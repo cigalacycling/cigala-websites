@@ -33,3 +33,9 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - Bright inline colours in old product descriptions are toned to brand text.
 - New logo "Cigala Cycling Retail" (`logo/cigala-cycling-retail-logo.png`, 343px) is in Files as `cigala-cycling-retail-logo.png`. It was fetched by Shopify from the staging WordPress media library (id 733) and is set as the header logo, footer logo and favicon.
 - Waiting on Matteo: the contour background upload. Staging WordPress refuses SVG files, so it can't be routed that way.
+- Round 2 (15 Nov):
+  - Footer newsletter posts to the shared Brevo form (same list as cigalacycling.com), with the agreed wording.
+  - The topo background is on the footer only (body is plain #08090a). The footer image is `cigala-topo-footer.webp`, rendered at 2004px from the SVG master (76 KB, Files; fetched via staging media id 734); the source is in this folder.
+  - The footer logo now has a 1x/2x/3x srcset.
+  - Product pages: new `blocks/cigala-trust.liquid` (fast delivery, finance, expert support, duties & taxes included) under the buy buttons. All texts are editable.
+- Privacy policy update: drafted in `retail/PRIVACY-DRAFT.md`, not applied.
