@@ -616,7 +616,7 @@ html .cc .reset { font: 600 13px var(--body); color: var(--text-2); background: 
 html .cc .reset:hover { color: #fff; }
 html .cc .none { color: var(--text-2); margin: 0 0 18px; }
 html .cc .none a { color: var(--green-text); }
-html .cc .tour .entry { display: flex; width: fit-content; }
+html .cc .tour .entry { display: flex; width: fit-content; background: rgba(8,9,10,.72); backdrop-filter: blur(4px); }
 html .cc .tour .when { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--red); border-radius: 6px; padding: 4px 9px; margin-bottom: 10px; }
 html .cc .tour .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: -4px 0 12px; font-size: 12.5px; font-weight: 600; color: var(--text-3); }
 html .cc .tour[hidden] { display: none; }
@@ -639,7 +639,21 @@ html .cc .hero .eyebrow::before { content: ""; width: 7px; height: 7px; border-r
 html .cc .story .quote { margin-bottom: 18px; }
 html .cc .brand img { border-radius: 0; }
 html .cc .story img.signature { display: block; width: 150px; max-width: 45%; height: auto; margin: 22px 0 0 -4px; opacity: .92; }
-html .cc .story img.signature + .sig { margin-top: 4px !important; }
+html .cc .story img.signature + .sig { margin-top: 6px !important; font-size: 13px; font-weight: 600; color: var(--text-2); }
+html .cc .story img.signature + .sig span { display: inline; font-size: 13px; font-weight: 500; color: var(--text-3); }
+html .cc .burger details.sub { border-bottom: 1px solid var(--border); }
+html .cc .burger details.sub > summary { border: 0; border-radius: 0; background: none; list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 11px 0; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; color: var(--text); }
+html .cc .burger details.sub > summary::-webkit-details-marker { display: none; }
+html .cc .burger details.sub > summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid var(--green-text); border-bottom: 2px solid var(--green-text); transform: rotate(45deg); margin: -4px 4px 0 0; transition: transform .2s; }
+html .cc .burger details.sub[open] > summary::after { transform: rotate(-135deg); margin-top: 4px; }
+html .cc .burger details.sub .sub-links { display: grid; padding: 0 0 8px 14px; border-left: 2px solid var(--border); margin: 0 0 6px 2px; }
+html .cc .burger details.sub .sub-links a { border-bottom: 0; padding: 9px 0; font-size: 12.5px; color: var(--text-2); }
+html .cc .burger details.sub .sub-links a[aria-current="page"] { padding-left: 12px; color: var(--text); }
+html .cc .burger details.sub > summary:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+html .cc .why .ico { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
+html .cc .why .ico svg { width: 24px; height: 24px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+html .cc .why h3 { margin-top: 16px; }
+html .cc .stat .n i { font-size: .6em; margin-left: .14em; vertical-align: .38em; }
 html .cc .story p { margin-bottom: 16px; }
 html .cc .band .tx .eyebrow + h2, html .cc .band .tx h2 + .bar { margin-top: 0; }
 html .cc .fi select:focus, html .cc .fi select:focus-visible { outline: none; }
@@ -654,10 +668,8 @@ html .cc section.matteo .in .photo { aspect-ratio: auto !important; overflow: vi
 html .cc section.matteo .in .photo img { width: 100%; max-width: 340px; }
 
 }
-@media (max-width: 640px) {html .cc .tour { aspect-ratio: auto; min-height: 440px; }
-html .cc .tour .tx { padding-top: 70px; }
-
-}
+html .cc #tour-grid .tour { aspect-ratio: auto; min-height: 430px; }
+html .cc #tour-grid .tour .tx { padding-top: 66px; }
 @media (max-width: 1080px) {html .cc .menu { display: none; }
 html .cc .burger { display: block; }
 html .cc .nav .btn { display: none; }
@@ -714,18 +726,21 @@ html .cc .tour:hover img { transform: none; }
     <details class="burger" id="menu-mobile">
       <summary>Menu</summary>
       <nav aria-label="Main (mobile)">
-        <a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All tours</a>
+        <a href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">About us</a>
+        <a href="https://tours.cigalacycling.com/destinations/" target="_blank" rel="noopener">Destinations</a>
+        <details class="sub"><summary>Bike tours</summary><div class="sub-links">
+            <a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All tours</a>
         <a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener" aria-current="page">Road tours</a>
         <a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel tours</a>
         <a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo tours</a>
         <a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian tours</a>
         <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a>
-        <a href="https://tours.cigalacycling.com/destinations/" target="_blank" rel="noopener">Destinations</a>
+          </div></details>
+        <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a>
         <a href="https://tours.cigalacycling.com/guides/" target="_blank" rel="noopener">Cycling guides</a>
-        <a href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">About us</a>
-        <a href="https://tours.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a>
         <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching</a>
         <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a>
+        <a href="https://tours.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a>
         <a href="https://tours.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
       </nav>
     </details>

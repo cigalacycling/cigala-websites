@@ -290,6 +290,21 @@ rep('<a class="btn btn-ghost" href="https://tours.cigalacycling.com/about/" targ
 s = re.sub(r'<ul class="creds">.*?</ul>', '<ul class="creds">\n        <li>European Road Champion Gran Fondo</li>\n        <li>UCI Gran Fondo Vice World Champion</li>\n        <li>UCI Gravel Vice World Champion</li>\n        <li>Italian Gravel Champion</li>\n        <li>200+ race wins</li>\n      </ul>', s, count=1, flags=re.S)
 # signature under the name in "Our story" (cut from the coaching blog; typed name stays for Google and screen readers)
 rep('<p class="sig">Matteo Cigala<span>Tours Director</span></p>', '<img class="signature" src="img/cigala-tours-signature.webp" alt="Matteo Cigala\'s signature" width="924" height="251" loading="lazy">\n      <p class="sig">Matteo Cigala<span>Tours Director</span></p>')  # letter style: signature, then typed name
+# phone menu: same order as the desktop menu, with Bike tours as a sub-menu (Matteo, 15 Nov)
+m = re.search(r'(<nav aria-label="Main \(mobile\)">)(.*?)(\n      </nav>)', s, re.S)
+sub = ''.join(f'\n            <a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_TOURS)
+mob_items = [('About us', L + '/about/'), ('Destinations', L + '/destinations/'), None,
+             ('Custom tours', L + '/trips/private-trips/'), ('Cycling guides', L + '/guides/'),
+             ('Coaching', 'https://coaching.cigalacycling.com/'), ('Shop', 'https://retail.cigalacycling.com/'),
+             ('Testimonials', L + '/testimonials/'), ('Contact', L + '/contact/')]
+body = ''
+for it in mob_items:
+    if it is None:
+        body += f'\n        <details class="sub"><summary>Bike tours</summary><div class="sub-links">{sub}\n          </div></details>'
+    else:
+        body += f'\n        <a href="{it[1]}" {EXT}>{it[0]}</a>'
+s = s[:m.start()] + m.group(1) + body + m.group(3) + s[m.end():]
+
 # icons instead of 01-06 in 'Why ride with us' (Matteo, 15 Nov)
 WHY_ICONS = {'01': '<circle cx="9" cy="8" r="3.2"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 13.7c2.9.3 5 2.3 5 5.3"/>', '02': '<circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5 9 9h6l3.5 7.5M9 9l3 7.5H5.5M12 16.5 15 9M13.5 6h3"/>', '03': '<path d="M2 7h11v9H2zM13 10h4.5l3.5 3.5V16h-8"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>', '04': '<path d="M3 18V6M3 14h18v4M21 14v-2.5A2.5 2.5 0 0 0 18.5 9H11v5"/><circle cx="7" cy="11" r="1.8"/>', '05': '<path d="M2 19 9 7l4 6 2.5-3.5L22 19z"/>', '06': '<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'}
 for n, svg in WHY_ICONS.items():
@@ -321,6 +336,15 @@ CSS2 = """
 .story img.signature { display: block; width: 150px; max-width: 45%; height: auto; margin: 22px 0 0 -4px; opacity: .92; }
 .story img.signature + .sig { margin-top: 6px !important; font-size: 13px; font-weight: 600; color: var(--text-2); }
 .story img.signature + .sig span { display: inline; font-size: 13px; font-weight: 500; color: var(--text-3); }
+.burger details.sub { border-bottom: 1px solid var(--border); }
+.burger details.sub > summary { border: 0; border-radius: 0; background: none; list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 11px 0; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; color: var(--text); }
+.burger details.sub > summary::-webkit-details-marker { display: none; }
+.burger details.sub > summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid var(--green-text); border-bottom: 2px solid var(--green-text); transform: rotate(45deg); margin: -4px 4px 0 0; transition: transform .2s; }
+.burger details.sub[open] > summary::after { transform: rotate(-135deg); margin-top: 4px; }
+.burger details.sub .sub-links { display: grid; padding: 0 0 8px 14px; border-left: 2px solid var(--border); margin: 0 0 6px 2px; }
+.burger details.sub .sub-links a { border-bottom: 0; padding: 9px 0; font-size: 12.5px; color: var(--text-2); }
+.burger details.sub .sub-links a[aria-current="page"] { padding-left: 12px; color: var(--text); }
+.burger details.sub > summary:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 .why .ico { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
 .why .ico svg { width: 24px; height: 24px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .why h3 { margin-top: 16px; }
