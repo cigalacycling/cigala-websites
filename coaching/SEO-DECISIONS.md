@@ -328,3 +328,5 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - /testimonials/ H1 "READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING" -> "READ OUR TESTIMONIALS" (Matteo: no
   hyphen); "What people say about Cigala Cycling" stays right under it as a subtitle (not a heading). Testimonial and
   review cards highlight on hover. Blog hero: Matteo winning in Siena, whole rider in frame (the riding photo cut his face).
+- Individual Packages: the 5 live testimonials (same quotes and photos with their live alt) now in the moving review strip
+  like the rest of the site; the currency note in the first person ("please contact me"), like the note beside it.

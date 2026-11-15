@@ -170,9 +170,11 @@ cards = ''.join([
 
 # ---------- testimonials (live quotes; photos had no alt text, see SEO-DECISIONS.md) ----------
 QUOTES = re.findall(r'TXT: "(.*?)"\n<img https://[^ ]*/(unnamed-\d+)\.png', '\n'.join(TXT), re.S)
-quotes = ''.join(
-    f'<figure class="q"><img src="{img(n + ".png", "athlete-" + n)}" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200">'
-    f'<div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“{E(re.sub(r"\s*\n\s*", " ", q))}”</blockquote></figure>' for q, n in QUOTES)
+# Matteo 15 Nov: the live testimonials as the same moving strip as the rest of the site
+quotes = ('<div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Athlete reviews, scroll sideways">' + ''.join(
+    f'<figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“{E(re.sub(r"\s*\n\s*", " ", q))}”</blockquote>'
+    f'<figcaption><img src="{img(n + ".png", "athlete-" + n)}" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>Coached athlete</b><span>Cigala Cycling Coaching</span></div></figcaption></figure>' for q, n in QUOTES)
+    + '</div><div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Previous reviews">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Next reviews">→</button></div></div>')
 assert len(QUOTES) == 5
 
 # ---------- Vekta + devices ----------
@@ -257,7 +259,7 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
 <section id="packages">
   <div class="in">
     {notes_strip([('spots', 'I coach a limited number of athletes, so every one of them gets my full attention: a one-to-one, personal coaching experience, never a template.'),   # Matteo 15 Nov: no "get in touch before"; a unique experience
-                 ('currency', E(intro[1])), ('platform', 'For Advanced &amp; Premium Packages Vekta membership is included (worth €19.99/ month)<br>On demand Training Peaks Premium is also an option.')])}
+                 ('currency', 'To sign up in another currency, please contact me and I will send you the right link.'), ('platform', 'For Advanced &amp; Premium Packages Vekta membership is included (worth €19.99/ month)<br>On demand Training Peaks Premium is also an option.')])}
     <div class="pkgs">
       {cards}
     </div>
@@ -292,7 +294,7 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
       <div><div class="eyebrow">Our athletes</div><h2>READ OUR TESTIMONIALS</h2></div>
       <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Read our reviews on Google →</a><a class="arrow-link" href="{C}/testimonials/" {EXT}>Read more testimonials →</a></div>
     </div>
-    <div class="quotes">{quotes}</div>
+    {quotes}
   </div>
 </section>
 
@@ -619,7 +621,7 @@ document.getElementById('g-more').dataset.label = document.getElementById('g-mor
 
 build('individual-packages', PATH, MAIN,
       'New Individual Packages page. Same packages, prices, payment links and copy as live; the page now has its approved H1.',
-      h1='Individual Cycling Coaching Packages', extra_css=PCSS + FT_CSS + CS_CSS + CAL_CSS, extra_js=PJS,
+      h1='Individual Cycling Coaching Packages', extra_css=PCSS + FT_CSS + CS_CSS + CAL_CSS, extra_js=PJS + REVIEWS_JS,
       # Matteo 15 Nov: the devices heading was too long
       h2_changes={'drop': ['FOLLOW YOUR STRUCTURED TRAINING SESSIONS ON YOUR FAVOURITE DEVICES & APPS (BELOW SOME APPS - THE LIST IS MUCH LONGER)', 'READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING'],
                   'add': ['SYNC WITH YOUR FAVOURITE DEVICES & APPS', 'READ OUR TESTIMONIALS']})   # Matteo 15 Nov: just "Read our testimonials"
