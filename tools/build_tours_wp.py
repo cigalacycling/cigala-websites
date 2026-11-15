@@ -8,7 +8,7 @@ Writes stg-tours/out/:
 
 Run tools/build_tours_home.py first. Push with tools/push_tours_wp.py.
 """
-import os, re, json, copy, random, urllib.parse
+import os, re, sys, json, copy, random, urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 OUT = ROOT + 'stg-tours/out/'
@@ -132,31 +132,19 @@ ftr = fix(between(home, '<footer>', '</footer>'))
 # tours list order comes from the preview (MENU_TOURS)
 # consent banner + "Chat with us" button: same as cigalacycling.com (wp/consent-banner.html), Tours version.
 # Tours has Google Analytics G-QRF16ZZVDB and no Meta Pixel. gtag.js only loads after Accept.
+# Shared Cigala cookie banner (shared/consent/, README there). Tours IDs checked on the live site 15 Nov:
+# GA4 G-QRF16ZZVDB, OpenWidget org 43e5f685-...; no Meta Pixel on live Tours, so none until Matteo confirms.
+sys.path.insert(0, ROOT + 'shared/consent')
+from render import banner as render_banner, head_snippet
 GA = 'G-QRF16ZZVDB'
-banner = open(ROOT + 'wp/consent-banner.html').read()
-def brep(a, b):
-    global banner
-    assert banner.count(a) == 1, a[:70]
-    banner = banner.replace(a, b)
-# banner text: identical on every Cigala site (Matteo, 15 Nov)
-brep("var GA='G-955J6LHQ2P', PX='1986332861692106';", "var GA='" + GA + "', PX='';")
-brep("    if(window.fbq)return;", "    if(!PX||window.fbq)return;")
-brep("    if(typeof gtag==='function'){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});gtag('config',GA);}",
-     "    window.dataLayer=window.dataLayer||[];if(typeof gtag!=='function'){window.gtag=function(){dataLayer.push(arguments);};}\n"
-     "    gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});\n"
-     "    if(!document.querySelector('script[src*=\"gtag/js?id='+GA+'\"]')){var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+GA;document.head.appendChild(g);gtag('js',new Date());}\n"
-     "    gtag('config',GA);")
+PIXEL = ''   # '1986332861692106' once Matteo confirms the Pixel on Tours
+banner = render_banner(ga_id=GA, pixel_id=PIXEL, openwidget_org='43e5f685-37fc-4f78-9420-122fd2a3c5e3')
 ftr = ftr.replace('<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>', '<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
 assert 'data-cc-settings' in ftr
 json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>'), html_widget(banner)])])}}, open(OUT + 'lib-228.json', 'w'))
 
-# head snippet (Elementor custom code 9279): consent default denied; returning visitors who accepted get GA loaded
-head_code = ("<script>window.dataLayer=window.dataLayer||[];if(typeof window.gtag!=='function'){window.gtag=function(){dataLayer.push(arguments);};}"
-    "gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});"
-    "(function(){var GA='" + GA + "',c=null;try{c=localStorage.getItem('cc_consent');}catch(e){}"
-    "if(c==='granted'){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});"
-    "if(!document.querySelector('script[src*=\"gtag/js?id='+GA+'\"]')){var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+GA;document.head.appendChild(g);gtag('js',new Date());gtag('config',GA);}}"
-    "else{window['ga-disable-'+GA]=true;}})();</script>")
+# head snippet (Elementor custom code 9279): the shared one. The consent-default line goes first in WPCode Header (Matteo).
+head_code = head_snippet()
 json.dump({"meta": {"_elementor_location": "elementor_head", "_elementor_priority": 1, "_elementor_code": head_code}}, open(OUT + 'snippet-9279.json', 'w'))
 
 # ---------- homepage ----------

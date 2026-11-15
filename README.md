@@ -150,11 +150,13 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Title, meta, canonical, robots and schema match live.
   - The 8 H2s use the live wording (Matteo approved making the label H2s normal text).
 - **Menu:** Bike Tours order is All, Road, Gravel, Gran Fondo, Italian, Custom (Matteo). The current page gets a red underline, as on cigalacycling.com; on tour pages "Bike tours" is underlined too.
-- **Consent and chat:** the footer (228) has the cigalacycling.com banner, `wp/consent-banner.html`, in a Tours version (GA G-QRF16ZZVDB, no Meta Pixel on Tours), plus the green "Chat with us" button. OpenWidget loads after consent or on click. The footer also has a "Cookie settings" link.
-  - Elementor custom code **snippet 9279** (head) sets Google consent default to denied. For visitors who accepted, it loads gtag.js; for everyone else it sets `ga-disable`.
-  - The banner text is identical on every Cigala site (Matteo). Tours has no Meta Pixel installed yet, although the text mentions one.
+- **Consent and chat (15 Nov):** Tours uses the **shared banner** `shared/consent/` (`render.py`), with GA4 G-QRF16ZZVDB and OpenWidget org 43e5f685…, both confirmed on the live site.
+  - It sits in footer 228, and the footer has a "Cookie settings" link. The old Elementor cookie popup is gone.
+  - Elementor custom code **9279** (head) is the shared `head-snippet.html`.
+  - **Meta Pixel:** not added. Live Tours has none, and the shared rule is that it's added only after Matteo confirms. The banner text therefore leaves out "advertising (Meta Pixel)". To add it, set `PIXEL` in `build_tours_wp.py`.
+  - The other tags on live Tours are only GA4, OpenWidget and the WeTravel booking widget (Book now checkout, functional). No GTM, Pixel, Hotjar or Clarity.
+  - **Matteo to do on staging:** paste `shared/consent/wpcode-header-line.html` as the **first line** of WPCode → Header & Footer → Header, above the Google tag. This replaces the earlier "delete the Google tag" note. Until then, Analytics' `config` runs before any consent default.
   - **Chat:** OpenWidget picks the template by page address. tours.cigalacycling.com gets the Tours template (196a47eb…); any other address, including the staging one, gets the default Cigala Cycling template. On live it will be right automatically. To preview it on staging, add `staging.tours.cigalacycling.com` to the Tours template's address rule in OpenWidget.
-  - **Matteo to do on staging:** remove the old Google tag from WPCode (Code Snippets → Header & Footer → Header). It loads gtag.js before consent and runs `config` before the denied default. Once it's gone, gtag.js only loads after Accept.
 - **Logo:** header and footer use the file Matteo sent on 15 Nov, `tours/brand/ccToursLogo-matteo-2026-11-15.png` (WebP media 9281), with square corners.
 - **Signature:** under "Matteo Cigala, Tours Director" in Our story. Cut from the coaching blog image `Matteo-Cigala-6-years-old.png` as white ink on transparent (media 9282).
 - **Road tours page (new, 15 Nov):** https://staging.tours.cigalacycling.com/trips/road-trips/, page **9301**, child of Trips 8689.
