@@ -415,7 +415,8 @@ def country_maps_v2(path50, admin1):
         tol = (lon1 - lon0) / 900
         eps = (lon1 - lon0) / 2500   # close the hairline gaps between provinces (they showed as odd inner lines)
         regions = [unary_union([x.buffer(eps) for x in g]).buffer(-eps).simplify(tol) for g in groups.values()]
-        whole = unary_union([r.buffer(eps) for r in regions]).buffer(-eps).simplify(tol)
+        close = (lon1 - lon0) / 220   # smooth the outline: fill narrow estuaries/inlets that drew as odd spikes (e.g. the Gironde)
+        whole = unary_union([r.buffer(eps) for r in regions]).buffer(close).buffer(-close).simplify(tol)
         sel = [f for f in provs if f['properties']['name'] in hl or ('region:' + (f['properties'].get('region') or '')) in hl]
         hil = unary_union([shape(f['geometry']).buffer(0) for f in sel]).simplify(tol) if sel else None
         def d_of(geom, close=True, holes=False):
@@ -464,5 +465,5 @@ if __name__ == '__main__':
         print(slug, len(out) // 1024, 'KB')
     open(OUT + 'custom-locations.svg', 'w').write(draw_locations(topo_polys(f['countries'].replace('-10m', '-50m')), lakes))   # 1:50m is plenty at this scale
     print('custom-locations', os.path.getsize(OUT + 'custom-locations.svg') // 1024, 'KB')
-    country_maps_v2(f['countries'].replace('-10m', '-50m'), f['admin1'])
+    country_maps_v2(f['countries'], f['admin1'])   # neighbours from the same detailed (1:10m) data as the country
     print('country maps', len([x for x in os.listdir(OUT) if x.startswith('country-')]))

@@ -236,6 +236,25 @@ def card_list(it, a, b):
 FIX_NAME = {'SWIZERLAND': 'SWITZERLAND'}   # typo on the live page
 FIX_H1 = {'gran-canaria': 'Cycling in Gran Canaria'}   # live H1 said 'Cycling in Mallorca' (copied page)
 FIX_URL = {'/destinations/belgium/': '/trips/tour-of-flanders-experience/'}   # live link is a 404: Belgium = the Flanders tour
+# live Tuscany "Upcoming" cards link to the Lake Garda tours: send each card to the tour its title names (Matteo 15 Nov)
+FIX_CARD_URL = {('tuscany', 'chianti & gran fondo strade bianche'): '/trips/chianti-gran-fondo-strade-bianche/',
+                ('tuscany', 'tuscany epic | gravel'): '/trips/tuscany-epic-gravel/',
+                ("tuscany", "italy's coast to coast"): '/trips/italys-coast-to-coast/'}
+# photo keywords per destination, to fill gallery rows to 3 from the media library (Matteo 15 Nov: full rows on every page)
+GAL_KW = {'italy': ['italy', 'italian', 'tuscany', 'dolomites', 'garda', 'como', 'stelvio', 'chianti'], 'france': ['france', 'french', 'alpe d', 'galibier', 'ventoux', 'pyrenees', 'corsica'],
+          'spain': ['spain', 'spanish', 'mallorca', 'girona', 'calpe', 'costa blanca', 'tenerife', 'canaria', 'teide'],
+          'girona': ['girona', 'catalonia'], 'slovenia': ['slovenia', 'bled', 'vrsic', 'soca'], 'french-alps': ['french alps', 'alpe d', 'galibier', 'izoard', 'france']}
+def gallery_extras(slug, name, need, used):
+    kws = GAL_KW.get(slug, [name.lower()])
+    out = []
+    for x in json.load(open(ROOT + 'stg-tours/media-library.json')):
+        w, h = int(x.get('width') or 0), int(x.get('height') or 0)
+        if w < 1200 or h * 1.05 > w or 'webp' in x.get('mime_type', '') or not x.get('mime_type', '').startswith('image/'): continue
+        txt = ((x.get('alt_text') or '') + ' ' + x['source_url'].rsplit('/', 1)[-1]).lower()
+        if x['source_url'].lower().endswith('.png'): continue   # PNGs are designs/graphics, not photos
+        if any(re.search(r'\b' + re.escape(k) + r's?\b', txt) for k in kws) and media(x['source_url'])['id'] not in used and 'logo' not in txt and 'map' not in txt:
+            out.append(x['source_url'])
+    return out[:need]
 
 def destinations():
     it = items(elementor(10))
@@ -445,6 +464,10 @@ def destination(slug):
             for x in vals:
                 if media(x)['id'] not in used: used.add(media(x)['id']); seen.append(x)
             if not seen: return ''
+            if len(seen) % 3:
+                extra = gallery_extras(slug, name, 3 - len(seen) % 3, used)
+                for x in extra: used.add(media(x)['id']); seen.append(x); print('  + gallery', slug, media(x)['id'], (media(x).get('alt_text') or '')[:70], x.rsplit('/', 1)[-1][:50])
+                if len(seen) % 3: print('  !! gallery not full', slug, len(seen))
             return f'<div class="gal3">{"".join(img_tag(x, 1200, alt=f"Cycling in {name} - Cigala Cycling Tours") for x in seen)}</div>'
         if kind == 'facts':
             return '<div class="facts4">' + ''.join(
@@ -455,12 +478,14 @@ def destination(slug):
             for c in vals:
                 u = link(c['url']).replace(L, '')
                 u = FIX_URL.get(u, u)
+                u = FIX_CARD_URL.get((slug, re.sub(r'<[^>]+>', '', c['title']).replace('\u200b', '').strip().lower()), u)
                 tag = c['tag'].title() if c['tag'] else ''
                 title = re.sub(r'<[^>]+>', '', c['title']).replace('\u200b', '').strip()
                 tags = f'<span class="tags"><span class="tag{" gravel" if tag == "Gravel" else ""}">{E(tag)}</span></span>' if tag else ''
                 title = re.sub(r'<[^>]+>', '', c['title']).replace('\u200b', '').strip()
                 go = c['go'].replace('→', '').strip().capitalize() + ' →'
                 desc = re.sub(r'<p>(\s|&nbsp;|\u200b|<br\s*/?>)*</p>', '', c['desc'])
+                if 'nquire' in c['go']: u = '/trips/private-trips/'   # an Enquire card is a custom tour: never another tour's page (live Madeira linked to Cyprus)
                 hm = re.match(r'^/trips/([^/]+)/?$', u)
                 if hm and hm.group(1) in HOME_CARDS and hm.group(1) != 'private-trips':
                     out.append(('home', HOME_CARDS[hm.group(1)])); continue
@@ -726,6 +751,12 @@ html .cl .vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)
 html .cl .band-up > img { object-position: center 58% !important; }   /* show the riders' faces (Matteo) */
 html .cl .band-up.priv > img { object-position: center 75% !important; }
 html .cl .hero.phero.dhero .in { padding-block: 150px 60px !important; }   /* taller destination hero: more of the photo (Matteo) */
+/* every destination hero the same height, whatever the H1 length (Matteo 15 Nov): content sits at the bottom */
+html .cl .hero.phero.dhero { min-height: 640px; display: flex; flex-direction: column; justify-content: flex-end; }
+html .cl .hero.phero.dhero > .in { width: 100%; box-sizing: border-box; }
+@media (max-width: 900px) { html .cl .hero.phero.dhero { min-height: 600px; } }
+/* breathing room between text, map and photos (Matteo 15 Nov: map and photos were touching) */
+html .cl .dsplit + .gal3, html .cl .dsplit + .dprose, html .cl .dprose + .gal3, html .cl .gal3 + .dprose, html .cl .gal3 + .gal3 { margin-top: 36px; }
 html .cl .dsplit { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: start; }
 @media (max-width: 900px) { html .cl .dsplit { grid-template-columns: minmax(0, 1fr); } }
 html .cl .cmapbox { width: 100%; max-width: 374px; justify-self: end; }
