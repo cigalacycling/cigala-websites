@@ -62,6 +62,8 @@ body { overflow-x: hidden; }
 [data-elementor-type="header"] { position: sticky; top: 0; z-index: 50; }
 footer[data-elementor-type="footer"] { margin-top: 0 !important; border-top: 0 !important; background: none !important; }
 footer[data-elementor-type="footer"] footer { margin-top: 64px; }
+.elementor-kit-6 footer ul a { color: var(--text-2); }
+.elementor-kit-6 footer ul a:hover, .elementor-kit-6 footer ul a:active { color: var(--green-text); text-decoration: none; }
 @media (max-width: 640px) { footer[data-elementor-type="footer"] footer { margin-top: 52px; } }
 .elementor-widget-html, .elementor-widget-html .elementor-widget-container { width: 100%; }
 .e-con.cc-wrap, .cc-wrap > .e-con-inner { padding: 0 !important; gap: 0 !important; max-width: none !important; }
