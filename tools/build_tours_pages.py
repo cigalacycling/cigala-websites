@@ -699,6 +699,7 @@ html .cl .band-up.priv > img { object-position: center 75% !important; }
 html .cl .hero.phero.dhero .in { padding-block: 150px 60px !important; }   /* taller destination hero: more of the photo (Matteo) */
 html .cl .dsplit { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: start; }
 @media (max-width: 900px) { html .cl .dsplit { grid-template-columns: minmax(0, 1fr); } }
+html .cl .cmapbox { width: 100%; max-width: 400px; justify-self: end; }
 html .cl .cmapbox svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
 html .cl .dtour .tx { gap: 10px; }
 html .cl .dtour .ctas.one { margin-top: auto; padding-top: 6px; }
