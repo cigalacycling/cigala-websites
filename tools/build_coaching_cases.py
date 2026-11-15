@@ -22,9 +22,9 @@ def bars(c):
 
 def photo(c, i):
     if c.get('photo_file'):
-        return f'<div class="cs-photo"><img src="{conv(c["photo_file"], "case-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"></div>'
+        return f'<div class="cs-photo"><img src="{conv(c["photo_file"], "case-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"{fstyle(c)}></div>'
     if c['photo']:
-        return f'<div class="cs-photo"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="{"eager" if i == 0 else "lazy"}"></div>'
+        return f'<div class="cs-photo"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="{"eager" if i == 0 else "lazy"}"{fstyle(c)}></div>'
     return f'<div class="cs-photo cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c.get("stat_label", ""))}</small></div>'
 
 def case(c, i):

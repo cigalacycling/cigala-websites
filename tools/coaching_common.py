@@ -260,12 +260,16 @@ CASES = [
      'result': 'Completed the Haute Route Pyrenees in 2017, “the experience of a lifetime”, and later got back to regular cycling after his cardiac procedure.',
      'quote': 'As a non-elite or serious cyclist, I can highly recommend Matteo to anyone interested in getting fit and ready for any cycling goal, no matter what level you’re at or what age you are!'},
 ]
+# Matteo 15 Nov: keep each athlete centred in the crop (horizontal% vertical% of the photo: where the face is)
+FOCUS = {'marine-lenehan': '45% 28%', 'tilen': '50% 25%', 'marco': '50% 22%', 'vittorio': '35% 32%', 'david': '45% 22%',
+         'shane-courtney': '45% 50%', 'bernd-ondruch': '45% 40%', 'rob-kavanagh': '45% 38%', 'derek-lawler': '45% 48%'}
+def fstyle(c): return f' style="object-position:{FOCUS[c["slug"]]}"' if c['slug'] in FOCUS else ''
 def case_cards(link_base):
     """Scrolling case study cards; link_base is the case studies page URL."""
     def pic(c):
-        if c.get('photo_file'): return f'<span class="cs-img"><img src="{conv(c["photo_file"], "case-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"></span>'
+        if c.get('photo_file'): return f'<span class="cs-img"><img src="{conv(c["photo_file"], "case-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"{fstyle(c)}></span>'
         if not c['photo']: return f'<span class="cs-img cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c.get("stat_label", ""))}</small></span>'
-        return f'<span class="cs-img"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="lazy"></span>'
+        return f'<span class="cs-img"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="lazy"{fstyle(c)}></span>'
     cards = ''.join(f'<a class="cs-card" href="{link_base}#{c["slug"]}" {EXT}>{pic(c)}'
                     f'<span class="cs-tx"><span class="cs-tag">{E(c["tag"])}</span><b class="cs-stat">{E(c["stat"])}</b><span class="cs-h">{E(c["headline"])}</span>'
                     f'<span class="cs-n">{E(c["name"])} · {E(c["where"])}</span><span class="arrow-link">Read the case study →</span></span></a>' for c in CASES)
