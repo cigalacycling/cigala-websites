@@ -15,3 +15,11 @@ Source: Matteo, 15 Nov 2026.
 - **Privacy policy:** the controller is the site's entity, with its CRO number.
 - **Registered office address:** do NOT publish it on any site. It's Matteo's home address (his decision, 15 Nov 2026). Show the company name, CRO number, VAT number and "Co. Wicklow, Ireland" only. If he later moves the registered office to a business address (accountant, or a registered-office service, via CRO Form B2), add that address.
 - **Reviews:** no star ratings in schema for your own reviews. Show real review text on the page and link to the right Google profile (see coaching/ and the Coaching chat's reviews_strip()).
+- **Form emails (Matteo, 15 Nov 2026):** every contact or enquiry form sends to the inbox of the site it's on:
+
+  | Site | Forms send to |
+  |---|---|
+  | cigalacycling.com | info@cigalacycling.com |
+  | coaching.cigalacycling.com | matteo@cigalacycling.com |
+  | tours.cigalacycling.com | tours@cigalacycling.com |
+  | retail.cigalacycling.com (Shopify) | retail@cigalacycling.com |

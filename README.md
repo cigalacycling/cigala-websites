@@ -191,7 +191,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Fields: no visible labels, every field required, placeholders "Name *", "Email *", "Phone (with country code) *", "Your Message *". Phone is a text field, so +353 and spaces are accepted.
   - Style: 16px text, 8px corners, green focus outline, green "Send >" button.
   - Contact gained the phone field. Custom tours keeps its phone field id (now text instead of number).
-  - Email settings are untouched ([all-fields] to info@).
+  - Emails go to **tours@cigalacycling.com** (Matteo 15 Nov; the per-site inboxes are in `shared/BUSINESS.md`). Subjects: "New message from the Tours website" (Contact) and "New custom tour enquiry from the Tours website" (Custom tours). Content: [all-fields].
   - Before-change backups: `stg-tours/backup/page-461-before-form.json`, `page-1576-before-form.json`.
   - When these pages get the new design, keep the same form widget.
 - **Terms (564) and Privacy Policy (new, 9347, /privacy-policy/), 15 Nov:** built in the cigalacycling.com Terms style by `tools/build_tours_legal.py`, pushed with `push_tours_list.py terms` and `push_tours_list.py privacy-policy`.

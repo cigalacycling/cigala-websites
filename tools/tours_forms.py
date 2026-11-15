@@ -6,7 +6,7 @@ Patches the live Elementor form widgets on Tours STAGING in place:
 - no visible labels, a " *" at the end of every placeholder, every field required
 - Name, Email, Phone (with country code), Your Message. Phone is a text field: Elementor's number/tel fields
   reject "+353 87 ...". Custom tours keeps its phone field id, so nothing else changes.
-Email settings (recipient, subject, [all-fields]) are untouched. Idempotent: safe to run again.
+Emails go to tours@cigalacycling.com with a clear subject; the content stays [all-fields]. Idempotent: safe to run again.
 Backups of the pages before the first change: stg-tours/backup/page-<id>-before-form.json
 """
 import os, sys, json
@@ -16,7 +16,13 @@ from push_tours_wp import req, B
 PH = {'name': 'Name', 'email': 'Email', 'message': 'Your Message'}
 PHONE_PH = 'Phone (with country code) *'
 
-def fix_form(s):
+TO = 'tours@cigalacycling.com'   # shared/BUSINESS.md: Tours forms go to the Tours inbox (Matteo 15 Nov)
+SUBJECT = {461: 'New message from the Tours website', 1576: 'New custom tour enquiry from the Tours website'}
+
+def fix_form(s, pid):
+    s['email_to'] = TO
+    if s.get('email_to_2'): s['email_to_2'] = TO
+    s['email_subject'] = SUBJECT[pid]
     cls = (s.get('_css_classes') or '').split()
     if 'cc-form' not in cls: cls.append('cc-form')
     s['_css_classes'] = ' '.join(cls)
@@ -43,7 +49,7 @@ for pid in (461, 1576):
     out = []
     def walk(els):
         for e in els:
-            if e.get('widgetType') == 'form': out.append(fix_form(e['settings']))
+            if e.get('widgetType') == 'form': out.append(fix_form(e['settings'], pid))
             walk(e.get('elements', []))
     walk(d)
     assert len(out) == 1, (pid, len(out))
