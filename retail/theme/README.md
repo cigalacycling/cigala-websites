@@ -155,3 +155,4 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - `/products/assioma-duo` → `/products/favero-assioma-pro-rs-2`
   - Shopify only follows a redirect once the product page is gone, so they start working when the UNO and DUO are archived.
 - **Checking later:** the festive returns section and the automatic BFCM collection.
+- **Failed or refused delivery charges:** Matteo confirmed the Returns page amounts. The Terms page (live page content) now uses the same: €10 Ireland / €35 EU per package, and €25 / €60 for bulky items (it had €7 / €19 and €49). The drafts in `retail/policies-new/` are updated to match.
