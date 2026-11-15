@@ -1,0 +1,205 @@
+{
+  "approved_by": "Matteo",
+  "approved_on": "2026-11-14",
+  "tours": [
+    {
+      "slug": "alpine-gravel-escape",
+      "title": "Alpine Gravel Escape",
+      "trip_url": "https://tours.cigalacycling.com/trips/alpine-gravel-escape/",
+      "tags": [
+        "GRAVEL"
+      ],
+      "country": "italy",
+      "card_web": "cards-web/alpine-gravel-escape.jpg",
+      "card_hq": "cards-HQ/alpine-gravel-escape.png",
+      "story_hq": "stories-HQ/alpine-gravel-escape-story.png",
+      "alt": "Alpine Gravel Escape cycling tour: 320 km, 9,300 m climbing"
+    },
+    {
+      "slug": "chianti-gran-fondo-strade-bianche",
+      "title": "Chianti Strade Bianche",
+      "trip_url": "https://tours.cigalacycling.com/trips/chianti-gran-fondo-strade-bianche/",
+      "tags": [
+        "ROAD",
+        "GRAN FONDO"
+      ],
+      "country": "italy",
+      "card_web": "cards-web/chianti-gran-fondo-strade-bianche.jpg",
+      "card_hq": "cards-HQ/chianti-gran-fondo-strade-bianche.png",
+      "story_hq": "stories-HQ/chianti-gran-fondo-strade-bianche-story.png",
+      "alt": "Chianti Strade Bianche cycling tour: 350 km, 6,000 m climbing"
+    },
+    {
+      "slug": "cyprus-crossing-gravel",
+      "title": "Cyprus Crossing",
+      "trip_url": "https://tours.cigalacycling.com/trips/cyprus-crossing-gravel/",
+      "tags": [
+        "GRAVEL"
+      ],
+      "country": "cyprus",
+      "card_web": "cards-web/cyprus-crossing-gravel.jpg",
+      "card_hq": "cards-HQ/cyprus-crossing-gravel.png",
+      "story_hq": "stories-HQ/cyprus-crossing-gravel-story.png",
+      "alt": "Cyprus Crossing cycling tour: 415 km, 8,700 m climbing"
+    },
+    {
+      "slug": "discover-the-algarve-granfondo",
+      "title": "Algarve & Gran Fondo",
+      "trip_url": "https://tours.cigalacycling.com/trips/discover-the-algarve-granfondo/",
+      "tags": [
+        "ROAD",
+        "GRAN FONDO"
+      ],
+      "country": "portugal",
+      "card_web": "cards-web/discover-the-algarve-granfondo.jpg",
+      "card_hq": "cards-HQ/discover-the-algarve-granfondo.png",
+      "story_hq": "stories-HQ/discover-the-algarve-granfondo-story.png",
+      "alt": "Algarve & Gran Fondo cycling tour: 420 km, 5,800 m climbing"
+    },
+    {
+      "slug": "dolomites",
+      "title": "Dolomites",
+      "trip_url": "https://tours.cigalacycling.com/trips/dolomites/",
+      "tags": [
+        "ROAD"
+      ],
+      "country": "italy",
+      "card_web": "cards-web/dolomites.jpg",
+      "card_hq": "cards-HQ/dolomites.png",
+      "story_hq": "stories-HQ/dolomites-story.png",
+      "alt": "Dolomites cycling tour: 290 km, 8,200 m climbing"
+    },
+    {
+      "slug": "french-alps",
+      "title": "French Alps",
+      "trip_url": "https://tours.cigalacycling.com/trips/french-alps/",
+      "tags": [
+        "ROAD"
+      ],
+      "country": "france",
+      "card_web": "cards-web/french-alps.jpg",
+      "card_hq": "cards-HQ/french-alps.png",
+      "story_hq": "stories-HQ/french-alps-story.png",
+      "alt": "French Alps cycling tour: 485 km, 13,700 m climbing"
+    },
+    {
+      "slug": "italian-alps",
+      "title": "Italian Alps",
+      "trip_url": "https://tours.cigalacycling.com/trips/italian-alps/",
+      "tags": [
+        "ROAD"
+      ],
+      "country": "italy",
+      "card_web": "cards-web/italian-alps.jpg",
+      "card_hq": "cards-HQ/italian-alps.png",
+      "story_hq": "stories-HQ/italian-alps-story.png",
+      "alt": "Italian Alps cycling tour: 380 km, 10,200 m climbing"
+    },
+    {
+      "slug": "italys-coast-to-coast",
+      "title": "Italy's Coast to Coast",
+      "trip_url": "https://tours.cigalacycling.com/trips/italys-coast-to-coast/",
+      "tags": [
+        "ROAD"
+      ],
+      "country": "italy",
+      "card_web": "cards-web/italys-coast-to-coast.jpg",
+      "card_hq": "cards-HQ/italys-coast-to-coast.png",
+      "story_hq": "stories-HQ/italys-coast-to-coast-story.png",
+      "alt": "Italy'S Coast to Coast cycling tour: 470 km, 4,600 m climbing"
+    },
+    {
+      "slug": "lake-como-il-lombardia",
+      "title": "Lake Como & Il Lombardia",
+      "trip_url": "https://tours.cigalacycling.com/trips/lake-como-gran-fondo-il-lombardia/",
+      "tags": [
+        "ROAD"
+      ],
+      "country": "italy",
+      "card_web": "cards-web/lake-como-il-lombardia.jpg",
+      "card_hq": "cards-HQ/lake-como-il-lombardia.png",
+      "story_hq": "stories-HQ/lake-como-il-lombardia-story.png",
+      "alt": "Lake Como & Il Lombardia cycling tour: 410 km, 5,300 m climbing"
+    },
+    {
+      "slug": "lake-garda-gravel",
+      "title": "Lake Garda Gravel",
+      "trip_url": "https://tours.cigalacycling.com/trips/lake-garda-gravel",
+      "tags": [
+        "GRAVEL"
+      ],
+      "country": "italy",
+      "card_web": "cards-web/lake-garda-gravel.jpg",
+      "card_hq": "cards-HQ/lake-garda-gravel.png",
+      "story_hq": "stories-HQ/lake-garda-gravel-story.png",
+      "alt": "Lake Garda Gravel cycling tour: 340 km, 3,500 m climbing"
+    },
+    {
+      "slug": "lake-garda-stelvio",
+      "title": "Lake Garda & Stelvio",
+      "trip_url": "https://tours.cigalacycling.com/trips/lake-garda-and-stelvio",
+      "tags": [
+        "ROAD"
+      ],
+      "country": "italy",
+      "card_web": "cards-web/lake-garda-stelvio.jpg",
+      "card_hq": "cards-HQ/lake-garda-stelvio.png",
+      "story_hq": "stories-HQ/lake-garda-stelvio-story.png",
+      "alt": "Lake Garda & Stelvio cycling tour: 460 km, 4,000 m climbing"
+    },
+    {
+      "slug": "maratona-dles-dolomites",
+      "title": "Maratona dles Dolomites",
+      "trip_url": "https://tours.cigalacycling.com/trips/maratona-dles-dolomites/",
+      "tags": [
+        "ROAD",
+        "GRAN FONDO"
+      ],
+      "country": "italy",
+      "card_web": "cards-web/maratona-dles-dolomites.jpg",
+      "card_hq": "cards-HQ/maratona-dles-dolomites.png",
+      "story_hq": "stories-HQ/maratona-dles-dolomites-story.png",
+      "alt": "Maratona Dles Dolomites cycling tour: 250–350 km, 5,000–7,000 m climbing"
+    },
+    {
+      "slug": "tour-of-flanders-experience",
+      "title": "Tour of Flanders Experience",
+      "trip_url": "https://tours.cigalacycling.com/trips/tour-of-flanders-experience/",
+      "tags": [
+        "ROAD",
+        "GRAN FONDO"
+      ],
+      "country": "belgium",
+      "card_web": "cards-web/tour-of-flanders-experience.jpg",
+      "card_hq": "cards-HQ/tour-of-flanders-experience.png",
+      "story_hq": "stories-HQ/tour-of-flanders-experience-story.png",
+      "alt": "Tour of Flanders Experience cycling tour: 120–300 km, 1,000–3,000 m climbing"
+    },
+    {
+      "slug": "tuscany-epic-gravel",
+      "title": "Tuscany Epic",
+      "trip_url": "https://tours.cigalacycling.com/trips/tuscany-epic-gravel/",
+      "tags": [
+        "GRAVEL"
+      ],
+      "country": "italy",
+      "card_web": "cards-web/tuscany-epic-gravel.jpg",
+      "card_hq": "cards-HQ/tuscany-epic-gravel.png",
+      "story_hq": "stories-HQ/tuscany-epic-gravel-story.png",
+      "alt": "Tuscany Epic cycling tour: 490 km, 7,100 m climbing"
+    },
+    {
+      "slug": "wonderful-slovenia",
+      "title": "Wonderful Slovenia",
+      "trip_url": "https://tours.cigalacycling.com/trips/wonderful-slovenia/",
+      "tags": [
+        "ROAD"
+      ],
+      "country": "slovenia",
+      "card_web": "cards-web/wonderful-slovenia.jpg",
+      "card_hq": "cards-HQ/wonderful-slovenia.png",
+      "story_hq": "stories-HQ/wonderful-slovenia-story.png",
+      "alt": "Wonderful Slovenia cycling tour: 440 km, 6,600 m climbing"
+    }
+  ]
+}
