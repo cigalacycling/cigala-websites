@@ -8,11 +8,17 @@ P: Contact and custom tour forms: your name, email address, phone number (custom
 Bookings: when you book a tour, our booking platform WeTravel collects your name, contact details, the tour you booked and your payment. We use these details to confirm and run your tour, take deposits and balances, and send you the trip information. Legal basis: our contract with you.
 Tour details: before the tour we may ask for details such as your bike size and preferences, room sharing, dietary needs, flight times and an emergency contact, and we send you our Waiver of Liability Form to complete. We use this information only to organise your tour and look after you on it. Legal basis: our contract with you and, for the emergency contact, our legitimate interest in your safety.
 Health information: if you choose to tell us about a medical condition or allergy, we use it only to keep you safe on the tour and share it only where needed, for example with a hotel or in an emergency. Legal basis: your explicit consent, or protecting your vital interests in an emergency.
+Newsletter: if you sign up to the Cigala Cycling newsletter on any of our websites, your email address. Legal basis: your consent. See "One newsletter for all our websites" below.
 Live chat: the messages and any details you choose to share in the chat. We use them to answer you. Legal basis: your request and our legitimate interest in replying to it.
 Website analytics and advertising: information about how you use the site, such as pages visited, device, browser and approximate location, collected only if you accept cookies (see "Cookies" below). Legal basis: your consent.
 Technical data: like every website, our host's servers automatically record basic technical information (such as IP address, browser and the time of your visit) to keep the site running and secure. Legal basis: our legitimate interest in protecting the website.
 Photos: we often take photos and videos on our tours and may share them on our website and social media, as set out in the Waiver of Liability Form. If you would rather not appear, tell us and we will respect it.
 We do not store or maintain credit card details, nor do we share customer financial details with any third parties. Card payments are handled by WeTravel and its payment providers.
+LI: One newsletter for all our websites
+P: Cigala Cycling has one newsletter, shared by all our websites: cigalacycling.com, coaching.cigalacycling.com, tours.cigalacycling.com and retail.cigalacycling.com.
+Whichever of our websites you sign up on, you receive the same Cigala Cycling newsletter. It includes training tips, news, blogs, and deals and offers on our bike tours, and on the coaching and online shop run by our sister company Cigala Cycling Ltd.
+Your email address is kept in our newsletter system (Brevo) for this purpose. We do not sell it or give it to anyone else to market to you.
+You can unsubscribe at any time with the link at the bottom of every email, or by emailing tours@cigalacycling.com. Unsubscribing stops the newsletter from all our websites.
 LI: Cookies
 P: When you first visit, a banner asks whether you accept cookies. Until you choose, and if you reject, we do not set analytics or advertising cookies.
 If you accept, we use:
@@ -28,6 +34,7 @@ P: We only share personal data with trusted service providers and partners that 
 - Hotels, bike rental shops, transfer and transport companies and restaurants that provide services on your tour, which receive the details they need, such as your name, room, bike size, dietary needs and arrival times.
 - Event organisers, such as gran fondo and sportive organisers, when we register you for an event included in your tour.
 - Hostinger, our website host (EU).
+- Brevo (Sendinblue SAS, France), our newsletter system, if you sign up to the newsletter.
 - Google Ireland Limited (Google Analytics, and Google Fonts, which delivers the website's fonts and receives your IP address when a page loads).
 - Meta Platforms Ireland Limited (Meta Pixel, only if you accept cookies).
 - Text S.A. (OpenWidget live chat).
