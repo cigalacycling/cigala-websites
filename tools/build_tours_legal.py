@@ -36,7 +36,7 @@ blocks = [clean(b) for b in blocks]
 TITLES = ['Outstanding Balances & Cancellation Policy', 'Pricing & Payment Terms', 'Travel Insurance', 'Travel Arrangements & Disruptions',
           'Accommodation & Rooming', 'Changes to the itinerary', 'Third-Party Services', 'Force Majeure', 'Rider Eligibility',
           'Passport / visa / entry requirements', 'Bike Rental and Damage', 'Private Groups & Group Size',
-          'Events Regulations & Partecipant Responsability', 'Client Protection & Insolvency Safeguard Statement', 'Waiver of Liability']
+          'Events Regulations & Participant Responsibility', 'Client Protection & Insolvency Safeguard Statement', 'Waiver of Liability']
 intro, rest = blocks[:4], blocks[4:]
 assert len(rest) == len(TITLES) + 2, (len(rest), len(TITLES))
 sections = [(t, rest[i]) for i, t in enumerate(TITLES[:-1])] + [(TITLES[-1], ''.join(rest[len(TITLES) - 1:]))]
