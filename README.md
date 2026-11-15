@@ -199,7 +199,27 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - The privacy text is in `tours/privacy.txt`: Tours' own processors (WeTravel, tour partners, event organisers, Hostinger, Google, Meta, OpenWidget), with no tracking IDs. **Matteo to review it** (ideally his accountant or solicitor too).
   - The Rank Math title and meta for the privacy page are set.
   - The footer legal row reads Refund/cancellation policy & terms · Privacy policy · Cookie settings. The shared banner (no vendor names) links to /privacy-policy/.
-- **Next:** destinations, guides, about, contact, testimonials, the trip pages, and the custom-tour page.
+- **All the other Tours pages, rebuilt on staging (15 Nov):**
+  - **Source of the words:** each page's ORIGINAL Elementor data (`stg-tours/backup/page-<id>.json`), never the current staging page. The builders keep the H1/H2 wording and level, body copy, links and image alt text.
+  - `tools/build_tours_pages.py`: About 271, Contact 461 (live form kept), Destinations 10, the 26 destination pages (ids in `stg-tours/destination-ids.json`), Testimonials 2844 and Custom tours 1576 (live form kept).
+  - `tools/build_tours_trips.py`: the 15 trip pages (ids in `stg-tours/trip-ids.json`), in the trip design `trip/pub/index.html`. It covers the price box with the live WeTravel links, the key numbers, route map, day by day, what's included, gallery, hotels, bike rental, guides, FAQ, reviews and the closing booking band.
+  - `tools/build_tours_guides.py`: single post template 5104 (all 37 guides), guide card 5087 and the Guides page 5030 (live loop grid, so new guides appear by themselves).
+  - Push: `python3 -I tools/push_tours_list.py <name>` (about, contact, destinations, dest-<slug>, testimonials, private-trips, trip-<slug>); `python3 -I tools/build_tours_guides.py --push`. Then `build_tours_wp.py` + `push_tours_wp.py lib-6` for the CSS.
+  - Images: `tools/tours_img.py` makes WebP q90 from the largest staging original on demand, with the library alt (records in `stg-tours/media-webp.json`).
+  - Checks: `python3 -I tools/seo_check_tours.py <paths>` (title, meta, robots, canonical, OG, H1/H2 against the live baseline) and `node tools/layout_check_tours.js <paths> [--shots dir]` (390/820/1440, no sideways scroll, one H1, 16px fields, alt on every image).
+  - Intended SEO changes:
+    - Repeated link-only headings became buttons or links: "View Destination→" ×30 on Destinations, "View/Enquire Tour →" on the destination pages, "BOOK NOW", the "20+/500+/5★/10" stats, and the countries under each testimonial video.
+    - "Official event partner" became "Event day support" (Matteo).
+    - "SWIZERLAND" became "Switzerland"; the "REASTURANTS" and "ACTIVITES" typos are fixed.
+    - The Belgium card links to the Flanders tour (live /destinations/belgium/ is a 404).
+    - Testimonials gains an H1 (live had none); the Guides cards use H3, so the page has one H1.
+    - Body text that live had in H4 headings is now paragraphs, with the same words.
+  - **For Matteo to decide (live content, left as is):**
+    - The Gran Canaria page H1 says "Cycling in Mallorca".
+    - The Lake Como guide FAQ asks "How hard is Madonna del Ghisallo?" twice; the second answer is about the Muro di Sormano.
+    - A stray "harmony." line in the Dolomites intro.
+    - Smaller typos: "accomodate", "Alantejo", "Marocco", "Durace".
+    - Live pages output two meta descriptions: Rank Math's, and a second one from the Hello theme's excerpt (`hello_elementor_settings_description_meta_tag`). Switching the Hello one off would leave Rank Math's only.
   - The other pages haven't been rebuilt.
 
 ## Tours build plan: Matteo's notes, 15 Nov

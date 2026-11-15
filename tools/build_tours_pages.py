@@ -58,6 +58,8 @@ def items(els, out=None, depth=0):
         elif w:
             out.append((w, None, s))
             if e.get('elements'): items(e['elements'], out, depth + 1)   # e.g. nested carousels hold containers
+        elif e.get('elements'):   # newer Elementor elements (e-flexbox, e-div-block) hold containers and widgets
+            items(e['elements'], out, depth + 1)
     return out
 
 def text_of(h): return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', h))).strip()
