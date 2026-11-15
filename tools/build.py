@@ -22,6 +22,7 @@ EXTRA='''
 .proof-mob { display: none; }
 .g-rev { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--text-2); text-decoration: none; transition: color .15s; }
 .g-rev span { color: var(--star); font-size: 15px; }
+.gstar { color: var(--star); }
 .g-rev:hover, .g-rev:active { color: var(--green-text); }
 .proof-wrap .g-rev, .proof-mob .g-rev { float: right; }
 .proof-wrap::after, .proof-mob::after { content: ''; display: block; clear: both; }
