@@ -83,3 +83,14 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
     - `cigala-season` returns bf / cm / off. "off" (from Tue 1 Dec 00:00) hides all campaign pieces as a safety net.
   - On Cyber Monday the page, header, footer and panels turn violet (#120a24 base, violet band).
   - Bottom campaign bar (`snippets/cigala-campaign-bar.liquid`): text, countdown and "Shop the deals" (/collections/bfcm). It can be closed for the session, and switches wording and colour on Cyber Monday.
+- Round 7 (15 Nov), in both the main and sale-season themes:
+  - `snippets/cigala-stock-status.liquid` puts a pulsing status dot on product cards and product pages:
+    - blue "Back order" when the description mentions back order / backorder / back-order
+    - red "Out of stock"
+    - amber "Low stock" (≤3)
+    - green "In stock"
+  - The "Sold out" badge is red with white text.
+  - Judge.me is in brand colours: green buttons and bars, gold stars, Montserrat/Anton.
+  - Sale theme only:
+    - "Deal ends in" replaces "Black Friday deals end in" on the countdowns.
+    - During Black Friday the home band and announcement don't mention Cyber Monday (eyebrow "Black Friday", announcement "Black Friday deals are live · Shop the deals").
