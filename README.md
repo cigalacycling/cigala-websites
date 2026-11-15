@@ -118,3 +118,9 @@ Elementor snippet 697 holds the head code: it sends a consent update for returni
 - Algarve page: one sentence is repeated.
 
 The new designs fix the last three. The Gran Canaria H1 still has to be fixed on the live page.
+
+## Tours staging: status 15 Nov
+
+- Hostinger created the staging copy as a separate WordPress install in the `/staging` folder of tours.cigalacycling.com. `https://tours.cigalacycling.com/staging/wp-login.php` answers, and its login form posts to `https://staging.tours.cigalacycling.com`.
+- `staging.tours.cigalacycling.com` doesn't resolve to a server yet: the proxy can't connect, while `staging.cigalacycling.com` works. A DNS record for `staging.tours` is needed, pointing to the same server as `tours.cigalacycling.com`.
+- No application password is saved for the Tours staging host yet. It must be created in the **staging** wp-admin, never on live.
