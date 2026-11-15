@@ -36,6 +36,9 @@ def elementor(pid):
 def clean(h):
     h = re.sub(r'<span style="[^"]*">(.*?)</span>', r'\1', h, flags=re.S)
     h = re.sub(r' (data-[a-z-]+|style|class)="[^"]*"', '', h)
+    h = re.sub(r'</?(div|section|article)\b[^>]*>', '', h)          # wrappers pasted in from other apps (they add big gaps)
+    h = re.sub(r'<p>\s*(<p[ >])', r'\1', h); h = re.sub(r'(</p>)\s*</p>', r'\1', h)
+    h = re.sub(r' (dir|tabindex|role|aria-[a-z-]+)="[^"]*"', '', h)
     h = re.sub(r'<p>(&nbsp;|\s)*</p>', '', h)
     h = h.replace('https://staging.tours.cigalacycling.com', L)
     return h.strip()
@@ -340,6 +343,21 @@ def para_html(v):
 def is_go(v, s):   # the "View Tour →", "Enquire Tour →", "View Destination→" headings that only carry a link
     return '→' in v and isinstance(s.get('link'), dict) and s['link'].get('url') and len(text_of(v)) < 30
 
+
+# homepage tour cards (Matteo 15 Nov: the upcoming tours on destination pages = the homepage cards)
+def home_cards():
+    els = json.loads(json.load(open(ROOT + 'stg-tours/out/page-5212.json'))['meta']['_elementor_data'])
+    hs = []
+    def walk(xs):
+        for e in xs:
+            if e.get('widgetType') == 'html': hs.append(e['settings']['html'])
+            walk(e.get('elements', []))
+    walk(els)
+    blob = ''.join(hs)
+    return {re.search(r'/trips/([^"/]+)/?"', m.group(0)).group(1): m.group(0) for m in re.finditer(r'<a class="tour".*?</a>', blob, re.S)}
+HOME_CARDS = home_cards()
+LIST_BAND = re.search(r'<div class="band">.*?</div>\s*</div>\s*(?=</div>\s*</section>)', json.loads(open(ROOT + 'stg-tours/out/list-trips.json').read())['main'], re.S).group(0)
+
 def destination(slug):
     pid = DEST_IDS[slug]
     it = [x for x in items(elementor(pid)) if x[0] not in ('open', 'close', 'divider', 'spacer')]
@@ -419,26 +437,44 @@ def destination(slug):
                 tags = f'<span class="tags"><span class="tag{" gravel" if tag == "Gravel" else ""}">{E(tag)}</span></span>' if tag else ''
                 title = re.sub(r'<[^>]+>', '', c['title']).replace('\u200b', '').strip()
                 go = c['go'].replace('→', '').strip().capitalize() + ' →'
-                out.append(f'<article class="tcard dtour"><a class="ph" href="{u}">{img_tag(c["bg"], 900, alt=f"{title} - {name} cycling tour")}{tags}</a><div class="tx">'
-                           f'<h2>{E(title)}</h2><div class="desc">{c["desc"]}</div><div class="bottom"><div class="ctas one"><a class="btn btn-ghost" href="{u}">{E(go)}</a></div></div></div></article>')
-            return f'<div class="tgrid">{"".join(out)}</div>'
+                desc = re.sub(r'<p>(\s|&nbsp;|\u200b|<br\s*/?>)*</p>', '', c['desc'])
+                hm = re.match(r'^/trips/([^/]+)/?$', u)
+                if hm and hm.group(1) in HOME_CARDS and hm.group(1) != 'private-trips':
+                    out.append(('home', HOME_CARDS[hm.group(1)])); continue
+                out.append(('card', f'<article class="tcard dtour"><a class="ph" href="{u}">{img_tag(c["bg"], 900, alt=f"{title} - {name} cycling tour")}{tags}</a><div class="tx">'
+                           f'<h2>{E(title)}</h2><div class="desc">{desc}</div><div class="ctas one"><a class="btn btn-go" href="{u}">{E(go)}</a></div></div></article>'))
+            if out and all(k == 'home' for k, _ in out):
+                return '<!--HOMECARDS-->' + ''.join(h for k, h in out)
+            return f'<div class="tgrid">{"".join(h if k == "card" else h for k, h in out)}</div>'
         if kind == 'btn':
             return '<div class="ctas">' + ''.join(f'<a class="btn btn-go" href="{link(u).replace(L, "")}">{E(t.capitalize())} →</a>' for t, u in vals) + '</div>'
-        if kind == 'band':
-            txt, (bt, bu) = vals[0]
-            return (f'<div class="band">{img_tag(4440, 1600)}<div class="tx"><div class="eyebrow">Custom tours</div>'
-                    f'<div class="lede">{txt}</div><div class="ctas"><a class="btn btn-go" href="{link(bu).replace(L, "")}">{E(bt.capitalize())} →</a></div></div></div>')
+        if kind == 'band':   # the same "Can't find the perfect one?" band as at the bottom of All tours (Matteo 15 Nov)
+            return '<div class="dband">' + LIST_BAND + '</div>'
         return ''
     html_s = []
+    cmap_done = False
     for n, sec in enumerate(sections):
         body = ''.join(render_block(k, v) for k, v in sec['blocks'])
         if not body and not sec['h2']: continue
         head = head_block(eyebrow(sec['h2']), re.sub(r'<[^>]+>', '', sec['h2']).replace('\u200b', '').strip()) if sec['h2'] else ''
         sid = ' id="tours"' if sec['h2'] and 'UPCOMING' in text_of(sec['h2']).upper() else ''
+        if '<!--HOMECARDS-->' in body:   # upcoming tours: the homepage cards (homepage CSS, .cc)
+            lede = ''.join(re.findall(r'<p>.*?</p>', body.split('<!--HOMECARDS-->')[0], re.S))
+            cards = body.split('<!--HOMECARDS-->', 1)[1]
+            h2t = re.sub(r'<[^>]+>', '', sec['h2']).replace('\u200b', '').strip() if sec['h2'] else 'Upcoming tours'
+            html_s.append(f'<div class="cc cc-page"><section id="tours" class="dtours"><div class="in"><div class="head"><div><div class="eyebrow">2027 season</div>'
+                          f'<h2>{E(h2t)}</h2><div class="bar"></div>{lede.replace("<p>", "<p class=lede>")}</div></div><div class="tours">{cards}</div></div></section></div>')
+            continue
+        if not cmap_done and '<div class="prose dprose">' in body and os.path.exists(ROOT + f'tourspages/maps/country-{slug}.svg'):
+            cmap = open(ROOT + f'tourspages/maps/country-{slug}.svg').read()
+            body = body.replace('<div class="prose dprose">', '<div class="dsplit"><div class="prose dprose">', 1)
+            k = body.index('</div>', body.index('<div class="prose dprose">')) + len('</div>')
+            body = body[:k] + f'<div class="cmapbox">{cmap}</div></div>' + body[k:]
+            cmap_done = True
         html_s.append(f'<section{sid}{" style=\"padding-top:44px\"" if n == 0 else ""}>\n  <div class="in">\n    {head}\n    {body}\n  </div>\n</section>')
-    has_tours = any(' id="tours"' in x for x in html_s)
+    has_tours = any('id="tours"' in x for x in html_s)
     sub_html = f'<h2 class="pill-eyebrow hero-sub">{E(re.sub(r"<[^>]+>", "", sub).strip())}</h2>' if sub else '<div class="pill-eyebrow">Destination</div>'
-    main = f'''<div class="hero phero">
+    main = f'''<div class="hero phero dhero">
   {img_tag(hero_bg, 2000, alt=f'Cycling in {name} - Cigala Cycling Tours', lazy=False)}
   <div class="in">
     <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / <a href="{L}/destinations/" {EXT}>Destinations</a> / {E(name)}</div>
@@ -660,6 +696,14 @@ html .cl .vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)
 @media (max-width: 640px) { html .cl .vgrid { grid-template-columns: minmax(0, 1fr); } }
 html .cl .band-up > img { object-position: center 58% !important; }   /* show the riders' faces (Matteo) */
 html .cl .band-up.priv > img { object-position: center 75% !important; }
+html .cl .hero.phero.dhero .in { padding-block: 150px 60px !important; }   /* taller destination hero: more of the photo (Matteo) */
+html .cl .dsplit { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+@media (max-width: 900px) { html .cl .dsplit { grid-template-columns: minmax(0, 1fr); } }
+html .cl .cmapbox svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
+html .cl .dtour .tx { gap: 10px; }
+html .cl .dtour .ctas.one { margin-top: auto; padding-top: 6px; }
+html .cl .dband { margin-top: 48px; }
+html .cc .dtours { padding-top: 56px; }
 html .cl .vgrid.few .vcard:nth-child(n+7) { display: none; }
 html .cl .vmore-wrap { justify-content: center; margin-top: 22px; }
 html .cl .info h2.wa a { color: var(--green-text); }

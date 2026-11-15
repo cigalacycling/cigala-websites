@@ -10,7 +10,7 @@
 - Uploaded once to Tours STAGING and recorded in stg-tours/media-webp.json under 'src-<id>-<maxw>'.
 """
 import os, io, sys, json, time, ssl, urllib.request, urllib.error
-from PIL import Image
+from PIL import Image, ImageOps
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 HOST = 'staging.tours.cigalacycling.com'   # never the live host
@@ -47,18 +47,18 @@ def media(src):
         if k.rsplit('.', 1)[0] in (stem, stem + '-scaled'): return v
     raise KeyError('not in the staging media library: ' + src)
 
-def webp(src, maxw=1600, alt=None):
+def webp(src, maxw=1600, alt=None, redo=False):
     m = media(src)
     key = f"src-{m['id']}-{maxw}"
     done = json.load(open(MAP))
-    if key in done: return done[key]
+    if key in done and not redo: return done[key]
     u = m['source_url']
     raw = None
     if '-scaled.' in u:   # WordPress keeps the full-size upload next to the -scaled copy
         try: raw = _req(u.replace('-scaled.', '.'))
         except RuntimeError: raw = None
     raw = raw or _req(u)
-    im = Image.open(io.BytesIO(raw))
+    im = ImageOps.exif_transpose(Image.open(io.BytesIO(raw)))   # phone photos: apply the camera's rotation tag
     im = im.convert('RGBA') if im.mode in ('RGBA', 'LA') or (im.mode == 'P' and 'transparency' in im.info) else im.convert('RGB')
     w0 = im.size
     if im.width > maxw: im = im.resize((maxw, round(im.height * maxw / im.width)), Image.LANCZOS)

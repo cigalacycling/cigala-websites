@@ -296,6 +296,89 @@ def draw_locations(countries, lakes):
     out.append('</svg>')
     return ''.join(out)
 
+
+# ---------- destination pages: the country, in our style, with the region(s) marked (Matteo 15 Nov) ----------
+CB = {'Italy': (6.4, 18.7, 36.5, 47.2), 'France': (-5.3, 9.8, 41.2, 51.2), 'Spain': (-9.5, 4.5, 35.8, 44.0),
+      'Canary Islands': (-18.3, -13.3, 27.5, 29.5), 'Portugal': (-9.7, -6.0, 36.8, 42.3), 'Croatia': (13.3, 19.6, 42.2, 46.7),
+      'Slovenia': (13.2, 16.8, 45.3, 47.0), 'Greece': (19.2, 28.4, 34.6, 41.9), 'Switzerland': (5.8, 10.6, 45.7, 47.9),
+      'Ireland': (-10.8, -5.8, 51.2, 55.6), 'Cyprus': (32.1, 34.7, 34.4, 35.8)}
+CN = {'Canary Islands': ['Spain'], 'Cyprus': ['Cyprus', 'N. Cyprus']}
+REGIONS = {   # destination slug: (country map, lat, lon, label)
+ 'tuscany': ('Italy', 43.35, 11.2, 'Tuscany'), 'lake-garda': ('Italy', 45.65, 10.65, 'Lake Garda'), 'alps-dolomites': ('Italy', 46.45, 11.6, 'Alps & Dolomites'),
+ 'lake-como': ('Italy', 45.98, 9.25, 'Lake Como'), 'sardinia': ('Italy', 40.1, 9.0, 'Sardinia'), 'sicily': ('Italy', 37.5, 14.2, 'Sicily'),
+ 'puglia': ('Italy', 40.85, 17.0, 'Puglia'), 'french-alps': ('France', 45.05, 6.45, 'French Alps'), 'pyrenees': ('France', 42.9, 0.9, 'Pyrenees'),
+ 'corsica': ('France', 42.15, 9.1, 'Corsica'), 'algarve': ('Portugal', 37.15, -8.1, 'Algarve'), 'girona': ('Spain', 41.98, 2.82, 'Girona'),
+ 'mallorca': ('Spain', 39.6, 2.9, 'Mallorca'), 'costa-blanca': ('Spain', 38.65, -0.05, 'Costa Blanca'),
+ 'gran-canaria': ('Canary Islands', 27.95, -15.6, 'Gran Canaria'), 'tenerife': ('Canary Islands', 28.27, -16.6, 'Tenerife')}
+COUNTRY_PAGES = {'italy': 'Italy', 'france': 'France', 'spain': 'Spain', 'portugal': 'Portugal', 'croatia': 'Croatia', 'slovenia': 'Slovenia',
+                 'greece': 'Greece', 'switzerland': 'Switzerland', 'ireland': 'Ireland', 'cyprus': 'Cyprus'}
+
+def topo_named(path):
+    """{country name: [rings]} from the world-atlas TopoJSON."""
+    t = json.load(open(path)); sc, tr = t['transform']['scale'], t['transform']['translate']
+    arcs = []
+    for a in t['arcs']:
+        x = y = 0; pts = []
+        for dx, dy in a:
+            x += dx; y += dy; pts.append((x * sc[0] + tr[0], y * sc[1] + tr[1]))
+        arcs.append(pts)
+    def ring(idx):
+        out = []
+        for i in idx:
+            pts = arcs[i] if i >= 0 else arcs[~i][::-1]
+            out += pts if not out else pts[1:]
+        return out
+    out = {}
+    for g in t['objects']['countries']['geometries']:
+        rs = [ring(r) for r in g['arcs']] if g['type'] == 'Polygon' else [ring(r) for p in g.get('arcs', []) for r in p] if g['type'] == 'MultiPolygon' else []
+        out.setdefault(g['properties']['name'], []).extend(rs)
+    return out
+
+def draw_country(map_name, dots, named):
+    W2, H2 = 640, 640
+    lon0, lon1, lat0, lat1 = CB[map_name]
+    k0 = math.cos(math.radians((lat0 + lat1) / 2))
+    s = min(W2 * .9 / ((lon1 - lon0) * k0), H2 * .9 / (lat1 - lat0))
+    ox = (W2 - (lon1 - lon0) * k0 * s) / 2; oy = (H2 - (lat1 - lat0) * s) / 2
+    P = lambda lon, lat: (ox + (lon - lon0) * k0 * s, oy + (lat1 - lat) * s)
+    mine = set(CN.get(map_name, [map_name]))
+    def d_of(rings):
+        out = []
+        for r in rings:
+            if not any(lon0 - 3 <= x <= lon1 + 3 and lat0 - 3 <= y <= lat1 + 3 for x, y in r): continue
+            pts, last = [], None
+            for x, y in r:
+                X, Y = P(x, y)
+                if last and abs(X - last[0]) < 1.4 and abs(Y - last[1]) < 1.4: continue
+                pts.append(f'{X:.1f},{Y:.1f}'); last = (X, Y)
+            if len(pts) > 2: out.append('M' + 'L'.join(pts) + 'Z')
+        return ''.join(out)
+    others = d_of([r for n, rs in named.items() if n not in mine for r in rs])
+    me = d_of([r for n in mine for r in named.get(n, [])])
+    E = lambda x: html.escape(x, quote=True)
+    out = [f'<svg class="cmap" viewBox="0 0 {W2} {H2}" role="img" aria-label="Map of {E(map_name)}{" showing " + E(", ".join(d[2] for d in dots)) if dots else ""}" xmlns="http://www.w3.org/2000/svg">',
+           f'<rect width="{W2}" height="{H2}" fill="#0a0c0e"/>',
+           f'<path d="{others}" fill="#16191d" stroke="#2c3036" stroke-width=".8"/>',
+           f'<path d="{me}" fill="#009a44" fill-opacity=".16" stroke="#2bd47a" stroke-width="2" stroke-linejoin="round"/>']
+    for lat, lon, label in dots:
+        x, y = P(lon, lat)
+        right = x < W2 * .62
+        out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="15" fill="#e10600" fill-opacity=".22"/><circle cx="{x:.1f}" cy="{y:.1f}" r="7" fill="#e10600" stroke="#fff" stroke-width="2"/>')
+        tx = x + 14 if right else x - 14; anc = 'start' if right else 'end'
+        st = f'font-family="Montserrat, Arial, sans-serif" font-size="17" font-weight="700" text-anchor="{anc}"'
+        out.append(f'<text x="{tx:.1f}" y="{y + 6:.1f}" {st} fill="none" stroke="#0a0c0e" stroke-width="5" stroke-linejoin="round">{E(label)}</text>'
+                   f'<text x="{tx:.1f}" y="{y + 6:.1f}" {st} fill="#f7f8f8">{E(label)}</text>')
+    out.append('</svg>')
+    return ''.join(out)
+
+def country_maps(path50):
+    named = topo_named(path50)
+    for slug, (cm, lat, lon, label) in REGIONS.items():
+        open(OUT + f'country-{slug}.svg', 'w').write(draw_country(cm, [(lat, lon, label)], named))
+    for slug, cm in COUNTRY_PAGES.items():
+        dots = [(la, lo, lb) for s2, (c2, la, lo, lb) in REGIONS.items() if c2 == cm or (cm == 'Spain' and c2 == 'Canary Islands' and False)]
+        open(OUT + f'country-{slug}.svg', 'w').write(draw_country(cm, dots, named))
+
 if __name__ == '__main__':
     f = geo_files()
     countries, lakes, rivers = topo_polys(f['countries']), geojson_polys(f['lakes']), geojson_lines(f['rivers'])
@@ -306,3 +389,5 @@ if __name__ == '__main__':
         print(slug, len(out) // 1024, 'KB')
     open(OUT + 'custom-locations.svg', 'w').write(draw_locations(topo_polys(f['countries'].replace('-10m', '-50m')), lakes))   # 1:50m is plenty at this scale
     print('custom-locations', os.path.getsize(OUT + 'custom-locations.svg') // 1024, 'KB')
+    country_maps(f['countries'].replace('-10m', '-50m'))
+    print('country maps', len([x for x in os.listdir(OUT) if x.startswith('country-')]))
