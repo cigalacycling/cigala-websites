@@ -290,6 +290,13 @@ rep('<a class="btn btn-ghost" href="https://tours.cigalacycling.com/about/" targ
 s = re.sub(r'<ul class="creds">.*?</ul>', '<ul class="creds">\n        <li>European Road Champion Gran Fondo</li>\n        <li>UCI Gran Fondo Vice World Champion</li>\n        <li>UCI Gravel Vice World Champion</li>\n        <li>Italian Gravel Champion</li>\n        <li>200+ race wins</li>\n      </ul>', s, count=1, flags=re.S)
 # signature under the name in "Our story" (cut from the coaching blog; typed name stays for Google and screen readers)
 rep('<p class="sig">Matteo Cigala<span>Tours Director</span></p>', '<img class="signature" src="img/cigala-tours-signature.webp" alt="Matteo Cigala\'s signature" width="924" height="251" loading="lazy">\n      <p class="sig">Matteo Cigala<span>Tours Director</span></p>')  # letter style: signature, then typed name
+# icons instead of 01-06 in 'Why ride with us' (Matteo, 15 Nov)
+WHY_ICONS = {'01': '<circle cx="9" cy="8" r="3.2"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 13.7c2.9.3 5 2.3 5 5.3"/>', '02': '<circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5 9 9h6l3.5 7.5M9 9l3 7.5H5.5M12 16.5 15 9M13.5 6h3"/>', '03': '<path d="M2 7h11v9H2zM13 10h4.5l3.5 3.5V16h-8"/><circle cx="6" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>', '04': '<path d="M3 18V6M3 14h18v4M21 14v-2.5A2.5 2.5 0 0 0 18.5 9H11v5"/><circle cx="7" cy="11" r="1.8"/>', '05': '<path d="M2 19 9 7l4 6 2.5-3.5L22 19z"/>', '06': '<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'}
+for n, svg in WHY_ICONS.items():
+    rep(f'<div class="num">{n}</div>', f'<div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">{svg}</svg></div>')
+# one quiet line under the signature
+rep('<p class="sig">Matteo Cigala<span>Tours Director</span></p>', '<p class="sig">Matteo Cigala<span>, Tours Director</span></p>')
+
 # more FAQs (facts from the live terms, custom tours and Dolomites pages)
 FAQ = [
   ('What is included in the price?', 'Each tour page lists exactly what is included. As an example, the Dolomites tour includes hotel nights, buffet breakfasts, airport transfers with bike and luggage at set times, guided rides every day with our ex-pro guides, a support vehicle, snacks and water on the route, and GPX files sent in advance. Flights, dinners, bike rental and travel insurance are extra.'),
@@ -312,7 +319,12 @@ CSS2 = """
 .story .quote { margin-bottom: 18px; }
 .brand img { border-radius: 0; }   /* Matteo's logo file has its own square white border */
 .story img.signature { display: block; width: 150px; max-width: 45%; height: auto; margin: 22px 0 0 -4px; opacity: .92; }
-.story img.signature + .sig { margin-top: 4px !important; }
+.story img.signature + .sig { margin-top: 6px !important; font-size: 13px; font-weight: 600; color: var(--text-2); }
+.story img.signature + .sig span { display: inline; font-size: 13px; font-weight: 500; color: var(--text-3); }
+.why .ico { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
+.why .ico svg { width: 24px; height: 24px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.why h3 { margin-top: 16px; }
+.stat .n i { font-size: .6em; margin-left: .14em; vertical-align: .38em; }
 .story p { margin-bottom: 16px; }
 .band .tx .eyebrow + h2, .band .tx h2 + .bar { margin-top: 0; }
 .fi select:focus, .fi select:focus-visible { outline: none; }
