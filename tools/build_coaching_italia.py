@@ -106,6 +106,22 @@ def up(u): return img(u.split('/uploads/')[1].rsplit('.', 1)[0].split('/', 2)[-1
 pics = ''.join(f'<div class="photo it-pic"><img src="{up(u)}" alt="{E(a)}" loading="lazy"></div>' for u, a in LIVE_PICS)
 assert len(LIVE_PICS) == 5, LIVE_PICS
 
+# Matteo 15 Nov: the events as cards (name, place, discipline), more exciting than a list; live wording kept
+TYPES = {'Strada': '#34c46a', 'Gravel': '#f0bf00', 'MTB': '#ff3d33', 'Tutte le discipline': '#5f86c9'}
+EV_T = {'Strade Bianche': 'Strada', 'Hero': 'MTB', 'Nove Colli': 'Strada', 'Maratona': 'Strada', 'Stelvio': 'Strada', 'Paganella': 'MTB',
+        'Hills of Gravel': 'Gravel', 'Colnago': 'Strada', 'Mondiali': 'Tutte le discipline', 'Calendario FCI': 'Tutte le discipline'}
+EV_IC = {'Strada': '<path d="M3 20 9 6l4 8 3-5 5 11z"/>', 'Gravel': '<circle cx="6" cy="17" r="2"/><circle cx="13" cy="15" r="1.5"/><circle cx="18" cy="18" r="2.5"/><path d="M2 21h20"/>',
+         'MTB': '<path d="m3 20 6-9 3 4 3-6 6 11z"/><path d="M14 6l1-3 2 1"/>', 'Tutte le discipline': '<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>'}
+def ev_card(x):
+    t = next((v for k, v in EV_T.items() if k in x), 'Strada'); c = TYPES[t]
+    m = re.match(r'\*\*(.+?)\*\*\s*(.*)', x.replace('**\n\n**', '').strip())
+    name, rest = (m.group(1).strip(), m.group(2).strip()) if m else (x.replace('**', '').strip(), '')
+    pl = re.match(r'\(([^)]+)\)\s*(.*)', name + ' ' + rest) if False else None
+    nm = re.match(r'(.+?)\s*\(([^)]+)\)$', name)
+    if nm: name, rest = nm.group(1), f'({nm.group(2)}) {rest}'.strip()
+    rest = rest.strip()
+    return (f'<li style="--tc:{c}"><span class="it-ev-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{EV_IC[t]}</svg></span><span class="it-ev-tag">{t}</span>'
+            f'<b>{E(name)}</b>{f"<span class=it-ev-pl>{E(rest.strip("() ").replace(") —", " —"))}</span>" if rest else ""}</li>')
 FACTS = [('clock', 'Comunicazione in italiano', 'Parli direttamente con Matteo, nella tua lingua, per chiamate, feedback e domande.'),
          ('currency', 'Prezzi in euro', 'Paghi in euro: nessun costo di cambio.'),
          ('route', 'Costruito sulle tue strade', 'Dolomiti, Appennini, gravel o pianura: il piano segue il tuo territorio e il tuo calendario gare.')]
@@ -192,15 +208,19 @@ MAIN = f'''<div class="hero hero-sm">
   </div>
 </section>
 
-<section>
+<section class="it-ev">
   <div class="in">
-    <div class="gn-txt">
-      <div class="eyebrow">Il tuo obiettivo</div>
-      <h2>Gli Eventi per Cui Prepariamo i Nostri Atleti</h2><div class="bar"></div>
-      <p>{E(ev_p[0])}</p>
-      {chips(ev_li, 'cn-chips')}
-      {''.join(f'<p>{E(x)}</p>' for x in ev_p[1:])}
+    <div class="it-ev-top">
+      <div class="it-ev-pic"><img src="{img('gran_fondo_strade_bianche_2022_img_1', 'italia-strade-bianche')}" alt="{E(live_alt('gran_fondo_strade_bianche_2022_img_1'))}" loading="lazy"><span>Matteo vince la Medio Fondo Strade Bianche, Siena</span></div>
+      <div class="gn-txt">
+        <div class="eyebrow">Il tuo obiettivo</div>
+        <h2>Gli Eventi per Cui Prepariamo i Nostri Atleti</h2><div class="bar"></div>
+        <p>{E(ev_p[0])}</p>
+        <div class="it-ev-types">{''.join(f'<span style="--tc:{c}">{t}</span>' for t, c in TYPES.items())}</div>
+      </div>
     </div>
+    <ul class="it-ev-grid">{''.join(ev_card(x) for x in ev_li)}</ul>
+    {''.join(f'<p class="it-ev-note">{E(x)}</p>' for x in ev_p[1:])}
   </div>
 </section>
 
@@ -217,7 +237,7 @@ MAIN = f'''<div class="hero hero-sm">
       <div><div class="eyebrow">Risultati reali</div><h2>LEGGI I NOSTRI CASI STUDIO</h2><div class="bar"></div></div>
       <div class="rv-links"><a class="btn btn-go" href="{C}/case-studies/" {EXT}>Leggi i nostri casi studio</a></div>
     </div>
-    {case_cards(C + '/case-studies/')}
+    {case_cards(C + '/case-studies/', 'it')}
   </div>
 </section>
 
@@ -276,11 +296,36 @@ MAIN = f'''<div class="hero hero-sm">
   </div>
 </section>'''
 
-JS = REVIEWS_JS + G.NUMS_JS + """<script>(function(){document.querySelectorAll('.pkg-all').forEach(function(b){b.addEventListener('click',function(){
+IT_NL = """<script>(function(){function go(){var b=document.querySelector('.nl-band');if(!b)return;
+var m={'.nl-eyebrow':'Newsletter','.nl-t':'Resta aggiornato','.nl-d':'Consigli di allenamento, novità, articoli e offerte su coaching, viaggi in bici e il nostro shop.','.nl-sr':'Indirizzo email'};
+for(var k in m){var e=b.querySelector(k);if(e)e.textContent=m[k];}
+var i=b.querySelector('input[type=email]');if(i)i.placeholder='Il tuo indirizzo email';var bt=b.querySelector('button[type=submit]');if(bt)bt.textContent='Iscriviti';
+var n=b.querySelector('.nl-note');if(n)n.innerHTML='Una sola newsletter Cigala Cycling per tutti i nostri siti. Niente spam, puoi cancellarti quando vuoi. <a href="/privacy-policy/">Privacy policy</a>';
+var msg=b.querySelector('.nl-msg');if(msg)new MutationObserver(function(){var t=msg.textContent,r={'Please enter a valid email address.':'Inserisci un indirizzo email valido.','Thanks, you’re subscribed! Watch your inbox for our next update.':'Grazie, sei iscritto! Controlla la tua casella per il prossimo aggiornamento.','Please try again.':'Riprova, per favore.'};
+for(var k in r){if(t.indexOf(k)>-1&&t!==r[k]){msg.textContent=r[k];}}}).observe(msg,{childList:true,characterData:true,subtree:true});}
+if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);})();</script>"""
+JS = REVIEWS_JS + G.NUMS_JS + IT_NL + """<script>(function(){document.querySelectorAll('.pkg-all').forEach(function(b){b.addEventListener('click',function(){
 var o=!b.closest('.pkg').classList.contains('open');document.querySelectorAll('.pkg').forEach(function(p){p.classList.toggle('open',o);});
 document.querySelectorAll('.pkg-all').forEach(function(x){x.setAttribute('aria-expanded',o);x.querySelector('span').textContent=o?'Mostra meno':'Vedi tutte le caratteristiche';});});});
 document.querySelectorAll('[data-waitlist]').forEach(function(a){a.addEventListener('click',function(){var m=document.querySelector('#contact textarea');if(m&&!m.value)m.value='Vorrei entrare nella lista d\\u2019attesa del pacchetto '+a.dataset.waitlist+'.';});});})();</script>"""
 ITCSS = '''<style>
+.it-ev-top { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 36px; align-items: center; margin-bottom: 26px; }
+@media (max-width: 900px) { .it-ev-top { grid-template-columns: 1fr; gap: 20px; } }
+.it-ev-pic { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid var(--border); }
+.it-ev-pic img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+.it-ev-pic span { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 14px 12px; background: linear-gradient(transparent, rgba(8,9,10,.9)); font-size: 13px; color: var(--text); }
+.it-ev-types { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.it-ev-types span { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--tc); color: var(--text); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.it-ev-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.it-ev-grid li { position: relative; display: grid; gap: 6px; align-content: start; padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: linear-gradient(160deg, color-mix(in srgb, var(--tc) 12%, transparent), transparent 60%), var(--panel); transition: transform .25s, border-color .25s, box-shadow .25s; }
+.it-ev-grid li:hover { transform: translateY(-4px); border-color: var(--tc); box-shadow: 0 16px 40px color-mix(in srgb, var(--tc) 22%, transparent); }
+.it-ev-ic svg { width: 30px; height: 30px; fill: none; stroke: var(--tc); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.it-ev-tag { position: absolute; top: 16px; right: 16px; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--tc); }
+.it-ev-grid b { font: 400 20px/1.15 var(--head); text-transform: uppercase; color: var(--text); }
+.it-ev-pl { font-size: 13.5px; color: var(--text-2); line-height: 1.45; }
+.it-ev-note { margin: 18px 0 0; color: var(--text-2); max-width: 80ch; }
+/* Italian on this page: the shared parts (sold-out stamp, newsletter band) */
+.pkg.sold::after { content: "ESAURITO" !important; }
 .it-pics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
 .it-pic { aspect-ratio: 1 / 1; margin: 0; }
 .it-pic img { width: 100%; height: 100%; object-fit: cover; }

@@ -354,3 +354,4 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   Marine's testimonial under invented names: not used. Bernd is the one real UK-linked client.
 - USA hero: Matteo riding in the blue Italia kit on a dry, sunny road (live alt of imgi_20); not the Vekta image, nothing that looks like Ireland.
 - Reviews on UK/USA/Canada: text only, first name + real place, no photos, eyebrow 'What our athletes say' (Matteo). Italian page: no English names, 'Atleta seguito da Matteo · Recensione tradotta dall'inglese'. Same H2s; no review schema on these pages, so no SEO change.
+- Italia: events as cards (discipline tag, icon, place; live wording kept) next to the Strade Bianche win photo (live alt); case study cards in Italian (CASES_IT); newsletter band, its messages and the sold-out stamp in Italian on this page (JS/CSS on the page; the shared footer template is unchanged). Live H2s unchanged.

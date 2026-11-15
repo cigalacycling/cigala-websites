@@ -284,15 +284,33 @@ CASES = [
 FOCUS = {'marine-lenehan': '45% 28%', 'tilen': '50% 25%', 'marco': '50% 22%', 'vittorio': '35% 32%', 'david': '45% 22%',
          'shane-courtney': '45% 50%', 'bernd-ondruch': '45% 40%', 'rob-kavanagh': '45% 38%', 'derek-lawler': '45% 48%'}
 def fstyle(c): return f' style="object-position:{FOCUS[c["slug"]]}"' if c['slug'] in FOCUS else ''
-def case_cards(link_base):
-    """Scrolling case study cards; link_base is the case studies page URL."""
+# Italian labels for the case study cards on /preparatore-di-ciclismo-italia/ (Matteo 15 Nov: that page all in Italian)
+CASES_IT = {
+    'marine-lenehan': ('Strada · Gran Fondo e gravel', 'WorldTour Pro', 'Professionista dal 1° gennaio 2026', 'Dalla prima uscita al WorldTour', 'Irlanda'),
+    'tilen': ('Corse su strada', '1.063 W sprint', 'Miglior potenza su 15 secondi', 'Da non saper scattare in piedi a 1.063 W', 'Corridore su strada · Slovenia'),
+    'marco': ('Strada e gravel', '+124 W sprint', '', 'Ogni numero è salito', 'Corridore strada e gravel · Portogallo'),
+    'eoin': ('Corse su strada', '+104 W sprint', 'Miglior potenza su 15 secondi', 'Record personali e vittorie di categoria', 'Corridore IVCA · Irlanda'),
+    'vittorio': ('MTB e ciclocross', 'Record 1.112 W', '', 'Più veloce in uscita da ogni curva', 'Corridore MTB e ciclocross · Italia'),
+    'david': ('Granfondo', '+44 W CP', '', '+44 watt di motore', 'Granfondista · Irlanda'),
+    'shane-courtney': ('Corse su strada', 'FTP 220 → 260 W', '', '+40 W di FTP in meno di 4 mesi', 'Tralee Manor West ibike · Irlanda'),
+    'bernd-ondruch': ('Gran Fondo', 'Qualificato ai Mondiali', '', 'Qualificato ai Mondiali Gran Fondo', 'Germania e Regno Unito'),
+    'rob-kavanagh': ('Forma fisica e dimagrimento', '−16 kg', '', 'Quasi 16 kg persi in 6 mesi', 'Irlanda'),
+    'derek-lawler': ('Granfondo e salute', 'Haute Route a 60 anni', '', 'Dal divano all’Haute Route a 60 anni', 'Kilkenny, Irlanda'),
+}
+def case_cards(link_base, lang='en'):
+    """Scrolling case study cards; link_base is the case studies page URL. lang='it': Italian labels (CASES_IT)."""
+    def tr(c):
+        if lang != 'it': return c
+        t = CASES_IT[c['slug']]
+        return dict(c, tag=t[0], stat=t[1], stat_label=t[2], headline=t[3], where=t[4])
     def pic(c):
         if c.get('photo_file'): return f'<span class="cs-img"><img src="{conv(c["photo_file"], "case-" + os.path.basename(c["photo_file"]).rsplit(".", 1)[0])}" alt="{E(c.get("photo_alt") or live_alt(c["photo"]))}" loading="lazy"{fstyle(c)}></span>'
         if not c['photo']: return f'<span class="cs-img cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c.get("stat_label", ""))}</small></span>'
         return f'<span class="cs-img"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="lazy"{fstyle(c)}></span>'
+    rd = 'Leggi il caso studio →' if lang == 'it' else 'Read the case study →'
     cards = ''.join(f'<a class="cs-card" href="{link_base}#{c["slug"]}" {EXT}>{pic(c)}'
                     f'<span class="cs-tx"><span class="cs-tag">{E(c["tag"])}</span><b class="cs-stat">{E(c["stat"])}</b><span class="cs-h">{E(c["headline"])}</span>'
-                    f'<span class="cs-n">{E(c["name"])} · {E(c["where"])}</span><span class="arrow-link">Read the case study →</span></span></a>' for c in CASES)
+                    f'<span class="cs-n">{E(c["name"])} · {E(c["where"])}</span><span class="arrow-link">{rd}</span></span></a>' for c in map(tr, CASES))
     # Matteo 15 Nov: the case studies move on slowly by themselves, like the reviews (pause on hover/touch, off for reduced motion)
     js = ("<script>(function(){var stop=false;var wr=document.currentScript.parentElement,r=wr.querySelector('.cs-row');if(!r)return;var red=matchMedia('(prefers-reduced-motion: reduce)').matches;"
           "wr.querySelectorAll('.cs-btn').forEach(function(b){b.addEventListener('click',function(){stop=true;"
