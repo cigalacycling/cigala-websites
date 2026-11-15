@@ -130,6 +130,8 @@ def months(t):
     a, b = date.fromisoformat(t['start']), date.fromisoformat(t['end'])
     return [str(m) for m in range(a.month, b.month + 1)]
 
+BADGE = json.load(open(ROOT + 'tours/badges.json'))   # Gran Fondo badges from the survey design
+BADGE = {'entry': BADGE['entry'], 'support': BADGE['support']}
 cards = []
 for t in trips:
     lv = [x.strip().lower() for x in t['level'].split(',')]
@@ -140,7 +142,7 @@ for t in trips:
         f'<a class="tour" data-k="{t["type"]}" data-country="{t["country"].lower()}" data-month="{" ".join(months(t))}" data-level="{" ".join(lv)}" href="{t["url"]}" {EXT}>'
         f'<img src="{img}" alt="{E(name)} bike tour" loading="lazy">'
         f'<span class="tag{" gravel" if t["type"] == "gravel" else ""}">{TYPE[t["type"]]}</span>'
-        f'<div class="tx"><time class="when" datetime="{t["start"]}">{dates(t)}</time>'
+        f'<div class="tx">{BADGE.get(t.get("badge"), "")}<time class="when" datetime="{t["start"]}">{dates(t)}</time>'
         f'<h3>{E(name)}</h3><p>{E(BLURB[t["slug"]])}</p>'
         f'<span class="facts"><span>{t["country"]}</span><span>{t["distance"]}</span><span>{t["climbing"]} climbing</span></span>'
         f'<span class="go">View tour →</span></div></a>')
@@ -201,6 +203,7 @@ CSS = '''
 .reset:hover { color: #fff; }
 .none { color: var(--text-2); margin: 0 0 18px; }
 .none a { color: var(--green-text); }
+.tour .entry { display: flex; width: fit-content; background: rgba(8,9,10,.72); backdrop-filter: blur(4px); }
 .tour .when { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--red); border-radius: 6px; padding: 4px 9px; margin-bottom: 10px; }
 .tour .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: -4px 0 12px; font-size: 12.5px; font-weight: 600; color: var(--text-3); }
 .tour[hidden] { display: none; }
@@ -324,10 +327,8 @@ section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; bo
   .finder { margin-bottom: 30px; }
   section.matteo .in .photo img { width: 100%; max-width: 340px; }
 }
-@media (max-width: 640px) {
-  .tour { aspect-ratio: auto; min-height: 440px; }
-  .tour .tx { padding-top: 70px; }
-}
+#tour-grid .tour { aspect-ratio: auto; min-height: 430px; }   /* grow with long text + badge; rows stay equal height */
+#tour-grid .tour .tx { padding-top: 66px; }
 """
 s = s.replace('@media (max-width: 1080px)', CSS2 + '\n@media (max-width: 1080px)', 1)
 

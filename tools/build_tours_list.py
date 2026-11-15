@@ -26,6 +26,7 @@ def dates(t):
 
 # ---------- trip rows from the design ----------
 CARD = {'lake-garda-and-stelvio': 'lake-garda-stelvio', 'lake-como-gran-fondo-il-lombardia': 'lake-como-il-lombardia'}
+BADGES = json.load(open(ROOT + 'tours/badges.json'))
 rows = {}
 for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     slug = re.search(r'href="' + re.escape(L) + r'/trips/([^/"]+)/?"', a).group(1)
@@ -41,6 +42,8 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     a = re.sub(r'src="cards/[^"]+\.jpg"', f'src="img/cigala-tours-card-{card}.webp"', a)
     # dates as real text, first in the facts row
     a = a.replace('<div class="meta">', f'<div class="meta"><span class="chip date"><time datetime="{t["start"]}">{dates(t)}</time></span>', 1)
+    if t.get('badge'):   # Gran Fondo badge (same as the homepage cards)
+        a = re.sub(r'(<div class="tags">.*?</div>)', lambda m: m.group(1) + BADGES[t['badge']], a, count=1, flags=re.S)
     rows[slug] = (t['type'], a)
 
 ROAD = [s for s, (k, _) in rows.items() if k == 'road']
@@ -94,7 +97,8 @@ main = f'''<div class="hero phero">
 
 # ---------- CSS: design CSS scoped to .cl, plus the brand fixes used on the homepage ----------
 design_css = re.search(r'<style>\n(.*?)</style>', idx, re.S).group(1)
-EXTRA = '''
+EXTRA = BADGES['css'] + '''
+.trip .entry { margin: 2px 0 0; width: fit-content; }
 [hidden] { display: none !important; }
 .eyebrow { color: #ff3d33; margin-bottom: 10px; }
 button, .btn { text-transform: none; letter-spacing: .02em; }
