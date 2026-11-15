@@ -144,6 +144,20 @@ def cal_it():
         assert a in h, a
         h = h.replace(a, b)
     return h
+# Matteo 15 Nov: a map of Italy in our style next to the regions (the list stays, for Google). Outline: Natural Earth
+# 50m (public domain) via world-atlas; coaching/italy-map.json is made by a small script (outline + the listed cities).
+import json as _json
+def italy_map():
+    m = _json.load(open(ROOT + 'coaching/italy-map.json'))
+    vb = f"{m['minx'] - 10} {m['miny'] - 10} {m['w'] - m['minx'] + 20} {m['h'] - m['miny'] + 20}"
+    dots = ''.join(f'<g class="it-city" style="--i:{i}"><circle cx="{x}" cy="{y}" r="9" class="it-halo"/><circle cx="{x}" cy="{y}" r="4"/><title>{E(n)}</title></g>' for i, (n, (x, y)) in enumerate(m['pts'].items()))
+    labels = ''.join(f'<text x="{m["pts"][n][0] + dx}" y="{m["pts"][n][1] + dy}" class="it-lab" text-anchor="{a}">{n}</text>' for n, dx, dy, a in
+                     [('Milano', -8, 18, 'end'), ('Venezia', 10, 16, 'start'), ('Torino', -10, 4, 'end'), ('Bolzano', 10, -6, 'start'), ('Firenze', 10, 4, 'start'), ('Siena', -10, 14, 'end'), ('Roma', 10, 4, 'start'), ('Napoli', 10, 4, 'start')])
+    return (f'<svg class="it-map" viewBox="{vb}" role="img" aria-labelledby="it-map-t"><title id="it-map-t">Mappa dell’Italia con le città dove seguiamo ciclisti</title>'
+            f'<defs><linearGradient id="it-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#009a44" stop-opacity=".35"/><stop offset="1" stop-color="#009a44" stop-opacity=".08"/></linearGradient>'
+            f'<filter id="it-glow" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter></defs>'
+            f'<path d="{m["d"]}" fill="#009a44" opacity=".35" filter="url(#it-glow)"/><path d="{m["d"]}" class="it-land" fill="url(#it-g)"/>'
+            f'{dots}{labels}</svg>')
 FACTS = [('clock', 'Comunicazione in italiano', 'Parli direttamente con Matteo, nella tua lingua, per chiamate, feedback e domande.'),
          ('currency', 'Prezzi in euro', 'Paghi in euro: nessun costo di cambio.'),
          ('route', 'Costruito sulle tue strade', 'Dolomiti, Appennini, gravel o pianura: il piano segue il tuo territorio e il tuo calendario gare.')]
@@ -272,10 +286,11 @@ MAIN = f'''<div class="hero hero-sm">
       <p>{E(rg_p[0])}</p>
       {chips(rg_li, 'cn-regions')}
     </div>
-    <div>
-      <div class="eyebrow">Compatibile con i tuoi dispositivi e app</div>
-      <div class="logos apps cn-apps">{P.devices}</div>
-    </div>
+    <div class="it-map-wrap">{italy_map()}</div>
+  </div>
+  <div class="in it-devs">
+    <div class="eyebrow">Compatibile con i tuoi dispositivi e app</div>
+    <div class="logos apps cn-apps">{P.devices}</div>
   </div>
 </section>
 
@@ -352,6 +367,15 @@ ITCSS = '''<style>
 .it-ev-tag { position: absolute; top: 16px; right: 16px; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--tc); }
 .it-ev-grid b { font: 400 20px/1.15 var(--head); text-transform: uppercase; color: var(--text); }
 .it-ev-pl { font-size: 13.5px; color: var(--text-2); line-height: 1.45; }
+.it-map-wrap { display: grid; place-items: center; }
+.it-map { width: 100%; max-width: 440px; height: auto; overflow: visible; }
+.it-land { stroke: #34c46a; stroke-width: 1.6; stroke-linejoin: round; }
+.it-city circle { fill: #ff3d33; }
+.it-city .it-halo { fill: rgba(255,61,51,.25); transform-box: fill-box; transform-origin: center; animation: it-pulse 2.4s ease-out infinite; animation-delay: calc(var(--i) * .15s); }
+@keyframes it-pulse { 0% { transform: scale(.6); opacity: 1; } 100% { transform: scale(2.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .it-city .it-halo { animation: none; } }
+.it-lab { fill: #d0d6e0; font: 600 13px var(--body); paint-order: stroke; stroke: #0f1011; stroke-width: 3px; }
+.it-devs { margin-top: 36px; }
 .it-ev-won { justify-self: start; padding: 3px 9px; border-radius: 999px; background: rgba(240,191,0,.14); color: #f0bf00; font-size: 11px; font-weight: 700; letter-spacing: .04em; }
 .it-motto { text-align: center; margin: 0 auto 48px; padding: 34px 20px; border-radius: 18px; border: 1px solid var(--border); background: radial-gradient(600px 200px at 50% 0%, rgba(0,154,68,.22), transparent 70%), var(--panel); }
 .it-motto-t { margin: 0; font: 400 clamp(30px, 5vw, 60px)/1 var(--head); color: var(--text); letter-spacing: .01em; }
