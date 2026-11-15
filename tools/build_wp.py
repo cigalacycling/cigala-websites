@@ -49,7 +49,7 @@ css = open(S + 'brand.css').read()
 extra = re.search(r"EXTRA='''(.*?)'''", open(S + 'tools/build.py').read(), re.S).group(1)
 css = css + extra
 import sys as _sys; _sys.path.insert(0, S + 'shared/social'); from social import SOCIAL_CSS
-css = css + SOCIAL_CSS + '\n.elementor-kit-6 .cc-social a { color: var(--text-2); }\n.elementor-kit-6 .cc-social a:hover, .elementor-kit-6 .cc-social a:active { color: var(--green-text); }\n'
+css = css + '\n.elementor-kit-6 .g-rev { color: var(--green-text); }\n.elementor-kit-6 .g-rev:hover { color: #fff; }\n' + SOCIAL_CSS + '\n.elementor-kit-6 .cc-social a { color: var(--text-2); }\n.elementor-kit-6 .cc-social a:hover, .elementor-kit-6 .cc-social a:active { color: var(--green-text); }\n'
 css = re.sub(r'/\* preview ribbon \*/.*?\.ribbon b \{[^}]*\}', '', css, flags=re.S)
 css = re.sub(r'\.topo \{[^}]*\}', '', css)
 css = css.replace('.page { position: relative; z-index: 1; }', '')

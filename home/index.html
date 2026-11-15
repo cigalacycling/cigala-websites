@@ -158,16 +158,24 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
 /* inner pages */
 .hero .in.proof-wrap { display: block; padding-block: 0; }
 .proof-mob { display: none; }
-.g-rev { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--text-2); text-decoration: none; transition: color .15s; }
+.g-rev { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--green-text); text-decoration: none; transition: color .15s; }
 .g-rev span { color: var(--star); font-size: 15px; }
 .gstar { color: var(--star); }
-.g-rev:hover, .g-rev:active { color: var(--green-text); }
+.g-rev:hover, .g-rev:active { color: #fff; }
 .proof-wrap .g-rev, .proof-mob .g-rev { float: right; }
 .proof-wrap::after, .proof-mob::after { content: ''; display: block; clear: both; }
 @media (max-width: 640px) { .hero .in.proof-wrap { display: none; } .proof-mob { display: block; } .proof-mob .proof { margin-top: 28px; } }
 .proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 36px; border: 1px solid var(--border); border-radius: var(--r); background: var(--panel-grad), var(--panel); }
 .proof > div { padding: 18px 20px; border-left: 1px solid var(--border); min-width: 0; }
 .proof > div:first-child { border-left: 0; }
+/* Same as Coaching/Tours stats squares (Matteo 15 Nov): colour bar, hover lift, count-up */
+.proof > div { --c: #34c46a; position: relative; transition: transform .25s, box-shadow .25s, background .25s; }
+.proof > div:nth-child(2) { --c: #f0bf00; } .proof > div:nth-child(3) { --c: #ff3d33; } .proof > div:nth-child(4) { --c: #5f86c9; }
+.proof > div::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); transform: scaleX(.18); transform-origin: left; transition: transform .35s; }
+.proof > div:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,.45), 0 0 0 1px var(--c); background: color-mix(in srgb, var(--c) 10%, transparent); z-index: 1; }
+.proof > div:hover::before { transform: scaleX(1); }
+.proof b { transition: color .25s; } .proof > div:hover b { color: var(--c); } .proof > div:hover span { color: var(--text); }
+@media (prefers-reduced-motion: reduce) { .proof > div, .proof > div::before { transition: none; } .proof > div:hover { transform: none; } }
 .proof b { display: block; font-family: var(--head); font-weight: 400; font-size: clamp(30px, 3.6vw, 44px); line-height: 1; color: var(--text); }
 .proof span { display: block; margin-top: 8px; font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
 @media (max-width: 640px) { .proof { grid-template-columns: repeat(2, minmax(0, 1fr)); } .proof > div:nth-child(3) { border-left: 0; } .proof > div:nth-child(n+3) { border-top: 1px solid var(--border); } }
@@ -282,7 +290,7 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
     <div><b>700+</b><span>Cyclists guided on tour</span></div>
     <div><b>10+</b><span>Years running tours</span></div>
     <div><b>10+</b><span>Years serving customers in Ireland &amp; Europe</span></div>
-  </div><a class="g-rev" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener"><span aria-hidden="true">★</span> Read our reviews on Google</a></div>
+  </div><a class="g-rev" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener"><span aria-hidden="true">★</span> Read our reviews on Google →</a></div>
 </div>
 
 <section style="padding-top:40px">
@@ -324,7 +332,7 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
     <div><b>700+</b><span>Cyclists guided on tour</span></div>
     <div><b>10+</b><span>Years running tours</span></div>
     <div><b>10+</b><span>Years serving customers in Ireland &amp; Europe</span></div>
-  </div><a class="g-rev" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener"><span aria-hidden="true">★</span> Read our reviews on Google</a></div>
+  </div><a class="g-rev" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener"><span aria-hidden="true">★</span> Read our reviews on Google →</a></div>
 
 
 <section>
@@ -369,7 +377,9 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
     </div>
   </div>
 </section>
-
+<script>(function(){var l=document.querySelectorAll('.proof b');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+l.forEach(function(el){var m=el.textContent.match(/^([\d,]+)(\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
+new IntersectionObserver(function(es,ob){if(!es[0].isIntersecting)return;ob.disconnect();var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1500);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},{threshold:.5}).observe(el);});})();</script>
 
 <footer>
   <div class="in">
