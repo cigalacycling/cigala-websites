@@ -133,3 +133,4 @@ Built by `tools/build_coaching_generic.py`, `build_coaching_testimonials.py` and
 To check with Matteo (copy left exactly as live):
 - /testing/ "What we organise": all six steps repeat the same placeholder text ("The Premium package is for those triathletes...").
 - /cycling-coach-uk/, -usa/, -canada/: the 5-star quotes credited to "John - England, UK", "Peter - New York, UK", "Peter - British Columbia, Canda" are reworded versions of Derek's testimonial; the planned rewrite with unique content still needs Matteo's approval.
+- Crawl of staging (15 Nov, `stg-coaching/crawl-after-2026-11-15.json`, compared by `tools/compare_coaching_crawl.py`): 76 live pages; titles, metas, H1s, H2s, alt texts and schema types match except the approved changes (homepage hidden "IRELAND" H2, two Yoast title typo fixes, icon images left out, the two packages photos Matteo replaced, /dummy-page/ to be redirected). The header logo keeps its live alt "Cigala Cycling Coaching Logo".

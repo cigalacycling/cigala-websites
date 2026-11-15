@@ -83,7 +83,7 @@ def mob(label, items):
 
 HEADER = f'''<header class="nav">
   <div class="in">
-    <a class="brand" href="{C}/" {EXT}><img src="{LOGO}" alt="Cigala Cycling Coaching home" width="58" height="58"></a>
+    <a class="brand" href="{C}/" {EXT}><img src="{LOGO}" alt="Cigala Cycling Coaching Logo" width="58" height="58"></a>
     <nav class="menu" aria-label="Main">
       {a(C + '/about/', 'About')}
       {dd('Cycling', CYC)}
