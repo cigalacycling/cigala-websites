@@ -117,7 +117,7 @@ html .cc .burger nav a, html .cc .burger details.sub > summary { transition: col
 html .cc .burger nav a:hover, html .cc .burger nav a:active, html .cc .burger details.sub > summary:hover { color: var(--green-text); }
 /* footer links: green on hover like the menu, no underline (Matteo left the choice to us) */
 html .cc footer a { text-decoration: none; transition: color .15s; }
-html .cc footer a:hover, html .cc footer a:active, html .cc footer a:focus-visible { color: var(--green-text); }
+html .cc footer a:hover, html .cc footer a:active, html .cc footer a:focus-visible, html .cc footer ul a:hover { color: var(--green-text); }
 html .cc footer h4 { font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); line-height: 1.4; }
 html .cc .dd-menu a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); }
 html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
