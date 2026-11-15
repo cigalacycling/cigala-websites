@@ -1,0 +1,87 @@
+{
+ "v": 3,
+ "layout": "files",
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-14T19:07:21Z"
+ },
+ "title": "Cigala Cycling",
+ "namespace": "CigalaCycling",
+ "libraries": [],
+ "sections": {},
+ "groups": [
+  "Logos",
+  "Backgrounds"
+ ],
+ "assetGroups": {
+  "Logos": {
+   "name": "Logos",
+   "tile": "m",
+   "order": [
+    "cigala-cycling-logo-square.png",
+    "cigala-tours-logo-square.png",
+    "cigala-tours-logo-round.jpg"
+   ],
+   "files": {
+    "cigala-cycling-logo-square.png": {
+     "name": "cigala-cycling-logo-square.png",
+     "blob": "8fc5708cc152ff337c028d523a96054b",
+     "size": 124539,
+     "type": "image/png"
+    },
+    "cigala-tours-logo-square.png": {
+     "name": "cigala-tours-logo-square.png",
+     "blob": "3e69f17c90dc3970fbed3778d97ddc21",
+     "size": 41856,
+     "type": "image/png"
+    },
+    "cigala-tours-logo-round.jpg": {
+     "name": "cigala-tours-logo-round.jpg",
+     "blob": "61889a2539d8848cf4fbb501e54c24db",
+     "size": 13982,
+     "type": "image/jpeg"
+    }
+   }
+  },
+  "Backgrounds": {
+   "name": "Backgrounds",
+   "tile": "l",
+   "order": [
+    "topo-background.svg",
+    "topo-background-tile.svg",
+    "topo-story-1080x1920.png"
+   ],
+   "files": {
+    "topo-background.svg": {
+     "name": "topo-background.svg",
+     "blob": "03f41dd00b96824c80b099fb36f409b4",
+     "size": 146202,
+     "type": "image/svg+xml"
+    },
+    "topo-background-tile.svg": {
+     "name": "topo-background-tile.svg",
+     "blob": "181cf4b8a82b054badfc302ac53ab1ea",
+     "size": 292384,
+     "type": "image/svg+xml"
+    },
+    "topo-story-1080x1920.png": {
+     "name": "topo-story-1080x1920.png",
+     "blob": "c934e49406fb35981ba58da65d8d1ed3",
+     "size": 181175,
+     "type": "image/png"
+    }
+   }
+  }
+ },
+ "blobs": {},
+ "docs": {
+  "readme": "project/README.md",
+  "sections": []
+ },
+ "lastChange": {
+  "by": "Matteo Cigala",
+  "at": "2026-11-14T19:07:21Z",
+  "via": "Claude Code",
+  "note": "Brand kit created from the approved website designs and brand rules."
+ }
+}

@@ -1,0 +1,12 @@
+const { chromium } = require('playwright');
+(async()=>{const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:1440,height:900}});const p=await ctx.newPage();
+const hits=[];p.on('request',r=>{const u=r.url();if(/google-analytics\.com\/g\/collect|openwidget\.js/.test(u))hits.push(u.slice(0,70));});
+await p.goto('https://staging.cigalacycling.com/?x='+Date.now(),{waitUntil:'networkidle'});await p.waitForTimeout(3000);
+console.log('before consent:',JSON.stringify(hits), 'banner visible', await p.isVisible('#cc-consent'));
+await p.screenshot({path:'wp/shots/consent.png',clip:{x:0,y:700,width:1440,height:200}});
+hits.length=0; await p.click('.cc-accept'); await p.waitForTimeout(4000);
+console.log('after accept:',JSON.stringify(hits), 'banner visible', await p.isVisible('#cc-consent'));
+const p2=await ctx.newPage();const h2=[];p2.on('request',r=>{if(/google-analytics\.com\/g\/collect|openwidget\.js/.test(r.url()))h2.push(r.url().slice(0,70));});
+await p2.goto('https://staging.cigalacycling.com/about/?x='+Date.now(),{waitUntil:'networkidle'});await p2.waitForTimeout(3000);
+console.log('next page (accepted):',JSON.stringify(h2),'banner', await p2.isVisible('#cc-consent'));
+await b.close();})();

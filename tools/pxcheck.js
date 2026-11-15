@@ -1,0 +1,30 @@
+const { chromium } = require('playwright');
+const BASE='https://staging.cigalacycling.com';
+(async () => {
+  const b = await chromium.launch();
+  const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } });
+  const fb = [];
+  await ctx.route(/connect\.facebook\.net|facebook\.com\/tr/, async r => { fb.push(r.request().url().slice(0,90)); await r.fulfill({ status: 200, contentType: 'application/javascript', body: '' }); });
+  await ctx.route(/sibforms\.com/, r => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': BASE }, body: '{"success":true}' }));
+  const p = await ctx.newPage();
+  await p.goto(BASE + '/?x=' + Date.now(), { waitUntil: 'networkidle' });
+  console.log('before choice: fb requests', fb.length, 'fbq', await p.evaluate(() => typeof window.fbq));
+  console.log('banner text:', await p.$eval('#cc-consent p', e => e.textContent.trim().slice(0, 110)));
+  await p.click('#cc-consent .cc-accept'); await p.waitForTimeout(1000);
+  console.log('after accept: fb requests', fb, 'queue', JSON.stringify(await p.evaluate(() => window.fbq && fbq.queue.map(a => [...a]))));
+  await p.goto(BASE + '/about/?x=' + Date.now(), { waitUntil: 'networkidle' });
+  console.log('next page (granted stored): fbq', await p.evaluate(() => typeof window.fbq), JSON.stringify(await p.evaluate(() => window.fbq && fbq.queue.map(a => [...a]))));
+  await p.fill('#nl-email-foot', 'x@example.com'); await p.click('.nl-band button[type=submit]'); await p.waitForTimeout(800);
+  console.log('after newsletter:', JSON.stringify(await p.evaluate(() => fbq.queue.slice(-1).map(a => [...a]))));
+  await p.evaluate(() => jQuery(document).trigger('submit_success'));
+  console.log('after contact success:', JSON.stringify(await p.evaluate(() => fbq.queue.slice(-1).map(a => [...a]))), 'jq', await p.evaluate(() => !!window.jQuery));
+  // reject path
+  const ctx2 = await b.newContext(); const fb2 = [];
+  await ctx2.route(/connect\.facebook\.net|facebook\.com\/tr/, async r => { fb2.push(r.request().url()); await r.fulfill({ status: 200, body: '' }); });
+  const q = await ctx2.newPage();
+  await q.goto(BASE + '/?x=' + Date.now(), { waitUntil: 'networkidle' });
+  await q.click('#cc-consent .cc-reject'); await q.waitForTimeout(800);
+  await q.goto(BASE + '/about/?x=' + Date.now(), { waitUntil: 'networkidle' });
+  console.log('reject: fb requests', fb2.length, 'fbq', await q.evaluate(() => typeof window.fbq));
+  await b.close();
+})();

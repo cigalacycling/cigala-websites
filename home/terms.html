@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cigala Cycling Terms</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+/* Cigala Cycling kit for cigalacycling.com, the hub of the three businesses. Same tokens as the approved Tours preview.
+   Layout: sticky nav, short hero with the H1, three tall photo cards (one per business), mission split with Matteo, contact band, footer. */
+:root {
+  color-scheme: dark;
+  --bg: #08090a; --panel: rgba(15,16,17,.92); --panel-solid: #0f1011;
+  --panel-grad: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+  --border: rgba(255,255,255,.08); --border-strong: rgba(255,255,255,.14); --wash: rgba(255,255,255,.04);
+  --text: #f7f8f8; --text-2: #d0d6e0; --text-3: #8a8f98; --text-4: #62666d;
+  --green: #009a44; --green-hi: #00b350; --green-text: #34c46a; --green-wash: rgba(0,154,68,.14);
+  --red: #E10600; --red-text: #ff3d33; --star: #f0bf00;
+  --head: "Anton", Impact, "Arial Narrow", sans-serif;
+  --body: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 12px;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--text-2); font-family: var(--body); }
+body { position: relative; margin: 0; font-size: 15px; line-height: 1.6; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: rgba(8,9,10,.92); }
+.topo { position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(rgba(8,9,10,.6),rgba(8,9,10,.6)), #08090a url(topo-background-tile.svg) top center / auto 3000px repeat-y; }
+.page { position: relative; z-index: 1; }
+::selection { background: rgba(0,154,68,.45); color: #fff; }
+a { color: var(--text); text-decoration-color: rgba(255,255,255,.3); text-underline-offset: 3px; }
+a:hover { color: #fff; text-decoration-color: var(--green); }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+img { display: block; max-width: 100%; }
+b, strong { color: var(--text); font-weight: 600; }
+
+.in { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+section { padding-block: 72px 0; }
+h1, h2, h3 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.04; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(38px, 6.4vw, 76px); }
+h2 { font-size: clamp(30px, 4.6vw, 52px); }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--red-text); margin-bottom: 10px; }
+.bar { width: 40px; height: 3px; border-radius: 2px; background: var(--green); margin-top: 16px; }
+.lede { color: var(--text-2); max-width: 62ch; margin: 16px 0 0; font-size: 16px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--body); font-weight: 600; font-size: 14px; letter-spacing: .02em; text-decoration: none;
+  border-radius: 8px; padding: 12px 22px; border: 1px solid transparent; cursor: pointer; transition: background .15s, border-color .15s; }
+.btn-go { background: var(--green); color: #fff; }
+.btn-go:hover { background: var(--green-hi); color: #fff; }
+.btn-ghost { background: rgba(8,9,10,.35); color: var(--text); border-color: var(--border-strong); backdrop-filter: blur(4px); }
+.btn-ghost:hover { border-color: var(--green); color: #fff; }
+.ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+/* preview ribbon */
+.ribbon { position: relative; z-index: 2; background: var(--green-wash); border-bottom: 1px solid rgba(0,154,68,.35); font-size: 12.5px; color: var(--text-2); }
+.ribbon .in { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; padding-block: 8px; }
+.ribbon b { color: var(--green-text); letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; }
+
+/* nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(8,9,10,.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+.nav .in { position: relative; display: flex; align-items: center; gap: 18px; padding-block: 10px; }
+.brand { display: flex; align-items: center; text-decoration: none; flex: none; }
+.brand img { width: 58px; height: 58px; }
+.brand-lg img { width: 76px; height: 76px; }
+.menu { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+.menu a { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-2); text-decoration: none; padding: 8px 10px; border-radius: 0; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
+.menu a:hover, .menu a:active { color: var(--green-text); box-shadow: inset 0 -2px 0 var(--green); }
+.menu a[aria-current="page"] { color: var(--text); box-shadow: inset 0 -2px 0 var(--red); }
+.nav .btn { padding: 9px 16px; font-size: 13px; flex: none; }
+.burger { display: none; margin-left: auto; }
+.burger summary { list-style: none; cursor: pointer; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text); border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 14px; }
+.burger summary::-webkit-details-marker { display: none; }
+.burger nav { position: absolute; left: 0; right: 0; top: 100%; background: var(--panel-solid); border-bottom: 1px solid var(--border); display: grid; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)); }
+.burger nav a { padding: 11px 0; border-bottom: 1px solid var(--border); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; transition: color .15s; }
+.burger nav a:hover, .burger nav a:active { color: var(--green-text); }
+.burger nav a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
+
+/* hero */
+.hero .in { padding-block: 64px 8px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 48px; align-items: end; }
+.hero h1 { max-width: 22ch; font-size: clamp(38px, 5.4vw, 68px); }
+.since { text-align: right; color: var(--text-3); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.since b { display: block; font-family: var(--head); font-weight: 400; font-size: 56px; line-height: 1; color: var(--text); letter-spacing: 0; }
+
+/* three businesses */
+.biz { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 560px; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); background: var(--panel-solid); isolation: isolate; text-decoration: none; }
+.card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .6s ease; }
+.card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 15%, rgba(8,9,10,.8) 50%, rgba(8,9,10,.98) 100%); }
+.card:hover > img { transform: scale(1.04); }
+.card:hover { border-color: rgba(0,154,68,.6); }
+.card .tx { padding: 26px; display: grid; gap: 10px; }
+.card .k { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text); }
+.card .tx { text-shadow: 0 1px 10px rgba(0,0,0,.65); }
+.card .btn { text-shadow: none; }
+.card h2 { font-size: clamp(30px, 3vw, 40px); }
+.card p { margin: 0; font-size: 14.5px; font-weight: 500; color: var(--text); }
+.card .btn { justify-self: start; margin-top: 8px; }
+.card .host { font-size: 12px; color: var(--text-2); }
+
+/* mission */
+.split { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
+.split p { margin: 0 0 14px; max-width: 62ch; }
+.split .lede { margin-bottom: 18px; }
+.tagline { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: clamp(22px, 2.6vw, 30px); line-height: 1.1; margin: 0 0 18px; }
+.tagline span { color: var(--green-text); }
+.creds { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; padding: 0; list-style: none; }
+.creds li { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--text); border: 1px solid var(--border-strong); background: var(--wash); border-radius: 999px; padding: 5px 12px; }
+.creds li::before { content: "★"; color: var(--star); margin-right: 6px; }
+.photo { position: relative; display: flex; justify-content: center; align-items: flex-end; max-width: 100%; }
+.photo::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }
+.photo img { width: 100%; max-width: 480px; height: auto; -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, #000 82%, transparent 100%); }
+.sig { color: var(--text); font-weight: 600; margin-top: 18px !important; }
+.sig span { display: block; font-weight: 500; color: var(--text-3); font-size: 13px; }
+
+/* group photo band */
+.band { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); isolation: isolate; }
+.band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 45%; z-index: -2; }
+.band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8,9,10,.93) 0%, rgba(8,9,10,.72) 45%, rgba(8,9,10,.15) 100%); }
+.band .tx { padding: clamp(32px, 6vw, 64px); max-width: 640px; }
+.contact-lines { display: grid; gap: 4px; margin-top: 18px; font-weight: 600; color: var(--text); }
+.contact-lines span { color: var(--text-3); font-weight: 500; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; margin-right: 8px; }
+
+/* footer */
+footer { margin-top: 80px; border-top: 1px solid var(--border); background: rgba(8,9,10,.85); }
+footer .in { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); gap: 28px; padding-block: 44px 28px; }
+footer .tag-line { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: 22px; line-height: 1.15; margin: 14px 0 0; }
+footer h4 { margin: 0 0 12px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+footer ul a { text-decoration: none; color: var(--text-2); }
+footer ul a:hover { color: #fff; }
+.legal { border-top: 1px solid var(--border); }
+.legal .in { display: flex; flex-wrap: wrap; gap: 6px 20px; padding-block: 16px; font-size: 12px; color: var(--text-4); }
+
+@media (max-width: 980px) { .menu { display: none; } .burger { display: block; } .nav .btn { display: none; } }
+@media (max-width: 900px) {
+  .biz { grid-template-columns: minmax(0, 1fr); }
+  .card { min-height: 380px; }
+  .split { grid-template-columns: minmax(0, 1fr); }
+  .photo img { max-width: 380px; }
+  footer .in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  footer .in > div:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  section { padding-block: 56px 0; }
+  .hero .in { grid-template-columns: minmax(0, 1fr); padding-block: 40px 0; }
+  .since { text-align: left; }
+  .since b { font-size: 40px; }
+  .card { min-height: 420px; }
+  .card::after { background: linear-gradient(180deg, rgba(8,9,10,0) 5%, rgba(8,9,10,.85) 42%, rgba(8,9,10,.98) 100%); }
+  .band::after { background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,.93)); }
+  footer .in { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .card > img { transition: none; } .card:hover > img { transform: none; } }
+
+/* inner pages */
+.hero .in.proof-wrap { display: block; padding-block: 0; }
+.proof-mob { display: none; }
+@media (max-width: 640px) { .hero .in.proof-wrap { display: none; } .proof-mob { display: block; } .proof-mob .proof { margin-top: 28px; } }
+.proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 36px; border: 1px solid var(--border); border-radius: var(--r); background: var(--panel-grad), var(--panel); }
+.proof > div { padding: 18px 20px; border-left: 1px solid var(--border); min-width: 0; }
+.proof > div:first-child { border-left: 0; }
+.proof b { display: block; font-family: var(--head); font-weight: 400; font-size: clamp(30px, 3.6vw, 44px); line-height: 1; color: var(--text); }
+.proof span { display: block; margin-top: 8px; font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+@media (max-width: 640px) { .proof { grid-template-columns: repeat(2, minmax(0, 1fr)); } .proof > div:nth-child(3) { border-left: 0; } .proof > div:nth-child(n+3) { border-top: 1px solid var(--border); } }
+.hero.page-hero .in { padding-block: 64px 8px; display: block; }
+.page-hero h1 { font-size: clamp(44px, 7vw, 84px); }
+.crumbs { font-size: 12.5px; color: var(--text-3); margin-bottom: 14px; }
+.page-hero .eyebrow { margin-bottom: 10px; }
+.crumbs a { color: var(--text-3); text-decoration: none; } .crumbs a:hover { color: #fff; }
+.feature { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
+.feature.flip > .ph { order: 2; }
+.feature .ph { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); aspect-ratio: 4 / 3; max-width: 100%; }
+.feature .ph img { width: 100%; height: 100%; object-fit: cover; }
+.feature p { margin: 0 0 12px; max-width: 62ch; }
+.feature .big { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: clamp(22px, 2.4vw, 28px); line-height: 1.25; letter-spacing: .015em; margin: 22px 0 18px; }
+.list-places { display: grid; gap: 6px; margin: 4px 0 14px; padding: 0; list-style: none; }
+.list-places li { padding-left: 16px; position: relative; }
+.list-places li::before { content: ""; position: absolute; left: 0; top: .7em; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: clamp(20px, 3vw, 32px); min-width: 0; }
+.contact-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px; align-items: start; }
+.form { display: grid; gap: 14px; }
+.form label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); display: grid; gap: 6px; }
+.form label i { color: var(--red-text); font-style: normal; }
+.form input, .form textarea { font: 15px/1.5 var(--body); color: var(--text); background: rgba(8,9,10,.6); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; width: 100%; }
+.form input:focus, .form textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px var(--green-wash); }
+.form textarea { min-height: 150px; resize: vertical; }
+.form .btn { justify-self: start; }
+.form .note { font-size: 13px; color: var(--green-text); min-height: 1.2em; margin: 0; }
+.info { display: grid; gap: 16px; }
+.info .row { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; align-items: center; }
+.info .ic { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
+.info .ic svg { width: 20px; height: 20px; fill: none; stroke: var(--green-text); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.info h2 { font-size: 15px; font-family: var(--body); font-weight: 600; letter-spacing: .1em; color: var(--text-3); }
+.info h2::after { display: none; }
+.info .val { color: var(--text); font-weight: 600; font-size: 17px; overflow-wrap: anywhere; }
+.info .val a { text-decoration: none; }
+.social { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.social a { font-size: 13px; font-weight: 600; text-decoration: none; color: var(--text); border: 1px solid var(--border-strong); background: var(--wash); border-radius: 999px; padding: 7px 14px; }
+.social a:hover { border-color: var(--green); }
+.info .h2s { font-size: 15px; font-family: var(--body); font-weight: 600; letter-spacing: .1em; color: var(--text-3); text-transform: uppercase; margin: 0; }
+.terms { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; align-items: start; }
+.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 96px); display: grid; gap: 2px; font-size: 13px; }
+.toc a { color: var(--text-3); text-decoration: none; padding: 5px 10px; border-left: 2px solid var(--border); }
+.toc a:hover { color: #fff; border-left-color: var(--green); }
+.toc b { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin: 0 0 8px; font-weight: 600; }
+.legal-doc { display: grid; gap: 14px; }
+.legal-doc ol { margin: 0; padding: 0; list-style: none; counter-reset: t; display: grid; gap: 14px; }
+.legal-doc ol > li { counter-increment: t; }
+.legal-doc h3 { font-size: 22px; display: flex; gap: 12px; align-items: baseline; scroll-margin-top: 100px; }
+.legal-doc h3::before { content: counter(t, decimal-leading-zero); font-size: 14px; color: var(--red-text); font-family: var(--head); letter-spacing: .06em; }
+.legal-doc p { margin: 10px 0 0; max-width: 72ch; overflow-wrap: anywhere; }
+.legal-doc .waiver-head { margin-top: 28px; }
+.legal-doc .waiver-head h2 { font-size: clamp(24px, 3vw, 34px); }
+.legal-doc .waiver-head .provider { font-family: var(--body); text-transform: none; font-weight: 600; font-size: 15px; color: var(--text-2); letter-spacing: 0; margin-top: 14px; }
+.legal-doc .provider::after { display: none; }
+@media (max-width: 900px) {
+  .feature, .feature.flip { grid-template-columns: minmax(0, 1fr); }
+  .feature.flip > .ph { order: 0; }
+  .contact-grid { grid-template-columns: minmax(0, 1fr); }
+  .terms { grid-template-columns: minmax(0, 1fr); }
+  .toc { position: static; display: none; }
+}
+</style>
+</head>
+<body>
+<div class="topo" aria-hidden="true"></div>
+<div class="page">
+<div class="ribbon"><div class="in"><b>Design preview</b><span>A concept of cigalacycling.com in the Cigala Cycling brand. The menu moves between the preview pages; other links go to the live sites.</span></div></div>
+<header class="nav">
+  <div class="in">
+    <a class="brand" href="./"><img src="img/logo.png" alt="Cigala Cycling logo with chain | Cigala Cycling" width="58" height="58"></a>
+    <nav class="menu" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="about.html">About</a>
+      <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching</a>
+      <a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike tours</a>
+      <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Retail store</a>
+    </nav>
+    <a class="btn btn-go" href="contact.html">Contact us</a>
+    <details class="burger" id="menu-mobile">
+      <summary>Menu</summary>
+      <nav aria-label="Main (mobile)">
+        <a href="./">Home</a>
+        <a href="about.html">About</a>
+        <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching</a>
+        <a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike tours</a>
+        <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Retail store</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<div class="hero page-hero">
+  <div class="in">
+    <div class="crumbs"><a href="./">Home</a> / Terms &amp; Conditions</div>
+    <div class="eyebrow">Cigala Cycling Limited</div>
+    <h1>Terms &amp; Conditions</h1>
+    <div class="bar"></div>
+  </div>
+</div>
+<section style="padding-top:40px">
+  <div class="in terms">
+    <nav class="toc" aria-label="On this page"><b>On this page</b><a href="#privacy-policy">Privacy Policy</a><a href="#sign-up">Sign Up</a><a href="#sign-off-and-renewal">Sign Off And Renewal</a><a href="#anti-doping-policy">Anti Doping Policy</a><a href="#accident-policy">Accident Policy</a><a href="#individual-sessions">Individual Sessions</a><a href="#data-scraping-screening">Data Scraping &amp; Screening</a><a href="#coaching-discount-codes">Coaching Discount Codes</a><a href="#name-of-trading">Name Of Trading</a><a href="#waiver">Liability waiver</a></nav>
+    <div class="legal-doc">
+      <div class="panel"><ol><li><h3 id="privacy-policy">Privacy Policy</h3><p>We do not store or maintain credit card details nor do we share customer financial details with any third parties.</p></li><li><h3 id="sign-up">Sign Up</h3><p>For the basic and advanced coaching packages, the minimum sign up is 6 months.</p><p>For the advanced +1 o 2 sessions and premium packages the minimum it’s 3 months.</p><p>Payments will be made automatically monthly GoCardless platform (Direct Debit).</p><p>In the case, during the subscription period, the direct debit payments fail more than twice, an administration fee will be applied to your account to cover processing and follow-up costs.</p></li><li><h3 id="sign-off-and-renewal">Sign Off And Renewal</h3><p>At the end of the subscription, an automatic renewal notification email will be sent. If you intend to change your coaching package or do not continue with your subscription, reply to the email as indicated.</p><p>If you decide to end your coaching before the end of your current subscription period, the full payment for the current month will still apply.</p><p>Additionally, a sign-off fee equivalent to one month of coaching will be charged. This covers your coaching and the continuation of your TrainingPeaks/Vekta subscription until the end of the current block of training built, and also accounts for the fact that Matteo coaches a limited number of athletes. By committing to a coaching plan, you are taking a valuable spot that could otherwise be offered to another athlete, so the sign-off fee reflects the reserved place, the time dedicated to your training, and the effort required to reopen that spot for a new athlete.</p></li><li><h3 id="anti-doping-policy">Anti Doping Policy</h3><p>Cigala Cycling is against to all forms of doping and its practice. We do not take any responsibility on this subject and it is in the rider’s responsibility to respect the following:</p><p>-Be aware of the list of prohibited substances available at the World Anti Doping Agency (WADA) website at this link:</p><p><a href="https://www.wada-ama.org/sites/default/files/2025-09/2026list_en_final_clean_september_2025.pdf" target="_blank" rel="noopener">https://www.wada-ama.org/sites/default/files/2025-09/2026list_en_final_clean_september_2025.pdf</a></p><p>-Sign a form at the start of the coaching collaboration where the rider takes responsibility of the pharmaceutical and nutritional subject.</p></li><li><h3 id="accident-policy">Accident Policy</h3><p>For that availing of individual sessions, training camps or tours, In the case of a rider falling during training with the coaches, Cigala Cycling Ltd does not accept responsibility of any accident.</p><p>It is in the rider responsibility to have or not a private sports insurance or travel insurance if the training camp or tour is located abroad and at the start of the collaboration, a form must be signed.</p></li><li><h3 id="individual-sessions">Individual Sessions</h3><p>Training Sessions are held in Wicklow, Co. Wicklow. With other arrangements, training sessions can be held in another location.</p><p>In the event of cancellation or rescheduling 1 on 1 session or group session 48 hrs of the notice must be given otherwise the session is lost.</p><p>In the event of the lateness of more than 30 minutes the time of the session will be reduced in accordance with time lost.</p><p>In the unlikely event of the lateness of the coach, the time will be still made up.</p><p>In the event of a no-show the session will be lost.</p><p>In the event of no-show from the coach, the session will be rescheduled and an extra free session will be given.</p></li><li><h3 id="data-scraping-screening">Data Scraping &amp; Screening</h3><p>Across our websites with our domain, it is prohibited to users from recording and extracting sensitive data and give them to their collaborators without our permission. This includes the screening and recording with automated programs, software, bot, or any other method of screen scraping.</p></li><li><h3 id="coaching-discount-codes">Coaching Discount Codes</h3><p>Coaching riders will avail of a discount code on our retail store. This code is only valid (1) when you are currently a coached rider, (2) cannot combined with any other discount code (3) cannot combined with any finance options such as Humm &amp; Klarna (4) cannot be shared with other people.</p><p>If an order will be placed using the discount code with the above reasons, the order will be cancelled.</p></li><li><h3 id="name-of-trading">Name Of Trading</h3><p>Cigala Cycling Limited</p></li></ol></div>
+      <div class="panel waiver-head" id="waiver">
+        <h2>COACHING &amp; TRAINING PLAN LIABILITY WAIVER &amp; INFORMED CONSENT</h2>
+        <h2 class="provider">Coach/Provider: Cigala Cycling Limited ("Coach")</h2>
+        <div style="margin-top:20px"><ol><li><h3 id="acknowledgment-of-risks">Acknowledgment of Risks</h3><p>I understand that endurance training and cycling involve inherent risks, including but not limited to falls, crashes, collisions, equipment failure, overuse injuries, muscle strains, dehydration, heat illness, cardiovascular events, illness, fatigue, and overtraining. I understand these risks may result in serious injury, permanent disability, or death. I voluntarily choose to participate in training based on plans and guidance provided by the Coach.</p></li><li><h3 id="medical-responsibility">Medical Responsibility</h3><p>I confirm that I am physically and medically able to participate in endurance training. I have consulted a physician if I have any medical condition, symptoms, or concerns. I will seek medical advice before continuing training if I experience chest pain, dizziness, fainting, unusual shortness of breath, or other concerning symptoms. I am solely responsible for monitoring my own physical condition during training. The Coach does not perform medical evaluations and relies on my representations regarding my health.</p></li><li><h3 id="no-medical-advice">No Medical Advice</h3><p>I understand that the Coach provides coaching and educational guidance, not medical diagnosis or treatment. Nothing in the training plans or communication should be interpreted as medical advice.</p></li><li><h3 id="athlete-responsibility">Athlete Responsibility</h3><p>I am responsible for adjusting or stopping training if I feel pain, illness, excessive fatigue, or injury; using appropriate and safe equipment; following traffic laws; choosing safe routes and environments; and maintaining proper fueling, hydration, and rest. I am responsible for how I execute the training plan.</p></li><li><h3 id="no-guarantee-of-results">No Guarantee of Results</h3><p>I understand that performance improvements are not guaranteed and results depend on many factors outside the Coach’s control.</p></li><li><h3 id="assumption-of-risk">Assumption of Risk</h3><p>I knowingly and freely assume all risks, both known and unknown, associated with my training and participation in endurance sport.</p></li><li><h3 id="release-of-liability">Release of Liability</h3><p>To the fullest extent permitted by law, I release and hold harmless Cigala Cycling Limited, its owners, employees, contractors, and representatives from any and all claims arising from injury, illness, damage, or loss related to my participation in training, except in cases of gross negligence or willful misconduct.</p></li><li><h3 id="online-coaching-technology">Online Coaching &amp; Technology</h3><p>I understand that training is delivered remotely via digital platforms. The Coach cannot monitor me in real time, and I am responsible for how I apply the training.</p></li></ol></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="in">
+    <div>
+      <a class="brand brand-lg" href="./"><img src="img/logo.png" alt="Cigala Cycling logo with chain | Cigala Cycling" width="88" height="88"></a>
+      <p class="tag-line">Cycling &amp; Triathlon Coaching<br>Bike Tours · Retail</p>
+    </div>
+    <div>
+      <h4>Cigala Cycling</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching</a></li>
+        <li><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike tours</a></li>
+        <li><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Retail store</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li>info@cigalacycling.com</li>
+        <li>+353 404 78107</li>
+        <li><a href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">WhatsApp</a> · <a href="https://www.instagram.com/cigalacycling/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/CigalaCycling/" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@cigalacycling" target="_blank" rel="noopener">YouTube</a> · <a href="https://www.tiktok.com/@cigalacycling" target="_blank" rel="noopener">TikTok</a> · <a href="https://x.com/CigalaCycling" target="_blank" rel="noopener">X</a> · <a href="https://www.threads.com/@cigalacycling" target="_blank" rel="noopener">Threads</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="legal"><div class="in">
+    <span>© 2026 Cigala Cycling</span>
+    <a href="terms.html">Terms &amp; Conditions</a>
+  </div></div>
+</footer>
+</div>
+<script>document.querySelectorAll("form.form").forEach(f=>f.addEventListener("submit",e=>{e.preventDefault();f.querySelector(".note").textContent="Preview only: on the live site this sends your message to info@cigalacycling.com.";}));</script>
+</body>
+</html>

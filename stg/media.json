@@ -1,0 +1,44 @@
+{
+ "logo.png": {
+  "id": 685,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-cycling-logo.png",
+  "alt": "Cigala Cycling logo",
+  "err": null
+ },
+ "coaching.jpg": {
+  "id": 686,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-riders.jpg",
+  "alt": "Three Cigala Cycling riders climbing a mountain road together",
+  "err": null
+ },
+ "tours.jpg": {
+  "id": 687,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-riders-cyprus.jpg",
+  "alt": "Cigala Cycling Tours riders in white team jerseys celebrating on the coast in Cyprus",
+  "err": null
+ },
+ "retail.jpg": {
+  "id": 688,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-retail-smart-bike.jpg",
+  "alt": "Rider training on a Wahoo smart bike in front of a mountain backdrop",
+  "err": null
+ },
+ "matteo-white.png": {
+  "id": 689,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/matteo-cigala-white-jersey.png",
+  "alt": "Matteo Cigala, Head Coach and Tours Director, in the white Cigala Cycling jersey",
+  "err": null
+ },
+ "contact.jpg": {
+  "id": 690,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-group-black-kit.jpg",
+  "alt": "Cigala Cycling riders in the black team kit",
+  "err": null
+ },
+ "team-white.jpg": {
+  "id": 691,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-team-white-jerseys.jpg",
+  "alt": "Cigala Cycling riders in white jerseys celebrating on the coast",
+  "err": null
+ }
+}
