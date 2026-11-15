@@ -57,7 +57,7 @@ def btn(label, url, cls='btn-go', note=''):
 
 # New feature line, added by Matteo (15 Nov 2026): Advanced and Premium only, a normal line after the training plan.
 # Matteo 15 Nov (2nd review): 'deep initial assessment ... across the year or 6 months, depending on how much training data'
-ASSESS = 'Deep Initial Assessment of your training data from the past year or 6 months, depending on the data available'
+ASSESS = 'Deep Initial Assessment of your training data (last 6–12 months)'   # Matteo 15 Nov: shorter
 # Who each package is for: short lines taken from the live FAQ answer "What would the most suitable package for me?"
 FOR = {
     'basic': 'For riders who can follow the training without the human aspect of a coach.',

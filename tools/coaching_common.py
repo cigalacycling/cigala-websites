@@ -123,7 +123,7 @@ FOOTER = f'''<footer>
       <h2 class="tag-line">Train Smarter, Ride Faster</h2>
     </div>
     <div><h4>Coaching</h4><ul>{''.join(li(u, t) for u, t in COACH)}</ul></div>
-    <div><h4>Cigala Cycling</h4><ul>{''.join(li(u, t) for u, t in SITE)}</ul></div>
+    <div><h4>Explore</h4><ul>{''.join(li(u, t) for u, t in SITE)}</ul></div>
     <div><h4>Contact</h4>
       <ul>
         <li><a href="mailto:info@cigalacycling.com">info@cigalacycling.com</a></li>

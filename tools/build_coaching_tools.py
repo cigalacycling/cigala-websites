@@ -13,7 +13,10 @@ import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from coaching_common import *
 
-NL_URL = ''   # Brevo form URL for the Coaching list (…sibforms.com/serve/…?isAjax=1). Empty = sign-up box hidden.
+NL_URL = ''   # Brevo form URL for the Coaching list (…sibforms.com/serve/…?isAjax=1). Empty = no sign-up, tools open.
+# Matteo 15 Nov: people must sign up before they see their results. Only active once NL_URL is set (otherwise nobody
+# could unlock the tools). Once signed up, a flag in the browser keeps all three tools open for that visitor.
+GATE = True
 CAL = 'https://calendly.com/cigalacycling'
 B = C + '/blog/'
 HERO = img('IMG_4003AWDWWWU', 'tools-hero')   # Matteo coaching a group of riders (live photo)
@@ -40,14 +43,29 @@ def hero(eyebrow, h1, lede):
   </div>
 </div>'''
 
+def gate():
+    if not (GATE and NL_URL): return ''
+    return f'''<div class="tl-gate" hidden>
+          <form class="tl-gate-form" novalidate>
+            <h3 class="h-sm">See your results</h3>
+            <p>Enter your email to unlock all our free tools, and get training tips from Head Coach Matteo Cigala.</p>
+            <label class="vh" for="tl-g-email">Email</label>
+            <input id="tl-g-email" type="email" name="EMAIL" required autocomplete="email" inputmode="email" placeholder="Your email address *">
+            <label class="tl-ok"><input type="checkbox" required><span>Yes, email me training tips and news from Cigala Cycling Coaching. I can unsubscribe at any time. See our <a href="{C}/privacy-policy/" {EXT}>privacy policy</a>.</span></label>
+            <input type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" class="tl-hp" aria-hidden="true">
+            <button class="btn btn-go" type="submit">Show my results</button>
+            <p class="tl-nl-msg" role="status" aria-live="polite"></p>
+          </form>
+        </div>'''
+
 def signup(topic):
-    if not NL_URL: return ''
+    if not NL_URL or GATE: return ''
     return f'''<div class="tl-nl panel">
       <div><h3 class="h-sm">Get free training tips by email</h3><p>Sessions, fuelling and racing advice from Head Coach Matteo Cigala. No spam; unsubscribe any time.</p></div>
       <form class="tl-nl-form" novalidate data-topic="{topic}">
         <label class="vh" for="tl-email">Email</label>
         <div class="tl-nl-row"><input id="tl-email" type="email" name="EMAIL" required autocomplete="email" inputmode="email" placeholder="Your email address *"><button class="btn btn-go" type="submit">Subscribe</button></div>
-        <label class="tl-ok"><input type="checkbox" required> Yes, email me training tips and news from Cigala Cycling Coaching. See our <a href="{C}/privacy-policy/" {EXT}>privacy policy</a>.</label>
+        <label class="tl-ok"><input type="checkbox" required><span>Yes, email me training tips and news from Cigala Cycling Coaching. See our <a href="{C}/privacy-policy/" {EXT}>privacy policy</a>.</span></label>
         <input type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" class="tl-hp" aria-hidden="true">
         <p class="tl-nl-msg" role="status" aria-live="polite"></p>
       </form>
@@ -135,10 +153,20 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
 .tl-ok { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
 .tl-ok input { width: 18px; height: 18px; accent-color: #009a44; flex: none; margin-top: 2px; }
 .tl-ok a { color: var(--green-text); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .tl-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .tl-nl-msg { margin: 10px 0 0; font-size: 14px; min-height: 1em; }
 .tl-nl-msg.err { color: #ff6b63; } .tl-nl-msg.ok { color: var(--green-text); }
 .tl-nl-form.done .tl-nl-row, .tl-nl-form.done .tl-ok { display: none; }
+.tl-out { position: relative; }
+.tl-out.locked [id$="-out"] { filter: blur(7px); pointer-events: none; user-select: none; }
+.tl-gate { position: absolute; inset: 64px 16px auto; z-index: 2; display: grid; place-items: center; }
+.tl-gate-form { width: min(440px, 100%); display: grid; gap: 12px; padding: 24px; border-radius: 14px; background: rgba(8,9,10,.94); border: 1px solid rgba(0,154,68,.5); box-shadow: 0 24px 60px rgba(0,0,0,.5); }
+.tl-gate-form h3 { margin: 0; }
+.tl-gate-form p { margin: 0; color: var(--text-2); font-size: 14.5px; }
+.tl-gate-form input[type=email] { font: 400 16px/1.4 var(--body); color: var(--text); background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; width: 100%; }
+.tl-gate-form .tl-ok { margin: 0; }
+.tl-gate-form .btn { justify-self: start; }
 @media (max-width: 900px) { .tl-box, .tl-nl { grid-template-columns: minmax(0, 1fr); } .tl-cards { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 640px) { .tl-in, .tl-out { padding: 18px; } .tl-tbl { font-size: 13.5px; } .tl-tbl th, .tl-tbl td { padding: 9px 6px; } .tl-nl-row { flex-direction: column; } }
 </style>'''
@@ -164,9 +192,35 @@ NLJS = '''<script>
 })();
 </script>''' % ('"' + NL_URL + '"')
 
+GATEJS = '''<script>
+(function () {   /* sign up to see the results (Matteo 15 Nov); the flag keeps every tool open afterwards */
+  var out = document.querySelector('.tl-out'), g = document.querySelector('.tl-gate'); if (!out || !g) return;
+  var K = 'cc_tools_ok', open = false; try { open = localStorage.getItem(K) === '1'; } catch (e) {}
+  if (open) return;
+  out.classList.add('locked'); g.hidden = false;
+  var f = g.querySelector('form'), em = f.querySelector('input[type=email]'), ok = f.querySelector('.tl-ok input'), msg = f.querySelector('.tl-nl-msg'), btn = f.querySelector('button');
+  f.addEventListener('submit', function (e) {
+    e.preventDefault(); msg.className = 'tl-nl-msg';
+    if (!em.value.trim() || !em.checkValidity()) { msg.className += ' err'; msg.textContent = 'Please enter a valid email address.'; em.focus(); return; }
+    if (!ok.checked) { msg.className += ' err'; msg.textContent = 'Please tick the box to continue.'; ok.focus(); return; }
+    if (f.querySelector('[name=email_address_check]').value) return;
+    var fd = new FormData(); fd.append('EMAIL', em.value.trim()); fd.append('email_address_check', ''); fd.append('locale', 'en');
+    btn.disabled = true; btn.textContent = 'One moment…';
+    fetch(%s, { method: 'POST', body: fd }).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.success) throw new Error('fail');
+      try { localStorage.setItem(K, '1'); } catch (x) {}
+      out.classList.remove('locked'); g.hidden = true;
+      try { if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'tools' }); if (window.fbq) fbq('track', 'Lead'); } catch (x) {}
+    }).catch(function () { msg.className = 'tl-nl-msg err'; msg.textContent = 'Sorry, that didn’t work. Please try again.'; })
+      .then(function () { btn.disabled = false; btn.textContent = 'Show my results'; });
+  });
+})();
+</script>''' % ('"' + NL_URL + '"')
+
 def page(name, path, h1, title, meta, main, js):
+    extra = (GATEJS if GATE else NLJS) if NL_URL else ''
     build(name, path, main, f'New page: {h1}. Calculated in the browser; nothing is stored.', h1=h1,
-          extra_css=TCSS, extra_js=js + (NLJS if NL_URL else ''), new_page={'title': title, 'meta': meta})
+          extra_css=TCSS, extra_js=js + extra, new_page={'title': title, 'meta': meta})
 
 # =====================================================================================================================
 # 1. Training zones
@@ -189,7 +243,7 @@ ZMAIN = hero('Free tool', 'Training Zones Calculator', 'Work out your cycling po
       </form>
       <div class="tl-out panel" aria-live="polite">
         <h2>Your zones</h2>
-        <div id="tl-zones-out"><p class="tl-empty">Enter your FTP or 20-minute power to see your zones.</p></div>
+        {gate()}<div id="tl-zones-out"><p class="tl-empty">Enter your FTP or 20-minute power to see your zones.</p></div>
       </div>
     </div>
     {signup('zones')}
@@ -278,7 +332,7 @@ CMAIN = hero('Free tool', 'Carbs per Hour Calculator', 'How many grams of carboh
       </form>
       <div class="tl-out panel" aria-live="polite">
         <h2>Your fuelling plan</h2>
-        <div id="tl-carbs-out"></div>
+        {gate()}<div id="tl-carbs-out"></div>
       </div>
     </div>
     {signup('carbs')}
@@ -360,7 +414,7 @@ PMAIN = hero('Free tool', 'Critical Power &amp; W′ Calculator', 'Enter two all
       </form>
       <div class="tl-out panel" aria-live="polite">
         <h2>Your results</h2>
-        <div id="tl-cp-out"></div>
+        {gate()}<div id="tl-cp-out"></div>
       </div>
     </div>
     {signup('cp')}

@@ -463,10 +463,20 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
 .tl-ok { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
 .tl-ok input { width: 18px; height: 18px; accent-color: #009a44; flex: none; margin-top: 2px; }
 .tl-ok a { color: var(--green-text); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .tl-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .tl-nl-msg { margin: 10px 0 0; font-size: 14px; min-height: 1em; }
 .tl-nl-msg.err { color: #ff6b63; } .tl-nl-msg.ok { color: var(--green-text); }
 .tl-nl-form.done .tl-nl-row, .tl-nl-form.done .tl-ok { display: none; }
+.tl-out { position: relative; }
+.tl-out.locked [id$="-out"] { filter: blur(7px); pointer-events: none; user-select: none; }
+.tl-gate { position: absolute; inset: 64px 16px auto; z-index: 2; display: grid; place-items: center; }
+.tl-gate-form { width: min(440px, 100%); display: grid; gap: 12px; padding: 24px; border-radius: 14px; background: rgba(8,9,10,.94); border: 1px solid rgba(0,154,68,.5); box-shadow: 0 24px 60px rgba(0,0,0,.5); }
+.tl-gate-form h3 { margin: 0; }
+.tl-gate-form p { margin: 0; color: var(--text-2); font-size: 14.5px; }
+.tl-gate-form input[type=email] { font: 400 16px/1.4 var(--body); color: var(--text); background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; width: 100%; }
+.tl-gate-form .tl-ok { margin: 0; }
+.tl-gate-form .btn { justify-self: start; }
 @media (max-width: 900px) { .tl-box, .tl-nl { grid-template-columns: minmax(0, 1fr); } .tl-cards { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 640px) { .tl-in, .tl-out { padding: 18px; } .tl-tbl { font-size: 13.5px; } .tl-tbl th, .tl-tbl td { padding: 9px 6px; } .tl-nl-row { flex-direction: column; } }
 </style>
@@ -531,7 +541,7 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
       <h2 class="tag-line">Train Smarter, Ride Faster</h2>
     </div>
     <div><h4>Coaching</h4><ul><li><a href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Cycling Packages</a></li><li><a href="https://coaching.cigalacycling.com/tri-individual-packages/" target="_blank" rel="noopener">Triathlon Packages</a></li><li><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a></li><li><a href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 Session</a></li><li><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a></li><li><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a></li><li><a href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">Free Training Tools</a></li></ul></div>
-    <div><h4>Cigala Cycling</h4><ul><li><a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a></li><li><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a></li><li><a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a></li><li><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a></li><li><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Retail Store</a></li><li><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a></li><li><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a></li><li><a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a></li><li><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a></li><li><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Retail Store</a></li><li><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a></li></ul></div>
     <div><h4>Contact</h4>
       <ul>
         <li><a href="mailto:info@cigalacycling.com">info@cigalacycling.com</a></li>
