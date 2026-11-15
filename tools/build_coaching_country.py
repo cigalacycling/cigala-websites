@@ -22,9 +22,6 @@ import build_coaching_generic as G
 import build_coaching_packages as P   # (rebuilds the packages page too: same output)
 
 CAL = 'https://calendly.com/cigalacycling'
-# GoCardless one-time payment links for Basic 12 weeks. The live country pages have none (their Basic option has no link).
-# Matteo 15 Nov: Basic needs a real payment button -> paste each link here when created in GoCardless, then rebuild.
-BASIC_PAY = {'uk': '', 'usa': '', 'canada': ''}
 TP_LEVELS = P.TPLOGO
 
 def rv(i):
@@ -39,10 +36,10 @@ def strip(ids):
 # 6 Shane, 7 John Dowley, 8 William Rymer, 9 Gerard, 10 Rob, 11 Damian (winter + spring racing)
 C_ = {
 'uk': dict(
-    name='the UK', adj='UK', cur='£', code='GBP', hero=('536278406', 'country-uk-hero'), photo=('IMG_6241', 'country-uk-events'),
+    name='the UK', adj='UK', cur='£', code='GBP', hero=('imgi_22_lABWBM7F', 'country-uk-hero-coaching'), pos='60% 35%', photo=('unnamed-6.png', 'country-uk-events-tre-valli'),
     vekta='£17.99', guides=[('fred-whitton-challenge-training-guide', 'How to train for the Fred Whitton Challenge'), ('slower-in-winter-is-not-your-legs', 'Slower in winter? It’s not your legs'), ('effective-fuelling-techniques-for-winter-training', 'Fuelling for winter training')], reviews=[5, 1, 8, 2, 11, 3],
     facts=[('clock', 'Same time as Ireland', 'GMT/BST: calls and replies happen in your own day, not overnight.'),
-           ('currency', 'Prices in pounds', 'Pay in GBP by GoCardless: no exchange fees on your side.'),
+           ('currency', 'Prices in pounds', 'You pay in pounds, so no exchange fees on your side.'),
            ('route', 'Built for UK roads', 'Short steep climbs, wind, wet winters and the TT and sportive calendar.')],
     how=[('Sign up or talk first', 'Choose your package and sign up straight away, or book a free consultation with Matteo first. Ireland and the UK share a time zone, so a lunch break or an evening works.'),
          ('Testing & zones', 'Every package starts with tests (CP, FTP, FTHR or INSCYD) to set your zones. On Advanced and Premium, Matteo also does a deep assessment of your last 6–12 months of training data.'),
@@ -59,10 +56,10 @@ C_ = {
     },
     extra_q=('Do you coach time trials and hill climbs?', ['Yes. Time trials and hill climbs are short, all-out efforts, and we train them that way: pacing work, efforts at and above Critical Power, and sessions in your race position. Advanced and Premium include race and pacing strategy for each event.'])),
 'usa': dict(
-    name='the USA', adj='US', cur='$', code='USD', hero=('1640367', 'country-usa-hero'), photo=('536278406', 'country-usa-events'),
+    name='the USA', adj='US', cur='$', code='USD', hero=('V6A9680-scaled', 'country-usa-hero-wicklow'), pos='18% 40%', photo=('imgi_17_zCRmNmCA', 'country-usa-events-coaching'),
     vekta='$21.99', guides=[('tips-for-gravel-racing', 'Tips for gravel racing'), ('getting-started-with-gravel', 'Getting started with gravel'), ('heat-training', 'Heat training: why it is a game changer')], reviews=[4, 1, 7, 10, 6, 0],
     facts=[('clock', 'Works across US time zones', 'Feedback is written in Vekta or TrainingPeaks, so you never need to be online at the same time.'),
-           ('currency', 'Prices in US dollars', 'Pay in USD by GoCardless.'),
+           ('currency', 'Prices in US dollars', 'You pay in dollars, so no exchange fees on your side.'),
            ('route', 'Climate and terrain', 'Altitude in Colorado, heat in Texas, long gravel days: the plan follows where you ride.')],
     how=[('Sign up or talk first', 'Choose your package and sign up straight away, or book a free consultation with Matteo first: the booking page shows the times in your own time zone.'),
          ('Testing & zones', 'Every package starts with tests (CP, FTP, FTHR or INSCYD) to set your zones. On Advanced and Premium, Matteo also does a deep assessment of your last 6–12 months of training data.'),
@@ -79,10 +76,10 @@ C_ = {
     },
     extra_q=('Can you coach me for a long gravel race?', ['Yes. Gravel and MTB are part of what we coach. Long gravel races are won or lost on pacing and fuelling as much as fitness: Advanced and Premium include daily carb recommendations for each session and a race and pacing strategy for the event.'])),
 'canada': dict(
-    name='Canada', adj='Canadian', cur='$', code='CAD', hero=('1670521', 'country-canada-hero'), photo=('536278406', 'country-canada-events'),
+    name='Canada', adj='Canadian', cur='$', code='CAD', hero=('IMG_20211006_115329', 'country-canada-hero-finish'), pos='55% 78%', photo=('pzrIm4dp1o9W5oO', 'country-canada-events-podium'),
     vekta='$30.99', guides=[('gran-fondo-whistler-training-guide', 'How to train for Gran Fondo Whistler'), ('slower-in-winter-is-not-your-legs', 'Slower in winter? It’s not your legs'), ('effective-fuelling-techniques-for-winter-training', 'Fuelling for winter training')], reviews=[11, 4, 1, 3, 8, 2],
     facts=[('snow', 'A real winter plan', 'Indoor blocks on Zwift, MyWhoosh or ROUVY so you start spring fit, not from zero.'),
-           ('currency', 'Prices in Canadian dollars', 'Pay in CAD by GoCardless.'),
+           ('currency', 'Prices in Canadian dollars', 'You pay in Canadian dollars, so no exchange fees on your side.'),
            ('clock', 'Coast to coast', 'Feedback is written in Vekta or TrainingPeaks, so time zones don’t matter.')],
     how=[('Sign up or talk first', 'Choose your package and sign up straight away, or book a free consultation with Matteo first: the booking page shows the times in your own time zone.'),
          ('Testing & zones', 'Every package starts with tests (CP, FTP, FTHR or INSCYD) to set your zones. On Advanced and Premium, Matteo also does a deep assessment of your last 6–12 months of training data.'),
@@ -142,23 +139,26 @@ def build_country(key):
     nums = re.findall(r'H3: (.+)\nH4: (.+)', '\n'.join(lines(T, 'H2: 2025 IN NUMBERS', ('H2:',))))
     # prices + payment links from the live page
     html_src = open(ROOT + f'coaching/html/{name}.html').read()
-    pay = {lab.strip(): u for u, lab in re.findall(r'<option value="(https://[^"]+)"[^>]*>\s*([^<]+?)\s*<', html_src)}
+    pay = {lab.strip(): u for u, lab in re.findall(r'<option value="(https://[^"\s]+)\s*"[^>]*>\s*([^<]+?)\s*<', html_src)}
     pb = lambda k: next(l for l in lines(T, 'H2: ' + k, ('LABEL:',)))
     def price(k): return next(l[5:].strip() for l in lines(T, 'H2: ' + k, ('LABEL:',)) if l.startswith('TXT: ') and re.match(r'TXT: [£$]', l))
     sub_basic = next(l[3:] for l in lines(T, 'H2: Basic', ('LABEL:',)) if l.startswith('P: '))
+    if key == 'canada':   # live card said $387 ($129/mo) but the live Revolut link charges 390 CAD: show what is charged
+        sub_basic = sub_basic.replace('$387', '$390 CAD')
     prem_sub = next(l[3:] for l in lines(T, 'H2: Premium', ('LABEL:',)) if l.startswith('P: '))
-    adv_lab = next(k for k in pay if k.startswith('Advanced'))
+    adv_lab = next(k for k in pay if k.startswith('Advanced')); bas_lab = next(k for k in pay if k.startswith('Basic'))
     p3 = next(k for k in pay if k.startswith('Premium 3')); p6 = next(k for k in pay if k.startswith('Premium 6'))
     nump = lambda s: re.search(r'(\d+) ' + c['code'], s).group(1)
     bp, bper = re.match(r'([£$][\d.]+)(/\w+)', price('Basic')).groups()
+    if key == 'canada': bp = '$130'
     ap, aper = re.match(r'([£$][\d.]+)(/\w+)', price('Advanced')).groups()
     pp, pper = re.match(r'([£$][\d.]+)(/\w+)', price('Premium')).groups()
-    cur_note = f' {c["code"]}' if c['code'] != 'GBP' else ''
+    cur_note = ' CAD' if key == 'canada' else ''   # Matteo 15 Nov: no currency codes, except CAD ($ alone reads as US dollars)
     cards = ''.join([
         P.card('basic', 'Basic', '12 Weeks', bp, bper, sub_basic,
                # the live country pages have no payment link for Basic: start with the free call
-               (P.btn(f'Buy Basic 12 Weeks · {re.search(r"[£$][\d,]+", sub_basic).group(0)}{cur_note}', BASIC_PAY[key], 'btn-ghost') if BASIC_PAY[key] else
-                f'<a class="btn btn-ghost pay" href="{CAL}" {EXT}>Start with a free call</a><span class="pay-note">Basic 12 weeks: {re.search(r"[£$][\d,]+", sub_basic).group(0)}{cur_note}, one payment</span>')),
+               # Basic pays by the live Revolut checkout link (one payment), as on the live pages
+               P.btn(f'Buy Basic 12 Weeks · {c["cur"]}{nump(bas_lab)}{cur_note}', pay[bas_lab], 'btn-ghost')),
         P.card('advanced', 'Advanced', '6 months subscription', ap, aper, '',
                P.btn(f'Subscribe to Advanced · {c["cur"]}{nump(adv_lab)}{cur_note}/mo', pay[adv_lab]),
                '<span class="pkg-badge">Monthly (Our Most Popular)</span>', 'hot'),
@@ -186,9 +186,9 @@ def build_country(key):
     tick = lambda xs: '<ul class="ticks">' + ''.join(f'<li>{G.inline(x)}</li>' for x in xs) + '</ul>'
 
     MAIN = f'''<div class="hero hero-sm">
-  <img src="{hsrc}" alt="{E(halt)}">
+  <img src="{hsrc}" alt="{E(halt)}" style="object-position: {c['pos']}">
   <div class="in">
-    <div class="eyebrow eb-pill"><span class="dot"></span>Online cycling coaching · {E(c["code"])}</div>
+    <div class="eyebrow eb-pill"><span class="dot"></span>Online cycling coaching</div>
     <h1>{E(h1)}</h1>
     <p class="lede">{G.inline(intro[0])}</p>
     <div class="ctas"><a class="btn btn-go" href="{CAL}" {EXT}>Book free consultation</a><a class="btn btn-ghost" href="#packages">See the packages ↓</a></div>
@@ -223,7 +223,7 @@ def build_country(key):
 
 <section id="packages">
   <div class="in">
-    <div class="head"><div><div class="eyebrow">Prices in {E(c["code"])}</div><h2>COACHING PACKAGES</h2><div class="bar"></div></div></div>
+    <div class="head"><div><div class="eyebrow">Choose your package</div><h2>COACHING PACKAGES</h2><div class="bar"></div></div></div>
     {cad_note}
     <div class="pkgs">{cards}</div>
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="{C}/terms-conditions/" {EXT}>HERE</a></b></p>

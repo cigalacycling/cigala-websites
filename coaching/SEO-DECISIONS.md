@@ -168,7 +168,11 @@ Changed, for Matteo to read on staging:
 To check with Matteo:
 - Canada Basic: the live card says "one-time payment of $387", the live option says "390 CAD". Left as live.
 - Matteo 15 Nov: confirmed calls in the client's morning, payment by GoCardless and "no exchange fees" for UK clients.
-- Matteo 15 Nov: Basic must have a payment button, not "Start with a free call". The live country pages have no Basic link,
-  so Matteo creates one-time GoCardless links (GBP, USD, CAD) and they go in `BASIC_PAY` in `tools/build_coaching_country.py`.
+- Matteo 15 Nov: Basic must have a payment button. The live pages DO have one: a Revolut checkout link in the Basic drop-down
+  (missed at first because the live option value ends with a space). Basic now has "Buy Basic 12 Weeks" with that live link.
+- Canada Basic: the live card said $387 ($129/mo) but the live Revolut link is "390 CAD": the card now shows what is charged ($390 CAD, $130/mo).
+- Matteo 15 Nov: hero photos are now Cigala/Matteo photos instead of random cyclists (UK: coaching an athlete; USA: Matteo in
+  Cigala kit in Wicklow; Canada: Matteo winning Tre Valli Varesine); event photos too. Currency codes removed (only CAD
+  stays, as "$" alone reads as US dollars); "by GoCardless" removed from the facts (Basic pays by Revolut).
 - Matteo 15 Nov: H2 "2025 IN NUMBERS" -> "2026 IN NUMBERS" on UK/USA/Canada and "2025 IN NUMERI" -> "2026 IN NUMERI" on Italia
   (same numbers as the Packages page, which already says 2026). No green line under the testimonials heading (as on Packages).
