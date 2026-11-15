@@ -448,19 +448,26 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .hero-sm h1 { font-size: clamp(38px, 6vw, 72px); }
 .hero-sm > img { object-position: 50% 40%; }
 .cs-list { display: grid; gap: 24px; }
-.cs-case { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); overflow: hidden; border-radius: 16px; scroll-margin-top: 100px; }
-.cs-photo { min-height: 100%; background: #111; }
-.cs-photo img { width: 100%; height: 100%; object-fit: cover; min-height: 320px; }
-.cs-photo.cs-data { display: grid; place-content: center; text-align: center; gap: 8px; min-height: 320px; }
-.cs-body { padding: 28px; display: grid; gap: 8px; align-content: start; }
+.cs-case { display: grid; gap: 18px; padding: 28px; border-radius: 16px; scroll-margin-top: 100px; }
+.cs-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 20px; align-items: center; }
+.cs-av { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 3px solid var(--green); }
+.cs-av-i { display: grid; place-items: center; background: #0b1a12; color: var(--green-text); font: 400 34px/1 var(--head); }
+.cs-stat b { display: block; font: 400 clamp(26px, 2.6vw, 34px)/1 var(--head); color: var(--green-text); text-align: right; white-space: nowrap; }
+.cs-tl { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 0; counter-reset: step; }
+.cs-tl li { position: relative; padding: 26px 14px 0 0; border-top: 3px solid rgba(0,154,68,.35); }
+.cs-tl li:last-child { border-top-color: var(--green); }
+.cs-tl li::before { content: ""; position: absolute; top: -9px; left: 0; width: 15px; height: 15px; border-radius: 50%; background: #0b1a12; border: 3px solid var(--green); }
+.cs-tl li:last-child::before { background: var(--green); }
+.cs-when { display: block; font: 400 20px/1.1 var(--head); color: var(--text); text-transform: uppercase; }
+.cs-what { display: block; margin-top: 6px; font-size: 14px; line-height: 1.5; color: var(--text-2); }
 .cs-title { font-size: clamp(28px, 3.2vw, 40px); margin: 0; }
 .cs-who { margin: 0; color: var(--text-3); font-size: 14px; }
-.cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; margin-top: 14px; }
+.cs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px 28px; }
 .cs-grid h3 { font: 700 11px/1.4 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--green-text); margin: 0 0 6px; }
 .cs-grid p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.6; }
 .cs-grid .ticks { margin: 0; }
 .cs-res p { color: var(--text); font-weight: 600; }
-.cs-charts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.cs-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .cs-bar { padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.02); }
 .cs-bar-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .cs-bar-h b { font-size: 13px; color: var(--text); }
@@ -472,16 +479,16 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .cs-b.now i { background: var(--green); }
 .cs-b em { font-style: normal; font-weight: 700; color: var(--text-2); text-align: right; }
 .cs-b.now em { color: var(--text); }
-.cs-bests { margin-top: 16px; }
+.cs-bests { margin-top: 0; }
 .cs-bests h3 { font: 700 11px/1.4 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--green-text); margin: 0 0 8px; }
 .cs-bests .ticks { grid-template-columns: 1fr 1fr; }
 .cs-src { margin: 10px 0 0; font-size: 12px; color: var(--text-3); }
-.cs-photo.cs-data b { font-size: clamp(36px, 3.6vw, 48px); padding: 0 16px; }
 @media (max-width: 1100px) { .cs-charts { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 640px) { .cs-bests .ticks { grid-template-columns: minmax(0, 1fr); } }
-.cs-body blockquote { margin: 16px 0 0; padding: 14px 18px; border-left: 3px solid var(--green); background: rgba(255,255,255,.03); border-radius: 0 10px 10px 0; color: var(--text-2); font-style: italic; }
-.cs-body cite { display: block; margin-top: 8px; font-style: normal; font-size: 13px; color: var(--text-3); }
-@media (max-width: 900px) { .cs-case { grid-template-columns: minmax(0, 1fr); } .cs-photo img { min-height: 0; aspect-ratio: 16 / 10; } .cs-grid { grid-template-columns: minmax(0, 1fr); } .cs-body { padding: 20px; } }
+.cs-case blockquote { margin: 16px 0 0; padding: 14px 18px; border-left: 3px solid var(--green); background: rgba(255,255,255,.03); border-radius: 0 10px 10px 0; color: var(--text-2); font-style: italic; }
+.cs-case cite { display: block; margin-top: 8px; font-style: normal; font-size: 13px; color: var(--text-3); }
+@media (max-width: 900px) { .cs-case { padding: 20px; } .cs-tl { grid-template-columns: minmax(0, 1fr); } .cs-tl li { border-top: 0; border-left: 3px solid rgba(0,154,68,.35); padding: 0 0 18px 22px; } .cs-tl li::before { top: 0; left: -9px; } }
+@media (max-width: 640px) { .cs-head { grid-template-columns: auto minmax(0, 1fr); gap: 14px; } .cs-av { width: 72px; height: 72px; } .cs-stat { grid-column: 1 / -1; } .cs-stat b { text-align: left; } }
 </style>
 <div class="topo" aria-hidden="true"></div>
 <div class="page">
@@ -526,155 +533,155 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 <section>
   <div class="in cs-list">
     <article class="cs-case panel" id="marine-lenehan">
-      <div class="cs-photo"><img src="img/case-marine-lenehan.webp" alt="Female cyclist biting gold medal | Cigala Cycling Coaching" loading="eager" style="object-position:45% 28%"></div>
-      <div class="cs-body">
-        <span class="cs-tag">Gran Fondo &amp; gravel</span>
-        <h2 class="cs-title">From first ride to European champion</h2>
-        <p class="cs-who">Marine Lenehan · Ireland</p>
-        <div class="cs-grid">
-          <div><h3>Starting point</h3><p>A complete newcomer to cycling: she started riding in February.</p></div>
-          <div><h3>Goal</h3><p>Learn the sport and find out how far she could go.</p></div>
-          <div><h3>How we coached</h3><ul class="ticks"><li>A crash course in cycling, built from scratch</li><li>Personalised sessions with attention to every detail</li><li>Every session different, so training stayed fun and dynamic</li></ul></div>
-          <div class="cs-res"><h3>Result</h3><p>European Gran Fondo &amp; gravel champion (19–34) and silver medallist at the Gran Fondo World Championships, within a year of starting cycling.</p></div>
-        </div>
-        
-        <blockquote>“He has not only made me fall in love with cycling, but has believed in me even when I didn’t.”<cite>Marine Lenehan</cite></blockquote>
+      <div class="cs-head">
+        <img class="cs-av" src="img/case-marine-lenehan.webp" alt="Female cyclist biting gold medal | Cigala Cycling Coaching" loading="lazy" width="96" height="96" style="object-position:45% 28%">
+        <div><span class="cs-tag">Gran Fondo &amp; gravel</span><h2 class="cs-title">From first ride to European champion</h2><p class="cs-who">Marine Lenehan · Ireland</p></div>
+        <div class="cs-stat"><b>European champion</b></div>
       </div>
+      <ol class="cs-tl" style="--n:4"><li><span class="cs-when">February</span><span class="cs-what">First rides: a complete newcomer to cycling</span></li><li><span class="cs-when">With Matteo</span><span class="cs-what">A crash course in cycling and personalised, detailed sessions</span></li><li><span class="cs-when">Within the year</span><span class="cs-what">European Gran Fondo &amp; gravel champion (19–34)</span></li><li><span class="cs-when">Worlds</span><span class="cs-what">Silver medal at the Gran Fondo World Championships</span></li></ol>
+      <div class="cs-grid">
+        <div><h3>Starting point</h3><p>A complete newcomer to cycling: she started riding in February.</p></div>
+        <div><h3>Goal</h3><p>Learn the sport and find out how far she could go.</p></div>
+        <div><h3>How we coached</h3><ul class="ticks"><li>A crash course in cycling, built from scratch</li><li>Personalised sessions with attention to every detail</li><li>Every session different, so training stayed fun and dynamic</li></ul></div>
+        <div class="cs-res"><h3>Result</h3><p>European Gran Fondo &amp; gravel champion (19–34) and silver medallist at the Gran Fondo World Championships, within a year of starting cycling.</p></div>
+      </div>
+      <p class="cs-src">Source: From Marine’s testimonial</p>
+      <blockquote>“He has not only made me fall in love with cycling, but has believed in me even when I didn’t.”<cite>Marine Lenehan</cite></blockquote>
     </article><article class="cs-case panel" id="tilen">
-      <div class="cs-photo"><img src="img/case-tilen.webp" alt="Tilen Č. racing in a white team kit" loading="lazy" style="object-position:50% 25%"></div>
-      <div class="cs-body">
-        <span class="cs-tag">Road racing</span>
-        <h2 class="cs-title">From not sprinting out of the saddle to 1,063 W</h2>
-        <p class="cs-who">Tilen Č. · Road racer · Slovenia</p>
-        <div class="cs-grid">
-          <div><h3>Starting point</h3><p>One year ago Tilen couldn’t sprint standing up.</p></div>
-          <div><h3>Goal</h3><p>Race at the front, from local races to the national championships.</p></div>
-          <div><h3>How we coached</h3><ul class="ticks"><li>Consistency: steady training, no huge weeks (the biggest was 16 hours)</li><li>A plan built around his life, adjusted week by week</li><li>Talking to his coach: RPE and a comment after his rides, so the plan could adapt</li></ul></div>
-          <div class="cs-res"><h3>Result</h3><p>4th overall at Portorož and first over the main climb; 9th in the amateur road race at the national championships. All-time bests from the sprint to three hours, and a Critical Power of 375 W.</p></div>
-        </div>
-        <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Riding time</b><span class="cs-delta">+17%</span></div><p>More hours, no huge weeks</p><div class="cs-b"><span>Year before</span><i style="width:86%"></i><em>558 h</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>651 h</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 15-second power</b><span class="cs-delta">+212 W</span></div><p>From seated to standing</p><div class="cs-b"><span>Year before</span><i style="width:80%"></i><em>851 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>1,063 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 2-hour power</b><span class="cs-delta">+20 W</span></div><p>Stronger for longer, set at L’Étape Slovenia</p><div class="cs-b"><span>Year before</span><i style="width:94%"></i><em>296 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>316 W</em></div></div></div><div class="cs-bests"><h3>All-time bests</h3><ul class="ticks"><li>8 min: 429 W (5.5 W/kg)</li><li>20 min: 382 W (4.9 W/kg)</li><li>2 min: 556 W (7.1 W/kg), at the Nationals</li><li>3 h: 298 W (3.8 W/kg), at Corsa per Haiti</li></ul></div><p class="cs-src">Source: Vekta data, year before vs this year (Nov 2024 – Nov 2026)</p>
-        <blockquote>“Significant technical progress and gains in strength.”<cite>Tilen Č.</cite></blockquote>
+      <div class="cs-head">
+        <img class="cs-av" src="img/case-tilen.webp" alt="Tilen Č. racing in a white team kit" loading="lazy" width="96" height="96" style="object-position:50% 25%">
+        <div><span class="cs-tag">Road racing</span><h2 class="cs-title">From not sprinting out of the saddle to 1,063 W</h2><p class="cs-who">Tilen Č. · Road racer · Slovenia</p></div>
+        <div class="cs-stat"><b>1,063 W sprint</b></div>
       </div>
+      <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Riding time</b><span class="cs-delta">+17%</span></div><p>More hours, no huge weeks</p><div class="cs-b"><span>Year before</span><i style="width:86%"></i><em>558 h</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>651 h</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 15-second power</b><span class="cs-delta">+212 W</span></div><p>From seated to standing</p><div class="cs-b"><span>Year before</span><i style="width:80%"></i><em>851 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>1,063 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 2-hour power</b><span class="cs-delta">+20 W</span></div><p>Stronger for longer, set at L’Étape Slovenia</p><div class="cs-b"><span>Year before</span><i style="width:94%"></i><em>296 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>316 W</em></div></div></div>
+      <div class="cs-grid">
+        <div><h3>Starting point</h3><p>One year ago Tilen couldn’t sprint standing up.</p></div>
+        <div><h3>Goal</h3><p>Race at the front, from local races to the national championships.</p></div>
+        <div><h3>How we coached</h3><ul class="ticks"><li>Consistency: steady training, no huge weeks (the biggest was 16 hours)</li><li>A plan built around his life, adjusted week by week</li><li>Talking to his coach: RPE and a comment after his rides, so the plan could adapt</li></ul></div>
+        <div class="cs-res"><h3>Result</h3><p>4th overall at Portorož and first over the main climb; 9th in the amateur road race at the national championships. All-time bests from the sprint to three hours, and a Critical Power of 375 W.</p></div>
+      </div>
+      <div class="cs-bests"><h3>All-time bests</h3><ul class="ticks"><li>8 min: 429 W (5.5 W/kg)</li><li>20 min: 382 W (4.9 W/kg)</li><li>2 min: 556 W (7.1 W/kg), at the Nationals</li><li>3 h: 298 W (3.8 W/kg), at Corsa per Haiti</li></ul></div><p class="cs-src">Source: Vekta data, year before vs this year (Nov 2024 – Nov 2026)</p>
+      <blockquote>“Significant technical progress and gains in strength.”<cite>Tilen Č.</cite></blockquote>
     </article><article class="cs-case panel" id="marco">
-      <div class="cs-photo"><img src="img/case-marco.webp" alt="Marco B. racing on gravel in a green kit, race number 96" loading="lazy" style="object-position:50% 22%"></div>
-      <div class="cs-body">
-        <span class="cs-tag">Road &amp; gravel</span>
-        <h2 class="cs-title">Every number went up</h2>
-        <p class="cs-who">Marco B. · Road &amp; gravel racer · Portugal</p>
-        <div class="cs-grid">
-          <div><h3>Starting point</h3><p>Marco races on the road and on gravel from Portugal, including the European Gravel Championships in Belgium and Portugal’s gravel nationals.</p></div>
-          <div><h3>Goal</h3><p>Raise his power from the sprint to the hour for his road and gravel races.</p></div>
-          
-          <div class="cs-res"><h3>Result</h3><p>From late July to late October, every one of his power bests went up: past 4 W/kg for five minutes, and W′, his energy for attacks, up 28%.</p></div>
-        </div>
-        <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Best 30-second power</b><span class="cs-delta">+24%</span></div><p>The punch: almost a quarter more</p><div class="cs-b"><span>Previous 3 months</span><i style="width:80%"></i><em>505 W</em></div><div class="cs-b now"><span>Last 3 months</span><i style="width:100%"></i><em>628 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 15-second power</b><span class="cs-delta">+124 W</span></div><p>The sprint: faster to the line</p><div class="cs-b"><span>Previous 3 months</span><i style="width:85%"></i><em>728 W</em></div><div class="cs-b now"><span>Last 3 months</span><i style="width:100%"></i><em>852 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 5-minute power</b><span class="cs-delta">+21 W</span></div><p>The climbs: from 3.8 to 4.1 W/kg</p><div class="cs-b"><span>Previous 3 months</span><i style="width:93%"></i><em>271 W</em></div><div class="cs-b now"><span>Last 3 months</span><i style="width:100%"></i><em>292 W</em></div></div></div><div class="cs-bests"><h3>Up across the board</h3><ul class="ticks"><li>3 minutes: 292 → 325 W</li><li>10 minutes: 242 → 263 W</li><li>20 minutes: 222 → 236 W</li><li>60 minutes: 204 → 211 W</li><li>W′: 11.4 → 14.6 kJ (+28%)</li></ul></div><p class="cs-src">Source: Vekta data, last 3 months (late July – late October 2026) against the 3 months before</p>
-        
+      <div class="cs-head">
+        <img class="cs-av" src="img/case-marco.webp" alt="Marco B. racing on gravel in a green kit, race number 96" loading="lazy" width="96" height="96" style="object-position:50% 22%">
+        <div><span class="cs-tag">Road &amp; gravel</span><h2 class="cs-title">Every number went up</h2><p class="cs-who">Marco B. · Road &amp; gravel racer · Portugal</p></div>
+        <div class="cs-stat"><b>+124 W sprint</b></div>
       </div>
+      <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Best 30-second power</b><span class="cs-delta">+24%</span></div><p>The punch: almost a quarter more</p><div class="cs-b"><span>Previous 3 months</span><i style="width:80%"></i><em>505 W</em></div><div class="cs-b now"><span>Last 3 months</span><i style="width:100%"></i><em>628 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 15-second power</b><span class="cs-delta">+124 W</span></div><p>The sprint: faster to the line</p><div class="cs-b"><span>Previous 3 months</span><i style="width:85%"></i><em>728 W</em></div><div class="cs-b now"><span>Last 3 months</span><i style="width:100%"></i><em>852 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 5-minute power</b><span class="cs-delta">+21 W</span></div><p>The climbs: from 3.8 to 4.1 W/kg</p><div class="cs-b"><span>Previous 3 months</span><i style="width:93%"></i><em>271 W</em></div><div class="cs-b now"><span>Last 3 months</span><i style="width:100%"></i><em>292 W</em></div></div></div>
+      <div class="cs-grid">
+        <div><h3>Starting point</h3><p>Marco races on the road and on gravel from Portugal, including the European Gravel Championships in Belgium and Portugal’s gravel nationals.</p></div>
+        <div><h3>Goal</h3><p>Raise his power from the sprint to the hour for his road and gravel races.</p></div>
+        
+        <div class="cs-res"><h3>Result</h3><p>From late July to late October, every one of his power bests went up: past 4 W/kg for five minutes, and W′, his energy for attacks, up 28%.</p></div>
+      </div>
+      <div class="cs-bests"><h3>Up across the board</h3><ul class="ticks"><li>3 minutes: 292 → 325 W</li><li>10 minutes: 242 → 263 W</li><li>20 minutes: 222 → 236 W</li><li>60 minutes: 204 → 211 W</li><li>W′: 11.4 → 14.6 kJ (+28%)</li></ul></div><p class="cs-src">Source: Vekta data, last 3 months (late July – late October 2026) against the 3 months before</p>
+      
     </article><article class="cs-case panel" id="eoin">
-      <div class="cs-photo cs-data" aria-hidden="true"><b>+104 W sprint</b><small>Best 15-second power</small></div>
-      <div class="cs-body">
-        <span class="cs-tag">Road racing</span>
-        <h2 class="cs-title">All-time bests and category wins</h2>
-        <p class="cs-who">Eoin R. · IVCA racer · Ireland</p>
-        <div class="cs-grid">
-          <div><h3>Starting point</h3><p>Eoin races the IVCA calendar in Ireland.</p></div>
-          <div><h3>Goal</h3><p>Get stronger in the efforts that decide a race.</p></div>
-          
-          <div class="cs-res"><h3>Result</h3><p>Between May and November he set all-time bests from 15 seconds to 5 minutes and won his category more than once. In one race, after about 100 km, he still sprinted 1,271 W in the final 10 minutes.</p></div>
-        </div>
-        <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Best 15-second power</b><span class="cs-delta">+104 W</span></div><p>A faster finish</p><div class="cs-b"><span>Same months 2025</span><i style="width:91%"></i><em>1,041 W</em></div><div class="cs-b now"><span>This season</span><i style="width:100%"></i><em>1,145 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 1-minute power</b><span class="cs-delta">+54 W</span></div><p>For closing a gap or a short climb</p><div class="cs-b"><span>Same months 2025</span><i style="width:92%"></i><em>643 W</em></div><div class="cs-b now"><span>This season</span><i style="width:100%"></i><em>697 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 5-minute power</b><span class="cs-delta">+31 W</span></div><p>The breakaway: an all-time best, set in October</p><div class="cs-b"><span>Same months 2025</span><i style="width:93%"></i><em>383 W</em></div><div class="cs-b now"><span>This season</span><i style="width:100%"></i><em>414 W</em></div></div></div><div class="cs-bests"><h3>The engine</h3><ul class="ticks"><li>Peak Critical Power: 313 → 332 W (+19 W), his highest on record</li><li>VO2max 59, the highest Vekta has on record for him</li><li>1,271 W sprint after about 100 km of racing</li></ul></div><p class="cs-src">Source: Vekta data, May–Nov 2025 vs May–Nov 2026</p>
-        
+      <div class="cs-head">
+        <span class="cs-av cs-av-i" aria-hidden="true">ER</span>
+        <div><span class="cs-tag">Road racing</span><h2 class="cs-title">All-time bests and category wins</h2><p class="cs-who">Eoin R. · IVCA racer · Ireland</p></div>
+        <div class="cs-stat"><b>+104 W sprint</b></div>
       </div>
+      <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Best 15-second power</b><span class="cs-delta">+104 W</span></div><p>A faster finish</p><div class="cs-b"><span>Same months 2025</span><i style="width:91%"></i><em>1,041 W</em></div><div class="cs-b now"><span>This season</span><i style="width:100%"></i><em>1,145 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 1-minute power</b><span class="cs-delta">+54 W</span></div><p>For closing a gap or a short climb</p><div class="cs-b"><span>Same months 2025</span><i style="width:92%"></i><em>643 W</em></div><div class="cs-b now"><span>This season</span><i style="width:100%"></i><em>697 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 5-minute power</b><span class="cs-delta">+31 W</span></div><p>The breakaway: an all-time best, set in October</p><div class="cs-b"><span>Same months 2025</span><i style="width:93%"></i><em>383 W</em></div><div class="cs-b now"><span>This season</span><i style="width:100%"></i><em>414 W</em></div></div></div>
+      <div class="cs-grid">
+        <div><h3>Starting point</h3><p>Eoin races the IVCA calendar in Ireland.</p></div>
+        <div><h3>Goal</h3><p>Get stronger in the efforts that decide a race.</p></div>
+        
+        <div class="cs-res"><h3>Result</h3><p>Between May and November he set all-time bests from 15 seconds to 5 minutes and won his category more than once. In one race, after about 100 km, he still sprinted 1,271 W in the final 10 minutes.</p></div>
+      </div>
+      <div class="cs-bests"><h3>The engine</h3><ul class="ticks"><li>Peak Critical Power: 313 → 332 W (+19 W), his highest on record</li><li>VO2max 59, the highest Vekta has on record for him</li><li>1,271 W sprint after about 100 km of racing</li></ul></div><p class="cs-src">Source: Vekta data, May–Nov 2025 vs May–Nov 2026</p>
+      
     </article><article class="cs-case panel" id="vittorio">
-      <div class="cs-photo"><img src="img/case-vittorio.webp" alt="Vittorio C. racing mountain bike in an orange helmet" loading="lazy" style="object-position:35% 32%"></div>
-      <div class="cs-body">
-        <span class="cs-tag">MTB &amp; cyclocross</span>
-        <h2 class="cs-title">Faster out of every corner</h2>
-        <p class="cs-who">Vittorio C. · MTB &amp; cyclocross racer · Italy</p>
-        <div class="cs-grid">
-          <div><h3>Starting point</h3><p>Vittorio races mountain bike and cyclocross in Italy: 25 races in the last 12 months.</p></div>
-          <div><h3>Goal</h3><p>Get stronger in the short, repeated, all-out efforts that decide off-road racing.</p></div>
-          
-          <div class="cs-res"><h3>Result</h3><p>All-time bests in the sprint and the 1-minute, 7.0 W/kg for a minute (his best ever, above his previous record from 2023), and his highest power ever: 1,112 W in April 2026.</p></div>
-        </div>
-        <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Best 5-second power</b><span class="cs-delta">+82 W</span></div><p>A sharper sprint: an all-time best</p><div class="cs-b"><span>Year before</span><i style="width:91%"></i><em>837 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>919 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 15-second power</b><span class="cs-delta">+98 W</span></div><p>Up every steep ramp: another all-time best</p><div class="cs-b"><span>Year before</span><i style="width:87%"></i><em>684 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>782 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 1-minute power</b><span class="cs-delta">+47 W</span></div><p>The attack: 7.0 W/kg for a minute</p><div class="cs-b"><span>Year before</span><i style="width:90%"></i><em>404 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>451 W</em></div></div></div><div class="cs-bests"><h3>More matches to burn</h3><ul class="ticks"><li>W′: 7.4 → 9 kJ (+21%), Nov 2025 vs Nov 2026</li><li>Record power: 1,112 W, April 2026</li></ul></div><p class="cs-src">Source: Vekta data, last 12 months against the 12 months before (Nov 2024 – Nov 2026)</p>
-        <blockquote>“Today, a max power record.”<cite>Vittorio C.</cite></blockquote>
+      <div class="cs-head">
+        <img class="cs-av" src="img/case-vittorio.webp" alt="Vittorio C. racing mountain bike in an orange helmet" loading="lazy" width="96" height="96" style="object-position:35% 32%">
+        <div><span class="cs-tag">MTB &amp; cyclocross</span><h2 class="cs-title">Faster out of every corner</h2><p class="cs-who">Vittorio C. · MTB &amp; cyclocross racer · Italy</p></div>
+        <div class="cs-stat"><b>1,112 W record</b></div>
       </div>
+      <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Best 5-second power</b><span class="cs-delta">+82 W</span></div><p>A sharper sprint: an all-time best</p><div class="cs-b"><span>Year before</span><i style="width:91%"></i><em>837 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>919 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 15-second power</b><span class="cs-delta">+98 W</span></div><p>Up every steep ramp: another all-time best</p><div class="cs-b"><span>Year before</span><i style="width:87%"></i><em>684 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>782 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 1-minute power</b><span class="cs-delta">+47 W</span></div><p>The attack: 7.0 W/kg for a minute</p><div class="cs-b"><span>Year before</span><i style="width:90%"></i><em>404 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>451 W</em></div></div></div>
+      <div class="cs-grid">
+        <div><h3>Starting point</h3><p>Vittorio races mountain bike and cyclocross in Italy: 25 races in the last 12 months.</p></div>
+        <div><h3>Goal</h3><p>Get stronger in the short, repeated, all-out efforts that decide off-road racing.</p></div>
+        
+        <div class="cs-res"><h3>Result</h3><p>All-time bests in the sprint and the 1-minute, 7.0 W/kg for a minute (his best ever, above his previous record from 2023), and his highest power ever: 1,112 W in April 2026.</p></div>
+      </div>
+      <div class="cs-bests"><h3>More matches to burn</h3><ul class="ticks"><li>W′: 7.4 → 9 kJ (+21%), Nov 2025 vs Nov 2026</li><li>Record power: 1,112 W, April 2026</li></ul></div><p class="cs-src">Source: Vekta data, last 12 months against the 12 months before (Nov 2024 – Nov 2026)</p>
+      <blockquote>“Today, a max power record.”<cite>Vittorio C.</cite></blockquote>
     </article><article class="cs-case panel" id="david">
-      <div class="cs-photo"><img src="img/case-david.webp" alt="David O. racing in his Gorey CC club kit" loading="lazy" style="object-position:45% 22%"></div>
-      <div class="cs-body">
-        <span class="cs-tag">Sportive</span>
-        <h2 class="cs-title">+44 watts of engine</h2>
-        <p class="cs-who">David O. · Sportive rider · Ireland</p>
-        <div class="cs-grid">
-          <div><h3>Starting point</h3><p>David rides Ireland’s big sportives: the Tour de Conamara, the Tour de Kilkenny and the Tour of Wicklow, days of 140–160 km.</p></div>
-          <div><h3>Goal</h3><p>A bigger engine for long days in the saddle.</p></div>
-          
-          <div class="cs-res"><h3>Result</h3><p>Critical Power up from 244 to 288 W in twelve months (+18%), with his highest ever, 290 W, in September, and the highest VO2max Vekta has on record for him.</p></div>
-        </div>
-        <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Best 20-minute power</b><span class="cs-delta">+26 W</span></div><p>The long climbs on a big day out</p><div class="cs-b"><span>Year before</span><i style="width:91%"></i><em>250 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>276 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 5-minute power</b><span class="cs-delta">+32 W</span></div><p>Over a short, steep climb with the group</p><div class="cs-b"><span>Year before</span><i style="width:90%"></i><em>288 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>320 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 30-second power</b><span class="cs-delta">+128 W</span></div><p>A quarter more kick</p><div class="cs-b"><span>Year before</span><i style="width:80%"></i><em>505 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>633 W</em></div></div></div><div class="cs-bests"><h3>The engine</h3><ul class="ticks"><li>Critical Power: 244 → 288 W (+44 W, +18%), Nov 2025 vs Nov 2026</li><li>VO2max: 52 → 58 ml/kg/min (Vekta estimate)</li></ul></div><p class="cs-src">Source: Vekta data, last 12 months against the 12 months before (Nov 2024 – Nov 2026)</p>
-        
+      <div class="cs-head">
+        <img class="cs-av" src="img/case-david.webp" alt="David O. racing in his Gorey CC club kit" loading="lazy" width="96" height="96" style="object-position:45% 22%">
+        <div><span class="cs-tag">Sportive</span><h2 class="cs-title">+44 watts of engine</h2><p class="cs-who">David O. · Sportive rider · Ireland</p></div>
+        <div class="cs-stat"><b>+44 W CP</b></div>
       </div>
+      <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Best 20-minute power</b><span class="cs-delta">+26 W</span></div><p>The long climbs on a big day out</p><div class="cs-b"><span>Year before</span><i style="width:91%"></i><em>250 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>276 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 5-minute power</b><span class="cs-delta">+32 W</span></div><p>Over a short, steep climb with the group</p><div class="cs-b"><span>Year before</span><i style="width:90%"></i><em>288 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>320 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 30-second power</b><span class="cs-delta">+128 W</span></div><p>A quarter more kick</p><div class="cs-b"><span>Year before</span><i style="width:80%"></i><em>505 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>633 W</em></div></div></div>
+      <div class="cs-grid">
+        <div><h3>Starting point</h3><p>David rides Ireland’s big sportives: the Tour de Conamara, the Tour de Kilkenny and the Tour of Wicklow, days of 140–160 km.</p></div>
+        <div><h3>Goal</h3><p>A bigger engine for long days in the saddle.</p></div>
+        
+        <div class="cs-res"><h3>Result</h3><p>Critical Power up from 244 to 288 W in twelve months (+18%), with his highest ever, 290 W, in September, and the highest VO2max Vekta has on record for him.</p></div>
+      </div>
+      <div class="cs-bests"><h3>The engine</h3><ul class="ticks"><li>Critical Power: 244 → 288 W (+44 W, +18%), Nov 2025 vs Nov 2026</li><li>VO2max: 52 → 58 ml/kg/min (Vekta estimate)</li></ul></div><p class="cs-src">Source: Vekta data, last 12 months against the 12 months before (Nov 2024 – Nov 2026)</p>
+      
     </article><article class="cs-case panel" id="shane-courtney">
-      <div class="cs-photo"><img src="img/case-shane-courtney.webp" alt="Cyclist racing on road bike | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 50%"></div>
-      <div class="cs-body">
-        <span class="cs-tag">Road racing</span>
-        <h2 class="cs-title">+40 W FTP in under 4 months</h2>
-        <p class="cs-who">Shane Courtney · Tralee Manor West ibike</p>
-        <div class="cs-grid">
-          <div><h3>Starting point</h3><p>Training 14–16 hours a week over the winter on a generic plan, and getting nowhere. Racing in A4.</p></div>
-          <div><h3>Goal</h3><p>Get faster and move up the racing categories.</p></div>
-          <div><h3>How we coached</h3><ul class="ticks"><li>Contact by phone or WhatsApp every couple of days, and weekly feedback</li><li>No junk miles: every interval has a clear purpose</li><li>Recovery, nutrition, strength and two flexibility sessions a week</li></ul></div>
-          <div class="cs-res"><h3>Result</h3><p>FTP up from 220 W to 260 W in under 4 months, sprint from about 600 W to 920 W. Upgraded to A3 with points to spare, and county hill-climb champion.</p></div>
-        </div>
-        
-        <blockquote>“Matteo managed to raise my FTP from 220w to 260w in less than 4 months &amp; my sprint from 600w ish to 920w.”<cite>Shane Courtney</cite></blockquote>
+      <div class="cs-head">
+        <img class="cs-av" src="img/case-shane-courtney.webp" alt="Cyclist racing on road bike | Cigala Cycling Coaching" loading="lazy" width="96" height="96" style="object-position:45% 50%">
+        <div><span class="cs-tag">Road racing</span><h2 class="cs-title">+40 W FTP in under 4 months</h2><p class="cs-who">Shane Courtney · Tralee Manor West ibike</p></div>
+        <div class="cs-stat"><b>220 → 260 W FTP</b></div>
       </div>
+      <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>FTP</b><span class="cs-delta">+40 W</span></div><p>Up in under 4 months</p><div class="cs-b"><span>Before</span><i style="width:85%"></i><em>220 W</em></div><div class="cs-b now"><span>With coaching</span><i style="width:100%"></i><em>260 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Sprint</b><span class="cs-delta">+320 W</span></div><p>From about 600 W</p><div class="cs-b"><span>Before</span><i style="width:65%"></i><em>600 W</em></div><div class="cs-b now"><span>With coaching</span><i style="width:100%"></i><em>920 W</em></div></div></div>
+      <div class="cs-grid">
+        <div><h3>Starting point</h3><p>Training 14–16 hours a week over the winter on a generic plan, and getting nowhere. Racing in A4.</p></div>
+        <div><h3>Goal</h3><p>Get faster and move up the racing categories.</p></div>
+        <div><h3>How we coached</h3><ul class="ticks"><li>Contact by phone or WhatsApp every couple of days, and weekly feedback</li><li>No junk miles: every interval has a clear purpose</li><li>Recovery, nutrition, strength and two flexibility sessions a week</li></ul></div>
+        <div class="cs-res"><h3>Result</h3><p>FTP up from 220 W to 260 W in under 4 months, sprint from about 600 W to 920 W. Upgraded to A3 with points to spare, and county hill-climb champion.</p></div>
+      </div>
+      <div class="cs-bests"><h3>Results</h3><ul class="ticks"><li>Upgraded from A4 to A3 with points to spare</li><li>County hill-climb champion</li><li>Comfortable in the drops all day, with two flexibility sessions a week</li></ul></div><p class="cs-src">Source: Shane’s own numbers, from his testimonial</p>
+      <blockquote>“Matteo managed to raise my FTP from 220w to 260w in less than 4 months &amp; my sprint from 600w ish to 920w.”<cite>Shane Courtney</cite></blockquote>
     </article><article class="cs-case panel" id="bernd-ondruch">
-      <div class="cs-photo"><img src="img/case-bernd-ondruch-2x.webp" alt="Cycling Pro wearing Kask helmet | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 40%"></div>
-      <div class="cs-body">
-        <span class="cs-tag">Gran Fondo</span>
-        <h2 class="cs-title">Qualified for the Gran Fondo Worlds</h2>
-        <p class="cs-who">Bernd Ondruch · Germany</p>
-        <div class="cs-grid">
-          <div><h3>Starting point</h3><p>Three years of trying to qualify on his own, riding consistently but with no structured plan.</p></div>
-          <div><h3>Goal</h3><p>Qualify for the UCI Gran Fondo World Championship.</p></div>
-          <div><h3>How we coached</h3><ul class="ticks"><li>A coaching style adapted to him, with accountability but no pressure</li><li>Varied workouts targeting different parts of his riding</li><li>The plan adjusted after a crash, never pushing beyond his limits</li></ul></div>
-          <div class="cs-res"><h3>Result</h3><p>Clear improvements after 4–6 weeks, and he qualified for the UCI Gran Fondo World Championship after 12 months of coaching.</p></div>
-        </div>
-        
-        <blockquote>“With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.”<cite>Bernd Ondruch</cite></blockquote>
+      <div class="cs-head">
+        <img class="cs-av" src="img/case-bernd-ondruch-2x.webp" alt="Cycling Pro wearing Kask helmet | Cigala Cycling Coaching" loading="lazy" width="96" height="96" style="object-position:45% 40%">
+        <div><span class="cs-tag">Gran Fondo</span><h2 class="cs-title">Qualified for the Gran Fondo Worlds</h2><p class="cs-who">Bernd Ondruch · Germany</p></div>
+        <div class="cs-stat"><b>Worlds qualified</b></div>
       </div>
+      <ol class="cs-tl" style="--n:5"><li><span class="cs-when">3 years</span><span class="cs-what">Trying to qualify on his own, with no structured plan</span></li><li><span class="cs-when">Week 1</span><span class="cs-what">Coaching with Matteo: varied, tailored workouts</span></li><li><span class="cs-when">4–6 weeks</span><span class="cs-what">Noticeable improvements, and consistent since</span></li><li><span class="cs-when">After a crash</span><span class="cs-what">The plan adjusted, never beyond his limits</span></li><li><span class="cs-when">12 months</span><span class="cs-what">Qualified for the UCI Gran Fondo World Championship</span></li></ol>
+      <div class="cs-grid">
+        <div><h3>Starting point</h3><p>Three years of trying to qualify on his own, riding consistently but with no structured plan.</p></div>
+        <div><h3>Goal</h3><p>Qualify for the UCI Gran Fondo World Championship.</p></div>
+        <div><h3>How we coached</h3><ul class="ticks"><li>A coaching style adapted to him, with accountability but no pressure</li><li>Varied workouts targeting different parts of his riding</li><li>The plan adjusted after a crash, never pushing beyond his limits</li></ul></div>
+        <div class="cs-res"><h3>Result</h3><p>Clear improvements after 4–6 weeks, and he qualified for the UCI Gran Fondo World Championship after 12 months of coaching.</p></div>
+      </div>
+      <p class="cs-src">Source: From Bernd’s testimonial</p>
+      <blockquote>“With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.”<cite>Bernd Ondruch</cite></blockquote>
     </article><article class="cs-case panel" id="rob-kavanagh">
-      <div class="cs-photo"><img src="img/case-rob-kavanagh.webp" alt="Cyclist in black Team Sky kit | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 38%"></div>
-      <div class="cs-body">
-        <span class="cs-tag">Fitness &amp; weight loss</span>
-        <h2 class="cs-title">Close to 16 kg lost in 6 months</h2>
-        <p class="cs-who">Rob Kavanagh · Ireland</p>
-        <div class="cs-grid">
-          <div><h3>Starting point</h3><p>Had lost interest in the gym and football and put on a lot of weight. Bought a road bike, but wasn’t making progress riding alone.</p></div>
-          <div><h3>Goal</h3><p>Lose weight, get fitter and start racing.</p></div>
-          <div><h3>How we coached</h3><ul class="ticks"><li>A structured training plan from the first phone call</li><li>Sessions planned for him, so he knew exactly what to do</li></ul></div>
-          <div class="cs-res"><h3>Result</h3><p>Close to 16 kg lost in 6 months, and healthier, fitter and happier.</p></div>
-        </div>
-        
-        <blockquote>“To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.”<cite>Rob Kavanagh</cite></blockquote>
+      <div class="cs-head">
+        <img class="cs-av" src="img/case-rob-kavanagh.webp" alt="Cyclist in black Team Sky kit | Cigala Cycling Coaching" loading="lazy" width="96" height="96" style="object-position:45% 38%">
+        <div><span class="cs-tag">Fitness &amp; weight loss</span><h2 class="cs-title">Close to 16 kg lost in 6 months</h2><p class="cs-who">Rob Kavanagh · Ireland</p></div>
+        <div class="cs-stat"><b>−16 kg</b></div>
       </div>
+      <ol class="cs-tl" style="--n:4"><li><span class="cs-when">Before</span><span class="cs-what">Lost interest in the gym and football, and put on weight</span></li><li><span class="cs-when">New bike</span><span class="cs-what">Riding alone, with no progress for the time put in</span></li><li><span class="cs-when">First call</span><span class="cs-what">A 40-minute chat, and a structured plan from day one</span></li><li><span class="cs-when">6 months</span><span class="cs-what">Close to 16 kg lost: healthier, fitter, happier</span></li></ol>
+      <div class="cs-grid">
+        <div><h3>Starting point</h3><p>Had lost interest in the gym and football and put on a lot of weight. Bought a road bike, but wasn’t making progress riding alone.</p></div>
+        <div><h3>Goal</h3><p>Lose weight, get fitter and start racing.</p></div>
+        <div><h3>How we coached</h3><ul class="ticks"><li>A structured training plan from the first phone call</li><li>Sessions planned for him, so he knew exactly what to do</li></ul></div>
+        <div class="cs-res"><h3>Result</h3><p>Close to 16 kg lost in 6 months, and healthier, fitter and happier.</p></div>
+      </div>
+      <p class="cs-src">Source: From Rob’s testimonial</p>
+      <blockquote>“To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.”<cite>Rob Kavanagh</cite></blockquote>
     </article><article class="cs-case panel" id="derek-lawler">
-      <div class="cs-photo"><img src="img/case-derek-lawler-2x.webp" alt="Cyclist with Bianchi bike | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 48%"></div>
-      <div class="cs-body">
-        <span class="cs-tag">Sportive &amp; health</span>
-        <h2 class="cs-title">From the couch to the Haute Route at 60</h2>
-        <p class="cs-who">Derek Lawler · Kilkenny, Ireland</p>
-        <div class="cs-grid">
-          <div><h3>Starting point</h3><p>Starting, in his words, from the “couch (literally!)”.</p></div>
-          <div><h3>Goal</h3><p>Ride the Haute Route Pyrenees to mark his 60th birthday.</p></div>
-          <div><h3>How we coached</h3><ul class="ticks"><li>A 9-month plan building up to the event</li><li>Years later, a steady, gradual plan to recover fitness after heart disease and a cardiac procedure</li></ul></div>
-          <div class="cs-res"><h3>Result</h3><p>Completed the Haute Route Pyrenees in 2017, “the experience of a lifetime”, and later got back to regular cycling after his cardiac procedure.</p></div>
-        </div>
-        
-        <blockquote>“As a non-elite or serious cyclist, I can highly recommend Matteo to anyone interested in getting fit and ready for any cycling goal, no matter what level you’re at or what age you are!”<cite>Derek Lawler</cite></blockquote>
+      <div class="cs-head">
+        <img class="cs-av" src="img/case-derek-lawler-2x.webp" alt="Cyclist with Bianchi bike | Cigala Cycling Coaching" loading="lazy" width="96" height="96" style="object-position:45% 48%">
+        <div><span class="cs-tag">Sportive &amp; health</span><h2 class="cs-title">From the couch to the Haute Route at 60</h2><p class="cs-who">Derek Lawler · Kilkenny, Ireland</p></div>
+        <div class="cs-stat"><b>Haute Route at 60</b></div>
       </div>
+      <ol class="cs-tl" style="--n:5"><li><span class="cs-when">Start</span><span class="cs-what">From the “couch (literally!)”</span></li><li><span class="cs-when">9 months</span><span class="cs-what">A plan built up to the event</span></li><li><span class="cs-when">2017</span><span class="cs-what">Haute Route Pyrenees, for his 60th birthday</span></li><li><span class="cs-when">2024</span><span class="cs-what">Heart disease and a cardiac procedure</span></li><li><span class="cs-when">After</span><span class="cs-what">A steady, gradual plan back to regular cycling</span></li></ol>
+      <div class="cs-grid">
+        <div><h3>Starting point</h3><p>Starting, in his words, from the “couch (literally!)”.</p></div>
+        <div><h3>Goal</h3><p>Ride the Haute Route Pyrenees to mark his 60th birthday.</p></div>
+        <div><h3>How we coached</h3><ul class="ticks"><li>A 9-month plan building up to the event</li><li>Years later, a steady, gradual plan to recover fitness after heart disease and a cardiac procedure</li></ul></div>
+        <div class="cs-res"><h3>Result</h3><p>Completed the Haute Route Pyrenees in 2017, “the experience of a lifetime”, and later got back to regular cycling after his cardiac procedure.</p></div>
+      </div>
+      <p class="cs-src">Source: From Derek’s testimonial</p>
+      <blockquote>“As a non-elite or serious cyclist, I can highly recommend Matteo to anyone interested in getting fit and ready for any cycling goal, no matter what level you’re at or what age you are!”<cite>Derek Lawler</cite></blockquote>
     </article>
   </div>
 </section>
