@@ -97,7 +97,7 @@ REV_IT = [(0, 'Non solo mi ha fatto innamorare del ciclismo, ma ha creduto in me
 def rv_it(i, q):
     t, _, n, w, ph = REVIEWS[i]
     return (f'<figure class="rv"><div class="rv-stars" role="img" aria-label="5 stelle">★★★★★</div><blockquote>“{E(q)}”</blockquote>'
-            f'<figcaption><img src="{img(ph, "athlete-" + re.sub(r"[^a-z]+", "-", n.lower()).strip("-"))}" alt="{E(live_alt(ph))}" loading="lazy" width="48" height="48"><div><b>{E(n)}</b><span>{E(w)}</span></div></figcaption></figure>')
+            f'<figcaption class="rv-txt"><div><b>Atleta seguito da Matteo</b><span>Recensione tradotta dall’inglese</span></div></figcaption></figure>')   # Matteo 15 Nov: no English names on the Italian page
 strip = ('<div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Recensioni degli atleti">' + ''.join(rv_it(i, q) for i, q in REV_IT) + '</div>'
          '<div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Recensioni precedenti">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Recensioni successive">→</button></div></div>')
 # the live page's review photos (live alt text kept): a photo row
@@ -152,9 +152,9 @@ MAIN = f'''<div class="hero hero-sm">
 
 <section>
   <div class="in">
-    <div class="head"><div><div class="eyebrow">Allenati con metodo, vai più forte</div><h2>{E("E' il nostro motto")}</h2><div class="bar"></div></div>
+    <div class="head"><div><div class="eyebrow">Cosa dicono i nostri atleti</div><h2>{E("E' il nostro motto")}</h2><div class="bar"></div></div>
       <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Le nostre recensioni su Google →</a></div></div>
-    <p class="cn-lede">Atleti reali, con il loro nome. Recensioni tradotte dall’inglese.</p>
+    <p class="cn-lede">Recensioni reali di atleti seguiti da Matteo.</p>
     {strip}
     <div class="it-pics">{pics}</div>
   </div>
@@ -281,7 +281,7 @@ var o=!b.closest('.pkg').classList.contains('open');document.querySelectorAll('.
 document.querySelectorAll('.pkg-all').forEach(function(x){x.setAttribute('aria-expanded',o);x.querySelector('span').textContent=o?'Mostra meno':'Vedi tutte le caratteristiche';});});});
 document.querySelectorAll('[data-waitlist]').forEach(function(a){a.addEventListener('click',function(){var m=document.querySelector('#contact textarea');if(m&&!m.value)m.value='Vorrei entrare nella lista d\\u2019attesa del pacchetto '+a.dataset.waitlist+'.';});});})();</script>"""
 ITCSS = '''<style>
-.it-pics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+.it-pics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
 .it-pic { aspect-ratio: 1 / 1; margin: 0; }
 .it-pic img { width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 700px) { .it-pics { grid-template-columns: repeat(3, minmax(0, 1fr)); } .it-pics .it-pic:nth-child(n+4) { display: none; } }

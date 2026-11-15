@@ -353,3 +353,4 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Country reviews: the non-duplicated live quotes (William-Wales, Nat-California, Chris-Ontario) are rewordings of
   Marine's testimonial under invented names: not used. Bernd is the one real UK-linked client.
 - USA hero: Matteo riding in the blue Italia kit on a dry, sunny road (live alt of imgi_20); not the Vekta image, nothing that looks like Ireland.
+- Reviews on UK/USA/Canada: text only, first name + real place, no photos, eyebrow 'What our athletes say' (Matteo). Italian page: no English names, 'Atleta seguito da Matteo · Recensione tradotta dall'inglese'. Same H2s; no review schema on these pages, so no SEO change.

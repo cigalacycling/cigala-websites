@@ -27,7 +27,7 @@ TP_LEVELS = P.TPLOGO
 def rv(i):
     t, q, n, w, ph = REVIEWS[i]
     return (f'<figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“{E(q)}”</blockquote>'
-            f'<figcaption><img src="{img(ph, "athlete-" + re.sub(r"[^a-z]+", "-", n.lower()).strip("-"))}" alt="{E(live_alt(ph))}" loading="lazy" width="48" height="48"><div><b>{E(n)}</b><span>{E(w)}</span></div></figcaption></figure>')
+            f'<figcaption class="rv-txt"><div><b>{E(n.split()[0])}</b><span>{E(w)}</span></div></figcaption></figure>')   # Matteo 15 Nov: text only, no faces
 def strip(ids):
     return (f'<div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Athlete reviews, scroll sideways">{"".join(rv(i) for i in ids)}</div>'
             '<div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Previous reviews">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Next reviews">→</button></div></div>')
@@ -215,9 +215,9 @@ def build_country(key):
 
 <section>
   <div class="in">
-    <div class="head"><div><div class="eyebrow">#TrainSmarterRideFaster</div><h2>It's our vision</h2><div class="bar"></div></div>
+    <div class="head"><div><div class="eyebrow">What our athletes say</div><h2>It's our vision</h2><div class="bar"></div></div>
       <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Read our reviews on Google →</a><a class="arrow-link" href="{C}/case-studies/" {EXT}>Case studies →</a></div></div>
-    <p class="cn-lede">Real athletes, in their own words, with their own names and home towns.</p>
+    <p class="cn-lede">Real athletes coached by Matteo, in their own words.</p>
     {strip(c['reviews'])}
   </div>
 </section>
