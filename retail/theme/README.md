@@ -96,3 +96,12 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
     - The bottom bar button stays green.
     - "Deal ends in" replaces "Black Friday deals end in" on the countdowns.
     - During Black Friday the home band and announcement don't mention Cyber Monday (eyebrow "Black Friday", announcement "Black Friday deals are live · Shop the deals").
+- Round 8 (15 Nov), both themes:
+  - Each home category tile shows its best seller (by Shopify BEST_SELLING), using a new `product` setting on the tile block:
+    - Assioma UNO
+    - KICKR CORE 2 with Zwift Cog and Click
+    - Garmin Edge 1040 (the top seller, the Varia radar, isn't a computer)
+    - C-Bear alloy pulley
+    - Zone3 men's Agile
+    - Normatec 3.0 legs
+  - "Advice from racers" is now "Advice from experts".
