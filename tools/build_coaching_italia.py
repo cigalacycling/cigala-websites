@@ -118,7 +118,7 @@ EV_MORE = ['**Campionato Italiano Gravel** (FCI)', '**Campionati Italiani Granfo
            '**Nova Eroica** (Buonconvento, Siena)', '**L’Eroica** (Gaiole in Chianti)', '**Granfondo Il Lombardia** (Como)',
            '**Granfondo Tre Valli Varesine** (Varese)', '**Sportful Dolomiti Race** (Feltre)', '**Granfondo Campagnolo Roma** (Roma)',
            '**Tuscany Trail** (Toscana) — bikepacking, circa 500 km', '**Italy Divide** (da Pompei al Lago di Garda) — ultra gravel e bikepacking',
-           '**Veneto Gravel** (Bassano del Grappa)', '**Dolomiti Superbike** (Villabassa, Alta Pusteria)', '**Capoliveri Legend Cup** (Isola d’Elba)', '**La Fausto Coppi** (Cuneo)', '**Granfondo Felice Gimondi** (Bergamo)']
+           '**Veneto Gravel** (Bassano del Grappa)', '**Dolomiti Superbike** (Villabassa, Alta Pusteria)', '**Capoliveri Legend Cup** (Isola d’Elba)', '**La Fausto Coppi** (Cuneo)']
 EV_T.update({'Superbike': 'MTB', 'Capoliveri': 'MTB', 'Tuscany Trail': 'Ultra', 'Italy Divide': 'Ultra', 'Veneto Gravel': 'Gravel', 'Fausto Coppi': 'Strada', 'Gimondi': 'Strada', 'Gravel': 'Gravel', 'Eroica': 'Gravel', 'Granfondo e Marathon': 'Tutte le discipline', 'Lombardia': 'Strada', 'Tre Valli': 'Strada', 'Sportful': 'Strada', 'Campagnolo': 'Strada'})
 WON = ('Strade Bianche', 'Campionato Italiano Gravel', 'Il Lombardia', 'Tre Valli Varesine', 'Mondiali, Europei')   # Mondiali/Europei: European Champion Gran Fondo 2022   # About page: Matteo's own wins
 def ev_card(x):
