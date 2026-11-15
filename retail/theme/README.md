@@ -92,5 +92,7 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - The "Sold out" badge is red with white text.
   - Judge.me is in brand colours: green buttons and bars, gold stars, Montserrat/Anton.
   - Sale theme only:
+    - The "Shop the deals" button in the home band is white (Matteo, 15 Nov).
+    - The bottom bar button stays green.
     - "Deal ends in" replaces "Black Friday deals end in" on the countdowns.
     - During Black Friday the home band and announcement don't mention Cyber Monday (eyebrow "Black Friday", announcement "Black Friday deals are live · Shop the deals").
