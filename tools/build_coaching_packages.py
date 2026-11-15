@@ -205,9 +205,9 @@ img('SDFASDFASDF.png', 'cigala-x-vekta'); img('PfNJBaCPkS_eSn5J', 'trainingpeaks
 # dark-background versions (tools/darklogo.py): white background removed, black text turned white
 # Matteo 15 Nov (2nd review): the dark Cigala x Vekta logo looked bad -> lockup of the new Coaching logo, x, and the Vekta
 # logo remade with smooth edges (tools/unmix_logo.py); the TrainingPeaks badges are cropped tight so they sit centred.
-shutil.copy(ROOT + 'coaching/webp/vekta-white.webp', OUT + 'img/vekta-white.webp')
+shutil.copy(ROOT + 'coaching/webp/vekta-white-v2.webp', OUT + 'img/vekta-white-v2.webp')
 shutil.copy(ROOT + 'coaching/webp/darklogo-trainingpeaks-levels-crop.webp', OUT + 'img/trainingpeaks-levels-dark-v2.webp')
-VKLOGO, TPLOGO = 'img/vekta-white.webp', 'img/trainingpeaks-levels-dark-v2.webp'
+VKLOGO, TPLOGO = 'img/vekta-white-v2.webp', 'img/trainingpeaks-levels-dark-v2.webp'
 
 intro = [l[3:] for l in TXT[TXT.index('TXT: [', 0):TXT.index('TXT: 12 Weeks')] if l.startswith('P: ')]
 MAIN = f'''<div class="hero hero-sm hero-lake">
