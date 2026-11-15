@@ -141,6 +141,6 @@ The new designs fix the last three. The Gran Canaria H1 still has to be fixed on
 - **Homepage tour finder** (approved idea, inspired by italybiketours.com's hero search bar). A bar in the homepage hero with three dropdowns: **Tour type** (Road, Gran Fondo, Gravel), **Country** (Italy, France, Portugal, Belgium, Cyprus, Slovenia) and **Level** (Beginner, Intermediate, Expert), plus a **Find tours** button.
   - If only one choice matches an existing category page, the button goes there: Italy goes to `/italian-trips/`, Gravel to `/trips/gravel-trips/`, Gran Fondo to `/trips/granfondo-trips/`, Road to `/trips/road-trips/`.
   - Otherwise it goes to `/trips/?type=…&country=…&level=…`, which filters the cards in the browser. The full list stays in the HTML, and the canonical stays `/trips/`, so there's no duplicate content.
-  - A **Month** dropdown needs tour dates; only the Maratona has one (July 2027). Add it once Matteo gives the dates.
+  - **Month** dropdown (Feb–Oct 2027): the dates are in `tours/trips-2027.json`, read from the card images on the live `/trips/` page. On live they only exist inside the images. On the new cards they'll also be real text, which Google can read.
   - At 390px the bar stacks vertically. Selects use 16px text so iPhones don't zoom in.
 
