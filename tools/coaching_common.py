@@ -6,6 +6,9 @@ Images: WebP q90 from coaching/webp/ (extracted from live), copied into coaching
 """
 import os, re, json, html, shutil
 from PIL import Image
+import sys as _sys
+_sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'shared', 'social'))
+from social import social_row, SOCIAL_CSS   # shared footer icon row (Matteo, all sites)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 OUT = ROOT + 'coachingpages/'
@@ -87,6 +90,7 @@ SITE = [(C + '/about/', 'About'), (C + '/testimonials/', 'Testimonials'), (C + '
 COACH = [(C + '/individual-packages/', 'Cycling Packages'), (C + '/tri-individual-packages/', 'Triathlon Packages'), (C + '/group-club-packages/', 'Group &amp; Club Packages'),
          (C + '/book-1-on-1-session/', 'Book a 1-to-1 Session'), (C + '/testing/', 'INSCYD Testing'), (C + '/nutrition/', 'Nutrition')]
 INTL = [('/cycling-coach-uk/', 'Cycling Coach UK'), ('/cycling-coach-usa/', 'Cycling Coach USA'), ('/cycling-coach-canada/', 'Cycling Coach Canada'), ('/preparatore-di-ciclismo-italia/', 'Preparatore di Ciclismo Italia')]
+GOOGLE_REVIEWS = 'https://share.google/lwboSfcuStGhX0c0p'   # Cigala Cycling Ltd Google Business Profile (shared/BUSINESS.md)
 FOOTER = f'''<footer>
   <div class="in fcols">
     <div>
@@ -99,9 +103,9 @@ FOOTER = f'''<footer>
       <ul>
         <li><a href="mailto:info@cigalacycling.com">info@cigalacycling.com</a></li>
         <li><a href="tel:+35340478107">+353 404 78107</a></li>
-        <li>{a('https://wa.me/message/WVBRO6XAMQMCH1', 'WhatsApp')} · {a('https://www.instagram.com/cigalacycling/', 'Instagram')} · {a('https://www.facebook.com/CigalaCycling/', 'Facebook')}</li>
-        <li>{a('https://www.youtube.com/@cigalacycling', 'YouTube')} · {a('https://www.tiktok.com/@cigalacycling', 'TikTok')} · {a('https://x.com/CigalaCycling', 'X')} · {a('https://www.threads.com/@cigalacycling', 'Threads')}</li>
+        <li>{a(GOOGLE_REVIEWS, '★ Google reviews')}</li>
       </ul>
+      {social_row()}
     </div>
   </div>
   <div class="legal"><div class="in">
@@ -222,6 +226,8 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .rv-links { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
 @media (max-width: 900px) { .rv-row { grid-auto-columns: minmax(260px, 70%); } }
 @media (max-width: 640px) { .rv-row { grid-auto-columns: 86%; } .rv-nav { display: none; } }
+/* ---- shared social icon row (shared/social) ---- */
+''' + SOCIAL_CSS + '''
 /* ---- footer layout: as cigalacycling.com ---- */
 .fcols { grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)) !important; }
 footer .tag-line { font-size: 22px; line-height: 1.15; margin: 14px 0 0; max-width: 24ch; }
@@ -259,7 +265,6 @@ document.querySelectorAll('.dd').forEach(function (d) {
 # ---------- athlete reviews (Matteo 15 Nov: own review cards instead of the Shapo widget; reviews chosen by Claude) ----------
 # Quotes are the athletes' own words from the live Testimonials page (coaching/text/testimonials.txt); no star ratings,
 # because these are testimonials, not rated reviews. The Google link goes to Matteo's Google Business Profile.
-GOOGLE_REVIEWS = 'https://share.google/lwboSfcuStGhX0c0p'
 REVIEWS = [
     ('Gran Fondo Worlds qualifier', 'With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.', 'Bernd Ondruch', 'Germany'),
     ('From couch to Haute Route, and back after heart disease', 'First time was a 9 month training plan to get me from couch (literally!) to Haute Route Pyrenees in 2017 to mark my 60th birthday. More recently, I have worked with Matteo to help me recover from heart disease and a cardiac procedure.', 'Derek Lawler', 'Kilkenny, Ireland'),

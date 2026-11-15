@@ -97,6 +97,8 @@ html .cc .burger nav a[aria-current="page"] { color: var(--text); box-shadow: in
 /* footer links: Elementor's kit link colour (.elementor-kit-6 a) must not win over the green hover */
 .elementor-kit-6 .cc footer a:hover, .elementor-kit-6 .cc .legal a:hover { color: var(--green-text) !important; text-decoration: none !important; }
 .elementor-kit-6 .cc footer a, .elementor-kit-6 .cc .legal a { text-decoration: none; }
+.elementor-kit-6 .cc-social a { color: var(--text-2) !important; }
+.elementor-kit-6 .cc-social a:hover { color: var(--green-text) !important; }
 /* Shapo testimonials widget and the live Elementor contact form, in the brand */
 .cc-shapo { margin-top: 18px; }
 .cc-contact.e-con { --gap: 0px; }
