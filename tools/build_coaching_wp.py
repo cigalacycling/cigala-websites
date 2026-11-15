@@ -257,7 +257,11 @@ def blocks_of(page_html):
 def page_js(page_html):
     """the page's own script (after the shared menu script)"""
     scripts = re.findall(r'<script>.*?</script>', page_html, re.S)
-    return [s for s in scripts if '.dd' not in s or 'pkg-all' in s or 'g-more' in s or 'rv-row' in s]
+    # the page's own structured data (FAQPage, Service...) too: it was dropped before (found 15 Nov). The site-wide
+    # schema in the shared head stays where it is; only blocks from the page body (after the header) are added.
+    body = page_html[page_html.find('<footer>'):]   # only the page script area after the footer (blocks above are pushed with their content)
+    ld = re.findall(r'<script type="application/ld\+json">.*?</script>', body, re.S)
+    return [s for s in scripts if '.dd' not in s or 'pkg-all' in s or 'g-more' in s or 'rv-row' in s] + ld
 
 CURJS = "<script>(function(){var p=location.pathname;document.querySelectorAll('.cc .nav a[href]').forEach(function(a){var h=a.getAttribute('href');if(h&&h.charAt(0)==='/'&&!a.classList.contains('btn')&&!a.classList.contains('brand')&&h===p){a.setAttribute('aria-current','page');var d=a.closest('.dd');if(d){d.querySelector('.dd-btn').classList.add('is-current');}var sb=a.closest('details.sub');if(sb){sb.querySelector('summary').classList.add('is-current');}}});})();</script>"
 DDJS = "<script>(function(){document.querySelectorAll('.cc .dd').forEach(function(d){var b=d.querySelector('.dd-btn');b.addEventListener('click',function(){var o=d.classList.toggle('open');b.setAttribute('aria-expanded',o);});d.addEventListener('focusout',function(e){if(!d.contains(e.relatedTarget)){d.classList.remove('open');b.setAttribute('aria-expanded','false');}});});})();</script>"

@@ -16,6 +16,7 @@ What changed (logged in coaching/SEO-DECISIONS.md, section 10):
   python3 -I tools/build_coaching_country.py
 """
 import os, sys, re
+import html as H
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from coaching_common import *
 import build_coaching_generic as G
@@ -38,7 +39,7 @@ C_ = {
 'uk': dict(
     name='the UK', adj='UK', cur='£', code='GBP', hero=('imgi_22_lABWBM7F', 'country-uk-hero-coaching'), pos='60% 35%', photo=('unnamed-6.png', 'country-uk-events-tre-valli'),
     vekta='£17.99', guides=[('fred-whitton-challenge-training-guide', 'How to train for the Fred Whitton Challenge'), ('slower-in-winter-is-not-your-legs', 'Slower in winter? It’s not your legs'), ('effective-fuelling-techniques-for-winter-training', 'Fuelling for winter training')], reviews=[1, 5, 8, 2, 11, 3],
-    facts=[('clock', 'Same time as Ireland', 'GMT/BST: calls and replies happen in your own day, not overnight.'),
+    facts=[('clock', 'Same time zone as you', 'GMT/BST: calls and replies happen in your own day, not overnight.'),
            ('currency', 'Prices in pounds', 'You pay in pounds, so no exchange fees on your side.'),
            ('route', 'Built for UK roads', 'Short steep climbs, wind, wet winters and the TT and sportive calendar.')],
     how=[('Sign up or talk first', 'Choose your package and sign up straight away, or book a free consultation with Matteo first. Ireland and the UK share a time zone, so a lunch break or an evening works.'),
@@ -349,7 +350,7 @@ def build_country(key):
         .replace("document.getElementById('g-more').dataset.label = document.getElementById('g-more').textContent;", '')
     build(name, path, MAIN, f'{path} rewritten for {c["name"]}: own copy, real testimonials, prices in {c["code"]}. H1, H2s and lists kept.',
           h1=h1, h2_changes={'drop': ['2025 IN NUMBERS', 'READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING'], 'add': ['2026 IN NUMBERS', 'READ OUR CASE STUDIES']},   # Matteo 15 Nov: 2026; case studies
-          extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + P.CAL_CSS + CCSS, extra_js=JS + EV_JS)
+          extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + P.CAL_CSS + CCSS, extra_js=JS + EV_JS + seo_ld(path, h1, {'uk': 'United Kingdom', 'usa': 'United States', 'canada': 'Canada'}[key], 'en', faq, intro[0]))
     words = len(re.sub(r'<[^>]+>', ' ', MAIN).split())
     print(name, 'words', words, 'reviews', len(c['reviews']), 'faq', len(faq))
 
@@ -398,6 +399,18 @@ def country_map(key):
 EV_JS = """<script>(function(){var bs=document.querySelectorAll('.cx-ev-types button');bs.forEach(function(b){b.addEventListener('click',function(){
 var f=b.dataset.f;bs.forEach(function(x){x.classList.toggle('on',x===b);});
 document.querySelectorAll('.cx-ev-grid li').forEach(function(li){li.classList.toggle('off',!!f&&li.dataset.t!==f);});});});})();</script>"""
+
+def seo_ld(path, name, country, lang, faq, desc):
+    """Matteo 15 Nov: help each country page rank in its country: FAQPage + a Service with areaServed (added; the site-wide schema stays)."""
+    import json
+    strip = lambda t: re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', H.unescape(t) if isinstance(t, str) else t)).strip()
+    g = [{'@type': 'Service', '@id': C + path + '#service', 'name': name, 'serviceType': 'Online cycling coaching', 'url': C + path, 'inLanguage': lang,
+          'description': desc, 'provider': {'@id': 'https://coaching.cigalacycling.com/#organization'},
+          'areaServed': {'@type': 'Country', 'name': country}},
+         {'@type': 'FAQPage', '@id': C + path + '#faq', 'inLanguage': lang, 'mainEntity': [
+             {'@type': 'Question', 'name': strip(q), 'acceptedAnswer': {'@type': 'Answer', 'text': ' '.join(strip(p) for p in ps)}} for q, ps in faq]}]
+    return '<script type="application/ld+json">' + json.dumps({'@context': 'https://schema.org', '@graph': g}, ensure_ascii=False) + '</script>'
+
 CCSS = '''<style>
 .cx-intro-sec { padding-top: 24px !important; }
 .cx-intro { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 40px; align-items: center; }

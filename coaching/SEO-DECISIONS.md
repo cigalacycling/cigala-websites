@@ -374,3 +374,12 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   Tour Divide; Canada BC Bike Race, Tour Divide); country map (Natural Earth, public domain) with the listed cities next to
   the region list. H2s unchanged. Italia: "membership incluso" -> "iscrizione inclusa" (Matteo).
 - UK/USA/Canada: reviews with photos again (first name + real place); review/case rows have room for the hover border; blog guides as green buttons; events to full rows (UK +Etape du Dales, The Gralloch, LEJOG; USA +SBT GRVL, Gravel Worlds; Canada +Paris to Ancaster).
+- SEO for the country pages (Matteo: rank high in each country). Already in place from live: hreflang en-gb/en-us/en-ca/it +
+  x-default, site-wide Organization/Service schema. Added: per page a Service with areaServed (United Kingdom / United
+  States / Canada / Italia) and a FAQPage from the page's FAQ. Bug fixed in tools/build_coaching_wp.py: page JSON-LD
+  placed after the footer (FAQPage on Talent, Nutrition, Triathlon About...) was never pushed to staging; now it is,
+  without duplicating the blocks that were already pushed (checked: one of each per page). UK box "Same time as
+  Ireland" -> "Same time zone as you".
+  Known gap: the site's <html lang> is en-US on every page, including the Italian one (WordPress site language); hreflang
+  "it" tells Google the right language. To fix properly at go-live: set the language per page (WPML/Polylang or a small
+  snippet). Not done on staging.

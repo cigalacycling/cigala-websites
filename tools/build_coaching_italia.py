@@ -451,5 +451,5 @@ if __name__ == '__main__':
                                'Un coaching personalizzato in base ai tuoi obiettivi. Seguiamo ciclisti in tutta Italia e in tutto il mondo.'],
                       'add': ['2026 IN NUMERI', 'LEGGI I MIEI CASI STUDIO', 'LEGGI LE MIE RECENSIONI', 'È il mio motto', 'Gli Eventi per Cui Preparo i Miei Atleti',
                               'Seguo ciclisti in tutta Italia', 'Un coaching personalizzato in base ai tuoi obiettivi. Seguo ciclisti in tutta Italia e in tutto il mondo.']},   # Matteo 15 Nov: first person
-          extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + P.CAL_CSS + CN.CCSS + ITCSS, extra_js=JS)
+          extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + P.CAL_CSS + CN.CCSS + ITCSS, extra_js=JS + CN.seo_ld(PATH, 'Preparatore di ciclismo Italia', 'Italia', 'it', faq, intro[0]))
     print('faq', len(faq), '| why', len(why), '| events', len(ev_li), '| regions', len(rg_li), '| features', {k: len(v) for k, v in FEAT.items()})
