@@ -49,25 +49,45 @@ LIVE_ALT = {
  "lake-como-gran-fondo-il-lombardia": "Lake Como & Lombardia 2027"
 }   # live card alts ('Cigla' typo on Lake Garda fixed)
 rows = {}
+TAGS = {'road': ['Road'], 'gf': ['Road', 'Gran Fondo'], 'gravel': ['Gravel']}
 for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     slug = re.search(r'href="' + re.escape(L) + r'/trips/([^/"]+)/?"', a).group(1)
     t = trips[slug]
-    card = CARD.get(slug, slug)
-    out = f'webp-tours/cigala-tours-card-{card}.webp'
-    if not os.path.exists(ROOT + out):   # 2200px original -> 1100px WebP q90
-        im = Image.open(ROOT + f'cards/hq/{card}.png').convert('RGB')
-        im.resize((1100, round(im.height * 1100 / im.width)), Image.LANCZOS).save(ROOT + out, 'WEBP', quality=90)
-    if not os.path.exists(ROOT + f'tourspages/img/cigala-tours-card-{card}.webp'):
-        shutil.copy(ROOT + out, ROOT + f'tourspages/img/cigala-tours-card-{card}.webp')
-    a = re.sub(r'src="cards/[^"]+\.jpg"', f'src="img/cigala-tours-card-{card}.webp"', a)
-    if slug in LIVE_ALT:
-        a = re.sub(r'(<img src="img/cigala-tours-card-[^"]+" alt=")[^"]*"', lambda m: m.group(1) + E(LIVE_ALT[slug]) + '"', a, count=1)
-    a = a.replace('<div class="meta">', f'<div class="meta"><span class="chip date"><time datetime="{t["start"]}">{dates(t)}</time></span>', 1)
-    if t.get('badge'):   # Gran Fondo badge (same as the homepage cards)
-        a = re.sub(r'(<div class="tags">.*?</div>)', lambda m: m.group(1) + BADGES[t['badge']], a, count=1, flags=re.S)
-    a = a.replace('<h2>Maratona dles Dolomites – Enel</h2>', '<h2>Maratona dles Dolomites - Enel</h2>')   # live H2 wording (hyphen)
-    rows[slug] = (t['type'], a)
-
+    g = lambda rx: re.search(rx, a, re.S).group(1)
+    name = g(r'<h2>(.*?)</h2>').replace('Maratona dles Dolomites – Enel', 'Maratona dles Dolomites - Enel')   # live H2 wording
+    where = g(r'<h3 class="where">(.*?)</h3>')
+    chips = re.findall(r'<span class="chip[^"]*">(.*?)</span>', g(r'<div class="meta">(.*?)</div>'))
+    nights = [c for c in chips if 'night' in c.lower()][0]
+    level = [c for c in chips if c.startswith('Level')][0].replace('Level: ', '')
+    desc = g(r'<div class="desc">(.*?)</div>')
+    price_label = g(r'<div class="price"><small>(.*?)</small>')
+    price = g(r'<div class="price"><small>.*?</small>(.*?)</div>')
+    early = re.search(r'<span class="early">(.*?)</span>', a)
+    more = g(r'<a class="btn btn-ghost" href="([^"]+)"')
+    book = g(r'<a class="btn btn-go" href="([^"]+)"')
+    img = f'img/cigala-tours-trip-{slug}.webp'
+    src = ROOT + f'webp-tours/cigala-tours-trip-{slug}.webp'
+    if os.path.exists(src) and not os.path.exists(ROOT + 'tourspages/' + img):
+        shutil.copy(src, ROOT + 'tourspages/' + img)
+    tags = ''.join(f'<span class="tag{" gravel" if x == "Gravel" else ""}">{x}</span>' for x in TAGS[t['type']])
+    badge = BADGES[t['badge']] if t.get('badge') else ''
+    alt = LIVE_ALT.get(slug) or f'{t["name"]} bike tour'
+    rows[slug] = (t['type'], f"""<article class="tcard" data-k="{t['type']}">
+  <a class="ph" href="{more}" {EXT}><img src="{img}" alt="{E(alt)}" loading="lazy" width="1200" height="900"><span class="tags">{tags}</span></a>
+  <div class="tx">
+    {badge}
+    <h2>{name}</h2>
+    <h3 class="where">{where}</h3>
+    <div class="meta"><span class="chip date"><time datetime="{t['start']}">{dates(t)}</time></span><span class="chip">{nights}</span><span class="chip">Level: {level}</span></div>
+    <div class="desc clamp">{desc}</div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
+    <div class="bottom">
+      <div class="price"><small>{price_label}</small>{price}</div>
+      {f'<span class="early">{early.group(1)}</span>' if early else ''}
+      <div class="ctas"><a class="btn btn-ghost" href="{more}" {EXT}>More details</a><a class="btn btn-go" href="{book}" {EXT}>Book now →</a></div>
+    </div>
+  </div>
+</article>""")
 by_date = lambda ss: sorted(ss, key=lambda s: trips[s]['start'])
 ROAD = by_date([s for s, (k, _) in rows.items() if k == 'road'])
 GF = by_date([s for s, (k, _) in rows.items() if k == 'gf'])
@@ -112,6 +132,8 @@ def browse(cur):
         f'<a class="chip" href="{L}{URL[s]}" {EXT}' + (' aria-current="page"' if s == cur else '') + f'>{t}</a>'
         for t, s in items) + '</nav>'
 
+READMORE = """<script>(function(){document.querySelectorAll('.cl .tcard .desc.clamp').forEach(function(d){var b=d.parentNode.querySelector('.more-txt');if(d.scrollHeight>d.clientHeight+4){b.hidden=false;b.addEventListener('click',function(){var o=d.classList.toggle('clamp');b.textContent=o?'Read more':'Show less';b.setAttribute('aria-expanded',!o);});}});})();</script>"""
+
 def page_main(slug):
     crumb, eyebrow, h1, intro, tour_list, hero, pid = PAGES[slug]
     if slug == 'trips':
@@ -129,16 +151,16 @@ def page_main(slug):
     if slug == 'road-trips':
         gf_html = '\n'.join(rows[s][1] for s in GF)
         parts.append(f'<section id="calendar" style="padding-top:44px">\n  <div class="in">\n    {head}\n'
-                     f'    <div class="trips">\n{tours_html}\n    </div>\n  </div>\n</section>')
+                     f'    <div class="tgrid">\n{tours_html}\n    </div>\n  </div>\n</section>')
         parts.append(f'<section style="padding-top:56px">\n  <div class="in">\n'
                      f'    <div class="head"><div><div class="eyebrow">Ride the event</div><h2>Road tours with a Gran Fondo</h2><div class="bar"></div>\n'
                      f'      <p class="lede">These tours are ridden on the road bike too, built around a Gran Fondo or a pro race weekend.</p></div>\n'
                      f'      <a class="arrow-link" href="{L}/trips/granfondo-trips/" {EXT}>All Gran Fondo tours →</a></div>\n'
-                     f'    <div class="trips">\n{gf_html}\n    </div>\n    {footnote}\n  </div>\n</section>')
+                     f'    <div class="tgrid">\n{gf_html}\n    </div>\n    {footnote}\n  </div>\n</section>')
     else:
         parts.append(f'<section id="calendar" style="padding-top:44px">\n  <div class="in">\n    {head}\n'
-                     f'    <div class="trips">\n{tours_html}\n    </div>\n    {footnote}\n  </div>\n</section>')
-    parts += [band, partners]
+                     f'    <div class="tgrid">\n{tours_html}\n    </div>\n    {footnote}\n  </div>\n</section>')
+    parts += [band, partners, READMORE]
     return '\n'.join(parts)
 
 # ---------- CSS: design CSS scoped to .cl, plus the brand fixes used on the homepage ----------
@@ -154,6 +176,37 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .browse { display: flex; flex-wrap: wrap; gap: 8px; }
 .browse .chip { text-decoration: none; }
 .browse .chip[aria-current="page"] { background: var(--green); border-color: var(--green); color: #fff; }
+:root { background: transparent; }
+/* tour cards: 3 per row on laptops, 2 on tablets, 1 on phones */
+.tgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.tcard { display: flex; flex-direction: column; min-width: 0; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.tcard:hover { border-color: rgba(0,154,68,.5); }
+.tcard .ph { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
+.tcard .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.tcard:hover .ph img { transform: scale(1.04); }
+.tcard .ph .tags { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; margin: 0; }
+.tcard .tag { display: inline-flex; align-items: center; white-space: nowrap; line-height: 1.2; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.78); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 10px; }
+.tcard .tag::before { content: ""; flex: none; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
+.tcard .tag.gravel::before { background: var(--gravel); }
+.tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 22px; min-width: 0; }
+.tcard .entry { width: fit-content; margin: 0; }
+.tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
+.tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -4px; }
+.tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
+.tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+.tcard .desc.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.tcard .more-txt { align-self: flex-start; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 0; cursor: pointer; margin-top: -4px; }
+.tcard .bottom { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); display: grid; gap: 10px; }
+.tcard .price { font-family: var(--head); font-size: 26px; line-height: 1.1; color: var(--text); }
+.tcard .price small { display: block; padding: 0; margin-left: 0; font-family: var(--body); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+.tcard .early { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; }
+.tcard .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
+.tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
+@media (max-width: 1100px) { .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .tgrid { grid-template-columns: minmax(0, 1fr); } }
 '''
 css = scope_css(design_css + EXTRA, 'html .cl')
 css += '''

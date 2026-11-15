@@ -425,6 +425,38 @@ html .cl .head .lede { margin-top: 14px; }
 html .cl .browse { display: flex; flex-wrap: wrap; gap: 8px; }
 html .cl .browse .chip { text-decoration: none; }
 html .cl .browse .chip[aria-current="page"] { background: var(--green); border-color: var(--green); color: #fff; }
+html .cl { background: transparent; }
+html .cl .tgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+html .cl .tcard { display: flex; flex-direction: column; min-width: 0; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+html .cl .tcard:hover { border-color: rgba(0,154,68,.5); }
+html .cl .tcard .ph { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
+html .cl .tcard .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+html .cl .tcard:hover .ph img { transform: scale(1.04); }
+html .cl .tcard .ph .tags { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; margin: 0; }
+html .cl .tcard .tag { display: inline-flex; align-items: center; white-space: nowrap; line-height: 1.2; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.78); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 10px; }
+html .cl .tcard .tag::before { content: ""; flex: none; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
+html .cl .tcard .tag.gravel::before { background: var(--gravel); }
+html .cl .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 22px; min-width: 0; }
+html .cl .tcard .entry { width: fit-content; margin: 0; }
+html .cl .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
+html .cl .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -4px; }
+html .cl .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+html .cl .tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
+html .cl .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+html .cl .tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+html .cl .tcard .desc.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+html .cl .tcard .more-txt { align-self: flex-start; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 0; cursor: pointer; margin-top: -4px; }
+html .cl .tcard .bottom { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); display: grid; gap: 10px; }
+html .cl .tcard .price { font-family: var(--head); font-size: 26px; line-height: 1.1; color: var(--text); }
+html .cl .tcard .price small { display: block; padding: 0; margin-left: 0; font-family: var(--body); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+html .cl .tcard .early { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; }
+html .cl .tcard .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+html .cl .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
+html .cl .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
+@media (max-width: 1100px) {html .cl .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+ }
+@media (max-width: 640px) {html .cl .tgrid { grid-template-columns: minmax(0, 1fr); }
+ }
 
 
 body:has(.cl-page) { overflow-x: hidden; }   /* topo background: set in build_tours_wp.py, same as the homepage */
@@ -677,8 +709,11 @@ html .cc section.matteo .in .photo { aspect-ratio: auto !important; overflow: vi
 html .cc section.matteo .in .photo img { width: 100%; max-width: 340px; }
 
 }
-html .cc #tour-grid .tour { aspect-ratio: auto; min-height: 430px; }
-html .cc #tour-grid .tour .tx { padding-top: 66px; }
+html .cc #tour-grid .tour { aspect-ratio: auto; min-height: 380px; }
+html .cc #tour-grid .tour .tx { padding-top: 58px; padding-bottom: 18px; }
+html .cc #tour-grid .tour p { margin: 6px 0 10px; }
+@media (min-width: 1100px) {html .cc #tour-grid .tour .facts { margin-bottom: 8px; }
+ }
 @media (max-width: 1080px) {html .cc .menu { display: none; }
 html .cc .burger { display: block; }
 html .cc .nav .btn { display: none; }
@@ -768,59 +803,67 @@ html .cc .tour:hover img { transform: none; }
 <section id="calendar" style="padding-top:44px">
   <div class="in">
     <div class="head"><div><div class="eyebrow">Gravel tours</div><h2>2027 Calendar</h2><div class="bar"></div></div><nav class="browse" aria-label="Tour types"><a class="chip" href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All</a><a class="chip" href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road</a><a class="chip" href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener" aria-current="page">Gravel</a><a class="chip" href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo</a><a class="chip" href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italy</a></nav></div>
-    <div class="trips">
-<article class="panel trip" data-k="gravel">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/cyprus-crossing-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-cyprus-crossing-gravel.webp" alt="Cyprus Crossing Gravel Tour" loading="lazy" width="1100" height="1375"></a>
+    <div class="tgrid">
+<article class="tcard" data-k="gravel">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/cyprus-crossing-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-cyprus-crossing-gravel.webp" alt="Cyprus Crossing Gravel Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag gravel">Gravel</span></div>
+    
     <h2>Cyprus Crossing | Gravel</h2>
     <h3 class="where">Paphos, Cyprus</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-04-22">22–29 Apr 2027</time></span><span class="chip-s chip km">7 nights/8 days</span><span class="chip">Level: Expert</span></div>
-    <div class="desc"><p>Are you ready for the gravel adventure of your lifetime?</p><p>Cyprus offers endless of gravel routes combined with amazing weather all year round with great food &amp; hospitality.</p><p>We have designed a unique gravel trip with 80% off road which takes you to the top of Mt Olympus, and across the island. Don't miss out on this trip if you are a gravel lover.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-04-22">22–29 Apr 2027</time></span><span class="chip">7 nights/8 days</span><span class="chip">Level: Expert</span></div>
+    <div class="desc clamp"><p>Are you ready for the gravel adventure of your lifetime?</p><p>Cyprus offers endless of gravel routes combined with amazing weather all year round with great food &amp; hospitality.</p><p>We have designed a unique gravel trip with 80% off road which takes you to the top of Mt Olympus, and across the island. Don't miss out on this trip if you are a gravel lover.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1399 | £1249 | $1649*</div><span class="early">Early bird price until 30/11</span></div>
+      <div class="price"><small>Price</small>€1399 | £1249 | $1649*</div>
+      <span class="early">Early bird price until 30/11</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/cyprus-crossing-gravel/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=7789420390&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="gravel">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/tuscany-epic-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-tuscany-epic-gravel.webp" alt="Tuscany Gravel Epic" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="gravel">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/tuscany-epic-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-tuscany-epic-gravel.webp" alt="Tuscany Gravel Epic" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag gravel">Gravel</span></div>
+    
     <h2>Tuscany Epic | Gravel</h2>
     <h3 class="where">Castagneto Carducci, Tuscany, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-05-31">31 May – 6 Jun 2027</time></span><span class="chip-s chip km">6 nights / 7 days</span><span class="chip">Level: Expert</span></div>
-    <div class="desc"><p>When you think about Tuscany, as a cycling lover you immediately think about the white roads, cypress trees and rolling green hills.</p><p>Well, we have built a trip that goes around the whole region in order for to discover and immerse yourself in the Tuscany culture and gastronomy. All with your gravel bike, on 80% off roads. Simply a trip of a lifetime.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-05-31">31 May – 6 Jun 2027</time></span><span class="chip">6 nights / 7 days</span><span class="chip">Level: Expert</span></div>
+    <div class="desc clamp"><p>When you think about Tuscany, as a cycling lover you immediately think about the white roads, cypress trees and rolling green hills.</p><p>Well, we have built a trip that goes around the whole region in order for to discover and immerse yourself in the Tuscany culture and gastronomy. All with your gravel bike, on 80% off roads. Simply a trip of a lifetime.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1399 | £1249 | $1649*</div><span class="early">Early bird price until 31/12</span></div>
+      <div class="price"><small>Price</small>€1399 | £1249 | $1649*</div>
+      <span class="early">Early bird price until 31/12</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/tuscany-epic-gravel/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=5065115298&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="gravel">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/alpine-gravel-escape/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-alpine-gravel-escape.webp" alt="Alpine Gravel Tour Bormio Cigala" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="gravel">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/alpine-gravel-escape/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-alpine-gravel-escape.webp" alt="Alpine Gravel Tour Bormio Cigala" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag gravel">Gravel</span></div>
+    
     <h2>Alpine Gravel Escape</h2>
     <h3 class="where">Bormio, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-07-15">15–20 Jul 2027</time></span><span class="chip-s chip km">5 nights/6 days</span><span class="chip">Level: Expert</span></div>
-    <div class="desc"><p>Experience the Italian Alps like never before. This unique gravel adventure takes you beyond the tarmac to ride the iconic Stelvio Gravel, spectacular alpine trails and historic military roads through breathtaking mountain landscapes. Designed for adventurous riders, it combines epic climbs, remote gravel routes and unforgettable scenery.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-07-15">15–20 Jul 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Expert</span></div>
+    <div class="desc clamp"><p>Experience the Italian Alps like never before. This unique gravel adventure takes you beyond the tarmac to ride the iconic Stelvio Gravel, spectacular alpine trails and historic military roads through breathtaking mountain landscapes. Designed for adventurous riders, it combines epic climbs, remote gravel routes and unforgettable scenery.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1299 | £1149 | $1549*</div><span class="early">Early bird price until 28/02</span></div>
+      <div class="price"><small>Price</small>€1299 | £1149 | $1549*</div>
+      <span class="early">Early bird price until 28/02</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/alpine-gravel-escape/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=6681342030&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="gravel">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/lake-garda-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-lake-garda-gravel.webp" alt="Lake Garda Gravel cycling tour: 340 km, 3,500 m climbing" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="gravel">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-garda-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-garda-gravel.webp" alt="Lake Garda Gravel bike tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag gravel">Gravel</span></div>
+    
     <h2>Lake Garda Gravel</h2>
     <h3 class="where">Lake Garda, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-09-07">7–12 Sep 2027</time></span><span class="chip-s chip km">5 nights/6 days</span><span class="chip">Level: Intermediate, Expert</span></div>
-    <div class="desc"><p>Trade the tarmac for gravel on Lake Garda's quieter side.</p><p>Based in Moniga del Garda, explore the vineyard tracks of Valtenesi, the Moreniche hills, the Mincio Valley and the renowned Amarone wine region of Valpolicella. Six days of scenic gravel riding, historic villages and some of Italy's finest wine country.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-09-07">7–12 Sep 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>Trade the tarmac for gravel on Lake Garda's quieter side.</p><p>Based in Moniga del Garda, explore the vineyard tracks of Valtenesi, the Moreniche hills, the Mincio Valley and the renowned Amarone wine region of Valpolicella. Six days of scenic gravel riding, historic villages and some of Italy's finest wine country.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1099 | £999 | $1299*</div><span class="early">Early bird price until 30/04</span></div>
+      <div class="price"><small>Price</small>€1099 | £999 | $1299*</div>
+      <span class="early">Early bird price until 30/04</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/lake-garda-gravel/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=2303316283&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
@@ -850,6 +893,7 @@ html .cc .tour:hover img { transform: none; }
     <div class="panel"><div class="lab">Official event partner</div><div class="logos"><span><img src="img/logo-algarve.png" alt="Algarve Granfondo logo" loading="lazy"></span></div></div>
   </div>
 </section>
+<script>(function(){document.querySelectorAll('.cl .tcard .desc.clamp').forEach(function(d){var b=d.parentNode.querySelector('.more-txt');if(d.scrollHeight>d.clientHeight+4){b.hidden=false;b.addEventListener('click',function(){var o=d.classList.toggle('clamp');b.textContent=o?'Read more':'Show less';b.setAttribute('aria-expanded',!o);});}});})();</script>
 </div>
 <div class="cc"><footer>
   <div class="in">

@@ -425,6 +425,38 @@ html .cl .head .lede { margin-top: 14px; }
 html .cl .browse { display: flex; flex-wrap: wrap; gap: 8px; }
 html .cl .browse .chip { text-decoration: none; }
 html .cl .browse .chip[aria-current="page"] { background: var(--green); border-color: var(--green); color: #fff; }
+html .cl { background: transparent; }
+html .cl .tgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+html .cl .tcard { display: flex; flex-direction: column; min-width: 0; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+html .cl .tcard:hover { border-color: rgba(0,154,68,.5); }
+html .cl .tcard .ph { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
+html .cl .tcard .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+html .cl .tcard:hover .ph img { transform: scale(1.04); }
+html .cl .tcard .ph .tags { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; margin: 0; }
+html .cl .tcard .tag { display: inline-flex; align-items: center; white-space: nowrap; line-height: 1.2; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.78); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 10px; }
+html .cl .tcard .tag::before { content: ""; flex: none; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
+html .cl .tcard .tag.gravel::before { background: var(--gravel); }
+html .cl .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 22px; min-width: 0; }
+html .cl .tcard .entry { width: fit-content; margin: 0; }
+html .cl .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
+html .cl .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -4px; }
+html .cl .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+html .cl .tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
+html .cl .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+html .cl .tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+html .cl .tcard .desc.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+html .cl .tcard .more-txt { align-self: flex-start; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 0; cursor: pointer; margin-top: -4px; }
+html .cl .tcard .bottom { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); display: grid; gap: 10px; }
+html .cl .tcard .price { font-family: var(--head); font-size: 26px; line-height: 1.1; color: var(--text); }
+html .cl .tcard .price small { display: block; padding: 0; margin-left: 0; font-family: var(--body); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+html .cl .tcard .early { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; }
+html .cl .tcard .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+html .cl .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
+html .cl .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
+@media (max-width: 1100px) {html .cl .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+ }
+@media (max-width: 640px) {html .cl .tgrid { grid-template-columns: minmax(0, 1fr); }
+ }
 
 
 body:has(.cl-page) { overflow-x: hidden; }   /* topo background: set in build_tours_wp.py, same as the homepage */
@@ -677,8 +709,11 @@ html .cc section.matteo .in .photo { aspect-ratio: auto !important; overflow: vi
 html .cc section.matteo .in .photo img { width: 100%; max-width: 340px; }
 
 }
-html .cc #tour-grid .tour { aspect-ratio: auto; min-height: 430px; }
-html .cc #tour-grid .tour .tx { padding-top: 66px; }
+html .cc #tour-grid .tour { aspect-ratio: auto; min-height: 380px; }
+html .cc #tour-grid .tour .tx { padding-top: 58px; padding-bottom: 18px; }
+html .cc #tour-grid .tour p { margin: 6px 0 10px; }
+@media (min-width: 1100px) {html .cc #tour-grid .tour .facts { margin-bottom: 8px; }
+ }
 @media (max-width: 1080px) {html .cc .menu { display: none; }
 html .cc .burger { display: block; }
 html .cc .nav .btn { display: none; }
@@ -768,87 +803,99 @@ html .cc .tour:hover img { transform: none; }
 <section id="calendar" style="padding-top:44px">
   <div class="in">
     <div class="head"><div><div class="eyebrow">Road tours</div><h2>2027 Calendar</h2><div class="bar"></div></div><nav class="browse" aria-label="Tour types"><a class="chip" href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All</a><a class="chip" href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener" aria-current="page">Road</a><a class="chip" href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel</a><a class="chip" href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo</a><a class="chip" href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italy</a></nav></div>
-    <div class="trips">
-<article class="panel trip" data-k="road">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-dolomites.webp" alt="Dolomites Tour" loading="lazy" width="1100" height="1375"></a>
+    <div class="tgrid">
+<article class="tcard" data-k="road">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-dolomites.webp" alt="Dolomites Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span></div>
+    
     <h2>Dolomites</h2>
     <h3 class="where">Dolomites, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-07-08">8–13 Jul 2027</time></span><span class="chip-s chip km">5 nights/6 days</span><span class="chip">Level: Intermediate, Expert</span></div>
-    <div class="desc"><p>On this trip you will ride in one of the most spectacular places on Earth.</p><p>The Dolomites are so mystical and mind-blowing. Everywhere you look, it's a postcard. You will climb some of Italy's famous and beautiful climb: Giau, Gardena, Sella, Pordoi, Campolongo, Falzarego, Valparola, Fedaia, Tre Cime di Lavaredo and San Pellegrino.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-07-08">8–13 Jul 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>On this trip you will ride in one of the most spectacular places on Earth.</p><p>The Dolomites are so mystical and mind-blowing. Everywhere you look, it's a postcard. You will climb some of Italy's famous and beautiful climb: Giau, Gardena, Sella, Pordoi, Campolongo, Falzarego, Valparola, Fedaia, Tre Cime di Lavaredo and San Pellegrino.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1499 | £1349 | $1749*</div><span class="early">Early bird price until 28/02</span></div>
+      <div class="price"><small>Price</small>€1499 | £1349 | $1749*</div>
+      <span class="early">Early bird price until 28/02</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/dolomites/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=9944206554&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="road">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/italian-alps/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-italian-alps.webp" alt="Italian Alps Tour" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="road">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/italian-alps/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-italian-alps.webp" alt="Italian Alps Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span></div>
+    
     <h2>Italian Alps</h2>
     <h3 class="where">Bormio, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-07-15">15–20 Jul 2027</time></span><span class="chip-s chip km">5 nights/6 days</span><span class="chip">Level: Intermediate, Expert</span></div>
-    <div class="desc"><p>Take on an unforgettable cycling holiday in the Italian Alps, conquering some of the most legendary climbs in cycling history. Ride the iconic roads of the Giro d'Italia, including the Stelvio, Gavia, Mortirolo, Cancano and Foscagno. Each climb offers its own unique challenge, spectacular alpine scenery and an incredible sense of achievement, making this the ultimate trip for riders looking to experience Italy's most famous mountain passes.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-07-15">15–20 Jul 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>Take on an unforgettable cycling holiday in the Italian Alps, conquering some of the most legendary climbs in cycling history. Ride the iconic roads of the Giro d'Italia, including the Stelvio, Gavia, Mortirolo, Cancano and Foscagno. Each climb offers its own unique challenge, spectacular alpine scenery and an incredible sense of achievement, making this the ultimate trip for riders looking to experience Italy's most famous mountain passes.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1299 | £1149 | $1549*</div><span class="early">Early bird price until 28/02</span></div>
+      <div class="price"><small>Price</small>€1299 | £1149 | $1549*</div>
+      <span class="early">Early bird price until 28/02</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/italian-alps/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=5899565803&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="road">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/french-alps/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-french-alps.webp" alt="French Alps Bike Tour" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="road">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/french-alps/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-french-alps.webp" alt="French Alps Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span></div>
+    
     <h2>French Alps</h2>
     <h3 class="where">French Alps, France</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-07-28">28 Jul – 4 Aug 2027</time></span><span class="chip-s chip km">7 nights/ 8 days</span><span class="chip">Level: Intermediate, Expert</span></div>
-    <div class="desc"><p>Take on an unforgettable cycling holiday in the French Alps, conquering legendary climbs including Col du Galibier, Alpe D'Huez, Col de la Madeleine, Col de la Croix de Fer, Col d'Izoard and the Cime de la Bonette — the highest paved road in the Alps. Each climb offers its own challenge and spectacular scenery, making this the ultimate trip for riders looking to experience France's most iconic mountain passes.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-07-28">28 Jul – 4 Aug 2027</time></span><span class="chip">7 nights/ 8 days</span><span class="chip">Level: Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>Take on an unforgettable cycling holiday in the French Alps, conquering legendary climbs including Col du Galibier, Alpe D'Huez, Col de la Madeleine, Col de la Croix de Fer, Col d'Izoard and the Cime de la Bonette — the highest paved road in the Alps. Each climb offers its own challenge and spectacular scenery, making this the ultimate trip for riders looking to experience France's most iconic mountain passes.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1799 | £1549 | $2099*</div><span class="early">Early bird price until 28/02</span></div>
+      <div class="price"><small>Price</small>€1799 | £1549 | $2099*</div>
+      <span class="early">Early bird price until 28/02</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/french-alps/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=5458779222&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="road">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/wonderful-slovenia/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-wonderful-slovenia.webp" alt="Wonderful Slovenia Bike Tour" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="road">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/wonderful-slovenia/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-wonderful-slovenia.webp" alt="Wonderful Slovenia Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span></div>
+    
     <h2>Wonderful Slovenia</h2>
     <h3 class="where">West Slovenia, Slovenia</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-08-31">31 Aug – 6 Sep 2027</time></span><span class="chip-s chip km">6 nights/7 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
-    <div class="desc"><p>Discover one of Europe's most underrated cycling destinations. This road trip takes you from the dramatic Julian Alps, over the legendary 24 hairpins of the Vršič Pass, down through the turquoise waters of the Soča Valley, and along the shores of Lake Bled. A journey through Slovenia's most spectacular landscapes in a single trip, this is the ultimate way to experience a country most cyclists have never had on their radar.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-08-31">31 Aug – 6 Sep 2027</time></span><span class="chip">6 nights/7 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>Discover one of Europe's most underrated cycling destinations. This road trip takes you from the dramatic Julian Alps, over the legendary 24 hairpins of the Vršič Pass, down through the turquoise waters of the Soča Valley, and along the shores of Lake Bled. A journey through Slovenia's most spectacular landscapes in a single trip, this is the ultimate way to experience a country most cyclists have never had on their radar.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1499 | £1349 | $1749*</div><span class="early">Early bird price until 30/04</span></div>
+      <div class="price"><small>Price</small>€1499 | £1349 | $1749*</div>
+      <span class="early">Early bird price until 30/04</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/wonderful-slovenia/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=1761100244&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="road">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/lake-garda-and-stelvio/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-lake-garda-stelvio.webp" alt="Lake Garda Bike Tour | Cigala Cycling" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="road">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-garda-and-stelvio/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-garda-and-stelvio.webp" alt="Lake Garda Bike Tour | Cigala Cycling" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span></div>
+    
     <h2>Lake Garda &amp; Day Trip to Stelvio</h2>
     <h3 class="where">Lake Garda, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-09-07">7–12 Sep 2027</time></span><span class="chip-s chip km">5 nights/6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
-    <div class="desc"><p>One of our most popular trip.</p><p>Ride in the amazing routes around Lake Garda. Experience the amazing cuisine of the area and immerse yourself in the culture. Finally, on this trip you will have the opportunity to have a day trip and ride Italy's most famous climb: Passo Dello Stelvio!</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-09-07">7–12 Sep 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>One of our most popular trip.</p><p>Ride in the amazing routes around Lake Garda. Experience the amazing cuisine of the area and immerse yourself in the culture. Finally, on this trip you will have the opportunity to have a day trip and ride Italy's most famous climb: Passo Dello Stelvio!</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1099 | £999 | $1299*</div><span class="early">Early bird price until 30/04</span></div>
+      <div class="price"><small>Price</small>€1099 | £999 | $1299*</div>
+      <span class="early">Early bird price until 30/04</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/lake-garda-and-stelvio/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=9061141280&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="road">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/italys-coast-to-coast/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-italys-coast-to-coast.webp" alt="Italy'S Coast to Coast cycling tour: 470 km, 4,600 m climbing" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="road">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/italys-coast-to-coast/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-italys-coast-to-coast.webp" alt="Italy&#x27;s Coast to Coast bike tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span></div>
+    
     <h2>Italy's Coast to Coast</h2>
     <h3 class="where">Tuscany, Umbria, Marche, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-09-24">24 Sep – 1 Oct 2027</time></span><span class="chip-s chip km">7 nights/8 days</span><span class="chip">Level: Intermediate, Expert</span></div>
-    <div class="desc"><p>An incredible cycling experience, from coast to coast through the heart of Italy: this road bike tour will take you on unique ride, from the Tyrrhenian Sea to the Adriatic Sea.</p><p>You will be riding through the most amazing countryside: rolling hills, apennine mountains, hidden medieval villages surrounded by unspoiled nature.</p><p>Covering three regions in 6 riding days: Tuscany, Umbria &amp; Marche.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-09-24">24 Sep – 1 Oct 2027</time></span><span class="chip">7 nights/8 days</span><span class="chip">Level: Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>An incredible cycling experience, from coast to coast through the heart of Italy: this road bike tour will take you on unique ride, from the Tyrrhenian Sea to the Adriatic Sea.</p><p>You will be riding through the most amazing countryside: rolling hills, apennine mountains, hidden medieval villages surrounded by unspoiled nature.</p><p>Covering three regions in 6 riding days: Tuscany, Umbria &amp; Marche.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1649 | £1449 | $1899*</div><span class="early">Early bird price until 30/05</span></div>
+      <div class="price"><small>Price</small>€1649 | £1449 | $1899*</div>
+      <span class="early">Early bird price until 30/05</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/italys-coast-to-coast/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=3772123174&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
@@ -861,73 +908,83 @@ html .cc .tour:hover img { transform: none; }
     <div class="head"><div><div class="eyebrow">Ride the event</div><h2>Road tours with a Gran Fondo</h2><div class="bar"></div>
       <p class="lede">These tours are ridden on the road bike too, built around a Gran Fondo or a pro race weekend.</p></div>
       <a class="arrow-link" href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">All Gran Fondo tours →</a></div>
-    <div class="trips">
-<article class="panel trip" data-k="gf">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/discover-the-algarve-granfondo/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-discover-the-algarve-granfondo.webp" alt="Algarve &amp; Gran Fondo Tour" loading="lazy" width="1100" height="1375"></a>
+    <div class="tgrid">
+<article class="tcard" data-k="gf">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/discover-the-algarve-granfondo/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-discover-the-algarve-granfondo.webp" alt="Algarve &amp; Gran Fondo Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span><span class="tag dot">Gran Fondo</span></div><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span>
+    <span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span>
     <h2>Discover the Algarve &amp; Gran Fondo</h2>
     <h3 class="where">Algarve, Portugal</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-02-17">17–22 Feb 2027</time></span><span class="chip-s chip km">5 nights/ 6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
-    <div class="desc"><p>Quiet roads and beautiful coastline is what makes this region unforgettable. A trip suitable to get ready for your spring/summer season whether you are a racer or a leisure rider with an opportunity to ride the Gran Fondo and watch the pro race.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-02-17">17–22 Feb 2027</time></span><span class="chip">5 nights/ 6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>Quiet roads and beautiful coastline is what makes this region unforgettable. A trip suitable to get ready for your spring/summer season whether you are a racer or a leisure rider with an opportunity to ride the Gran Fondo and watch the pro race.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1099 | £949 | $1249*</div></div>
+      <div class="price"><small>Price</small>€1099 | £949 | $1249*</div>
+      
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/discover-the-algarve-granfondo/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=7345498529&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="gf">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/chianti-gran-fondo-strade-bianche/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-chianti-gran-fondo-strade-bianche.webp" alt="Chianti &amp; Strade Bianche Tour" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="gf">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/chianti-gran-fondo-strade-bianche/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-chianti-gran-fondo-strade-bianche.webp" alt="Chianti &amp; Strade Bianche Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span><span class="tag dot">Gran Fondo</span></div><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span>
+    <span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span>
     <h2>Chianti &amp; Gran Fondo Strade Bianche</h2>
     <h3 class="where">Chianti, Tuscany, Italy.</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-03-03">3–8 Mar 2027</time></span><span class="chip-s chip km">5 nights / 6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
-    <div class="desc"><p>Everybody in cycling knows the iconic Strade Bianche. We’ve designed a unique cycling holiday based in the heart of Chianti, where you’ll ride Tuscany’s famous white roads, take part in the Gran Fondo on Sunday, and watch the pros on Saturday. With guaranteed entry, grid start options, and VIP race access, this is the ultimate Strade Bianche experience.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-03-03">3–8 Mar 2027</time></span><span class="chip">5 nights / 6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>Everybody in cycling knows the iconic Strade Bianche. We’ve designed a unique cycling holiday based in the heart of Chianti, where you’ll ride Tuscany’s famous white roads, take part in the Gran Fondo on Sunday, and watch the pros on Saturday. With guaranteed entry, grid start options, and VIP race access, this is the ultimate Strade Bianche experience.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>From</small>€1349 | £1149 | $1549*</div></div>
+      <div class="price"><small>From</small>€1349 | £1149 | $1549*</div>
+      
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/chianti-gran-fondo-strade-bianche/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=8896226693&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="gf">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/tour-of-flanders-experience/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-tour-of-flanders-experience.webp" alt="Tour of Flanders Experience Tour" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="gf">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/tour-of-flanders-experience/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-tour-of-flanders-experience.webp" alt="Tour of Flanders Experience Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span><span class="tag dot">Gran Fondo</span></div><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span>
+    <span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span>
     <h2>Tour of Flanders Experience</h2>
     <h3 class="where">Flanders, Belgium.</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-04-01">1–5 Apr 2027</time></span><span class="chip-s chip km">4 nights / 5 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
-    <div class="desc"><p>Ride it. Watch it. Live it.</p><p>Take on the cobbles of the Tour of Flanders weekend in the ultimate cycling experience.</p><p>Ride the legendary climbs in the We Ride Flanders sportive, then watch the world’s best battle it out on the same roads the very next day with premium race access.From brutal cobbles to electric crowds, this is Flanders at its best.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-04-01">1–5 Apr 2027</time></span><span class="chip">4 nights / 5 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>Ride it. Watch it. Live it.</p><p>Take on the cobbles of the Tour of Flanders weekend in the ultimate cycling experience.</p><p>Ride the legendary climbs in the We Ride Flanders sportive, then watch the world’s best battle it out on the same roads the very next day with premium race access.From brutal cobbles to electric crowds, this is Flanders at its best.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1299 | £1149 | $1549*</div><span class="early">Early bird price until 30/11</span></div>
+      <div class="price"><small>Price</small>€1299 | £1149 | $1549*</div>
+      <span class="early">Early bird price until 30/11</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/tour-of-flanders-experience/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=8767371711&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="gf">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/maratona-dles-dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-maratona-dles-dolomites.webp" alt="Maratona Dles Dolomites Bike Tour" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="gf">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/maratona-dles-dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-maratona-dles-dolomites.webp" alt="Maratona Dles Dolomites Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span><span class="tag dot">Gran Fondo</span></div><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span>
+    <span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span>
     <h2>Maratona dles Dolomites - Enel</h2>
     <h3 class="where">Alta Badia, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-06-30">30 Jun – 5 Jul 2027</time></span><span class="chip-s chip km">5 nights/ 6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
-    <div class="desc"><p>Join Cigala Cycling Tours, an Official Tour Operator of the Maratona dles Dolomites – Enel, for the 40th edition on 4 July 2027.</p><p>Ride through the spectacular Dolomites, taking on iconic climbs including the Campolongo, Pordoi, Sella, Gardena, Giau and Falzarego, with premium accommodation and full support from our experienced team.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-06-30">30 Jun – 5 Jul 2027</time></span><span class="chip">5 nights/ 6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>Join Cigala Cycling Tours, an Official Tour Operator of the Maratona dles Dolomites – Enel, for the 40th edition on 4 July 2027.</p><p>Ride through the spectacular Dolomites, taking on iconic climbs including the Campolongo, Pordoi, Sella, Gardena, Giau and Falzarego, with premium accommodation and full support from our experienced team.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>From</small>€2249 | £1959 | $2599*</div><span class="early">Early bird price until 31/01</span></div>
+      <div class="price"><small>From</small>€2249 | £1959 | $2599*</div>
+      <span class="early">Early bird price until 31/01</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/maratona-dles-dolomites/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=4934180003&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
 </article>
-<article class="panel trip" data-k="road">
-  <a class="cimg" href="https://tours.cigalacycling.com/trips/lake-como-gran-fondo-il-lombardia/" target="_blank" rel="noopener"><img src="img/cigala-tours-card-lake-como-il-lombardia.webp" alt="Lake Como &amp; Lombardia 2027" loading="lazy" width="1100" height="1375"></a>
+<article class="tcard" data-k="gf">
+  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-como-gran-fondo-il-lombardia/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-como-gran-fondo-il-lombardia.webp" alt="Lake Como &amp; Lombardia 2027" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span></a>
   <div class="tx">
-    <div class="tags"><span class="tag dot">Road</span></div><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span>
+    <span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span>
     <h2>Lake Como, Gran Fondo Il Lombardia &amp; Pro Race</h2>
     <h3 class="where">Lake Como, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-10-06">6–11 Oct 2027</time></span><span class="chip-s chip km">5 nights/6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
-    <div class="desc"><p>Everybody that is into cycling knows the last monument of the year, "Il Lombardia".</p><p>We designed a unique Cycling Holiday basing us on a central location for you to discover the beauty of Lake Como, watch the pros and ride the Gran Fondo "Il Lombardia".</p><p>From iconic climbs to lakeside roads, this is the ultimate way to experience Il Lombardia from the inside.</p></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-10-06">6–11 Oct 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
+    <div class="desc clamp"><p>Everybody that is into cycling knows the last monument of the year, "Il Lombardia".</p><p>We designed a unique Cycling Holiday basing us on a central location for you to discover the beauty of Lake Como, watch the pros and ride the Gran Fondo "Il Lombardia".</p><p>From iconic climbs to lakeside roads, this is the ultimate way to experience Il Lombardia from the inside.</p></div>
+    <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
-      <div><div class="price"><small>Price</small>€1299 | £1149 | $1499*</div><span class="early">Early bird price until 30/05</span></div>
+      <div class="price"><small>Price</small>€1299 | £1149 | $1499*</div>
+      <span class="early">Early bird price until 30/05</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/lake-como-gran-fondo-il-lombardia/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=1699558775&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
@@ -957,6 +1014,7 @@ html .cc .tour:hover img { transform: none; }
     <div class="panel"><div class="lab">Official event partner</div><div class="logos"><span><img src="img/logo-algarve.png" alt="Algarve Granfondo logo" loading="lazy"></span></div></div>
   </div>
 </section>
+<script>(function(){document.querySelectorAll('.cl .tcard .desc.clamp').forEach(function(d){var b=d.parentNode.querySelector('.more-txt');if(d.scrollHeight>d.clientHeight+4){b.hidden=false;b.addEventListener('click',function(){var o=d.classList.toggle('clamp');b.textContent=o?'Read more':'Show less';b.setAttribute('aria-expanded',!o);});}});})();</script>
 </div>
 <div class="cc"><footer>
   <div class="in">
