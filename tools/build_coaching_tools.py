@@ -9,7 +9,7 @@ Everything is calculated in the visitor's browser; nothing is sent or stored. Th
 Brevo form for the separate Coaching list (NL_URL, set once Matteo has created it in Brevo; until then the box is not shown).
 Class names start with tl- so the merged kit CSS can't clash with other pages.
 """
-import os, sys
+import os, sys, re, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from coaching_common import *
 
@@ -233,7 +233,20 @@ GATEJS = '''<script>
 })();
 </script>''' % ('"' + NL_URL + '"')
 
+def schema(path, h1, meta):
+    """JSON-LD (15 Nov): each tool is a free web app; the hub lists the tools"""
+    org = {'@type': 'Organization', 'name': 'Cigala Cycling Ltd', 'url': C + '/'}
+    if path == '/tools/':
+        d = {'@context': 'https://schema.org', '@type': 'ItemList', 'name': h1, 'itemListElement': [
+            {'@type': 'ListItem', 'position': i + 1, 'url': C + u, 'name': re.sub(r'&amp;', '&', t)} for i, (_, u, t, _) in enumerate(TOOLS)]}
+    else:
+        d = {'@context': 'https://schema.org', '@type': 'WebApplication', 'name': h1, 'url': C + path, 'description': meta,
+             'applicationCategory': 'SportsApplication', 'operatingSystem': 'Any (web browser)', 'isAccessibleForFree': True,
+             'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR'}, 'provider': org}
+    return '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False) + '</script>'
+
 def page(name, path, h1, title, meta, main, js):
+    main = main.replace('</h1>', '</h1>' + schema(path, h1, meta), 1)
     extra = (GATEJS if GATE else NLJS) if NL_URL else ''
     build(name, path, main, f'New page: {h1}. Calculated in the browser; nothing is stored.', h1=h1,
           extra_css=TCSS, extra_js=js + extra, new_page={'title': title, 'meta': meta})

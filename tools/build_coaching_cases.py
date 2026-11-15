@@ -57,11 +57,15 @@ def case(c, i):
       {f'<blockquote>“{E(c["quote"])}”<cite>{E(c["name"])}</cite></blockquote>' if c.get('quote') else ''}
     </article>'''
 
+import json
+CASES_LD = '<script type="application/ld+json">' + json.dumps({'@context': 'https://schema.org', '@type': 'ItemList', 'name': 'Cycling coaching case studies',
+    'itemListElement': [{'@type': 'ListItem', 'position': i + 1, 'url': f"{C}/case-studies/#{c['slug']}", 'name': f"{c['headline']}: {c['name']}"} for i, c in enumerate(CASES)]},
+    ensure_ascii=False) + '</script>'   # JSON-LD (15 Nov): the case studies as a list
 MAIN = f'''<div class="hero hero-sm">
   <img src="{HERO}" alt="{E(live_alt('IMG_4003AWDWWWU'))}" width="2560" height="1707">
   <div class="in">
     <div class="eyebrow eb-pill"><span class="dot"></span>Results</div>
-    <h1>Case Studies</h1>
+    <h1>Case Studies</h1>{CASES_LD}
     <p class="lede">Real athletes, real goals, real results. How Cigala Cycling coaching took riders from where they started to where they wanted to be, in their own words.</p>
     <div class="ctas"><a class="btn btn-go" href="{CAL}" {EXT}>Book a free consultation</a><a class="btn btn-ghost" href="{C}/testimonials/" {EXT}>All testimonials</a></div>
   </div>
