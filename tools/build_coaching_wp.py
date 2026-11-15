@@ -149,7 +149,7 @@ json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget(FONTS + '<d
 
 # ---------- footer + shared cookie banner ----------
 ftr = fix(between(home, '<footer>', '</footer>'))
-ftr = ftr.replace('<a href="/terms-conditions/">Terms &amp; Conditions</a>', '<a href="/terms-conditions/">Terms &amp; Conditions</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
+ftr = ftr.replace('<a href="/privacy-policy/">Privacy Policy</a>', '<a href="/privacy-policy/">Privacy Policy</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
 assert 'data-cc-settings' in ftr
 sys.path.insert(0, ROOT + 'shared/consent')
 from render import banner as render_banner, head_snippet

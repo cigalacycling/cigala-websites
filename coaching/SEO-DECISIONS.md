@@ -83,3 +83,18 @@ They're probably in the WPCode header (not in the Elementor templates). Not chan
 - The tags sit in the **WPCode Header** box, after the JSON-LD schema, wrapped in a stray `<head>...</head>` pair. WPCode can't be edited over the REST API, so Matteo pastes the fix in wp-admin (staging first): replace those lines, **including the stray `<head>` and `</head>`**, with `coaching/wpcode-hreflang-fix.html`. The schema above them stays exactly as it is.
 - Only the domain changes; the tags and their targets are otherwise the same, so the Italia page keeps its signal.
 - Why UK/USA/Canada don't rank: they're 81-88% identical to each other (word comparison of the live pages), so Google treats them as duplicates. The Italia page is 80% different (Italian). Fix when those pages are rebuilt: give each one its own content (local events and guides the blog already has, e.g. Fred Whitton / W200 for UK and Ireland, BWR for USA, Gran Fondo Whistler for Canada; local currency; local testimonials), keeping URLs, titles (Canada typo fixed) and H1s.
+
+## 6. Applied on staging, 15 Nov
+
+- Typos (section 1) fixed on Coaching staging:
+  - Canada title **and** its Yoast focus keyphrase ("Cycling Coach Canda" -> "Canada"), via `/yoast/v1/bulk_editor/update_search`;
+  - "10 Habits ... better cyclist" title;
+  - "It's Not Your Legs" title;
+  - the fasted-training post title/H1 ("intensity"). The URL is unchanged.
+- The Yoast values before these changes are saved in `stg-coaching/yoast-before.json`.
+- Footer (Matteo: "less busy"): cigalacycling.com layout. The four international pages keep their footer links and live H2 wording, inside an "International coaching" toggle in the bottom row (still in the HTML, so Google sees and follows them).
+- Yoast scores on staging (15 Nov):
+  - pages: 4 good, 15 ok, 0 bad, 5 not analysed;
+  - posts: 36 good, 15 ok, 0 bad, 2 not analysed.
+  
+  These are Yoast's own checklist scores, saved when a page is edited in wp-admin. Pushing through the REST API doesn't recalculate them, so they're the scores the live site already had.

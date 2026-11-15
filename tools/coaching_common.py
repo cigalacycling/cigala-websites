@@ -80,39 +80,37 @@ HEADER = f'''<header class="nav">
 </header>'''
 
 def li(u, t): return f'<li>{a(u, t)}</li>'
+# Footer: same layout as cigalacycling.com (logo + tagline, two link columns, contact), Matteo 15 Nov: "less busy".
+# The four international pages keep their footer links (and live H2 wording) for Google, but sit in a small
+# "International coaching" toggle in the bottom row instead of a visible column. Closed <details> content is still in the HTML.
+SITE = [(C + '/about/', 'About'), (C + '/testimonials/', 'Testimonials'), (C + '/blog/', 'Blog'), (T + '/', 'Bike Tours'), (R, 'Retail Store'), (C + '/contact/', 'Contact')]
+COACH = [(C + '/individual-packages/', 'Cycling Packages'), (C + '/tri-individual-packages/', 'Triathlon Packages'), (C + '/group-club-packages/', 'Group &amp; Club Packages'),
+         (C + '/book-1-on-1-session/', 'Book a 1-to-1 Session'), (C + '/testing/', 'INSCYD Testing'), (C + '/nutrition/', 'Nutrition')]
+INTL = [('/cycling-coach-uk/', 'Cycling Coach UK'), ('/cycling-coach-usa/', 'Cycling Coach USA'), ('/cycling-coach-canada/', 'Cycling Coach Canada'), ('/preparatore-di-ciclismo-italia/', 'Preparatore di Ciclismo Italia')]
 FOOTER = f'''<footer>
   <div class="in fcols">
     <div>
       <a class="brand brand-lg" href="{C}/" {EXT}><img src="{LOGO}" alt="Cigala Cycling Coaching" width="76" height="76"></a>
       <h2 class="tag-line">Cycling &amp; Triathlon Coaching - Bike Tours - Retail</h2>
-      <h3 class="tag-sub">#TrainSmarterRideFaster</h3>
-      <ul class="contact">
+    </div>
+    <div><h4>Coaching</h4><ul>{''.join(li(u, t) for u, t in COACH)}</ul></div>
+    <div><h4>Cigala Cycling</h4><ul>{''.join(li(u, t) for u, t in SITE)}</ul></div>
+    <div><h4>Contact</h4>
+      <ul>
         <li><a href="mailto:info@cigalacycling.com">info@cigalacycling.com</a></li>
         <li><a href="tel:+35340478107">+353 404 78107</a></li>
+        <li>{a('https://wa.me/message/WVBRO6XAMQMCH1', 'WhatsApp')} · {a('https://www.instagram.com/cigalacycling/', 'Instagram')} · {a('https://www.facebook.com/CigalaCycling/', 'Facebook')}</li>
+        <li>{a('https://www.youtube.com/@cigalacycling', 'YouTube')} · {a('https://www.tiktok.com/@cigalacycling', 'TikTok')} · {a('https://x.com/CigalaCycling', 'X')} · {a('https://www.threads.com/@cigalacycling', 'Threads')}</li>
       </ul>
     </div>
-    <div><h4>Cycling</h4><ul>{''.join(li(u, t) for u, t in CYC)}</ul></div>
-    <div><h4>Triathlon</h4><ul>{''.join(li(u, t) for u, t in TRI)}</ul>
-      <h4 class="mt">Services</h4><ul>{''.join(li(u, t) for u, t in SERV)}</ul></div>
-    <div><h4>International Coaching</h4>
-      <ul class="intl">
-        <li><h2><a href="{C}/cycling-coach-uk/" {EXT}>Cycling Coach UK</a></h2></li>
-        <li><h2><a href="{C}/cycling-coach-usa/" {EXT}>Cycling Coach USA</a></h2></li>
-        <li><h2><a href="{C}/cycling-coach-canada/" {EXT}>Cycling Coach Canada</a></h2></li>
-        <li><h2><a href="{C}/preparatore-di-ciclismo-italia/" {EXT}>Preparatore di Ciclismo Italia</a></h2></li>
-      </ul>
-      <h4 class="mt">Cigala Cycling</h4>
-      <ul>{li(C + '/', 'Home')}{li(C + '/about/', 'About')}{li(C + '/testimonials/', 'Testimonials')}{li(C + '/blog/', 'Blog')}{li(T + '/', 'Bike Tours')}{li(R, 'Shop')}{li(C + '/contact/', 'Contact')}</ul>
-    </div>
-  </div>
-  <div class="in social">
-    {a('https://www.instagram.com/cigalacycling/', 'Instagram')}{a('https://www.facebook.com/CigalaCycling/', 'Facebook')}{a('https://www.youtube.com/@cigalacycling', 'YouTube')}{a('http://tiktok.com/@cigalacycling', 'TikTok')}{a('https://x.com/CigalaCycling', 'X')}{a('https://www.threads.com/@cigalacycling', 'Threads')}{a('https://wa.me/message/WVBRO6XAMQMCH1', 'WhatsApp')}
   </div>
   <div class="legal"><div class="in">
-    <span>© 2026, Cigala Cycling Ltd</span>
-    <span>VAT No: IE 3699893CH | Company Registration No: 675577</span>
+    <span>© 2026 Cigala Cycling Ltd · VAT IE 3699893CH · Company No. 675577</span>
     {a(C + '/terms-conditions/', 'Terms &amp; Conditions')}
     {a(C + '/privacy-policy/', 'Privacy Policy')}
+    <details class="intl-dd"><summary>International coaching</summary>
+      <ul class="intl">{''.join(f'<li><h2><a href="{C}{u}" {EXT}>{t}</a></h2></li>' for u, t in INTL)}</ul>
+    </details>
   </div></div>
 </footer>'''
 
@@ -208,6 +206,23 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .burger nav a { transition: color .15s; }
 .burger nav a:hover, .burger nav a:active { color: var(--green-text); }
 .burger nav a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
+/* ---- footer layout: as cigalacycling.com ---- */
+.fcols { grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)) !important; }
+footer .tag-line { font-size: 22px; line-height: 1.15; margin: 14px 0 0; max-width: 24ch; }
+footer ul { font-size: 14px; }
+footer ul a { color: var(--text-2); }
+.legal .in { align-items: center; }
+.intl-dd { position: relative; }
+.intl-dd summary { list-style: none; cursor: pointer; font-size: 12px; color: var(--text-3); }
+.intl-dd summary::-webkit-details-marker { display: none; }
+.intl-dd summary::after { content: " ▾"; }
+.intl-dd[open] summary::after { content: " ▴"; }
+.intl-dd summary:hover { color: var(--green-text); }
+.intl-dd .intl { list-style: none; margin: 0; padding: 10px 12px; position: absolute; bottom: calc(100% + 8px); left: 0; min-width: 240px; display: grid; gap: 4px; background: var(--panel-solid); border: 1px solid var(--border-strong); border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,.5); z-index: 5; }
+.intl-dd .intl h2 { margin: 0; font: 400 13px/1.6 var(--body); text-transform: none; letter-spacing: 0; }
+.intl-dd .intl a { color: var(--text-2); text-decoration: none; }
+@media (max-width: 1080px) { .fcols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; } .fcols > div:first-child { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .intl-dd .intl { left: auto; right: 0; } .fcols { grid-template-columns: minmax(0, 1fr) !important; } }
 /* ---- footer links: green-text on hover, no underline (Matteo, all sites, 15 Nov) ---- */
 footer a { text-decoration: none; transition: color .15s, border-color .15s; }
 footer a:hover, footer ul a:hover, footer .intl h2 a:hover, .legal a:hover, footer .social a:hover { color: var(--green-text); text-decoration: none; }
