@@ -24,7 +24,7 @@ def fix_img(m):
     tag = m.group(0); src = re.search(r'src="([^"]+)"', tag).group(1)
     if src.startswith('https://staging.tours.cigalacycling.com/wp-content/uploads/'): return tag   # already a staging WebP (tools/tours_img.py)
     if src.startswith('https://i.ytimg.com/vi/'): return tag   # YouTube video stills on the Testimonials page (the player loads on click)
-    key = IMG.get(src) or (src[len('img/cigala-tours-'):-5] if src.startswith('img/cigala-tours-') else None)
+    key = (src[4:-5] if src.startswith('img/flag-') else None) or IMG.get(src) or (src[len('img/cigala-tours-'):-5] if src.startswith('img/cigala-tours-') else None)
     if not key or key not in M: raise SystemExit('no staging image for ' + src)
     tag = tag.replace(f'src="{src}"', f'src="{M[key]["url"]}"')
     if not re.search(r'alt="[^"]+"', tag):   # empty alt -> the alt the image has on the site

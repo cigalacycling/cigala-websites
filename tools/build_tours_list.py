@@ -23,6 +23,7 @@ idx = open(ROOT + 'tourspages/index.html').read()
 home = open(ROOT + 'tourspages/home.html').read()
 trips = {t['slug']: t for t in json.load(open(ROOT + 'tours/trips-2027.json'))['trips']}
 LIVE = json.load(open(ROOT + 'tours/list-pages-live.json'))   # exact H1, intro and tour order of the live pages
+FLAG = {'Italy': 'it', 'France': 'fr', 'Portugal': 'pt', 'Slovenia': 'si', 'Cyprus': 'cy', 'Belgium': 'be'}   # small country flag on each card, top right (Matteo 15 Nov)
 MON = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 def dates(t):
@@ -74,7 +75,7 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     badge = BADGES[t['badge']] if t.get('badge') else ''
     alt = LIVE_ALT.get(slug) or f'{t["name"]} bike tour'
     rows[slug] = (t['type'], f"""<article class="tcard" data-k="{t['type']}">
-  <a class="ph" href="{more}" {EXT}><img src="{img}" alt="{E(alt)}" loading="lazy" width="1200" height="900"><span class="tags">{tags}</span>{badge}</a>
+  <a class="ph" href="{more}" {EXT}><img src="{img}" alt="{E(alt)}" loading="lazy" width="1200" height="900"><span class="tags">{tags}</span><img class="flag" src="img/flag-{FLAG[t['country']]}.webp" alt="Flag of {t['country']}" width="40" height="30">{badge}</a>
   <div class="tx">
     <h2>{name}</h2>
     <h3 class="where">{where}</h3>
@@ -193,6 +194,8 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .tcard .tag.gravel::before { background: var(--gravel); }
 .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
 .tcard .entry { width: fit-content; margin: 0; }
+.tcard .ph .flag { position: absolute; top: 26px; right: 26px; width: auto !important; height: 23px !important; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; filter: none !important; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); }
+.tcard:hover .ph .flag { transform: none; }
 .tcard .ph .entry { position: absolute; left: 26px; bottom: 26px; background: rgba(8,9,10,.85); border-radius: 999px; padding: 4px 10px; }   /* badge on the photo, lined up with the type tag above it */
 .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
 .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -6px; }

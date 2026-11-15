@@ -438,6 +438,8 @@ html .cl .tcard .tag::before { content: ""; flex: none; display: inline-block; w
 html .cl .tcard .tag.gravel::before { background: var(--gravel); }
 html .cl .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
 html .cl .tcard .entry { width: fit-content; margin: 0; }
+html .cl .tcard .ph .flag { position: absolute; top: 26px; right: 26px; width: auto !important; height: 23px !important; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; filter: none !important; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); }
+html .cl .tcard:hover .ph .flag { transform: none; }
 html .cl .tcard .ph .entry { position: absolute; left: 26px; bottom: 26px; background: rgba(8,9,10,.85); border-radius: 999px; padding: 4px 10px; }
 html .cl .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
 html .cl .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -6px; }
@@ -683,6 +685,7 @@ html .cc .cc-social a { display: inline-grid; place-items: center; width: 40px; 
 html .cc .cc-social a:hover, html .cc .cc-social a:active { color: var(--green-text, #34c46a); background: rgba(255,255,255,.04); }
 html .cc .cc-social a:focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 2px; }
 html .cc .cc-social svg { width: 20px; height: 20px; fill: currentColor; display: block; }
+html .cc .tour > .flag { position: absolute; top: 14px; right: 14px; width: auto; height: 28px; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); z-index: 2; }
 html .cc .who img { border: 2px solid var(--green); }
 html .cc .cc [hidden], html .cc [hidden] { display: none !important; }
 html .cc .eyebrow { color: var(--red-text, #ff3d33); margin-bottom: 10px; }
@@ -820,7 +823,7 @@ html .cc .tour:hover img { transform: none; }
     <div class="head"><div><div class="eyebrow">All public tours</div><h2>2027 Calendar</h2><div class="bar"></div></div><nav class="browse" aria-label="Tour types"><a class="chip" href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener" aria-current="page">All</a><a class="chip" href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road</a><a class="chip" href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel</a><a class="chip" href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo</a><a class="chip" href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italy</a></nav></div>
     <div class="tgrid">
 <article class="tcard" data-k="gf">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/discover-the-algarve-granfondo/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-discover-the-algarve-granfondo.webp" alt="Algarve &amp; Gran Fondo Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/discover-the-algarve-granfondo/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-discover-the-algarve-granfondo.webp" alt="Algarve &amp; Gran Fondo Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><img class="flag" src="img/flag-pt.webp" alt="Flag of Portugal" width="40" height="30"><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span></a>
   <div class="tx">
     <h2>Discover the Algarve &amp; Gran Fondo</h2>
     <h3 class="where">Algarve, Portugal</h3>
@@ -835,7 +838,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gf">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/chianti-gran-fondo-strade-bianche/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-chianti-gran-fondo-strade-bianche.webp" alt="Chianti &amp; Strade Bianche Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/chianti-gran-fondo-strade-bianche/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-chianti-gran-fondo-strade-bianche.webp" alt="Chianti &amp; Strade Bianche Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span></a>
   <div class="tx">
     <h2>Chianti &amp; Gran Fondo Strade Bianche</h2>
     <h3 class="where">Chianti, Tuscany, Italy</h3>
@@ -850,7 +853,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gf">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/tour-of-flanders-experience/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-tour-of-flanders-experience.webp" alt="Tour of Flanders Experience Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/tour-of-flanders-experience/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-tour-of-flanders-experience.webp" alt="Tour of Flanders Experience Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><img class="flag" src="img/flag-be.webp" alt="Flag of Belgium" width="40" height="30"><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span></a>
   <div class="tx">
     <h2>Tour of Flanders Experience</h2>
     <h3 class="where">Flanders, Belgium</h3>
@@ -865,7 +868,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gravel">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/cyprus-crossing-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-cyprus-crossing-gravel.webp" alt="Cyprus Crossing Gravel Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/cyprus-crossing-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-cyprus-crossing-gravel.webp" alt="Cyprus Crossing Gravel Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span><img class="flag" src="img/flag-cy.webp" alt="Flag of Cyprus" width="40" height="30"></a>
   <div class="tx">
     <h2>Cyprus Crossing</h2>
     <h3 class="where">Paphos, Cyprus</h3>
@@ -880,7 +883,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gravel">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/tuscany-epic-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-tuscany-epic-gravel.webp" alt="Tuscany Gravel Epic" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/tuscany-epic-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-tuscany-epic-gravel.webp" alt="Tuscany Gravel Epic" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"></a>
   <div class="tx">
     <h2>Tuscany Epic</h2>
     <h3 class="where">Castagneto Carducci, Tuscany, Italy</h3>
@@ -895,7 +898,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gf">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/maratona-dles-dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-maratona-dles-dolomites.webp" alt="Maratona Dles Dolomites Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/maratona-dles-dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-maratona-dles-dolomites.webp" alt="Maratona Dles Dolomites Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span></a>
   <div class="tx">
     <h2>Maratona dles Dolomites - Enel</h2>
     <h3 class="where">Alta Badia, Italy</h3>
@@ -910,7 +913,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="road">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-dolomites.webp" alt="Dolomites Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-dolomites.webp" alt="Dolomites Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"></a>
   <div class="tx">
     <h2>Dolomites</h2>
     <h3 class="where">Dolomites, Italy</h3>
@@ -925,7 +928,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="road">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/italian-alps/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-italian-alps.webp" alt="Italian Alps Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/italian-alps/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-italian-alps.webp" alt="Italian Alps Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"></a>
   <div class="tx">
     <h2>Italian Alps</h2>
     <h3 class="where">Bormio, Italy</h3>
@@ -940,7 +943,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gravel">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/alpine-gravel-escape/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-alpine-gravel-escape.webp" alt="Alpine Gravel Tour Bormio Cigala" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/alpine-gravel-escape/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-alpine-gravel-escape.webp" alt="Alpine Gravel Tour Bormio Cigala" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"></a>
   <div class="tx">
     <h2>Alpine Gravel Escape</h2>
     <h3 class="where">Bormio, Italy</h3>
@@ -955,7 +958,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="road">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/french-alps/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-french-alps.webp" alt="French Alps Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/french-alps/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-french-alps.webp" alt="French Alps Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span><img class="flag" src="img/flag-fr.webp" alt="Flag of France" width="40" height="30"></a>
   <div class="tx">
     <h2>French Alps</h2>
     <h3 class="where">French Alps, France</h3>
@@ -970,7 +973,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="road">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/wonderful-slovenia/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-wonderful-slovenia.webp" alt="Wonderful Slovenia Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/wonderful-slovenia/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-wonderful-slovenia.webp" alt="Wonderful Slovenia Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span><img class="flag" src="img/flag-si.webp" alt="Flag of Slovenia" width="40" height="30"></a>
   <div class="tx">
     <h2>Wonderful Slovenia</h2>
     <h3 class="where">West Slovenia, Slovenia</h3>
@@ -985,7 +988,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="road">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-garda-and-stelvio/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-garda-and-stelvio.webp" alt="Lake Garda Bike Tour | Cigala Cycling" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-garda-and-stelvio/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-garda-and-stelvio.webp" alt="Lake Garda Bike Tour | Cigala Cycling" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"></a>
   <div class="tx">
     <h2>Lake Garda &amp; Day Trip to Stelvio</h2>
     <h3 class="where">Lake Garda, Italy</h3>
@@ -1000,7 +1003,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gravel">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-garda-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-garda-gravel.webp" alt="Lake Garda Gravel bike tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-garda-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-garda-gravel.webp" alt="Lake Garda Gravel bike tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"></a>
   <div class="tx">
     <h2>Lake Garda Gravel</h2>
     <h3 class="where">Lake Garda, Italy</h3>
@@ -1015,7 +1018,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="road">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/italys-coast-to-coast/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-italys-coast-to-coast.webp" alt="Italy&#x27;s Coast to Coast bike tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/italys-coast-to-coast/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-italys-coast-to-coast.webp" alt="Italy&#x27;s Coast to Coast bike tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"></a>
   <div class="tx">
     <h2>Italy's Coast to Coast</h2>
     <h3 class="where">Tuscany, Umbria, Marche, Italy</h3>
@@ -1030,7 +1033,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gf">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-como-gran-fondo-il-lombardia/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-como-gran-fondo-il-lombardia.webp" alt="Lake Como &amp; Lombardia 2027" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-como-gran-fondo-il-lombardia/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-como-gran-fondo-il-lombardia.webp" alt="Lake Como &amp; Lombardia 2027" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span></a>
   <div class="tx">
     <h2>Lake Como, Gran Fondo Il Lombardia &amp; Pro Race</h2>
     <h3 class="where">Lake Como, Italy</h3>

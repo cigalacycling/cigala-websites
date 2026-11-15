@@ -36,10 +36,11 @@ def fix_img(m):
     src = re.search(r'src="([^"]+)"', tag).group(1)
     key = IMG.get(src) or (src[4:-5] if src.startswith('img/trip-') and src.endswith('.webp') else None) \
         or (src[len('img/cigala-tours-'):-5] if src.startswith('img/cigala-tours-guest-') else None)
+    key = key or (src[4:-5] if src.startswith('img/flag-') else None)
     if not key: raise SystemExit('no staging image for ' + src)
     tag = tag.replace(f'src="{src}"', f'src="{M[key]["url"]}"')
     alt = re.search(r'alt="([^"]*)"', tag).group(1)
-    keep_page_alt = key.startswith('trip-') or key in ('hero', 'matteo', 'signature')   # alt written for these spots in the design
+    keep_page_alt = key.startswith(('trip-', 'flag-')) or key in ('hero', 'matteo', 'signature')   # alt written for these spots in the design
     if not alt or not keep_page_alt:
         tag = re.sub(r'alt="[^"]*"', 'alt="' + M[key]['alt'].replace('"', '&quot;') + '"', tag)  # the alt the image already has on the site
     return tag

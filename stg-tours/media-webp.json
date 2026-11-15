@@ -8497,5 +8497,35 @@
    1333
   ],
   "orig": 8611
+ },
+ "flag-it": {
+  "id": 10089,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-it.webp",
+  "alt": "Flag of Italy"
+ },
+ "flag-fr": {
+  "id": 10090,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-fr.webp",
+  "alt": "Flag of France"
+ },
+ "flag-pt": {
+  "id": 10091,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-pt.webp",
+  "alt": "Flag of Portugal"
+ },
+ "flag-si": {
+  "id": 10092,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-si.webp",
+  "alt": "Flag of Slovenia"
+ },
+ "flag-cy": {
+  "id": 10093,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-cy.webp",
+  "alt": "Flag of Cyprus"
+ },
+ "flag-be": {
+  "id": 10094,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-be.webp",
+  "alt": "Flag of Belgium"
  }
 }

@@ -9,6 +9,7 @@ Changes on top of the design (approved by Matteo, 15 Nov 2026):
 Images are copied into tourspages/img/ (home-*) so the preview opens locally.
 """
 import os, re, sys, json, html, shutil, urllib.request, ssl
+FLAG = {'Italy': 'it', 'France': 'fr', 'Portugal': 'pt', 'Slovenia': 'si', 'Cyprus': 'cy', 'Belgium': 'be'}   # small country flag on each tour card, top right (Matteo 15 Nov)
 from datetime import date
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
@@ -143,6 +144,7 @@ for t in trips:
         f'<a class="tour" data-k="{t["type"]}" data-country="{t["country"].lower()}" data-month="{" ".join(months(t))}" data-level="{" ".join(lv)}" href="{t["url"]}" {EXT}>'
         f'<img src="{img}" alt="{E(name)} bike tour" loading="lazy">'
         f'<span class="tag{" gravel" if t["type"] == "gravel" else ""}">{TYPE[t["type"]]}</span>'
+        f'<img class="flag" src="img/flag-{FLAG[t["country"]]}.webp" alt="Flag of {t["country"]}" width="40" height="30">'
         f'<div class="tx">{BADGE.get(t.get("badge"), "")}<time class="when" datetime="{t["start"]}">{dates(t)}</time>'
         f'<h3>{E(name)}</h3><p>{E(BLURB[t["slug"]])}</p>'
         f'<span class="facts"><span>{t["country"]}</span><span>{t["distance"]}</span><span>{t["climbing"]} climbing</span></span>'
@@ -346,6 +348,7 @@ i = s.index('</details>', s.index('<details id="faq-4">')) + len('</details>')
 s = s[:i] + extra + s[i:]
 
 CSS2 = """
+.tour > img.flag { position: absolute !important; inset: 14px 14px auto auto !important; top: 14px !important; right: 14px !important; left: auto !important; bottom: auto !important; width: auto !important; height: 28px !important; filter: none !important; transform: none !important; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); z-index: 2; }
 .who img { border: 2px solid var(--green); }   /* green ring on guest photos, like Coaching */
 /* ---- Matteo's feedback, 15 Nov 2026 ---- */
 .cc [hidden], [hidden] { display: none !important; }
