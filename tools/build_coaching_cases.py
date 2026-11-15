@@ -22,10 +22,10 @@ def bars(c):
 
 def photo(c, i):
     if c.get('photo_file'):
-        return f'<div class="cs-photo"><img src="{conv(c["photo_file"], "athlete-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"></div>'
+        return f'<div class="cs-photo"><img src="{conv(c["photo_file"], "case-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"></div>'
     if c['photo']:
         return f'<div class="cs-photo"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="{"eager" if i == 0 else "lazy"}"></div>'
-    return f'<div class="cs-photo cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c["bars"][1][0])}</small></div>'
+    return f'<div class="cs-photo cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c.get("stat_label", ""))}</small></div>'
 
 def case(c, i):
     how = ''.join(f'<li>{E(x)}</li>' for x in c['how'])
@@ -100,10 +100,11 @@ CSS = CS_CSS + '''<style>
 .cs-bar-h b { font-size: 13px; color: var(--text); }
 .cs-delta { font: 400 22px/1 var(--head); color: var(--green-text); white-space: nowrap; }
 .cs-bar p { margin: 4px 0 10px; font-size: 12.5px; color: var(--text-3); }
-.cs-b { display: grid; grid-template-columns: 112px 1fr auto; align-items: center; gap: 8px; font-size: 12px; color: var(--text-3); margin-top: 6px; }
+.cs-b { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--text-3); margin-top: 8px; }
+.cs-b i { grid-column: 1 / -1; grid-row: 2; }   /* full-width bar under its label */
 .cs-b i { display: block; height: 10px; border-radius: 5px; background: rgba(255,255,255,.18); }
 .cs-b.now i { background: var(--green); }
-.cs-b em { font-style: normal; font-weight: 700; color: var(--text-2); min-width: 54px; text-align: right; }
+.cs-b em { font-style: normal; font-weight: 700; color: var(--text-2); text-align: right; }
 .cs-b.now em { color: var(--text); }
 .cs-bests { margin-top: 16px; }
 .cs-bests h3 { font: 700 11px/1.4 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--green-text); margin: 0 0 8px; }

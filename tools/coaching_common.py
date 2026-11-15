@@ -157,8 +157,9 @@ CASES = [
      'quote': 'He has not only made me fall in love with cycling, but has believed in me even when I didn’t.'},
     # Tilen: Matteo's athlete case study post (15 Nov 2026, "Athlete Review" chat); numbers from his Vekta data.
     # No photo yet (Matteo will send it): the card and the case show his numbers instead.
-    {'slug': 'tilen', 'name': 'Tilen Č.', 'where': 'Road racer · Slovenia', 'photo': None,
-     'headline': 'From not sprinting out of the saddle to 1,063 W', 'stat': '1,063 W sprint', 'tag': 'Road racing',
+    {'slug': 'tilen', 'name': 'Tilen Č.', 'where': 'Road racer · Slovenia', 'photo': None, 'photo_file': 'coaching/athletes/tilen.webp',
+     'photo_alt': 'Tilen Č. racing in a white team kit',
+     'headline': 'From not sprinting out of the saddle to 1,063 W', 'stat': '1,063 W sprint', 'stat_label': 'Best 15-second power', 'tag': 'Road racing',
      'before': 'One year ago Tilen couldn’t sprint standing up.',
      'goal': 'Race at the front, from local races to the national championships.',
      'how': ['Consistency: steady training, no huge weeks (the biggest was 16 hours)', 'A plan built around his life, adjusted week by week', 'Talking to his coach: RPE and a comment after his rides, so the plan could adapt'],
@@ -186,6 +187,50 @@ CASES = [
      'bests_title': 'Up across the board',
      'bests': ['3 minutes: 292 → 325 W', '10 minutes: 242 → 263 W', '20 minutes: 222 → 236 W', '60 minutes: 204 → 211 W', 'W′: 11.4 → 14.6 kJ (+28%)'],
      'source': 'Vekta data, last 3 months (late July – late October 2026) against the 3 months before'},
+    # Eoin, Vittorio and David: Matteo's case study posts (Canva, 15 Nov 2026), numbers from their Vekta data.
+    # The post tracker says each needs the athlete's OK: staging only until they agree.
+    {'slug': 'eoin', 'name': 'Eoin R.', 'where': 'IVCA racer · Ireland', 'photo': None,
+     'headline': 'All-time bests and category wins', 'stat': '+104 W sprint', 'stat_label': 'Best 15-second power', 'tag': 'Road racing',
+     'before': 'Eoin races the IVCA calendar in Ireland.',
+     'goal': 'Get stronger in the efforts that decide a race.',
+     'how': [],
+     'result': 'Between May and November he set all-time bests from 15 seconds to 5 minutes and won his category more than once. In one race, after about 100 km, he still sprinted 1,271 W in the final 10 minutes.',
+     'quote': None,
+     'labels': ('Same months 2025', 'This season'),
+     'bars': [('Best 15-second power', 'A faster finish', 1041, 1145, ' W', '+104 W'),
+              ('Best 1-minute power', 'For closing a gap or a short climb', 643, 697, ' W', '+54 W'),
+              ('Best 5-minute power', 'The breakaway: an all-time best, set in October', 383, 414, ' W', '+31 W')],
+     'bests_title': 'The engine',
+     'bests': ['Peak Critical Power: 313 → 332 W (+19 W), his highest on record', 'VO2max 59, the highest Vekta has on record for him', '1,271 W sprint after about 100 km of racing'],
+     'source': 'Vekta data, May–Nov 2025 vs May–Nov 2026'},
+    {'slug': 'vittorio', 'name': 'Vittorio C.', 'where': 'MTB & cyclocross racer · Italy', 'photo': None, 'photo_file': 'coaching/athletes/vittorio.webp',
+     'photo_alt': 'Vittorio C. racing mountain bike in an orange helmet',
+     'headline': 'Faster out of every corner', 'stat': '1,112 W record', 'tag': 'MTB & cyclocross',
+     'before': 'Vittorio races mountain bike and cyclocross in Italy: 25 races in the last 12 months.',
+     'goal': 'Get stronger in the short, repeated, all-out efforts that decide off-road racing.',
+     'how': [],
+     'result': 'All-time bests in the sprint and the 1-minute, 7.0 W/kg for a minute (his best ever, above his previous record from 2023), and his highest power ever: 1,112 W in April 2026.',
+     'quote': 'Today, a max power record.',
+     'bars': [('Best 5-second power', 'A sharper sprint: an all-time best', 837, 919, ' W', '+82 W'),
+              ('Best 15-second power', 'Up every steep ramp: another all-time best', 684, 782, ' W', '+98 W'),
+              ('Best 1-minute power', 'The attack: 7.0 W/kg for a minute', 404, 451, ' W', '+47 W')],
+     'bests_title': 'More matches to burn',
+     'bests': ['W′: 7.4 → 9 kJ (+21%), Nov 2025 vs Nov 2026', 'Record power: 1,112 W, April 2026'],
+     'source': 'Vekta data, last 12 months against the 12 months before (Nov 2024 – Nov 2026)'},
+    {'slug': 'david', 'name': 'David O.', 'where': 'Sportive rider · Ireland', 'photo': None, 'photo_file': 'coaching/athletes/david.webp',
+     'photo_alt': 'David O. riding in a light blue club kit',
+     'headline': '+44 watts of engine', 'stat': '+44 W CP', 'tag': 'Sportive',
+     'before': 'David rides Ireland’s big sportives: the Tour de Conamara, the Tour de Kilkenny and the Tour of Wicklow, days of 140–160 km.',
+     'goal': 'A bigger engine for long days in the saddle.',
+     'how': [],
+     'result': 'Critical Power up from 244 to 288 W in twelve months (+18%), with his highest ever, 290 W, in September, and the highest VO2max Vekta has on record for him.',
+     'quote': None,
+     'bars': [('Best 20-minute power', 'The long climbs on a big day out', 250, 276, ' W', '+26 W'),
+              ('Best 5-minute power', 'Over a short, steep climb with the group', 288, 320, ' W', '+32 W'),
+              ('Best 30-second power', 'A quarter more kick', 505, 633, ' W', '+128 W')],
+     'bests_title': 'The engine',
+     'bests': ['Critical Power: 244 → 288 W (+44 W, +18%), Nov 2025 vs Nov 2026', 'VO2max: 52 → 58 ml/kg/min (Vekta estimate)'],
+     'source': 'Vekta data, last 12 months against the 12 months before (Nov 2024 – Nov 2026)'},
     {'slug': 'shane-courtney', 'name': 'Shane Courtney', 'where': 'Tralee Manor West ibike', 'photo': 'T142905.118',
      'headline': '+40 W FTP in under 4 months', 'stat': '220 → 260 W FTP', 'tag': 'Road racing',
      'before': 'Training 14–16 hours a week over the winter on a generic plan, and getting nowhere. Racing in A4.',
@@ -218,8 +263,8 @@ CASES = [
 def case_cards(link_base):
     """Scrolling case study cards; link_base is the case studies page URL."""
     def pic(c):
-        if c.get('photo_file'): return f'<span class="cs-img"><img src="{conv(c["photo_file"], "athlete-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"></span>'
-        if not c['photo']: return f'<span class="cs-img cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c["bars"][1][0]) if c.get("bars") else ""}</small></span>'
+        if c.get('photo_file'): return f'<span class="cs-img"><img src="{conv(c["photo_file"], "case-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"></span>'
+        if not c['photo']: return f'<span class="cs-img cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c.get("stat_label", ""))}</small></span>'
         return f'<span class="cs-img"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="lazy"></span>'
     cards = ''.join(f'<a class="cs-card" href="{link_base}#{c["slug"]}" {EXT}>{pic(c)}'
                     f'<span class="cs-tx"><span class="cs-tag">{E(c["tag"])}</span><b class="cs-stat">{E(c["stat"])}</b><span class="cs-h">{E(c["headline"])}</span>'
