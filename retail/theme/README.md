@@ -105,3 +105,15 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
     - Zone3 men's Agile
     - Normatec 3.0 legs
   - "Advice from racers" is now "Advice from experts".
+- Round 9 (15 Nov): new page templates in the Cigala style:
+  - Reusable sections: `cigala-page-hero`, `cigala-split`, `cigala-cards` (icons or numbered steps), `cigala-band` (photo + CTA), plus `snippets/cigala-icon.liquid`.
+  - `templates/page.about.json`:
+    - Keeps the live story wording. Matteo's cut-out photo is in the hero, and the story is shown as numbered cards.
+    - The **registered (home) address is removed** (shared/BUSINESS.md). The page shows company name, CRO, VAT and "Co. Wicklow, Ireland" only.
+  - `templates/page.bike-to-work.json`: keeps the live wording and the H2s "Introduction" and "Rules". The scheme logo image is replaced by a team photo.
+  - `templates/page.finance.json`: rewritten (Matteo: "change everything"). It keeps the humm facts (little things <€500, 3 months 0%; big things up to €15,000, 36 months) and the apply link.
+  - The pages use these templates once each page's template is set (Online Store → Pages → Theme template): about-us → about, bike-to-work → bike-to-work, finance → finance.
+  - Until then the pages can be previewed with `?view=about` etc.
+  - File alt text set for IMG_3999… and IMG_4003… (the About photos).
+  - Home tile 5: Wetsuits is replaced by Sport Watches (`watches`, photo: Garmin Forerunner 55, its best seller).
+  - Collection and search grids now keep side margins on phones (`full_width_on_mobile: false`). The first product was being cut off at the screen edge.

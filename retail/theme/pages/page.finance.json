@@ -1,0 +1,113 @@
+{
+ "sections": {
+  "hero": {
+   "type": "cigala-page-hero",
+   "settings": {
+    "eyebrow": "Pay your way",
+    "lede": "<p>Spread the cost of your new kit. Choose humm by flexifi or Klarna at checkout and pay your way.</p>",
+    "image": "shopify://shop_images/cigala-retail-smart-bike.webp"
+   }
+  },
+  "options": {
+   "type": "cigala-cards",
+   "settings": {
+    "eyebrow": "humm by flexifi",
+    "heading": "For little things. For big things. For everything.",
+    "intro": "",
+    "columns": "3",
+    "numbered": false
+   },
+   "blocks": {
+    "c1": {
+     "type": "card",
+     "settings": {
+      "icon": "percent",
+      "title": "Buy 'Little things'",
+      "text": "<p>Below €500 and up to 3 months to pay with 0% interest.</p>"
+     }
+    },
+    "c2": {
+     "type": "card",
+     "settings": {
+      "icon": "euro",
+      "title": "Buy 'Big things'",
+      "text": "<p>Up to €15,000 and up to 36 months to pay, depending on what you buy.</p>"
+     }
+    },
+    "c3": {
+     "type": "card",
+     "settings": {
+      "icon": "card",
+      "title": "Klarna",
+      "text": "<p>Prefer Klarna? Choose it at checkout to pay later or in instalments.</p>"
+     }
+    }
+   },
+   "block_order": [
+    "c1",
+    "c2",
+    "c3"
+   ]
+  },
+  "steps": {
+   "type": "cigala-cards",
+   "settings": {
+    "eyebrow": "Use humm to shop today",
+    "heading": "How to get started",
+    "intro": "",
+    "columns": "3",
+    "numbered": true
+   },
+   "blocks": {
+    "c1": {
+     "type": "card",
+     "settings": {
+      "icon": "check",
+      "title": "Sign up",
+      "text": "<p>And get fast decisions.</p>"
+     }
+    },
+    "c2": {
+     "type": "card",
+     "settings": {
+      "icon": "card",
+      "title": "Shop now",
+      "text": "<p>Checkout online with humm.</p>"
+     }
+    },
+    "c3": {
+     "type": "card",
+     "settings": {
+      "icon": "calendar",
+      "title": "Pay in slices",
+      "text": "<p>And pay your way!</p>"
+     }
+    }
+   },
+   "block_order": [
+    "c1",
+    "c2",
+    "c3"
+   ]
+  },
+  "cta": {
+   "type": "cigala-band",
+   "settings": {
+    "image": "shopify://shop_images/cigala-group-black-kit.webp",
+    "eyebrow": "humm by flexifi",
+    "heading": "Apply today",
+    "text": "<p>humm by flexifi, same but different. Apply today and get humming!</p>",
+    "button_label": "Get started",
+    "button_link": "https://apply.flexifi.com/s/?channel=Web&source=0011n00002NECGfAAP",
+    "button2_label": "Bike to Work Scheme",
+    "button2_link": "shopify://pages/bike-to-work"
+   }
+  }
+ },
+ "order": [
+  "hero",
+  "options",
+  "steps",
+  "cta"
+ ]
+}
