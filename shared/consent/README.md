@@ -29,9 +29,9 @@ Every Cigala site uses this one banner, so it looks and behaves the same everywh
 |---|---|---|---|
 | cigalacycling.com | G-955J6LHQ2P | 1986332861692106 | 43e5f685-37fc-4f78-9420-122fd2a3c5e3 |
 | tours.cigalacycling.com | G-QRF16ZZVDB (from the live site) | 1986332861692106 (Matteo confirmed 15 Nov: same Pixel on all sites) | 43e5f685-37fc-4f78-9420-122fd2a3c5e3 (checked on the live site) |
-| coaching.cigalacycling.com | G-E1WWZCLBRB (from the live site) | 1986332861692106 (new on this site, only once Matteo confirms) | 43e5f685-37fc-4f78-9420-122fd2a3c5e3 (see coaching/TRACKING.md) |
+| coaching.cigalacycling.com | G-E1WWZCLBRB (from the live site) | 1986332861692106 (Matteo confirmed 15 Nov: same Pixel on all sites) | 43e5f685-37fc-4f78-9420-122fd2a3c5e3 (see coaching/TRACKING.md) |
 
-The Pixel is Matteo's single Meta Pixel. In November 2026 it was installed only on cigalacycling.com; live Tours and Coaching had no Pixel. Add it to a site only after Matteo confirms. Until then, render the banner without it: pass `pixel_id=''`, and drop "advertising (Meta Pixel)" from the banner text. Always confirm IDs against the live site before building, and keep every existing tag. If a live site has a tag not listed here, ask Matteo, then gate it behind consent the same way.
+The Pixel is Matteo's single Meta Pixel. In November 2026 it was installed only on cigalacycling.com; live Tours and Coaching had no Pixel. On 15 Nov Matteo confirmed the same Pixel goes on cigalacycling.com, Tours and Coaching. It always loads only after Accept. `render.py` can still leave it out with `pixel_id=''` if a future site shouldn't have it. Always confirm IDs against the live site before building, and keep every existing tag. If a live site has a tag not listed here, ask Matteo, then gate it behind consent the same way.
 
 ## Installing on a WordPress staging site
 
