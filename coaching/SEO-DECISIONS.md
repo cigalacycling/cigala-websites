@@ -170,3 +170,5 @@ To check with Matteo:
 - Matteo 15 Nov: confirmed calls in the client's morning, payment by GoCardless and "no exchange fees" for UK clients.
 - Matteo 15 Nov: Basic must have a payment button, not "Start with a free call". The live country pages have no Basic link,
   so Matteo creates one-time GoCardless links (GBP, USD, CAD) and they go in `BASIC_PAY` in `tools/build_coaching_country.py`.
+- Matteo 15 Nov: H2 "2025 IN NUMBERS" -> "2026 IN NUMBERS" on UK/USA/Canada and "2025 IN NUMERI" -> "2026 IN NUMERI" on Italia
+  (same numbers as the Packages page, which already says 2026). No green line under the testimonials heading (as on Packages).

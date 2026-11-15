@@ -265,7 +265,7 @@ def build_country(key):
 
 <section>
   <div class="in">
-    <div class="head"><div><div class="eyebrow">Results</div><h2>2025 IN NUMBERS</h2><div class="bar"></div></div></div>
+    <div class="head"><div><div class="eyebrow">Results</div><h2>2026 IN NUMBERS</h2><div class="bar"></div></div></div>
     <div class="stats nums">{nums_html}</div>
   </div>
 </section>
@@ -273,7 +273,7 @@ def build_country(key):
 <section>
   <div class="in">
     <div class="head">
-      <div><div class="eyebrow">Real results</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2><div class="bar"></div></div>
+      <div><div class="eyebrow">Real results</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2></div>
       <div class="rv-links"><a class="btn btn-ghost" href="{C}/testimonials/" {EXT}>Read more testimonials</a></div>
     </div>
     {case_cards(C + '/case-studies/')}
@@ -324,7 +324,8 @@ def build_country(key):
     JS = REVIEWS_JS + P.PJS.replace("document.getElementById('g-more').addEventListener", "document.getElementById('g-more') && document.getElementById('g-more').addEventListener") \
         .replace("document.getElementById('g-more').dataset.label = document.getElementById('g-more').textContent;", '')
     build(name, path, MAIN, f'{path} rewritten for {c["name"]}: own copy, real testimonials, prices in {c["code"]}. H1, H2s and lists kept.',
-          h1=h1, extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + CCSS, extra_js=JS)
+          h1=h1, h2_changes={'drop': ['2025 IN NUMBERS'], 'add': ['2026 IN NUMBERS']},   # Matteo 15 Nov: 2026, as on Packages
+          extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + CCSS, extra_js=JS)
     words = len(re.sub(r'<[^>]+>', ' ', MAIN).split())
     print(name, 'words', words, 'reviews', len(c['reviews']), 'faq', len(faq))
 

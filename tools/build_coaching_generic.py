@@ -135,7 +135,7 @@ def section(h2, items, n):
     imgs = [it for it in items if it[0] == 'img' and it[1] in WEBP and not is_icon(it[1])]   # (a few live images are 404s)
     rest = [it for it in items if it[0] != 'img']
     head = heading_html('h2', h2) if h2 else ''
-    bar = '<div class="bar"></div>' if h2 else ''
+    bar = '<div class="bar"></div>' if h2 and not h2.startswith(('LEGGI LE NOSTRE RECENSIONI', 'READ OUR TESTIMONIALS')) else ''   # Matteo 15 Nov: no line under the testimonials heading
     if h2 and 'FREQUENTLY' in h2.upper() and any(it[0] in ('h3', 'h4') for it in rest):
         return f'<section>\n  <div class="in">\n    <div class="head"><div>{head}{bar}</div></div>\n    {faq_html(rest)}\n  </div>\n</section>'
     text = body_html(rest)
@@ -222,6 +222,9 @@ def hero(h1, lede, img_html, btns):
 def build_page(name, h2_changes=None, extra_main='', contact=None):
     path, hero_key = PAGES[name]
     items, form = parse(name)
+    if name == 'preparatore-di-ciclismo-italia':   # Matteo 15 Nov: 2026 in numbers on all the country pages
+        items = [('h2', '2026 IN NUMERI') if it == ('h2', '2025 IN NUMERI') else it for it in items]
+        h2_changes = {'drop': ['2025 IN NUMERI'], 'add': ['2026 IN NUMERI']}
     h1s = [it for it in items if it[0] == 'h1']
     h1 = h1s[0][1] if h1s else LIVE[C + path]['h1'][0]
     # intro: everything before the first H2 (minus the H1)
