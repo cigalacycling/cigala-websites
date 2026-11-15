@@ -327,14 +327,12 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .ticks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
 .ticks li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-2); line-height: 1.45; }
 .ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%2334c46a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
-.ticks li.key { color: var(--text); font-weight: 600; background: var(--green-wash); border: 1px solid rgba(0,154,68,.45); border-radius: 8px; padding: 8px 10px 8px 34px; }
-.ticks li.key::before { left: 10px; top: 11px; }
-.pkg-plus { margin: 14px 0 0; font-size: 13px; color: var(--text-3); }
-.pkg-plus a { color: var(--green-text); }
+.pkg:not(.open) .ticks li.more { display: none; }
+.pkg-all { margin-top: 14px; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 4px 0; cursor: pointer; }
+.pkg-all:hover { color: #fff; }
 .terms { margin: 22px 0 0; font-size: 13px; color: var(--text-3); text-align: center; }
 .terms b { color: var(--text-2); font-weight: 600; }
 .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
-.every { margin-top: 40px; padding: 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr); gap: 24px 40px; }
 .h-sm { font-size: clamp(24px, 2.6vw, 30px); }
 .ticks.cols { columns: 2; column-gap: 32px; display: block; margin: 0; }
 .ticks.cols li { break-inside: avoid; margin-bottom: 9px; }
@@ -380,7 +378,6 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 @media (max-width: 900px) {
   .pkgs, .notes { grid-template-columns: minmax(0, 1fr); }
   .pkgs { gap: 26px; }
-  .every { grid-template-columns: minmax(0, 1fr); }
   .gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .rider { aspect-ratio: 16 / 10; }
 }
@@ -454,8 +451,8 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
         <p class="pkg-sub">Charged with one-time payment of €228 for the 12 weeks.</p>
         <div class="pkg-buy"><a class="btn btn-ghost pay" href="https://cigala-cycling-retail.myshopify.com/cart/31567870165038:1?channel=buy_button" target="_blank" rel="noopener">Buy Basic 12 Weeks · €228</a></div>
         <div class="pkg-lab">What you get</div>
-        <ul class="ticks"><li>Personalised Daily Training Plan build for 12 weeks</li><li>Training Peaks Basic Account</li><li>Contact when needed via email</li><li>Feedback on sessions</li><li>Schedule Adjustment</li><li>Daily Training Analysis</li></ul>
-        <p class="pkg-plus">+ everything in <a href="#every">every package</a></p>
+        <ul class="ticks"><li>Personalised Daily Training Plan build for 12 weeks</li><li>Training Peaks Basic Account</li><li>Contact when needed via email</li><li>Feedback on sessions</li><li>Schedule Adjustment</li><li>Daily Training Analysis</li><li class="more">Plan Tailored to your Training Availability</li><li class="more">Stretching &amp; Core Exercises</li><li class="more">Gym &amp; Winter Program + Support</li><li class="more">Test Protocols (CP, FTP, FTHR or INSCYD)</li><li class="more">Tests Analysis</li><li class="more">Adaptive Training Zones changing weekly</li><li class="more">Training Periodized based on goals</li><li class="more">Blood panel review from our Sport Nutritionist</li><li class="more">Discount membership for products at retail.cigalacycling.com</li><li class="more">Nutritional Guide</li><li class="more">Blog posts for tips</li><li class="more">Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li class="more">Access to World Class Nutritionist &amp; Mental Coach</li><li class="more">Access to our online Community (value €9/m)</li><li class="more">Discounted metabolic INSCYD testing</li><li class="more">Daily Session Carbs Recommendations</li><li class="more">Nutritional Consult with our Sports Nutritionist</li></ul>
+        <button type="button" class="pkg-all" aria-expanded="false" data-n="23">Show all 23 features ↓</button>
       </article><article class="pkg hot" id="pkg-advanced">
         <span class="pkg-badge">Monthly (Our Most Popular)</span>
         <div class="pkg-term">6 months subscription</div>
@@ -464,8 +461,8 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
         <p class="pkg-sub"></p>
         <div class="pkg-buy"><a class="btn btn-go pay" href="https://pay.gocardless.com/BRT0004AR2PG9DT" target="_blank" rel="noopener">Subscribe to Advanced · €149/mo</a></div>
         <div class="pkg-lab">What you get</div>
-        <ul class="ticks"><li class="key">Initial Assessment Review of your training data</li><li>Personalised Daily Training Plan build on a weekly basis</li><li>Vekta membership included (value €19.99/m)</li><li>Race Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency weekly</li><li>Weekly Feedback</li><li>Weekly Schedule Adjustment</li><li>Weekly Training Analysis</li><li>Monthly catch up call or when needed</li></ul>
-        <p class="pkg-plus">+ everything in <a href="#every">every package</a></p>
+        <ul class="ticks"><li>Personalised Daily Training Plan build on a weekly basis</li><li>Initial Assessment Review of your training data</li><li>Vekta membership included (value €19.99/m)</li><li>Race Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency weekly</li><li>Weekly Feedback</li><li>Weekly Schedule Adjustment</li><li>Weekly Training Analysis</li><li>Monthly catch up call or when needed</li><li class="more">Plan Tailored to your Training Availability</li><li class="more">Stretching &amp; Core Exercises</li><li class="more">Gym &amp; Winter Program + Support</li><li class="more">Test Protocols (CP, FTP, FTHR or INSCYD)</li><li class="more">Tests Analysis</li><li class="more">Adaptive Training Zones changing weekly</li><li class="more">Training Periodized based on goals</li><li class="more">Blood panel review from our Sport Nutritionist</li><li class="more">Discount membership for products at retail.cigalacycling.com</li><li class="more">Nutritional Guide</li><li class="more">Blog posts for tips</li><li class="more">Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li class="more">Access to World Class Nutritionist &amp; Mental Coach</li><li class="more">Access to our online Community (value €9/m)</li><li class="more">Discounted INSCYD Metabolic Testing</li><li class="more">Daily Session Carbs Recommendations</li><li class="more">Nutritional Consult with our Sports Nutritionist</li></ul>
+        <button type="button" class="pkg-all" aria-expanded="false" data-n="27">Show all 27 features ↓</button>
       </article><article class="pkg sold" id="pkg-premium">
         <span class="pkg-badge sold">Monthly (SOLD OUT!)</span>
         <div class="pkg-term">3 months subscription (€10 off for 6 mo)</div>
@@ -474,16 +471,12 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
         <p class="pkg-sub"></p>
         <div class="pkg-buy"><a class="btn btn-ghost pay" href="#contact" data-waitlist="Premium">Join the waiting list</a><span class="pay-note">Premium 3 months €249/mo · 6 months €239/mo</span></div>
         <div class="pkg-lab">What you get</div>
-        <ul class="ticks"><li class="key">Initial Assessment Review of your training data</li><li>Personalised Daily Training Plan build on a weekly basis</li><li>Vekta membership included (value €19.99/m)</li><li>Race Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency daily</li><li>Daily Feedback</li><li>Daily Schedule Adjustment</li><li>Daily Training Analysis</li><li>Weekly catch up call or when needed</li></ul>
-        <p class="pkg-plus">+ everything in <a href="#every">every package</a></p>
+        <ul class="ticks"><li>Personalised Daily Training Plan build on a weekly basis</li><li>Initial Assessment Review of your training data</li><li>Vekta membership included (value €19.99/m)</li><li>Race Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency daily</li><li>Daily Feedback</li><li>Daily Schedule Adjustment</li><li>Daily Training Analysis</li><li>Weekly catch up call or when needed</li><li class="more">Plan Tailored to your Training Availability</li><li class="more">Stretching &amp; Core Exercises</li><li class="more">Gym &amp; Winter Program + Support</li><li class="more">Test Protocols (CP, FTP, FTHR or INSCYD)</li><li class="more">Tests Analysis</li><li class="more">Adaptive Training Zones changing weekly</li><li class="more">Training Periodized based on goals</li><li class="more">Blood panel review from our Sport Nutritionist</li><li class="more">Discount membership for products at retail.cigalacycling.com</li><li class="more">Nutritional Guide</li><li class="more">Blog posts for tips</li><li class="more">Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li class="more">Access to World Class Nutritionist &amp; Mental Coach</li><li class="more">Access to our online Community (value €9/m)</li><li class="more">Discounted INSCYD Metabolic Testing</li><li class="more">Daily Session Carb Recommendations</li><li class="more">Nutritional Consult with our Sports Nutritionist</li></ul>
+        <button type="button" class="pkg-all" aria-expanded="false" data-n="27">Show all 27 features ↓</button>
       </article>
     </div>
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">HERE</a></b></p>
 
-    <div class="every panel" id="every">
-      <div><div class="eyebrow">Basic · Advanced · Premium</div><h3 class="h-sm">Included in every package</h3><div class="bar"></div></div>
-      <ul class="ticks cols"><li>Plan Tailored to your Training Availability</li><li>Stretching &amp; Core Exercises</li><li>Gym &amp; Winter Program + Support</li><li>Test Protocols (CP, FTP, FTHR or INSCYD)</li><li>Tests Analysis</li><li>Adaptive Training Zones changing weekly</li><li>Training Periodized based on goals</li><li>Blood panel review from our Sport Nutritionist</li><li>Discount membership for products at retail.cigalacycling.com</li><li>Nutritional Guide</li><li>Blog posts for tips</li><li>Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li>Access to World Class Nutritionist &amp; Mental Coach</li><li>Access to our online Community (value €9/m)</li><li>Discounted INSCYD Metabolic Testing</li><li>Daily Session Carbs Recommendations</li><li>Nutritional Consult with our Sports Nutritionist</li></ul>
-    </div>
 
     <div class="addons">
       <div class="panel addon">
@@ -636,6 +629,13 @@ document.querySelectorAll('[data-waitlist]').forEach(function (b) {
   b.addEventListener('click', function () {
     var m = document.querySelector('#contact textarea');
     if (m && !m.value) m.value = 'Hi Matteo, please add me to the waiting list for the ' + b.dataset.waitlist + ' package.';
+  });
+});
+document.querySelectorAll('.pkg-all').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var o = b.closest('.pkg').classList.toggle('open');
+    b.setAttribute('aria-expanded', o);
+    b.textContent = o ? 'Show fewer ↑' : 'Show all ' + b.dataset.n + ' features ↓';
   });
 });
 document.getElementById('g-more').dataset.label = document.getElementById('g-more').textContent;

@@ -3,8 +3,8 @@
 All live copy is kept: package names, prices, every feature line, the payment links (Shopify / GoCardless),
 testimonials, Vekta text, FAQ, 2026 numbers, featured athletes gallery, contact form.
 Approved SEO change (coaching/SEO-DECISIONS.md): the page gets the H1 "Individual Cycling Coaching Packages".
-Layout changes: the payment dropdowns become buttons; Premium (sold out) gets a waiting-list button to the contact form; features shared by all three packages are listed once
-under the cards ("Included in every package"), each card lists what is specific to it.
+Layout changes: the payment dropdowns become buttons; Premium (sold out) gets a waiting-list button to the contact form.
+Each card has its complete feature list: the lines that make the package different come first, the rest open with "Show all".
 """
 import os, sys, re, html as H
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -36,10 +36,14 @@ pay = {label: url for url, label in PAY.items()}
 def btn(label, url, cls='btn-go', note=''):
     return f'<a class="btn {cls} pay" href="{E(url)}" {EXT}>{label}</a>' + (f'<span class="pay-note">{note}</span>' if note else '')
 
-# New feature line, added by Matteo (15 Nov 2026): Advanced and Premium only, shown first and highlighted.
+# New feature line, added by Matteo (15 Nov 2026): Advanced and Premium only, a normal line after the training plan.
 ASSESS = 'Initial Assessment Review of your training data'
 def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
-    items = (f'<li class="key">{E(ASSESS)}</li>' if key in ('advanced', 'premium') else '') + ''.join(f'<li>{E(x)}</li>' for x in own[key])
+    top = list(own[key])
+    if key in ('advanced', 'premium'): top.insert(1, ASSESS)
+    rest = [f for f in F[key] if f not in own[key]]
+    items = ''.join(f'<li>{E(x)}</li>' for x in top) + ''.join(f'<li class="more">{E(x)}</li>' for x in rest)
+    total = len(top) + len(rest)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
         {badge}
         <div class="pkg-term">{term}</div>
@@ -49,7 +53,7 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         <div class="pkg-buy">{buttons}</div>
         <div class="pkg-lab">What you get</div>
         <ul class="ticks">{items}</ul>
-        <p class="pkg-plus">+ everything in <a href="#every">every package</a></p>
+        <button type="button" class="pkg-all" aria-expanded="false" data-n="{total}">Show all {total} features ↓</button>
       </article>'''
 
 cards = ''.join([
@@ -64,7 +68,6 @@ cards = ''.join([
          '<span class="pay-note">Premium 3 months €249/mo · 6 months €239/mo</span>',
          '<span class="pkg-badge sold">Monthly (SOLD OUT!)</span>', 'sold'),
 ])
-every = ''.join(f'<li>{E(x)}</li>' for x in common)
 
 # ---------- testimonials (live quotes; photos had no alt text, see SEO-DECISIONS.md) ----------
 QUOTES = re.findall(r'TXT: "(.*?)"\n<img https://[^ ]*/(unnamed-\d+)\.png', '\n'.join(TXT), re.S)
@@ -149,10 +152,6 @@ MAIN = f'''<div class="hero hero-sm">
     </div>
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="{C}/terms-conditions/" {EXT}>HERE</a></b></p>
 
-    <div class="every panel" id="every">
-      <div><div class="eyebrow">Basic · Advanced · Premium</div><h3 class="h-sm">Included in every package</h3><div class="bar"></div></div>
-      <ul class="ticks cols">{every}</ul>
-    </div>
 
     <div class="addons">
       <div class="panel addon">
@@ -280,14 +279,12 @@ PCSS = '''<style>
 .ticks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
 .ticks li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-2); line-height: 1.45; }
 .ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%2334c46a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
-.ticks li.key { color: var(--text); font-weight: 600; background: var(--green-wash); border: 1px solid rgba(0,154,68,.45); border-radius: 8px; padding: 8px 10px 8px 34px; }
-.ticks li.key::before { left: 10px; top: 11px; }
-.pkg-plus { margin: 14px 0 0; font-size: 13px; color: var(--text-3); }
-.pkg-plus a { color: var(--green-text); }
+.pkg:not(.open) .ticks li.more { display: none; }
+.pkg-all { margin-top: 14px; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 4px 0; cursor: pointer; }
+.pkg-all:hover { color: #fff; }
 .terms { margin: 22px 0 0; font-size: 13px; color: var(--text-3); text-align: center; }
 .terms b { color: var(--text-2); font-weight: 600; }
 .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
-.every { margin-top: 40px; padding: 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr); gap: 24px 40px; }
 .h-sm { font-size: clamp(24px, 2.6vw, 30px); }
 .ticks.cols { columns: 2; column-gap: 32px; display: block; margin: 0; }
 .ticks.cols li { break-inside: avoid; margin-bottom: 9px; }
@@ -333,7 +330,6 @@ PCSS = '''<style>
 @media (max-width: 900px) {
   .pkgs, .notes { grid-template-columns: minmax(0, 1fr); }
   .pkgs { gap: 26px; }
-  .every { grid-template-columns: minmax(0, 1fr); }
   .gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .rider { aspect-ratio: 16 / 10; }
 }
@@ -357,6 +353,13 @@ document.querySelectorAll('[data-waitlist]').forEach(function (b) {
   b.addEventListener('click', function () {
     var m = document.querySelector('#contact textarea');
     if (m && !m.value) m.value = 'Hi Matteo, please add me to the waiting list for the ' + b.dataset.waitlist + ' package.';
+  });
+});
+document.querySelectorAll('.pkg-all').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var o = b.closest('.pkg').classList.toggle('open');
+    b.setAttribute('aria-expanded', o);
+    b.textContent = o ? 'Show fewer ↑' : 'Show all ' + b.dataset.n + ' features ↓';
   });
 });
 document.getElementById('g-more').dataset.label = document.getElementById('g-more').textContent;
