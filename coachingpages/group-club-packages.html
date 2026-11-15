@@ -479,7 +479,13 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .nums .stat:nth-child(-n+4) .n { color: var(--text); }
 .vk p { margin: 14px 0 0; max-width: 62ch; }
 .vk p a { color: var(--green-text); }
-.vk .ticks { margin-top: 14px; }
+.vk-feats { list-style: none; margin: 18px 0 4px; padding: 0; display: grid; gap: 12px; }
+.vk-feats li { display: flex; gap: 14px; align-items: flex-start; }
+.vk-feats svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.vk-feats p { margin: 0 !important; font-size: 15px; line-height: 1.55; }
+.vk-feats b { color: var(--text); }
+.ticks li.no-lab { padding: 10px 0 0; margin-top: 4px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+.ticks li.no-lab::before { display: none; }
 .vk-side { display: grid; gap: 14px; }
 .vk-side .photo { aspect-ratio: 3 / 2; }
 .vk-logos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -532,10 +538,18 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .addon-ic { width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; display: block; margin-bottom: 14px; }
 .q .rv-stars { color: #f5b301; letter-spacing: 2px; font-size: 15px; line-height: 1; }
 .vk-lock { display: flex !important; align-items: center; justify-content: center; gap: 16px; }
-.vk-lock img:first-child { width: 64px; height: 64px; border-radius: 0; }
-.vk-lock span { font: 400 26px/1 var(--head); color: var(--text-3); }
+.vk-lock img:first-child { width: 72px; height: 72px; border-radius: 0; }
+.vk-lock .vk-x { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--text-2); stroke-width: 2.4; stroke-linecap: round; }
 .vk-lock img:last-child { width: auto; height: 34px; max-width: 46%; }
 .vk-logos img { margin: 0 auto; }
+@media (max-width: 640px) {
+  .vk-logos { grid-template-columns: minmax(0, 1fr); }
+  .vk-logos > * { min-height: 110px; }
+  .vk-lock { gap: 12px; padding: 16px 12px !important; }
+  .vk-lock img:first-child { width: 60px; height: 60px; }
+  .vk-lock img:last-child { height: 30px; max-width: none; }
+  .vk-logos > span img { max-height: 84px; }
+}
 </style><style>
 .grp-photo { aspect-ratio: 3 / 2; }
 .split .first { margin-top: 16px; }

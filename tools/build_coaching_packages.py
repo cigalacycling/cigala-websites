@@ -68,10 +68,14 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     NOT_IN_BASIC = ['Feedback on sessions', 'Schedule Adjustment', 'Daily Training Analysis']
     no = ([ASSESS] + NOT_IN_BASIC + ['Monthly catch up call', 'Race Strategy', 'Continuous Support & Motivation', 'Vekta membership']) if key == 'basic' else []
     top = [x for x in top if x not in no]
-    items = ''.join(f'<li>{E(x)}</li>' for x in top)
-    items += ''.join(f'<li class="no">{E(x)}<span class="vh"> (not included)</span></li>' for x in no)  # shown, not counted
-    items += ''.join(f'<li class="more">{E(x)}</li>' for x in rest)
-    total = len(top) + len(rest)
+    # Matteo 15 Nov (3rd review): lead with what you GET. Every card shows its first 8 included lines; "Show all" opens
+    # the rest and, on Basic only, the lines it does not include, at the very end under their own label.
+    inc = top + rest; SHOW = 8
+    items = ''.join(f'<li{" class=\"more\"" if i >= SHOW else ""}>{E(x)}</li>' for i, x in enumerate(inc))
+    if no:
+        items += '<li class="more no-lab">Included in Advanced &amp; Premium</li>'
+        items += ''.join(f'<li class="more no">{E(x)}<span class="vh"> (not included in Basic)</span></li>' for x in no)
+    total = len(inc)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
         {badge}
         <div class="pkg-term">{term}</div>
@@ -138,7 +142,13 @@ def md(s):  # **bold** and [text](url) from the extractor
     s = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', s)
     return re.sub(r'\[(.+?)\]\((.+?)\)', lambda m: f'<a href="{m.group(2)}" {EXT}>{m.group(1).strip()}</a>', s)
 vk_intro = ''.join(f'<p>{md(x)}</p>' for x in vk[:3])
-vk_points = ''.join(f'<li>{md(x)}</li>' for x in vk[3:8])
+# Matteo 15 Nov: an icon for each Vekta feature instead of the tick
+VK_IC = ['<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',                       # adaptive zones: sliders
+         '<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/>',  # AI modelling: chip
+         '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',                                                                     # beyond FTP: power trace
+         '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',          # personalised: target
+         '<circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/>']                          # elite tools: award
+vk_points = ''.join(f'<li><svg viewBox="0 0 24 24" aria-hidden="true">{ic}</svg><p>{md(x)}</p></li>' for ic, x in zip(VK_IC, vk[3:8]))
 vk_end = f'<p>{md(vk[8])}</p>'
 DEV = re.findall(r'<img https://[^ ]*/uploads/(\S+) alt=\'([^\']*)\'>', '\n'.join(section_lines('H2: FOLLOW YOUR STRUCTURED TRAINING SESSIONS ON YOUR FAVOURITE DEVICES & APPS (BELOW SOME APPS - THE LIST IS MUCH LONGER)', 'H2:')))
 devices = ''.join(f'<a href="https://joinvekta.com/partnerships" {EXT}><img src="{img(u, "app-" + re.sub(r"[^a-z0-9]+", "-", a.split("|")[0].lower()).strip("-")[:24])}" alt="{E(a)}" loading="lazy"></a>' for u, a in DEV)
@@ -247,7 +257,7 @@ MAIN = f'''<div class="hero hero-sm">
       <div class="eyebrow">Training platform</div>
       <h2>USING VEKTA - NEXT GENERATION TRAINING &amp; COACHING PLATFORM</h2>
       <div class="bar"></div>
-      <div class="vk">{vk_intro}<ul class="ticks">{vk_points}</ul>{vk_end}</div>
+      <div class="vk">{vk_intro}<ul class="vk-feats">{vk_points}</ul>{vk_end}</div>
       <div class="ctas"><a class="btn btn-go" href="{VEKTA}" {EXT}>Find more about Vekta →</a></div>
     </div>
     <div class="vk-side">
@@ -385,7 +395,13 @@ PCSS = '''<style>
 .nums .stat:nth-child(-n+4) .n { color: var(--text); }
 .vk p { margin: 14px 0 0; max-width: 62ch; }
 .vk p a { color: var(--green-text); }
-.vk .ticks { margin-top: 14px; }
+.vk-feats { list-style: none; margin: 18px 0 4px; padding: 0; display: grid; gap: 12px; }
+.vk-feats li { display: flex; gap: 14px; align-items: flex-start; }
+.vk-feats svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.vk-feats p { margin: 0 !important; font-size: 15px; line-height: 1.55; }
+.vk-feats b { color: var(--text); }
+.ticks li.no-lab { padding: 10px 0 0; margin-top: 4px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+.ticks li.no-lab::before { display: none; }
 .vk-side { display: grid; gap: 14px; }
 .vk-side .photo { aspect-ratio: 3 / 2; }
 .vk-logos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -442,6 +458,14 @@ PCSS = '''<style>
 .vk-lock .vk-x { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--text-2); stroke-width: 2.4; stroke-linecap: round; }
 .vk-lock img:last-child { width: auto; height: 34px; max-width: 46%; }
 .vk-logos img { margin: 0 auto; }
+@media (max-width: 640px) {
+  .vk-logos { grid-template-columns: minmax(0, 1fr); }
+  .vk-logos > * { min-height: 110px; }
+  .vk-lock { gap: 12px; padding: 16px 12px !important; }
+  .vk-lock img:first-child { width: 60px; height: 60px; }
+  .vk-lock img:last-child { height: 30px; max-width: none; }
+  .vk-logos > span img { max-height: 84px; }
+}
 </style>'''
 PJS = '''<script>
 document.getElementById('g-more').addEventListener('click', function () {
