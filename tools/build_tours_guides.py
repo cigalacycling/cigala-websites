@@ -19,6 +19,8 @@ from push_tours_wp import req, B
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 M = json.load(open(ROOT + 'stg-tours/media-webp.json'))
+from tours_img import webp
+HERO = webp(4877, 2000)   # Guides hero: Col du Galibier (large original; the earlier one was too small)
 E = lambda x: html.escape(x, quote=True)
 
 def rid(): return ''.join(random.choice('0123456789abcdef') for _ in range(7))
@@ -100,7 +102,7 @@ gs.update({'columns': 3, 'columns_tablet': 2, 'columns_mobile': 1, 'row_gap': {'
            'text': 'Continue reading: all guides', '_css_classes': 'cl-ggrid'})
 grid['id'] = rid()
 gpage = [
-    con([htmlw(f'''<div class="cl cl-page"><div class="hero plain-hero"><div class="in">
+    con([htmlw(f'''<div class="cl cl-page"><div class="hero phero"><img src="{HERO['url']}" alt="{E(HERO['alt'])}"><div class="in">
 <div class="crumbs"><a href="/">Home</a> / Guides</div>
 <div class="eyebrow">Plan your trip</div>
 <h1>{E(h1)}</h1>
@@ -142,24 +144,25 @@ GUIDES_CSS = '''
 .cl-post-content figcaption { font-size: 13px; color: #8a8f98; margin-top: 8px; }
 .cl-post-content blockquote { margin: 22px 0; padding: 4px 0 4px 18px; border-left: 3px solid #009a44; color: #f7f8f8; font-style: italic; }
 .e-con.cl-post-band { padding-top: 56px !important; }
-/* guide cards (loop item 5087) */
-.e-con.cl-gcard { height: 100%; background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012)), rgba(15,16,17,.92); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; }
+/* guide cards (loop item 5087): same look as the Coaching blog cards (title over the photo, green Read more) */
+.e-con.cl-gcard { position: relative; height: 100%; display: block !important; background: #0f1011; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; overflow: hidden; }
 .e-con.cl-gcard:hover { border-color: rgba(0,154,68,.5); }
 .cl-gcard-ph { width: 100% !important; margin: 0 !important; }
-.cl-gcard-ph img { width: 100% !important; aspect-ratio: 16 / 10; height: auto !important; object-fit: cover; border-radius: 0 !important; display: block; }
-.e-con.cl-gcard-tx { flex: 1; padding: 18px 20px 20px !important; gap: 8px !important; }
-.cl-gcard-by .elementor-heading-title { font: 600 11px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .12em !important; text-transform: uppercase; color: #ff3d33 !important; }
-.cl-gcard-title .elementor-heading-title, .cl-gcard-title .elementor-heading-title a { font-family: Anton, Impact, sans-serif !important; font-weight: 400 !important; text-transform: uppercase; color: #f7f8f8 !important; font-size: 22px !important; line-height: 1.14 !important; letter-spacing: .01em; text-decoration: none; }
-.cl-gcard-ex, .cl-gcard-ex p { font: 400 14px/1.55 Montserrat, system-ui, sans-serif !important; color: #b4bcd0 !important; margin: 0 !important; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.cl-gcard-go { margin-top: auto !important; }
-.cl-gcard-go .elementor-button { background: none !important; border: 0 !important; padding: 0 !important; font: 600 13px Montserrat, system-ui, sans-serif !important; color: #2bd47a !important; text-transform: none !important; box-shadow: none !important; }
-.cl-gcard-go .elementor-button:hover { color: #f7f8f8 !important; }
+.cl-gcard-ph img { width: 100% !important; aspect-ratio: 4 / 3; height: auto !important; object-fit: cover; border-radius: 0 !important; display: block; transition: transform .5s ease; }
+.e-con.cl-gcard:hover .cl-gcard-ph img { transform: scale(1.04); }
+.e-con.cl-gcard-tx { position: absolute !important; left: 0; right: 0; bottom: 0; padding: 70px 18px 18px !important; gap: 6px !important; background: linear-gradient(180deg, rgba(8,9,10,0) 0%, rgba(8,9,10,.78) 45%, rgba(8,9,10,.96) 100%); }
+.cl-gcard-by .elementor-heading-title { font: 600 10.5px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .12em !important; text-transform: uppercase; color: #d0d6e0 !important; }
+.cl-gcard-title .elementor-heading-title, .cl-gcard-title .elementor-heading-title a { font-family: Anton, Impact, sans-serif !important; font-weight: 400 !important; text-transform: uppercase; color: #f7f8f8 !important; font-size: 21px !important; line-height: 1.14 !important; letter-spacing: .01em; text-decoration: none; }
+.cl-gcard-ex { display: none !important; }
+.cl-gcard-go { margin-top: 6px !important; }
+.cl-gcard-go .elementor-button { background: #009a44 !important; border: 0 !important; border-radius: 8px !important; padding: 9px 16px !important; font: 600 13px Montserrat, system-ui, sans-serif !important; color: #fff !important; text-transform: none !important; box-shadow: none !important; }
+.cl-gcard-go .elementor-button:hover { background: #00b350 !important; color: #fff !important; }
 /* Guides page */
 .e-con.cl-guides-grid { max-width: 1232px !important; margin: 0 auto !important; padding: 24px 16px 0 !important; }
 .cl-ggrid .elementor-loop-container { gap: 16px !important; }
-.cl-ggrid .e-loop__load-more .elementor-button { font: 600 14px Montserrat, system-ui, sans-serif !important; color: #f7f8f8 !important; background: rgba(255,255,255,.04) !important; border: 1px solid rgba(255,255,255,.14) !important; border-radius: 8px !important; padding: 12px 20px !important; text-transform: none !important; }
+.cl-ggrid .e-loop__load-more .elementor-button { font: 600 14px Montserrat, system-ui, sans-serif !important; color: #fff !important; background: #009a44 !important; border: 0 !important; border-radius: 8px !important; padding: 12px 22px !important; text-transform: none !important; }
 .cl-ggrid .e-load-more-spinner { display: none !important; }   /* Elementor shows it only while loading; its own CSS is not loaded here */
-.cl-ggrid .e-loop__load-more .elementor-button:hover { border-color: #009a44 !important; color: #2bd47a !important; }
+.cl-ggrid .e-loop__load-more .elementor-button:hover { background: #00b350 !important; color: #fff !important; }
 html .cl h2.guides-intro { font-family: Montserrat, system-ui, sans-serif; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 17px; line-height: 1.6; color: #d0d6e0; max-width: 62ch; margin-top: 18px; }
 html .cl .band-title { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: clamp(30px, 4.4vw, 48px); line-height: 1.08; margin: 0; }
 '''

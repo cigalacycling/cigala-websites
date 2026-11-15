@@ -251,11 +251,12 @@ LOCATIONS = [   # same order and words as the live list on /trips/private-trips/
  ('Canary Islands (Tenerife, Gran Canaria, Lanzarote), Spain', 28.3, -15.6), ('Baleares Islands (Mallorca, Minorca, Ibiza, Formentera), Spain', 39.6, 2.9),
  ('Calpe & Denia, Spain', 38.7, 0.0), ('Girona, Spain', 41.98, 2.82), ('Basque Country, Spain', 43.1, -2.4), ('Spanish Pyrenees, Spain', 42.45, -0.5),
  ('Croatia', 43.6, 16.2), ('Slovenia', 46.1, 14.8), ('Cyprus', 35.0, 33.0), ('Turkey', 38.6, 29.5), ('Greek Islands', 37.1, 25.3),
- ('Albania', 41.1, 20.0), ('Morocco', 31.7, -7.2), ('Flanders, Belgium', 50.9, 3.6)]
+ ('Albania', 41.1, 20.0), ('Morocco', 31.7, -7.2), ('Flanders, Belgium', 50.9, 3.6),
+ ('Ireland', 53.0, -8.0), ('Provence, France', 43.95, 5.4), ('Switzerland', 46.7, 8.2)]   # added by Matteo 15 Nov
 
 def draw_locations(countries, lakes):
     W2, H2 = 1000, 700
-    lon0, lon1, lat0, lat1 = -19.0, 36.0, 26.5, 53.5
+    lon0, lon1, lat0, lat1 = -19.0, 36.0, 26.5, 55.5
     k0 = math.cos(math.radians((lat0 + lat1) / 2))
     s = min(W2 / ((lon1 - lon0) * k0), H2 / (lat1 - lat0))
     ox = (W2 - (lon1 - lon0) * k0 * s) / 2; oy = (H2 - (lat1 - lat0) * s) / 2

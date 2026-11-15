@@ -27,6 +27,11 @@ html .cl .band .lede p { margin: 0; }
 html .cl .vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 1000px) { html .cl .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { html .cl .vgrid { grid-template-columns: minmax(0, 1fr); } }
+html .cl .band-up > img { object-position: center 22% !important; }   /* show the faces (Matteo) */
+html .cl .vgrid.few .vcard:nth-child(n+7) { display: none; }
+html .cl .vmore-wrap { justify-content: center; margin-top: 22px; }
+html .cl .info h2.wa a { color: var(--green-text); }
+html .cl .why6 .panel { display: flex; gap: 14px; align-items: flex-start; }
 html .cl .vcard { margin: 0; padding: 0; overflow: hidden; }
 html .cl .vcard .yt, html .cl .vcard iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; padding: 0; margin: 0; background: #000; position: relative; cursor: pointer; }
 html .cl .vcard .yt img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.82); transition: filter .2s; }
@@ -47,12 +52,14 @@ html .cl .org { padding: 16px 18px; display: flex; gap: 12px; align-items: cente
 html .cl .org h3 { font-size: 18px; }
 html .cl .oic { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
 html .cl .oic svg { width: 21px; height: 21px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-html .cl .locwrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-top: 18px; }
+html .cl .locwrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 22px; align-items: start; margin-top: 18px; }
 @media (max-width: 900px) { html .cl .locwrap { grid-template-columns: minmax(0, 1fr); } }
 html .cl .lmapbox svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
-html .cl .locs.loclist { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; margin: 0; padding: 0; width: 100%; max-width: none; justify-self: stretch; list-style: none; }
+html .cl .locs.loclist { display: block !important; columns: 3; column-gap: 28px; margin: 0; padding: 0; width: 100%; max-width: none; list-style: none; }
+@media (max-width: 1000px) { html .cl .locs.loclist { columns: 2; } html .cl .locwrap { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { html .cl .locs.loclist { columns: 1; } }
 html .cl .locs.loclist li::before, html .cl .locs.loclist li::after { content: none !important; display: none !important; }
-html .cl .locs.loclist li { display: flex; gap: 10px; align-items: flex-start; justify-content: flex-start; text-align: left; line-height: 1.4; margin: 0; background: none; border: 0; padding: 0; border-radius: 0; font-size: 14px; color: var(--text-2); }
+html .cl .locs.loclist li { break-inside: avoid; margin-bottom: 6px !important; display: flex; gap: 10px; align-items: flex-start; justify-content: flex-start; text-align: left; line-height: 1.4; margin: 0; background: none; border: 0; padding: 0; border-radius: 0; font-size: 14px; color: var(--text-2); }
 html .cl .locs.loclist .n { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #e10600; color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; margin-top: 1px; }
 html .cl .locs { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 html .cl .locs li { font-size: 13.5px; color: var(--text); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 13px; }
@@ -900,7 +907,7 @@ html .cc .tour:hover img { transform: none; }
 <section>
   <div class="in">
     <div class="head"><div><div class="eyebrow">The difference</div><h2>WHY RIDERS CHOOSE US</h2><div class="bar"></div></div></div>
-    <div class="why6"><div class="panel"><span class="tick" aria-hidden="true"></span><div><h3>Expertise You Can Trust</h3><p>Our staff are all former pro or semi pro cyclists with knowledge and thousands of hours guiding on European roads.</p></div></div><div class="panel"><span class="tick" aria-hidden="true"></span><div><h3>10+ Years of Tour Experience</h3><p>A decade of crafting smooth, safe, high-quality cycling tours.</p></div></div><div class="panel"><span class="tick" aria-hidden="true"></span><div><h3>Hand-Built Routes</h3><p>Every climb and descent is selected through first-hand experience — never guesswork.</p></div></div><div class="panel"><span class="tick" aria-hidden="true"></span><div><h3>Premium, Personal Support</h3><p>Small groups, on-road vehicle &amp; mechanical assistance, detailed briefings, professional ride leaders.</p></div></div><div class="panel"><span class="tick" aria-hidden="true"></span><div><h3>The Perfect Balance</h3><p>Challenging riding, great food, beautiful accommodation, and a relaxed post-ride atmosphere.</p></div></div><div class="panel"><span class="tick" aria-hidden="true"></span><div><h3>All Levels Welcome</h3><p>We support each rider at their pace, ensuring everyone enjoys the experience without pressure.</p></div></div></div>
+    <div class="why6"><div class="panel"><span class="oic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M8.5 13 7 21l5-3 5 3-1.5-8"/></svg></span><div><h3>Expertise You Can Trust</h3><p>Our staff are all former pro or semi pro cyclists with knowledge and thousands of hours guiding on European roads.</p></div></div><div class="panel"><span class="oic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M12 14h2M16 14h0"/></svg></span><div><h3>10+ Years of Tour Experience</h3><p>A decade of crafting smooth, safe, high-quality cycling tours.</p></div></div><div class="panel"><span class="oic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"/></svg></span><div><h3>Hand-Built Routes</h3><p>Every climb and descent is selected through first-hand experience — never guesswork.</p></div></div><div class="panel"><span class="oic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 16V8a1 1 0 0 1 1-1h11l4 4h1a1 1 0 0 1 1 1v4H3z"/><circle cx="7.5" cy="16.5" r="1.8"/><circle cx="16.5" cy="16.5" r="1.8"/></svg></span><div><h3>Premium, Personal Support</h3><p>Small groups, on-road vehicle &amp; mechanical assistance, detailed briefings, professional ride leaders.</p></div></div><div class="panel"><span class="oic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v16M5 8h14M5 8l-2.5 6a2.5 2.5 0 0 0 5 0zM19 8l-2.5 6a2.5 2.5 0 0 0 5 0zM8 20h8"/></svg></span><div><h3>The Perfect Balance</h3><p>Challenging riding, great food, beautiful accommodation, and a relaxed post-ride atmosphere.</p></div></div><div class="panel"><span class="oic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20a6 6 0 0 1 12 0M14.5 20a4.5 4.5 0 0 1 7-3.7"/></svg></span><div><h3>All Levels Welcome</h3><p>We support each rider at their pace, ensuring everyone enjoys the experience without pressure.</p></div></div></div>
   </div>
 </section>
 <section>

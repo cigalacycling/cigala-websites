@@ -81,6 +81,13 @@ PARTNERS = re.search(r'<section>\s*<div class="in partners">.*?</section>', json
 PARTNERS_H2 = re.sub(r'<div class="lab">([^<]*)</div>', r'<h2 class="lab">\1</h2>', PARTNERS)
 
 # ===================== About (271) =====================
+WHY_ICONS = [   # Why riders choose us, in the live order (Matteo 15 Nov: own icons instead of ticks)
+ '<circle cx="12" cy="9" r="5"/><path d="M8.5 13 7 21l5-3 5 3-1.5-8"/>',                                    # expertise: medal
+ '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h2M12 14h2M16 14h0"/>',   # 10+ years: calendar
+ '<circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"/>',   # hand-built routes
+ '<path d="M3 16V8a1 1 0 0 1 1-1h11l4 4h1a1 1 0 0 1 1 1v4H3z"/><circle cx="7.5" cy="16.5" r="1.8"/><circle cx="16.5" cy="16.5" r="1.8"/>',   # support vehicle
+ '<path d="M12 4v16M5 8h14M5 8l-2.5 6a2.5 2.5 0 0 0 5 0zM19 8l-2.5 6a2.5 2.5 0 0 0 5 0zM8 20h8"/>',          # balance
+ '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20a6 6 0 0 1 12 0M14.5 20a4.5 4.5 0 0 1 7-3.7"/>']   # all levels: people
 def about():
     it = items(elementor(271))
     h1 = next(v for k, v, s in it if k == 'h1')
@@ -94,7 +101,7 @@ def about():
         m = re.match(r'<p><strong>✔\s*(.*?)</strong>\s*(?:<br\s*/?>)?\s*(.*)</p>$', v, re.S)
         assert m, v
         why.append((m.group(1).strip(), m.group(2).strip()))
-    whyh = ''.join(f'<div class="panel"><span class="tick" aria-hidden="true"></span><div><h3>{h}</h3><p>{p}</p></div></div>' for h, p in why)
+    whyh = ''.join(f'<div class="panel"><span class="oic" aria-hidden="true"><svg viewBox="0 0 24 24">{WHY_ICONS[n % len(WHY_ICONS)]}</svg></span><div><h3>{h}</h3><p>{p}</p></div></div>' for n, (h, p) in enumerate(why))
     team = []   # each member: a container with a background photo, then two texts: name, role
     for k, v, s in it[team_i:ready_i]:
         if k == 'bg': team.append([v])
@@ -160,6 +167,7 @@ sys.path.insert(0, ROOT + 'shared/social')
 from social import social_row
 IC_MAIL = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>'
 IC_PHONE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18h2"/></svg>'
+IC_WA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.3-3.8A8 8 0 1 1 8 19z"/><path d="M9 9.5c.5 2 2.5 4 4.5 4.5l1.2-1.2 2 1-.5 1.7c-3.5.3-7.5-3.7-7.2-7.2L10.7 8l1 2z"/></svg>'
 IC_SOC = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.6M8.2 13.2l7.6 4.6"/></svg>'
 def contact():
     it = items(elementor(461))
@@ -176,7 +184,7 @@ def contact():
     <div class="pill-eyebrow">Get in touch</div>
     <h1>{E(h1)}</h1>
     <div class="bar"></div>
-    <h2 class="hero-phone"><a href="{tel}">{E(phone)}</a></h2>
+    <div class="ctas"><a class="btn btn-go" href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">WhatsApp us →</a><a class="btn btn-ghost" href="mailto:{email}">Email us</a></div>
   </div>
 </div>
 <section style="padding-top:40px">
@@ -185,6 +193,7 @@ def contact():
     <div class="panel cpanel info">
       <div class="row"><div class="ic">{IC_MAIL}</div><div><h3>{E(h3s[0])}</h3><h2><a href="mailto:{email}">{E(email)}</a></h2></div></div>
       <div class="row"><div class="ic">{IC_PHONE}</div><div><h3>{E(h3s[1])}</h3><h2><a href="{tel}">{E(h2s[2])}</a></h2></div></div>
+      <div class="row"><div class="ic">{IC_WA}</div><div><h3>WhatsApp</h3><h2 class="wa"><a href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">Message us on WhatsApp</a></h2></div></div>
       <div class="row"><div class="ic">{IC_SOC}</div><div><h3>{E(h3s[2])}</h3></div></div>
       {social_row()}
     </div>
@@ -276,7 +285,7 @@ def destinations():
 </section>
 <section>
   <div class="in">
-    <div class="band">
+    <div class="band band-up">
       {img_tag(ult_bg, 1600)}
       <div class="tx">
         <div class="eyebrow">Every destination</div>
@@ -469,10 +478,11 @@ def testimonials():
         f'<img src="https://i.ytimg.com/vi/{vid}/hqdefault.jpg" alt="{E(n)} from {E(c)} talks about riding with Cigala Cycling Tours" loading="lazy">'
         f'<span class="play" aria-hidden="true"></span></button><figcaption><h2>{E(n)}</h2><span>{E(c)}</span></figcaption></figure>'
         for vid, n, c in vids)
-    main = f'''<div class="hero plain-hero">
+    main = f'''<div class="hero phero">
+  {img_tag(4893, 2000, lazy=False)}
   <div class="in">
     <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / Testimonials</div>
-    <div class="eyebrow">What our riders say</div>
+    <div class="pill-eyebrow">What our riders say</div>
     <h1>Testimonials</h1>
     <div class="bar"></div>
   </div>
@@ -482,10 +492,12 @@ def testimonials():
   <div class="in">
     <div class="head"><div><div class="eyebrow">On video</div><p class="band-title">Hear it from our guests</p><div class="bar"></div></div></div>
     <div class="vgrid">{cards}</div>
+    <div class="ctas vmore-wrap"><button type="button" class="btn btn-go vmore">Show all {len(vids)} videos</button></div>
   </div>
 </section>
 {PARTNERS_H2}
-{YT_JS}'''
+{YT_JS}
+<script>(function(){{var g=document.querySelector('.cl .vgrid'),b=document.querySelector('.cl .vmore');if(!g||!b)return;g.classList.add('few');b.addEventListener('click',function(){{g.classList.remove('few');b.parentNode.remove();}});}})();</script>'''
     return {'id': 2844, 'slug': 'testimonials', 'main': main, 'css': PAGE_CSS, 'crumb': 'Testimonials', 'videos': len(vids)}
 
 
@@ -515,13 +527,14 @@ def custom():
         if it[i][0] == 'h3' and it[i + 1][0] == 'text': faq.append((it[i][1], it[i + 1][1])); i += 2
         else: i += 1
     contact_txt = [v for k, v, s in it[g_i:] if k == 'text']
-    hero_bg = it[0][1]; build_bg = [v for k, v, s in it[:b_i] if k == 'bg'][-1]
+    hero_bg = it[0][1]; build_bg = 4440   # Matteo 15 Nov: the live photo here is low quality
     photo = next(v for k, v, s in it[f_i:g_i] if k == 'img')
     btn = it[b_i + 1][1][0] if it[b_i + 1][0] == 'btn' else 'Customise your tour'
     ask_html = ''.join(f'<div class="panel step"><span class="n">{n:02d}</span><h3>{E(text_of(a))}</h3></div>' for n, a in enumerate(asks, 1))
     org_html = ''.join(f'<div class="panel org"><span class="oic" aria-hidden="true"><svg viewBox="0 0 24 24">{ORG_ICONS.get(fix_text(o).strip().upper(), "<path d=\'m5 12.5 4.2 4.2L19 7\'/>")}</svg></span><h3>{E(o.title())}</h3></div>' for o in org)
     locs = re.findall(r'<li>(.*?)</li>', loc_txt[1], re.S)
     locs = [x.replace(chr(0x200b), '').strip() for x in locs if 'Patagonia' not in x]   # Europe map (Matteo 15 Nov)
+    locs += ['Ireland', 'Provence, France', 'Switzerland']   # added by Matteo 15 Nov (same order as the map, tools/tours_route_maps.py)
     lmap = open(ROOT + 'tourspages/maps/custom-locations.svg').read()
     loc_html = ('<div class="locwrap"><div class="lmapbox">' + lmap + '</div><ol class="locs loclist">' +
                 ''.join(f'<li><span class="n">{i}</span>{x}</li>' for i, x in enumerate(locs, 1)) + '</ol></div>')
@@ -582,7 +595,9 @@ def custom():
     <div class="panel cpanel info">
       {img_tag(photo, 1100, cls='cphoto')}
       <h3 class="gt">{E(it[g_i][1])}</h3>
-      {''.join(contact_txt).replace('+353 40478107', f'<a href="tel:{tel}">+353 40478107</a>')}
+      {''.join(c for c in contact_txt if 'call us' not in c.lower())}
+      <p>Alternatively, message us on WhatsApp.</p>
+      <div class="ctas"><a class="btn btn-go" href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">WhatsApp us →</a></div>
     </div>
   </div>
 </section>'''
@@ -643,6 +658,11 @@ html .cl .band .lede p { margin: 0; }
 html .cl .vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 1000px) { html .cl .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { html .cl .vgrid { grid-template-columns: minmax(0, 1fr); } }
+html .cl .band-up > img { object-position: center 22% !important; }   /* show the faces (Matteo) */
+html .cl .vgrid.few .vcard:nth-child(n+7) { display: none; }
+html .cl .vmore-wrap { justify-content: center; margin-top: 22px; }
+html .cl .info h2.wa a { color: var(--green-text); }
+html .cl .why6 .panel { display: flex; gap: 14px; align-items: flex-start; }
 html .cl .vcard { margin: 0; padding: 0; overflow: hidden; }
 html .cl .vcard .yt, html .cl .vcard iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; padding: 0; margin: 0; background: #000; position: relative; cursor: pointer; }
 html .cl .vcard .yt img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.82); transition: filter .2s; }
@@ -663,12 +683,14 @@ html .cl .org { padding: 16px 18px; display: flex; gap: 12px; align-items: cente
 html .cl .org h3 { font-size: 18px; }
 html .cl .oic { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
 html .cl .oic svg { width: 21px; height: 21px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-html .cl .locwrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-top: 18px; }
+html .cl .locwrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 22px; align-items: start; margin-top: 18px; }
 @media (max-width: 900px) { html .cl .locwrap { grid-template-columns: minmax(0, 1fr); } }
 html .cl .lmapbox svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
-html .cl .locs.loclist { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; margin: 0; padding: 0; width: 100%; max-width: none; justify-self: stretch; list-style: none; }
+html .cl .locs.loclist { display: block !important; columns: 3; column-gap: 28px; margin: 0; padding: 0; width: 100%; max-width: none; list-style: none; }
+@media (max-width: 1000px) { html .cl .locs.loclist { columns: 2; } html .cl .locwrap { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { html .cl .locs.loclist { columns: 1; } }
 html .cl .locs.loclist li::before, html .cl .locs.loclist li::after { content: none !important; display: none !important; }
-html .cl .locs.loclist li { display: flex; gap: 10px; align-items: flex-start; justify-content: flex-start; text-align: left; line-height: 1.4; margin: 0; background: none; border: 0; padding: 0; border-radius: 0; font-size: 14px; color: var(--text-2); }
+html .cl .locs.loclist li { break-inside: avoid; margin-bottom: 6px !important; display: flex; gap: 10px; align-items: flex-start; justify-content: flex-start; text-align: left; line-height: 1.4; margin: 0; background: none; border: 0; padding: 0; border-radius: 0; font-size: 14px; color: var(--text-2); }
 html .cl .locs.loclist .n { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #e10600; color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; margin-top: 1px; }
 html .cl .locs { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 html .cl .locs li { font-size: 13.5px; color: var(--text); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 13px; }

@@ -170,6 +170,8 @@ banner = render_banner(ga_id=GA, privacy_url='/privacy-policy/', pixel_id=PIXEL,
 ftr = ftr.replace('<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>', '<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>\n    <a href="/privacy-policy/">Privacy Policy</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
 assert 'data-cc-settings' in ftr
 ftr = ftr.replace('>Refund/cancellation policy &amp; terms</a>', '>Refund/Cancellation Policy &amp; Terms</a>')   # capitals (Matteo)
+ftr = ftr.replace('★ Google reviews', '<span class="gstar">★</span> Google reviews')   # gold star, like the Retail site (Matteo 15 Nov)
+css += '\nhtml .cc .gstar { color: #f0bf00; }\n'
 # topo background parallax: the lines drift slower than the page, so you see them move (off for reduced motion)
 PARALLAX = "<script>(function(){if(!document.querySelector('.cc-page,.cl-page')||matchMedia('(prefers-reduced-motion: reduce)').matches)return;var b=document.body,q=0;function u(){q=0;b.style.setProperty('background-position','0 0, center '+(window.scrollY*0.4).toFixed(1)+'px','important');}addEventListener('scroll',function(){if(!q){q=1;requestAnimationFrame(u);}},{passive:true});u();})();</script>"
 
@@ -191,7 +193,7 @@ if TOURS_NL_URL:
     ftr_widgets[0] = html_widget('<div class="cc">' + nlband + ftr + '</div>' + PARALLAX)
     ftr_widgets.append(html_widget(nlpop))
     # Tours: the .cc text rule would turn the band title into Montserrat; and the pop-up must sit above the chat widget
-    css += '\n/* ---- newsletter (shared wp/nl-*) ---- */\nhtml .cc .nl-band .nl-t { font-family: Anton, Impact, "Arial Narrow", sans-serif; font-weight: 400; }\nhtml .cc .nl-band { border-bottom: 0 !important; }\nhtml .cc .nl-band .nl-band-in { padding-bottom: 8px !important; }\nhtml .cc .nl-band + footer { margin-top: 0 !important; }\n#nl-pop { z-index: 2147483647 !important; }\n'
+    css += '\n/* ---- newsletter (shared wp/nl-*) ---- */\nhtml .cc .nl-band .nl-t { font-family: Anton, Impact, "Arial Narrow", sans-serif; font-weight: 400; }\nhtml .cc .nl-band { border-bottom: 0 !important; }\nhtml .cc .nl-band .nl-band-in { padding-block: 40px !important; }\nhtml .cc .nl-band + footer { margin-top: 0 !important; }\n#nl-pop { z-index: 2147483647 !important; }\n'
 json.dump({"meta": {"_elementor_data": json.dumps([wrap(ftr_widgets)])}}, open(OUT + 'lib-228.json', 'w'))
 
 # head snippet (Elementor custom code 9279): the shared one. The consent-default line goes first in WPCode Header (Matteo).

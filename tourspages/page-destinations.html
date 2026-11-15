@@ -27,6 +27,11 @@ html .cl .band .lede p { margin: 0; }
 html .cl .vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 1000px) { html .cl .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { html .cl .vgrid { grid-template-columns: minmax(0, 1fr); } }
+html .cl .band-up > img { object-position: center 22% !important; }   /* show the faces (Matteo) */
+html .cl .vgrid.few .vcard:nth-child(n+7) { display: none; }
+html .cl .vmore-wrap { justify-content: center; margin-top: 22px; }
+html .cl .info h2.wa a { color: var(--green-text); }
+html .cl .why6 .panel { display: flex; gap: 14px; align-items: flex-start; }
 html .cl .vcard { margin: 0; padding: 0; overflow: hidden; }
 html .cl .vcard .yt, html .cl .vcard iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; padding: 0; margin: 0; background: #000; position: relative; cursor: pointer; }
 html .cl .vcard .yt img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.82); transition: filter .2s; }
@@ -47,12 +52,14 @@ html .cl .org { padding: 16px 18px; display: flex; gap: 12px; align-items: cente
 html .cl .org h3 { font-size: 18px; }
 html .cl .oic { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
 html .cl .oic svg { width: 21px; height: 21px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-html .cl .locwrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-top: 18px; }
+html .cl .locwrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 22px; align-items: start; margin-top: 18px; }
 @media (max-width: 900px) { html .cl .locwrap { grid-template-columns: minmax(0, 1fr); } }
 html .cl .lmapbox svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
-html .cl .locs.loclist { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; margin: 0; padding: 0; width: 100%; max-width: none; justify-self: stretch; list-style: none; }
+html .cl .locs.loclist { display: block !important; columns: 3; column-gap: 28px; margin: 0; padding: 0; width: 100%; max-width: none; list-style: none; }
+@media (max-width: 1000px) { html .cl .locs.loclist { columns: 2; } html .cl .locwrap { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { html .cl .locs.loclist { columns: 1; } }
 html .cl .locs.loclist li::before, html .cl .locs.loclist li::after { content: none !important; display: none !important; }
-html .cl .locs.loclist li { display: flex; gap: 10px; align-items: flex-start; justify-content: flex-start; text-align: left; line-height: 1.4; margin: 0; background: none; border: 0; padding: 0; border-radius: 0; font-size: 14px; color: var(--text-2); }
+html .cl .locs.loclist li { break-inside: avoid; margin-bottom: 6px !important; display: flex; gap: 10px; align-items: flex-start; justify-content: flex-start; text-align: left; line-height: 1.4; margin: 0; background: none; border: 0; padding: 0; border-radius: 0; font-size: 14px; color: var(--text-2); }
 html .cl .locs.loclist .n { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #e10600; color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; margin-top: 1px; }
 html .cl .locs { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 html .cl .locs li { font-size: 13.5px; color: var(--text); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 13px; }
@@ -908,7 +915,7 @@ html .cc .tour:hover img { transform: none; }
 </section>
 <section>
   <div class="in">
-    <div class="band">
+    <div class="band band-up">
       <img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-1720641-1600.webp" alt="Cycling in the Dolomites" loading="lazy">
       <div class="tx">
         <div class="eyebrow">Every destination</div>
