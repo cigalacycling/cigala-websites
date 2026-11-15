@@ -10,10 +10,15 @@ Coaching: if you sign up, your name, contact details, goals, training availabili
 Health information: some coaching services use information about your health, such as injuries, medical conditions or the blood panel you share for review by our sports nutritionist. We only use it to coach you safely, only with your explicit consent, and you can withdraw that consent at any time.
 Payments: packages are paid through Shopify (one-off payments) or GoCardless (monthly Direct Debit). They process your payment details; we receive only the confirmation and your contact details.
 Live chat: the messages and any details you choose to share in the chat. We use them to answer you. Legal basis: your request and our legitimate interest in replying to it.
-Newsletter: if you sign up (in the newsletter pop-up, or to see your results in our free training tools), your email address. We send you our newsletter: training tips, coaching news and offers, and news and offers from Cigala Cycling Tours (our bike tours) and our online shop, retail.cigalacycling.com. Legal basis: your consent. You can unsubscribe at any time with the link at the bottom of every email.
+Newsletter: if you sign up (in the newsletter pop-up, or to see your results in our free training tools), your email address. Legal basis: your consent. See "One newsletter for all our websites" below.
 Free training tools: the numbers you enter in our calculators (for example power, weight or swim times) are calculated in your browser. They are not sent to us or stored.
 Website analytics and advertising: information about how you use the site, collected only if you accept cookies (see "Cookies" below). Legal basis: your consent.
 We do not store or maintain credit card details, nor do we share customer financial details with any third parties.
+LI: One newsletter for all our websites
+P: Cigala Cycling has one newsletter, shared by all our websites: cigalacycling.com, coaching.cigalacycling.com, tours.cigalacycling.com and retail.cigalacycling.com.
+Whichever of our websites you sign up on, you receive the same Cigala Cycling newsletter. It includes training tips, news, blogs, and deals and offers on our coaching, our bike tours (run by our sister company Cigala Cycling Tours Ltd) and our online shop.
+Your email address is kept in our newsletter system (Brevo) for this purpose. We do not sell it or give it to anyone else to market to you.
+You can unsubscribe at any time with the link at the bottom of every email, or by emailing info@cigalacycling.com. Unsubscribing stops the newsletter from all our websites.
 LI: Cookies
 P: When you first visit, a banner asks whether you accept cookies. Until you choose, and if you reject, we do not set analytics or advertising cookies.
 If you accept, we use:

@@ -186,7 +186,7 @@ if COACH_NL_URL:
     for a, b in [('<p class="nl-eyebrow">Newsletter</p>', '<p class="nl-eyebrow">Free training tips</p>'),
                  ('<p class="nl-t" id="nl-pop-t">Stay in the loop</p>', '<p class="nl-t" id="nl-pop-t">Train smarter, ride faster</p>'),
                  ('<p class="nl-d">News, blogs, tips, special deals and tour dates from Cigala Cycling.</p>',
-                  '<p class="nl-d">Free training tips from Head Coach Matteo Cigala, first news when coaching places open, and offers on our bike tours and shop.</p>'),
+                  '<p class="nl-d">Training tips, news, blogs and deals on coaching, bike tours and our shop.</p>'),
                  ("if(/^\\/contact\\/?$/.test(location.pathname)){return;}", "if(/^\\/(contact|tools)(\\/|$)/.test(location.pathname)){return;}")]:
         assert a in pop, a; pop = pop.replace(a, b)
     pop = re.sub(r"var URL='https://[^']+';", "var URL='" + COACH_NL_URL + "';", pop); assert COACH_NL_URL in pop
