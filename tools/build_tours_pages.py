@@ -469,8 +469,12 @@ def destination(slug):
             if out and all(k == 'home' for k, _ in out):
                 return '<!--HOMECARDS-->' + ''.join(h for k, h in out)
             grid = ''.join(h for k, h in out)
-            rest_cls = {1: ' last1', 2: ' last2'}.get(len(out) % 3, '')   # last row stretches to fill (Matteo 15 Nov: no filler card)
-            return chips(grid) + f'<div class="tgrid{rest_cls}">{grid}</div>'
+            if len(out) % 3 and any('Enquire' in c['go'] for c in vals):   # fill the last row on laptops (Matteo 15 Nov)
+                grid += ('<article class="tcard dcta" data-k="all"><div class="tx"><div class="eyebrow">Your dates, your group</div>'
+                         '<p class="ctat">Build your own tour</p><div class="bar"></div><p>Tell us where, when and how hard you want to ride: '
+                         'we plan the routes, hotels, support and every detail.</p><div class="ctas one"><a class="btn btn-go" href="/trips/private-trips/">'
+                         'Plan your custom tour →</a></div></div></article>')
+            return chips(grid) + f'<div class="tgrid">{grid}</div>'
         if kind == 'btn':
             return '<div class="ctas">' + ''.join(f'<a class="btn btn-go" href="{link(u).replace(L, "")}">{E(t.capitalize())} →</a>' for t, u in vals) + '</div>'
         if kind == 'band':   # the same "Can't find the perfect one?" band as at the bottom of All tours (Matteo 15 Nov)
@@ -740,13 +744,6 @@ html .cl .fchip[data-f=road] .fd, html .cc .fchip[data-f=road] .fd, html .cl .fc
 html .cl .fchip[data-f=gravel] .fd, html .cc .fchip[data-f=gravel] .fd { background: var(--gravel, #b9895a); }
 html .cl .fchip.on[data-f=road], html .cc .fchip.on[data-f=road], html .cl .fchip.on[data-f=gf], html .cc .fchip.on[data-f=gf] { background: #e10600; border-color: #e10600; }
 html .cl .fchip.on[data-f=gravel], html .cc .fchip.on[data-f=gravel] { background: var(--gravel, #b9895a); border-color: var(--gravel, #b9895a); }
-@media (min-width: 1001px) {
-  html .cl .tgrid.last1, html .cl .tgrid.last2 { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; }
-  html .cl .tgrid.last1 > *, html .cl .tgrid.last2 > * { grid-column: span 2; }
-  html .cl .tgrid.last2 > :nth-last-child(-n+2) { grid-column: span 3; }
-  html .cl .tgrid.last1 > :last-child { grid-column: span 6; }
-  html .cl .tgrid.last1 > :last-child .ph, html .cl .tgrid.last2 > :nth-last-child(-n+2) .ph { aspect-ratio: 16 / 7; }
-}
 html .cl .dcta { background: linear-gradient(160deg, rgba(0,154,68,.22), rgba(0,154,68,.06)), var(--panel) !important; border-color: rgba(0,154,68,.45) !important; }
 html .cl .dcta .tx { justify-content: center; }
 html .cl .dcta .ctat { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: clamp(26px, 2.6vw, 34px); line-height: 1.08; margin: 0; }
