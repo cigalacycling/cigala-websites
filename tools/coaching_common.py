@@ -73,6 +73,7 @@ TRI = [(C + '/about2/', 'About Triathlon Coaching'), (C + '/tri-individual-packa
        (C + '/group-club-packages/', 'Group &amp; Club Packages'), (SKOOL, 'Community')]
 SERV = [(C + '/testing/', 'INSCYD Testing'), (C + '/nutrition/', 'Nutrition'), (C + '/bike-fitting/', 'Bike Fit'),
         (C + '/talent-scout/', 'Talent Programme'), (C + '/club-talk/', 'Club Talk'), (C + '/tools/', 'Free Training Tools')]   # a top-level item wrapped the menu at 1440
+RES = [(C + '/testimonials/', 'Testimonials'), (C + '/case-studies/', 'Case Studies')]   # Matteo 15 Nov: one menu for both
 def dd(label, items):
     return (f'<div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">{label} <span aria-hidden="true">▾</span></button>'
             f'<div class="dd-menu">{"".join(a(u, t) for u, t in items)}</div></div>')
@@ -88,7 +89,7 @@ HEADER = f'''<header class="nav">
       {dd('Cycling', CYC)}
       {dd('Triathlon', TRI)}
       {dd('Services', SERV)}
-      {a(C + '/testimonials/', 'Testimonials')}
+      {dd('Results', RES)}
       {a(C + '/blog/', 'Blog')}
       {a(T + '/', 'Bike Tours')}
       {a(R, 'Shop')}
@@ -102,7 +103,8 @@ HEADER = f'''<header class="nav">
         {mob('Cycling', CYC)}
         {mob('Triathlon', TRI)}
         {mob('Services', SERV)}
-        {a(C + '/testimonials/', 'Testimonials')}{a(C + '/blog/', 'Blog')}{a(T + '/', 'Bike Tours')}{a(R, 'Shop')}{a(C + '/contact/', 'Contact')}
+        {mob('Results', RES)}
+        {a(C + '/blog/', 'Blog')}{a(T + '/', 'Bike Tours')}{a(R, 'Shop')}{a(C + '/contact/', 'Contact')}
       </nav>
     </details>
   </div>
@@ -603,7 +605,7 @@ def build(name, path, main, ribbon, h1=None, h2_changes=None, extra_css='', extr
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{E(live['title'])}</title>
-<meta name="description" content="{E(live['meta_description'])}">
+<meta name="description" content="{E(live['meta_description'] or '')}">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="{LOGO}">

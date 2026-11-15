@@ -24,7 +24,12 @@ PAGES = {'home': 2924, 'individual-packages': 3338, 'tri-individual-packages': 3
          'tools-critical-power': 'new-critical-power-calculator', 'tools-climb-time': 'new-climb-time-calculator',
          'tools-sweat-rate': 'new-sweat-rate-calculator', 'tools-swim-pace': 'new-swim-pace-calculator',
          'tools-ftp-test': 'new-ftp-test-calculator', 'tools-gear-speed': 'new-gear-speed-calculator',
-         'case-studies': 'new-case-studies'}
+         'case-studies': 'new-case-studies',
+         # the remaining live pages, rebuilt by tools/build_coaching_generic.py (Matteo 15 Nov: finish every page)
+         'about': 2109, 'about2': 3770, 'coaching-vision': 3272, 'testing': 3865, 'nutrition': 3995, 'bike-fitting': 4256,
+         'book-1-on-1-session': 3750, 'talent-scout': 896, 'club-talk': 4395, 'contact': 461,
+         'testimonials': 2844, 'blog': 4354,
+         'cycling-coach-uk': 6098, 'cycling-coach-usa': 6100, 'cycling-coach-canada': 6102, 'preparatore-di-ciclismo-italia': 6106}
 NEW = {'new-tools': ('Free Cycling Training Tools', 'tools', None),
        'new-training-zones-calculator': ('Training Zones Calculator', 'training-zones-calculator', 'tools'),
        'new-carbs-per-hour-calculator': ('Carbs per Hour Calculator', 'carbs-per-hour-calculator', 'tools'),
@@ -141,6 +146,27 @@ html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 va
 .cc-form .elementor-field-type-submit { width: auto !important; flex: 0 0 auto !important; }
 .cc-form .elementor-message { color: #d0d6e0; font-family: Montserrat, system-ui, sans-serif; }
 .cc-form { background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012)), rgba(15,16,17,.92); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 22px !important; margin-top: 22px; }
+/* blog: the live loop grid (posts appear automatically) as cards, and the single post template 4028 in the brand */
+.cc-blog-wrap { padding: 8px 16px 0 !important; max-width: 1232px !important; margin: 0 auto !important; }
+.cc-blog .elementor-loop-container { gap: 16px !important; }
+.cc-blog .e-loop-item, .cc-blog .elementor-4718 { background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012)), rgba(15,16,17,.92) !important; border: 1px solid rgba(255,255,255,.08) !important; border-radius: 14px !important; overflow: hidden; }
+.cc-blog .e-loop-item img { border-radius: 0 !important; aspect-ratio: 16 / 10; object-fit: cover; width: 100% !important; }
+.cc-blog .elementor-widget-theme-post-title .elementor-heading-title, .cc-blog .elementor-widget-theme-post-title a { font: 400 24px/1.14 Anton, Impact, sans-serif !important; text-transform: uppercase !important; color: #f7f8f8 !important; letter-spacing: .01em; }
+.cc-blog .elementor-widget-theme-post-title a:hover { color: #34c46a !important; }
+.cc-blog .elementor-widget-heading .elementor-heading-title { font: 600 12px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .08em; text-transform: uppercase !important; color: #ff3d33 !important; }
+.cc-blog .elementor-widget-theme-post-excerpt, .cc-blog .elementor-widget-theme-post-excerpt p { font: 400 15px/1.6 Montserrat, system-ui, sans-serif !important; color: #d0d6e0 !important; }
+.cc-blog .elementor-divider-separator { border-color: #009a44 !important; width: 40px !important; border-top-width: 3px !important; }
+.cc-blog .elementor-button { background: none !important; color: #34c46a !important; padding: 0 !important; font: 600 14px Montserrat, system-ui, sans-serif !important; text-transform: none !important; border: 0 !important; box-shadow: none !important; }
+.cc-blog .elementor-button:hover { color: #fff !important; }
+.cc-blog .e-load-more-anchor + div .elementor-button, .cc-blog .elementor-button-wrapper .e-load-more-spinner + .elementor-button-text { color: #fff !important; }
+.single-post .elementor-4028 { max-width: 860px; margin: 0 auto; padding: 40px 16px 0; }
+.single-post .elementor-4028 .elementor-widget-theme-post-title .elementor-heading-title { font: 400 clamp(34px, 5vw, 56px)/1.08 Anton, Impact, sans-serif !important; text-transform: uppercase !important; color: #f7f8f8 !important; }
+.single-post .elementor-4028 .elementor-widget-heading .elementor-heading-title { font-family: Montserrat, system-ui, sans-serif !important; color: #ff3d33 !important; }
+.single-post .elementor-4028 .elementor-widget-theme-post-content, .single-post .elementor-4028 .elementor-widget-theme-post-content p, .single-post .elementor-4028 .elementor-widget-theme-post-content li { font: 400 17px/1.75 Montserrat, system-ui, sans-serif !important; color: #d0d6e0 !important; }
+.single-post .elementor-4028 .elementor-widget-theme-post-content h2, .single-post .elementor-4028 .elementor-widget-theme-post-content h3 { font-family: Anton, Impact, sans-serif !important; font-weight: 400 !important; text-transform: uppercase; color: #f7f8f8 !important; line-height: 1.14 !important; margin: 32px 0 10px; }
+.single-post .elementor-4028 .elementor-widget-theme-post-content a { color: #34c46a !important; }
+.single-post .elementor-4028 img { border-radius: 12px; }
+.single-post .elementor-4028 .elementor-divider-separator { border-color: #009a44 !important; }
 '''
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap">'
 
@@ -217,6 +243,10 @@ def build_page(key):
     for b in blocks_of(src):
         b = fix(b)
         content.append('<div class="cc cc-page">' + b + '</div>')
+        lw = re.search(r'data-live-widget="(\d+):([\w-]+)"', b)
+        if lw:   # a live WordPress widget (the blog's automatic post list) where the preview has a placeholder
+            w = live_widget(int(lw.group(1)), lw.group(2)); w['settings']['_css_classes'] = 'cc-blog'
+            els.append(wrap([w], 'cc-wrap cc-blog-wrap')); continue
         if 'id="contact"' in b:   # any page with the contact section gets the live Elementor form
             # live Elementor form (sends to info@cigalacycling.com) instead of the preview's static form
             form = live_widget(3338, 'form')
@@ -264,6 +294,16 @@ def build_page(key):
     return len(els)
 
 n = {k: build_page(k) for k in PAGES}
+
+# ---------- blog loop item 4718: post title H1 -> H3 (one H1 per page) ----------
+li = json.load(open(ROOT + 'stg-coaching/backup/lib-4718.json'))
+lid = json.loads(li['meta']['_elementor_data'])
+def _t(els):
+    for e in els:
+        if e.get('widgetType') == 'theme-post-title': e['settings']['header_size'] = 'h3'
+        _t(e.get('elements', []))
+_t(lid)
+json.dump({"meta": {"_elementor_data": json.dumps(lid)}}, open(OUT + 'lib-4718.json', 'w'))
 
 # ---------- kit: add the scoped CSS, keep everything else ----------
 kit = copy.deepcopy(json.load(open(ROOT + 'stg-coaching/backup/lib-6.json'))['meta']['_elementor_page_settings'])
