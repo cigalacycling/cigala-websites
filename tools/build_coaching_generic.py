@@ -262,5 +262,7 @@ def build_page(name, h2_changes=None, extra_main='', contact=None):
           h2_changes=h2_changes, extra_css=GCSS)
 
 if __name__ == '__main__':
-    for name in (sys.argv[1:] or PAGES):
+    COUNTRY = ('cycling-coach-uk', 'cycling-coach-usa', 'cycling-coach-canada')   # built by build_coaching_country.py
+    for name in (sys.argv[1:] or [p for p in PAGES if p not in COUNTRY]):
+        assert name not in COUNTRY, 'use tools/build_coaching_country.py for ' + name
         build_page(name)

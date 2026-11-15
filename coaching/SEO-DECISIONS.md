@@ -132,7 +132,40 @@ Built by `tools/build_coaching_generic.py`, `build_coaching_testimonials.py` and
 
 To check with Matteo (copy left exactly as live):
 - /testing/ "What we organise": all six steps repeat the same placeholder text ("The Premium package is for those triathletes...").
-- /cycling-coach-uk/, -usa/, -canada/: the 5-star quotes credited to "John - England, UK", "Peter - New York, UK", "Peter - British Columbia, Canda" are reworded versions of Derek's testimonial; the planned rewrite with unique content still needs Matteo's approval.
+- /cycling-coach-uk/, -usa/, -canada/: done, see section 10 (Matteo approved the rewrite on 15 Nov).
 - Crawl of staging (15 Nov, `stg-coaching/crawl-after-2026-11-15.json`, compared by `tools/compare_coaching_crawl.py`): 76 live pages; titles, metas, H1s, H2s, alt texts and schema types match except the approved changes (homepage hidden "IRELAND" H2, two Yoast title typo fixes, icon images left out, the two packages photos Matteo replaced, /dummy-page/ to be redirected). The header logo keeps its live alt "Cigala Cycling Coaching Logo".
 - Structured data added (15 Nov): each free tool page has a WebApplication (free, SportsApplication) JSON-LD; /tools/ and /case-studies/ have an ItemList. Existing site schema (Organization, Service, WebSite) untouched. Verified on staging: valid JSON.
 - Yoast focus keyphrases set where missing (`tools/yoast_coaching_keyphrases.py`): Book 1-on-1 (3750), Terms (564), two blog posts (4917, 4894). Titles and metas unchanged.
+
+## 10. UK, USA and Canada pages rewritten (15 Nov 2026, Matteo: "Yes go ahead")
+
+Builder: `tools/build_coaching_country.py` (replaces the generic build for pages 6098, 6100, 6102).
+
+Kept exactly as live: URL, Yoast title (Canada typo fix from section 1), meta description, H1, all live H2s (checked by
+`build()` and on staging), the intro paragraphs, the event and region lists, prices and GoCardless payment links in GBP/USD/CAD,
+the package feature lists (in each page's own currency), every live FAQ question (same wording, checked by an assert).
+
+Changed, for Matteo to read on staging:
+- **Testimonials.** Live showed five quotes credited to people who don't exist ("William - Wales, UK", "Bernd - England, UK",
+  "Peter - New York, UK", "John - Quebec, Canda"...). They were real testimonials (Bernd, Bryan Nolan, William Rymer, Derek Lawler)
+  under invented UK/US/Canadian names, or rewordings of them. Fake reviews are a Google and consumer-law risk, so each page
+  now shows six real testimonials, word for word, with the athlete's real name and place (picked per country: Mallorca 312
+  and time-crunched riders for the UK; the US stage race, family/work balance and weight loss for the USA; winter training for Canada).
+- **Own copy per country.** New: three facts under the intro (time zone, currency, terrain/winter), "How it works" in 4 steps
+  (H3, time-zone details per country), a region paragraph on terrain and climate, and "Guides from our blog" links
+  (Fred Whitton / winter for the UK, gravel and heat for the USA, Gran Fondo Whistler / winter for Canada).
+  FAQ answers rewritten per country (prices in the local currency, UK same clock as Ireland, US/Canada time differences,
+  local events in "My event is months away"), plus one extra question: UK time trials and hill climbs, USA long gravel races.
+  Overlap of the text between the pages went from 81-88% to under half, and what's left is mostly headings and shared site blocks.
+- **Typos:** "Canda" -> "Canada" (body), "reccomendations", "New York, UK" (removed with the fake quotes), "remotely delivering in".
+- The "Why ... choose" Vekta line shows Vekta's value in the page's currency (£17.99, $21.99, $30.99), as the package cards on live already did.
+- Premium shows "Join the waiting list" as on the main Packages page (sold out). Basic has no payment link on the live
+  country pages, so its button is "Start with a free call".
+- Live had three H1s: "#TrainSmarterRideFaster" is now the eyebrow of "It's our vision" and "START WORKING WITH MATTEO"
+  the eyebrow of the closing call to action (one H1, section 2).
+- A contact form was added at the end (the Premium waiting-list button needed one). The form is the live Elementor form, sending to matteo@.
+
+To check with Matteo:
+- Canada Basic: the live card says "one-time payment of $387", the live option says "390 CAD". Left as live.
+- USA/Canada FAQ says calls are "usually your morning": please confirm the hours you take calls with North America.
+- "Pay in GBP/USD/CAD by GoCardless" and "no exchange fees on your side" (UK): please confirm.

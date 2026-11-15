@@ -461,10 +461,207 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
 .faq h3 { display: inline; font: 600 15px/1.4 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); }
 @media (max-width: 900px) { .gn-photo { aspect-ratio: 16 / 10; } }
+</style><style>
+.hero-sm { min-height: min(560px, 74svh); }
+.hero-sm .in { padding-block: 110px 48px; }
+.hero-sm h1 { max-width: 16ch; font-size: clamp(38px, 6vw, 72px); }
+.hero-lake > img { object-position: 72% 78%; }   /* riders in the clear right-hand side, lake behind the heading */
+@media (max-width: 640px) { .hero-lake > img { object-position: 64% 70%; } }
+#packages { padding-top: 28px; }
+.notes-wrap { margin: 0 0 40px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.notes-lab { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+.notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 32px; }
+.note { display: flex; gap: 12px; align-items: flex-start; }
+.note svg { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-top: 1px; }
+.note p { margin: 0; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+.pkgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 16px; align-items: start; }
+.pkg { display: grid; grid-row: span 9; grid-template-rows: subgrid; row-gap: 0; align-content: start; }   /* term, name, for, price, sub, buy, label, list, button line up across the cards */
+.pkg { position: relative; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px 24px; min-width: 0; }
+.pkg.hot { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 24px 60px rgba(0,154,68,.18); }
+.pkg-badge { position: absolute; top: -13px; left: 24px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--green); border-radius: 999px; padding: 5px 12px; }
+.pkg-badge.sold { background: var(--panel-solid); border: 1px solid var(--red); color: var(--red-text, #ff3d33); }
+.pkg-term { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.pkg h2 { font-size: 40px; margin-top: 10px; }
+.pkg-price { display: flex; align-items: baseline; gap: 4px; margin-top: 14px; }
+.pkg-price b { font: 400 54px/1 var(--head); color: var(--text); }
+.pkg-price span { color: var(--text-3); font-weight: 600; }
+.pkg-sub { font-size: 13px; color: var(--text-3); margin: 8px 0 18px; }
+.pkg-buy { display: grid; gap: 8px; }
+.pay { width: 100%; text-align: center; }
+.pay-note { display: block; font-size: 12.5px; color: var(--text-3); text-align: center; }
+.pkg-lab { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--green-text); }   /* Matteo 15 Nov: stands out from the grey notes */
+.ticks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; align-content: start; }
+.ticks li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-2); line-height: 1.45; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%2334c46a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.pkg:not(.open) .ticks li.more { display: none; }
+.pkg-for { margin: 8px 0 0; font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
+.pkg-call { font-size: 13px; font-weight: 600; color: var(--green-text); text-decoration: none; text-align: center; padding: 4px 0; }
+.pkg-call:hover { color: #fff; }
+.ticks li.no { color: var(--text-4, #62666d); }
+.ticks li.no span { font-size: 12.5px; }
+.ticks li.no::before { background: rgba(225,6,0,.12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5.2 5.2l5.6 5.6M10.8 5.2l-5.6 5.6' fill='none' stroke='%23ff3d33' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.cmp-wrap { margin-top: 44px; }
+.cmp-scroll { margin-top: 20px; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r); background: var(--panel-grad), var(--panel); }
+.cmp { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px; }
+.cmp th, .cmp td { padding: 13px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+.cmp tbody tr:last-child th, .cmp tbody tr:last-child td { border-bottom: 0; }
+.cmp thead th { font: 400 20px/1.1 var(--head); text-transform: uppercase; color: var(--text); }
+.cmp tbody th { font-weight: 600; color: var(--text); width: 28%; }
+.cmp td { color: var(--text-2); }
+.cmp .hot { background: rgba(0,154,68,.07); }
+.cmp thead .hot { color: var(--green-text); }
+.cmp .y { color: var(--green-text); font-weight: 700; font-size: 16px; }
+.cmp .n { color: var(--red-text, #ff3d33); font-weight: 700; font-size: 16px; }
+.cmp-note { margin: 12px 0 0; font-size: 13px; color: var(--text-3); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.cmp tbody th { position: sticky; left: 0; background: var(--panel-solid); }
+.pkg-all { margin-top: 16px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font: 600 14px var(--body); color: var(--text); background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 10px; padding: 11px 14px; cursor: pointer; }
+.pkg-all svg { width: 18px; height: 18px; fill: none; stroke: var(--green-text); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
+.pkg-all:hover { border-color: var(--green); }
+.pkg.open .pkg-all svg { transform: rotate(180deg); }
+.terms { margin: 22px 0 0; font-size: 13px; color: var(--text-3); text-align: center; }
+.terms b { color: var(--text-2); font-weight: 600; }
+.panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
+.h-sm { font-size: clamp(24px, 2.6vw, 30px); }
+.ticks.cols { columns: 2; column-gap: 32px; display: block; margin: 0; }
+.ticks.cols li { break-inside: avoid; margin-bottom: 9px; }
+.addons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.addon { padding: 24px; }
+.addon p { margin: 10px 0 0; font-size: 14.5px; }
+.addon p a { color: var(--green-text); }
+.addon .arrow-link { display: inline-block; margin-top: 14px; }
+.quotes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.q { margin: 0; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.q img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); }
+.q blockquote { margin: 0; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+.nums { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.nums .n { margin: 0; font-family: var(--head); font-weight: 400; font-size: clamp(32px, 3.6vw, 46px); line-height: 1; color: var(--text); }
+.nums .l { margin: 8px 0 0; }
+.nums .stat:nth-child(-n+4) .n { color: var(--text); }
+.vk p { margin: 14px 0 0; max-width: 62ch; }
+.vk p a { color: var(--green-text); }
+.vk-feats { list-style: none; margin: 18px 0 4px; padding: 0; display: grid; gap: 12px; }
+.vk-feats li { display: flex; gap: 14px; align-items: flex-start; }
+.vk-feats svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.vk-feats p { margin: 0 !important; font-size: 15px; line-height: 1.55; }
+.vk-feats b { color: var(--text); }
+.ticks li.no-lab { padding: 10px 0 0; margin-top: 4px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+.ticks li.no-lab::before { display: none; }
+.vk-side { display: grid; gap: 14px; }
+.vk-side .photo { aspect-ratio: 3 / 2; }
+.vk-side .photo img { filter: brightness(.85); }   /* Matteo 15 Nov: 15% darker */
+.vk-logos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vk-logos > * { display: grid; place-items: center; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; min-height: 130px; }
+.vk-logos img { max-height: 92px; width: auto; max-width: 100%; }
+.h-long { font-size: clamp(24px, 3vw, 36px); max-width: 32ch; }
+.apps { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.apps a { background: #fff; border-radius: 10px; height: 84px; display: grid; place-items: center; padding: 10px; }
+.apps img { max-height: 54px; max-width: 100%; object-fit: contain; }
+.faq h3 { display: inline; font: 600 15px/1.4 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); }
+.faq details p a { color: var(--green-text); }
+.gallery { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.gallery .g { aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.gallery .g img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.gallery .g:hover img { transform: scale(1.05); }
+.gallery:not(.all) .g.more { display: none; }
+.rider { aspect-ratio: 1; }
+.form { display: grid; gap: 14px; padding: 22px; margin-top: 22px; }
+.form label { display: grid; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.form input, .form textarea { font: 400 16px/1.4 var(--body); color: var(--text); background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; width: 100%; }
+.form input:focus, .form textarea:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: transparent; }
+.form .btn { justify-self: start; }
+@media (max-width: 1080px) { .quotes { grid-template-columns: repeat(3, minmax(0, 1fr)); } .apps { grid-template-columns: repeat(4, minmax(0, 1fr)); } .nums { grid-template-columns: repeat(3, minmax(0, 1fr)); } .nums .stat:nth-child(4) { border-left: 0; } .nums .stat:nth-child(n+4) { border-top: 1px solid var(--border); } }
+@media (max-width: 900px) {
+  .pkgs, .notes { grid-template-columns: minmax(0, 1fr); }
+  .pkgs { gap: 26px; }
+  .gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .rider { aspect-ratio: 16 / 10; }
+}
+@media (max-width: 640px) {
+  .addons, .quotes { grid-template-columns: minmax(0, 1fr); }
+  .ticks.cols { columns: 1; }
+  .apps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nums .stat:nth-child(odd) { border-left: 0; } .nums .stat:nth-child(even) { border-left: 1px solid var(--border); } .nums .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+  .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .gallery:not(.all) .g:nth-child(n+13) { display: none; }
+  .pkg h2 { font-size: 34px; }
+  .cmp-scroll { overflow: visible; }
+  .cmp, .cmp tbody, .cmp tr, .cmp th, .cmp td { display: block; min-width: 0; }
+  .cmp thead { display: none; }
+  .cmp tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--border); }
+  .cmp tbody tr:last-child { border-bottom: 0; }
+  .cmp tbody th { grid-column: 1 / -1; position: static; width: auto; background: none; border: 0; padding: 14px 14px 4px; }
+  .cmp td { border: 0; padding: 4px 10px 14px 14px; font-size: 13px; }
+  .cmp td::before { content: attr(data-l); display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 3px; }
+  .cmp td.hot::before { color: var(--green-text); }
+}
+.addon { position: relative; }
+.addon-ic { width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; display: block; margin-bottom: 14px; }
+.q .rv-stars { color: #f5b301; letter-spacing: 2px; font-size: 15px; line-height: 1; }
+.vk-lock { display: flex !important; align-items: center; justify-content: center; gap: 16px; }
+.vk-lock img:first-child { width: 72px; height: 72px; border-radius: 0; }
+.vk-lock .vk-x { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--text-2); stroke-width: 2.4; stroke-linecap: round; }
+.vk-lock img:last-child { width: auto; height: 34px; max-width: 46%; }
+.vk-logos img { margin: 0 auto; }
+@media (max-width: 640px) {
+  .vk-logos { grid-template-columns: minmax(0, 1fr); }
+  .vk-logos > * { min-height: 110px; }
+  .vk-lock { gap: 12px; padding: 16px 12px !important; }
+  .vk-lock img:first-child { width: 60px; height: 60px; }
+  .vk-lock img:last-child { height: 30px; max-width: none; }
+  .vk-logos > span img { max-height: 84px; }
+}
+</style><style>
+.ft-box { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 60%), var(--panel-grad), var(--panel); }
+.ft-head p { margin: 14px 0 0; color: var(--text-2); }
+.ft-head .arrow-link { display: inline-block; margin-top: 14px; }
+.ft-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }   /* 8 tools in 2 columns */
+.ft-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.03); text-decoration: none; transition: border-color .2s, transform .2s; }
+.ft-card:hover { border-color: rgba(0,154,68,.6); transform: translateX(3px); }
+.ft-card svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ft-card span { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.ft-card b { color: var(--text); font-size: 15px; }
+.ft-card small { color: var(--text-3); font-size: 13px; }
+.ft-card i { font-style: normal; color: var(--green-text); font-weight: 700; }
+@media (max-width: 900px) { .ft-box { grid-template-columns: minmax(0, 1fr); padding: 22px; gap: 20px; } }
+@media (max-width: 560px) { .ft-cards { grid-template-columns: minmax(0, 1fr); } }
+</style><style>
+.cs-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 300px); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: thin; }
+.cs-card { scroll-snap-align: start; display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--panel-grad), var(--panel); text-decoration: none; transition: border-color .2s, transform .2s; }
+.cs-card:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
+.cs-img { aspect-ratio: 4 / 3; overflow: hidden; background: #111; }
+.cs-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.9); }
+.cs-data { display: grid; place-content: center; text-align: center; gap: 6px; background: radial-gradient(circle at 30% 20%, rgba(0,154,68,.45), rgba(0,154,68,0) 60%), #0b1a12; }
+.cs-data b { font: 400 40px/1 var(--head); color: #fff; }
+.cs-data small { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green-text); }
+.cs-tx { display: grid; gap: 6px; padding: 16px 18px 18px; }
+.cs-tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.cs-stat { font: 400 30px/1.05 var(--head); color: var(--text); text-transform: uppercase; }
+.cs-h { font-size: 15px; font-weight: 600; color: var(--text); }
+.cs-n { font-size: 13px; color: var(--text-3); }
+.cs-card .arrow-link { margin-top: 6px; }
+</style><style>
+.cn-facts { grid-template-columns: 1fr; align-content: center; }
+.cn-facts .note p { margin: 0; }
+.cn-lede { color: var(--text-2); margin: -6px 0 18px; }
+.cn-why .ticks { columns: 2 340px; column-gap: 32px; }
+.cn-why .ticks li { break-inside: avoid; }
+.cur-note { color: var(--text-3); font-size: 14px; margin: 0 0 14px; }
+.cn-tp { display: flex; justify-content: center; margin-top: 22px; }
+.cn-tp img { max-height: 90px; width: auto; }
+.cn-how { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; counter-reset: none; }
+.cn-how li { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); }
+.cn-how .hw-n { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #08090a; font-weight: 800; }
+.cn-how h3 { margin: 4px 0 6px; }
+.cn-how p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.cn-gh { margin: 24px 0 8px; }
+.cn-guides { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.cn-apps { margin-top: 14px; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 </style>
 <div class="topo" aria-hidden="true"></div>
 <div class="page">
-<div class="ribbon"><div class="in"><b>Preview</b><span>New /cycling-coach-canada/ in the Cigala Cycling design: live H1, H2s, copy and images kept.</span></div></div>
+<div class="ribbon"><div class="in"><b>Preview</b><span>/cycling-coach-canada/ rewritten for Canada: own copy, real testimonials, prices in CAD. H1, H2s and lists kept.</span></div></div>
 <header class="nav">
   <div class="in">
     <a class="brand" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo-v2.webp" alt="Cigala Cycling Coaching Logo" width="58" height="58"></a>
@@ -494,82 +691,196 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
   </div>
 </header>
 <div class="hero hero-sm">
-  <img src="img/pg-hero-cycling-coach-canada.webp" alt="Bianchi Arcadex celeste gravel bike | Cigala Cycling Coaching">
+  <img src="img/country-canada-hero.webp" alt="Cycling in the Alps | Cigala Cycling">
   <div class="in">
+    <div class="eyebrow eb-pill"><span class="dot"></span>Online cycling coaching · CAD</div>
     <h1>CYCLING COACH CANADA</h1>
     <p class="lede">Train with Italian Head Coach <a href="https://coaching.cigalacycling.com/about" target="_blank" rel="noopener">Matteo Cigala</a> — from anywhere in Canada.</p>
-    <div class="ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">BOOK FREE CONSULTATION</a></div>
+    <div class="ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book free consultation</a><a class="btn btn-ghost" href="#packages">See the packages ↓</a></div>
   </div>
 </div>
 
 <section>
-  <div class="in gn-txt gn-solo"><p>Matteo brings over 28 years of cycling experience, more than a decade of coaching riders around the world, and hundreds of race victories. He provides personalised coaching for road cycling, gravel, MTB, gran fondos and endurance riders, with every training plan built around your goals, your schedule and your lifestyle.</p><p>Whether you’re in British Columbia, Alberta, Ontario, Quebec or anywhere else in Canada, training for a gran fondo, preparing for a gravel race, competing in local or Cycling Canada events, or working towards your next big cycling goal, your coaching is fully tailored to help you perform at your best.</p></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>Why Canadian Cyclists Choose Cigala Cycling Coaching</h2><div class="bar"></div><ul class="ticks"><li>Personalised daily/weekly training plans built around Critical Power (CP) and W′ modelling — going beyond basic FTP training</li><li>Powered by <b>Vekta</b>, a next-generation training platform used by WorldTour teams (membership worth €19.99/month included free)</li><li>Training Peaks also available if you’re already set up there</li><li>Adaptive training zones that update as your fitness changes</li><li>Full support for sportives, Gran Fondos, time trials, road racing and general performance goals</li><li>Syncs with Garmin, Wahoo, Zwift and more</li><li>Nutritional guidance and access to a sports nutritionist and mental coach</li><li>Daily session carb reccomendations</li><li>Communication designed around Canada time zones — daily/weekly contact regardless of your coast</li></ul></div>
-</section>
-
-<section>
-  <div class="in split gn-split">
-    <div class="gn-txt"><h2>It&#x27;s our vision</h2><div class="bar"></div><p>&quot;Matteo&#x27;s attention to detail is exceptional. Every part of the coaching is tailored to you, and it shows in the results. <br> ★★★★★Chris - Ontario, Canada</p><p>&quot;The most exciting part of working with Matteo is the noticeable improvements I started to experience after just 4-6 weeks.</p><p>Since then, these improvements have been consistent and remarkable&quot; <br> ★★★★★Greg - Colorado, USA</p><p>&quot;Matteo schedules sessions that are built around your available time and utilizes quality over quantity. I have seen improvement year on year while working with Matteo.&quot; <br> ★★★★★Mark - Alberta, Canada</p><p>&quot;Matteo has maximised every hour I can dedicate to training, making every session count.&quot; <br> ★★★★★John - Quebec, Canda</p><p>&quot;You don&#x27;t need to be an elite cyclist to benefit from Matteo&#x27;s coaching. I can highly recommend him to anyone looking to get fitter and achieve their cycling goals, whatever their age or experience.&quot; <br> ★★★★★Peter - British Columbia, Canda</p></div>
-    <div class="photo gn-photo"><img src="img/pg-usa-gravel.webp" alt="USA Gravel | Cigala Cycling " loading="lazy"></div>
-  </div>
-  <div class="in"><div class="gn-gal"><div class="g"><img src="img/pg-what-is-w-prime-and-why-it-explains-how-.webp" alt="What is W&#x27; Prime and why it explains how you get dropped." loading="lazy"></div><div class="g"><img src="img/pg-cyclist-on-a-scott-road-bike.webp" alt="Cyclist on a Scott road bike | Cigala Cycling Coaching" loading="lazy"></div><div class="g"><img src="img/pg-cycling-in-the-alps.webp" alt="Cycling in the Alps | Cigala Cycling" loading="lazy"></div></div></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>COACHING PACKAGES</h2><div class="bar"></div><p>Prices in Canadian Dollar (CAD)</p><p>12 Weeks</p></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>Basic</h2><div class="bar"></div><p>Charged with one-time payment of $387 for the 12 weeks.</p><p>$129/mo</p><ul class="ticks"><li>Personalised Daily Training Plan build for 12 weeks</li><li>Plan Tailored to your Training Availability</li><li>Stretching &amp; Core Exercises</li><li>Gym &amp; Winter Program + Support</li><li>Test Protocols (CP, FTP, FTHR or INSCYD)</li><li>Tests Analysis</li><li>Adaptive Training Zones changing weekly</li><li>Training Periodized based on goals</li><li>Blood panel review from our Sport Nutritionist</li><li>Discount membership for products at retail.cigalacycling.com</li><li>Nutritional Guide</li><li>Blog posts for tips</li><li>Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li>Access to World Class Nutritionist &amp; Mental Coach</li><li>Access to our online Community (value $15/m)</li><li>Discounted metabolic INSCYD testing</li><li>Training Peaks Basic Account</li><li>Contact when needed via email</li><li>Feedback on sessions</li><li>Schedule Adjustment</li><li>Daily Training Analysis</li><li>Daily Session Carbs Recommendations</li><li>Nutritional Consult with our Sports Nutritionist</li></ul><p>Basic 12 Weeks Options<br> Basic 12 Weeks: 390 CAD - one-time payment</p><p>Monthly (Our Most Popular)</p></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>Advanced</h2><div class="bar"></div><p>6 months subscription</p><p>$250/mo</p><ul class="ticks"><li>Personalised Daily Training Plan build on a weekly basis</li><li>Plan Tailored to your Training Availability</li><li>Stretching &amp; Core Exercises</li><li>Gym &amp; Winter Program + Support</li><li>Test Protocols (CP, FTP, FTHR or INSCYD)</li><li>Tests Analysis</li><li>Adaptive Training Zones changing weekly</li><li>Training Periodized based on goals</li><li>Blood panel review from our Sport Nutritionist</li><li>Discount membership for products at retail.cigalacycling.com</li><li>Nutritional Guide</li><li>Blog posts for tips</li><li>Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li>Access to World Class Nutritionist &amp; Mental Coach</li><li>Access to our online Community (value $15/m)</li><li>Discounted INSCYD Metabolic Testing</li><li>Vekta membership included (value $30.99/m)</li><li>Race Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency weekly</li><li>Weekly Feedback</li><li>Weekly Schedule Adjustment</li><li>Weekly Training Analysis</li><li>Daily Session Carbs Recommendations</li><li>Monthly catch up call or when needed</li><li>Nutritional Consult with our Sports Nutritionist</li></ul><p>Advanced 6 Month Package Options<br> Advanced 6 months: 250 CAD - monthly</p><p>Monthly</p></div>
-</section>
-
-<section>
-  <div class="in split gn-split">
-    <div class="gn-txt"><h2>Premium</h2><div class="bar"></div><p>3 months subscription ($20 off for 6 mo)</p><p>$420/mo</p><ul class="ticks"><li>Personalised Daily Training Plan build on a weekly basis</li><li>Plan Tailored to your Training Availability</li><li>Stretching &amp; Core Exercises</li><li>Gym &amp; Winter Program + Support</li><li>Test Protocols (CP, FTP, FTHR or INSCYD)</li><li>Tests Analysis</li><li>Adaptive Training Zones changing weekly</li><li>Training Periodized based on goals</li><li>Blood panel review from our Sport Nutritionist</li><li>Discount membership for products at retail.cigalacycling.com</li><li>Nutritional Guide</li><li>Blog posts for tips</li><li>Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li>Access to World Class Nutritionist &amp; Mental Coach</li><li>Access to our online Community (value $15/m)</li><li>Discounted INSCYD Metabolic Testing</li><li>Vekta membership included (value $30.99/m)</li><li>Race Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency daily</li><li>Daily Feedback</li><li>Daily Schedule Adjustment</li><li>Daily Training Analysis</li><li>Daily Session Carbs Recommendations</li><li>Weekly catch up call or when needed</li><li>Nutritional Consult with our Sports Nutritionist</li></ul><p>Premium 6 Month Package Options<br> Premium 6 months - 400 CAD - monthly</p><p>Premium 3 Month Package Options<br> Premium 3 months : 420 CAD - monthly</p><p><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions.<br>View T&amp;C <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">HERE</a></b></p></div>
-    <div class="photo gn-photo gn-png"><img src="img/pg-trainingpeaks-level-1-2-logos.webp" alt="TrainingPeaks Level 1 &amp; 2 logos | Cigala Cycling Coaching" loading="lazy"></div>
+  <div class="in split">
+    <div class="gn-txt">
+      <div class="eyebrow">Your coach</div>
+      <p>Matteo brings over 28 years of cycling experience, more than a decade of coaching riders around the world, and hundreds of race victories. He provides personalised coaching for road cycling, gravel, MTB, gran fondos and endurance riders, with every training plan built around your goals, your schedule and your lifestyle.</p><p>Whether you’re in British Columbia, Alberta, Ontario, Quebec or anywhere else in Canada, training for a gran fondo, preparing for a gravel race, competing in local or Cycling Canada events, or working towards your next big cycling goal, your coaching is fully tailored to help you perform at your best.</p>
+    </div>
+    <div class="notes cn-facts"><div class="note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/></svg><p><b>A real winter plan</b><br>Indoor blocks on Zwift, MyWhoosh or ROUVY so you start spring fit, not from zero.</p></div><div class="note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><p><b>Prices in Canadian dollars</b><br>Pay in CAD by GoCardless.</p></div><div class="note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><p><b>Coast to coast</b><br>Feedback is written in Vekta or TrainingPeaks, so time zones don’t matter.</p></div></div>
   </div>
 </section>
 
 <section>
   <div class="in">
-    <div class=head><div><h2>AS SEEN IN</h2><div class="bar"></div></div></div>
-    <div class="gn-gal"><div class="g gn-png"><img src="img/pg-red-bull-racing-logo.webp" alt="Red Bull Racing logo | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-stickybottle-com-cycling-logo.webp" alt="StickyBottle.com cycling logo | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-white-zwift-logo-on-orange-bg.webp" alt="White Zwift logo on orange bg | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-trainingpeaks-logo-with-icon.webp" alt="TrainingPeaks logo with icon | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-cycling-ireland-logo.webp" alt="Cycling Ireland logo | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-vekta-logo-with-yellow-icon.webp" alt="Vekta logo with yellow icon | Cigala Cycling Coaching" loading="lazy"></div></div>
+    <div class="head"><div><div class="eyebrow">Why riders choose us</div><h2>Why Canadian Cyclists Choose Cigala Cycling Coaching</h2><div class="bar"></div></div></div>
+    <div class="gn-txt cn-why"><ul class="ticks"><li>Personalised daily/weekly training plans built around Critical Power (CP) and W′ modelling — going beyond basic FTP training</li><li>Powered by <b>Vekta</b>, a next-generation training platform used by WorldTour teams (membership worth $30.99/month included free)</li><li>Training Peaks also available if you’re already set up there</li><li>Adaptive training zones that update as your fitness changes</li><li>Full support for sportives, Gran Fondos, time trials, road racing and general performance goals</li><li>Syncs with Garmin, Wahoo, Zwift and more</li><li>Nutritional guidance and access to a sports nutritionist and mental coach</li><li>Daily session carb recommendations</li><li>Communication designed around Canada time zones — daily/weekly contact regardless of your coast</li></ul></div>
   </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>Events We Help Canadian Riders Prepare For</h2><div class="bar"></div><p>Training toward a specific date changes everything about how a plan should be built. We coach riders preparing for Gran Fondos and races across the Canadian calendar, including:</p><ul class="ticks"><li><b>RBC GranFondo Whistler</b> (Vancouver to Whistler, BC)</li><li><b>Gran Fondo Axel Merckx Okanagan</b> (Kelowna, BC)</li><li><b>Gran Fondo Baie Sainte-Marie</b> (Nova Scotia)</li><li><b>Gran Fondo PEI</b> (Prince Edward Island)<br><b><br></b></li><li><b>Revelstoke Gran Fondo</b> (BC)</li><li><b>Ride to Conquer Cancer</b> events (multiple provinces)</li><li>Cycling BC, Ontario and provincial road race/criterium calendars</li></ul><p>Targeting an event further afield — a European Gran Fondo or a US Gran Fondo World Series qualifier? We build Canadian athletes’ training blocks around those goals too, including winter indoor periodisation ahead of the trip.</p></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>2025 IN NUMBERS</h2><div class="bar"></div><h3 class="gn-sub">1348</h3><h4 class="gn-sub">Top 10</h4><h3 class="gn-sub">149</h3><h4 class="gn-sub">3rd places</h4><h3 class="gn-sub">129</h3><h4 class="gn-sub">2nd places</h4><h3 class="gn-sub">164</h3><h4 class="gn-sub">1st places</h4><h3 class="gn-sub">100%</h3><h4 class="gn-sub">Performance improvement</h4><h3 class="gn-sub">&gt;90%</h3><h4 class="gn-sub">Goals Achieved by clients</h4></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2><div class="bar"></div><div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">READ MORE TESTIMONIALS</a></div></div>
-</section>
-
-<section>
-  <div class="in split gn-split flip">
-    <div class="gn-txt"><h2>Coaching Cyclists Across Canada</h2><div class="bar"></div><p>Matteo coaches riders remotely delivering in from coast to coast in Canda, including:</p><ul class="ticks"><li><b>British Columbia</b> — Vancouver, Whistler, Victoria, Kelowna/Okanagan</li><li><b>Ontario</b> — Toronto, Ottawa, Barrie</li><li><b>Alberta</b> — Calgary, Edmonton</li><li><b>Quebec</b> — Montreal, Quebec City</li><li><b>Atlantic Canada</b> — Nova Scotia, PEI, New Brunswick</li></ul><p>Wherever you’re based, coaching is delivered the same way: personalised plan, remote feedback, and testing built around your local terrain, climate and event calendar.</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p></div>
-    <div class="photo gn-photo gn-png"><img src="img/pg-garmin-logo-with-blue-triangle.webp" alt="Garmin logo with blue triangle | Cigala Cycling Coaching" loading="lazy"></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">#TrainSmarterRideFaster</div><h2>It's our vision</h2><div class="bar"></div></div>
+      <div class="rv-links"><a class="arrow-link" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener">★ Read our reviews on Google →</a><a class="arrow-link" href="https://coaching.cigalacycling.com/case-studies/" target="_blank" rel="noopener">Case studies →</a></div></div>
+    <p class="cn-lede">Real athletes, in their own words, with their own names and home towns.</p>
+    <div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Athlete reviews, scroll sideways"><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“The big revelation for me has been how fresh I feel following a full winter training and spring racing schedule tailored by Matteo… Much less fatigued than ever before with less hours of training!”</blockquote><figcaption><img src="img/athlete-damian-gannon.webp" alt="Five cyclists in blue kits | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>Damian Gannon</b><span>Swords Cycling Club</span></div></figcaption></figure><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“I had entered a seven-day mountain stage race in the USA… During the event, I felt stronger each day of the race and ended up in the top 50 in a highly competitive field which included full time international professional racers.”</blockquote><figcaption><img src="img/athlete-ceall-o-dunlaing.webp" alt="Cyclist on mountain road | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>Ceall O’Dunlaing</b><span>Stage race in the USA</span></div></figcaption></figure><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.”</blockquote><figcaption><img src="img/athlete-bernd-ondruch.webp" alt="Cycling Pro wearing Kask helmet | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>Bernd Ondruch</b><span>Germany</span></div></figcaption></figure><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“After 7 weeks of following his programme, which is mainly working in Z1/2 with bits of Z3, I’ve managed to get a PB FTP of 207W.”</blockquote><figcaption><img src="img/athlete-lisa-dunne.webp" alt="Athletes on a winner&#x27;s podium | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>Lisa Dunne</b><span>Al Jassra Race Team, Qatar</span></div></figcaption></figure><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“I don’t have the free time to dedicate to hours of junk miles, and Matteo has perfectly optimised my training to adapt to what time I do have.”</blockquote><figcaption><img src="img/athlete-william-rymer.webp" alt="Two cyclists posing by lake | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>William Rymer</b><span>Roscrea, Tipperary, Ireland</span></div></figcaption></figure><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“First time was a 9 month training plan to get me from couch (literally!) to Haute Route Pyrenees in 2017 to mark my 60th birthday. More recently, I have worked with Matteo to help me recover from heart disease and a cardiac procedure.”</blockquote><figcaption><img src="img/athlete-derek-lawler.webp" alt="Cyclist with Bianchi bike | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>Derek Lawler</b><span>Kilkenny, Ireland</span></div></figcaption></figure></div><div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Previous reviews">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Next reviews">→</button></div></div>
   </div>
-  <div class="in"><div class="gn-gal"><div class="g gn-png"><img src="img/pg-wahoo-fitness-brand-logo-text.webp" alt="Wahoo Fitness brand logo text" loading="lazy"></div><div class="g gn-png"><img src="img/pg-hammerhead-logo-with-keywords.webp" alt="Hammerhead logo with keywords | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-bryton-logo-black-and-white.webp" alt="Bryton logo black and white | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-rouvy-logo-on-gray-background.webp" alt="ROUVY logo on gray background | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-mywhoosh-cycling-logo.webp" alt="MyWhoosh cycling logo | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-zwift-logo-with-orange-z.webp" alt="Zwift logo with orange Z | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-igpsport-black-and-red-logo.webp" alt="iGPSPORT black and red logo | Cigala Cycling Coaching" loading="lazy"></div></div></div>
+</section>
+
+<section id="packages">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Prices in CAD</div><h2>COACHING PACKAGES</h2><div class="bar"></div></div></div>
+    <p class="cur-note">Prices in Canadian Dollar (CAD)</p>
+    <div class="pkgs"><article class="pkg " id="pkg-basic">
+        
+        <div class="pkg-term">12 Weeks</div>
+        <h2>Basic</h2>
+        <p class="pkg-for">For riders who can follow the training without the human aspect of a coach.</p>
+        <div class="pkg-price"><b>$129</b><span>/mo</span></div>
+        <p class="pkg-sub">Charged with one-time payment of $387 for the 12 weeks.</p>
+        <div class="pkg-buy"><a class="btn btn-ghost pay" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Start with a free call</a><span class="pay-note">Basic 12 weeks: $387 CAD, one payment</span><a class="pkg-call" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Not sure? Book a free consultation →</a></div>
+        <div class="pkg-lab">What you get</div>
+        <ul class="ticks"><li>Personalised Daily Training Plan build for 12 weeks</li><li>Training Peaks Basic Account</li><li>Contact when needed via email</li><li>Plan Tailored to your Training Availability</li><li>Stretching &amp; Core Exercises</li><li>Gym &amp; Winter Program + Support</li><li>Test Protocols (CP, FTP, FTHR or INSCYD)</li><li>Tests Analysis</li><li>Training Periodized based on goals</li><li>Blood panel review from our Sport Nutritionist</li><li>Discount membership for products at retail.cigalacycling.com</li><li>Nutritional Guide</li><li class="more">Blog posts for tips</li><li class="more">Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li class="more">Access to work 1-to-1 with our World Class Nutritionist &amp; Mental Coach</li><li class="more">Access to our online Community (value $15/m)</li><li class="more">Discounted metabolic INSCYD testing</li><li class="more no-lab">Included in Advanced &amp; Premium</li><li class="more no">Feedback on sessions<span class="vh"> (not included in Basic)</span></li><li class="more no">Schedule Adjustment<span class="vh"> (not included in Basic)</span></li><li class="more no">Training Analysis<span class="vh"> (not included in Basic)</span></li><li class="more no">Daily Session Carbs Recommendations<span class="vh"> (not included in Basic)</span></li><li class="more no">Nutritional Consult with our Sports Nutritionist<span class="vh"> (not included in Basic)</span></li><li class="more no">Adaptive Training Zones changing weekly<span class="vh"> (not included in Basic)</span></li><li class="more no">Deep Initial Assessment of your training data (last 6–12 months)<span class="vh"> (not included in Basic)</span></li><li class="more no">Monthly catch up call<span class="vh"> (not included in Basic)</span></li><li class="more no">Race &amp; Pacing Strategy<span class="vh"> (not included in Basic)</span></li><li class="more no">Continuous Support &amp; Motivation<span class="vh"> (not included in Basic)</span></li><li class="more no">Vekta membership<span class="vh"> (not included in Basic)</span></li></ul>
+        <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
+      </article><article class="pkg hot" id="pkg-advanced">
+        <span class="pkg-badge">Monthly (Our Most Popular)</span>
+        <div class="pkg-term">6 months subscription</div>
+        <h2>Advanced</h2>
+        <p class="pkg-for">Access to Matteo as your coach, with weekly feedback, a monthly catch up call and deep training analysis, plus Vekta.</p>
+        <div class="pkg-price"><b>$250</b><span>/mo</span></div>
+        <p class="pkg-sub"></p>
+        <div class="pkg-buy"><a class="btn btn-go pay" href="https://pay.gocardless.com/BRT01KYYQB6HMVD3ZHR9EGE5QR91V" target="_blank" rel="noopener">Subscribe to Advanced · $250 CAD/mo</a><a class="pkg-call" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Not sure? Book a free consultation →</a></div>
+        <div class="pkg-lab">What you get</div>
+        <ul class="ticks"><li>Personalised Daily Training Plan build on a weekly basis</li><li>Deep Initial Assessment of your training data (last 6–12 months)</li><li>Vekta membership included (value $30.99/m)</li><li>Nutritional Consult with our Sports Nutritionist</li><li>Race &amp; Pacing Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency weekly</li><li>Weekly Feedback</li><li>Weekly Schedule Adjustment</li><li>Weekly Training Analysis</li><li>Monthly catch up call or when needed</li><li>Adaptive Training Zones changing weekly</li><li class="more">Plan Tailored to your Training Availability</li><li class="more">Stretching &amp; Core Exercises</li><li class="more">Gym &amp; Winter Program + Support</li><li class="more">Test Protocols (CP, FTP, FTHR or INSCYD)</li><li class="more">Tests Analysis</li><li class="more">Training Periodized based on goals</li><li class="more">Blood panel review from our Sport Nutritionist</li><li class="more">Discount membership for products at retail.cigalacycling.com</li><li class="more">Nutritional Guide</li><li class="more">Blog posts for tips</li><li class="more">Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li class="more">Access to work 1-to-1 with our World Class Nutritionist &amp; Mental Coach</li><li class="more">Access to our online Community (value $15/m)</li><li class="more">Discounted INSCYD Metabolic Testing</li><li class="more">Daily Session Carbs Recommendations</li></ul>
+        <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
+      </article><article class="pkg sold" id="pkg-premium">
+        <span class="pkg-badge sold">Monthly (SOLD OUT!)</span>
+        <div class="pkg-term">3 months subscription ($20 off for 6 mo)</div>
+        <h2>Premium</h2>
+        <p class="pkg-for">The closest coaching: daily contact, feedback and analysis, and a weekly catch up call.</p>
+        <div class="pkg-price"><b>$420</b><span>/mo</span></div>
+        <p class="pkg-sub"></p>
+        <div class="pkg-buy"><a class="btn btn-ghost pay" href="#contact" data-waitlist="Premium">Join the waiting list</a><span class="pay-note">Premium 3 months $420 CAD/mo · 6 months $400 CAD/mo</span><a class="pkg-call" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Not sure? Book a free consultation →</a></div>
+        <div class="pkg-lab">What you get</div>
+        <ul class="ticks"><li>Personalised Daily Training Plan build on a weekly basis</li><li>Deep Initial Assessment of your training data (last 6–12 months)</li><li>Vekta membership included (value $30.99/m)</li><li>Nutritional Consult with our Sports Nutritionist</li><li>Race &amp; Pacing Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency daily</li><li>Daily Feedback</li><li>Daily Schedule Adjustment</li><li>Daily Training Analysis</li><li>Weekly catch up call or when needed</li><li>Adaptive Training Zones changing weekly</li><li class="more">Plan Tailored to your Training Availability</li><li class="more">Stretching &amp; Core Exercises</li><li class="more">Gym &amp; Winter Program + Support</li><li class="more">Test Protocols (CP, FTP, FTHR or INSCYD)</li><li class="more">Tests Analysis</li><li class="more">Training Periodized based on goals</li><li class="more">Blood panel review from our Sport Nutritionist</li><li class="more">Discount membership for products at retail.cigalacycling.com</li><li class="more">Nutritional Guide</li><li class="more">Blog posts for tips</li><li class="more">Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li class="more">Access to work 1-to-1 with our World Class Nutritionist &amp; Mental Coach</li><li class="more">Access to our online Community (value $15/m)</li><li class="more">Discounted INSCYD Metabolic Testing</li><li class="more">Daily Session Carb Recommendations</li></ul>
+        <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
+      </article></div>
+    <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">HERE</a></b></p>
+    <div class="cn-tp"><img src="img/trainingpeaks-levels-dark-v2.webp" alt="TrainingPeaks Level 1 &amp; 2 logos | Cigala Cycling Coaching" loading="lazy"></div>
+  </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>FREQUENTLY ASKED QUESTIONS</h2><div class="bar"></div><p>Which package is right for me?</p><p>It depends on your budget and how much direct feedback you want. If you’re happy following a plan independently, Basic is enough. Advanced is our most popular package because it includes weekly access to Matteo plus Vekta membership.</p><p>I&#x27;m based in Canada — does coaching work remotely? How you handle winter training?</p><p>All coaching is delivered online — plans, feedback, testing and communication happen asynchronously via Vekta or Training Peaks, with calls scheduled to suit your time zone, whether you’re on the East Coast, West Coast, or anywhere between.</p><p>Your plan includes a dedicated gym &amp; winter programme, built for indoor trainer work (Zwift, RGT, MyWhoosh, etc.) during the colder months, periodised so you come into spring with a real fitness base rather than starting over.</p><p>Do you only coach people who race?</p><p>No. We coach riders working toward weight loss, their first century ride, general fitness, Gran Fondos, triathlon or racing — the only requirement is that you ride a bike and want to improve.</p><p>Do I need to switch from Training Peaks to Vekta?</p><p>No — we can continue working in Training Peaks if you’re already comfortable there, or explore Vekta’s Critical Power and W′ analytics alongside it.</p><p>What age do I need to be?</p><p>We coach all ages, 14 and up — no upper limit. Riders under U23 receive a 20% student discount.</p><p>My event is months away — can I still sign up now?</p><p>Yes. Based on how far away is the event you can choose any suitable package.</p></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Getting started from Canada</div><h3 class="h-sec">HOW IT WORKS</h3><div class="bar"></div></div></div>
+    <ol class="cn-how"><li><span class="hw-n">1</span><div><h3 class="h-sm">Free call</h3><p>Book a free consultation with Matteo. The booking page shows the times in your own time zone.</p></div></li><li><span class="hw-n">2</span><div><h3 class="h-sm">Deep assessment</h3><p>Matteo goes through your last 6–12 months of training data and sets your Critical Power, W′ and zones.</p></div></li><li><span class="hw-n">3</span><div><h3 class="h-sm">Your plan</h3><p>Sessions land in Vekta or TrainingPeaks and sync to your Garmin, Wahoo or your indoor app for the winter.</p></div></li><li><span class="hw-n">4</span><div><h3 class="h-sm">Feedback</h3><p>Matteo is in Ireland, 4½ hours ahead of Newfoundland and 8 ahead of BC: your ride is usually reviewed by the time you wake up.</p></div></li></ol>
+  </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>Personalised to your goals. Coaching cyclists in Canada and worldwide.</h2><div class="bar"></div><div class="ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book Free Consultation</a></div></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Press &amp; partners</div><h2>AS SEEN IN</h2><div class="bar"></div></div></div>
+    <div class="seen-tiles"><span class="seen-tile" style="background:#fff"><img class="contain" src="img/logo-red-bull.webp" alt="Red Bull Racing logo | Cigala Cycling Coaching" loading="lazy"></span><span class="seen-tile" style="background:#fff"><img class="contain" src="img/logo-stickybottle.webp" alt="StickyBottle.com cycling logo | Cigala Cycling Coaching" loading="lazy"></span><span class="seen-tile" style="background:#f9661a"><img class="mark" src="img/logo-zwift-centred3.webp" alt="White Zwift logo on orange bg | Cigala Cycling Coaching" loading="lazy"></span><span class="seen-tile" style="background:#011031"><img class="mark" src="img/logo-trainingpeaks-centred3.webp" alt="TrainingPeaks logo with icon | Cigala Cycling Coaching" loading="lazy"></span><span class="seen-tile" style="background:#284733"><img class="mark" src="img/logo-cycling-ireland-centred3.webp" alt="Cycling Ireland logo | Cigala Cycling Coaching" loading="lazy"></span><span class="seen-tile" style="background:#fff"><img class="contain" src="img/logo-vekta.webp" alt="Vekta logo with yellow icon | Cigala Cycling Coaching" loading="lazy"></span></div>
+  </div>
+</section>
+
+<section>
+  <div class="in split gn-split">
+    <div class="gn-txt">
+      <div class="eyebrow">Your target</div>
+      <h2>Events We Help Canadian Riders Prepare For</h2><div class="bar"></div>
+      <p>Training toward a specific date changes everything about how a plan should be built. We coach riders preparing for Gran Fondos and races across the Canadian calendar, including:</p>
+      <ul class="ticks"><li><b>RBC GranFondo Whistler</b> (Vancouver to Whistler, BC)</li><li><b>Gran Fondo Axel Merckx Okanagan</b> (Kelowna, BC)</li><li><b>Gran Fondo Baie Sainte-Marie</b> (Nova Scotia)</li><li><b>Gran Fondo PEI</b> (Prince Edward Island)</li><li><b>Revelstoke Gran Fondo</b> (BC)</li><li><b>Ride to Conquer Cancer</b> events (multiple provinces)</li><li>Cycling BC, Ontario and provincial road race/criterium calendars</li></ul>
+      <p>Targeting an event further afield — a European Gran Fondo or a US Gran Fondo World Series qualifier? We build Canadian athletes’ training blocks around those goals too, including winter indoor periodisation ahead of the trip.</p>
+      <h3 class="h-sm cn-gh">Guides from our blog</h3>
+      <ul class="cn-guides"><li><a class="arrow-link" href="https://coaching.cigalacycling.com/blog/gran-fondo-whistler-training-guide/" target="_blank" rel="noopener">How to train for Gran Fondo Whistler →</a></li><li><a class="arrow-link" href="https://coaching.cigalacycling.com/blog/slower-in-winter-is-not-your-legs/" target="_blank" rel="noopener">Slower in winter? It’s not your legs →</a></li><li><a class="arrow-link" href="https://coaching.cigalacycling.com/blog/effective-fuelling-techniques-for-winter-training/" target="_blank" rel="noopener">Fuelling for winter training →</a></li></ul>
+    </div>
+    <div class="photo gn-photo"><img src="img/country-canada-events.webp" alt="Cyclist doing a Time Trial | Cigala Cycling" loading="lazy"></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Results</div><h2>2025 IN NUMBERS</h2><div class="bar"></div></div></div>
+    <div class="stats nums"><div class="stat"><h3 class="n" data-count="1348">1348</h3><h4 class="l">Top 10</h4></div><div class="stat"><h3 class="n" data-count="149">149</h3><h4 class="l">3rd places</h4></div><div class="stat"><h3 class="n" data-count="129">129</h3><h4 class="l">2nd places</h4></div><div class="stat"><h3 class="n" data-count="164">164</h3><h4 class="l">1st places</h4></div><div class="stat"><h3 class="n" data-count="100%">100%</h3><h4 class="l">Performance improvement</h4></div><div class="stat"><h3 class="n" data-count="&gt;90%">&gt;90%</h3><h4 class="l">Goals Achieved by clients</h4></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head">
+      <div><div class="eyebrow">Real results</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2><div class="bar"></div></div>
+      <div class="rv-links"><a class="btn btn-ghost" href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Read more testimonials</a></div>
+    </div>
+    <div class="cs-row" tabindex="0" aria-label="Case studies, scroll sideways"><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#marine-lenehan" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-marine-lenehan.webp" alt="Female cyclist biting gold medal | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 28%"></span><span class="cs-tx"><span class="cs-tag">Gran Fondo &amp; gravel</span><b class="cs-stat">European champion</b><span class="cs-h">From first ride to European champion</span><span class="cs-n">Marine Lenehan · Ireland</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#tilen" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-tilen.webp" alt="Tilen Č. racing in a white team kit" loading="lazy" style="object-position:50% 25%"></span><span class="cs-tx"><span class="cs-tag">Road racing</span><b class="cs-stat">1,063 W sprint</b><span class="cs-h">From not sprinting out of the saddle to 1,063 W</span><span class="cs-n">Tilen Č. · Road racer · Slovenia</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#marco" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-marco.webp" alt="Marco B. racing on gravel in a green kit, race number 96" loading="lazy" style="object-position:50% 22%"></span><span class="cs-tx"><span class="cs-tag">Road &amp; gravel</span><b class="cs-stat">+124 W sprint</b><span class="cs-h">Every number went up</span><span class="cs-n">Marco B. · Road &amp; gravel racer · Portugal</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#eoin" target="_blank" rel="noopener"><span class="cs-img cs-data" aria-hidden="true"><b>+104 W sprint</b><small>Best 15-second power</small></span><span class="cs-tx"><span class="cs-tag">Road racing</span><b class="cs-stat">+104 W sprint</b><span class="cs-h">All-time bests and category wins</span><span class="cs-n">Eoin R. · IVCA racer · Ireland</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#vittorio" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-vittorio.webp" alt="Vittorio C. racing mountain bike in an orange helmet" loading="lazy" style="object-position:35% 32%"></span><span class="cs-tx"><span class="cs-tag">MTB &amp; cyclocross</span><b class="cs-stat">1,112 W record</b><span class="cs-h">Faster out of every corner</span><span class="cs-n">Vittorio C. · MTB &amp; cyclocross racer · Italy</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#david" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-david.webp" alt="David O. racing in his Gorey CC club kit" loading="lazy" style="object-position:45% 22%"></span><span class="cs-tx"><span class="cs-tag">Sportive</span><b class="cs-stat">+44 W CP</b><span class="cs-h">+44 watts of engine</span><span class="cs-n">David O. · Sportive rider · Ireland</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#shane-courtney" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-shane-courtney.webp" alt="Cyclist racing on road bike | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 50%"></span><span class="cs-tx"><span class="cs-tag">Road racing</span><b class="cs-stat">220 → 260 W FTP</b><span class="cs-h">+40 W FTP in under 4 months</span><span class="cs-n">Shane Courtney · Tralee Manor West ibike</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#bernd-ondruch" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-bernd-ondruch-2x.webp" alt="Cycling Pro wearing Kask helmet | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 40%"></span><span class="cs-tx"><span class="cs-tag">Gran Fondo</span><b class="cs-stat">Worlds qualified</b><span class="cs-h">Qualified for the Gran Fondo Worlds</span><span class="cs-n">Bernd Ondruch · Germany</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#rob-kavanagh" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-rob-kavanagh.webp" alt="Cyclist in black Team Sky kit | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 38%"></span><span class="cs-tx"><span class="cs-tag">Fitness &amp; weight loss</span><b class="cs-stat">−16 kg</b><span class="cs-h">Close to 16 kg lost in 6 months</span><span class="cs-n">Rob Kavanagh · Ireland</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#derek-lawler" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-derek-lawler-2x.webp" alt="Cyclist with Bianchi bike | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 48%"></span><span class="cs-tx"><span class="cs-tag">Sportive &amp; health</span><b class="cs-stat">Haute Route at 60</b><span class="cs-h">From the couch to the Haute Route at 60</span><span class="cs-n">Derek Lawler · Kilkenny, Ireland</span><span class="arrow-link">Read the case study →</span></span></a></div>
+  </div>
+</section>
+
+<section>
+  <div class="in split">
+    <div class="gn-txt">
+      <div class="eyebrow">Where we coach</div>
+      <h2>Coaching Cyclists Across Canada</h2><div class="bar"></div>
+      <p>Matteo coaches riders remotely from coast to coast in Canada, including:</p>
+      <ul class="ticks"><li><b>British Columbia</b> — Vancouver, Whistler, Victoria, Kelowna/Okanagan</li><li><b>Ontario</b> — Toronto, Ottawa, Barrie</li><li><b>Alberta</b> — Calgary, Edmonton</li><li><b>Quebec</b> — Montreal, Quebec City</li><li><b>Atlantic Canada</b> — Nova Scotia, PEI, New Brunswick</li></ul>
+      <p>In most of Canada the road season is short and the winter is long. Your year is planned around that: an indoor block with structured trainer sessions and gym work through the winter, then a short, focused build to your summer Gran Fondo.</p>
+      <p>Wherever you’re based, coaching is delivered the same way: personalised plan, remote feedback, and testing built around your local terrain, climate and event calendar.</p>
+    </div>
+    <div>
+      <div class="eyebrow">Works with your devices &amp; apps</div>
+      <div class="logos apps cn-apps"><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-garmin-logo-with-blue-tr.webp" alt="Garmin logo with blue triangle | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-wahoo-fitness-brand-logo.webp" alt="Wahoo Fitness brand logo text" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-hammerhead-logo-with-key.webp" alt="Hammerhead logo with keywords | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-bryton-logo-black-and-wh.webp" alt="Bryton logo black and white | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-rouvy-logo-on-gray-backg.webp" alt="ROUVY logo on gray background | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-mywhoosh-cycling-logo.webp" alt="MyWhoosh cycling logo | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-zwift-logo-with-orange-z.webp" alt="Zwift logo with orange Z | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-igpsport-black-and-red-l.webp" alt="iGPSPORT black and red logo | Cigala Cycling Coaching" loading="lazy"></a></div>
+    </div>
+  </div>
+</section>
+
+<section class="ft">
+  <div class="in">
+    <div class="ft-box">
+      <div class="ft-head"><div class="eyebrow">Train smarter</div><h3 class="h-sec">FREE TRAINING TOOLS</h3><div class="bar"></div>
+        <p>Free calculators from Head Coach Matteo Cigala. Work out your numbers in seconds.</p>
+        <a class="arrow-link" href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">See all free tools →</a></div>
+      <div class="ft-cards"><a class="ft-card" href="https://coaching.cigalacycling.com/tools/training-zones-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15v3M11 11v7M15 8v10M19 5v13"/></svg><span><b>Training zones</b><small>Power and heart-rate zones from your FTP</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/ftp-test-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 13l4-4M12 3V1M9 1h6"/></svg><span><b>FTP test</b><small>Your FTP from a ramp, 8-min or 20-min test</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/carbs-per-hour-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/></svg><span><b>Carbs per hour</b><small>Your fuelling plan in gels and bottles</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/sweat-rate-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7l5.7 5.6a8 8 0 1 1-11.4 0z"/></svg><span><b>Sweat rate</b><small>How much you sweat, and how much to drink</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/critical-power-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span><b>Critical Power &amp; W′</b><small>CP, W′ and your best power from 2 to 20 min</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/climb-time-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20h20L14 6l-4 6-2-3-6 11z"/><path d="M14 6l2 3"/></svg><span><b>Climb time</b><small>Your time on the Stelvio, Alpe d’Huez or any climb</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/gear-speed-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8L7 17M17 7l2.8-2.8"/></svg><span><b>Gear &amp; speed</b><small>Your speed in every gear at any cadence</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/swim-pace-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M2 13c2 0 2-1.5 4-1.5S8 13 10 13s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><circle cx="16" cy="5" r="2"/><path d="M6 9l4-3 3 3"/></svg><span><b>Swim pace (CSS)</b><small>Triathlon swim paces from two time trials</small></span><i aria-hidden="true">→</i></a></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Good to know</div><h2>FREQUENTLY ASKED QUESTIONS</h2><div class="bar"></div></div></div>
+    <div class="faq"><details open><summary><h3>Which package is right for me?</h3></summary><p>It depends on your budget and how much direct feedback you want. Basic (one payment for 12 weeks) is a plan you follow on your own. Advanced ($250 CAD/month) adds Matteo: weekly feedback and schedule changes, a monthly call and Vekta membership, and it is our most popular package. Premium is the closest coaching, with daily contact; it is full at the moment, but you can join the waiting list.</p></details><details><summary><h3>I&#x27;m based in Canada — does coaching work remotely? How you handle winter training?</h3></summary><p>Yes. All coaching is delivered online — plans, feedback, testing and communication happen asynchronously via Vekta or Training Peaks, so it works the same in Vancouver, Toronto or Halifax. Calls are booked at a time that suits both sides.</p><p>Your plan includes a dedicated gym &amp; winter programme, built for indoor trainer work (Zwift, RGT, MyWhoosh, etc.) during the colder months, periodised so you come into spring with a real fitness base rather than starting over.</p></details><details><summary><h3>Do you only coach people who race?</h3></summary><p>No. We coach riders working toward weight loss, their first Gran Fondo or Ride to Conquer Cancer, general fitness, gravel, triathlon or racing — the only requirement is that you ride a bike and want to improve.</p></details><details><summary><h3>Do I need to switch from Training Peaks to Vekta?</h3></summary><p>No — we can continue working in Training Peaks if you’re already comfortable there, or explore Vekta’s Critical Power and W′ analytics alongside it.</p></details><details><summary><h3>What age do I need to be?</h3></summary><p>We coach all ages, 14 and up — no upper limit. Riders under U23 receive a 20% student discount.</p></details><details><summary><h3>My event is months away — can I still sign up now?</h3></summary><p>Yes, and with a short outdoor season it pays to start early. For a September event like the RBC GranFondo Whistler, starting in the winter gives you an indoor base block, an outdoor build in spring and a taper. Pick the package that fits the time you have.</p></details></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="band band-cta">
+      <img src="img/matteo-worlds-silver.webp" alt="Matteo Cigala, silver at the World Championship Gravel 19-34" loading="lazy" width="1280" height="1600">
+      <div class="tx">
+        <div class="eyebrow">Start working with Matteo</div>
+        <h2>Personalised to your goals. Coaching cyclists in Canada and worldwide.</h2>
+        <div class="bar"></div>
+        <div class="ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book Free Consultation</a><a class="btn btn-ghost" href="#packages">See the packages</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="in split">
+    <div class="photo rider"><img src="img/matteo-coaching.webp" alt="Matteo Cigala Coaching" loading="lazy" width="1440" height="1081"></div>
+    <div>
+      <div class="eyebrow">Contact</div>
+      <h3 class="h-sec">GET IN TOUCH TODAY</h3>
+      <div class="bar"></div>
+      <p class="lede">Questions about coaching from Canada? Send us a message and Matteo will get back to you.</p>
+      <form class="form panel" method="post" action="#" onsubmit="return false">
+        <label>Name<input name="form_fields[name]" type="text" placeholder="Name *" required autocomplete="name"></label>
+        <label>Email<input name="form_fields[email]" type="email" placeholder="Email *" required autocomplete="email"></label>
+        <label>Phone<input name="form_fields[phone]" type="tel" placeholder="Phone (with country code) *" required autocomplete="tel"></label>
+        <label>Message<textarea name="form_fields[message]" placeholder="Your Message *" rows="5" required></textarea></label>
+        <button class="btn btn-go" type="submit">Send &gt;</button>
+      </form>
+    </div>
+  </div>
 </section>
 <footer>
   <div class="in fcols">
@@ -604,5 +915,39 @@ document.querySelectorAll('.dd').forEach(function (d) {
   b.addEventListener('click', function () { var o = d.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
   d.addEventListener('focusout', function (e) { if (!d.contains(e.relatedTarget)) { d.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
 });
+</script><script>(function(){var r=document.getElementById('rv-row');if(!r)return;document.querySelectorAll('.rv-btn').forEach(function(b){b.addEventListener('click',function(){r.scrollBy({left:(+b.dataset.d)*r.clientWidth*0.85,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});});})();</script><script>
+document.getElementById('g-more') && document.getElementById('g-more').addEventListener('click', function () {
+  var g = document.getElementById('gallery'), all = g.classList.toggle('all');
+  this.textContent = all ? 'Show fewer photos' : this.dataset.label;
+});
+document.querySelectorAll('[data-waitlist]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var m = document.querySelector('#contact textarea');
+    if (m && !m.value) m.value = 'Hi Matteo, please add me to the waiting list for the ' + b.dataset.waitlist + ' package.';
+  });
+});
+document.querySelectorAll('.pkg-all').forEach(function (b) {   // one click opens every package (Matteo 15 Nov)
+  b.addEventListener('click', function () {
+    var o = !b.closest('.pkg').classList.contains('open');
+    document.querySelectorAll('.pkg').forEach(function (p) { p.classList.toggle('open', o); });
+    document.querySelectorAll('.pkg-all').forEach(function (x) { x.setAttribute('aria-expanded', o); x.querySelector('span').textContent = o ? 'Show fewer features' : 'See all features'; });
+  });
+});
+(function () {   // 2026 in numbers count up when they scroll into view (Matteo 15 Nov); the HTML keeps the real numbers
+  var els = document.querySelectorAll('[data-count]');
+  if (!els.length || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  els.forEach(function (el) {
+    var m = el.dataset.count.match(/^(\D*)(\d+)(\D*)$/); if (!m) return;
+    var to = +m[2], dur = 1600;
+    el.style.minWidth = el.offsetWidth + 'px'; el.textContent = m[1] + '0' + m[3];
+    new IntersectionObserver(function (es, ob) {
+      if (!es[0].isIntersecting) return; ob.disconnect();
+      var t0 = performance.now();
+      (function step(t) { var k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+        el.textContent = m[1] + Math.round(to * e) + m[3]; if (k < 1) requestAnimationFrame(step); })(t0);
+    }, { threshold: 0.4 }).observe(el);
+  });
+})();
+
 </script>
 </body></html>
