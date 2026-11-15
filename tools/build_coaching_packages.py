@@ -266,6 +266,16 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
 
 <section>
   <div class="in">
+    <div class="head">
+      <div><div class="eyebrow">Real results</div><h3 class="h-sec">CASE STUDIES</h3><div class="bar"></div></div>
+      <div class="rv-links"><a class="arrow-link" href="{C}/case-studies/" {EXT}>All case studies →</a></div>
+    </div>
+    {case_cards(C + '/case-studies/')}
+  </div>
+</section>
+
+<section>
+  <div class="in">
     <div class="head"><div><div class="eyebrow">Results</div><h2>2026 IN NUMBERS</h2><div class="bar"></div></div></div>
     <div class="stats nums">{nums_html}</div>
   </div>
@@ -428,6 +438,7 @@ PCSS = '''<style>
 .ticks li.no-lab::before { display: none; }
 .vk-side { display: grid; gap: 14px; }
 .vk-side .photo { aspect-ratio: 3 / 2; }
+.vk-side .photo img { filter: brightness(.85); }   /* Matteo 15 Nov: 15% darker */
 .vk-logos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .vk-logos > * { display: grid; place-items: center; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; min-height: 130px; }
 .vk-logos img { max-height: 92px; width: auto; max-width: 100%; }
@@ -529,5 +540,5 @@ document.getElementById('g-more').dataset.label = document.getElementById('g-mor
 
 build('individual-packages', PATH, MAIN,
       'New Individual Packages page. Same packages, prices, payment links and copy as live; the page now has its approved H1.',
-      h1='Individual Cycling Coaching Packages', extra_css=PCSS + FT_CSS, extra_js=PJS)
+      h1='Individual Cycling Coaching Packages', extra_css=PCSS + FT_CSS + CS_CSS, extra_js=PJS)
 print('features:', {k: len(v) for k, v in F.items()}, 'shared:', len(common), 'gallery:', len(gal), 'faq:', len(faq), 'apps:', len(DEV))

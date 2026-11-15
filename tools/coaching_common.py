@@ -145,11 +145,70 @@ FT_CSS = '''<style>
 @media (max-width: 560px) { .ft-cards { grid-template-columns: minmax(0, 1fr); } }
 </style>'''
 
+# ---------- Case studies (Matteo 15 Nov). Every fact comes from the athlete's own testimonial on the live Testimonials
+# page (coaching/text/testimonials.txt); nothing is added. Matteo will add more as he publishes them.
+CASES = [
+    {'slug': 'marine-lenehan', 'name': 'Marine Lenehan', 'where': 'Ireland', 'photo': 'T135849.182',
+     'headline': 'From first ride to European champion', 'stat': 'European champion', 'tag': 'Gran Fondo & gravel',
+     'before': 'A complete newcomer to cycling: she started riding in February.',
+     'goal': 'Learn the sport and find out how far she could go.',
+     'how': ['A crash course in cycling, built from scratch', 'Personalised sessions with attention to every detail', 'Every session different, so training stayed fun and dynamic'],
+     'result': 'European Gran Fondo & gravel champion (19–34) and silver medallist at the Gran Fondo World Championships, within a year of starting cycling.',
+     'quote': 'He has not only made me fall in love with cycling, but has believed in me even when I didn’t.'},
+    {'slug': 'shane-courtney', 'name': 'Shane Courtney', 'where': 'Tralee Manor West ibike', 'photo': 'T142905.118',
+     'headline': '+40 W FTP in under 4 months', 'stat': '220 → 260 W FTP', 'tag': 'Road racing',
+     'before': 'Training 14–16 hours a week over the winter on a generic plan, and getting nowhere. Racing in A4.',
+     'goal': 'Get faster and move up the racing categories.',
+     'how': ['Contact by phone or WhatsApp every couple of days, and weekly feedback', 'No junk miles: every interval has a clear purpose', 'Recovery, nutrition, strength and two flexibility sessions a week'],
+     'result': 'FTP up from 220 W to 260 W in under 4 months, sprint from about 600 W to 920 W. Upgraded to A3 with points to spare, and county hill-climb champion.',
+     'quote': 'Matteo managed to raise my FTP from 220w to 260w in less than 4 months & my sprint from 600w ish to 920w.'},
+    {'slug': 'bernd-ondruch', 'name': 'Bernd Ondruch', 'where': 'Germany', 'photo': 'T134927.535',
+     'headline': 'Qualified for the Gran Fondo Worlds', 'stat': 'Worlds qualified', 'tag': 'Gran Fondo',
+     'before': 'Three years of trying to qualify on his own, riding consistently but with no structured plan.',
+     'goal': 'Qualify for the UCI Gran Fondo World Championship.',
+     'how': ['A coaching style adapted to him, with accountability but no pressure', 'Varied workouts targeting different parts of his riding', 'The plan adjusted after a crash, never pushing beyond his limits'],
+     'result': 'Clear improvements after 4–6 weeks, and he qualified for the UCI Gran Fondo World Championship after 12 months of coaching.',
+     'quote': 'With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.'},
+    {'slug': 'rob-kavanagh', 'name': 'Rob Kavanagh', 'where': 'Ireland', 'photo': 'T143158.190',
+     'headline': 'Close to 16 kg lost in 6 months', 'stat': '−16 kg', 'tag': 'Fitness & weight loss',
+     'before': 'Had lost interest in the gym and football and put on a lot of weight. Bought a road bike, but wasn’t making progress riding alone.',
+     'goal': 'Lose weight, get fitter and start racing.',
+     'how': ['A structured training plan from the first phone call', 'Sessions planned for him, so he knew exactly what to do'],
+     'result': 'Close to 16 kg lost in 6 months, and healthier, fitter and happier.',
+     'quote': 'To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.'},
+    {'slug': 'derek-lawler', 'name': 'Derek Lawler', 'where': 'Kilkenny, Ireland', 'photo': 'T140239.558',
+     'headline': 'From the couch to the Haute Route at 60', 'stat': 'Haute Route at 60', 'tag': 'Sportive & health',
+     'before': 'Starting, in his words, from the “couch (literally!)”.',
+     'goal': 'Ride the Haute Route Pyrenees to mark his 60th birthday.',
+     'how': ['A 9-month plan building up to the event', 'Years later, a steady, gradual plan to recover fitness after heart disease and a cardiac procedure'],
+     'result': 'Completed the Haute Route Pyrenees in 2017, “the experience of a lifetime”, and later got back to regular cycling after his cardiac procedure.',
+     'quote': 'As a non-elite or serious cyclist, I can highly recommend Matteo to anyone interested in getting fit and ready for any cycling goal, no matter what level you’re at or what age you are!'},
+]
+def case_cards(link_base):
+    """Scrolling case study cards; link_base is the case studies page URL."""
+    cards = ''.join(f'<a class="cs-card" href="{link_base}#{c["slug"]}" {EXT}><span class="cs-img"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="lazy"></span>'
+                    f'<span class="cs-tx"><span class="cs-tag">{E(c["tag"])}</span><b class="cs-stat">{E(c["stat"])}</b><span class="cs-h">{E(c["headline"])}</span>'
+                    f'<span class="cs-n">{E(c["name"])} · {E(c["where"])}</span><span class="arrow-link">Read the case study →</span></span></a>' for c in CASES)
+    return f'<div class="cs-row" tabindex="0" aria-label="Case studies, scroll sideways">{cards}</div>'
+CS_CSS = """<style>
+.cs-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 300px); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: thin; }
+.cs-card { scroll-snap-align: start; display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--panel-grad), var(--panel); text-decoration: none; transition: border-color .2s, transform .2s; }
+.cs-card:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
+.cs-img { aspect-ratio: 4 / 3; overflow: hidden; background: #111; }
+.cs-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.9); }
+.cs-tx { display: grid; gap: 6px; padding: 16px 18px 18px; }
+.cs-tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.cs-stat { font: 400 30px/1.05 var(--head); color: var(--text); text-transform: uppercase; }
+.cs-h { font-size: 15px; font-weight: 600; color: var(--text); }
+.cs-n { font-size: 13px; color: var(--text-3); }
+.cs-card .arrow-link { margin-top: 6px; }
+</style>"""
+
 def li(u, t): return f'<li>{a(u, t)}</li>'
 # Footer: same layout as cigalacycling.com (logo + tagline, two link columns, contact), Matteo 15 Nov: "less busy".
 # The four international pages keep their footer links (and live H2 wording) for Google, but sit in a small
 # "International coaching" toggle in the bottom row instead of a visible column. Closed <details> content is still in the HTML.
-SITE = [(C + '/about/', 'About'), (C + '/testimonials/', 'Testimonials'), (C + '/blog/', 'Blog'), (T + '/', 'Bike Tours'), (R, 'Retail Store'), (C + '/contact/', 'Contact')]
+SITE = [(C + '/about/', 'About'), (C + '/testimonials/', 'Testimonials'), (C + '/case-studies/', 'Case Studies'), (C + '/blog/', 'Blog'), (T + '/', 'Bike Tours'), (R, 'Retail Store'), (C + '/contact/', 'Contact')]
 COACH = [(C + '/individual-packages/', 'Cycling Packages'), (C + '/tri-individual-packages/', 'Triathlon Packages'), (C + '/group-club-packages/', 'Group &amp; Club Packages'),
          (C + '/book-1-on-1-session/', 'Book a 1-to-1 Session'), (C + '/testing/', 'INSCYD Testing'), (C + '/nutrition/', 'Nutrition'), (C + '/tools/', 'Free Training Tools')]
 INTL = [('/cycling-coach-uk/', 'Cycling Coach UK'), ('/cycling-coach-usa/', 'Cycling Coach USA'), ('/cycling-coach-canada/', 'Cycling Coach Canada'), ('/preparatore-di-ciclismo-italia/', 'Preparatore di Ciclismo Italia')]

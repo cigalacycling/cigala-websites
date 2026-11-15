@@ -24,6 +24,8 @@ Y = {   # same as the previews (tools/build_coaching_tools.py)
               'Free FTP calculator: your FTP from a ramp test, an 8-minute or a 20-minute test, with W/kg and your training zones.', 'ftp calculator'),
     'gear-speed-calculator': ('Bike Gear & Speed Calculator (Cadence, Gear Ratio) | Cigala Cycling Coaching',
               'Free bike gear calculator: your speed in every gear at any cadence for your chainrings, cassette and tyre size, plus development per pedal turn.', 'bike gear calculator'),
+    'case-studies': ('Cycling Coaching Case Studies | Cigala Cycling Coaching',
+              'Real results from Cigala Cycling coaching: from first ride to European champion, +40 W FTP in 4 months, Gran Fondo Worlds qualification and more.', 'cycling coaching case studies'),
 }
 items = []
 for slug, (t, m, k) in Y.items():

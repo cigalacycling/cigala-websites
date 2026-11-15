@@ -515,6 +515,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .ticks li.no-lab::before { display: none; }
 .vk-side { display: grid; gap: 14px; }
 .vk-side .photo { aspect-ratio: 3 / 2; }
+.vk-side .photo img { filter: brightness(.85); }   /* Matteo 15 Nov: 15% darker */
 .vk-logos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .vk-logos > * { display: grid; place-items: center; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; min-height: 130px; }
 .vk-logos img { max-height: 92px; width: auto; max-width: 100%; }
@@ -591,6 +592,18 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .ft-card i { font-style: normal; color: var(--green-text); font-weight: 700; }
 @media (max-width: 900px) { .ft-box { grid-template-columns: minmax(0, 1fr); padding: 22px; gap: 20px; } }
 @media (max-width: 560px) { .ft-cards { grid-template-columns: minmax(0, 1fr); } }
+</style><style>
+.cs-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 300px); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: thin; }
+.cs-card { scroll-snap-align: start; display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--panel-grad), var(--panel); text-decoration: none; transition: border-color .2s, transform .2s; }
+.cs-card:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
+.cs-img { aspect-ratio: 4 / 3; overflow: hidden; background: #111; }
+.cs-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.9); }
+.cs-tx { display: grid; gap: 6px; padding: 16px 18px 18px; }
+.cs-tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.cs-stat { font: 400 30px/1.05 var(--head); color: var(--text); text-transform: uppercase; }
+.cs-h { font-size: 15px; font-weight: 600; color: var(--text); }
+.cs-n { font-size: 13px; color: var(--text-3); }
+.cs-card .arrow-link { margin-top: 6px; }
 </style>
 <div class="topo" aria-hidden="true"></div>
 <div class="page">
@@ -720,6 +733,16 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 
 <section>
   <div class="in">
+    <div class="head">
+      <div><div class="eyebrow">Real results</div><h3 class="h-sec">CASE STUDIES</h3><div class="bar"></div></div>
+      <div class="rv-links"><a class="arrow-link" href="https://coaching.cigalacycling.com/case-studies/" target="_blank" rel="noopener">All case studies →</a></div>
+    </div>
+    <div class="cs-row" tabindex="0" aria-label="Case studies, scroll sideways"><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#marine-lenehan" target="_blank" rel="noopener"><span class="cs-img"><img src="img/athlete-marine-lenehan.webp" alt="Female cyclist biting gold medal | Cigala Cycling Coaching" loading="lazy"></span><span class="cs-tx"><span class="cs-tag">Gran Fondo &amp; gravel</span><b class="cs-stat">European champion</b><span class="cs-h">From first ride to European champion</span><span class="cs-n">Marine Lenehan · Ireland</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#shane-courtney" target="_blank" rel="noopener"><span class="cs-img"><img src="img/athlete-shane-courtney.webp" alt="Cyclist racing on road bike | Cigala Cycling Coaching" loading="lazy"></span><span class="cs-tx"><span class="cs-tag">Road racing</span><b class="cs-stat">220 → 260 W FTP</b><span class="cs-h">+40 W FTP in under 4 months</span><span class="cs-n">Shane Courtney · Tralee Manor West ibike</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#bernd-ondruch" target="_blank" rel="noopener"><span class="cs-img"><img src="img/athlete-bernd-ondruch.webp" alt="Cycling Pro wearing Kask helmet | Cigala Cycling Coaching" loading="lazy"></span><span class="cs-tx"><span class="cs-tag">Gran Fondo</span><b class="cs-stat">Worlds qualified</b><span class="cs-h">Qualified for the Gran Fondo Worlds</span><span class="cs-n">Bernd Ondruch · Germany</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#rob-kavanagh" target="_blank" rel="noopener"><span class="cs-img"><img src="img/athlete-rob-kavanagh.webp" alt="Cyclist in black Team Sky kit | Cigala Cycling Coaching" loading="lazy"></span><span class="cs-tx"><span class="cs-tag">Fitness &amp; weight loss</span><b class="cs-stat">−16 kg</b><span class="cs-h">Close to 16 kg lost in 6 months</span><span class="cs-n">Rob Kavanagh · Ireland</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#derek-lawler" target="_blank" rel="noopener"><span class="cs-img"><img src="img/athlete-derek-lawler.webp" alt="Cyclist with Bianchi bike | Cigala Cycling Coaching" loading="lazy"></span><span class="cs-tx"><span class="cs-tag">Sportive &amp; health</span><b class="cs-stat">Haute Route at 60</b><span class="cs-h">From the couch to the Haute Route at 60</span><span class="cs-n">Derek Lawler · Kilkenny, Ireland</span><span class="arrow-link">Read the case study →</span></span></a></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
     <div class="head"><div><div class="eyebrow">Results</div><h2>2026 IN NUMBERS</h2><div class="bar"></div></div></div>
     <div class="stats nums"><div class="stat"><h3 class="n" data-count="1348">1348</h3><h4 class="l">Top 10</h4></div><div class="stat"><h3 class="n" data-count="149">149</h3><h4 class="l">3rd places</h4></div><div class="stat"><h3 class="n" data-count="129">129</h3><h4 class="l">2nd places</h4></div><div class="stat"><h3 class="n" data-count="164">164</h3><h4 class="l">1st places</h4></div><div class="stat"><h3 class="n" data-count="100%">100%</h3><h4 class="l">Performance improvement</h4></div><div class="stat"><h3 class="n" data-count="&gt;90%">&gt;90%</h3><h4 class="l">Goals Achieved by clients</h4></div></div>
   </div>
@@ -800,7 +823,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
       <h2 class="tag-line">Train Smarter, Ride Faster</h2>
     </div>
     <div><h4>Coaching</h4><ul><li><a href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Cycling Packages</a></li><li><a href="https://coaching.cigalacycling.com/tri-individual-packages/" target="_blank" rel="noopener">Triathlon Packages</a></li><li><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a></li><li><a href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 Session</a></li><li><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a></li><li><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a></li><li><a href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">Free Training Tools</a></li></ul></div>
-    <div><h4>Explore</h4><ul><li><a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a></li><li><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a></li><li><a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a></li><li><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a></li><li><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Retail Store</a></li><li><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a></li><li><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a></li><li><a href="https://coaching.cigalacycling.com/case-studies/" target="_blank" rel="noopener">Case Studies</a></li><li><a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a></li><li><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a></li><li><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Retail Store</a></li><li><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a></li></ul></div>
     <div><h4>Contact</h4>
       <ul>
         <li><a href="mailto:info@cigalacycling.com">info@cigalacycling.com</a></li>

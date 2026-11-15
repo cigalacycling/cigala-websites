@@ -60,7 +60,7 @@ MAIN = f'''<div class="hero hero-sm">
 <section>
   <div class="in">
     <a class="band club-band" href="{C}/club-talk/" {EXT}>
-      <img src="{img('imgi_21_Lu1whOJ', 'cta')}" alt="Cyclists riding below the Tre Cime di Lavaredo peaks" loading="lazy" width="1367" height="1492">
+      <img src="{img('imgi_21_Lu1whOJ', 'cta')}" alt="Group of riders in cycling kit celebrating together on a mountain pass" loading="lazy" width="1367" height="1492">
       <div class="tx">
         <div class="eyebrow eb-pill"><span class="dot"></span>Club talks</div>
         <h3 class="h-sec">CLUB INFORMATION DAYS, COACHING NIGHTS, Q&amp;A AND GROUP SESSIONS</h3>
