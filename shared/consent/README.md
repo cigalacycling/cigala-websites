@@ -5,7 +5,7 @@ Every Cigala site uses this one banner, so it looks and behaves the same everywh
 ## Look
 
 - A dark bar fixed to the bottom of the screen: `#0f1011`, with a 1px `rgba(255,255,255,.14)` top border. Montserrat 14px, text `#d0d6e0`.
-- The text: "We use cookies for website analytics, advertising and our live chat, to improve your experience. You can accept or reject them." It names no vendors (Matteo, 15 Nov). It ends with a Privacy policy link to **the site's own privacy page** (`privacy_url`, default `/privacy-policy/`). Each site has its own privacy page naming that site's tools, linked in its footer next to Terms.
+- The text: "We use cookies for website analytics, advertising and our live chat, to improve your experience. You can accept or reject them." It names no vendors (Matteo, 15 Nov). It ends with a Privacy policy link to **the site's own privacy page** (`privacy_url`, default `/privacy-policy/`). Each site has its own privacy page naming that site's tools, linked in its footer next to Terms. Name the tools only (Google Analytics, Meta Pixel and so on), never their measurement or Pixel IDs (Matteo, 15 Nov). Use `privacy.txt` (cigalacycling.com) as the template: it includes the protective sections (security, children, other websites, governing law).
 - The buttons:
   - **Reject:** outlined, transparent background.
   - **Accept:** solid brand green `#009a44`, `#00b350` on hover.
