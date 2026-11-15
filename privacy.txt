@@ -5,12 +5,17 @@ For any privacy question or request, contact us at info@cigalacycling.com or +35
 Our other websites each have their own privacy policy covering the services and tools they use. coaching.cigalacycling.com and retail.cigalacycling.com are also run by Cigala Cycling Ltd. tours.cigalacycling.com is run by our sister company, Cigala Cycling Tours Ltd (Company Registration No. 780307). By using this website you confirm that you have read this policy.
 LI: What we collect and why
 P: Contact form: your name, email address, phone number and message. We use them only to answer your enquiry. Legal basis: your request and our legitimate interest in replying to it.
-Newsletter: your email address, if you choose to subscribe. We use it to send you news, blogs, tips, special deals and tour dates. Legal basis: your consent, which you can withdraw at any time.
+Newsletter: your email address, if you choose to subscribe. We use it to send you the Cigala Cycling newsletter. Legal basis: your consent, which you can withdraw at any time. See "One newsletter for all our websites" below.
 Live chat: the messages and any details you choose to share in the chat. We use them to answer you. Legal basis: your request and our legitimate interest in replying to it.
 Website analytics and advertising: information about how you use the site, such as pages visited, device, browser and approximate location, collected only if you accept cookies (see "Cookies" below). Legal basis: your consent.
 Technical data: like every website, our host's servers automatically record basic technical information (such as IP address, browser and the time of your visit) to keep the site running and secure. Legal basis: our legitimate interest in protecting the website.
 Please do not send us health, medical or other sensitive information through the website, contact form or chat. If you need to share such information for coaching or a tour, we will tell you how to do so securely.
 We do not store or maintain credit card details, nor do we share customer financial details with any third parties.
+LI: One newsletter for all our websites
+P: Cigala Cycling has one newsletter, shared by all our websites: cigalacycling.com, coaching.cigalacycling.com, tours.cigalacycling.com and retail.cigalacycling.com.
+Whichever of our websites you sign up on, you receive the same Cigala Cycling newsletter. It includes training tips, news, blogs, and deals and offers on our coaching, our bike tours (run by our sister company Cigala Cycling Tours Ltd) and our online shop.
+Your email address is kept in our newsletter system (Brevo) for this purpose. We do not sell it or give it to anyone else to market to you.
+You can unsubscribe at any time with the link at the bottom of every email, or by emailing info@cigalacycling.com. Unsubscribing stops the newsletter from all our websites.
 LI: Cookies
 P: When you first visit, a banner asks whether you accept cookies. Until you choose, and if you reject, we do not set analytics or advertising cookies.
 If you accept, we use:
