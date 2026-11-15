@@ -12,6 +12,7 @@ import build_coaching_generic as G
 
 items, _ = G.parse('testimonials')
 h1 = next(it[1] for it in items if it[0] == 'h1')
+H1 = 'READ OUR TESTIMONIALS'   # Matteo 15 Nov: no '- WHAT PEOPLE SAY ABOUT CIGALA CYCLING'
 h2i = next(i for i, it in enumerate(items) if it[0] == 'h2')
 tests, cur = [], None
 for it in items[:h2i]:
@@ -45,7 +46,8 @@ MAIN = f'''<section class="tm-hero">
   <div class="in tm-hero-in">
     <div>
       <div class="eyebrow eb-pill"><span class="dot"></span>Our athletes</div>
-      {G.heading_html('h1', h1)}
+      <h1>{H1}</h1>
+      <p class="tm-sub">What people say about Cigala Cycling</p>
       <p class="lede">From first-time sportive riders to national champions and a WorldTour Pro: in their own words.</p>
       <div class="ctas"><a class="btn btn-go" href="{C}/case-studies/" {EXT}>See the case studies</a><a class="btn btn-ghost" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Our Google reviews</a></div>
     </div>
@@ -84,6 +86,9 @@ CSS = G.GCSS + '''<style>
 .tm-hero-pic figcaption { margin-top: 8px; color: var(--text-3); font-size: 13px; text-align: right; }
 @media (max-width: 820px) { .tm-hero-in { grid-template-columns: minmax(0, 1fr); } .tm-hero-pic { justify-self: stretch; max-width: none; } .tm-hero-pic img { aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 25%; } .tm-hero-pic figcaption { text-align: left; } .tm-hero { padding-top: 96px !important; } }
 .tm-cols { columns: 3 300px; column-gap: 16px; }
+.tm { transition: transform .25s, border-color .25s, box-shadow .25s; }
+.tm:hover { transform: translateY(-3px); border-color: var(--green); box-shadow: 0 18px 44px rgba(0,154,68,.16); }   /* Matteo 15 Nov: highlight on hover */
+.tm-sub { margin: -4px 0 12px; font: 400 clamp(20px, 2.4vw, 28px)/1.15 var(--head); text-transform: uppercase; color: var(--green-text); }
 .tm { break-inside: avoid; margin: 0 0 16px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); display: grid; gap: 12px; }
 .tm-photo { border-radius: 10px; overflow: hidden; }   /* Matteo 15 Nov: photos not centred -> shown whole, no crop */
 .tm-photo img { display: block; width: 100%; height: auto; max-height: 420px; object-fit: contain; background: #0d0e0f; }
@@ -96,5 +101,5 @@ CSS = G.GCSS + '''<style>
 .tm details[open] summary { margin-bottom: 10px; }
 .tm figcaption { font-weight: 700; color: var(--text); font-size: 14px; }
 </style>'''
-build('testimonials', '/testimonials/', MAIN, 'New Testimonials page: every live testimonial, H1 and H2 kept.', h1=re.sub(r'\s+', ' ', h1), extra_css=CSS)
+build('testimonials', '/testimonials/', MAIN, 'New Testimonials page: every live testimonial, H1 and H2 kept.', h1=H1, extra_css=CSS)
 print('testimonials:', MAIN.count('<figure class="tm">'))

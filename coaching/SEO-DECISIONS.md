@@ -325,3 +325,6 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   Brugnetti, Zorzi: from the A&J history page), label "Athletes managed by A&J".
 - /club-talk/ H1 "Club information days, coaching nights, Q&A, group coaching sessions and more" -> "... coaching workshops,
   ..." and "coaching nights" -> "coaching workshops" in the copy (Matteo). URL and Yoast title/description unchanged.
+- /testimonials/ H1 "READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING" -> "READ OUR TESTIMONIALS" (Matteo: no
+  hyphen); "What people say about Cigala Cycling" stays right under it as a subtitle (not a heading). Testimonial and
+  review cards highlight on hover. Blog hero: Matteo winning in Siena, whole rider in frame (the riding photo cut his face).

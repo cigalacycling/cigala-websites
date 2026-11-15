@@ -346,6 +346,8 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .rv-wrap { position: relative; }
 .rv-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, calc((100% - 32px) / 3)); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 14px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.2) transparent; }
 .rv-row:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; border-radius: 12px; }
+.rv { transition: border-color .25s, box-shadow .25s, transform .25s; }
+.rv:hover { border-color: var(--green) !important; box-shadow: 0 16px 40px rgba(0,154,68,.15); transform: translateY(-3px); }
 .rv { margin: 0; scroll-snap-align: start; display: flex; flex-direction: column; gap: 14px; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; min-width: 0; }
 .rv-tag { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-text); background: var(--green-wash); border-radius: 999px; padding: 4px 10px; }
 .rv blockquote { margin: 0; padding: 0; border: 0; font-style: normal; font-size: 15px; line-height: 1.6; color: var(--text-2); }
@@ -512,7 +514,7 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
   </div>
 </header>
 <div class="hero hero-sm blog-hero">
-  <img src="img/blog-hero-matteo-riding.webp" alt="Professional cyclist on a bike | Cigala Cycling Coaching" style="object-position:50% 30%">
+  <img src="img/blog-hero-matteo-win.webp" alt="Matteo Cigala winning a gran fondo in Siena, arms raised at the finish" style="object-position:50% 45%">
   <div class="in">
     <div class="eyebrow eb-pill"><span class="dot"></span>Blog</div>
     <h1>STAY UP TO DATE WITH OUR LATEST BLOG POSTS</h1>
