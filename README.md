@@ -186,6 +186,14 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - On the tour list cards, the "Event entry guaranteed" / "Event day fully supported" badge now sits on the photo (bottom left), so every title in a row starts at the same height.
   - The red date chip is bigger (13px).
   - Checked on staging at 390/820/1440: no sideways scroll, one H1, titles aligned.
+- **Contact forms like Coaching (15 Nov, Matteo: all sites the same):** the forms on Contact 461 and Custom tours 1576 are patched in place by `tools/tours_forms.py`.
+  - The script adds the class `cc-form`; `build_tours_wp.py` copies the `.cc-form` CSS from `tools/build_coaching_wp.py` into the kit.
+  - Fields: no visible labels, every field required, placeholders "Name *", "Email *", "Phone (with country code) *", "Your Message *". Phone is a text field, so +353 and spaces are accepted.
+  - Style: 16px text, 8px corners, green focus outline, green "Send >" button.
+  - Contact gained the phone field. Custom tours keeps its phone field id (now text instead of number).
+  - Email settings are untouched ([all-fields] to info@).
+  - Before-change backups: `stg-tours/backup/page-461-before-form.json`, `page-1576-before-form.json`.
+  - When these pages get the new design, keep the same form widget.
 - **Terms (564) and Privacy Policy (new, 9347, /privacy-policy/), 15 Nov:** built in the cigalacycling.com Terms style by `tools/build_tours_legal.py`, pushed with `push_tours_list.py terms` and `push_tours_list.py privacy-policy`.
   - The terms text is the live page word for word, with the same H1, and title, meta, robots, OG and schema are unchanged.
   - The privacy text is in `tours/privacy.txt`: Tours' own processors (WeTravel, tour partners, event organisers, Hostinger, Google, Meta, OpenWidget), with no tracking IDs. **Matteo to review it** (ideally his accountant or solicitor too).

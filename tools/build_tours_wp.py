@@ -198,6 +198,11 @@ for f in sorted(glob.glob(ROOT + 'stg-tours/out/list-*.json')):
     c = json.load(open(f))['css']
     if c in _seen: continue   # all list pages share one stylesheet
     _seen.add(c); css += '\n/* ---- trip-list pages (.cl) ---- */\n' + c
+# contact forms (Contact 461, Custom tours 1576; tools/tours_forms.py adds the class): the Coaching .cc-form rules, read from
+# tools/build_coaching_wp.py so both sites stay identical (Matteo 15 Nov: every contact form looks like Coaching's)
+FORM_CSS = '\n'.join(l for l in open(ROOT + 'tools/build_coaching_wp.py').read().split('\n') if l.startswith(('.cc-form ', '.cc-form{', '.cc-form {')))
+assert FORM_CSS.count('.cc-form') >= 9, 'Coaching form CSS not found'
+css += '\n/* ---- contact forms, same as Coaching ---- */\n' + FORM_CSS + '\n'
 kit['custom_css'] = css
 json.dump({"meta": {"_elementor_page_settings": kit}}, open(OUT + 'lib-6.json', 'w'))
 print('built: home blocks', len(blocks), '| css', len(css), '| header', len(hdr), '| footer', len(ftr))
