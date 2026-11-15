@@ -72,10 +72,10 @@ footer[data-elementor-type="footer"] footer { margin-top: 64px; }
 .site-header, .site-footer { display: none; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 /* contact form (Elementor form widget) */
-.cc-form .elementor-field-group { margin-bottom: 14px; }
+.cc-form .elementor-field-group { margin-bottom: 0; padding: 0 0 14px !important; }
 .cc-form label.elementor-field-label { font: 600 12px/1.4 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; }
-.cc-form .elementor-field { font: 16px/1.5 var(--body) !important; color: var(--text) !important; background: rgba(8,9,10,.6) !important; border: 1px solid var(--border-strong) !important; border-radius: 8px !important; padding: 12px 14px !important; }
-.cc-form .elementor-field:focus { border-color: var(--green) !important; box-shadow: 0 0 0 3px var(--green-wash); outline: none; }
+.cc-form .elementor-field { font: 16px/1.4 var(--body) !important; color: var(--text) !important; background: rgba(255,255,255,.04) !important; border: 1px solid var(--border-strong) !important; border-radius: 8px !important; padding: 12px 14px !important; }
+.cc-form .elementor-field:focus { outline: 2px solid var(--green) !important; outline-offset: 1px; }
 .cc-form .elementor-button { background: var(--green) !important; color: #fff !important; border: 0 !important; border-radius: 8px !important; font: 600 14px var(--body) !important; letter-spacing: .02em; text-transform: none !important; padding: 12px 22px !important; }
 .cc-form .elementor-button:hover { background: var(--green-hi) !important; }
 .cc-form .elementor-message { color: var(--green-text); }
@@ -120,21 +120,23 @@ for k in list(st):
         del st[k]
 for k in list(st):
     if k.startswith(('_margin', '_element_width', '_element_custom_width', '_flex_size', '_z_index', '_padding', '_position', '_offset')): del st[k]
-st['button_text'] = 'Send →'
+st['button_text'] = 'Send >'   # same as the Coaching form
 st['button_width'] = '100'
 st['button_align'] = 'start'
 st['_css_classes'] = 'cc-form'
 for fld in st['form_fields']:
     fld['width'] = '100'; fld['required'] = 'true'
     if fld.get('custom_id') == 'message': fld['rows'] = 4
-_ph = {'custom_id': 'phone', 'field_type': 'tel', 'required': 'true', 'field_label': 'Phone', 'placeholder': 'Phone (with country code)', 'width': '100', '_id': 'c1ph0ne'}
+    # same as Coaching: no visible labels, a * in each placeholder so every field is clearly compulsory
+    if fld.get('placeholder') and not fld['placeholder'].endswith('*'): fld['placeholder'] += ' *'
+_ph = {'custom_id': 'phone', 'field_type': 'tel', 'required': 'true', 'field_label': 'Phone', 'placeholder': 'Phone (with country code) *', 'width': '100', '_id': 'c1ph0ne'}
 _ix = [i for i, f in enumerate(st['form_fields']) if f.get('custom_id') == 'email'][0]
 if not any(f.get('custom_id') == 'phone' for f in st['form_fields']): st['form_fields'].insert(_ix + 1, _ph)
 st['mark_required'] = 'yes'
 for k in list(st):
     if isinstance(st[k], str) and 'staging.cigalacycling.com' in st[k]:
         st[k] = st[k].replace('email@staging.cigalacycling.com', 'noreply@cigalacycling.com').replace('info@staging.cigalacycling.com', 'info@cigalacycling.com').replace('staging.cigalacycling.com', 'cigalacycling.com')
-st['show_labels'] = 'yes'
+st['show_labels'] = ''   # labels hidden, like Coaching (screen readers still get them)
 formcol = wrap([form], inner=True, settings={"content_width": "full", "css_classes": "cc-formcol", "width": {"unit": "%", "size": 58}, "width_mobile": {"unit": "%", "size": 100}, "padding": {"unit": "px", "top": "24", "right": "24", "bottom": "24", "left": "24", "isLinked": True}})
 infocol = wrap([html_widget(info_panel)], inner=True, settings={"width": {"unit": "%", "size": 42}, "width_mobile": {"unit": "%", "size": 100}})
 grid = {"id": rid(), "elType": "container", "settings": {"content_width": "boxed", "boxed_width": {"unit": "px", "size": 1200}, "flex_direction": "row", "flex_direction_mobile": "column", "flex_gap": {"unit": "px", "size": 16, "column": "16", "row": "16"}, "flex_align_items": "flex-start", "padding": {"unit": "px", "top": "40", "right": "16", "bottom": "0", "left": "16", "isLinked": False}}, "elements": [formcol, infocol], "isInner": False}
