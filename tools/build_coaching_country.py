@@ -22,6 +22,9 @@ import build_coaching_generic as G
 import build_coaching_packages as P   # (rebuilds the packages page too: same output)
 
 CAL = 'https://calendly.com/cigalacycling'
+# GoCardless one-time payment links for Basic 12 weeks. The live country pages have none (their Basic option has no link).
+# Matteo 15 Nov: Basic needs a real payment button -> paste each link here when created in GoCardless, then rebuild.
+BASIC_PAY = {'uk': '', 'usa': '', 'canada': ''}
 TP_LEVELS = P.TPLOGO
 
 def rv(i):
@@ -154,7 +157,8 @@ def build_country(key):
     cards = ''.join([
         P.card('basic', 'Basic', '12 Weeks', bp, bper, sub_basic,
                # the live country pages have no payment link for Basic: start with the free call
-               f'<a class="btn btn-ghost pay" href="{CAL}" {EXT}>Start with a free call</a><span class="pay-note">Basic 12 weeks: {re.search(r"[£$][\d,]+", sub_basic).group(0)}{cur_note}, one payment</span>'),
+               (P.btn(f'Buy Basic 12 Weeks · {re.search(r"[£$][\d,]+", sub_basic).group(0)}{cur_note}', BASIC_PAY[key], 'btn-ghost') if BASIC_PAY[key] else
+                f'<a class="btn btn-ghost pay" href="{CAL}" {EXT}>Start with a free call</a><span class="pay-note">Basic 12 weeks: {re.search(r"[£$][\d,]+", sub_basic).group(0)}{cur_note}, one payment</span>')),
         P.card('advanced', 'Advanced', '6 months subscription', ap, aper, '',
                P.btn(f'Subscribe to Advanced · {c["cur"]}{nump(adv_lab)}{cur_note}/mo', pay[adv_lab]),
                '<span class="pkg-badge">Monthly (Our Most Popular)</span>', 'hot'),

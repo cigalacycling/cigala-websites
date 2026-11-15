@@ -167,5 +167,6 @@ Changed, for Matteo to read on staging:
 
 To check with Matteo:
 - Canada Basic: the live card says "one-time payment of $387", the live option says "390 CAD". Left as live.
-- USA/Canada FAQ says calls are "usually your morning": please confirm the hours you take calls with North America.
-- "Pay in GBP/USD/CAD by GoCardless" and "no exchange fees on your side" (UK): please confirm.
+- Matteo 15 Nov: confirmed calls in the client's morning, payment by GoCardless and "no exchange fees" for UK clients.
+- Matteo 15 Nov: Basic must have a payment button, not "Start with a free call". The live country pages have no Basic link,
+  so Matteo creates one-time GoCardless links (GBP, USD, CAD) and they go in `BASIC_PAY` in `tools/build_coaching_country.py`.
