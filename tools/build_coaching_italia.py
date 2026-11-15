@@ -185,7 +185,7 @@ hsrc = img('IMG_3999AWDWWWU', 'italia-hero-team')
 MAIN = f'''<div class="hero hero-sm">
   <img src="{hsrc}" alt="{E(live_alt('IMG_3999AWDWWWU'))}" style="object-position: 50% 45%">
   <div class="in">
-    <div class="eyebrow eb-pill"><span class="dot"></span>Preparazione ciclistica online</div>
+    <div class="eyebrow eb-pill"><span class="dot"></span>Allenatore di ciclismo online</div>
     <h1>PREPARATORE DI CICLISMO ITALIA</h1>
     <p class="lede">Preparati con il preparatore di ciclismo <a href="{C}/about/" {EXT}>Matteo Cigala</a> — ovunque tu sia in Italia.</p>
     <div class="ctas"><a class="btn btn-go" href="{P.CAL}" {EXT}>Prenota una consulenza gratuita</a><a class="btn btn-ghost" href="#packages">Vedi i pacchetti ↓</a></div>
@@ -257,7 +257,7 @@ MAIN = f'''<div class="hero hero-sm">
 <section class="it-ev">
   <div class="in">
     <div class="it-ev-top">
-      <div class="it-ev-pic"><img src="{img('gran_fondo_strade_bianche_2022_img_1', 'italia-strade-bianche')}" alt="{E(live_alt('gran_fondo_strade_bianche_2022_img_1'))}" loading="lazy"><span>Matteo vince la Medio Fondo Strade Bianche, Siena</span></div>
+      <div class="it-ev-pic"><img src="{img('imgi_25_F42ZwHhq', 'italia-strade-bianche-estate')}" alt="Matteo Cigala vince la Medio Fondo Strade Bianche in Piazza del Campo, Siena, a braccia alzate" loading="lazy"><span>Matteo vince la Medio Fondo Strade Bianche, Siena</span></div>
       <div class="gn-txt">
         <div class="eyebrow">Il tuo obiettivo</div>
         <h2>Gli Eventi per Cui Prepariamo i Nostri Atleti</h2><div class="bar"></div>
@@ -362,7 +362,7 @@ ITCSS = '''<style>
 .it-ev-top { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 36px; align-items: center; margin-bottom: 26px; }
 @media (max-width: 900px) { .it-ev-top { grid-template-columns: 1fr; gap: 20px; } }
 .it-ev-pic { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid var(--border); }
-.it-ev-pic img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+.it-ev-pic img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; display: block; }
 .it-ev-pic span { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 14px 12px; background: linear-gradient(transparent, rgba(8,9,10,.9)); font-size: 13px; color: var(--text); }
 .it-ev-types { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .it-ev-types button { font-family: var(--body); background: transparent; cursor: pointer; transition: background .2s, color .2s; }

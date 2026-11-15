@@ -367,3 +367,4 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   H2s "LEGGI LE MIE RECENSIONI", "LEGGI I MIEI CASI STUDIO". Body copy in the first person too (offro, preparo, seguo,
   alleno); "Matteo Cigala" kept in the hero line and in the H2 "Perche' atleti in Italia scelgono Matteo Cigala" (search).
   Contact: "Hai domande sulla preparazione? Scrivimi." Intro section 24px closer to the hero.
+- Italia: hero eyebrow 'Allenatore di ciclismo online' (not a heading; adds the synonym, H1 unchanged); events photo: the summer Strade Bianche win (new Italian alt).
