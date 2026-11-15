@@ -145,3 +145,13 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
 - Less space between the page hero and the first card section (20px).
 - Home tile "Power Meters" now uses the Favero Assioma PRO RS-2. The Assioma UNO/DUO are being discontinued.
 - Sale theme only: the bottom "Shop the deals" button is white.
+
+**Matteo's answers (15 Nov 2026)**
+
+- **Home address in the shop policies:** Matteo is fine with it being there. The cleaned versions leave it out anyway. The Terms clause now reads "laws of Ireland", which is the correct wording.
+- **Shipping outside the EU:** the Terms are right, it is US and Canada only.
+- **Redirects created:**
+  - `/products/assioma-uno` → `/products/favero-assioma-pro-rs-1`
+  - `/products/assioma-duo` → `/products/favero-assioma-pro-rs-2`
+  - Shopify only follows a redirect once the product page is gone, so they start working when the UNO and DUO are archived.
+- **Checking later:** the festive returns section and the automatic BFCM collection.
