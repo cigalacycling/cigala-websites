@@ -218,12 +218,12 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - CORS checked for staging and live.
   - Tested with the request mocked, so no contact was added: the footer sign-up works, and the pop-up opens after the cookie choice at 390 and 1440.
   - Tours CSS keeps the band title in Anton and puts the pop-up above the chat widget.
-- **For Matteo to decide (live content, left as is):**
-    - The Gran Canaria page H1 says "Cycling in Mallorca".
-    - The Lake Como guide FAQ asks "How hard is Madonna del Ghisallo?" twice; the second answer is about the Muro di Sormano.
-    - A stray "harmony." line in the Dolomites intro.
-    - Smaller typos: "accomodate", "Alantejo", "Marocco", "Durace".
-    - Live pages output two meta descriptions: Rank Math's, and a second one from the Hello theme's excerpt (`hello_elementor_settings_description_meta_tag`). Switching the Hello one off would leave Rank Math's only.
+- **Live errors fixed (Matteo 15 Nov: "any error you see, fix it"):**
+  - The Gran Canaria H1 now reads "Cycling in Gran Canaria" (live: "Cycling in Mallorca").
+  - In the Lake Como guide (post 8945), the second FAQ question is now "How hard is the Muro di Sormano?". Backup: `stg-tours/backup/post-8945-before-faq-fix.json`.
+  - The stray "harmony." line in the Dolomites intro is gone.
+  - Spelling is fixed through `fix_text()` in `build_tours_pages.py`, on visible text and alt text only, applied to every rebuilt page and trip. Examples: Mechanical, Dura-Ace, Accommodation, Coffee, Alentejo, Morocco, recipes, cuisine, Trentino, luggage, San Gimignano, Nova Gorica, Barcelonnette, Grosseto, peninsula, countryside, Col du Télégraphe, Crostini. The Terms text is untouched (kept word for word).
+  - One meta description per page: the Hello theme's own description tag is off (`hello_elementor_settings_description_meta_tag` = true), so only Rank Math's remains.
   - The other pages haven't been rebuilt.
 
 ## Tours build plan: Matteo's notes, 15 Nov
