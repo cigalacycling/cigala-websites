@@ -626,7 +626,7 @@
  "card-maratona-dles-dolomites": {
   "id": 9296,
   "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-maratona-dles-dolomites.webp",
-  "alt": "Maratona Dles Dolomites cycling tour: 250\u2013350 km, 5,000\u20137,000 m climbing",
+  "alt": "Maratona Dles Dolomites cycling tour: 250–350 km, 5,000–7,000 m climbing",
   "from": [
    1100,
    1375
@@ -639,7 +639,7 @@
  "card-tour-of-flanders-experience": {
   "id": 9297,
   "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-tour-of-flanders-experience.webp",
-  "alt": "Tour of Flanders Experience cycling tour: 120\u2013300 km, 1,000\u20133,000 m climbing",
+  "alt": "Tour of Flanders Experience cycling tour: 120–300 km, 1,000–3,000 m climbing",
   "from": [
    1100,
    1375
@@ -783,5 +783,229 @@
   "id": 9364,
   "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-cycling-tours-share.jpg",
   "alt": "Cigala Cycling Tours riders celebrating with their bikes on the coast in Cyprus: guided cycling tours and holidays across Europe"
+ },
+ "src-9235-600": {
+  "id": 9374,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-IMG_5948-1-600.webp",
+  "alt": "Matteo Cigala in the new Cigala Cycling Kit",
+  "from": [
+   1108,
+   1319
+  ],
+  "size": [
+   600,
+   714
+  ],
+  "orig": 9235
+ },
+ "src-2647-600": {
+  "id": 9375,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075454.942-600.webp",
+  "alt": "A smiling male cyclist in a black Cigala Cycling jersey, white helmet, and mirrored sunglasses posing outdoors.",
+  "from": [
+   510,
+   686
+  ],
+  "size": [
+   510,
+   686
+  ],
+  "orig": 2647
+ },
+ "src-2662-600": {
+  "id": 9376,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075504.567-600.webp",
+  "alt": "A smiling cyclist wearing a white helmet and pink sunglasses against a mountain backdrop.",
+  "from": [
+   515,
+   686
+  ],
+  "size": [
+   515,
+   686
+  ],
+  "orig": 2662
+ },
+ "src-2661-600": {
+  "id": 9377,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075529.367-600.webp",
+  "alt": "A cyclist in a white Cigala Cycling jersey and helmet stands with a bicycle against a rolling green landscape.",
+  "from": [
+   1200,
+   1600
+  ],
+  "size": [
+   600,
+   800
+  ],
+  "orig": 2661
+ },
+ "src-2657-600": {
+  "id": 9378,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075640.063-600.webp",
+  "alt": "Cyclist portrait",
+  "from": [
+   980,
+   1484
+  ],
+  "size": [
+   600,
+   909
+  ],
+  "orig": 2657
+ },
+ "src-2659-600": {
+  "id": 9379,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075615.158-600.webp",
+  "alt": "A young male cyclist wearing a white POC helmet, gold-tinted sunglasses, and a black Cigala Cycling jersey.",
+  "from": [
+   686,
+   677
+  ],
+  "size": [
+   600,
+   592
+  ],
+  "orig": 2659
+ },
+ "src-2658-600": {
+  "id": 9380,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075628.006-600.webp",
+  "alt": "A cyclist in a white jersey and helmet standing with his road bike.",
+  "from": [
+   1200,
+   1600
+  ],
+  "size": [
+   600,
+   800
+  ],
+  "orig": 2658
+ },
+ "src-4665-600": {
+  "id": 9381,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-8-600.webp",
+  "alt": "smiling man with round sunglasses wearing a white \"Cigala Cycling\" t-shirt, with a steep, rocky mountain range in the background.",
+  "from": [
+   683,
+   903
+  ],
+  "size": [
+   600,
+   793
+  ],
+  "orig": 4665
+ },
+ "src-2568-600": {
+  "id": 9382,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-22T235046.235-1-600.webp",
+  "alt": "Woman in black cycling shirt - Cigala Cycling Tours",
+  "from": [
+   1200,
+   1600
+  ],
+  "size": [
+   600,
+   800
+  ],
+  "orig": 2568
+ },
+ "src-2652-600": {
+  "id": 9383,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075741.606-600.webp",
+  "alt": "An older man with grey hair, sunglasses, and a mustache smiles while wearing a black 2022 Giro-E event shirt and accreditation badge, holding a yellow drink.",
+  "from": [
+   534,
+   686
+  ],
+  "size": [
+   534,
+   686
+  ],
+  "orig": 2652
+ },
+ "src-2651-600": {
+  "id": 9384,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075754.082-600.webp",
+  "alt": "A man holding a phone against a dramatic cliffside view of Lake Garda, Italy.",
+  "from": [
+   513,
+   686
+  ],
+  "size": [
+   513,
+   686
+  ],
+  "orig": 2651
+ },
+ "src-2653-600": {
+  "id": 9385,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075727.854-600.webp",
+  "alt": "A man in a yellow jacket, headband, and red sunglasses stands before a snow-covered mountain glacier.",
+  "from": [
+   686,
+   686
+  ],
+  "size": [
+   600,
+   600
+  ],
+  "orig": 2653
+ },
+ "src-2656-600": {
+  "id": 9386,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075652.735-1-600.webp",
+  "alt": "A smiling in a black Cigala Cycling jersey on a sunny lakefront.",
+  "from": [
+   455,
+   686
+  ],
+  "size": [
+   455,
+   686
+  ],
+  "orig": 2656
+ },
+ "src-2654-600": {
+  "id": 9387,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075715.718-600.webp",
+  "alt": "A cyclist wearing a helmet, sunglasses, and a black Cigala Cycling jersey.",
+  "from": [
+   641,
+   686
+  ],
+  "size": [
+   600,
+   642
+  ],
+  "orig": 2654
+ },
+ "src-9235-1100": {
+  "id": 9388,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-IMG_5948-1-1100.webp",
+  "alt": "Matteo Cigala in the new Cigala Cycling Kit",
+  "from": [
+   1108,
+   1319
+  ],
+  "size": [
+   1100,
+   1309
+  ],
+  "orig": 9235
+ },
+ "src-2649-1600": {
+  "id": 9389,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075420.510-1600.webp",
+  "alt": "A group of cyclists in matching dark jerseys riding road bikes uphill alongside a scenic mountain lake.",
+  "from": [
+   1600,
+   1067
+  ],
+  "size": [
+   1600,
+   1067
+  ],
+  "orig": 2649
  }
 }

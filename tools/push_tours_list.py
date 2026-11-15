@@ -1,5 +1,5 @@
 """Create or update a Tours trip-list page on STAGING from stg-tours/out/list-<slug>.json
-(made by tools/build_tours_list.py), and set its Rank Math title and description.
+(made by tools/build_tours_list.py, build_tours_legal.py or build_tours_pages.py), and set its Rank Math title and description.
 
 Usage: python3 -I tools/push_tours_list.py road-trips
 Page IDs are kept in stg-tours/pages.json. Run tools/build_tours_wp.py + push lib-6 for the CSS.
@@ -22,6 +22,7 @@ IMG = {'img/home-hero.jpg': 'hero', 'img/dest-private-custom-tours.jpg': 'custom
        'img/logo-strade.png': 'logo-strade-v3', 'img/logo-algarve.png': 'logo-algarve', 'img/logo-wrf.png': 'logo-wrf'}
 def fix_img(m):
     tag = m.group(0); src = re.search(r'src="([^"]+)"', tag).group(1)
+    if src.startswith('https://staging.tours.cigalacycling.com/wp-content/uploads/'): return tag   # already a staging WebP (tools/tours_img.py)
     key = IMG.get(src) or (src[len('img/cigala-tours-'):-5] if src.startswith('img/cigala-tours-') else None)
     if not key or key not in M: raise SystemExit('no staging image for ' + src)
     tag = tag.replace(f'src="{src}"', f'src="{M[key]["url"]}"')
