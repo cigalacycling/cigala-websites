@@ -15,8 +15,8 @@ We do not store or maintain credit card details, nor do we share customer financ
 LI: Cookies
 P: When you first visit, a banner asks whether you accept cookies. Until you choose, and if you reject, we do not set analytics or advertising cookies.
 If you accept, we use:
-- Google Analytics 4 (measurement ID G-E1WWZCLBRB), provided by Google Ireland Limited, to understand how visitors use the site. Google Consent Mode keeps it in a cookie-free state until you accept.
-- Meta Pixel (ID 1986332861692106), provided by Meta Platforms Ireland Limited, to measure and improve our Facebook and Instagram advertising.
+- Google Analytics 4, provided by Google Ireland Limited, to understand how visitors use the site. Google Consent Mode keeps it in a cookie-free state until you accept.
+- Meta Pixel, provided by Meta Platforms Ireland Limited, to measure and improve our Facebook and Instagram advertising.
 - The OpenWidget live chat, provided by Text S.A. (Poland), which loads automatically after you accept. If you have not accepted, the chat only loads when you click "Chat with us".
 Some pages show reviews from our athletes through a Shapo widget, which loads from Shapo's servers.
 We also store your cookie choice in your browser (local storage), so we don't ask you again.
