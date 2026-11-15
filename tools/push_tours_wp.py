@@ -27,7 +27,7 @@ def req(url, data=None, method='GET'):
 names = sys.argv[1:] or sorted(f[:-5] for f in os.listdir(ROOT + 'stg-tours/out') if f.endswith('.json'))
 for n in names:
     kind, pid = n.split('-', 1)
-    path = {'lib': 'elementor_library', 'page': 'pages'}[kind]
+    path = {'lib': 'elementor_library', 'page': 'pages', 'snippet': 'elementor_snippet'}[kind]
     code, body = req(f'{B}/wp/v2/{path}/{pid}', open(ROOT + f'stg-tours/out/{n}.json', 'rb').read(), 'POST')
     print(n, code, '' if code == 200 else body[:300])
 code, body = req(f'{B}/elementor/v1/cache', method='DELETE')

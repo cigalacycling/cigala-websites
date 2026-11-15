@@ -149,9 +149,13 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Checked at 390/820/1440: no sideways scroll, one H1, alt text on every image, form fields at 16px.
   - Title, meta, canonical, robots and schema match live.
   - The 8 H2s use the live wording (Matteo approved making the label H2s normal text).
+- **Menu:** Bike Tours order is All, Road, Gravel, Gran Fondo, Italian, Custom (Matteo). The current page gets a red underline, as on cigalacycling.com; on tour pages "Bike tours" is underlined too.
+- **Consent and chat:** the footer (228) has the cigalacycling.com banner, `wp/consent-banner.html`, in a Tours version (GA G-QRF16ZZVDB, no Meta Pixel on Tours), plus the green "Chat with us" button. OpenWidget loads after consent or on click. The footer also has a "Cookie settings" link.
+  - Elementor custom code **snippet 9279** (head) sets Google consent default to denied. For visitors who accepted, it loads gtag.js; for everyone else it sets `ga-disable`.
+  - **Matteo to do on staging:** remove the old Google tag from WPCode (Code Snippets → Header & Footer → Header). It loads gtag.js before consent and runs `config` before the denied default. Once it's gone, gtag.js only loads after Accept.
+- **Waiting on Matteo:** the correct logo file (the current one looks like a favicon crop), and his signature for under "Matteo Cigala, Tours Director".
 - **Not done yet:**
   - `/trips/road-trips/` doesn't exist yet, so the menu link 404s on staging.
-  - Tracking: Google Analytics G-QRF16ZZVDB loads before consent (live too) and must be consent-gated.
   - The other pages haven't been rebuilt.
 
 ## Tours build plan: Matteo's notes, 15 Nov

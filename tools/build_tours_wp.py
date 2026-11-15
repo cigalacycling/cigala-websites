@@ -100,6 +100,10 @@ html .cc footer .in > div { min-width: 0; }
 html .cc footer li { overflow-wrap: anywhere; }
 html .cc button, html .cc .btn { text-transform: none; letter-spacing: .02em; }
 html .cc .dd-btn { text-transform: uppercase; letter-spacing: .04em; }
+html body #cc-consent button, html body #cc-chat { text-transform: none; letter-spacing: normal; font-family: Montserrat, system-ui, sans-serif; }
+html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current { color: var(--text); box-shadow: inset 0 -2px 0 var(--red); }
+html .cc .dd-menu a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); }
+html .cc .burger nav a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
 '''
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap">'
 
@@ -113,31 +117,47 @@ def wrap(elements):
 
 # ---------- JS split: menu (header) / finder (homepage) ----------
 js = between(home, '<script>\n(function () {\n  var f = document.getElementById', '</script>')
+CURJS = "<script>(function(){var p=location.pathname;document.querySelectorAll('.cc .nav a[href]').forEach(function(a){var h=a.getAttribute('href');if(h&&h.charAt(0)==='/'&&!a.classList.contains('btn')&&!a.classList.contains('brand')&&h===p){a.setAttribute('aria-current','page');var d=a.closest('.dd');if(d){d.querySelector('.dd-btn').classList.add('is-current');}}});})();</script>"
 dd_js = "<script>(function(){document.querySelectorAll('.cc .dd').forEach(function(d){var b=d.querySelector('.dd-btn');b.addEventListener('click',function(){var o=d.classList.toggle('open');b.setAttribute('aria-expanded',o);});d.addEventListener('focusout',function(e){if(!d.contains(e.relatedTarget)){d.classList.remove('open');b.setAttribute('aria-expanded','false');}});});})();</script>"
 finder_js = re.sub(r"\n  document\.querySelectorAll\('\.dd'\).*?\n  \}\);\n", '\n', js, flags=re.S)
 assert 'dd-btn' not in finder_js
 
 # ---------- header ----------
 hdr = fix(between(home, '<header class="nav">', '</header>'))
-json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget(FONTS + '<div class="cc">' + hdr + '</div>' + dd_js)])])}}, open(OUT + 'lib-170.json', 'w'))
+json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget(FONTS + '<div class="cc">' + hdr + '</div>' + CURJS + dd_js)])])}}, open(OUT + 'lib-170.json', 'w'))
 
 # ---------- footer: new design + existing chat and cookie widgets ----------
 ftr = fix(between(home, '<footer>', '</footer>'))
-ftr = ftr.replace('<li><a href="/trips/gravel-trips/">Gravel tours</a></li>', '<li><a href="/trips/gravel-trips/">Gravel tours</a></li>\n        <li><a href="/trips/road-trips/">Road tours</a></li>')
-old = json.loads(json.load(open(ROOT + 'stg-tours/backup/lib-228.json'))['meta']['_elementor_data'])
-keep = []
-def walk(n):
-    for e in n:
-        if e.get('widgetType') == 'html' and re.search(r'openwidget|cookieOptions', e['settings']['html']): keep.append(copy.deepcopy(e))
-        walk(e.get('elements', []))
-walk(old)
-assert len(keep) == 2, len(keep)
-for e in keep:   # cookie notice in brand colours (same change as cigalacycling.com)
-    h = e['settings']['html']
-    for a, b in (('cookieOptions.btnTxtColor = "#000000"', 'cookieOptions.btnTxtColor = "#ffffff"'), ('cookieOptions.btnColor = "#f1d600"', 'cookieOptions.btnColor = "#009a44"'), ('cookieOptions.popupColor = "#000000"', 'cookieOptions.popupColor = "#0f1011"')):
-        h = h.replace(a, b)
-    e['settings']['html'] = h
-json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>')] + keep)])}}, open(OUT + 'lib-228.json', 'w'))
+# tours list order comes from the preview (MENU_TOURS)
+# consent banner + "Chat with us" button: same as cigalacycling.com (wp/consent-banner.html), Tours version.
+# Tours has Google Analytics G-QRF16ZZVDB and no Meta Pixel. gtag.js only loads after Accept.
+GA = 'G-QRF16ZZVDB'
+banner = open(ROOT + 'wp/consent-banner.html').read()
+def brep(a, b):
+    global banner
+    assert banner.count(a) == 1, a[:70]
+    banner = banner.replace(a, b)
+brep("We use cookies for website analytics (Google Analytics), advertising (Meta Pixel) and our live chat, to improve your experience.",
+     "We use cookies for website analytics (Google Analytics) and our live chat, to improve your experience.")
+brep("var GA='G-955J6LHQ2P', PX='1986332861692106';", "var GA='" + GA + "', PX='';")
+brep("    if(window.fbq)return;", "    if(!PX||window.fbq)return;")
+brep("    if(typeof gtag==='function'){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});gtag('config',GA);}",
+     "    window.dataLayer=window.dataLayer||[];if(typeof gtag!=='function'){window.gtag=function(){dataLayer.push(arguments);};}\n"
+     "    gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});\n"
+     "    if(!document.querySelector('script[src*=\"gtag/js?id='+GA+'\"]')){var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+GA;document.head.appendChild(g);gtag('js',new Date());}\n"
+     "    gtag('config',GA);")
+ftr = ftr.replace('<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>', '<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
+assert 'data-cc-settings' in ftr
+json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>'), html_widget(banner)])])}}, open(OUT + 'lib-228.json', 'w'))
+
+# head snippet (Elementor custom code 9279): consent default denied; returning visitors who accepted get GA loaded
+head_code = ("<script>window.dataLayer=window.dataLayer||[];if(typeof window.gtag!=='function'){window.gtag=function(){dataLayer.push(arguments);};}"
+    "gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});"
+    "(function(){var GA='" + GA + "',c=null;try{c=localStorage.getItem('cc_consent');}catch(e){}"
+    "if(c==='granted'){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});"
+    "if(!document.querySelector('script[src*=\"gtag/js?id='+GA+'\"]')){var g=document.createElement('script');g.async=true;g.src='https://www.googletagmanager.com/gtag/js?id='+GA;document.head.appendChild(g);gtag('js',new Date());gtag('config',GA);}}"
+    "else{window['ga-disable-'+GA]=true;}})();</script>")
+json.dump({"meta": {"_elementor_location": "elementor_head", "_elementor_priority": 1, "_elementor_code": head_code}}, open(OUT + 'snippet-9279.json', 'w'))
 
 # ---------- homepage ----------
 main = home[home.index('</header>') + len('</header>'):home.index('<footer>')]

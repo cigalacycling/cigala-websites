@@ -80,12 +80,12 @@ for a, b in H2_FIX:
     s = s.replace(a, b)
 
 # ---------- menu ----------
-MENU_TOURS = [
+MENU_TOURS = [   # order from Matteo (15 Nov): all, road, gravel, gran fondo, italian, custom
     ('All tours', '/trips/'),
+    ('Road tours', '/trips/road-trips/'),
+    ('Gravel tours', '/trips/gravel-trips/'),
     ('Gran Fondo tours', '/trips/granfondo-trips/'),
     ('Italian tours', '/italian-trips/'),
-    ('Gravel tours', '/trips/gravel-trips/'),
-    ('Road tours', '/trips/road-trips/'),
     ('Custom tours', '/trips/private-trips/'),
 ]
 dd = ''.join(f'<a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_TOURS)
@@ -158,7 +158,7 @@ def opts(first, pairs):
 finder = f'''
     <form class="finder" id="finder" role="search" aria-label="Find a tour" action="{L}/trips/">
       <label class="fi"><span>Month</span><select name="month" id="q-month">{opts("Any month", [(m, MONTH[m] + " 2027") for m in used_months])}</select></label>
-      <label class="fi"><span>Tour type</span><select name="type" id="q-type">{opts("Any type", [("road", "Road"), ("gf", "Gran Fondo"), ("gravel", "Gravel")])}</select></label>
+      <label class="fi"><span>Tour type</span><select name="type" id="q-type">{opts("Any type", [("road", "Road"), ("gravel", "Gravel"), ("gf", "Gran Fondo")])}</select></label>
       <label class="fi"><span>Country</span><select name="country" id="q-country">{opts("Any country", [(c.lower(), c) for c in countries])}</select></label>
       <label class="fi"><span>Level</span><select name="level" id="q-level">{opts("Any level", [("beginner", "Beginner"), ("intermediate", "Intermediate"), ("expert", "Expert")])}</select></label>
       <button class="btn btn-go" type="submit">Find tours</button>
@@ -325,6 +325,13 @@ section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; bo
 }
 """
 s = s.replace('@media (max-width: 1080px)', CSS2 + '\n@media (max-width: 1080px)', 1)
+
+# same tour order in the phone menu and the footer
+mob = '\n        '.join(f'<a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_TOURS)
+s = re.sub(r'<a href="' + re.escape(L) + r'/trips/" ' + re.escape(EXT) + r'>All tours</a>(?:\s*<a href="[^"]+" ' + re.escape(EXT) + r'>(?:Gran Fondo|Italian|Gravel|Road|Custom) tours</a>)+', mob, s)  # desktop dropdown and phone menu
+foot = '\n        '.join(f'<li><a href="{L}{u}" {EXT}>{t}</a></li>' for t, u in MENU_TOURS)
+s, n = re.subn(r'<li><a href="' + re.escape(L) + r'/trips/" ' + re.escape(EXT) + r'>All tours</a></li>(?:\s*<li><a href="[^"]+" ' + re.escape(EXT) + r'>(?:Gran Fondo|Italian|Gravel|Road|Custom) tours</a></li>)+', foot, s, count=1)
+assert n == 1
 
 s = s.replace('<title>Cigala Tours Homepage</title>', '<title>Cigala Cycling Tours | Europe Bike Tour Operator</title>')
 open(OUT + 'home.html', 'w').write(s)
