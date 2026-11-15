@@ -450,8 +450,7 @@ def country_maps_v2(path50, admin1):
     for slug, (cm, lat, lon, label) in REGIONS.items():
         open(OUT + f'country-{slug}.svg', 'w').write(draw(cm, HIGHLIGHT.get(slug, [])))
     for slug, cm in COUNTRY_PAGES.items():
-        hl = [h for s2, (c2, *_r) in REGIONS.items() if c2 == cm for h in HIGHLIGHT.get(s2, [])]
-        open(OUT + f'country-{slug}.svg', 'w').write(draw(cm, hl))
+        open(OUT + f'country-{slug}.svg', 'w').write(draw(cm, []))   # country pages: just the country and its region borders (Matteo 15 Nov)
 
 if __name__ == '__main__':
     f = geo_files()

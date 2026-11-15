@@ -208,6 +208,9 @@ blocks = re.split(r'\n(?=<(?:div class="hero|div class="in stats-wrap|section)[ 
 blocks = [b.strip() for b in blocks if b.strip()]
 els = [wrap([html_widget('<div class="cc cc-page">' + b + '</div>')]) for b in blocks]
 els[-1]['elements'].append(html_widget(finder_js))
+cj = re.search(r"<script>\(function\(\)\{var l=document\.querySelectorAll\('\.stats \.stat \.n'\).*?</script>", home, re.S)   # count-up numbers (Matteo 15 Nov)
+assert cj, 'count-up script missing from tourspages/home.html'
+els[-1]['elements'].append(html_widget(cj.group(0)))
 content = '\n'.join('<div class="cc cc-page">' + b + '</div>' for b in blocks)
 json.dump({"meta": {"_elementor_data": json.dumps(els), "_elementor_edit_mode": "builder"}, "content": content}, open(OUT + 'page-5212.json', 'w'))
 

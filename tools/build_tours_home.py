@@ -272,6 +272,12 @@ JS = '''<script>
   apply();
 })();
 </script>''' % (json.dumps({k: list(v) for k, v in CAT.items()}), L)
+# Matteo 15 Nov: the numbers count up when they come into view (as on Coaching), with the same coloured hover; 11 years (since 2015)
+COUNT_JS = """<script>(function(){var l=document.querySelectorAll('.stats .stat .n');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+l.forEach(function(el){if(el.children.length)return;var m=el.textContent.match(/^([\\d,]+)(\\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
+new IntersectionObserver(function(es,ob){if(!es[0].isIntersecting)return;ob.disconnect();var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1500);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},{threshold:.5}).observe(el);});})();</script>"""
+JS = JS + COUNT_JS
+s = s.replace('<div class="stat"><div class="n">10</div><div class="l">Years in business</div></div>', '<div class="stat"><div class="n">11</div><div class="l">Years in business</div></div>')
 s = re.sub(r'<script>\s*\(function \(\) \{\s*var chips.*?</script>', lambda m: JS, s, count=1, flags=re.S)
 
 
@@ -348,6 +354,13 @@ i = s.index('</details>', s.index('<details id="faq-4">')) + len('</details>')
 s = s[:i] + extra + s[i:]
 
 CSS2 = """
+.stats .stat { --c: #34c46a; position: relative; transition: transform .25s, box-shadow .25s, background .25s; cursor: default; }
+.stats .stat:nth-child(2) { --c: #f0bf00; } .stats .stat:nth-child(3) { --c: #ff3d33; } .stats .stat:nth-child(4) { --c: #5f86c9; }
+.stats .stat::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); transform: scaleX(.18); transform-origin: left; transition: transform .35s; }
+.stats .stat:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,.45), 0 0 0 1px var(--c); background: color-mix(in srgb, var(--c) 10%, transparent); z-index: 1; }
+.stats .stat:hover::before { transform: scaleX(1); }
+.stats .stat .n { transition: color .25s; }
+.stats .stat:hover .n { color: var(--c); }
 .tour > img.flag { position: absolute !important; inset: 14px 14px auto auto !important; top: 14px !important; right: 14px !important; left: auto !important; bottom: auto !important; width: auto !important; height: 28px !important; filter: none !important; transform: none !important; aspect-ratio: 1 / 1; object-fit: cover; object-position: center; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); z-index: 2; }
 .who img { border: 2px solid var(--green); }   /* green ring on guest photos, like Coaching */
 /* ---- Matteo's feedback, 15 Nov 2026 ---- */

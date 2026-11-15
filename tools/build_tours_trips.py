@@ -344,7 +344,8 @@ def trip(slug):
         stats = []
         for st_ in S('stat'):
             lab = next((text_of(v) for k, v, s in st_['items'] if k == 'text'), '')
-            stats.append(f'<div class="stat"><div class="n">{E(text_of(st_["h"]))}</div><div class="l">{E(lab)}</div></div>')
+            num = {'500+': '700+', '10': '11'}.get(text_of(st_['h']).strip(), text_of(st_['h']).strip())   # same numbers as the homepage (Matteo 15 Nov)
+            stats.append(f'<div class="stat"><div class="n">{E(num)}</div><div class="l">{E(lab)}</div></div>')
         st_html = f'<div class="panel stats">{"".join(stats)}</div>' if stats else ''
         out.append(f'<section id="guides"><div class="in">{H(gd, "Who rides with you")}<div class="lede gl">{lede}</div>'
                    f'<div class="guides">{"".join(cards)}</div>{st_html}</div></section>')
@@ -389,6 +390,9 @@ def trip(slug):
     if num: ld["offers"] = {"@type": "Offer", "price": num, "priceCurrency": "EUR", "url": book, "availability": "https://schema.org/InStock"}
     out.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace('</', '<\\/') + '</script>')
     out.append(YT_JS if 'class="yt"' in ''.join(out) else '')
+    out.append("""<script>(function(){var l=document.querySelectorAll('.cl .stats .stat .n');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+l.forEach(function(el){var m=el.textContent.match(/^([\\d,]+)(\\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
+new IntersectionObserver(function(es,ob){if(!es[0].isIntersecting)return;ob.disconnect();var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1500);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},{threshold:.5}).observe(el);});})();</script>""")
     main = '\n'.join(x for x in out if x)
     main = main.replace('href="https://staging.tours.cigalacycling.com', 'href="' + L)   # links only; images stay on staging
     return {'id': pid, 'slug': 'trip-' + slug, 'main': main, 'css': PAGE_CSS + TRIP_CSS, 'crumb': tr['name']}
