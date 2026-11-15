@@ -148,20 +148,30 @@ html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 va
 .cc-form { background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012)), rgba(15,16,17,.92); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 22px !important; margin-top: 22px; }
 /* blog: the live loop grid (posts appear automatically) as cards, and the single post template 4028 in the brand */
 .cc-blog-wrap { padding: 8px 16px 0 !important; max-width: 1232px !important; margin: 0 auto !important; }
+.cc-blog .elementor-loop-container { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+@media (max-width: 1024px) { .cc-blog .elementor-loop-container { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
+@media (max-width: 640px) { .cc-blog .elementor-loop-container { grid-template-columns: minmax(0, 1fr) !important; } }
+.cc-blog .e-loop-item .e-con, .cc-blog .e-loop-item .e-con-inner { background: transparent !important; background-image: none !important; flex-direction: column !important; width: 100% !important; max-width: 100% !important; --width: 100% !important; border: 0 !important; }
+.cc-blog .e-loop-item > .e-con > .e-con:last-child, .cc-blog .e-loop-item .e-con + .e-con { padding: 18px 20px 22px !important; gap: 10px !important; }
 .cc-blog .elementor-loop-container { gap: 16px !important; }
 .cc-blog .e-loop-item, .cc-blog .elementor-4718 { background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012)), rgba(15,16,17,.92) !important; border: 1px solid rgba(255,255,255,.08) !important; border-radius: 14px !important; overflow: hidden; }
 .cc-blog .e-loop-item img { border-radius: 0 !important; aspect-ratio: 16 / 10; object-fit: cover; width: 100% !important; }
 .cc-blog .elementor-widget-theme-post-title .elementor-heading-title, .cc-blog .elementor-widget-theme-post-title a { font: 400 24px/1.14 Anton, Impact, sans-serif !important; text-transform: uppercase !important; color: #f7f8f8 !important; letter-spacing: .01em; }
 .cc-blog .elementor-widget-theme-post-title a:hover { color: #34c46a !important; }
-.cc-blog .elementor-widget-heading .elementor-heading-title { font: 600 12px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .08em; text-transform: uppercase !important; color: #ff3d33 !important; }
+.cc-blog .elementor-widget-heading:not(.elementor-widget-theme-post-title) .elementor-heading-title { font: 600 12px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .08em; text-transform: uppercase !important; color: #ff3d33 !important; }
 .cc-blog .elementor-widget-theme-post-excerpt, .cc-blog .elementor-widget-theme-post-excerpt p { font: 400 15px/1.6 Montserrat, system-ui, sans-serif !important; color: #d0d6e0 !important; }
 .cc-blog .elementor-divider-separator { border-color: #009a44 !important; width: 40px !important; border-top-width: 3px !important; }
 .cc-blog .elementor-button { background: none !important; color: #34c46a !important; padding: 0 !important; font: 600 14px Montserrat, system-ui, sans-serif !important; text-transform: none !important; border: 0 !important; box-shadow: none !important; }
 .cc-blog .elementor-button:hover { color: #fff !important; }
 .cc-blog .e-load-more-anchor + div .elementor-button, .cc-blog .elementor-button-wrapper .e-load-more-spinner + .elementor-button-text { color: #fff !important; }
+body.single-post { background: #08090a !important; }
+.single-post .elementor-4028, .single-post .elementor-4028 .e-con { background: transparent !important; background-image: none !important; }
 .single-post .elementor-4028 { max-width: 860px; margin: 0 auto; padding: 40px 16px 0; }
+.single-post .elementor-4028 .elementor-widget-theme-post-excerpt, .single-post .elementor-4028 .elementor-widget-theme-post-excerpt p { font: 500 19px/1.6 Montserrat, system-ui, sans-serif !important; color: #f7f8f8 !important; }
+.single-post .elementor-4028 .elementor-widget-theme-post-content strong, .single-post .elementor-4028 .elementor-widget-theme-post-content b, .single-post .elementor-4028 .elementor-widget-theme-post-content h4 { color: #f7f8f8 !important; }
+.single-post .elementor-4028 .elementor-widget-heading:not(:first-child):not(.elementor-widget-theme-post-title) .elementor-heading-title { color: #f7f8f8 !important; }
 .single-post .elementor-4028 .elementor-widget-theme-post-title .elementor-heading-title { font: 400 clamp(34px, 5vw, 56px)/1.08 Anton, Impact, sans-serif !important; text-transform: uppercase !important; color: #f7f8f8 !important; }
-.single-post .elementor-4028 .elementor-widget-heading .elementor-heading-title { font-family: Montserrat, system-ui, sans-serif !important; color: #ff3d33 !important; }
+.single-post .elementor-4028 .elementor-widget-heading:not(.elementor-widget-theme-post-title) .elementor-heading-title { font-family: Montserrat, system-ui, sans-serif !important; color: #ff3d33 !important; }
 .single-post .elementor-4028 .elementor-widget-theme-post-content, .single-post .elementor-4028 .elementor-widget-theme-post-content p, .single-post .elementor-4028 .elementor-widget-theme-post-content li { font: 400 17px/1.75 Montserrat, system-ui, sans-serif !important; color: #d0d6e0 !important; }
 .single-post .elementor-4028 .elementor-widget-theme-post-content h2, .single-post .elementor-4028 .elementor-widget-theme-post-content h3 { font-family: Anton, Impact, sans-serif !important; font-weight: 400 !important; text-transform: uppercase; color: #f7f8f8 !important; line-height: 1.14 !important; margin: 32px 0 10px; }
 .single-post .elementor-4028 .elementor-widget-theme-post-content a { color: #34c46a !important; }

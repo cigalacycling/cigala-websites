@@ -120,3 +120,16 @@ Approved by Matteo (content changes, not SEO-sensitive: H1/H2s, title and meta u
 - Footer tagline (an H2 on every page, live wording "Cycling & Triathlon Coaching - Bike Tours - Retail") changed to "Train Smarter, Ride Faster": Matteo, 15 Nov, since this is the coaching site. Small sitewide H2 change, approved.
 - Basic's not-included lines now follow the live page's own included/excluded marks (Feedback on sessions, Schedule Adjustment, Daily Training Analysis, Daily Session Carbs Recommendations, Nutritional Consult); Triathlon Basic likewise (its live list excludes the first three).
 - Packages hero photo: Matteo chose the riders by the lake in Wicklow (IMG_3999, 2560 px). Its live alt text had a typo ("Cycling Cycling Coaching group riding in Wicklow, Ireland"), fixed to "Cigala Cycling Coaching ...". The old soft hero photo (imgi_41) is no longer used on this page.
+
+## 9. Remaining pages rebuilt (15 Nov 2026, Matteo: "finish all of the rest of the pages")
+
+Built by `tools/build_coaching_generic.py`, `build_coaching_testimonials.py` and `build_coaching_blog.py`. Every page keeps its live H1 and every live H2 wording (checked by the build), all body copy, and every image with its live alt text. Changes:
+- Small black icon images (PNG under 200 px, e.g. numbered circles, user and rocket icons) are left out: they were invisible on the dark design. A few live images that return 404 (e.g. `unnamed-35.png` on /about/) are left out too.
+- Blog loop item (template 4718): post titles were H1, giving /blog/ ten H1s. Now H3, so the page has one H1. The "By ..." author H2s stay in the loop template.
+- Testimonials: Keith Sharkey's testimonial appears twice on the live page; shown once.
+- Menu: "Testimonials" is now a "Results" dropdown with Testimonials and Case Studies (same URLs).
+- Single blog posts: the template is restyled with CSS only (dark background, brand fonts); content untouched.
+
+To check with Matteo (copy left exactly as live):
+- /testing/ "What we organise": all six steps repeat the same placeholder text ("The Premium package is for those triathletes...").
+- /cycling-coach-uk/, -usa/, -canada/: the 5-star quotes credited to "John - England, UK", "Peter - New York, UK", "Peter - British Columbia, Canda" are reworded versions of Derek's testimonial; the planned rewrite with unique content still needs Matteo's approval.
