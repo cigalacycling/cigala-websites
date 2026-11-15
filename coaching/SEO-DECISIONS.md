@@ -277,3 +277,8 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   Vivify articles: Yoast canonical -> the original vivifysports.com post (7 posts, tools/coaching_vivify_canonical.py).
   Packages: "Monthly (SOLD OUT!)" badge removed (SOLD OUT stamp on the card instead), second buy button under each card,
   A&J line in the Talent box; Vision "Over a decade" image smaller.
+- /about/ redesigned (tools/build_coaching_about.py; Matteo: "terrible, too much text, alignment mixed, Read our testimonials
+  shows nothing"). H1 and all live H2s kept except "READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING" ->
+  "READ OUR CASE STUDIES" (with the case study cards under it, as on Vision/countries). All live copy kept word for word
+  (typo "we provides" -> "we provide"), all live images with their live alt (unnamed-35.png had no alt and no content:
+  left out). Added photos: Strade Bianche win, Volta Almodovar win. Old cigalacycling.com links point to the coaching pages.
