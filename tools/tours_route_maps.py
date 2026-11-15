@@ -413,15 +413,17 @@ def country_maps_v2(path50, admin1):
             key = f['properties'].get('region') or f['properties']['name']
             groups.setdefault(key, []).append(shape(f['geometry']).buffer(0))
         tol = (lon1 - lon0) / 900
-        regions = [unary_union(g).simplify(tol) for g in groups.values()]
-        whole = unary_union(regions).simplify(tol)
+        eps = (lon1 - lon0) / 2500   # close the hairline gaps between provinces (they showed as odd inner lines)
+        regions = [unary_union([x.buffer(eps) for x in g]).buffer(-eps).simplify(tol) for g in groups.values()]
+        whole = unary_union([r.buffer(eps) for r in regions]).buffer(-eps).simplify(tol)
         sel = [f for f in provs if f['properties']['name'] in hl or ('region:' + (f['properties'].get('region') or '')) in hl]
         hil = unary_union([shape(f['geometry']).buffer(0) for f in sel]).simplify(tol) if sel else None
-        def d_of(geom, close=True):
+        def d_of(geom, close=True, holes=False):
             polys = getattr(geom, 'geoms', [geom])
             out = []
             for pg in polys:
-                for ring in [pg.exterior] + list(pg.interiors):
+                if pg.area < (lon1 - lon0) ** 2 / 40000: continue   # specks
+                for ring in [pg.exterior] + (list(pg.interiors) if holes else []):
                     pts = [P(x, y) for x, y in ring.coords]
                     if len(pts) > 2: out.append('M' + 'L'.join(f'{x:.1f},{y:.1f}' for x, y in pts) + ('Z' if close else ''))
             return ''.join(out)
@@ -442,8 +444,8 @@ def country_maps_v2(path50, admin1):
                f'<rect width="{W2}" height="{H2}" fill="#0a0c0e"/>',
                f'<path d="{"".join(others)}" fill="#16191d" stroke="#2c3036" stroke-width=".8"/>',
                f'<path d="{d_of(whole)}" fill="#009a44" fill-opacity=".14" fill-rule="evenodd"/>',
-               f'<path d="{"".join(d_of(r) for r in regions)}" fill="none" stroke="#2bd47a" stroke-opacity=".35" stroke-width=".9" stroke-linejoin="round"/>']
-        if hil: out.append(f'<path d="{d_of(hil)}" fill="#2bd47a" fill-opacity=".55" stroke="#f7f8f8" stroke-width="1.6" stroke-linejoin="round" fill-rule="evenodd"/>')
+               f'<path d="{"".join(d_of(r) for r in regions)}" fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width=".7" stroke-linejoin="round"/>']   # subtle region borders (Matteo 15 Nov)
+        if hil: out.append(f'<path d="{d_of(hil)}" fill="#2bd47a" fill-opacity=".6" stroke="none" fill-rule="evenodd"/>')
         out.append(f'<path d="{d_of(whole)}" fill="none" stroke="#2bd47a" stroke-width="2" stroke-linejoin="round"/>')
         out.append('</svg>')
         return ''.join(out)
