@@ -418,7 +418,8 @@ ITCSS = '''<style>
 
 # Matteo 15 Nov: the Italian page in the first person ("agli italiani piace la prima persona"); his name stays where it
 # matters for search (H1 area, the H2 "Perche' atleti in Italia scelgono Matteo Cigala", the hero line). Quotes untouched.
-FIRST = [("vittorie, Matteo offre una preparazione", "vittorie, offro una preparazione"), ("Perché sceglierci", "Perché scegliere me"),
+FIRST = [("(membership incluso, valore €19,99/mese)", "(iscrizione inclusa, valore €19,99/mese)"),   # Matteo 15 Nov
+         ("vittorie, Matteo offre una preparazione", "vittorie, offro una preparazione"), ("Perché sceglierci", "Perché scegliere me"),
          ("Comunicazione diretta in italiano con Matteo", "Comunicazione diretta in italiano con me"), ("Matteo come tuo coach:", "Io come tuo coach:"),
          ("consulenza gratuita con Matteo.", "consulenza gratuita con me."), ("Con Avanzato e Premium Matteo analizza anche", "Con Avanzato e Premium analizzo anche"),
          ("Con Avanzato e Premium Matteo rivede le tue sessioni (ogni settimana o ogni giorno) e adatta", "Con Avanzato e Premium rivedo le tue sessioni (ogni settimana o ogni giorno) e adatto"),

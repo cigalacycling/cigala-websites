@@ -368,3 +368,8 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   alleno); "Matteo Cigala" kept in the hero line and in the H2 "Perche' atleti in Italia scelgono Matteo Cigala" (search).
   Contact: "Hai domande sulla preparazione? Scrivimi." Intro section 24px closer to the hero.
 - Italia: hero eyebrow 'Allenatore di ciclismo online' (not a heading; adds the synonym, H1 unchanged); events photo: the summer Strade Bianche win (new Italian alt).
+- UK/USA/Canada in the Italian page's style (Matteo): intro with Matteo's cut-out and 28+/10+/200+, facts row; events as
+  cards with discipline filters (all live events kept word for word, plus real big events: UK Dirty Reiver, Grinduro,
+  Battle on the Beach, Highland Trail 550, National Hill Climb; USA Unbound, Belgian Waffle Ride, Mid South, Leadville 100,
+  Tour Divide; Canada BC Bike Race, Tour Divide); country map (Natural Earth, public domain) with the listed cities next to
+  the region list. H2s unchanged. Italia: "membership incluso" -> "iscrizione inclusa" (Matteo).

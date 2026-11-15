@@ -54,6 +54,9 @@ C_ = {
      'What age do I need to be?': ['We coach all ages, 14 and up — no upper limit. Riders under U23 receive a 20% student discount, so juniors racing their first British Cycling events pay less.'],
      'My event is months away — can I still sign up now?': ['Yes, and earlier is better. The big UK sportives are in late spring and summer (the Fred Whitton and Etape Caledonia in May, the Dragon Ride in June), so starting in the winter gives you a base block, a build block and a taper. Pick the package that fits the time you have.'],
     },
+    ev_more=['**Dirty Reiver** (Kielder Forest, Northumberland)', '**Grinduro** (Scotland)', '**Battle on the Beach** (Pembrey, Wales)',
+             '**Highland Trail 550** (Scottish Highlands) — self-supported bikepacking', '**National Hill Climb Championship** (British Cycling)'],
+    map_labels=[('London', 10, 4, 'start'), ('Edinburgh', 10, -4, 'start'), ('Glasgow', -10, 4, 'end'), ('Cardiff', -10, 12, 'end'), ('Belfast', -10, 4, 'end'), ('Lake District', -10, 4, 'end'), ('Highlands', 10, -6, 'start')],
     extra_q=('Do you coach time trials and hill climbs?', ['Yes. Time trials and hill climbs are short, all-out efforts, and we train them that way: pacing work, efforts at and above Critical Power, and sessions in your race position. Advanced and Premium include race and pacing strategy for each event.'])),
 'usa': dict(
     name='the USA', adj='US', cur='$', code='USD', hero=('imgi_20_Fqav', 'country-usa-hero-matteo-sun'), pos='50% 8%', photo=('imgi_17_zCRmNmCA', 'country-usa-events-coaching'),
@@ -74,6 +77,9 @@ C_ = {
      'What age do I need to be?': ['We coach all ages, 14 and up — no upper limit. Riders under U23 receive a 20% student discount, which also covers juniors racing USA Cycling events.'],
      'My event is months away — can I still sign up now?': ['Yes, and earlier is better: a summer target like RAGBRAI in late July or a fall century gives you time for a base block, a build block and a taper. Pick the package that fits the time you have.'],
     },
+    ev_more=['**Unbound Gravel** (Emporia, Kansas)', '**Belgian Waffle Ride** (San Diego, California)', '**The Mid South** (Stillwater, Oklahoma)',
+             '**Leadville Trail 100 MTB** (Colorado)', '**Tour Divide** (Banff to the Mexican border) — self-supported bikepacking'],
+    map_labels=[('Seattle', 10, 4, 'start'), ('San Francisco', -10, 4, 'end'), ('Los Angeles', -10, 10, 'end'), ('Denver', 10, 4, 'start'), ('Dallas', 10, 4, 'start'), ('Austin', -10, 10, 'end'), ('Atlanta', -10, 4, 'end'), ('New York', 10, 4, 'start'), ('Florida', 10, 4, 'start')],
     extra_q=('Can you coach me for a long gravel race?', ['Yes. Gravel and MTB are part of what we coach. Long gravel races are won or lost on pacing and fuelling as much as fitness: Advanced and Premium include daily carb recommendations for each session and a race and pacing strategy for the event.'])),
 'canada': dict(
     name='Canada', adj='Canadian', cur='$', code='CAD', hero=('imgi_19_DIi7do4I', 'country-canada-hero-team', 'Cigala Cycling riders in the team kit, together before a group ride'), pos='55% 35%', photo=('pzrIm4dp1o9W5oO', 'country-canada-events-podium'),
@@ -96,6 +102,8 @@ C_ = {
      'What age do I need to be?': ['We coach all ages, 14 and up — no upper limit. Riders under U23 receive a 20% student discount.'],
      'My event is months away — can I still sign up now?': ['Yes, and with a short outdoor season it pays to start early. For a September event like the RBC GranFondo Whistler, starting in the winter gives you an indoor base block, an outdoor build in spring and a taper. Pick the package that fits the time you have.'],
     },
+    ev_more=['**BC Bike Race** (British Columbia) — seven days of singletrack', '**Tour Divide** (from Banff, Alberta) — self-supported bikepacking'],
+    map_labels=[('Vancouver', -10, 12, 'end'), ('Calgary', 10, 4, 'start'), ('Edmonton', 10, -4, 'start'), ('Toronto', -6, 16, 'end'), ('Ottawa', 4, -10, 'middle'), ('Montreal', 10, 4, 'start'), ('Halifax', 10, 8, 'start')],
     extra_q=None),
 }
 FIX = [('reccomendations', 'recommendations'), ('Canda', 'Canada'), ('New York, UK', 'New York, USA'), ('delivering in from coast to coast in Canada', 'from coast to coast in Canada'),
@@ -196,14 +204,16 @@ def build_country(key):
   </div>
 </div>
 
-<section>
-  <div class="in split">
+<section class="cx-intro-sec">
+  <div class="in cx-intro">
+    <div class="cx-me"><img src="{conv('coaching/brand/matteo-cigala-author-signature.webp', 'country-matteo-signature')}" alt="Matteo Cigala, Head Coach, in the white Cigala Cycling jersey, with his signature" loading="lazy" width="720" height="943"></div>
     <div class="gn-txt">
       <div class="eyebrow">Your coach</div>
+      <ul class="cx-nums">{''.join(f'<li><b>{a}</b><span>{b}</span></li>' for a, b in (('28+', 'years in cycling'), ('10+', 'years coaching'), ('200+', 'race wins')))}</ul>
       {''.join(f'<p>{G.inline(x)}</p>' for x in intro[1:])}
     </div>
-    <div class="notes cn-facts">{facts}</div>
   </div>
+  <div class="in"><div class="cx-facts">{facts}</div></div>
 </section>
 
 <section>
@@ -256,18 +266,21 @@ def build_country(key):
   </div>
 </section>
 
-<section>
-  <div class="in split gn-split">
-    <div class="gn-txt">
-      <div class="eyebrow">Your target</div>
-      <h2>{E(ev_h2)}</h2><div class="bar"></div>
-      <p>{G.inline(ev_p[0])}</p>
-      <ul class="cn-chips">{''.join(f'<li>{G.inline(x)}</li>' for x in ev_li)}</ul>
-      {''.join(f'<p>{G.inline(x)}</p>' for x in ev_p[1:])}
-      <h3 class="h-sm cn-gh">Guides from our blog</h3>
-      <ul class="cn-guides cn-gcards">{''.join(f'<li><a class="arrow-link" href="{C}/blog/{u}/" {EXT}>{E(t)} →</a></li>' for u, t in c['guides'])}</ul>
+<section class="cx-ev">
+  <div class="in">
+    <div class="cx-ev-top">
+      <div class="cx-ev-pic"><img src="{psrc}" alt="{E(palt)}" loading="lazy"></div>
+      <div class="gn-txt">
+        <div class="eyebrow">Your target</div>
+        <h2>{E(ev_h2)}</h2><div class="bar"></div>
+        <p>{G.inline(ev_p[0])}</p>
+        <div class="cx-ev-types" role="group" aria-label="Filter by discipline"><button type="button" class="on" data-f="" style="--tc:#d0d6e0">All</button>{''.join(f'<button type="button" data-f="{t}" style="--tc:{col}">{t}</button>' for t, col in EVT.items() if any(t == ev_type(x, c) for x in ev_li + c['ev_more']))}</div>
+      </div>
     </div>
-    <div class="photo gn-photo cn-evphoto"><img src="{psrc}" alt="{E(palt)}" loading="lazy"></div>
+    <ul class="cx-ev-grid">{''.join(ev_card(x, c) for x in ev_li + c['ev_more'])}</ul>
+    {''.join(f'<p class="cx-ev-note">{G.inline(x)}</p>' for x in ev_p[1:])}
+    <h3 class="h-sm cn-gh">Guides from our blog</h3>
+    <ul class="cn-guides cn-gcards">{''.join(f'<li><a class="arrow-link" href="{C}/blog/{u}/" {EXT}>{E(t)} →</a></li>' for u, t in c['guides'])}</ul>
   </div>
 </section>
 
@@ -298,10 +311,11 @@ def build_country(key):
       <p>{E(c["region"])}</p>
       {''.join(f'<p>{G.inline(x)}</p>' for x in rg_p[1:])}
     </div>
-    <div>
-      <div class="eyebrow">Works with your devices &amp; apps</div>
-      <div class="logos apps cn-apps">{P.devices}</div>
-    </div>
+    <div class="cx-map-wrap">{country_map(key)}</div>
+  </div>
+  <div class="in cx-devs">
+    <div class="eyebrow">Works with your devices &amp; apps</div>
+    <div class="logos apps cn-apps">{P.devices}</div>
   </div>
 </section>
 
@@ -333,12 +347,92 @@ def build_country(key):
         .replace("document.getElementById('g-more').dataset.label = document.getElementById('g-more').textContent;", '')
     build(name, path, MAIN, f'{path} rewritten for {c["name"]}: own copy, real testimonials, prices in {c["code"]}. H1, H2s and lists kept.',
           h1=h1, h2_changes={'drop': ['2025 IN NUMBERS', 'READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING'], 'add': ['2026 IN NUMBERS', 'READ OUR CASE STUDIES']},   # Matteo 15 Nov: 2026; case studies
-          extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + P.CAL_CSS + CCSS, extra_js=JS)
+          extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + P.CAL_CSS + CCSS, extra_js=JS + EV_JS)
     words = len(re.sub(r'<[^>]+>', ' ', MAIN).split())
     print(name, 'words', words, 'reviews', len(c['reviews']), 'faq', len(faq))
 
 NUT_Q = ('Can I work 1-to-1 with a nutritionist?', ['Yes. You can add nutrition coaching with our sports nutritionist, Marine Lenehan: a WorldTour Pro with LIDL-TREK, 2× Irish National Champion and Amateur Gravel World Champion 2024. She writes your daily macros, carbs per hour and nutrition notes into the same calendar as your training, reviews your food diary and plans your race fuelling and gut training. The price depends on what you need, and is agreed with Marine.'])
+# event cards (same style as the Italian page): discipline from the event name; filters; the live wording kept
+EVT = {'Road': '#34c46a', 'Gravel': '#f0bf00', 'MTB': '#ff3d33', 'Ultra': '#a78bfa', 'All disciplines': '#5f86c9'}
+EVK = [('Local club', 'All disciplines'), ('USA Cycling', 'All disciplines'), ('provincial', 'All disciplines'), ('Cycling BC', 'All disciplines'), ('Bikepacking', 'Ultra'), ('Highland Trail', 'Ultra'), ('Tour Divide', 'Ultra'), ('Gravel', 'Gravel'), ('Reiver', 'Gravel'), ('Grinduro', 'Gravel'), ('Waffle', 'Gravel'),
+       ('Mid South', 'Gravel'), ('MTB', 'MTB'), ('Battle on the Beach', 'MTB'), ('BC Bike Race', 'MTB'), ('Local club', 'All disciplines'), ('USA Cycling', 'All disciplines'),
+       ('provincial', 'All disciplines'), ('Cycling BC', 'All disciplines')]
+EVI = {'Road': '<path d="M3 20 9 6l4 8 3-5 5 11z"/>', 'Gravel': '<circle cx="6" cy="17" r="2"/><circle cx="13" cy="15" r="1.5"/><circle cx="18" cy="18" r="2.5"/><path d="M2 21h20"/>',
+       'MTB': '<path d="m3 20 6-9 3 4 3-6 6 11z"/><path d="M14 6l1-3 2 1"/>', 'Ultra': '<path d="M3 17c3-6 6 2 9-4s6-2 9-6"/><circle cx="3" cy="17" r="1.5"/><circle cx="21" cy="7" r="1.5"/>',
+       'All disciplines': '<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>'}
+def ev_type(x, c):
+    return next((t for k, t in EVK if k.lower() in x.lower()), 'Road')
+def ev_card(x, c):
+    t = ev_type(x, c); col = EVT[t]
+    x = re.sub(r'\*\*\s*\n\s*\*\*', '', x).strip()
+    m = re.match(r'(.*?\*\*[^*]+\*\*(?:\s*(?:and|/)\s*\*\*[^*]+\*\*)*)\s*(.*)$', x)
+    name, rest = (m.group(1), m.group(2)) if m else (x, '')
+    if not m:   # plain line (no bold name): the whole line is the card title
+        name, rest = x, ''
+    rest = rest.strip()
+    nm = re.match(r'(.+?)\s*\(([^)]+)\)\s*$', G.inline(name).replace('<b>', '').replace('</b>', '')) if '(' in name else None
+    title = re.sub(r'</?b>', '', G.inline(name)).strip()
+    nm2 = re.match(r'(.+?)\s+\(([^)]+)\)$', title)
+    place = rest
+    if nm2: title, place = nm2.group(1), (nm2.group(2) + (' ' + rest if rest else '')).strip()
+    place = re.sub(r'^\((.*?)\)\s*', r'\1 ', place).strip()
+    return (f'<li data-t="{t}" style="--tc:{col}"><span class="cx-ev-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{EVI[t]}</svg></span><span class="cx-ev-tag">{t}</span>'
+            f'<b>{title}</b>{f"<span class=cx-ev-pl>{place}</span>" if place else ""}</li>')
+import json as _json
+def country_map(key):
+    m = _json.load(open(ROOT + f'coaching/map-{key}.json'))
+    c = C_[key]
+    vb = f"{m['minx'] - 14} {m['miny'] - 14} {m['w'] - m['minx'] + 28} {m['h'] - m['miny'] + 28}"
+    dots = ''.join(f'<g class="it-city" style="--i:{i}"><circle cx="{x}" cy="{y}" r="9" class="it-halo"/><circle cx="{x}" cy="{y}" r="4"/><title>{E(n)}</title></g>' for i, (n, (x, y)) in enumerate(m['pts'].items()))
+    labels = ''.join(f'<text x="{m["pts"][n][0] + dx}" y="{m["pts"][n][1] + dy}" class="it-lab" text-anchor="{a}">{E(n)}</text>' for n, dx, dy, a in c['map_labels'])
+    fs = round((m['w'] - m['minx']) / 34, 1)   # labels the same size on screen whatever the map's scale
+    labels = labels.replace('class="it-lab"', f'class="it-lab" style="font-size:{fs}px;stroke-width:{fs / 4:.1f}px"')
+    dots = dots.replace('r="9"', f'r="{fs * .7:.1f}"').replace('r="4"', f'r="{fs * .32:.1f}"')
+    return (f'<svg class="it-map cx-map-{key}" viewBox="{vb}" role="img" aria-labelledby="map-t"><title id="map-t">Map of {E(c["name"])} with the cities where Matteo coaches riders</title>'
+            f'<defs><linearGradient id="it-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#009a44" stop-opacity=".35"/><stop offset="1" stop-color="#009a44" stop-opacity=".08"/></linearGradient>'
+            f'<filter id="it-glow" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter></defs>'
+            f'<path d="{m["d"]}" fill="#009a44" opacity=".35" filter="url(#it-glow)"/><path d="{m["d"]}" class="it-land" fill="url(#it-g)"/>{dots}{labels}</svg>')
+EV_JS = """<script>(function(){var bs=document.querySelectorAll('.cx-ev-types button');bs.forEach(function(b){b.addEventListener('click',function(){
+var f=b.dataset.f;bs.forEach(function(x){x.classList.toggle('on',x===b);});
+document.querySelectorAll('.cx-ev-grid li').forEach(function(li){li.classList.toggle('off',!!f&&li.dataset.t!==f);});});});})();</script>"""
 CCSS = '''<style>
+.cx-intro-sec { padding-top: 24px !important; }
+.cx-intro { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 40px; align-items: center; }
+@media (max-width: 900px) { .cx-intro { grid-template-columns: 1fr; } .cx-me { max-width: 280px; margin: 0 auto; } }
+.cx-me img { width: 100%; height: auto; display: block; filter: drop-shadow(0 24px 50px rgba(0,0,0,.5)); }
+.cx-nums { list-style: none; margin: 10px 0 18px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 26px; }
+.cx-nums li { display: grid; }
+.cx-nums b { font: 400 clamp(34px, 4vw, 48px)/1 var(--head); color: var(--green-text); }
+.cx-nums span { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.cx-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+.cx-facts .note { padding: 16px 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); }
+.cx-facts .note p { margin: 0; }
+@media (max-width: 800px) { .cx-facts { grid-template-columns: 1fr; } }
+.cx-ev-top { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 36px; align-items: center; margin-bottom: 26px; }
+@media (max-width: 900px) { .cx-ev-top { grid-template-columns: 1fr; gap: 20px; } }
+.cx-ev-pic { border-radius: 16px; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid var(--border); }
+.cx-ev-pic img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; display: block; }
+.cx-ev-types { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.cx-ev-types button { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--tc); color: var(--text); font: 700 12px var(--body); letter-spacing: .06em; text-transform: uppercase; background: transparent; cursor: pointer; transition: background .2s, color .2s; }
+.cx-ev-types button:hover, .cx-ev-types button.on { background: var(--tc); color: #0f1011 !important; }
+.cx-ev-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.cx-ev-grid li { position: relative; display: grid; gap: 6px; align-content: start; padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: linear-gradient(160deg, color-mix(in srgb, var(--tc) 12%, transparent), transparent 60%), var(--panel); transition: transform .25s, border-color .25s, box-shadow .25s; }
+.cx-ev-grid li:hover { transform: translateY(-4px); border-color: var(--tc); box-shadow: 0 16px 40px color-mix(in srgb, var(--tc) 22%, transparent); }
+.cx-ev-grid li.off { display: none; }
+.cx-ev-ic svg { width: 30px; height: 30px; fill: none; stroke: var(--tc); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cx-ev-tag { position: absolute; top: 16px; right: 16px; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--tc); }
+.cx-ev-grid b { font: 400 20px/1.15 var(--head); text-transform: uppercase; color: var(--text); padding-right: 64px; }
+.cx-ev-pl { font-size: 13.5px; color: var(--text-2); line-height: 1.45; }
+.cx-ev-note { margin: 18px 0 0; color: var(--text-2); max-width: 80ch; }
+.cx-map-wrap { display: grid; place-items: center; }
+.it-map { width: 100%; max-width: 480px; height: auto; overflow: visible; }
+.it-land { stroke: #34c46a; stroke-width: 1.6; stroke-linejoin: round; }
+.it-city circle { fill: #ff3d33; }
+.it-city .it-halo { fill: rgba(255,61,51,.25); transform-box: fill-box; transform-origin: center; animation: it-pulse 2.4s ease-out infinite; animation-delay: calc(var(--i) * .15s); }
+@keyframes it-pulse { 0% { transform: scale(.6); opacity: 1; } 100% { transform: scale(2.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .it-city .it-halo { animation: none; } }
+.it-lab { fill: #d0d6e0; font: 600 13px var(--body); paint-order: stroke; stroke: #0f1011; stroke-width: 3px; }
+.cx-devs { margin-top: 36px; }
 .cn-facts { grid-template-columns: 1fr; align-content: center; }
 .cn-facts .note p { margin: 0; }
 .cn-lede { color: var(--text-2); margin: -6px 0 18px; }
