@@ -91,6 +91,11 @@ Elementor snippet 697 holds the head code: it sends a consent update for returni
 - Images are WebP, every image has alt text, and the Pixel and Analytics only run after consent.
 - Newsletter: single opt-in, with a "sign_up" event in Analytics and "Lead" in Meta. The contact form sends "Contact" to Meta and "generate_lead" to Analytics.
 
+**Launch plan (decided 15 Nov):** all sites go live on the **same day**, once Tours and Coaching are finished on staging. Until then:
+- cigalacycling.com staging stays ready as it is.
+- **No edits on the live sites.** A push to live overwrites live with staging. If Matteo needs to change something on live, make the same change on staging too.
+- Just before launch: re-crawl each live site and compare it with its baseline, take Hostinger backups of each live site, then push the sites one after another on the same morning.
+
 **Before going live:**
 - Matteo tests on his phone.
 - No edits on live until the push.
