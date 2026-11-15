@@ -49,10 +49,10 @@ Inventory taken 15 Nov 2026 for the move to a new theme. It's built from three s
 
 Product templates `product` and `product.pre-order`, plus collection, collection list, page, page.wide, contact, blog, article, cart, search, 404, gift card and customer account pages.
 
-## Questions for Matteo
+## Matteo's answers (15 Nov 2026)
 
-1. Back-in-stock: keep STOQ or Ordersify? (You have both.)
-2. Chat: keep tawk.to on the shop, or use the same chat as the other Cigala sites?
-3. humm finance and Hextom Sales Boost: still wanted?
-4. What is "JDM integration"?
-5. Sections Pro content: the extra text, video and hero blocks on product pages. Should we bring those across?
+1. Back-in-stock: keep **both** STOQ and Ordersify.
+2. Chat: keep **tawk.to** on the shop.
+3. humm finance and Hextom Sales Boost: keep **both**.
+4. "JDM integration" is the **distributor connection. Keep it.** It's admin-side, so nothing to move in the theme.
+5. Sections Pro content: bring it across **if possible**, but it's not essential.
