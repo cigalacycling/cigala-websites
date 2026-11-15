@@ -159,8 +159,8 @@ sys.path.insert(0, ROOT + 'shared/consent')
 from render import banner as render_banner, head_snippet
 GA = 'G-QRF16ZZVDB'
 PIXEL = '1986332861692106'   # Matteo's single Meta Pixel, confirmed for Tours on 15 Nov (same on all Cigala sites)
-banner = render_banner(ga_id=GA, pixel_id=PIXEL, openwidget_org='43e5f685-37fc-4f78-9420-122fd2a3c5e3')
-ftr = ftr.replace('<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>', '<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
+banner = render_banner(ga_id=GA, privacy_url='/privacy-policy/', pixel_id=PIXEL, openwidget_org='43e5f685-37fc-4f78-9420-122fd2a3c5e3')   # Tours' own privacy page
+ftr = ftr.replace('<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>', '<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>\n    <a href="/privacy-policy/">Privacy policy</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
 assert 'data-cc-settings' in ftr
 json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>'), html_widget(banner)])])}}, open(OUT + 'lib-228.json', 'w'))
 
