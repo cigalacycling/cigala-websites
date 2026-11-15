@@ -366,7 +366,7 @@ def chips(cards):
     return f'<div class="fchips" role="group" aria-label="Filter by tour type">{b}</div>'
 FILTER_JS = """<script>(function(){document.querySelectorAll('.fchips').forEach(function(g){var grid=g.nextElementSibling;g.querySelectorAll('.fchip').forEach(function(b){b.addEventListener('click',function(){
 g.querySelectorAll('.fchip').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b);});var f=b.dataset.f;
-[].forEach.call(grid.children,function(c){c.hidden=!(f==='all'||c.dataset.k===f);});});});});})();</script>"""
+[].forEach.call(grid.children,function(c){c.hidden=!(f==='all'||c.dataset.k===f||c.dataset.k==='all');});});});});})();</script>"""
 
 LIST_BAND = re.search(r'<div class="band">.*?</div>\s*</div>\s*(?=</div>\s*</section>)', json.loads(open(ROOT + 'stg-tours/out/list-trips.json').read())['main'], re.S).group(0)
 
@@ -468,7 +468,13 @@ def destination(slug):
                            f'<h2>{E(title)}</h2><div class="desc">{desc}</div><div class="ctas one"><a class="btn btn-go" href="{u}">{E(go)}</a></div></div></article>'))
             if out and all(k == 'home' for k, _ in out):
                 return '<!--HOMECARDS-->' + ''.join(h for k, h in out)
-            return chips(''.join(h for k, h in out)) + f'<div class="tgrid">{"".join(h for k, h in out)}</div>'
+            grid = ''.join(h for k, h in out)
+            if len(out) % 3 and any('Enquire' in c['go'] for c in vals):   # fill the last row on laptops (Matteo 15 Nov)
+                grid += ('<article class="tcard dcta" data-k="all"><div class="tx"><div class="eyebrow">Your dates, your group</div>'
+                         '<p class="ctat">Build your own tour</p><div class="bar"></div><p>Tell us where, when and how hard you want to ride: '
+                         'we plan the routes, hotels, support and every detail.</p><div class="ctas one"><a class="btn btn-go" href="/trips/private-trips/">'
+                         'Plan your custom tour →</a></div></div></article>')
+            return chips(grid) + f'<div class="tgrid">{grid}</div>'
         if kind == 'btn':
             return '<div class="ctas">' + ''.join(f'<a class="btn btn-go" href="{link(u).replace(L, "")}">{E(t.capitalize())} →</a>' for t, u in vals) + '</div>'
         if kind == 'band':   # the same "Can't find the perfect one?" band as at the bottom of All tours (Matteo 15 Nov)
@@ -722,21 +728,39 @@ html .cl .band-up.priv > img { object-position: center 75% !important; }
 html .cl .hero.phero.dhero .in { padding-block: 150px 60px !important; }   /* taller destination hero: more of the photo (Matteo) */
 html .cl .dsplit { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: start; }
 @media (max-width: 900px) { html .cl .dsplit { grid-template-columns: minmax(0, 1fr); } }
-html .cl .cmapbox { width: 100%; max-width: 340px; justify-self: end; }
+html .cl .cmapbox { width: 100%; max-width: 374px; justify-self: end; }
 html .cl .cmapbox svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
 html .cl .dtour .tx { gap: 10px; }
 html .cl .dtour .ctas.one { margin-top: auto; padding-top: 6px; }
 html .cl .dband { margin-top: 48px; }
 html .cc .dtours { padding-top: 56px; }
 html .cc .dtours .tour { min-height: 380px; aspect-ratio: auto; }   /* same height as the homepage cards */
-html .cl .fchips, html .cc .fchips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+html .cl .fchips, html .cc .fchips { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 20px; }
 html .cl .fchip, html .cc .fchip { display: inline-flex; align-items: center; gap: 8px; font: 600 12.5px/1 var(--body); letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 9px 15px; cursor: pointer; }
 html .cl .fchip:hover, html .cc .fchip:hover { color: #fff; border-color: rgba(255,255,255,.3); }
 html .cl .fchip .fd, html .cc .fchip .fd { width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); }
 html .cl .fchip.on, html .cc .fchip.on { background: var(--green); border-color: var(--green); color: #fff; }
+html .cl .fchip[data-f=road] .fd, html .cc .fchip[data-f=road] .fd, html .cl .fchip[data-f=gf] .fd, html .cc .fchip[data-f=gf] .fd { background: #e10600; }
+html .cl .fchip[data-f=gravel] .fd, html .cc .fchip[data-f=gravel] .fd { background: var(--gravel, #b9895a); }
+html .cl .fchip.on[data-f=road], html .cc .fchip.on[data-f=road], html .cl .fchip.on[data-f=gf], html .cc .fchip.on[data-f=gf] { background: #e10600; border-color: #e10600; }
+html .cl .fchip.on[data-f=gravel], html .cc .fchip.on[data-f=gravel] { background: var(--gravel, #b9895a); border-color: var(--gravel, #b9895a); }
+html .cl .dcta { background: linear-gradient(160deg, rgba(0,154,68,.22), rgba(0,154,68,.06)), var(--panel) !important; border-color: rgba(0,154,68,.45) !important; }
+html .cl .dcta .tx { justify-content: center; }
+html .cl .dcta .ctat { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: clamp(26px, 2.6vw, 34px); line-height: 1.08; margin: 0; }
+html .cl .dcta p { color: var(--text-2); font-size: 14.5px; }
+html .cl .dcta .btn { white-space: nowrap; width: 100%; justify-content: center; }
 html .cl .fchip.on .fd, html .cc .fchip.on .fd { background: #fff; animation: fchip-pulse 1.8s ease-in-out infinite; }
 @keyframes fchip-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,.7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(255,255,255,0); opacity: .6; } }
-@media (prefers-reduced-motion: reduce) { html .cl .fchip.on .fd, html .cc .fchip.on .fd { animation: none; } }
+@media (prefers-reduced-motion: reduce) { html .cl .fchip[data-f=road] .fd, html .cc .fchip[data-f=road] .fd, html .cl .fchip[data-f=gf] .fd, html .cc .fchip[data-f=gf] .fd { background: #e10600; }
+html .cl .fchip[data-f=gravel] .fd, html .cc .fchip[data-f=gravel] .fd { background: var(--gravel, #b9895a); }
+html .cl .fchip.on[data-f=road], html .cc .fchip.on[data-f=road], html .cl .fchip.on[data-f=gf], html .cc .fchip.on[data-f=gf] { background: #e10600; border-color: #e10600; }
+html .cl .fchip.on[data-f=gravel], html .cc .fchip.on[data-f=gravel] { background: var(--gravel, #b9895a); border-color: var(--gravel, #b9895a); }
+html .cl .dcta { background: linear-gradient(160deg, rgba(0,154,68,.22), rgba(0,154,68,.06)), var(--panel) !important; border-color: rgba(0,154,68,.45) !important; }
+html .cl .dcta .tx { justify-content: center; }
+html .cl .dcta .ctat { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: clamp(26px, 2.6vw, 34px); line-height: 1.08; margin: 0; }
+html .cl .dcta p { color: var(--text-2); font-size: 14.5px; }
+html .cl .dcta .btn { white-space: nowrap; width: 100%; justify-content: center; }
+html .cl .fchip.on .fd, html .cc .fchip.on .fd { animation: none; } }
 html .cl [hidden], html .cc .tours > [hidden] { display: none !important; }
 html .cl .vgrid.few .vcard:nth-child(n+7) { display: none; }
 html .cl .vmore-wrap { justify-content: center; margin-top: 22px; }

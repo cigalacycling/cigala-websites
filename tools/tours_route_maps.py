@@ -87,7 +87,7 @@ ROUTES = {
 
 # ---------- data ----------
 NE = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/'
-NE_FILES = ['ne_10m_lakes', 'ne_10m_lakes_europe', 'ne_10m_rivers_lake_centerlines', 'ne_10m_rivers_europe']
+NE_FILES = ['ne_10m_lakes', 'ne_10m_lakes_europe', 'ne_10m_rivers_lake_centerlines', 'ne_10m_rivers_europe', 'ne_10m_admin_1_states_provinces']
 def geo_files():
     import ssl, urllib.request
     os.makedirs(GEO, exist_ok=True)
@@ -100,7 +100,7 @@ def geo_files():
     for n in NE_FILES:
         if not os.path.exists(f'{GEO}/{n}.geojson'):
             open(f'{GEO}/{n}.geojson', 'wb').write(urllib.request.urlopen(NE + n + '.geojson', context=ctx, timeout=120).read())
-    return {'countries': cp, 'lakes': [f'{GEO}/{n}.geojson' for n in NE_FILES[:2]], 'rivers': [f'{GEO}/{n}.geojson' for n in NE_FILES[2:]]}
+    return {'countries': cp, 'lakes': [f'{GEO}/{n}.geojson' for n in NE_FILES[:2]], 'rivers': [f'{GEO}/{n}.geojson' for n in NE_FILES[2:4]], 'admin1': f'{GEO}/{NE_FILES[4]}.geojson'}
 
 def geojson_lines(paths):
     out = []
@@ -379,6 +379,80 @@ def country_maps(path50):
         dots = [(la, lo, lb) for s2, (c2, la, lo, lb) in REGIONS.items() if c2 == cm or (cm == 'Spain' and c2 == 'Canary Islands' and False)]
         open(OUT + f'country-{slug}.svg', 'w').write(draw_country(cm, dots, named))
 
+
+# ---------- v2 (Matteo 15 Nov): no dots or names; region borders, our regions highlighted ----------
+ADMIN = {'Italy': ['Italy'], 'France': ['France'], 'Spain': ['Spain'], 'Canary Islands': ['Spain'], 'Portugal': ['Portugal'], 'Croatia': ['Croatia'],
+         'Slovenia': ['Slovenia'], 'Greece': ['Greece'], 'Switzerland': ['Switzerland'], 'Ireland': ['Ireland'], 'Cyprus': ['Cyprus', 'Northern Cyprus']}
+HIGHLIGHT = {   # destination slug: provinces (Natural Earth admin-1 names) or 'region:<name>'
+ 'tuscany': ['region:Toscana'], 'lake-garda': ['Brescia', 'Verona', 'Trento'], 'alps-dolomites': ['Bozen', 'Trento', 'Belluno', 'Sondrio'],
+ 'lake-como': ['Como', 'Lecco'], 'sardinia': ['region:Sardegna'], 'sicily': ['region:Sicily'], 'puglia': ['region:Apulia'],
+ 'french-alps': ['Savoie', 'Haute-Savoie', 'Isère', 'Hautes-Alpes', 'Alpes-de-Haute-Provence'],
+ 'pyrenees': ['Pyrénées-Atlantiques', 'Hautes-Pyrénées', 'Haute-Garonne', 'Ariège', 'Pyrénées-Orientales'], 'corsica': ['region:Corse'],
+ 'algarve': ['Faro'], 'girona': ['Gerona'], 'mallorca': ['Baleares'], 'costa-blanca': ['Alicante'],
+ 'gran-canaria': ['Las Palmas'], 'tenerife': ['Santa Cruz de Tenerife']}
+
+def country_maps_v2(path50, admin1):
+    from shapely.geometry import shape
+    from shapely.ops import unary_union
+    named = topo_named(path50)
+    feats = [f for f in json.load(open(admin1))['features']]
+    def draw(map_name, hl):
+        W2, H2 = 640, 640
+        lon0, lon1, lat0, lat1 = CB[map_name]
+        k0 = math.cos(math.radians((lat0 + lat1) / 2))
+        sc = min(W2 * .92 / ((lon1 - lon0) * k0), H2 * .92 / (lat1 - lat0))
+        ox = (W2 - (lon1 - lon0) * k0 * sc) / 2; oy = (H2 - (lat1 - lat0) * sc) / 2
+        P = lambda lon, lat: (ox + (lon - lon0) * k0 * sc, oy + (lat1 - lat) * sc)
+        provs = [f for f in feats if f['properties']['admin'] in ADMIN[map_name]]
+        if map_name == 'Canary Islands': provs = [f for f in provs if f['properties'].get('region') == 'Canary Is.']
+        if map_name == 'Spain': provs = [f for f in provs if f['properties'].get('region') != 'Canary Is.']
+        if map_name == 'France': provs = [f for f in provs if lon0 - 1 < shape(f['geometry']).centroid.x < lon1 + 1 and lat0 - 1 < shape(f['geometry']).centroid.y < lat1 + 1]
+        if map_name == 'Portugal': provs = [f for f in provs if f['properties']['name'] not in ('Madeira', 'Azores')]
+        groups = {}
+        for f in provs:
+            key = f['properties'].get('region') or f['properties']['name']
+            groups.setdefault(key, []).append(shape(f['geometry']).buffer(0))
+        tol = (lon1 - lon0) / 900
+        regions = [unary_union(g).simplify(tol) for g in groups.values()]
+        whole = unary_union(regions).simplify(tol)
+        sel = [f for f in provs if f['properties']['name'] in hl or ('region:' + (f['properties'].get('region') or '')) in hl]
+        hil = unary_union([shape(f['geometry']).buffer(0) for f in sel]).simplify(tol) if sel else None
+        def d_of(geom, close=True):
+            polys = getattr(geom, 'geoms', [geom])
+            out = []
+            for pg in polys:
+                for ring in [pg.exterior] + list(pg.interiors):
+                    pts = [P(x, y) for x, y in ring.coords]
+                    if len(pts) > 2: out.append('M' + 'L'.join(f'{x:.1f},{y:.1f}' for x, y in pts) + ('Z' if close else ''))
+            return ''.join(out)
+        mine = set(CN.get(map_name, [map_name]))
+        others = []
+        for n, rs in named.items():
+            if n in mine: continue
+            for r in rs:
+                if not any(lon0 - 3 <= x <= lon1 + 3 and lat0 - 3 <= y <= lat1 + 3 for x, y in r): continue
+                pts, last = [], None
+                for x, y in r:
+                    X, Y = P(x, y)
+                    if last and abs(X - last[0]) < 1.4 and abs(Y - last[1]) < 1.4: continue
+                    pts.append(f'{X:.1f},{Y:.1f}'); last = (X, Y)
+                if len(pts) > 2: others.append('M' + 'L'.join(pts) + 'Z')
+        label = html.escape(f'Map of {map_name}' + (' with the region highlighted' if hil else ''), quote=True)
+        out = [f'<svg class="cmap" viewBox="0 0 {W2} {H2}" role="img" aria-label="{label}" xmlns="http://www.w3.org/2000/svg">',
+               f'<rect width="{W2}" height="{H2}" fill="#0a0c0e"/>',
+               f'<path d="{"".join(others)}" fill="#16191d" stroke="#2c3036" stroke-width=".8"/>',
+               f'<path d="{d_of(whole)}" fill="#009a44" fill-opacity=".14" fill-rule="evenodd"/>',
+               f'<path d="{"".join(d_of(r) for r in regions)}" fill="none" stroke="#2bd47a" stroke-opacity=".35" stroke-width=".9" stroke-linejoin="round"/>']
+        if hil: out.append(f'<path d="{d_of(hil)}" fill="#2bd47a" fill-opacity=".55" stroke="#f7f8f8" stroke-width="1.6" stroke-linejoin="round" fill-rule="evenodd"/>')
+        out.append(f'<path d="{d_of(whole)}" fill="none" stroke="#2bd47a" stroke-width="2" stroke-linejoin="round"/>')
+        out.append('</svg>')
+        return ''.join(out)
+    for slug, (cm, lat, lon, label) in REGIONS.items():
+        open(OUT + f'country-{slug}.svg', 'w').write(draw(cm, HIGHLIGHT.get(slug, [])))
+    for slug, cm in COUNTRY_PAGES.items():
+        hl = [h for s2, (c2, *_r) in REGIONS.items() if c2 == cm for h in HIGHLIGHT.get(s2, [])]
+        open(OUT + f'country-{slug}.svg', 'w').write(draw(cm, hl))
+
 if __name__ == '__main__':
     f = geo_files()
     countries, lakes, rivers = topo_polys(f['countries']), geojson_polys(f['lakes']), geojson_lines(f['rivers'])
@@ -389,5 +463,5 @@ if __name__ == '__main__':
         print(slug, len(out) // 1024, 'KB')
     open(OUT + 'custom-locations.svg', 'w').write(draw_locations(topo_polys(f['countries'].replace('-10m', '-50m')), lakes))   # 1:50m is plenty at this scale
     print('custom-locations', os.path.getsize(OUT + 'custom-locations.svg') // 1024, 'KB')
-    country_maps(f['countries'].replace('-10m', '-50m'))
+    country_maps_v2(f['countries'].replace('-10m', '-50m'), f['admin1'])
     print('country maps', len([x for x in os.listdir(OUT) if x.startswith('country-')]))
