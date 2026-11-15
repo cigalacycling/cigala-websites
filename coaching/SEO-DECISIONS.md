@@ -76,3 +76,10 @@ Proposed fix, on staging only:
 - only put the tags on the country pages and the homepage, not on every blog post.
 
 They're probably in the WPCode header (not in the Elementor templates). Not changed yet.
+
+### 5a. Matteo's answer (15 Nov) and the fix
+
+- Fix the misspelling: **approved**. Matteo's priority is not to lose the Italia page (`/preparatore-di-ciclismo-italia/`), which brings a lot of traffic from Italy, and to improve the UK, USA and Canada pages.
+- The tags sit in the **WPCode Header** box, after the JSON-LD schema, wrapped in a stray `<head>...</head>` pair. WPCode can't be edited over the REST API, so Matteo pastes the fix in wp-admin (staging first): replace those lines, **including the stray `<head>` and `</head>`**, with `coaching/wpcode-hreflang-fix.html`. The schema above them stays exactly as it is.
+- Only the domain changes; the tags and their targets are otherwise the same, so the Italia page keeps its signal.
+- Why UK/USA/Canada don't rank: they're 81-88% identical to each other (word comparison of the live pages), so Google treats them as duplicates. The Italia page is 80% different (Italian). Fix when those pages are rebuilt: give each one its own content (local events and guides the blog already has, e.g. Fred Whitton / W200 for UK and Ireland, BWR for USA, Gran Fondo Whistler for Canada; local currency; local testimonials), keeping URLs, titles (Canada typo fixed) and H1s.
