@@ -16,6 +16,9 @@ I = dict(I, medal='<circle cx="12" cy="15" r="6"/><path d="M8.5 10.5 6 2h4l2 5 2
          grad='<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/>',
          flag='<path d="M4 22V4M4 4h13l-2 4 2 4H4"/>', globe='<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',
          map='<path d="m1 6 7-3 8 3 7-3v15l-7 3-8-3-7 3z"/><path d="M8 3v15M16 6v15"/>', cart='<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>',
+         sun='<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+         cup='<path d="M3 8h14v5a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6z"/><path d="M17 10h2a2 2 0 0 1 0 4h-2M7 2v3M11 2v3"/>',
+         leaf='<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.2-6.1C9.6 14.4 12 13 13 12"/>',
          trophy='<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
          tri='<circle cx="12" cy="4" r="2"/><path d="M4 21c2-3 5-4 8-4s6 1 8 4M9 10l3 2 3-2M12 12v5"/>')
 
@@ -34,7 +37,7 @@ bul = lambda xs: [x.lstrip('\u200b•· ').strip() for x in xs]
 intro = paras(T.split('\n')[:12])           # Founder line, 3 titles, then the 4 intro paragraphs
 titles, bio = intro[1:4], intro[4:8]
 # Matteo 15 Nov: no years, road and gravel silver on their own lines, and the race wins
-TITLES = ['200+ race wins', 'European Road Champion Gran Fondo', 'Vice-World Champion UCI Gran Fondo (road)', 'Vice-World Champion UCI Gravel', 'Italian Gravel Champion']
+TITLES = ['200+ race wins', 'European Road Champion Gran Fondo', 'Vice-World Champion UCI Gran Fondo', 'Vice-World Champion UCI Gravel', 'Italian Gravel Champion']
 story1 = paras(after('H3: FROM ITALIAN TALENT'))
 story2 = paras(after('H3: THE IRISH CHAPTER'))
 story3_raw = after('H3: A NEW ERA')
@@ -82,6 +85,8 @@ QUALS = ['UCI &amp; Cycling Ireland Coach', 'TrainingPeaks Level 2 Coach']   # M
 FACTS = [('flag', '28 years', 'of cycling experience'), ('users', 'Over a decade', 'of coaching'), ('trophy', '200+', 'race victories'),
          ('grad', 'BA &amp; Diploma', 'Business Management Degree, Diploma in Science and Sports')]
 PREM_IC = ['bike', 'globe', 'users', 'target', 'chart', 'chat', 'trophy', 'heart']
+RES_IC = ['flag', 'globe', 'medal', 'star', 'trophy', 'map', 'chart', 'heart']
+SCI_IC = ['power', 'heart', 'target', 'clock', 'lab', 'leaf', 'chart', 'cal', 'users', 'grad', 'sun', 'cup']
 WHO_IC = ['user', 'bike', 'flag', 'star', 'map', 'tri', 'users', 'power']
 
 def link_md(s):   # the live [text](url) links, pointed at the coaching site's own pages
@@ -93,10 +98,10 @@ def link_md(s):   # the live [text](url) links, pointed at the coaching site's o
 _pk = open(ROOT + 'coaching/text/individual-packages.txt').read()   # the same numbers as Individual Packages (Matteo 15 Nov)
 NUMS = re.findall(r'H3: (.+)\nH4: (.+)', _pk[_pk.index('H2: 2026 IN NUMBERS'):].split('\nH2:', 1)[0])
 assert len(NUMS) == 6, NUMS
-TILES = [(f'{C}/individual-packages/', 'imgi_20_Fqav', 'about-coaching-pro-cyclist', 'bike', 'CYCLING COACHING', 'Coaching is our CORE: road, gravel, MTB and gran fondos, for every level.', 'Cycling packages'),
-         (f'{C}/tri-individual-packages/', 'imgi_22_lABW', 'about-coaching-an-athlete', 'tri', 'TRIATHLON COACHING', 'Swim, bike and run, planned together around your races.', 'Triathlon packages'),
-         ('https://tours.cigalacycling.com/', 'imgi_21_Lu1w', 'about-tours-tre-cime', 'map', 'BIKE TOURS', 'Memorable Adventures. New Friends. Shared Passion. Lifetime Experience.', 'tours.cigalacycling.com'),
-         ('https://retail.cigalacycling.com/', 'imgi_18_BPZw', 'about-european-champion-medal', 'cart', 'RETAIL', 'Ireland’s #1 Online Shop for all cycling needs', 'retail.cigalacycling.com')]
+TILES = [(f'{C}/individual-packages/', img('imgi_23_gd4FHBmB', 'about-tile-cycling'), 'Matteo Cigala climbing a winding mountain road', 'bike', 'CYCLING COACHING', '', 'Cycling packages'),
+         (f'{C}/tri-individual-packages/', img('imgi_16_d3HssY4x', 'about-tile-triathlon'), live_alt('imgi_16_d3HssY4x'), 'tri', 'TRIATHLON COACHING', '', 'Triathlon packages'),
+         ('https://tours.cigalacycling.com/', img('imgi_21_Lu1w', 'about-tours-tre-cime'), live_alt('imgi_21_Lu1w'), 'map', 'BIKE TOURS', '', 'tours.cigalacycling.com'),
+         ('https://retail.cigalacycling.com/', conv('coachingpages/img/retail.webp', 'about-tile-retail'), 'A rider training on a smart indoor trainer, from the Cigala Cycling Retail shop', 'cart', 'RETAIL', '', 'retail.cigalacycling.com')]
 bt = after('H3: BIKE TOURS')
 tours_txt = ' '.join(l for l in bt if not l.startswith('<img'))
 dest = re.findall(r'^(Italy|Spain|France|Portugal): (.+)$', tours_txt.replace(' Italy:', '\nItaly:').replace(' Spain:', '\nSpain:').replace(' France:', '\nFrance:').replace(' Portugal:', '\nPortugal:').replace(' P: ', '\nP: '), re.M)
@@ -158,7 +163,7 @@ MAIN = f'''<div class="ab-hero">
         </div>
       </li>
       <li class="ab-ch">
-        <div class="ab-dot ab-world" role="img" aria-label="Europe and the world">{ic(I['globe'])}</div>
+        <div class="ab-dot ab-flag ab-euf" role="img" aria-label="European Union flag"><svg viewBox="0 0 24 24" aria-hidden="true" class="ab-eu"><path transform="translate(12.00 5.80) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(15.10 6.63) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(17.37 8.90) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(18.20 12.00) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(17.37 15.10) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(15.10 17.37) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(12.00 18.20) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(8.90 17.37) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(6.63 15.10) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(5.80 12.00) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(6.63 8.90) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/><path transform="translate(8.90 6.63) scale(.55)" d="M0-2.2.65-.7 2.1-.7.95.25 1.35 1.8 0 .9-1.35 1.8-.95.25-2.1-.7-.65-.7z"/></svg></div>
         <div class="ab-ch-body">
           <div class="panel ab-ch-head"><h3>A NEW ERA — EUROPEAN CHAMPION, WORLD CLASS RESULTS</h3><p>{E(s3_lead)}</p></div>
           <div class="ab-seasons">{''.join(season(y, it) for y, it in seasons)}</div>
@@ -180,12 +185,12 @@ MAIN = f'''<div class="ab-hero">
       <div class="panel ab-col">
         <h3 class="h-sm">Proven Results &amp; Athlete Achievements</h3>
         <p>{E(coach2[0])}</p>
-        <ul class="ab-chips ab-plain">{''.join(f'<li><span>{E(x)}</span></li>' for x in bul(coach2[1:]))}</ul>
+        <ul class="ab-chips">{''.join(f'<li>{ic(I[i])}<span>{E(x)}</span></li>' for i, x in zip(RES_IC, bul(coach2[1:])))}</ul>
       </div>
       <div class="panel ab-col ab-sci">
         <h3 class="h-sm">Science-Backed Performance Coaching</h3>
         <p>{E(coach3[0])}</p>
-        <ul class="ab-chips ab-plain">{''.join(f'<li><span>{E(x)}</span></li>' for x in bul(coach3[1:]))}</ul>
+        <ul class="ab-chips">{''.join(f'<li>{ic(I[i])}<span>{E(x)}</span></li>' for i, x in zip(SCI_IC, bul(coach3[1:])))}</ul>
       </div>
     </div>
     <div class="ab-pics">{img_k('imgi_22_lABW', 'about-coaching-an-athlete', '50% 40%')}{img_k('imgi_20_Fqav', 'about-coaching-pro-cyclist', '50% 8%')}</div>
@@ -218,7 +223,7 @@ MAIN = f'''<div class="ab-hero">
 <section>
   <div class="in">
     {head('#TrainSmarterRideFaster', 'CIGALA CYCLING')}
-    <ul class="ab-tiles">{''.join(f'<li><a href="{u}" {EXT}><span class="ab-tile-ic">{ic(I[i])}</span><h3 class="h-sm">{t}</h3><em>{l} →</em></a></li>' for u, k, n, i, t, d, l in TILES)}</ul>
+    <ul class="ab-tiles">{''.join(f'<li><a href="{u}" {EXT}><span class="ab-tile-img"><img src="{k}" alt="{E(n)}" loading="lazy"></span><h3 class="h-sm">{t}</h3><em>{l} →</em></a></li>' for u, k, n, i, t, d, l in TILES)}</ul>
   </div>
 </section>'''
 
@@ -326,6 +331,9 @@ CSS = '''<style>
 .ab-rv-h { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 20px; margin-bottom: 14px; }
 .ab-rv-h .ab-lab { margin: 0 !important; }
 .ab-tiles a { flex-direction: column; align-items: flex-start !important; padding: 0 !important; overflow: hidden; height: 100%; }
+.ab-tile-img { display: block; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--border); }
+.ab-tile-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+.ab-tiles a:hover .ab-tile-img img { transform: scale(1.05); }
 .ab-tile-ic { display: grid; place-items: center; width: 100%; aspect-ratio: 16 / 8; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.28), transparent 62%), #0f1011; border-bottom: 1px solid var(--border); }
 .ab-tiles .ab-tile-ic .sv-ic { width: 64px !important; height: 64px !important; padding: 0 !important; background: none !important; stroke-width: 1.3; transition: transform .3s; }
 .ab-tiles a:hover .ab-tile-ic .sv-ic { transform: scale(1.12); }
@@ -339,7 +347,8 @@ CSS = '''<style>
 .ab-flag { border-width: 3px; }
 .ab-it { background: linear-gradient(90deg, #009246 0 33.4%, #fff 33.4% 66.6%, #ce2b37 66.6%) !important; }
 .ab-ie { background: linear-gradient(90deg, #169b62 0 33.4%, #fff 33.4% 66.6%, #ff883e 66.6%) !important; }
-.ab-world .sv-ic { width: 30px; height: 30px; stroke: var(--green-text); }
+.ab-euf { background: #003399 !important; }
+.ab-eu { width: 100%; height: 100%; fill: #ffcc00; }
 .ab-plain li { padding-left: 28px !important; position: relative; }
 .ab-plain li::before { content: ""; position: absolute; left: 12px; top: 16px; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
 </style>'''

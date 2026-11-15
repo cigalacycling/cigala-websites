@@ -316,3 +316,7 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   the story timeline; one bullet style for all seasons; no repeated trophy/chart icons; tiles = title + link.
   Footer: "INSCYD Testing" link replaced by "Talent Programme". Homepage hero line names Matteo and his titles; the stats
   say the 28 years and 200+ wins are Matteo's own.
+- Case-study rows move on by themselves every 4 s on every page (pause on hover/touch, off for reduced motion), like the
+  reviews. About: "Vice-World Champion UCI Gran Fondo" (no "(road)"), EU flag for the new-era chapter, icons back on the
+  results and science lists (a different icon per line), bottom tiles with photos (the Tre Cime tour photo is back with
+  its live alt; the cycling tile uses the Wicklow climb photo, retail the smart-trainer photo).
