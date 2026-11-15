@@ -165,3 +165,4 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - main background white
   - fonts Montserrat
 - **Checkout background image:** Matteo is keeping the existing one. Shops on the Grow plan can't add a background image again once it is removed, so don't suggest removing it. The `cigala-retail-checkout-banner.jpg` file is unused.
+- **Publish (15 Nov 2026):** Matteo said yes to publishing. `theme_publish` refused with "Only agent-created themes can be published here" (the themes are duplicates), so Matteo publishes in Online Store → Themes. The reminder `trig_01RNagD79QA3dvaTyepxwssj` fires on 1 Dec 09:00 Dublin to switch back to the Horizon brand theme and restore any price drops.
