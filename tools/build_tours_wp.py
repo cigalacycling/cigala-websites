@@ -173,7 +173,18 @@ ftr = ftr.replace('>Refund/cancellation policy &amp; terms</a>', '>Refund/Cancel
 # topo background parallax: the lines drift slower than the page, so you see them move (off for reduced motion)
 PARALLAX = "<script>(function(){if(!document.querySelector('.cc-page,.cl-page')||matchMedia('(prefers-reduced-motion: reduce)').matches)return;var b=document.body,q=0;function u(){q=0;b.style.setProperty('background-position','0 0, center '+(window.scrollY*0.4).toFixed(1)+'px','important');}addEventListener('scroll',function(){if(!q){q=1;requestAnimationFrame(u);}},{passive:true});u();})();</script>"
 
-json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>' + PARALLAX), html_widget(banner)])])}}, open(OUT + 'lib-228.json', 'w'))
+# Newsletter (Matteo 15 Nov: same sign-up as cigalacycling.com and Coaching, one newsletter for all sites):
+# footer band wp/nl-band.html + pop-up wp/nl-popup.html, used as they are, posting to the Tours Brevo form.
+# Off until TOURS_NL_URL is set (the share link of Matteo's Brevo form on the "tours.cigalacycling.com" list, + ?isAjax=1).
+TOURS_NL_URL = ''
+ftr_widgets = [html_widget('<div class="cc">' + ftr + '</div>' + PARALLAX), html_widget(banner)]
+if TOURS_NL_URL:
+    nlband = open(ROOT + 'wp/nl-band.html').read()
+    nlpop = open(ROOT + 'wp/nl-popup.html').read()
+    nlpop = re.sub(r"var URL='https://[^']+';", "var URL='" + TOURS_NL_URL + "';", nlpop); assert TOURS_NL_URL in nlpop
+    ftr_widgets[0] = html_widget('<div class="cc">' + nlband + ftr + '</div>' + PARALLAX)
+    ftr_widgets.append(html_widget(nlpop))
+json.dump({"meta": {"_elementor_data": json.dumps([wrap(ftr_widgets)])}}, open(OUT + 'lib-228.json', 'w'))
 
 # head snippet (Elementor custom code 9279): the shared one. The consent-default line goes first in WPCode Header (Matteo).
 head_code = head_snippet()
