@@ -164,8 +164,10 @@ def trip(slug):
         ('Group size', get('GROUP')) if get('GROUP') else None] if x])
     extra_small = ''.join(f'<p class="note">{E(x)}</p>' for x in other_small)
     stay_html = f'<p class="note">{E(stay)}</p>' if stay else ''
+    card = M.get('trip-' + slug)   # the trip's photo (tour cards); the live top image is a designed poster, shown next to the intro
+    hero_img = (f'<img src="{card["url"]}" alt="{E(card["alt"])}">' if card else img_tag(hero_src, 2000, alt=hero_alt, lazy=False))
     hero = f'''<div class="hero thero">
-  {img_tag(hero_src, 2000, alt=hero_alt, lazy=False)}
+  {hero_img}
   <div class="in">
     <div>
       <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / <a href="{L}/trips/" {EXT}>Bike tours</a> / {E(tr['name'])}</div>
@@ -199,8 +201,7 @@ def trip(slug):
     intro = one('intro')
     if intro:
         paras = ''.join(clean(v) for k, v, s in intro['items'] if k == 'text')
-        card = M.get('trip-' + slug)
-        cimg = f'<div class="cardimg"><img src="{card["url"]}" alt="{E(card["alt"])}" loading="lazy"></div>' if card else ''
+        cimg = f'<div class="cardimg">{img_tag(hero_src, 1200, alt=hero_alt)}</div>' if hero_src and card else ''
         out.append(f'<section id="overview"><div class="in split"><div>{H(intro, "The trip")}<div class="prose">{paras}</div></div>{cimg}</div></section>')
         nav.append(('overview', 'Overview'))
     op = one('operator')
