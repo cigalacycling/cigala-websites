@@ -216,7 +216,21 @@ CSS = '''<style>
 .dest:hover { border-color: rgba(0,154,68,.6); }
 .dest-h { margin: 0; padding: 12px 14px; font: 400 18px/1.1 var(--head); letter-spacing: .02em; text-transform: uppercase; color: var(--text); }
 .eb-pill { display: inline-flex; align-items: center; gap: 8px; color: #fff; background: rgba(8,9,10,.7); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; margin-bottom: 18px; }
-.eb-pill span { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.eb-pill .dot { margin-right: 0; }   /* category label: still dot (shared/dot) */
+/* Cigala status dot, shared by every site (Matteo, 15 Nov 2026). Source: the Tours early-bird dot.
+   .dot            still dot, for labels (category tags): no movement
+   .dot.live       pulsing dot, ONLY for something time-sensitive or changing:
+                   early-bird price, "few places left", shop "in stock" / "low stock"
+   Colours: default red (#e10600), .green (#009a44, in stock / open), .amber (#f0bf00, low stock), .sand (gravel #c9a36a)
+   The pulse stops for visitors who ask for reduced motion. */
+.dot { display: inline-block; flex: none; width: 7px; height: 7px; border-radius: 50%; background: #e10600; vertical-align: 1px; margin-right: 7px; --dot-rgb: 225,6,0; }
+.dot.green { background: #009a44; --dot-rgb: 0,154,68; }
+.dot.amber { background: #f0bf00; --dot-rgb: 240,191,0; }
+.dot.sand  { background: #c9a36a; --dot-rgb: 201,163,106; }
+.dot.live  { animation: cigala-dot-pulse 1.8s ease-in-out infinite; }
+@keyframes cigala-dot-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(var(--dot-rgb), .7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(var(--dot-rgb), 0); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .dot.live { animation: none; } }
+
 .btn-h { margin: 0; font: inherit; text-transform: none; letter-spacing: normal; }
 .band .tx { min-height: 360px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
 .decade img { width: 100%; height: auto; max-width: 760px; margin: 0 auto; border-radius: var(--r); border: 1px solid var(--border); }

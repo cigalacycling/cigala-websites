@@ -205,7 +205,7 @@ intro = [l[3:] for l in TXT[TXT.index('TXT: [', 0):TXT.index('TXT: 12 Weeks')] i
 MAIN = f'''<div class="hero hero-sm hero-lake">
   <img src="{HERO}" alt="Cigala Cycling Coaching group riding in Wicklow, Ireland" width="2560" height="1707">
   <div class="in">
-    <div class="eyebrow eb-pill"><span></span>Cycling coaching</div>
+    <div class="eyebrow eb-pill"><span class="dot"></span>Cycling coaching</div>
     <h1>Individual Cycling Coaching Packages</h1>
     <p class="lede">I have 3 coaching packages: Basic, Advanced and Premium<br>For all you can add 1 or 2 One-on-One sessions a month with myself, Matteo Cigala</p>
     <div class="ctas">

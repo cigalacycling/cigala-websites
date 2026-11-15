@@ -22,7 +22,7 @@ clubs = ''.join(f'<li>{E(c)}</li>' for c in CLUBS)
 MAIN = f'''<div class="hero hero-sm">
   <img src="{HERO}" alt="Four Cigala Cycling riders climbing together in team kit" width="1600" height="1082">
   <div class="in">
-    <div class="eyebrow eb-pill"><span></span>Teams &amp; clubs</div>
+    <div class="eyebrow eb-pill"><span class="dot"></span>Teams &amp; clubs</div>
     <h1>Group &amp; club packages</h1>
     <p class="lede">This option is perfect for a group of friends or a team who have similar goals and fitness level.</p>
     <div class="ctas">
@@ -62,7 +62,7 @@ MAIN = f'''<div class="hero hero-sm">
     <a class="band club-band" href="{C}/club-talk/" {EXT}>
       <img src="{img('imgi_21_Lu1whOJ', 'cta')}" alt="Cyclists riding below the Tre Cime di Lavaredo peaks" loading="lazy" width="1367" height="1492">
       <div class="tx">
-        <div class="eyebrow eb-pill"><span></span>Club talks</div>
+        <div class="eyebrow eb-pill"><span class="dot"></span>Club talks</div>
         <h3 class="h-sec">CLUB INFORMATION DAYS, COACHING NIGHTS, Q&amp;A AND GROUP SESSIONS</h3>
         <div class="bar"></div>
         <span class="arrow-link">See club talks →</span>

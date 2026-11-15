@@ -107,7 +107,7 @@ assert intro[0] == 'TRIATHLON INDIVIDUAL PACKAGES', intro
 MAIN = f'''<div class="hero hero-sm">
   <img src="{HERO}" alt="Triathlete standing by a lake at sunrise" width="1600" height="1200">
   <div class="in">
-    <div class="eyebrow eb-pill"><span></span>Triathlon coaching</div>
+    <div class="eyebrow eb-pill"><span class="dot"></span>Triathlon coaching</div>
     <h1>TRIATHLON INDIVIDUAL PACKAGES</h1>
     <p class="lede">{E(intro[1])}<br>{E(intro[2])}<br>{E(intro[3])}</p>
     <div class="ctas">

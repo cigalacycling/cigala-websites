@@ -37,7 +37,7 @@ def hero(eyebrow, h1, lede):
     return f'''<div class="hero hero-sm tl-hero">
   <img src="{HERO}" alt="{E(HERO_ALT)}" width="2560" height="1707">
   <div class="in">
-    <div class="eyebrow eb-pill"><span></span>{eyebrow}</div>
+    <div class="eyebrow eb-pill"><span class="dot"></span>{eyebrow}</div>
     <h1>{h1}</h1>
     <p class="lede">{lede}</p>
   </div>
