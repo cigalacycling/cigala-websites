@@ -440,5 +440,31 @@
    240,
    240
   ]
+ },
+ "logo-v2": {
+  "id": 9281,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-logo-v2.webp",
+  "alt": "Cigala Cycling Tours Logo (Cigala Cycling) (Cycling Guides) (Dolomites) (Lake Garda) (Granfondo) (Tour of Flanders Experience) (Lake Como) (Gravel) (Algarve) (Coast to Coast) (Italian Alps) (Gravel) (Tuscany Epic Gravel) (Pyrenees) (Trips) (Gravel) (French Alps) (Tenerife) (Italian Alps Bike Tours) (Ireland) (Croatia) (Contact) (Tuscany) (Algarve Bike) (Cyprus) (Lake Como) (Lake Garda)",
+  "from": [
+   343,
+   343
+  ],
+  "size": [
+   343,
+   343
+  ]
+ },
+ "signature": {
+  "id": 9282,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-signature.webp",
+  "alt": "Matteo Cigala's signature",
+  "from": [
+   924,
+   251
+  ],
+  "size": [
+   924,
+   251
+  ]
  }
 }

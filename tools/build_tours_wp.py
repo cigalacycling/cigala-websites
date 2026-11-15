@@ -26,7 +26,8 @@ def between(s, a, b):
 # ---------- images: preview file -> staging WebP + alt ----------
 IMG = {
     'img/home-hero.jpg': 'hero', 'img/home-custom.jpg': 'custom', 'img/home-cta.jpg': 'cta',
-    'img/home-story.jpg': 'story', 'img/home-matteo.png': 'matteo', 'img/logo.png': 'logo',
+    'img/home-story.jpg': 'story', 'img/home-matteo.png': 'matteo', 'img/logo.png': 'logo-v2',
+    'img/cigala-tours-signature.webp': 'signature',
     'img/guides-0.jpg': 'guide-flanders', 'img/guides-1.jpg': 'guide-como', 'img/guides-2.jpg': 'guide-pack',
     'img/logo-mdd.png': 'logo-mdd', 'img/logo-lombardia.png': 'logo-lombardia', 'img/logo-strade.png': 'logo-strade', 'img/logo-algarve.png': 'logo-algarve',
 }
@@ -38,7 +39,7 @@ def fix_img(m):
     if not key: raise SystemExit('no staging image for ' + src)
     tag = tag.replace(f'src="{src}"', f'src="{M[key]["url"]}"')
     alt = re.search(r'alt="([^"]*)"', tag).group(1)
-    keep_page_alt = key.startswith('trip-') or key in ('hero', 'matteo')   # alt written for these spots in the design
+    keep_page_alt = key.startswith('trip-') or key in ('hero', 'matteo', 'signature')   # alt written for these spots in the design
     if not alt or not keep_page_alt:
         tag = re.sub(r'alt="[^"]*"', 'alt="' + M[key]['alt'].replace('"', '&quot;') + '"', tag)  # the alt the image already has on the site
     return tag

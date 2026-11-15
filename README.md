@@ -153,7 +153,8 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Consent and chat:** the footer (228) has the cigalacycling.com banner, `wp/consent-banner.html`, in a Tours version (GA G-QRF16ZZVDB, no Meta Pixel on Tours), plus the green "Chat with us" button. OpenWidget loads after consent or on click. The footer also has a "Cookie settings" link.
   - Elementor custom code **snippet 9279** (head) sets Google consent default to denied. For visitors who accepted, it loads gtag.js; for everyone else it sets `ga-disable`.
   - **Matteo to do on staging:** remove the old Google tag from WPCode (Code Snippets → Header & Footer → Header). It loads gtag.js before consent and runs `config` before the denied default. Once it's gone, gtag.js only loads after Accept.
-- **Waiting on Matteo:** the correct logo file (the current one looks like a favicon crop), and his signature for under "Matteo Cigala, Tours Director".
+- **Logo:** header and footer use the file Matteo sent on 15 Nov, `tours/brand/ccToursLogo-matteo-2026-11-15.png` (WebP media 9281), with square corners.
+- **Signature:** under "Matteo Cigala, Tours Director" in Our story. Cut from the coaching blog image `Matteo-Cigala-6-years-old.png` as white ink on transparent (media 9282).
 - **Not done yet:**
   - `/trips/road-trips/` doesn't exist yet, so the menu link 404s on staging.
   - The other pages haven't been rebuilt.

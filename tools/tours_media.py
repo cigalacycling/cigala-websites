@@ -47,6 +47,10 @@ A = {
     'trip-lake-garda-gravel': (6378, 1200, None),
     'trip-italys-coast-to-coast': (4972, 1200, None),
     'trip-lake-como-gran-fondo-il-lombardia': (7740, 1200, None),
+    # logo file Matteo sent on 15 Nov (proper border); keeps the logo's existing alt text
+    'logo-v2': ('tours/brand/ccToursLogo-matteo-2026-11-15.png', 343, None),
+    # signature, cut from the coaching blog image Matteo-Cigala-6-years-old.png, white ink on transparent
+    'signature': ('webp-tours/cigala-tours-signature.webp', 924, "Matteo Cigala's signature"),
     # guest photos: square crops from the originals matching the live crops (made by hand, already WebP q90)
     'guest-steve': ('webp-tours/cigala-tours-guest-steve.webp', 240, 'Person smiling while riding a celeste-colored Bianchi road bicycle'),
     'guest-hank': ('webp-tours/cigala-tours-guest-hank.webp', 240, 'Cycling Alps Cigala Cycling'),
@@ -55,7 +59,7 @@ A = {
     'guest-fraser': ('webp-tours/cigala-tours-guest-fraser.webp', 240, None),
     'guest-mike': ('webp-tours/cigala-tours-guest-mike.webp', 240, None),
 }
-GUEST_ALT = {'guest-william': 5949, 'guest-andreas': 5932, 'guest-fraser': 5934, 'guest-mike': 5933}
+GUEST_ALT = {'logo-v2': 4282, 'guest-william': 5949, 'guest-andreas': 5932, 'guest-fraser': 5934, 'guest-mike': 5933}
 
 def req(url, data=None, headers=None, method=None, tries=20):
     url = urllib.parse.quote(url, safe=':/?=&%')  # filenames like ©MolingAlex
@@ -95,7 +99,7 @@ for key, (src, maxw, alt) in A.items():
     if im.width > maxw: im = im.resize((maxw, round(im.height * maxw / im.width)), Image.LANCZOS)
     fn = f'cigala-tours-{key}.webp'
     im.save(OUTDIR + fn, 'WEBP', quality=90)
-    if alt is None: alt = lib[src]['alt_text'] if isinstance(src, int) else ''
+    if alt is None: alt = lib[src]['alt_text'] if isinstance(src, int) else lib[GUEST_ALT[key]]['alt_text'] if key in GUEST_ALT else ''
     assert alt, key
     body = open(OUTDIR + fn, 'rb').read()
     r = json.loads(req(B + '/media', data=body, method='POST', headers={'Content-Type': 'image/webp', 'Content-Disposition': f'attachment; filename="{fn}"', 'User-Agent': 'Mozilla/5.0'}))
