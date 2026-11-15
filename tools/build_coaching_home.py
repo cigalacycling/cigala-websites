@@ -135,7 +135,7 @@ No matter where you are in the world, we coach remotely in different countries, 
           <span class="k">Cigala Cycling Retail</span>
           <h2>SUPPLIERS OF PREMIUM BRANDS</h2>
           <p>Cycling and triathlon products from the brands we trust, with a discount for our coached riders.</p>
-          <h3 class="btn-h"><span class="btn btn-go">VISIT OUR RETAIL SITE</span></h3>
+          <span class="btn btn-go">Go to retail site →</span>
           <span class="host">retail.cigalacycling.com</span>
         </div>
       </a>

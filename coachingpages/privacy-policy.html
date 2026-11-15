@@ -301,6 +301,13 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
   .fcols { grid-template-columns: minmax(0, 1fr) !important; }
   .band-cta::after { background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,.94)); }
 }
+/* logo with its own border: square corners (Matteo's file, 15 Nov) */
+.brand img, .brand-lg img { border-radius: 0 !important; }
+/* menu: every item on the same line, submenus in capitals like the other sites */
+.menu { align-items: center; }
+.dd-btn { line-height: 1.6; }
+.dd-menu a { text-transform: uppercase !important; letter-spacing: .04em !important; font-size: 12.5px !important; font-weight: 600; }
+.burger nav a { text-transform: uppercase !important; letter-spacing: .05em !important; font-size: 13px !important; }
 /* ---- menu: same as cigalacycling.com (brand.css): hover = green word + 2px green line, current page = red line ---- */
 .nav .in { position: relative; }
 .menu a, .dd-btn { border-radius: 0; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
@@ -319,8 +326,9 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .rv { margin: 0; scroll-snap-align: start; display: flex; flex-direction: column; gap: 14px; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; min-width: 0; }
 .rv-tag { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-text); background: var(--green-wash); border-radius: 999px; padding: 4px 10px; }
 .rv blockquote { margin: 0; padding: 0; border: 0; font-style: normal; font-size: 15px; line-height: 1.6; color: var(--text-2); }
-.rv figcaption { font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
+.rv figcaption { display: flex; align-items: center; gap: 12px; font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
 .rv figcaption b { display: block; color: var(--text); }
+.rv figcaption img { width: 48px; height: 48px; flex: none; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); }   /* like the Tours guest photos */
 .rv figcaption span { color: var(--text-3); font-size: 13px; }
 .rv-nav { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
 .rv-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }

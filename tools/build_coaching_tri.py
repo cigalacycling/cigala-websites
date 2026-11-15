@@ -111,7 +111,7 @@ MAIN = f'''<div class="hero hero-sm">
     <h1>TRIATHLON INDIVIDUAL PACKAGES</h1>
     <p class="lede">{E(intro[1])}<br>{E(intro[2])}<br>{E(intro[3])}</p>
     <div class="ctas">
-      <a class="btn btn-go" href="{P.CAL}" {EXT}>BOOK FREE CONSULTATION</a>
+      <a class="btn btn-go" href="{P.CAL}" {EXT}>Book free consultation</a>
       <a class="btn btn-ghost" href="#packages">Compare packages ↓</a>
     </div>
   </div>
@@ -160,7 +160,7 @@ MAIN = f'''<div class="hero hero-sm">
         <h2 class="hashtag">#TrainSmarterRideFaster</h2>
         <div class="bar"></div>
         <p class="lede">Our triathlon coaching covers all disciplines of triathlon from Sprint to Ironman.</p>
-        <div class="ctas"><a class="btn btn-go" href="{P.CAL}" {EXT}>BOOK FREE CONSULTATION</a><a class="btn btn-ghost" href="{C}/about2/" {EXT}>About our triathlon coaching</a></div>
+        <div class="ctas"><a class="btn btn-go" href="{P.CAL}" {EXT}>Book free consultation</a><a class="btn btn-ghost" href="{C}/about2/" {EXT}>About our triathlon coaching</a></div>
       </div>
     </div>
   </div>

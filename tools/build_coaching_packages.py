@@ -181,7 +181,7 @@ MAIN = f'''<div class="hero hero-sm">
     <h1>Individual Cycling Coaching Packages</h1>
     <p class="lede">I have 3 coaching packages: Basic, Advanced and Premium<br>For all you can add 1 or 2 One-on-One sessions a month with myself, Matteo Cigala</p>
     <div class="ctas">
-      <a class="btn btn-go" href="{CAL}" {EXT}>BOOK FREE CONSULTATION</a>
+      <a class="btn btn-go" href="{CAL}" {EXT}>Book free consultation</a>
       <a class="btn btn-ghost" href="#packages">Compare packages ↓</a>
     </div>
   </div>
@@ -218,7 +218,7 @@ MAIN = f'''<div class="hero hero-sm">
   <div class="in">
     <div class="head">
       <div><div class="eyebrow">Our athletes</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2><div class="bar"></div></div>
-      <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}>★ Read our reviews on Google →</a><a class="arrow-link" href="{C}/testimonials/" {EXT}>READ MORE TESTIMONIALS →</a></div>
+      <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}>★ Read our reviews on Google →</a><a class="arrow-link" href="{C}/testimonials/" {EXT}>Read more testimonials →</a></div>
     </div>
     <div class="quotes">{quotes}</div>
   </div>
@@ -238,7 +238,7 @@ MAIN = f'''<div class="hero hero-sm">
       <h2>USING VEKTA - NEXT GENERATION TRAINING &amp; COACHING PLATFORM</h2>
       <div class="bar"></div>
       <div class="vk">{vk_intro}<ul class="ticks">{vk_points}</ul>{vk_end}</div>
-      <div class="ctas"><a class="btn btn-ghost" href="{VEKTA}" {EXT}>FIND MORE ABOUT VEKTA →</a></div>
+      <div class="ctas"><a class="btn btn-ghost" href="{VEKTA}" {EXT}>Find more about Vekta →</a></div>
     </div>
     <div class="vk-side">
       <div class="photo"><img src="{TEAM}" alt="{E(live_alt('imgi_43_K2-r3g1h'))}" loading="lazy" width="1600" height="1082"></div>
@@ -303,7 +303,8 @@ PCSS = '''<style>
 .hero-sm { min-height: min(560px, 74svh); }
 .hero-sm .in { padding-block: 110px 48px; }
 .hero-sm h1 { max-width: 16ch; font-size: clamp(38px, 6vw, 72px); }
-.notes-wrap { margin: 0 0 44px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+#packages { padding-top: 28px; }
+.notes-wrap { margin: 0 0 40px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .notes-lab { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
 .notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 32px; }
 .note { display: flex; gap: 12px; align-items: flex-start; }

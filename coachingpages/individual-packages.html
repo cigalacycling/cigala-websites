@@ -301,6 +301,13 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
   .fcols { grid-template-columns: minmax(0, 1fr) !important; }
   .band-cta::after { background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,.94)); }
 }
+/* logo with its own border: square corners (Matteo's file, 15 Nov) */
+.brand img, .brand-lg img { border-radius: 0 !important; }
+/* menu: every item on the same line, submenus in capitals like the other sites */
+.menu { align-items: center; }
+.dd-btn { line-height: 1.6; }
+.dd-menu a { text-transform: uppercase !important; letter-spacing: .04em !important; font-size: 12.5px !important; font-weight: 600; }
+.burger nav a { text-transform: uppercase !important; letter-spacing: .05em !important; font-size: 13px !important; }
 /* ---- menu: same as cigalacycling.com (brand.css): hover = green word + 2px green line, current page = red line ---- */
 .nav .in { position: relative; }
 .menu a, .dd-btn { border-radius: 0; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
@@ -319,8 +326,9 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .rv { margin: 0; scroll-snap-align: start; display: flex; flex-direction: column; gap: 14px; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; min-width: 0; }
 .rv-tag { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-text); background: var(--green-wash); border-radius: 999px; padding: 4px 10px; }
 .rv blockquote { margin: 0; padding: 0; border: 0; font-style: normal; font-size: 15px; line-height: 1.6; color: var(--text-2); }
-.rv figcaption { font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
+.rv figcaption { display: flex; align-items: center; gap: 12px; font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
 .rv figcaption b { display: block; color: var(--text); }
+.rv figcaption img { width: 48px; height: 48px; flex: none; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); }   /* like the Tours guest photos */
 .rv figcaption span { color: var(--text-3); font-size: 13px; }
 .rv-nav { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
 .rv-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
@@ -400,7 +408,8 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .hero-sm { min-height: min(560px, 74svh); }
 .hero-sm .in { padding-block: 110px 48px; }
 .hero-sm h1 { max-width: 16ch; font-size: clamp(38px, 6vw, 72px); }
-.notes-wrap { margin: 0 0 44px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+#packages { padding-top: 28px; }
+.notes-wrap { margin: 0 0 40px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .notes-lab { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
 .notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 32px; }
 .note { display: flex; gap: 12px; align-items: flex-start; }
@@ -557,7 +566,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
     <h1>Individual Cycling Coaching Packages</h1>
     <p class="lede">I have 3 coaching packages: Basic, Advanced and Premium<br>For all you can add 1 or 2 One-on-One sessions a month with myself, Matteo Cigala</p>
     <div class="ctas">
-      <a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">BOOK FREE CONSULTATION</a>
+      <a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book free consultation</a>
       <a class="btn btn-ghost" href="#packages">Compare packages ↓</a>
     </div>
   </div>
@@ -627,7 +636,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
   <div class="in">
     <div class="head">
       <div><div class="eyebrow">Our athletes</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2><div class="bar"></div></div>
-      <div class="rv-links"><a class="arrow-link" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener">★ Read our reviews on Google →</a><a class="arrow-link" href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">READ MORE TESTIMONIALS →</a></div>
+      <div class="rv-links"><a class="arrow-link" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener">★ Read our reviews on Google →</a><a class="arrow-link" href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Read more testimonials →</a></div>
     </div>
     <div class="quotes"><figure class="q"><img src="img/athlete-unnamed-88.webp" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200"><blockquote>“I would describe Matteo as a perfectionist. He never misses a detail and I think that&#x27;s why his coaching works well for me.”</blockquote></figure><figure class="q"><img src="img/athlete-unnamed-89.webp" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200"><blockquote>“The most exciting part of working with Matteo is the noticeable improvements I started to experience after just 4-6 weeks. Since then, these improvements have been consistent and remarkable”</blockquote></figure><figure class="q"><img src="img/athlete-unnamed-90.webp" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200"><blockquote>“Matteo schedules sessions that are built around your available time and utilizes quality over quantity. I have seen improvement year on year while working with Matteo.”</blockquote></figure><figure class="q"><img src="img/athlete-unnamed-91.webp" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200"><blockquote>“Matteo has perfectly optimised my training to adapt to what time I do have.”</blockquote></figure><figure class="q"><img src="img/athlete-unnamed-93.webp" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200"><blockquote>“As a non-elite or serious cyclist, I can highly recommend Matteo to anyone interested in getting fit and ready for any cycling goal, no matter what level you&#x27;re at or what age you are!”</blockquote></figure></div>
   </div>
@@ -647,7 +656,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
       <h2>USING VEKTA - NEXT GENERATION TRAINING &amp; COACHING PLATFORM</h2>
       <div class="bar"></div>
       <div class="vk"><p>With my coaching service, powered by <a href="https://joinvekta.com/" target="_blank" rel="noopener">Vekta</a>, you get more than a plan — you get a system that helps you understand your body, optimize your training, and achieve results faster.</p><p>Vekta goes far beyond traditional metrics like FTP, using Critical Power (CP) and W′ modelling to measure your true performance capacity, track endurance under fatigue, and guide every effort.</p><p>Your training will be precise and purposeful thanks to:</p><ul class="ticks"><li><b>Adaptive training zones</b>: Every workout is calibrated to your current fitness, so you’re always training at the right intensity.</li><li><b>AI-powered modelling</b>: Advanced algorithms analyze your sessions to identify trends, strengths, and areas to improve.</li><li><b>Beyond FTP metrics:</b> Understand your true power, endurance, and recovery capacity with insights used by professional athletes.</li><li><b>Personalized guidance</b>: Plans are tailored to your goals, lifestyle, and schedule, helping you stay consistent and motivated.</li><li><b>Elite-level tools trusted by pros:</b> Vekta is used by WorldTour teams, giving you access to the same science that powers elite performance.</li></ul><p>With this approach, every ride, interval, and effort has purpose. You’ll see clear progress, stay motivated, and know exactly how to push yourself safely toward your personal best.</p></div>
-      <div class="ctas"><a class="btn btn-ghost" href="https://joinvekta.com/" target="_blank" rel="noopener">FIND MORE ABOUT VEKTA →</a></div>
+      <div class="ctas"><a class="btn btn-ghost" href="https://joinvekta.com/" target="_blank" rel="noopener">Find more about Vekta →</a></div>
     </div>
     <div class="vk-side">
       <div class="photo"><img src="img/team-training.webp" alt="Cigala Cycling team training | Cigala Cycling Coaching" loading="lazy" width="1600" height="1082"></div>

@@ -217,6 +217,13 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
   .fcols { grid-template-columns: minmax(0, 1fr) !important; }
   .band-cta::after { background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,.94)); }
 }
+/* logo with its own border: square corners (Matteo's file, 15 Nov) */
+.brand img, .brand-lg img { border-radius: 0 !important; }
+/* menu: every item on the same line, submenus in capitals like the other sites */
+.menu { align-items: center; }
+.dd-btn { line-height: 1.6; }
+.dd-menu a { text-transform: uppercase !important; letter-spacing: .04em !important; font-size: 12.5px !important; font-weight: 600; }
+.burger nav a { text-transform: uppercase !important; letter-spacing: .05em !important; font-size: 13px !important; }
 /* ---- menu: same as cigalacycling.com (brand.css): hover = green word + 2px green line, current page = red line ---- */
 .nav .in { position: relative; }
 .menu a, .dd-btn { border-radius: 0; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
@@ -235,8 +242,9 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .rv { margin: 0; scroll-snap-align: start; display: flex; flex-direction: column; gap: 14px; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; min-width: 0; }
 .rv-tag { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-text); background: var(--green-wash); border-radius: 999px; padding: 4px 10px; }
 .rv blockquote { margin: 0; padding: 0; border: 0; font-style: normal; font-size: 15px; line-height: 1.6; color: var(--text-2); }
-.rv figcaption { font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
+.rv figcaption { display: flex; align-items: center; gap: 12px; font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
 .rv figcaption b { display: block; color: var(--text); }
+.rv figcaption img { width: 48px; height: 48px; flex: none; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); }   /* like the Tours guest photos */
 .rv figcaption span { color: var(--text-3); font-size: 13px; }
 .rv-nav { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
 .rv-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
@@ -319,20 +327,23 @@ document.querySelectorAll('.dd').forEach(function (d) {
 # ---------- athlete reviews (Matteo 15 Nov: own review cards instead of the Shapo widget; reviews chosen by Claude) ----------
 # Quotes are the athletes' own words from the live Testimonials page (coaching/text/testimonials.txt); no star ratings,
 # because these are testimonials, not rated reviews. The Google link goes to Matteo's Google Business Profile.
-REVIEWS = [   # strongest first (Matteo 15 Nov: "put the better one first")
-    ('Back after heart disease', 'First time was a 9 month training plan to get me from couch (literally!) to Haute Route Pyrenees in 2017 to mark my 60th birthday. More recently, I have worked with Matteo to help me recover from heart disease and a cardiac procedure.', 'Derek Lawler', 'Kilkenny, Ireland'),
-    ('Gran Fondo Worlds qualifier', 'With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.', 'Bernd Ondruch', 'Germany'),
-    ('Mallorca 312', 'I truly had a tailor-made plan every single week, and as a result, I showed up to the Mallorca 312 in the best shape I’ve ever been in.', 'Ward Den Hollander', 'Dublin, Ireland'),
-    ('+40 W FTP', 'Matteo managed to raise my FTP from 220w to 260w in less than 4 months & my sprint from 600w ish to 920w.', 'Shane Courtney', 'Tralee Manor West ibike'),
-    ('Power PBs', 'Matteo Cigala has been an incredible cycling coach, helping me navigate training around my family and work commitments. Thanks to his guidance, I not only reached my targets but also hit all-time personal best power numbers.', 'John Dowley', 'Carrick-on-Suir, Ireland'),
-    ('Busy professional', 'I don’t have the free time to dedicate to hours of junk miles, and Matteo has perfectly optimised my training to adapt to what time I do have.', 'William Rymer', 'Roscrea, Tipperary, Ireland'),
-    ('PB FTP in 7 weeks', 'After 7 weeks of following his programme, which is mainly working in Z1/2 with bits of Z3, I’ve managed to get a PB FTP of 207W.', 'Lisa Dunne', 'Al Jassra Race Team, Qatar'),
-    ('A3 to A1', 'I commenced the cycling season in February as an A2 and by March I had gained my first points finishing 2nd in the Lucan GP. Finally last week I achieved one of my goals for the season: I won the Connor Coombes GP.', 'Gerard Dunne', 'Navan Road Club'),
-    ('16 kg lighter', 'To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.', 'Rob Kavanagh', 'Ireland'),
-    ('Fresher, fewer hours', 'The big revelation for me has been how fresh I feel following a full winter training and spring racing schedule tailored by Matteo… Much less fatigued than ever before with less hours of training!', 'Damian Gannon', 'Swords Cycling Club'),
+REVIEWS = [   # strongest first; photo = the image above each testimonial on the live Testimonials page (Matteo 15 Nov: Marine first)
+    ('', 'He has not only made me fall in love with cycling, but has believed in me even when I didn’t. As I speak, I am current European Gran Fondo & gravel 19-34 champion, silver medalist at the Gran Fondo Worlds, from only starting cycling last February this year.', 'Marine Lenehan', 'Ireland', 'T135849.182'),
+    ('', 'First time was a 9 month training plan to get me from couch (literally!) to Haute Route Pyrenees in 2017 to mark my 60th birthday. More recently, I have worked with Matteo to help me recover from heart disease and a cardiac procedure.', 'Derek Lawler', 'Kilkenny, Ireland', 'T140239.558'),
+    ('', 'With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.', 'Bernd Ondruch', 'Germany', 'T134927.535'),
+    ('', 'I truly had a tailor-made plan every single week, and as a result, I showed up to the Mallorca 312 in the best shape I’ve ever been in.', 'Ward Den Hollander', 'Dublin, Ireland', 'T140125.193'),
+    ('', 'Matteo managed to raise my FTP from 220w to 260w in less than 4 months & my sprint from 600w ish to 920w.', 'Shane Courtney', 'Tralee Manor West ibike', 'T142905.118'),
+    ('', 'Matteo Cigala has been an incredible cycling coach, helping me navigate training around my family and work commitments. Thanks to his guidance, I not only reached my targets but also hit all-time personal best power numbers.', 'John Dowley', 'Carrick-on-Suir, Ireland', 'T135954.721'),
+    ('', 'I don’t have the free time to dedicate to hours of junk miles, and Matteo has perfectly optimised my training to adapt to what time I do have.', 'William Rymer', 'Roscrea, Tipperary, Ireland', 'T140040.590'),
+    ('', 'After 7 weeks of following his programme, which is mainly working in Z1/2 with bits of Z3, I’ve managed to get a PB FTP of 207W.', 'Lisa Dunne', 'Al Jassra Race Team, Qatar', 'T140416.718'),
+    ('', 'I commenced the cycling season in February as an A2 and by March I had gained my first points finishing 2nd in the Lucan GP. Finally last week I achieved one of my goals for the season: I won the Connor Coombes GP.', 'Gerard Dunne', 'Navan Road Club', 'T142455.462'),
+    ('', 'To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.', 'Rob Kavanagh', 'Ireland', 'T143158.190'),
+    ('', 'The big revelation for me has been how fresh I feel following a full winter training and spring racing schedule tailored by Matteo… Much less fatigued than ever before with less hours of training!', 'Damian Gannon', 'Swords Cycling Club', 'T140342.560'),
 ]
 def reviews_strip():
-    cards = ''.join(f'<figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“{E(q)}”</blockquote><figcaption><b>{E(n)}</b><span>{E(w)}</span></figcaption></figure>' for t, q, n, w in REVIEWS)
+    cards = ''.join(f'<figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“{E(q)}”</blockquote>'
+                    f'<figcaption><img src="{img(ph, "athlete-" + re.sub(r"[^a-z]+", "-", n.lower()).strip("-"))}" alt="{E(live_alt(ph))}" loading="lazy" width="48" height="48"><div><b>{E(n)}</b><span>{E(w)}</span></div></figcaption></figure>'
+                    for t, q, n, w, ph in REVIEWS)
     return (f'<div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Athlete reviews, scroll sideways">{cards}</div>'
             '<div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Previous reviews">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Next reviews">→</button></div></div>')
 REVIEWS_JS = """<script>(function(){var r=document.getElementById('rv-row');if(!r)return;document.querySelectorAll('.rv-btn').forEach(function(b){b.addEventListener('click',function(){r.scrollBy({left:(+b.dataset.d)*r.clientWidth*0.85,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});});})();</script>"""
