@@ -125,3 +125,16 @@ The new designs fix the last three. The Gran Canaria H1 still has to be fixed on
 - Hostinger created the staging copy as a separate WordPress install in the `/staging` folder of tours.cigalacycling.com. `https://tours.cigalacycling.com/staging/wp-login.php` answers, and its login form posts to `https://staging.tours.cigalacycling.com`.
 - `staging.tours.cigalacycling.com` doesn't resolve to a server yet: the proxy can't connect, while `staging.cigalacycling.com` works. A DNS record for `staging.tours` is needed, pointing to the same server as `tours.cigalacycling.com`.
 - No application password is saved for the Tours staging host yet. It must be created in the **staging** wp-admin, never on live.
+
+## Tours build plan: Matteo's notes, 15 Nov
+
+- **Homepage:** use the design in `survey/NfmCmGsjq4LL9bTAi38NXN/index.html`. It isn't among the 7 pages in `tourspages/`. Keep the live Yoast title and meta. The design's H1 ("Bike tours across Europe's best cycling roads") differs from the live H1, so it needs Matteo's OK; otherwise keep the live H1.
+- **Tour categories stay as separate pages**, not one page with filter chips. Each one has its own URL, title, meta, H1 and copy, which Google ranks (e.g. "Italy bike tours"):
+  - `/trips/`: all upcoming tours
+  - `/trips/granfondo-trips/`: Gran Fondo tours
+  - `/trips/gravel-trips/`: gravel tours
+  - `/italian-trips/`: Italy tours
+  - `/trips/private-trips/`: custom tours
+  - Each page uses the trip-list design from `tourspages/index.html`, already showing that category. The chips become links to these pages, not a JavaScript filter.
+- **Road tours** have no page on live. A new `/trips/road-trips/` page would be extra SEO; waiting on Matteo.
+
