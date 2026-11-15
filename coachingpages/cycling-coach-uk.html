@@ -476,7 +476,7 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .note svg { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-top: 1px; }
 .note p { margin: 0; font-size: 14px; color: var(--text-2); line-height: 1.55; }
 .pkgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 16px; align-items: start; }
-.pkg { display: grid; grid-row: span 9; grid-template-rows: subgrid; row-gap: 0; align-content: start; }   /* term, name, for, price, sub, buy, label, list, button line up across the cards */
+.pkg { display: grid; grid-row: span 10; grid-template-rows: subgrid; row-gap: 0; align-content: start; }   /* term, name, for, price, sub, buy, label, list, button line up across the cards */
 .pkg { position: relative; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px 24px; min-width: 0; }
 .pkg.hot { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 24px 60px rgba(0,154,68,.18); }
 .pkg-badge { position: absolute; top: -13px; left: 24px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--green); border-radius: 999px; padding: 5px 12px; }
@@ -539,6 +539,28 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .nums .n { margin: 0; font-family: var(--head); font-weight: 400; font-size: clamp(32px, 3.6vw, 46px); line-height: 1; color: var(--text); }
 .nums .l { margin: 8px 0 0; }
 .nums .stat:nth-child(-n+4) .n { color: var(--text); }
+/* Matteo 15 Nov: "What you get" in red (green got lost), a second button at the end of each card, Premium clearly sold out */
+.pkg .pkg-lab { color: #ff3d33; }
+.pkg .ticks li:not(.no):not(.no-lab)::before { background: rgba(225,6,0,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%23ff3d33' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.pkg-buy2 { margin-top: 12px; }
+.pkg-buy2 .pay2 { min-height: 0; padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
+.pkg.sold { border-color: rgba(255,61,51,.55); background: repeating-linear-gradient(135deg, rgba(255,61,51,.035) 0 14px, transparent 14px 28px), var(--panel-grad), var(--panel); }
+.pkg.sold .pkg-badge.sold { background: #e10600; border-color: #e10600; color: #fff; }
+.pkg.sold::after { content: "SOLD OUT"; position: absolute; top: 74px; right: 18px; transform: rotate(-9deg); padding: 6px 14px; border: 3px solid #ff3d33; border-radius: 8px; font: 400 26px/1 var(--head); letter-spacing: .06em; color: #ff3d33; opacity: .92; pointer-events: none; }
+.pkg.sold .pkg-price b { color: var(--text-2); }
+.pkg.sold .pay { background: transparent !important; border: 2px solid #ff3d33 !important; color: #fff !important; box-shadow: none !important; }
+.pkg.sold .pay:hover { background: rgba(255,61,51,.14) !important; }
+@media (max-width: 600px) { .pkg.sold::after { top: 64px; font-size: 22px; } }
+/* Matteo 15 Nov: 2026 in numbers with colour: medal colours for the places, a bar that fills as they count, a hover lift */
+.nums .stat { --c: #34c46a; position: relative; transition: background .25s, transform .25s; }
+.nums .stat:nth-child(1) { --c: #34c46a; } .nums .stat:nth-child(2) { --c: #d08a4b; } .nums .stat:nth-child(3) { --c: #c9d1db; }
+.nums .stat:nth-child(4) { --c: #f0bf00; } .nums .stat:nth-child(5) { --c: #34c46a; } .nums .stat:nth-child(6) { --c: #ff3d33; }
+.nums .stat .n { color: var(--c) !important; }
+.nums .stat::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 12px; height: 3px; border-radius: 3px; background: var(--c); transform: scaleX(0); transform-origin: left; transition: transform 1.6s cubic-bezier(.2,.7,.2,1); }
+.nums.on .stat::after { transform: scaleX(1); }
+.nums .stat:hover { background: color-mix(in srgb, var(--c) 12%, transparent); transform: translateY(-3px); }
+.nums .stat:hover .l { color: var(--text); }
+
 .vk p { margin: 14px 0 0; max-width: 62ch; }
 .vk p a { color: var(--green-text); }
 .vk-feats { list-style: none; margin: 18px 0 4px; padding: 0; display: grid; gap: 12px; }
@@ -825,6 +847,7 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
         <div class="pkg-lab">What you get</div>
         <ul class="ticks"><li>Personalised Daily Training Plan build for 12 weeks</li><li>Training Peaks Basic Account</li><li>Contact when needed via email</li><li>Plan Tailored to your Training Availability</li><li>Stretching &amp; Core Exercises</li><li>Gym &amp; Winter Program + Support</li><li>Test Protocols (CP, FTP, FTHR or INSCYD)</li><li>Tests Analysis</li><li>Training Periodized based on goals</li><li>Blood panel review from our Sport Nutritionist</li><li>Discount membership for products at retail.cigalacycling.com</li><li>Nutritional Guide</li><li class="more">Blog posts for tips</li><li class="more">Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li class="more">Access to work 1-to-1 with our World Class Nutritionist &amp; Mental Coach</li><li class="more">Access to our online Community (value £9/m)</li><li class="more">Discounted metabolic INSCYD testing</li><li class="more no-lab">Included in Advanced &amp; Premium</li><li class="more no">Feedback on sessions<span class="vh"> (not included in Basic)</span></li><li class="more no">Schedule Adjustment<span class="vh"> (not included in Basic)</span></li><li class="more no">Training Analysis<span class="vh"> (not included in Basic)</span></li><li class="more no">Daily Session Carbs Recommendations<span class="vh"> (not included in Basic)</span></li><li class="more no">Nutritional Consult with our Sports Nutritionist<span class="vh"> (not included in Basic)</span></li><li class="more no">Adaptive Training Zones changing weekly<span class="vh"> (not included in Basic)</span></li><li class="more no">Deep Initial Assessment of your training data (last 6–12 months)<span class="vh"> (not included in Basic)</span></li><li class="more no">Monthly catch up call<span class="vh"> (not included in Basic)</span></li><li class="more no">Race &amp; Pacing Strategy<span class="vh"> (not included in Basic)</span></li><li class="more no">Continuous Support &amp; Motivation<span class="vh"> (not included in Basic)</span></li><li class="more no">Vekta membership<span class="vh"> (not included in Basic)</span></li></ul>
         <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
+        <div class="pkg-buy2"><a class="btn btn-go pay pay2" href="https://checkout.revolut.com/pay/d20b0e23-3cf1-4d8e-9e85-f92277cbec25" target="_blank" rel="noopener">Buy Basic 12 Weeks · £195</a></div>
       </article><article class="pkg hot" id="pkg-advanced">
         <span class="pkg-badge">Monthly (Our Most Popular)</span>
         <div class="pkg-term">6 months subscription</div>
@@ -836,6 +859,7 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
         <div class="pkg-lab">What you get</div>
         <ul class="ticks"><li>Personalised Daily Training Plan build on a weekly basis</li><li>Deep Initial Assessment of your training data (last 6–12 months)</li><li>Vekta membership included (value £17.99/m)</li><li>Nutritional Consult with our Sports Nutritionist</li><li>Race &amp; Pacing Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency weekly</li><li>Weekly Feedback</li><li>Weekly Schedule Adjustment</li><li>Weekly Training Analysis</li><li>Monthly catch up call or when needed</li><li>Adaptive Training Zones changing weekly</li><li class="more">Plan Tailored to your Training Availability</li><li class="more">Stretching &amp; Core Exercises</li><li class="more">Gym &amp; Winter Program + Support</li><li class="more">Test Protocols (CP, FTP, FTHR or INSCYD)</li><li class="more">Tests Analysis</li><li class="more">Training Periodized based on goals</li><li class="more">Blood panel review from our Sport Nutritionist</li><li class="more">Discount membership for products at retail.cigalacycling.com</li><li class="more">Nutritional Guide</li><li class="more">Blog posts for tips</li><li class="more">Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li class="more">Access to work 1-to-1 with our World Class Nutritionist &amp; Mental Coach</li><li class="more">Access to our online Community (value £9/m)</li><li class="more">Discounted INSCYD Metabolic Testing</li><li class="more">Daily Session Carbs Recommendations</li></ul>
         <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
+        <div class="pkg-buy2"><a class="btn btn-go pay pay2" href="https://pay.gocardless.com/BRT01KYX0PYSQ9GTXP9NCA9KXXVJJ" target="_blank" rel="noopener">Subscribe to Advanced · £135/mo</a></div>
       </article><article class="pkg sold" id="pkg-premium">
         <span class="pkg-badge sold">Monthly (SOLD OUT!)</span>
         <div class="pkg-term">3 months subscription (£10 off for 6 mo)</div>
@@ -847,6 +871,7 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
         <div class="pkg-lab">What you get</div>
         <ul class="ticks"><li>Personalised Daily Training Plan build on a weekly basis</li><li>Deep Initial Assessment of your training data (last 6–12 months)</li><li>Vekta membership included (value £17.99/m)</li><li>Nutritional Consult with our Sports Nutritionist</li><li>Race &amp; Pacing Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency daily</li><li>Daily Feedback</li><li>Daily Schedule Adjustment</li><li>Daily Training Analysis</li><li>Weekly catch up call or when needed</li><li>Adaptive Training Zones changing weekly</li><li class="more">Plan Tailored to your Training Availability</li><li class="more">Stretching &amp; Core Exercises</li><li class="more">Gym &amp; Winter Program + Support</li><li class="more">Test Protocols (CP, FTP, FTHR or INSCYD)</li><li class="more">Tests Analysis</li><li class="more">Training Periodized based on goals</li><li class="more">Blood panel review from our Sport Nutritionist</li><li class="more">Discount membership for products at retail.cigalacycling.com</li><li class="more">Nutritional Guide</li><li class="more">Blog posts for tips</li><li class="more">Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li class="more">Access to work 1-to-1 with our World Class Nutritionist &amp; Mental Coach</li><li class="more">Access to our online Community (value £9/m)</li><li class="more">Discounted INSCYD Metabolic Testing</li><li class="more">Daily Session Carb Recommendations</li></ul>
         <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
+        <div class="pkg-buy2"><a class="btn btn-go pay pay2" href="#contact" data-waitlist="Premium">Join the waiting list</a></div>
       </article></div>
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">HERE</a></b></p>
     <div class="vk-logos cn-tp">
@@ -979,7 +1004,7 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
   <div class="in fcols">
     <div>
       <a class="brand brand-lg" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo-v2.webp" alt="Cigala Cycling Coaching" width="76" height="76"></a>
-      <h2 class="tag-line">Train Smarter, Ride Faster</h2>
+      <h2 class="tag-line">TRAIN SMARTER. RIDE FASTER.</h2>
     </div>
     <div><h4>Coaching</h4><ul><li><a href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Cycling Packages</a></li><li><a href="https://coaching.cigalacycling.com/tri-individual-packages/" target="_blank" rel="noopener">Triathlon Packages</a></li><li><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a></li><li><a href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 Session</a></li><li><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a></li><li><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a></li><li><a href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">Free Training Tools</a></li></ul></div>
     <div><h4>Explore</h4><ul><li><a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a></li><li><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a></li><li><a href="https://coaching.cigalacycling.com/case-studies/" target="_blank" rel="noopener">Case Studies</a></li><li><a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a></li><li><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a></li><li><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Retail Store</a></li><li><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a></li></ul></div>
@@ -1027,6 +1052,10 @@ document.querySelectorAll('.pkg-all').forEach(function (b) {   // one click open
   });
 });
 (function () {   // 2026 in numbers count up when they scroll into view (Matteo 15 Nov); the HTML keeps the real numbers
+  document.querySelectorAll('.nums').forEach(function (g) {
+    if (!('IntersectionObserver' in window)) { g.classList.add('on'); return; }
+    new IntersectionObserver(function (es, ob) { if (es[0].isIntersecting) { g.classList.add('on'); ob.disconnect(); } }, { threshold: 0.4 }).observe(g);
+  });
   var els = document.querySelectorAll('[data-count]');
   if (!els.length || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   els.forEach(function (el) {

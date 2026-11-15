@@ -484,7 +484,7 @@ def clubtalk():
 
 <section>
   <div class="in split">
-    {photo('imgi_17_zCRmNmCA', 'club-talk-coaching-session', pos='50% 35%')}
+    <div class="photo sv-photo"><img src="{conv('coaching/matteo-uploads/matteo-club-talk-queens-bay.webp', 'club-talk-matteo-speaking')}" alt="Matteo Cigala in the white Cigala Cycling jersey, talking to a group of riders before a ride" loading="lazy" style="object-position:40% 25%"></div>
     <div class="gn-txt">
       <div class="eyebrow">Topics</div>
       <h3 class="h-sec">WHAT WE TALK ABOUT</h3><div class="bar"></div>
@@ -550,6 +550,8 @@ def talent():
         for a, b in FIX.items(): w = w.replace(a, b)
         return w
     wins = [fx(w) for w in wins]
+    VER = {'Tour de France': '7', "Giro d'Italia": '6', 'Vuelta': '4', 'World Championships': '45'}   # aejallsports.ch, 15 Nov 2026
+    wins = [re.sub(r'^\d+(\s*x\s*)(.*)$', lambda m: (VER.get(m.group(2).strip()) or m.group(0).split('x')[0].strip()) + m.group(1) + m.group(2), w) for w in wins]
     def win(w):
         m = re.match(r'(\d+)\s*x\s*(.*)', w)
         return f'<li><b><span class="tl-n" data-n="{m.group(1)}">{m.group(1)}</span>×</b><span>{E(m.group(2))}</span></li>' if m else f'<li><b>All</b><span>{E(w[4:] if w.startswith("All ") else w)}</span></li>'
@@ -608,7 +610,7 @@ def talent():
       <p>Matteo Cigala is a talent scout for <b>A&amp;J AllSports</b>, the agency of some of the best riders in the WorldTour, such as <b>Tadej Pogačar</b>, <b>Isaac Del Toro</b>, <b>Biniam Girmay</b> and <b>Jasper Philipsen</b>. On the programme you get world-class coaching from him, and when you are ready, the agency and the teams hear about you.</p>
       <ul class="tl-riders" aria-label="Riders represented by A&amp;J AllSports">{''.join(f'<li>{n}</li>' for n in ('Tadej Pogačar', 'Isaac Del Toro', 'Biniam Girmay', 'Jasper Philipsen'))}</ul>
     </div>
-    <div class="photo gn-png tl-aj"><img src="{img('T161857.829', 'talent-aj-allsports')}" alt="{E(live_alt('T161857.829'))}" loading="lazy"></div>
+    <a class="photo gn-png tl-aj" href="https://aejallsports.ch/" {EXT}><img src="{conv('coaching/matteo-uploads/aj-allsports-logo.png', 'talent-aj-allsports-logo')}" alt="{E(live_alt('T161857.829'))}" loading="lazy"></a>
   </div>
 </section>
 
@@ -623,7 +625,7 @@ def talent():
 
 <section>
   <div class="in split">
-    {photo('imgi_22_unnamed', 'talent-race-data', 'Matteo Cigala analysing race data on a laptop in a team car', pos='50% 40%')}
+    <div class="photo sv-photo tl-carera"><img src="{conv('coaching/matteo-uploads/aj-allsports-carera-team.webp', 'talent-aj-allsports-team')}" alt="The A&amp;J AllSports team, including founders Alex and Johnny Carera" loading="lazy" style="object-position:50% 25%"></div>
     <div class="gn-txt">
       <div class="eyebrow">A&amp;J AllSports</div>
       <h2>TALENT SCOUT</h2><div class="bar"></div>
@@ -636,6 +638,7 @@ def talent():
   <div class="in">
     {head('The agency’s riders', 'RACES WON BY ATHLETES WITH A&amp;J')}
     {wins_html}
+    <p class="tl-src">Grand Tours and world titles as listed by <a href="https://aejallsports.ch/about-us/" {EXT}>A&amp;J AllSports</a>, November 2026.</p>
   </div>
 </section>
 
@@ -718,6 +721,11 @@ TL_CSS = """<style>
 .tl-wins li { padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel-grad), var(--panel); display: grid; gap: 2px; }
 .tl-wins b { font: 400 30px/1 var(--head); color: var(--green-text); font-variant-numeric: tabular-nums; }
 .tl-wins b span { color: inherit !important; font: inherit !important; }
+.tl-src { margin: 14px 0 0; font-size: 13px; color: var(--text-3); }
+.tl-src a { color: var(--green-text); }
+.tl-carera { background: #f4f4f2; }
+.tl-carera img { object-fit: cover; }
+a.tl-aj { text-decoration: none; }
 .tl-riders { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .tl-riders li { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border-strong); font-size: 13px; font-weight: 600; color: var(--text); }
 .pd-gain { stroke: #2fae5f; stroke-width: 1.5; stroke-dasharray: 2 3; }

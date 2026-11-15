@@ -113,7 +113,8 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         <div class="pkg-lab">What you get</div>
         <ul class="ticks">{items}</ul>
         <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
-      </article>'''
+        <div class="pkg-buy2">{re.search(r'<a [^>]*>.*?</a>', buttons).group(0).replace(' pay"', ' pay pay2"')}</div>
+      </article>'''   # Matteo 15 Nov: the button stays by the price, and again at the end of the list
 
 # ---------- compare table: only the differences, wording from the live feature lines ----------
 Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria-label="Not included">✗</span>'
@@ -381,7 +382,7 @@ PCSS = '''<style>
 .note svg { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-top: 1px; }
 .note p { margin: 0; font-size: 14px; color: var(--text-2); line-height: 1.55; }
 .pkgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 16px; align-items: start; }
-.pkg { display: grid; grid-row: span 9; grid-template-rows: subgrid; row-gap: 0; align-content: start; }   /* term, name, for, price, sub, buy, label, list, button line up across the cards */
+.pkg { display: grid; grid-row: span 10; grid-template-rows: subgrid; row-gap: 0; align-content: start; }   /* term, name, for, price, sub, buy, label, list, button line up across the cards */
 .pkg { position: relative; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px 24px; min-width: 0; }
 .pkg.hot { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 24px 60px rgba(0,154,68,.18); }
 .pkg-badge { position: absolute; top: -13px; left: 24px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--green); border-radius: 999px; padding: 5px 12px; }
@@ -444,6 +445,28 @@ PCSS = '''<style>
 .nums .n { margin: 0; font-family: var(--head); font-weight: 400; font-size: clamp(32px, 3.6vw, 46px); line-height: 1; color: var(--text); }
 .nums .l { margin: 8px 0 0; }
 .nums .stat:nth-child(-n+4) .n { color: var(--text); }
+/* Matteo 15 Nov: "What you get" in red (green got lost), a second button at the end of each card, Premium clearly sold out */
+.pkg .pkg-lab { color: #ff3d33; }
+.pkg .ticks li:not(.no):not(.no-lab)::before { background: rgba(225,6,0,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%23ff3d33' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.pkg-buy2 { margin-top: 12px; }
+.pkg-buy2 .pay2 { min-height: 0; padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
+.pkg.sold { border-color: rgba(255,61,51,.55); background: repeating-linear-gradient(135deg, rgba(255,61,51,.035) 0 14px, transparent 14px 28px), var(--panel-grad), var(--panel); }
+.pkg.sold .pkg-badge.sold { background: #e10600; border-color: #e10600; color: #fff; }
+.pkg.sold::after { content: "SOLD OUT"; position: absolute; top: 74px; right: 18px; transform: rotate(-9deg); padding: 6px 14px; border: 3px solid #ff3d33; border-radius: 8px; font: 400 26px/1 var(--head); letter-spacing: .06em; color: #ff3d33; opacity: .92; pointer-events: none; }
+.pkg.sold .pkg-price b { color: var(--text-2); }
+.pkg.sold .pay { background: transparent !important; border: 2px solid #ff3d33 !important; color: #fff !important; box-shadow: none !important; }
+.pkg.sold .pay:hover { background: rgba(255,61,51,.14) !important; }
+@media (max-width: 600px) { .pkg.sold::after { top: 64px; font-size: 22px; } }
+/* Matteo 15 Nov: 2026 in numbers with colour: medal colours for the places, a bar that fills as they count, a hover lift */
+.nums .stat { --c: #34c46a; position: relative; transition: background .25s, transform .25s; }
+.nums .stat:nth-child(1) { --c: #34c46a; } .nums .stat:nth-child(2) { --c: #d08a4b; } .nums .stat:nth-child(3) { --c: #c9d1db; }
+.nums .stat:nth-child(4) { --c: #f0bf00; } .nums .stat:nth-child(5) { --c: #34c46a; } .nums .stat:nth-child(6) { --c: #ff3d33; }
+.nums .stat .n { color: var(--c) !important; }
+.nums .stat::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 12px; height: 3px; border-radius: 3px; background: var(--c); transform: scaleX(0); transform-origin: left; transition: transform 1.6s cubic-bezier(.2,.7,.2,1); }
+.nums.on .stat::after { transform: scaleX(1); }
+.nums .stat:hover { background: color-mix(in srgb, var(--c) 12%, transparent); transform: translateY(-3px); }
+.nums .stat:hover .l { color: var(--text); }
+
 .vk p { margin: 14px 0 0; max-width: 62ch; }
 .vk p a { color: var(--green-text); }
 .vk-feats { list-style: none; margin: 18px 0 4px; padding: 0; display: grid; gap: 12px; }
@@ -538,6 +561,10 @@ document.querySelectorAll('.pkg-all').forEach(function (b) {   // one click open
   });
 });
 (function () {   // 2026 in numbers count up when they scroll into view (Matteo 15 Nov); the HTML keeps the real numbers
+  document.querySelectorAll('.nums').forEach(function (g) {
+    if (!('IntersectionObserver' in window)) { g.classList.add('on'); return; }
+    new IntersectionObserver(function (es, ob) { if (es[0].isIntersecting) { g.classList.add('on'); ob.disconnect(); } }, { threshold: 0.4 }).observe(g);
+  });
   var els = document.querySelectorAll('[data-count]');
   if (!els.length || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   els.forEach(function (el) {

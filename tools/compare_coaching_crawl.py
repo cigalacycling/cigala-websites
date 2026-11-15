@@ -5,7 +5,7 @@ Per page: title, meta description, H1, H2 set (footer tagline change approved), 
 import sys, json, re
 base = {r['url'].replace('https://coaching.cigalacycling.com', ''): r for r in json.load(open('coaching/baseline.json')) if r.get('status') == 200}
 after = {r['url'].replace('https://staging.coaching.cigalacycling.com', ''): r for r in json.load(open(sys.argv[1])) if r.get('status') == 200}
-FOOT = {'Cycling & Triathlon Coaching - Bike Tours - Retail': 'Train Smarter, Ride Faster'}
+FOOT = {'Cycling & Triathlon Coaching - Bike Tours - Retail': 'TRAIN SMARTER. RIDE FASTER.'}
 norm = lambda s: re.sub(r'\s+', ' ', (s or '').replace('Canda', 'Canada')).strip()
 issues = 0
 for path, b in sorted(base.items()):

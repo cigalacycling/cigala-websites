@@ -327,7 +327,7 @@ FOOTER = f'''<footer>
   <div class="in fcols">
     <div>
       <a class="brand brand-lg" href="{C}/" {EXT}><img src="{LOGO}" alt="Cigala Cycling Coaching" width="76" height="76"></a>
-      <h2 class="tag-line">Train Smarter, Ride Faster</h2>
+      <h2 class="tag-line">TRAIN SMARTER. RIDE FASTER.</h2>
     </div>
     <div><h4>Coaching</h4><ul>{''.join(li(u, t) for u, t in COACH)}</ul></div>
     <div><h4>Explore</h4><ul>{''.join(li(u, t) for u, t in SITE)}</ul></div>
@@ -634,7 +634,7 @@ def build(name, path, main, ribbon, h1=None, h2_changes=None, extra_css='', extr
     ch = h2_changes or {}
     if live['h2'] is None: live = dict(live, h2=[x for x in h2])   # new page: nothing on live to keep
     # sitewide approved change (Matteo 15 Nov, SEO-DECISIONS.md section 8): the footer tagline H2
-    FOOTER_H2 = {'Cycling & Triathlon Coaching - Bike Tours - Retail': 'Train Smarter, Ride Faster'}
+    FOOTER_H2 = {'Cycling & Triathlon Coaching - Bike Tours - Retail': 'TRAIN SMARTER. RIDE FASTER.'}
     want = [FOOTER_H2.get(x, x) for x in live['h2'] if x not in ch.get('drop', [])] + ch.get('add', [])
     missing = sorted({x for x in want if x not in h2}); extra = sorted({x for x in h2 if x not in want})
     assert not missing and not extra, ('H2 missing', missing, 'extra', extra)
