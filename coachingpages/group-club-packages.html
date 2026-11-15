@@ -347,6 +347,7 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .seen-tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
 .seen-tile { height: 96px; border-radius: 12px; overflow: hidden; display: grid; place-items: center; border: 1px solid var(--border); }
 .seen-tile img.cover { width: 100%; height: 100%; object-fit: cover; }
+.seen-tile img.mark { max-width: 64%; max-height: 46px; width: auto; height: auto; object-fit: contain; }
 .seen-tile img.contain { max-width: 78%; max-height: 72px; width: auto; height: auto; object-fit: contain; }
 @media (max-width: 900px) { .seen-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .seen-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } .seen-tile { height: 84px; } }
@@ -662,10 +663,10 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
       <div class="bar"></div>
       <p class="lede">Tell us about your group or club, how many riders and your goals, and we'll come back to you with the prices.</p>
       <form class="form panel" method="post" action="#" onsubmit="return false">
-        <label>Name<input name="form_fields[name]" type="text" placeholder="Name" required autocomplete="name"></label>
-        <label>Email<input name="form_fields[email]" type="email" placeholder="Email" required autocomplete="email"></label>
-        <label>Phone<input name="form_fields[phone]" type="tel" placeholder="Phone (with country code)" required autocomplete="tel"></label>
-        <label>Message<textarea name="form_fields[message]" placeholder="Your Message" rows="5" required></textarea></label>
+        <label>Name<input name="form_fields[name]" type="text" placeholder="Name *" required autocomplete="name"></label>
+        <label>Email<input name="form_fields[email]" type="email" placeholder="Email *" required autocomplete="email"></label>
+        <label>Phone<input name="form_fields[phone]" type="tel" placeholder="Phone (with country code) *" required autocomplete="tel"></label>
+        <label>Message<textarea name="form_fields[message]" placeholder="Your Message *" rows="5" required></textarea></label>
         <button class="btn btn-go" type="submit">Send &gt;</button>
       </form>
     </div>
@@ -675,7 +676,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
   <div class="in fcols">
     <div>
       <a class="brand brand-lg" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo-v2.webp" alt="Cigala Cycling Coaching" width="76" height="76"></a>
-      <h2 class="tag-line">Cycling &amp; Triathlon Coaching - Bike Tours - Retail</h2>
+      <h2 class="tag-line">Train Smarter, Ride Faster</h2>
     </div>
     <div><h4>Coaching</h4><ul><li><a href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Cycling Packages</a></li><li><a href="https://coaching.cigalacycling.com/tri-individual-packages/" target="_blank" rel="noopener">Triathlon Packages</a></li><li><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a></li><li><a href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 Session</a></li><li><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a></li><li><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a></li></ul></div>
     <div><h4>Cigala Cycling</h4><ul><li><a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a></li><li><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a></li><li><a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a></li><li><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a></li><li><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Retail Store</a></li><li><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a></li></ul></div>

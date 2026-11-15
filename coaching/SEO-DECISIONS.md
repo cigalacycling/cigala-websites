@@ -117,3 +117,4 @@ Approved by Matteo (content changes, not SEO-sensitive: H1/H2s, title and meta u
 - Advanced summary: weekly feedback, a monthly catch up call and deep training analysis, plus Vekta.
 - Contact form (all Coaching pages): new required Phone field; Name, Email and Message now required too.
 - The live icon images on the add-on panels (user / rocket, with alt text) are replaced by inline line icons in the brand style (decorative, aria-hidden).
+- Footer tagline (an H2 on every page, live wording "Cycling & Triathlon Coaching - Bike Tours - Retail") changed to "Train Smarter, Ride Faster": Matteo, 15 Nov, since this is the coaching site. Small sitewide H2 change, approved.

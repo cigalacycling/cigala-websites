@@ -54,9 +54,16 @@ def mono_img(key, name, nobox=False, holes=False):
 SEEN = [('imgi_4_wHe4MESD', 'logo-red-bull', '#fff', 'contain'), ('imgi_6_6_MxiOhd', 'logo-stickybottle', '#fff', 'contain'),
         ('unnamed-87.png', 'logo-zwift', '#f9661a', 'cover'), ('unnamed-86.png', 'logo-trainingpeaks', '#011031', 'cover'),
         ('unnamed-84.png', 'logo-cycling-ireland', '#284733', 'cover'), ('unnamed-85.png', 'logo-vekta', '#fff', 'contain')]
+def _seen_src(k, n, fit):
+    # Matteo 15 Nov: the coloured logos sat off-centre on phones (the marks are not centred in the original files, and
+    # 'cover' cropped them differently at each width) -> trimmed to the mark itself and centred on the logo's own colour.
+    if fit != 'cover': return img(k, n)
+    short = n.replace('logo-', '')
+    shutil.copy(ROOT + f'coaching/webp/seen-{short}-centred.webp', f'{OUT}img/{n}-centred.webp')
+    return f'img/{n}-centred.webp'
 def seen_logos():
     return '<div class="seen-tiles">' + ''.join(
-        f'<span class="seen-tile" style="background:{bg}"><img class="{fit}" src="{img(k, n)}" alt="{E(live_alt(k))}" loading="lazy"></span>' for k, n, bg, fit in SEEN) + '</div>'
+        f'<span class="seen-tile" style="background:{bg}"><img class="{"mark" if fit == "cover" else fit}" src="{_seen_src(k, n, fit)}" alt="{E(live_alt(k))}" loading="lazy"></span>' for k, n, bg, fit in SEEN) + '</div>'
 
 # ---------- menu ----------
 def a(u, t): return f'<a href="{u}" {EXT}>{t}</a>'
@@ -113,7 +120,7 @@ FOOTER = f'''<footer>
   <div class="in fcols">
     <div>
       <a class="brand brand-lg" href="{C}/" {EXT}><img src="{LOGO}" alt="Cigala Cycling Coaching" width="76" height="76"></a>
-      <h2 class="tag-line">Cycling &amp; Triathlon Coaching - Bike Tours - Retail</h2>
+      <h2 class="tag-line">Train Smarter, Ride Faster</h2>
     </div>
     <div><h4>Coaching</h4><ul>{''.join(li(u, t) for u, t in COACH)}</ul></div>
     <div><h4>Cigala Cycling</h4><ul>{''.join(li(u, t) for u, t in SITE)}</ul></div>
@@ -257,6 +264,7 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .seen-tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
 .seen-tile { height: 96px; border-radius: 12px; overflow: hidden; display: grid; place-items: center; border: 1px solid var(--border); }
 .seen-tile img.cover { width: 100%; height: 100%; object-fit: cover; }
+.seen-tile img.mark { max-width: 64%; max-height: 46px; width: auto; height: auto; object-fit: contain; }
 .seen-tile img.contain { max-width: 78%; max-height: 72px; width: auto; height: auto; object-fit: contain; }
 @media (max-width: 900px) { .seen-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .seen-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } .seen-tile { height: 84px; } }
@@ -395,7 +403,9 @@ def build(name, path, main, ribbon, h1=None, h2_changes=None, extra_css='', extr
     h2 = [html.unescape(re.sub(r'<[^>]+>', '', x)).strip() for x in re.findall(r'<h2[^>]*>(.*?)</h2>', page, re.S)]
     ch = h2_changes or {}
     if live['h2'] is None: live = dict(live, h2=[x for x in h2])   # new page: nothing on live to keep
-    want = [x for x in live['h2'] if x not in ch.get('drop', [])] + ch.get('add', [])
+    # sitewide approved change (Matteo 15 Nov, SEO-DECISIONS.md section 8): the footer tagline H2
+    FOOTER_H2 = {'Cycling & Triathlon Coaching - Bike Tours - Retail': 'Train Smarter, Ride Faster'}
+    want = [FOOTER_H2.get(x, x) for x in live['h2'] if x not in ch.get('drop', [])] + ch.get('add', [])
     missing = sorted({x for x in want if x not in h2}); extra = sorted({x for x in h2 if x not in want})
     assert not missing and not extra, ('H2 missing', missing, 'extra', extra)
     bad = [t for t in re.findall(r'<img\b[^>]*>', page) if ' alt="' not in t]

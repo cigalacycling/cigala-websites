@@ -1078,5 +1078,20 @@
   "id": 6666,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-matteo-coaching.webp",
   "alt": "Matteo Cigala Coaching"
+ },
+ "img/logo-zwift-centred.webp": {
+  "id": 6673,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-logo-zwift-centred.webp",
+  "alt": "White Zwift logo on orange bg | Cigala Cycling Coaching"
+ },
+ "img/logo-trainingpeaks-centred.webp": {
+  "id": 6674,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-logo-trainingpeaks-centred.webp",
+  "alt": "TrainingPeaks logo with icon | Cigala Cycling Coaching"
+ },
+ "img/logo-cycling-ireland-centred.webp": {
+  "id": 6675,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-logo-cycling-ireland-centred.webp",
+  "alt": "Cycling Ireland logo | Cigala Cycling Coaching"
  }
 }

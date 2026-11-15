@@ -182,10 +182,10 @@ MAIN = f'''<div class="hero hero-sm">
       <div class="bar"></div>
       <p class="lede">{E(intro[4])}</p>
       <form class="form panel" method="post" action="#" onsubmit="return false">
-        <label>Name<input name="form_fields[name]" type="text" placeholder="Name" required autocomplete="name"></label>
-        <label>Email<input name="form_fields[email]" type="email" placeholder="Email" required autocomplete="email"></label>
-        <label>Phone<input name="form_fields[phone]" type="tel" placeholder="Phone (with country code)" required autocomplete="tel"></label>
-        <label>Message<textarea name="form_fields[message]" placeholder="Your Message" rows="5" required></textarea></label>
+        <label>Name<input name="form_fields[name]" type="text" placeholder="Name *" required autocomplete="name"></label>
+        <label>Email<input name="form_fields[email]" type="email" placeholder="Email *" required autocomplete="email"></label>
+        <label>Phone<input name="form_fields[phone]" type="tel" placeholder="Phone (with country code) *" required autocomplete="tel"></label>
+        <label>Message<textarea name="form_fields[message]" placeholder="Your Message *" rows="5" required></textarea></label>
         <button class="btn btn-go" type="submit">Send &gt;</button>
       </form>
     </div>
