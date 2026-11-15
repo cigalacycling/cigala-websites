@@ -158,12 +158,12 @@ def build_country(key):
         P.card('basic', 'Basic', '12 Weeks', bp, bper, sub_basic,
                # the live country pages have no payment link for Basic: start with the free call
                # Basic pays by the live Revolut checkout link (one payment), as on the live pages
-               P.btn(f'Buy Basic 12 Weeks · {c["cur"]}{nump(bas_lab)}{cur_note}', pay[bas_lab], 'btn-ghost')),
+               P.btn(f'Buy Basic 12 Weeks · {c["cur"]}{nump(bas_lab)}{cur_note}', pay[bas_lab])),
         P.card('advanced', 'Advanced', '6 months subscription', ap, aper, '',
                P.btn(f'Subscribe to Advanced · {c["cur"]}{nump(adv_lab)}{cur_note}/mo', pay[adv_lab]),
                '<span class="pkg-badge">Monthly (Our Most Popular)</span>', 'hot'),
         P.card('premium', 'Premium', fix(prem_sub), pp, pper, '',
-               '<a class="btn btn-ghost pay" href="#contact" data-waitlist="Premium">Join the waiting list</a>'
+               '<a class="btn btn-go pay" href="#contact" data-waitlist="Premium">Join the waiting list</a>'
                f'<span class="pay-note">Premium 3 months {c["cur"]}{nump(p3)}{cur_note}/mo · 6 months {c["cur"]}{nump(p6)}{cur_note}/mo</span>',
                '<span class="pkg-badge sold">Monthly (SOLD OUT!)</span>', 'sold'),
     ])

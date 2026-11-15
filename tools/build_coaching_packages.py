@@ -129,13 +129,13 @@ compare = ('<div class="cmp-wrap"><h3 class="h-sm">Compare coaching packages</h3
 
 cards = ''.join([
     card('basic', 'Basic', '12 Weeks', '€19', '/week', 'Charged with one-time payment of €228 for the 12 weeks.',
-         btn('Buy Basic 12 Weeks · €228', pay['Basic 12 Weeks: 228 EUR - one-time payment'], 'btn-ghost')),
+         btn('Buy Basic 12 Weeks · €228', pay['Basic 12 Weeks: 228 EUR - one-time payment'])),
     card('advanced', 'Advanced', '6 months subscription', '€149', '/mo', '',
          btn('Subscribe to Advanced · €149/mo', pay['Advanced 6 months: 149 EUR - monthly']),
          '<span class="pkg-badge">Monthly (Our Most Popular)</span>', 'hot'),
     card('premium', 'Premium', '3 months subscription (€10 off for 6 mo)', '€249', '/mo', '',
          # Premium is sold out: Matteo chose a waiting list instead of the GoCardless links (15 Nov 2026)
-         '<a class="btn btn-ghost pay" href="#contact" data-waitlist="Premium">Join the waiting list</a>'
+         '<a class="btn btn-go pay" href="#contact" data-waitlist="Premium">Join the waiting list</a>'
          '<span class="pay-note">Premium 3 months €249/mo · 6 months €239/mo</span>',
          '<span class="pkg-badge sold">Monthly (SOLD OUT!)</span>', 'sold'),
 ])

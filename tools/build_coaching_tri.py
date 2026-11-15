@@ -4,8 +4,10 @@ Same design as the cycling packages page (tools/build_coaching_packages.py); its
 All live copy is kept: package names, prices, every feature line, FAQ (live H2s), payment links.
 Approved: H1 "TRIATHLON INDIVIDUAL PACKAGES" (the page's existing top line, coaching/SEO-DECISIONS.md).
 Matteo 15 Nov, applied as on the cycling page: Premium is sold out -> waiting list; Basic does not include training analysis.
-The live Tri Basic buy link is an expired Shopify checkout (redirects to the shop home) and there is no €237 product,
-so Basic gets "Contact us to sign up" (prefills the contact form) until Matteo says which product to link.
+The live Tri Basic buy link is an expired Shopify checkout (redirects to the shop home).
+Matteo 15 Nov: "the pricing and the structure of the pricing, copy, and also the link: copy the individual coaching" ->
+same prices, wording and payment links as the cycling Individual Packages page (Basic €19/week, €228 one payment;
+Advanced 6 months €149/mo; Premium sold out). The intro said "2 coaching packages: Advanced and Premium": it is 3.
 """
 import os, sys, io, re, contextlib
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -61,14 +63,14 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
       </article>'''
 
 cards = ''.join([
-    card('basic', 'Basic Package', '12 Weeks', '€79', '/mo', 'Charged with one-time payment of €237 for the 12 weeks.',
-         '<a class="btn btn-ghost pay" href="#contact" data-waitlist="Triathlon Basic 12 Weeks" data-msg="Hi Matteo, I would like to sign up for the Triathlon Basic 12 Weeks package.">Contact us to sign up</a>'),
-    card('advanced', 'Advanced', '5 months subscription', '€149', '/mo', '',
-         P.btn('Subscribe to Advanced · €149/mo', PAY['Advanced 6 months: 149 EUR - monthly']),
+    card('basic', 'Basic Package', '12 Weeks', '€19', '/week', 'Charged with one-time payment of €228 for the 12 weeks.',
+         P.btn('Buy Basic 12 Weeks · €228', P.pay['Basic 12 Weeks: 228 EUR - one-time payment'])),
+    card('advanced', 'Advanced', '6 months subscription', '€149', '/mo', '',
+         P.btn('Subscribe to Advanced · €149/mo', P.pay['Advanced 6 months: 149 EUR - monthly']),
          '<span class="pkg-badge">Monthly (Our Most Popular)</span>', 'hot'),
     card('premium', 'Premium', '3 months subscription (€10 off for 6 mo)', '€249', '/mo', '',
-         '<a class="btn btn-ghost pay" href="#contact" data-waitlist="Triathlon Premium">Join the waiting list</a>'
-         '<span class="pay-note">Premium 3 months €249/mo · 6 months: check availability</span>',
+         '<a class="btn btn-go pay" href="#contact" data-waitlist="Triathlon Premium">Join the waiting list</a>'
+         '<span class="pay-note">Premium 3 months €249/mo · 6 months €239/mo</span>',
          '<span class="pkg-badge sold">Monthly (SOLD OUT!)</span>', 'sold'),
 ])
 Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria-label="Not included">✗</span>'
@@ -114,7 +116,7 @@ MAIN = f'''<div class="hero hero-sm">
   <div class="in">
     <div class="eyebrow eb-pill"><span class="dot"></span>Triathlon coaching</div>
     <h1>TRIATHLON INDIVIDUAL PACKAGES</h1>
-    <p class="lede">{E(intro[1])}<br>{E(intro[2])}<br>{E(intro[3])}</p>
+    <p class="lede">{E(intro[1].replace('We have 2 coaching packages: Advanced and Premium', 'We have 3 coaching packages: Basic, Advanced and Premium'))}<br>{E(intro[2])}<br>{E(intro[3])}</p>
     <div class="ctas">
       <a class="btn btn-go" href="{P.CAL}" {EXT}>Book free consultation</a>
       <a class="btn btn-ghost" href="#packages">Compare coaching packages ↓</a>
