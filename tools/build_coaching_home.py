@@ -41,7 +41,7 @@ MAIN = f'''<div class="hero">
   <div class="in">
     <h2 class="eyebrow-h">#TrainSmarterRideFaster</h2>
     <h1>Premium Cycling &amp; Triathlon Coaching</h1>
-    <p class="lede">World-class coaching from a former pro and European Gran Fondo Champion, for cyclists and triathletes of every level.</p>
+    <p class="lede">By Matteo Cigala: former pro, European Gran Fondo Champion and Vice-World Champion on the road and on gravel. World-class coaching for cyclists and triathletes of every level.</p>
     <div class="ctas">
       <a class="btn btn-go" href="{C}/individual-packages/" {EXT}>Cycling coaching →</a>
       <a class="btn btn-ghost" href="{C}/tri-individual-packages/" {EXT}>Triathlon coaching</a>
@@ -51,8 +51,8 @@ MAIN = f'''<div class="hero">
 
 <div class="in stats-wrap">
   <div class="stats">
-    <div class="stat"><div class="n">28</div><div class="l">Years of racing</div></div>
-    <div class="stat"><div class="n">200+</div><div class="l">Race victories</div></div>
+    <div class="stat"><div class="n">28</div><div class="l">Years of Matteo’s racing</div></div>
+    <div class="stat"><div class="n">200+</div><div class="l">Matteo’s own race wins</div></div>
     <div class="stat"><div class="n">1,000+</div><div class="l">Athletes coached worldwide</div></div>
     <div class="stat"><div class="n">Worldwide</div><div class="l">Remote coaching</div></div>
   </div>

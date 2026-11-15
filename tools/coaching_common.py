@@ -317,7 +317,7 @@ def li(u, t): return f'<li>{a(u, t)}</li>'
 # "International coaching" toggle in the bottom row instead of a visible column. Closed <details> content is still in the HTML.
 SITE = [(C + '/about/', 'About'), (C + '/testimonials/', 'Testimonials'), (C + '/case-studies/', 'Case Studies'), (C + '/blog/', 'Blog'), (T + '/', 'Bike Tours'), (R, 'Retail Store'), (C + '/contact/', 'Contact')]
 COACH = [(C + '/individual-packages/', 'Cycling Packages'), (C + '/tri-individual-packages/', 'Triathlon Packages'), (C + '/group-club-packages/', 'Group &amp; Club Packages'),
-         (C + '/book-1-on-1-session/', 'Book a 1-to-1 Session'), (C + '/testing/', 'INSCYD Testing'), (C + '/nutrition/', 'Nutrition'), (C + '/tools/', 'Free Training Tools')]
+         (C + '/book-1-on-1-session/', 'Book a 1-to-1 Session'), (C + '/talent-scout/', 'Talent Programme'), (C + '/nutrition/', 'Nutrition'), (C + '/tools/', 'Free Training Tools')]
 INTL = [('/cycling-coach-uk/', 'Cycling Coach UK'), ('/cycling-coach-usa/', 'Cycling Coach USA'), ('/cycling-coach-canada/', 'Cycling Coach Canada'), ('/preparatore-di-ciclismo-italia/', 'Preparatore di Ciclismo Italia')]
 # Brevo form for the separate "coaching.cigalacycling.com" list (id 17, made by Matteo 15 Nov). Used by the newsletter
 # pop-up and the Free Tools sign-up. Empty = both stay off. Set it to the form's …sibforms.com/serve/… URL + '?isAjax=1'.

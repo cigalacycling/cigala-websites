@@ -33,6 +33,8 @@ bul = lambda xs: [x.lstrip('\u200b•· ').strip() for x in xs]
 
 intro = paras(T.split('\n')[:12])           # Founder line, 3 titles, then the 4 intro paragraphs
 titles, bio = intro[1:4], intro[4:8]
+# Matteo 15 Nov: no years, road and gravel silver on their own lines, and the race wins
+TITLES = ['200+ race wins', 'European Road Champion Gran Fondo', 'Vice-World Champion UCI Gran Fondo (road)', 'Vice-World Champion UCI Gravel', 'Italian Gravel Champion']
 story1 = paras(after('H3: FROM ITALIAN TALENT'))
 story2 = paras(after('H3: THE IRISH CHAPTER'))
 story3_raw = after('H3: A NEW ERA')
@@ -72,11 +74,11 @@ def season(y, items):
     k, n, pos = SEASON_PIC[y]
     sub = [i for i in items if i.startswith(('Gran Fondo', 'Medio Fondo')) and y == '2021']
     main = [i for i in items if i not in sub]
-    lis = ''.join(f'<li>{E(i)}' + (chips(sub, 'trophy', 'ab-sub') if i.startswith('Won 11') else '') + '</li>' for i in main)
+    lis = ''.join(f'<li>{E(i)}' + ('<ul class="ab-sub">' + ''.join(f'<li>{E(x)}</li>' for x in sub) + '</ul>' if i.startswith('Won 11') else '') + '</li>' for i in main)
     return (f'<article class="ab-season panel"><div class="ab-season-img"><img src="{img(k, n)}" alt="{E(live_alt(k))}" loading="lazy" style="object-position:{pos}"></div>'
             f'<div class="ab-season-tx"><div class="ab-year">{y}</div><p class="ab-sh">Season Highlights</p><ul class="ab-list">{lis}</ul></div></article>')
 
-QUALS = ['UCI &amp; Cycling Ireland Level 1 Coach', 'TrainingPeaks Level 2 Coach']   # Matteo 15 Nov
+QUALS = ['UCI &amp; Cycling Ireland Coach', 'TrainingPeaks Level 2 Coach']   # Matteo 15 Nov
 FACTS = [('flag', '28 years', 'of cycling experience'), ('users', 'Over a decade', 'of coaching'), ('trophy', '200+', 'race victories'),
          ('grad', 'BA &amp; Diploma', 'Business Management Degree, Diploma in Science and Sports')]
 PREM_IC = ['bike', 'globe', 'users', 'target', 'chart', 'chat', 'trophy', 'heart']
@@ -106,7 +108,7 @@ MAIN = f'''<div class="ab-hero">
     <div class="ab-hero-tx">
       <div class="eyebrow eb-pill"><span class="dot"></span>{E(intro[0])}</div>
       <h1>MATTEO CIGALA</h1>
-      <ul class="ab-titles">{''.join(f'<li>{ic(I["medal"])}<span>{E(t)}</span></li>' for t in titles)}</ul>
+      <ul class="ab-titles">{''.join(f'<li>{ic(I["trophy" if t.startswith("200") else "medal"])}<span>{E(t)}</span></li>' for t in TITLES)}</ul>
       <ul class="ab-quals">{''.join(f'<li>{ic(I["grad"])}<span>{q}</span></li>' for q in QUALS)}</ul>
       <div class="ctas"><a class="btn btn-go" href="{C}/individual-packages/" {EXT}>Train with Matteo</a><a class="btn btn-ghost" href="#story">Matteo’s story ↓</a></div>
     </div>
@@ -126,7 +128,7 @@ MAIN = f'''<div class="ab-hero">
     {head('Matteo’s story', "MATTEO'S STORY")}
     <ol class="ab-tl">
       <li class="ab-ch">
-        <div class="ab-dot"><span>IT</span></div>
+        <div class="ab-dot ab-flag ab-it" role="img" aria-label="Italy"></div>
         <div class="ab-ch-body panel">
           <h3>FROM ITALIAN TALENT TO INTERNATIONAL COMPETITOR</h3>
           <div class="ab-ch-grid">
@@ -136,14 +138,14 @@ MAIN = f'''<div class="ab-hero">
               {chips(juniors, 'globe')}
               <p class="ab-lab">His early career highlights also include:</p>
               {chips(early, 'trophy')}
-              <p>{E(story1[8])}</p>
+              <p class="ab-after">{E(story1[8])}</p>
             </div>
             {img_k('imgi_16_Nqjd', 'about-italian-podium', '50% 20%')}
           </div>
         </div>
       </li>
       <li class="ab-ch">
-        <div class="ab-dot"><span>IE</span></div>
+        <div class="ab-dot ab-flag ab-ie" role="img" aria-label="Ireland"></div>
         <div class="ab-ch-body panel">
           <h3>THE IRISH CHAPTER — DOMINANCE, CONSISTENCY &amp; LEADERSHIP</h3>
           <div class="ab-ch-grid">
@@ -156,7 +158,7 @@ MAIN = f'''<div class="ab-hero">
         </div>
       </li>
       <li class="ab-ch">
-        <div class="ab-dot"><span>EU</span></div>
+        <div class="ab-dot ab-world" role="img" aria-label="Europe and the world">{ic(I['globe'])}</div>
         <div class="ab-ch-body">
           <div class="panel ab-ch-head"><h3>A NEW ERA — EUROPEAN CHAMPION, WORLD CLASS RESULTS</h3><p>{E(s3_lead)}</p></div>
           <div class="ab-seasons">{''.join(season(y, it) for y, it in seasons)}</div>
@@ -178,15 +180,15 @@ MAIN = f'''<div class="ab-hero">
       <div class="panel ab-col">
         <h3 class="h-sm">Proven Results &amp; Athlete Achievements</h3>
         <p>{E(coach2[0])}</p>
-        {chips(bul(coach2[1:]), 'trophy')}
+        <ul class="ab-chips ab-plain">{''.join(f'<li><span>{E(x)}</span></li>' for x in bul(coach2[1:]))}</ul>
       </div>
       <div class="panel ab-col ab-sci">
         <h3 class="h-sm">Science-Backed Performance Coaching</h3>
         <p>{E(coach3[0])}</p>
-        {chips(bul(coach3[1:]), 'chart')}
+        <ul class="ab-chips ab-plain">{''.join(f'<li><span>{E(x)}</span></li>' for x in bul(coach3[1:]))}</ul>
       </div>
     </div>
-    <div class="ab-pics">{img_k('imgi_22_lABW', 'about-coaching-an-athlete', '50% 40%')}{img_k('imgi_20_Fqav', 'about-coaching-pro-cyclist', '50% 30%')}</div>
+    <div class="ab-pics">{img_k('imgi_22_lABW', 'about-coaching-an-athlete', '50% 40%')}{img_k('imgi_20_Fqav', 'about-coaching-pro-cyclist', '50% 8%')}</div>
   </div>
 </section>
 
@@ -216,7 +218,7 @@ MAIN = f'''<div class="ab-hero">
 <section>
   <div class="in">
     {head('#TrainSmarterRideFaster', 'CIGALA CYCLING')}
-    <ul class="ab-tiles">{''.join(f'<li><a href="{u}" {EXT}><span class="ab-tile-ic">{ic(I[i])}</span><h3 class="h-sm">{t}</h3><p>{d}</p><em>{l} →</em></a></li>' for u, k, n, i, t, d, l in TILES)}</ul>
+    <ul class="ab-tiles">{''.join(f'<li><a href="{u}" {EXT}><span class="ab-tile-ic">{ic(I[i])}</span><h3 class="h-sm">{t}</h3><em>{l} →</em></a></li>' for u, k, n, i, t, d, l in TILES)}</ul>
   </div>
 </section>'''
 
@@ -273,8 +275,8 @@ CSS = '''<style>
 .ab-list > li { position: relative; padding-left: 16px; font-size: 14px; line-height: 1.45; color: var(--text-2); }
 .ab-list > li::before { content: ""; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: #ff3d33; }
 .ab-sub { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; }
-.ab-sub li { display: flex; gap: 8px; align-items: center; font-size: 13.5px; color: var(--text); }
-.ab-sub .sv-ic { width: 16px; height: 16px; stroke: #f0bf00; flex: none; }
+.ab-sub li { position: relative; padding-left: 14px; font-size: 13.5px; color: var(--text-2); }
+.ab-sub li::before { content: ""; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; border-radius: 50%; border: 1px solid #ff3d33; }
 @media (max-width: 600px) { .ab-season { grid-template-columns: 1fr; } .ab-season-img { aspect-ratio: 16 / 9; } .ab-ch { grid-template-columns: 44px minmax(0, 1fr); gap: 12px; } .ab-dot { width: 44px; height: 44px; font-size: 16px; } .ab-ch::before { left: 21px; top: 44px; } }
 .ab-coach { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 @media (max-width: 1000px) { .ab-coach { grid-template-columns: 1fr; } }
@@ -333,6 +335,13 @@ CSS = '''<style>
 .ab-tiles a h3 { margin: 12px 18px 4px !important; flex: none !important; }
 .ab-tiles a p { margin: 0 18px; font-size: 14px; color: var(--text-2); }
 .ab-tiles a em { margin: auto 18px 18px; padding-top: 12px; font-style: normal; font-size: 13.5px; font-weight: 600; color: var(--green-text); }
+.ab-after { margin-top: 16px !important; }
+.ab-flag { border-width: 3px; }
+.ab-it { background: linear-gradient(90deg, #009246 0 33.4%, #fff 33.4% 66.6%, #ce2b37 66.6%) !important; }
+.ab-ie { background: linear-gradient(90deg, #169b62 0 33.4%, #fff 33.4% 66.6%, #ff883e 66.6%) !important; }
+.ab-world .sv-ic { width: 30px; height: 30px; stroke: var(--green-text); }
+.ab-plain li { padding-left: 28px !important; position: relative; }
+.ab-plain li::before { content: ""; position: absolute; left: 12px; top: 16px; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
 </style>'''
 
 if __name__ == '__main__':

@@ -311,3 +311,8 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   calendar on UK/USA/Canada. Individual Packages: Free Training Tools moved under the Vekta section. Triathlon cards:
   second buy button like cycling. Forms: a real test submission on staging /contact/ returned "Your submission was
   successful"; every page's form is the live Elementor form with 16px fields.
+- About round 3: hero titles without years (Matteo): 200+ race wins, European Road Champion Gran Fondo, Vice-World Champion
+  UCI Gran Fondo (road), Vice-World Champion UCI Gravel, Italian Gravel Champion; "UCI & Cycling Ireland Coach"; flags on
+  the story timeline; one bullet style for all seasons; no repeated trophy/chart icons; tiles = title + link.
+  Footer: "INSCYD Testing" link replaced by "Talent Programme". Homepage hero line names Matteo and his titles; the stats
+  say the 28 years and 200+ wins are Matteo's own.
