@@ -113,6 +113,10 @@ html .logos span.txt { width: 96px; height: 96px; padding: 8px; font-family: var
 /* shared social icons: Elementor's kit link colour would override them */
 .elementor-kit-6 .cc-social a { color: var(--text-2); }
 .elementor-kit-6 .cc-social a:hover, .elementor-kit-6 .cc-social a:active { color: var(--green-text); }
+/* a little more air between lines of the uppercase titles (Matteo) */
+html .cc h1, html .cl h1 { line-height: 1.08 !important; }
+html .cc h2, html .cc h3, html .cl h2, html .cl h3 { line-height: 1.14 !important; }
+html .cl h3.where { line-height: 1.4 !important; }
 /* menu: same as cigalacycling.com (brand.css 58-69) */
 html .cc .menu a, html .cc .dd-btn { border-radius: 0; background: none; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
 html .cc .menu a:hover, html .cc .menu a:active, html .cc .dd-btn:hover, html .cc .dd:focus-within .dd-btn, html .cc .dd.open .dd-btn { color: var(--green-text); background: none; box-shadow: inset 0 -2px 0 var(--green); }
