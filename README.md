@@ -225,3 +225,8 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Terms (564): live copy, H1 and H2s.
   - Privacy Policy is a **new page**, https://staging.coaching.cigalacycling.com/privacy-policy/ (ID in `stg-coaching/page-privacy-id.txt`), text in `coaching/privacy.txt`. It is a **draft for Matteo to check**: health data, retention periods and the list of providers (Calendly, Shopify, GoCardless, Vekta, TrainingPeaks, Skool, Shapo, nutritionist/mental coach). Yoast title is the default; the page is in the page sitemap.
   - The footer has Terms, Privacy Policy and Cookie settings; the cookie banner links to /privacy-policy/.
+
+## Tours schema (WPCode Header), 15 Nov
+- Matteo replaced the Organization + 6 Review block with `tours/wpcode-schema-without-reviews.html`: Organization with legalName and vatID, no self-serving reviews. Checked on / and /trips/: Organization, WebSite and Service; all JSON valid; no Review left; consent default still comes before gtag.js.
+- Optional, still to decide with Matteo: the Service catalogue lists 12 of 15 tours (no Maratona, Coast to Coast, Lake Como, Road page), and 3 URLs lack the trailing slash (dolomites, lake-garda-and-stelvio, lake-garda-gravel). Those URLs redirect, so they work.
+
