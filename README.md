@@ -74,7 +74,7 @@ B=https://staging.cigalacycling.com/wp-json
 curl -X POST $B/wp/v2/elementor_library/6   -H 'Content-Type: application/json' --data-binary @wp/out/lib-6.json    # kit (global CSS)
 curl -X POST $B/wp/v2/elementor_library/170 -H 'Content-Type: application/json' --data-binary @wp/out/lib-170.json  # header
 curl -X POST $B/wp/v2/elementor_library/228 -H 'Content-Type: application/json' --data-binary @wp/out/lib-228.json  # footer + banner + newsletter
-for id in 10 271 461 564; do curl -X POST $B/wp/v2/pages/$id -H 'Content-Type: application/json' --data-binary @wp/out/page-$id.json; done
+for id in 10 271 461 564 724; do curl -X POST $B/wp/v2/pages/$id -H 'Content-Type: application/json' --data-binary @wp/out/page-$id.json; done
 curl -X DELETE $B/elementor/v1/cache
 ```
 
@@ -86,6 +86,7 @@ Page IDs:
 | 271 | About |
 | 461 | Contact |
 | 564 | Terms & Conditions |
+| 724 | Privacy Policy (new, /privacy-policy/) |
 
 Elementor snippet 697 holds the head code: it sends a consent update for returning visitors who already accepted. Google's default consent line sits at the top of the WPCode Header box.
 

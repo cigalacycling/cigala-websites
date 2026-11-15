@@ -1,0 +1,44 @@
+H1: PRIVACY POLICY
+LI: Who we are
+P: This website, cigalacycling.com, is run by Cigala Cycling Limited, a company based in Co. Wicklow, Ireland ("we", "us"). We are the controller of the personal data described in this policy.
+For any privacy question or request, contact us at info@cigalacycling.com or +353 404 78107.
+Our other websites (tours.cigalacycling.com, coaching.cigalacycling.com and retail.cigalacycling.com) each have their own privacy policy covering the tools they use.
+LI: What we collect and why
+P: Contact form: your name, email address, phone number and message. We use them only to answer your enquiry. Legal basis: your request and our legitimate interest in replying to it.
+Newsletter: your email address, if you choose to subscribe. We use it to send you news, blogs, tips, special deals and tour dates. Legal basis: your consent, which you can withdraw at any time.
+Live chat: the messages and any details you choose to share in the chat. We use them to answer you. Legal basis: your request and our legitimate interest in replying to it.
+Website analytics and advertising: information about how you use the site, collected only if you accept cookies (see "Cookies" below). Legal basis: your consent.
+We do not store or maintain credit card details, nor do we share customer financial details with any third parties.
+LI: Cookies
+P: When you first visit, a banner asks whether you accept cookies. Until you choose, and if you reject, we do not set analytics or advertising cookies.
+If you accept, we use:
+- Google Analytics 4 (measurement ID G-955J6LHQ2P), provided by Google Ireland Limited, to understand how visitors use the site. Google Consent Mode keeps it in a cookie-free state until you accept.
+- Meta Pixel (ID 1986332861692106), provided by Meta Platforms Ireland Limited, to measure and improve our Facebook and Instagram advertising.
+- The OpenWidget live chat, provided by Text S.A. (Poland), which loads automatically after you accept. If you have not accepted, the chat only loads when you click "Chat with us".
+We also store your cookie choice and newsletter pop-up status in your browser (local storage), so we don't ask you again.
+You can change your choice at any time with the "Cookie settings" link at the bottom of every page.
+LI: Who receives your data
+P: We only share personal data with the service providers that help us run the site:
+- Hostinger, our website host (EU).
+- Brevo (Sendinblue SAS, France), which stores our newsletter list and sends our emails.
+- Google Ireland Limited (Google Analytics, and Google Fonts, which delivers the website's fonts and receives your IP address when a page loads).
+- Meta Platforms Ireland Limited (Meta Pixel, only if you accept cookies).
+- Text S.A. (OpenWidget live chat).
+Some of these providers may transfer data outside the European Economic Area, for example to the United States. Where they do, they use legal safeguards approved by the European Commission, such as the EU-US Data Privacy Framework or Standard Contractual Clauses.
+We never sell your personal data.
+LI: How long we keep it
+P: Contact form and chat enquiries: for as long as needed to deal with your enquiry, and no longer than two years afterwards.
+Newsletter: until you unsubscribe. Every email has an unsubscribe link.
+Analytics data: kept in Google Analytics in line with our retention settings, after which it is deleted automatically.
+LI: Your rights
+P: Under the GDPR you have the right to:
+- access the personal data we hold about you;
+- have it corrected or deleted;
+- object to or restrict how we use it;
+- receive it in a portable format;
+- withdraw your consent at any time (for example by unsubscribing, or through "Cookie settings").
+To use any of these rights, email info@cigalacycling.com. We will reply within one month.
+If you are not happy with how we handle your data, you can complain to the Data Protection Commission in Ireland (www.dataprotection.ie).
+LI: Changes to this policy
+P: We may update this policy when our website or services change. The latest version is always on this page.
+Last updated: November 2026.

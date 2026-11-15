@@ -3,7 +3,7 @@ S=__import__('os').path.dirname(__import__('os').path.dirname(__import__('os').p
 OUT=S+'home/'
 css=open(S+'brand.css').read()
 header=open(S+'part_header.html').read(); footer=open(S+'part_footer.html').read(); home_main=open(S+'part_home_main.html').read()
-LINKS={'https://cigalacycling.com/about/':'about.html','https://cigalacycling.com/contact/':'contact.html','https://cigalacycling.com/terms-conditions/':'terms.html','https://cigalacycling.com/':'./'}
+LINKS={'https://cigalacycling.com/about/':'about.html','https://cigalacycling.com/contact/':'contact.html','https://cigalacycling.com/terms-conditions/':'terms.html','https://cigalacycling.com/privacy-policy/':'privacy.html','https://cigalacycling.com/':'./'}
 def local(x):
     for k,v in LINKS.items():
         x=x.replace(f'href="{k}" target="_blank" rel="noopener"',f'href="{v}"')
@@ -73,6 +73,8 @@ EXTRA='''
 .legal-doc h3 { font-size: 22px; display: flex; gap: 12px; align-items: baseline; scroll-margin-top: 100px; }
 .legal-doc h3::before { content: counter(t, decimal-leading-zero); font-size: 14px; color: var(--red-text); font-family: var(--head); letter-spacing: .06em; }
 .legal-doc p { margin: 10px 0 0; max-width: 72ch; overflow-wrap: anywhere; }
+.legal-doc ul { margin: 8px 0 0; padding-left: 20px; max-width: 72ch; display: grid; gap: 4px; }
+.legal-doc ul li::marker { color: var(--green); }
 .legal-doc .waiver-head { margin-top: 28px; }
 .legal-doc .waiver-head h2 { font-size: clamp(24px, 3vw, 34px); }
 .legal-doc .waiver-head .provider { font-family: var(--body); text-transform: none; font-weight: 600; font-size: 15px; color: var(--text-2); letter-spacing: 0; margin-top: 14px; }
@@ -260,7 +262,12 @@ def slug(t): return re.sub(r'[^a-z0-9]+','-',t.lower()).strip('-')
 def render(lst):
     out=[]
     for it in lst:
-        ps=''.join(f'<p>{esc(p)}</p>' for p in it['p'])
+        ps=''; ul=[]
+        for p in it['p'] + [None]:
+            if p is not None and p.startswith('- '):
+                ul.append(f'<li>{esc(p[2:])}</li>'); continue
+            if ul: ps+='<ul>'+''.join(ul)+'</ul>'; ul=[]
+            if p is not None: ps+=f'<p>{esc(p)}</p>'
         out.append(f'<li><h3 id="{slug(it["t"])}">{esc(it["t"].title() if it["t"].isupper() else it["t"])}</h3>{ps}</li>')
     return '<ol>'+''.join(out)+'</ol>'
 toc=''.join(f'<a href="#{slug(i["t"])}">{esc(i["t"].title() if i["t"].isupper() else i["t"])}</a>' for i in items)+'<a href="#waiver">Liability waiver</a>'
@@ -288,4 +295,32 @@ terms=f'''
 </section>
 '''
 open(OUT+'terms.html','w').write(page('Cigala Cycling Terms','terms.html',terms))
+# ---------- PRIVACY POLICY (same style as Terms)
+pitems=[]; cur=None
+for ln in open(S+'privacy.txt').read().split('\n'):
+    if ln.startswith('H1:') or not ln.strip(): continue
+    if ln.startswith('LI:'): cur={'t':ln[3:].strip(),'p':[]}; pitems.append(cur); continue
+    if ln.startswith('P:'): ln=ln[2:]
+    cur['p'].append(ln.strip())
+ptoc=''.join(f'<a href="#{slug(i["t"])}">{esc(i["t"])}</a>' for i in pitems)
+privacy=f'''
+<div class="hero page-hero">
+  <div class="in">
+    <div class="crumbs"><a href="./">Home</a> / Privacy Policy</div>
+    <div class="eyebrow">Cigala Cycling Limited</div>
+    <h1>Privacy Policy</h1>
+    <div class="bar"></div>
+  </div>
+</div>
+<section style="padding-top:40px">
+  <div class="in terms">
+    <nav class="toc" aria-label="On this page"><b>On this page</b>{ptoc}</nav>
+    <div class="legal-doc">
+      <div class="panel">{render(pitems)}</div>
+    </div>
+  </div>
+</section>
+'''
+privacy=re.sub(r'<p>([A-Z][A-Za-z ]{2,40}):', r'<p><b>\1:</b>', privacy)
+open(OUT+'privacy.html','w').write(page('Cigala Cycling Privacy Policy','privacy.html',privacy))
 print('built', h2s, len(items), len(waiver))

@@ -32,7 +32,7 @@ def between(s, a, b, start=0):
 
 def fix_links(s):
     s = s.replace('href="./"', 'href="/"')
-    s = s.replace('href="about.html"', 'href="/about/"').replace('href="contact.html"', 'href="/contact/"').replace('href="terms.html"', 'href="/terms-conditions/"')
+    s = s.replace('href="about.html"', 'href="/about/"').replace('href="contact.html"', 'href="/contact/"').replace('href="terms.html"', 'href="/terms-conditions/"').replace('href="privacy.html"', 'href="/privacy-policy/"')
     for k, u in IMG.items():
         s = s.replace(f'src="img/{k}"', f'src="{u}"')
     s = re.sub(r'\s*target="_blank" rel="noopener"', lambda m: m.group(0), s)
@@ -100,6 +100,7 @@ pages = {}
 pages[10] = page_from_html(main_of('index.html'))
 pages[271] = page_from_html(main_of('about.html'))
 pages[564] = page_from_html(main_of('terms.html'))
+pages[724] = page_from_html(main_of('privacy.html'))  # Privacy Policy (created 15 Nov 2026)
 
 # contact: real Elementor form
 cm = main_of('contact.html')
@@ -157,8 +158,9 @@ ow = [x for x in scripts if 'openwidget' in x.lower()][0]
 ck = [x for x in scripts if 'cookieOptions' in x][0]
 ck = ck.replace('cookieOptions.btnTxtColor = "#000000"', 'cookieOptions.btnTxtColor = "#ffffff"').replace('cookieOptions.btnColor = "#f1d600"', 'cookieOptions.btnColor = "#009a44"').replace('cookieOptions.popupColor = "#000000"', 'cookieOptions.popupColor = "#0f1011"')
 import sys; sys.path.insert(0, S + 'shared/consent'); from render import banner as render_banner
-banner = render_banner(ga_id='G-955J6LHQ2P')
-ftr = ftr.replace('<a href="/terms-conditions/">Terms &amp; Conditions</a>', '<a href="/terms-conditions/">Terms &amp; Conditions</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
+banner = render_banner(ga_id='G-955J6LHQ2P', privacy_url='/privacy-policy/')
+ftr = ftr.replace('<a href="/privacy-policy/">Privacy Policy</a>', '<a href="/privacy-policy/">Privacy Policy</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
+assert 'data-cc-settings' in ftr
 nlband = open(S + 'wp/nl-band.html').read()
 nlpop = open(S + 'wp/nl-popup.html').read()
 assert ftr.startswith('<footer>')

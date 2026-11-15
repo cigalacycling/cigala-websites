@@ -199,6 +199,8 @@ footer ul a:hover { color: #fff; }
 .legal-doc h3 { font-size: 22px; display: flex; gap: 12px; align-items: baseline; scroll-margin-top: 100px; }
 .legal-doc h3::before { content: counter(t, decimal-leading-zero); font-size: 14px; color: var(--red-text); font-family: var(--head); letter-spacing: .06em; }
 .legal-doc p { margin: 10px 0 0; max-width: 72ch; overflow-wrap: anywhere; }
+.legal-doc ul { margin: 8px 0 0; padding-left: 20px; max-width: 72ch; display: grid; gap: 4px; }
+.legal-doc ul li::marker { color: var(--green); }
 .legal-doc .waiver-head { margin-top: 28px; }
 .legal-doc .waiver-head h2 { font-size: clamp(24px, 3vw, 34px); }
 .legal-doc .waiver-head .provider { font-family: var(--body); text-transform: none; font-weight: 600; font-size: 15px; color: var(--text-2); letter-spacing: 0; margin-top: 14px; }
