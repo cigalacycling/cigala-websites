@@ -554,7 +554,7 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>2026 IN NUMERI</h2><div class="bar"></div><h3 class="gn-sub">1348</h3><h4 class="gn-sub">Top 10</h4><h3 class="gn-sub">149</h3><h4 class="gn-sub">Terzi posti</h4><h3 class="gn-sub">129</h3><h4 class="gn-sub">Secondi Posti</h4><h3 class="gn-sub">164</h3><h4 class="gn-sub">Primi Posti</h4><h3 class="gn-sub">100%</h3><h4 class="gn-sub">Miglioramenti performance</h4><h3 class="gn-sub">&gt;90%</h3><h4 class="gn-sub">Obbiettivi raggiunti dai nostri atleti</h4></div>
+  <div class="in gn-txt gn-solo"><h2>2026 IN NUMERI</h2><div class="bar"></div><div class="stats nums"><div class="stat"><h3 class="n" data-count="1348">1348</h3><h4 class="l">Top 10</h4></div><div class="stat"><h3 class="n" data-count="149">149</h3><h4 class="l">Terzi posti</h4></div><div class="stat"><h3 class="n" data-count="129">129</h3><h4 class="l">Secondi Posti</h4></div><div class="stat"><h3 class="n" data-count="164">164</h3><h4 class="l">Primi Posti</h4></div><div class="stat"><h3 class="n" data-count="100%">100%</h3><h4 class="l">Miglioramenti performance</h4></div><div class="stat"><h3 class="n" data-count="&gt;90%">&gt;90%</h3><h4 class="l">Obbiettivi raggiunti dai nostri atleti</h4></div></div></div>
 </section>
 
 <section>
@@ -605,5 +605,18 @@ document.querySelectorAll('.dd').forEach(function (d) {
   b.addEventListener('click', function () { var o = d.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
   d.addEventListener('focusout', function (e) { if (!d.contains(e.relatedTarget)) { d.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
 });
-</script>
+</script><script>(function () {
+  document.querySelectorAll('.nums').forEach(function (g) {
+    if (!('IntersectionObserver' in window)) { g.classList.add('on'); return; }
+    new IntersectionObserver(function (es, ob) { if (es[0].isIntersecting) { g.classList.add('on'); ob.disconnect(); } }, { threshold: 0.4 }).observe(g);
+  });
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('[data-count]').forEach(function (el) {
+    var m = el.dataset.count.replace('&gt;', '>').match(/^(\D*)(\d+)(\D*)$/); if (!m) return;
+    var to = +m[2]; el.style.minWidth = el.offsetWidth + 'px'; el.textContent = m[1] + '0' + m[3];
+    new IntersectionObserver(function (es, ob) { if (!es[0].isIntersecting) return; ob.disconnect(); var t0 = performance.now();
+      (function step(t) { var k = Math.min(1, (t - t0) / 1600); el.textContent = m[1] + Math.round(to * (1 - Math.pow(1 - k, 3))) + m[3]; if (k < 1) requestAnimationFrame(step); })(t0);
+    }, { threshold: 0.4 }).observe(el);
+  });
+})();</script>
 </body></html>

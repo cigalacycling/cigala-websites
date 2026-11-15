@@ -268,8 +268,32 @@ def build_page(name, h2_changes=None, extra_main='', contact=None):
     if form or contact: blocks.append(contact_block(*(contact or ())))
     main = '\n\n'.join(b for b in blocks if b)
     h1_text = re.sub(r'\s+', ' ', LINK.sub(lambda m: m.group(1), h1)).strip()
+    js = ''
+    if name == 'preparatore-di-ciclismo-italia':   # Matteo 15 Nov: the coloured, counting number boxes on every page with them
+        def nums(m):
+            cells = ''.join(f'<div class="stat"><h3 class="n" data-count="{n}">{n}</h3><h4 class="l">{l}</h4></div>'
+                            for n, l in re.findall(r'<h3 class="gn-sub">(.*?)</h3><h4 class="gn-sub">(.*?)</h4>', m.group(2)))
+            return m.group(1) + f'<div class="stats nums">{cells}</div>'
+        main, k = re.subn(r'(<h2>2026 IN NUMERI</h2><div class="bar"></div>)((?:<h3 class="gn-sub">.*?</h3><h4 class="gn-sub">.*?</h4>)+)', nums, main)
+        assert k == 1
+        js = NUMS_JS
     build(name, path, main, f'New {path} in the Cigala Cycling design: live H1, H2s, copy and images kept.', h1=h1_text,
-          h2_changes=h2_changes, extra_css=GCSS)
+          h2_changes=h2_changes, extra_css=GCSS, extra_js=js)
+
+NUMS_JS = '''<script>(function () {
+  document.querySelectorAll('.nums').forEach(function (g) {
+    if (!('IntersectionObserver' in window)) { g.classList.add('on'); return; }
+    new IntersectionObserver(function (es, ob) { if (es[0].isIntersecting) { g.classList.add('on'); ob.disconnect(); } }, { threshold: 0.4 }).observe(g);
+  });
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('[data-count]').forEach(function (el) {
+    var m = el.dataset.count.replace('&gt;', '>').match(/^(\\D*)(\\d+)(\\D*)$/); if (!m) return;
+    var to = +m[2]; el.style.minWidth = el.offsetWidth + 'px'; el.textContent = m[1] + '0' + m[3];
+    new IntersectionObserver(function (es, ob) { if (!es[0].isIntersecting) return; ob.disconnect(); var t0 = performance.now();
+      (function step(t) { var k = Math.min(1, (t - t0) / 1600); el.textContent = m[1] + Math.round(to * (1 - Math.pow(1 - k, 3))) + m[3]; if (k < 1) requestAnimationFrame(step); })(t0);
+    }, { threshold: 0.4 }).observe(el);
+  });
+})();</script>'''
 
 if __name__ == '__main__':
     COUNTRY = ('cycling-coach-uk', 'cycling-coach-usa', 'cycling-coach-canada', 'nutrition', 'contact', 'book-1-on-1-session', 'bike-fitting', 'testing', 'about2', 'club-talk', 'talent-scout', 'coaching-vision', 'about')   # own builders: country, nutrition, services, about

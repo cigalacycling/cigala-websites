@@ -16,6 +16,8 @@ _c = NUT.CSS
 CAL_CSS = '<style>' + _c[_c.index('.cal-scroll {'):_c.index('.nu-upg-cta {')] + '''
 .pk-cal { margin: 0; display: grid; gap: 10px; }
 .pk-cal .cal-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pk-note { margin: 0; }
+.pk-note .cal-rm { font-size: 13px; }
 .pk-cal figcaption { color: var(--text-2); font-size: 14px; line-height: 1.55; }
 .pk-cal figcaption a { color: var(--green-text); font-weight: 600; }
 @media (max-width: 1100px) { .pk-cal .cal-row { grid-template-columns: repeat(3, 165px); } }
@@ -240,7 +242,8 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
 
 <section id="packages">
   <div class="in">
-    {notes_strip([('spots', E(intro[2])), ('currency', E(intro[1])), ('platform', 'For Advanced &amp; Premium Packages Vekta membership is included (worth €19.99/ month)<br>On demand Training Peaks Premium is also an option.')])}
+    {notes_strip([('spots', 'I coach a limited number of athletes, so every one of them gets my full attention: a one-to-one, personal coaching experience, never a template.'),   # Matteo 15 Nov: no "get in touch before"; a unique experience
+                 ('currency', E(intro[1])), ('platform', 'For Advanced &amp; Premium Packages Vekta membership is included (worth €19.99/ month)<br>On demand Training Peaks Premium is also an option.')])}
     <div class="pkgs">
       {cards}
     </div>
@@ -309,6 +312,7 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
     <div class="vk-side">
       <figure class="nu-cal pk-cal">
         <div class="cal-scroll" tabindex="0" aria-label="Example days from an athlete's calendar, with nutrition"><div class="cal-row">{NUT.cal_days(('21', '24', '26'))}</div></div>
+        <div class="cal-note pk-note"><div class="cal-nh"><span>Note</span><b>Nutrition</b><em>Breakfast · sample</em></div><p class="cal-rt">{E(NUT.BREAKFAST[0])}</p><p class="cal-rm">{E(NUT.BREAKFAST[1])}</p><p class="cal-rmac">{E(NUT.BREAKFAST[2])}</p><p class="cal-rm">{E(', '.join(x if i == 0 else x[0].lower() + x[1:] for i, x in enumerate(NUT.BREAKFAST[3])))}</p></div>
         <figcaption>Working 1-to-1 with our sports nutritionist, Marine Lenehan? Her nutrition notes, daily macros and carbs per hour sit in the same calendar as your sessions. <a href="{C}/nutrition/#upgrade" {EXT}>Read more about nutrition coaching →</a></figcaption>
       </figure>
       <div class="vk-logos">

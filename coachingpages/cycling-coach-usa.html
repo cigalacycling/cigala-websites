@@ -543,6 +543,10 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .pkg .pkg-lab { color: #ff3d33; }
 /* Matteo 15 Nov (later): ticks back to green, the X stays red */
 .pkg-buy2 { margin-top: 12px; }
+.addon-aj { display: flex; align-items: center; gap: 14px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--border); }
+.addon-aj img { flex: none; width: 110px; height: auto; background: #fff; border-radius: 8px; padding: 8px; }
+.addon-aj span { font-size: 14px; color: var(--text-2); }
+.addon-aj b { color: var(--text); }
 .pkg-buy2 .pay2 { min-height: 0; padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
 .pkg.sold { border-color: rgba(255,61,51,.55); background: repeating-linear-gradient(135deg, rgba(255,61,51,.035) 0 14px, transparent 14px 28px), var(--panel-grad), var(--panel); }
 .pkg.sold .pkg-badge.sold { background: #e10600; border-color: #e10600; color: #fff; }
@@ -721,6 +725,8 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 
 .pk-cal { margin: 0; display: grid; gap: 10px; }
 .pk-cal .cal-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pk-note { margin: 0; }
+.pk-note .cal-rm { font-size: 13px; }
 .pk-cal figcaption { color: var(--text-2); font-size: 14px; line-height: 1.55; }
 .pk-cal figcaption a { color: var(--green-text); font-weight: 600; }
 @media (max-width: 1100px) { .pk-cal .cal-row { grid-template-columns: repeat(3, 165px); } }
