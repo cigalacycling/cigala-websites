@@ -87,7 +87,7 @@ tile = open(ROOT + 'wp/topo-tile-min.svg').read()
 tile_uri = 'data:image/svg+xml,' + urllib.parse.quote(tile, safe=' =:/(),.-')
 css += '''
 /* ---- WordPress / Elementor integration (Tours) ---- */
-body:has(.cc-page) { background: linear-gradient(rgba(8,9,10,.6),rgba(8,9,10,.6)), #08090a url("''' + tile_uri + '''") top center / auto 3000px repeat-y !important; overflow-x: hidden; }
+body:has(.cc-page), body:has(.cl-page) { background: linear-gradient(rgba(8,9,10,.6),rgba(8,9,10,.6)), #08090a url("''' + tile_uri + '''") top center / auto 3000px repeat-y !important; overflow-x: hidden; }
 html .cc { background: transparent; }
 [data-elementor-type="header"]:has(.cc) { position: sticky; top: 0; z-index: 50; }
 html .cc .nav { position: relative; top: 0; }
@@ -103,6 +103,10 @@ html .cc button, html .cc .btn { text-transform: none; letter-spacing: .02em; }
 html .cc .dd-btn { text-transform: uppercase; letter-spacing: .04em; }
 html body #cc-consent button, html body #cc-chat { text-transform: none; letter-spacing: normal; font-family: Montserrat, system-ui, sans-serif; }
 html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current { color: var(--text); box-shadow: inset 0 -2px 0 var(--red); }
+html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current, html .cc .dd .dd-btn { border-radius: 0; }
+html .cc .dd-btn.is-current, html .cc .dd:hover .dd-btn.is-current { background: none; }
+html .cc .dd-btn { display: inline-flex; align-items: center; gap: 4px; line-height: inherit; font-size: 12.5px; }
+html .cc footer h4 { font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); line-height: 1.4; }
 html .cc .dd-menu a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); }
 html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
 html .cc .burger nav a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }

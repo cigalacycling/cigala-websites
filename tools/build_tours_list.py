@@ -157,7 +157,7 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 '''
 css = scope_css(design_css + EXTRA, 'html .cl')
 css += '''
-body:has(.cl-page) { background: #08090a !important; overflow-x: hidden; }
+body:has(.cl-page) { overflow-x: hidden; }   /* topo background: set in build_tours_wp.py, same as the homepage */
 body:has(.cl-page) .site-header, body:has(.cl-page) .site-footer { display: none; }
 html .cl h1, html .cl h2, html .cl h3, html .cl h4 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.04; }
 html .cl p, html .cl li, html .cl a, html .cl span, html .cl div, html .cl button { font-family: var(--body); }

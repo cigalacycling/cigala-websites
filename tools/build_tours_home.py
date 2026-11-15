@@ -311,7 +311,7 @@ WHY_ICONS = {'01': '<circle cx="9" cy="8" r="3.2"/><path d="M3 19c0-3.3 2.7-5.5 
 for n, svg in WHY_ICONS.items():
     rep(f'<div class="num">{n}</div>', f'<div class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">{svg}</svg></div>')
 # one quiet line under the signature
-rep('<p class="sig">Matteo Cigala<span>Tours Director</span></p>', '<p class="sig">Matteo Cigala<span>, Tours Director</span></p>')
+# signature, then 'Matteo Cigala', then 'Tours Director' underneath (Matteo, 15 Nov): the design's two-line format stays
 
 # more FAQs (facts from the live terms, custom tours and Dolomites pages)
 FAQ = [
@@ -335,8 +335,8 @@ CSS2 = """
 .story .quote { margin-bottom: 18px; }
 .brand img { border-radius: 0; }   /* Matteo's logo file has its own square white border */
 .story img.signature { display: block; width: 150px; max-width: 45%; height: auto; margin: 22px 0 0 -4px; opacity: .92; }
-.story img.signature + .sig { margin-top: 6px !important; font-size: 13px; font-weight: 600; color: var(--text-2); }
-.story img.signature + .sig span { display: inline; font-size: 13px; font-weight: 500; color: var(--text-3); }
+.story img.signature + .sig { margin-top: 6px !important; font-size: 14px; }
+.story img.signature + .sig span { display: block; font-size: 12.5px; margin-top: 2px; }
 .burger details.sub { border-bottom: 1px solid var(--border); }
 .burger details.sub > summary { border: 0; border-radius: 0; background: none; list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 11px 0; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; color: var(--text); }
 .burger details.sub > summary::-webkit-details-marker { display: none; }
@@ -349,6 +349,13 @@ CSS2 = """
 .why .ico { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
 .why .ico svg { width: 24px; height: 24px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .why h3 { margin-top: 16px; }
+@media (min-width: 901px) {
+  .hero::after { background: linear-gradient(90deg, rgba(8,9,10,.72) 0%, rgba(8,9,10,.45) 50%, rgba(8,9,10,.2) 100%), linear-gradient(180deg, rgba(8,9,10,.3) 0%, rgba(8,9,10,.2) 40%, rgba(8,9,10,.92) 100%); }
+}
+.hero h1, .hero .lede { text-shadow: 0 2px 18px rgba(0,0,0,.55); }
+.finder { margin-bottom: 26px; }
+#tour-grid .tour img { filter: brightness(.82); }
+#tour-grid .tour::before { content: ""; position: absolute; inset: 0 0 auto; height: 38%; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,0)); }
 .stat .n i { font-size: .6em; margin-left: .14em; vertical-align: .38em; }
 .story p { margin-bottom: 16px; }
 .band .tx .eyebrow + h2, .band .tx h2 + .bar { margin-top: 0; }
