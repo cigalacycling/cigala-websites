@@ -507,8 +507,12 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .nums .stat:nth-child(-n+4) .n { color: var(--text); }
 /* Matteo 15 Nov: "What you get" in red (green got lost), a second button at the end of each card, Premium clearly sold out */
 .pkg .pkg-lab { color: #ff3d33; }
-.pkg .ticks li:not(.no):not(.no-lab)::before { background: rgba(225,6,0,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%23ff3d33' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+/* Matteo 15 Nov (later): ticks back to green, the X stays red */
 .pkg-buy2 { margin-top: 12px; }
+.addon-aj { display: flex; align-items: center; gap: 14px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--border); }
+.addon-aj img { flex: none; width: 110px; height: auto; background: #fff; border-radius: 8px; padding: 8px; }
+.addon-aj span { font-size: 14px; color: var(--text-2); }
+.addon-aj b { color: var(--text); }
 .pkg-buy2 .pay2 { min-height: 0; padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
 .pkg.sold { border-color: rgba(255,61,51,.55); background: repeating-linear-gradient(135deg, rgba(255,61,51,.035) 0 14px, transparent 14px 28px), var(--panel-grad), var(--panel); }
 .pkg.sold .pkg-badge.sold { background: #e10600; border-color: #e10600; color: #fff; }
@@ -764,7 +768,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
         <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
         <div class="pkg-buy2"><a class="btn btn-go pay pay2" href="https://pay.gocardless.com/BRT0004AR2PG9DT" target="_blank" rel="noopener">Subscribe to Advanced · €149/mo</a></div>
       </article><article class="pkg sold" id="pkg-premium">
-        <span class="pkg-badge sold">Monthly (SOLD OUT!)</span>
+        
         <div class="pkg-term">3 months subscription (€10 off for 6 mo)</div>
         <h2>Premium</h2>
         <p class="pkg-for">The closest coaching: daily contact, feedback and analysis, and a weekly catch up call.</p>
@@ -793,6 +797,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
         <svg class="addon-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
         <h3 class="h-sm">Talent programme</h3>
         <p>Underage, Juniors &amp; U23 will avail of a 20% student discount for all packages.</p>
+        <p class="addon-aj"><img src="img/packages-aj-allsports-logo.webp" alt="A&amp;J All Sports Agency logo" loading="lazy" width="120" height="48"><span>Coached by a talent scout for <b>A&amp;J AllSports</b>, the agency of Tadej Pogačar and other WorldTour stars.</span></p>
         <p>See our talent programme for more information <a href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener"><b>HERE</b></a></p>
         <a class="arrow-link" href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener">Talent programme →</a>
       </div>

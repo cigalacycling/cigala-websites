@@ -541,7 +541,7 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .nums .stat:nth-child(-n+4) .n { color: var(--text); }
 /* Matteo 15 Nov: "What you get" in red (green got lost), a second button at the end of each card, Premium clearly sold out */
 .pkg .pkg-lab { color: #ff3d33; }
-.pkg .ticks li:not(.no):not(.no-lab)::before { background: rgba(225,6,0,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%23ff3d33' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+/* Matteo 15 Nov (later): ticks back to green, the X stays red */
 .pkg-buy2 { margin-top: 12px; }
 .pkg-buy2 .pay2 { min-height: 0; padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
 .pkg.sold { border-color: rgba(255,61,51,.55); background: repeating-linear-gradient(135deg, rgba(255,61,51,.035) 0 14px, transparent 14px 28px), var(--panel-grad), var(--panel); }
@@ -861,7 +861,7 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
         <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
         <div class="pkg-buy2"><a class="btn btn-go pay pay2" href="https://pay.gocardless.com/BRT01KYX0PYSQ9GTXP9NCA9KXXVJJ" target="_blank" rel="noopener">Subscribe to Advanced · £135/mo</a></div>
       </article><article class="pkg sold" id="pkg-premium">
-        <span class="pkg-badge sold">Monthly (SOLD OUT!)</span>
+        
         <div class="pkg-term">3 months subscription (£10 off for 6 mo)</div>
         <h2>Premium</h2>
         <p class="pkg-for">The closest coaching: daily contact, feedback and analysis, and a weekly catch up call.</p>

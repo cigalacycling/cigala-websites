@@ -165,7 +165,7 @@ def build_country(key):
         P.card('premium', 'Premium', fix(prem_sub), pp, pper, '',
                '<a class="btn btn-go pay" href="#contact" data-waitlist="Premium">Join the waiting list</a>'
                f'<span class="pay-note">Premium 3 months {c["cur"]}{nump(p3)}{cur_note}/mo · 6 months {c["cur"]}{nump(p6)}{cur_note}/mo</span>',
-               '<span class="pkg-badge sold">Monthly (SOLD OUT!)</span>', 'sold'),
+               '', 'sold'),   # Matteo 15 Nov: no sold-out badge, the SOLD OUT stamp is enough
     ])
     # feature lines in this page's currency (the live country lists use these values)
     vals = dict(re.findall(r'^LI: (Access to our online Community|Vekta membership included) \(value ([^)]*)\)', '\n'.join(T), re.M))

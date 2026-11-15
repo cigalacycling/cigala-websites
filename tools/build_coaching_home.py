@@ -183,5 +183,19 @@ No matter where you are in the world, we coach remotely in different countries, 
 </section>'''
 
 
-build('home', '/', MAIN, 'New Coaching homepage in the Cigala Cycling brand. Copy, H1 and H2s are the live ones; links go to the live pages until staging is built.', extra_js=REVIEWS_JS, extra_css=FT_CSS,
+# Matteo 15 Nov: the four squares under the hero were plain: colour, a hover lift and a count-up
+HS_CSS = """<style>
+.stats-wrap .stat { --c: #34c46a; position: relative; transition: transform .25s, box-shadow .25s, background .25s; cursor: default; }
+.stats-wrap .stat:nth-child(2) { --c: #f0bf00; } .stats-wrap .stat:nth-child(3) { --c: #ff3d33; } .stats-wrap .stat:nth-child(4) { --c: #5f86c9; }
+.stats-wrap .stat::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); transform: scaleX(.18); transform-origin: left; transition: transform .35s; }
+.stats-wrap .stat:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,.45), 0 0 0 1px var(--c); background: color-mix(in srgb, var(--c) 10%, transparent); z-index: 1; }
+.stats-wrap .stat:hover::before { transform: scaleX(1); }
+.stats-wrap .stat .n { transition: color .25s; }
+.stats-wrap .stat:hover .n { color: var(--c); }
+.stats-wrap .stat:hover .l { color: var(--text); }
+</style>"""
+HS_JS = """<script>(function(){var l=document.querySelectorAll('.stats-wrap .stat .n');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+l.forEach(function(el){var m=el.textContent.match(/^([\\d,]+)(\\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
+new IntersectionObserver(function(es,ob){if(!es[0].isIntersecting)return;ob.disconnect();var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1500);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},{threshold:.5}).observe(el);});})();</script>"""
+build('home', '/', MAIN, 'New Coaching homepage in the Cigala Cycling brand. Copy, H1 and H2s are the live ones; links go to the live pages until staging is built.', extra_js=REVIEWS_JS + HS_JS, extra_css=FT_CSS + HS_CSS,
       h2_changes={'drop': ['IRELAND']})   # the hidden 'IRELAND' card heading went with the destination grid (Matteo 15 Nov: no tours grid on coaching)

@@ -149,7 +149,7 @@ cards = ''.join([
          # Premium is sold out: Matteo chose a waiting list instead of the GoCardless links (15 Nov 2026)
          '<a class="btn btn-go pay" href="#contact" data-waitlist="Premium">Join the waiting list</a>'
          '<span class="pay-note">Premium 3 months €249/mo · 6 months €239/mo</span>',
-         '<span class="pkg-badge sold">Monthly (SOLD OUT!)</span>', 'sold'),
+         '', 'sold'),   # Matteo 15 Nov: no "Monthly (SOLD OUT!)" badge, the SOLD OUT stamp is enough
 ])
 
 # ---------- testimonials (live quotes; photos had no alt text, see SEO-DECISIONS.md) ----------
@@ -260,6 +260,7 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
         <svg class="addon-ic" viewBox="0 0 24 24" aria-hidden="true">{ICON['rocket']}</svg>
         <h3 class="h-sm">Talent programme</h3>
         <p>Underage, Juniors &amp; U23 will avail of a 20% student discount for all packages.</p>
+        <p class="addon-aj"><img src="{conv('coaching/matteo-uploads/aj-allsports-logo.png', 'packages-aj-allsports-logo', 600)}" alt="A&amp;J All Sports Agency logo" loading="lazy" width="120" height="48"><span>Coached by a talent scout for <b>A&amp;J AllSports</b>, the agency of Tadej Pogačar and other WorldTour stars.</span></p>
         <p>See our talent programme for more information <a href="{C}/talent-scout/" {EXT}><b>HERE</b></a></p>
         <a class="arrow-link" href="{C}/talent-scout/" {EXT}>Talent programme →</a>
       </div>
@@ -447,8 +448,12 @@ PCSS = '''<style>
 .nums .stat:nth-child(-n+4) .n { color: var(--text); }
 /* Matteo 15 Nov: "What you get" in red (green got lost), a second button at the end of each card, Premium clearly sold out */
 .pkg .pkg-lab { color: #ff3d33; }
-.pkg .ticks li:not(.no):not(.no-lab)::before { background: rgba(225,6,0,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%23ff3d33' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+/* Matteo 15 Nov (later): ticks back to green, the X stays red */
 .pkg-buy2 { margin-top: 12px; }
+.addon-aj { display: flex; align-items: center; gap: 14px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--border); }
+.addon-aj img { flex: none; width: 110px; height: auto; background: #fff; border-radius: 8px; padding: 8px; }
+.addon-aj span { font-size: 14px; color: var(--text-2); }
+.addon-aj b { color: var(--text); }
 .pkg-buy2 .pay2 { min-height: 0; padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
 .pkg.sold { border-color: rgba(255,61,51,.55); background: repeating-linear-gradient(135deg, rgba(255,61,51,.035) 0 14px, transparent 14px 28px), var(--panel-grad), var(--panel); }
 .pkg.sold .pkg-badge.sold { background: #e10600; border-color: #e10600; color: #fff; }

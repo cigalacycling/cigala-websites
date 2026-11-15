@@ -71,7 +71,7 @@ cards = ''.join([
     card('premium', 'Premium', '3 months subscription (€10 off for 6 mo)', '€249', '/mo', '',
          '<a class="btn btn-go pay" href="#contact" data-waitlist="Triathlon Premium">Join the waiting list</a>'
          '<span class="pay-note">Premium 3 months €249/mo · 6 months €239/mo</span>',
-         '<span class="pkg-badge sold">Monthly (SOLD OUT!)</span>', 'sold'),
+         '', 'sold'),   # Matteo 15 Nov: no sold-out badge, the SOLD OUT stamp is enough
 ])
 Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria-label="Not included">✗</span>'
 ROWS = [

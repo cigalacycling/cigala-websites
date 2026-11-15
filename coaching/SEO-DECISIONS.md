@@ -270,3 +270,10 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   shorter events photo. All live copy, lists and FAQ questions kept.
   Not changed: the live quotes under invented names ("William - Wales, UK", "Peter - New York, UK"...) stay off the pages
   (see section 10); real names and places stay. Matteo can send real clients from each country to add.
+- Matteo's answers (15 Nov, late): A&J logo and team photo supplied (talent page; logo keeps the live alt); wins checked on
+  aejallsports.ch "About us" counters: Tour 6 -> 7, Vuelta 3 -> 4, World titles 44 -> 45, Giro 6 unchanged; source line added.
+  Club Talk: Matteo's presentation photo. Footer tagline H2 "Train Smarter, Ride Faster" -> "TRAIN SMARTER. RIDE FASTER."
+  (every page). Shopify "One-on-One Sessions": Navan, Co.Meath -> Wicklow Town, Co.Wicklow (live store, Matteo's answer).
+  Vivify articles: Yoast canonical -> the original vivifysports.com post (7 posts, tools/coaching_vivify_canonical.py).
+  Packages: "Monthly (SOLD OUT!)" badge removed (SOLD OUT stamp on the card instead), second buy button under each card,
+  A&J line in the Talent box; Vision "Over a decade" image smaller.
