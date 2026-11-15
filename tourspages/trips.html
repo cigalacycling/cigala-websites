@@ -430,25 +430,26 @@ html .cl .tgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)
 html .cl .tcard { display: flex; flex-direction: column; min-width: 0; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
 html .cl .tcard:hover { border-color: rgba(0,154,68,.5); }
 html .cl .tcard .ph { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
-html .cl .tcard .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+html .cl .tcard .ph img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.95); transition: transform .5s ease; }
 html .cl .tcard:hover .ph img { transform: scale(1.04); }
 html .cl .tcard .ph .tags { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; margin: 0; }
 html .cl .tcard .tag { display: inline-flex; align-items: center; white-space: nowrap; line-height: 1.2; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.78); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 10px; }
 html .cl .tcard .tag::before { content: ""; flex: none; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
 html .cl .tcard .tag.gravel::before { background: var(--gravel); }
-html .cl .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 22px; min-width: 0; }
+html .cl .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
 html .cl .tcard .entry { width: fit-content; margin: 0; }
 html .cl .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
-html .cl .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -4px; }
+html .cl .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -6px; }
 html .cl .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
 html .cl .tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
 html .cl .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+html .cl .tcard .meta { margin: 2px 0; }
 html .cl .tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
 html .cl .tcard .desc.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 html .cl .tcard .more-txt { align-self: flex-start; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 0; cursor: pointer; margin-top: -4px; }
 html .cl .tcard .bottom { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); display: grid; gap: 10px; }
 html .cl .tcard .price { font-family: var(--head); font-size: 26px; line-height: 1.1; color: var(--text); }
-html .cl .tcard .price small { display: block; padding: 0; margin-left: 0; font-family: var(--body); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+html .cl .tcard .price small { display: block; padding: 0; margin: 0 0 8px !important; font-family: var(--body); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
 html .cl .tcard .early { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; }
 html .cl .tcard .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
 html .cl .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
@@ -631,6 +632,9 @@ html .cc .legal { border-top: 1px solid var(--border); }
 html .cc .legal .in { display: flex; flex-wrap: wrap; gap: 6px 20px; padding-block: 16px; font-size: 12px; color: var(--text-4); grid-template-columns: none; }
 html .cc .hero h1 { font-size: clamp(38px, 5.2vw, 72px); max-width: 22ch; }
 html .cc #tours { scroll-margin-top: 70px; }
+@media (min-width: 901px) {html .cc section#tours { padding-top: 52px; }
+ }
+html .cc #tour-grid .tour p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 html .cc .finder { margin-top: 26px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; align-items: stretch; background: rgba(15,16,17,.9); border: 1px solid var(--border-strong); border-radius: 16px; padding: 8px; gap: 0; max-width: 980px; box-shadow: 0 18px 50px rgba(0,0,0,.45); backdrop-filter: blur(6px); }
 html .cc .fi { display: grid; gap: 2px; padding: 8px 14px; border-right: 1px solid var(--border); min-width: 0; position: relative; }
 html .cc .fi span { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red); }
@@ -759,11 +763,7 @@ html .cc .tour:hover img { transform: none; }
     <nav class="menu" aria-label="Main">
       <a href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">About</a>
       <a href="https://tours.cigalacycling.com/destinations/" target="_blank" rel="noopener">Destinations</a>
-      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Bike tours <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All tours</a>
-        <a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road tours</a>
-        <a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel tours</a>
-        <a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo tours</a>
-        <a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian tours</a></div></div>
+      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Bike tours <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All Tours</a><a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road Tours</a><a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel Tours</a><a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo Tours</a><a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian Tours</a></div></div>
       <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a>
       <a href="https://tours.cigalacycling.com/guides/" target="_blank" rel="noopener">Guides</a>
       <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching</a>
@@ -778,11 +778,11 @@ html .cc .tour:hover img { transform: none; }
         <a href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">About us</a>
         <a href="https://tours.cigalacycling.com/destinations/" target="_blank" rel="noopener">Destinations</a>
         <details class="sub"><summary>Bike tours</summary><div class="sub-links">
-            <a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All tours</a>
-        <a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road tours</a>
-        <a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel tours</a>
-        <a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo tours</a>
-        <a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian tours</a>
+            <a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All Tours</a>
+            <a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road Tours</a>
+            <a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel Tours</a>
+            <a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo Tours</a>
+            <a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian Tours</a>
           </div></details>
         <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a>
         <a href="https://tours.cigalacycling.com/guides/" target="_blank" rel="noopener">Cycling guides</a>
@@ -1051,7 +1051,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
     </div>
-    <p class="footnote">*Prices in GBP or USD could be slightly different at the time of booking based on the current exchange rate. By signing up to any of our Cycling Holidays (public or custom) you accept our Terms &amp; Conditions. <a href="https://tours.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">View T&amp;C</a></p>
+    <p class="footnote">*Prices in GBP or USD could be slightly different at the time of booking based on the current exchange rate. On our booking page you can choose your currency, see the live price in it and pay in the currency you prefer. By signing up to any of our Cycling Holidays (public or custom) you accept our Terms &amp; Conditions. <a href="https://tours.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">View T&amp;C</a></p>
   </div>
 </section>
 <section>
@@ -1086,12 +1086,12 @@ html .cc .tour:hover img { transform: none; }
     <div>
       <h4>Tours</h4>
       <ul>
-        <li><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All tours</a></li>
-        <li><a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road tours</a></li>
-        <li><a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel tours</a></li>
-        <li><a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo tours</a></li>
-        <li><a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian tours</a></li>
-        <li><a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom Tours</a></li>
       </ul>
     </div>
     <div>

@@ -81,14 +81,14 @@ for a, b in H2_FIX:
 
 # ---------- menu ----------
 MENU_TOURS = [   # order from Matteo (15 Nov): all, road, gravel, gran fondo, italian, custom
-    ('All tours', '/trips/'),
-    ('Road tours', '/trips/road-trips/'),
-    ('Gravel tours', '/trips/gravel-trips/'),
-    ('Gran Fondo tours', '/trips/granfondo-trips/'),
-    ('Italian tours', '/italian-trips/'),
-    ('Custom tours', '/trips/private-trips/'),
+    ('All Tours', '/trips/'),
+    ('Road Tours', '/trips/road-trips/'),
+    ('Gravel Tours', '/trips/gravel-trips/'),
+    ('Gran Fondo Tours', '/trips/granfondo-trips/'),
+    ('Italian Tours', '/italian-trips/'),
+    ('Custom Tours', '/trips/private-trips/'),
 ]
-MENU_SUB = [m for m in MENU_TOURS if m[0] != 'Custom tours']   # Custom tours is its own menu item (Matteo, 15 Nov)
+MENU_SUB = [m for m in MENU_TOURS if m[0] != 'Custom Tours']   # Custom tours is its own menu item (Matteo, 15 Nov)
 dd = ''.join(f'<a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_SUB)
 s = s.replace(f'<a href="{L}/trips/" {EXT}>Bike tours</a>',
               f'<div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Bike tours <span aria-hidden="true">▾</span></button><div class="dd-menu">{dd}</div></div>')
@@ -106,7 +106,7 @@ BLURB = {
     'tour-of-flanders-experience': 'Ride it. Watch it. Live it. Take on the cobbles in the ultimate cycling experience.',
     'cyprus-crossing-gravel': 'A lifetime trip in one of the most beautiful islands in Europe.',
     'tuscany-epic-gravel': 'An incredible trip across Italy’s best region for gravel, on the Tuscany Trail route.',
-    'maratona-dles-dolomites': 'Official Tour Operator of the Maratona dles Dolomites – Enel, for the 40th edition on 4 July 2027.',
+    'maratona-dles-dolomites': 'Official Tour Operator for the 40th edition, 4 July 2027.',
     'dolomites': 'Giau, Gardena, Sella, Pordoi, Falzarego, Fedaia and Tre Cime di Lavaredo.',
     'italian-alps': 'Iconic Giro climbs including Stelvio, Gavia, Mortirolo and Cancano.',
     'alpine-gravel-escape': 'Take on the Stelvio Gravel and explore the Alps on remote gravel roads and mountain passes.',
@@ -117,7 +117,7 @@ BLURB = {
     'italys-coast-to-coast': 'From the Tyrrhenian Sea to the Adriatic Sea, through Tuscany, Umbria and Marche.',
     'lake-como-gran-fondo-il-lombardia': 'Discover Lake Como, watch the pros and ride the Gran Fondo “Il Lombardia”.',
 }
-SHORT = {'Discover the Algarve & Gran Fondo': 'Algarve & Gran Fondo', 'Chianti & Gran Fondo Strade Bianche': 'Chianti & Strade Bianche',
+SHORT = {'Maratona dles Dolomites – Enel': 'Maratona dles Dolomites', 'Discover the Algarve & Gran Fondo': 'Algarve & Gran Fondo', 'Chianti & Gran Fondo Strade Bianche': 'Chianti & Strade Bianche',
          'Cyprus Crossing | Gravel': 'Cyprus Crossing', 'Tuscany Epic | Gravel': 'Tuscany Epic',
          'Lake Garda & Day Trip to Stelvio': 'Lake Garda & Stelvio', 'Lake Como, Gran Fondo Il Lombardia & Pro Race': 'Lake Como & Il Lombardia'}
 
@@ -185,6 +185,8 @@ CSS = '''
 /* ---- finder, menu dropdown, tour facts (15 Nov 2026) ---- */
 .hero h1 { font-size: clamp(38px, 5.2vw, 72px); max-width: 22ch; }
 #tours { scroll-margin-top: 70px; }
+@media (min-width: 901px) { section#tours { padding-top: 52px; } }
+#tour-grid .tour p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .finder { margin-top: 26px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; align-items: stretch; background: rgba(15,16,17,.9); border: 1px solid var(--border-strong); border-radius: 16px; padding: 8px; gap: 0; max-width: 980px; box-shadow: 0 18px 50px rgba(0,0,0,.45); backdrop-filter: blur(6px); }
 .fi { display: grid; gap: 2px; padding: 8px 14px; border-right: 1px solid var(--border); min-width: 0; position: relative; }
 .fi span { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red); }
@@ -204,7 +206,7 @@ CSS = '''
 .reset:hover { color: #fff; }
 .none { color: var(--text-2); margin: 0 0 18px; }
 .none a { color: var(--green-text); }
-.tour .entry { display: flex; width: fit-content; background: rgba(8,9,10,.72); backdrop-filter: blur(4px); }
+.tour .entry { display: flex; width: fit-content; max-width: 100%; white-space: nowrap; font-size: 10.5px; letter-spacing: .05em; background: rgba(8,9,10,.72); backdrop-filter: blur(4px); }
 .tour .when { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--red); border-radius: 6px; padding: 4px 9px; margin-bottom: 10px; }
 .tour .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: -4px 0 12px; font-size: 12.5px; font-weight: 600; color: var(--text-3); }
 .tour[hidden] { display: none; }

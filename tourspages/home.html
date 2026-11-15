@@ -206,6 +206,8 @@ footer ul a:hover { color: #fff; }
 /* ---- finder, menu dropdown, tour facts (15 Nov 2026) ---- */
 .hero h1 { font-size: clamp(38px, 5.2vw, 72px); max-width: 22ch; }
 #tours { scroll-margin-top: 70px; }
+@media (min-width: 901px) { section#tours { padding-top: 52px; } }
+#tour-grid .tour p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .finder { margin-top: 26px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; align-items: stretch; background: rgba(15,16,17,.9); border: 1px solid var(--border-strong); border-radius: 16px; padding: 8px; gap: 0; max-width: 980px; box-shadow: 0 18px 50px rgba(0,0,0,.45); backdrop-filter: blur(6px); }
 .fi { display: grid; gap: 2px; padding: 8px 14px; border-right: 1px solid var(--border); min-width: 0; position: relative; }
 .fi span { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red); }
@@ -225,7 +227,7 @@ footer ul a:hover { color: #fff; }
 .reset:hover { color: #fff; }
 .none { color: var(--text-2); margin: 0 0 18px; }
 .none a { color: var(--green-text); }
-.tour .entry { display: flex; width: fit-content; background: rgba(8,9,10,.72); backdrop-filter: blur(4px); }
+.tour .entry { display: flex; width: fit-content; max-width: 100%; white-space: nowrap; font-size: 10.5px; letter-spacing: .05em; background: rgba(8,9,10,.72); backdrop-filter: blur(4px); }
 .tour .when { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--red); border-radius: 6px; padding: 4px 9px; margin-bottom: 10px; }
 .tour .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: -4px 0 12px; font-size: 12.5px; font-weight: 600; color: var(--text-3); }
 .tour[hidden] { display: none; }
@@ -333,11 +335,7 @@ section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; bo
     <nav class="menu" aria-label="Main">
       <a href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">About</a>
       <a href="https://tours.cigalacycling.com/destinations/" target="_blank" rel="noopener">Destinations</a>
-      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Bike tours <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All tours</a>
-        <a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road tours</a>
-        <a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel tours</a>
-        <a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo tours</a>
-        <a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian tours</a></div></div>
+      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Bike tours <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All Tours</a><a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road Tours</a><a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel Tours</a><a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo Tours</a><a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian Tours</a></div></div>
       <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a>
       <a href="https://tours.cigalacycling.com/guides/" target="_blank" rel="noopener">Guides</a>
       <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching</a>
@@ -352,11 +350,11 @@ section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; bo
         <a href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">About us</a>
         <a href="https://tours.cigalacycling.com/destinations/" target="_blank" rel="noopener">Destinations</a>
         <details class="sub"><summary>Bike tours</summary><div class="sub-links">
-            <a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All tours</a>
-        <a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road tours</a>
-        <a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel tours</a>
-        <a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo tours</a>
-        <a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian tours</a>
+            <a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All Tours</a>
+            <a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road Tours</a>
+            <a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel Tours</a>
+            <a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo Tours</a>
+            <a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian Tours</a>
           </div></details>
         <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a>
         <a href="https://tours.cigalacycling.com/guides/" target="_blank" rel="noopener">Cycling guides</a>
@@ -415,7 +413,7 @@ section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; bo
       <a class="tour" data-k="gf" data-country="belgium" data-month="4" data-level="beginner intermediate expert" href="https://tours.cigalacycling.com/trips/tour-of-flanders-experience/" target="_blank" rel="noopener"><img src="img/trip-tour-of-flanders-experience.webp" alt="Tour of Flanders Experience bike tour" loading="lazy"><span class="tag">Gran Fondo</span><div class="tx"><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span><time class="when" datetime="2027-04-01">1–5 Apr 2027</time><h3>Tour of Flanders Experience</h3><p>Ride it. Watch it. Live it. Take on the cobbles in the ultimate cycling experience.</p><span class="facts"><span>Belgium</span><span>120-300 km</span><span>1,000-3,000 m climbing</span></span><span class="go">View tour →</span></div></a>
       <a class="tour" data-k="gravel" data-country="cyprus" data-month="4" data-level="expert" href="https://tours.cigalacycling.com/trips/cyprus-crossing-gravel/" target="_blank" rel="noopener"><img src="img/trip-cyprus-crossing-gravel.webp" alt="Cyprus Crossing bike tour" loading="lazy"><span class="tag gravel">Gravel</span><div class="tx"><time class="when" datetime="2027-04-22">22–29 Apr 2027</time><h3>Cyprus Crossing</h3><p>A lifetime trip in one of the most beautiful islands in Europe.</p><span class="facts"><span>Cyprus</span><span>415 km</span><span>8,700 m climbing</span></span><span class="go">View tour →</span></div></a>
       <a class="tour" data-k="gravel" data-country="italy" data-month="5 6" data-level="expert" href="https://tours.cigalacycling.com/trips/tuscany-epic-gravel/" target="_blank" rel="noopener"><img src="img/trip-tuscany-epic-gravel.webp" alt="Tuscany Epic bike tour" loading="lazy"><span class="tag gravel">Gravel</span><div class="tx"><time class="when" datetime="2027-05-31">31 May – 6 Jun 2027</time><h3>Tuscany Epic</h3><p>An incredible trip across Italy’s best region for gravel, on the Tuscany Trail route.</p><span class="facts"><span>Italy</span><span>490 km</span><span>7,100 m climbing</span></span><span class="go">View tour →</span></div></a>
-      <a class="tour" data-k="gf" data-country="italy" data-month="6 7" data-level="beginner intermediate expert" href="https://tours.cigalacycling.com/trips/maratona-dles-dolomites/" target="_blank" rel="noopener"><img src="img/trip-maratona-dles-dolomites.webp" alt="Maratona dles Dolomites – Enel bike tour" loading="lazy"><span class="tag">Gran Fondo</span><div class="tx"><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span><time class="when" datetime="2027-06-30">30 Jun – 5 Jul 2027</time><h3>Maratona dles Dolomites – Enel</h3><p>Official Tour Operator of the Maratona dles Dolomites – Enel, for the 40th edition on 4 July 2027.</p><span class="facts"><span>Italy</span><span>250-350 km</span><span>5,000-7,000 m climbing</span></span><span class="go">View tour →</span></div></a>
+      <a class="tour" data-k="gf" data-country="italy" data-month="6 7" data-level="beginner intermediate expert" href="https://tours.cigalacycling.com/trips/maratona-dles-dolomites/" target="_blank" rel="noopener"><img src="img/trip-maratona-dles-dolomites.webp" alt="Maratona dles Dolomites bike tour" loading="lazy"><span class="tag">Gran Fondo</span><div class="tx"><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span><time class="when" datetime="2027-06-30">30 Jun – 5 Jul 2027</time><h3>Maratona dles Dolomites</h3><p>Official Tour Operator for the 40th edition, 4 July 2027.</p><span class="facts"><span>Italy</span><span>250-350 km</span><span>5,000-7,000 m climbing</span></span><span class="go">View tour →</span></div></a>
       <a class="tour" data-k="road" data-country="italy" data-month="7" data-level="intermediate expert" href="https://tours.cigalacycling.com/trips/dolomites/" target="_blank" rel="noopener"><img src="img/trip-dolomites.webp" alt="Dolomites bike tour" loading="lazy"><span class="tag">Road</span><div class="tx"><time class="when" datetime="2027-07-08">8–13 Jul 2027</time><h3>Dolomites</h3><p>Giau, Gardena, Sella, Pordoi, Falzarego, Fedaia and Tre Cime di Lavaredo.</p><span class="facts"><span>Italy</span><span>290 km</span><span>8,200 m climbing</span></span><span class="go">View tour →</span></div></a>
       <a class="tour" data-k="road" data-country="italy" data-month="7" data-level="intermediate expert" href="https://tours.cigalacycling.com/trips/italian-alps/" target="_blank" rel="noopener"><img src="img/trip-italian-alps.webp" alt="Italian Alps bike tour" loading="lazy"><span class="tag">Road</span><div class="tx"><time class="when" datetime="2027-07-15">15–20 Jul 2027</time><h3>Italian Alps</h3><p>Iconic Giro climbs including Stelvio, Gavia, Mortirolo and Cancano.</p><span class="facts"><span>Italy</span><span>380 km</span><span>10,200 m climbing</span></span><span class="go">View tour →</span></div></a>
       <a class="tour" data-k="gravel" data-country="italy" data-month="7" data-level="expert" href="https://tours.cigalacycling.com/trips/alpine-gravel-escape/" target="_blank" rel="noopener"><img src="img/trip-alpine-gravel-escape.webp" alt="Alpine Gravel Escape bike tour" loading="lazy"><span class="tag gravel">Gravel</span><div class="tx"><time class="when" datetime="2027-07-15">15–20 Jul 2027</time><h3>Alpine Gravel Escape</h3><p>Take on the Stelvio Gravel and explore the Alps on remote gravel roads and mountain passes.</p><span class="facts"><span>Italy</span><span>320 km</span><span>9,300 m climbing</span></span><span class="go">View tour →</span></div></a>
@@ -575,12 +573,12 @@ section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; bo
     <div>
       <h4>Tours</h4>
       <ul>
-        <li><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All tours</a></li>
-        <li><a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road tours</a></li>
-        <li><a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel tours</a></li>
-        <li><a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo tours</a></li>
-        <li><a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian tours</a></li>
-        <li><a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom Tours</a></li>
       </ul>
     </div>
     <div>

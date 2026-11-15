@@ -99,6 +99,7 @@ partners = re.search(r'<section>\s*<div class="in partners">.*?</section>', idx,
 partners = partners.replace('<div class="lab">Official event partner</div>', '<div class="lab">Event day support</div>')   # Matteo, 15 Nov
 partners = partners.replace('alt="Algarve Granfondo logo" loading="lazy"></span>', 'alt="Algarve Granfondo logo" loading="lazy"></span><span class="fill"><img src="img/logo-wrf.png" alt="We Ride Flanders logo" loading="lazy"></span>', 1)
 footnote = ('<p class="footnote">*Prices in GBP or USD could be slightly different at the time of booking based on the current exchange rate. '
+            'On our booking page you can choose your currency, see the live price in it and pay in the currency you prefer. '
             'By signing up to any of our Cycling Holidays (public or custom) you accept our Terms &amp; Conditions. '
             f'<a href="{L}/terms-conditions/" {EXT}>View T&amp;C</a></p>')
 
@@ -184,25 +185,26 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .tcard { display: flex; flex-direction: column; min-width: 0; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
 .tcard:hover { border-color: rgba(0,154,68,.5); }
 .tcard .ph { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
-.tcard .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.tcard .ph img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.95); transition: transform .5s ease; }
 .tcard:hover .ph img { transform: scale(1.04); }
 .tcard .ph .tags { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; margin: 0; }
 .tcard .tag { display: inline-flex; align-items: center; white-space: nowrap; line-height: 1.2; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.78); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 10px; }
 .tcard .tag::before { content: ""; flex: none; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
 .tcard .tag.gravel::before { background: var(--gravel); }
-.tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 22px; min-width: 0; }
+.tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
 .tcard .entry { width: fit-content; margin: 0; }
 .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
-.tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -4px; }
+.tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -6px; }
 .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
 .tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
 .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.tcard .meta { margin: 2px 0; }
 .tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
 .tcard .desc.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .tcard .more-txt { align-self: flex-start; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 0; cursor: pointer; margin-top: -4px; }
 .tcard .bottom { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); display: grid; gap: 10px; }
 .tcard .price { font-family: var(--head); font-size: 26px; line-height: 1.1; color: var(--text); }
-.tcard .price small { display: block; padding: 0; margin-left: 0; font-family: var(--body); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+.tcard .price small { display: block; padding: 0; margin: 0 0 8px !important; font-family: var(--body); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
 .tcard .early { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; }
 .tcard .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
 .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
