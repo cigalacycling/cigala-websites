@@ -36,6 +36,8 @@ ICON = {
     'spots': '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
     'currency': '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
     'platform': '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+    'person': '<circle cx="12" cy="7" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/>',   # the live page used a user icon and a rocket icon here
+    'rocket': '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
     'student': '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/>',
 }
 def notes_strip(items):
@@ -48,11 +50,12 @@ def btn(label, url, cls='btn-go', note=''):
     return f'<a class="btn {cls} pay" href="{E(url)}" {EXT}>{label}</a>' + (f'<span class="pay-note">{note}</span>' if note else '')
 
 # New feature line, added by Matteo (15 Nov 2026): Advanced and Premium only, a normal line after the training plan.
-ASSESS = 'Initial Assessment Review of your training data'
+# Matteo 15 Nov (2nd review): 'deep initial assessment ... across the year or 6 months, depending on how much training data'
+ASSESS = 'Deep Initial Assessment of your training data from the past year or 6 months, depending on the data available'
 # Who each package is for: short lines taken from the live FAQ answer "What would the most suitable package for me?"
 FOR = {
     'basic': 'For riders who can follow the training without the human aspect of a coach.',
-    'advanced': 'Access to Matteo as your coach, with feedback, phone calls and training analysis, plus Vekta.',
+    'advanced': 'Access to Matteo as your coach, with weekly feedback, a monthly catch up call and deep training analysis, plus Vekta.',
     'premium': 'The closest coaching: daily contact, feedback and analysis, and a weekly catch up call.',
 }
 def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
@@ -60,11 +63,13 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     if key in ('advanced', 'premium'): top.insert(1, ASSESS)
     rest = [f for f in F[key] if f not in own[key]]
     # Matteo, 15 Nov 2026: Basic does NOT include training analysis (the live list said "Daily Training Analysis")
-    NOT_IN_BASIC = {'Daily Training Analysis'}
-    no = [ASSESS] + [x for x in top if x in NOT_IN_BASIC] if key == 'basic' else []
+    # Matteo 15 Nov (2nd review): Basic has no feedback, schedule adjustment or training analysis; show with an X
+    # everything the coached packages add, so the difference is clear on the card itself.
+    NOT_IN_BASIC = ['Feedback on sessions', 'Schedule Adjustment', 'Daily Training Analysis']
+    no = ([ASSESS] + NOT_IN_BASIC + ['Monthly catch up call', 'Race Strategy', 'Continuous Support & Motivation', 'Vekta membership']) if key == 'basic' else []
     top = [x for x in top if x not in no]
     items = ''.join(f'<li>{E(x)}</li>' for x in top)
-    items += ''.join(f'<li class="no">{E(x)} <span>(not included)</span></li>' for x in no)  # shown, not counted
+    items += ''.join(f'<li class="no">{E(x)}<span class="vh"> (not included)</span></li>' for x in no)  # shown, not counted
     items += ''.join(f'<li class="more">{E(x)}</li>' for x in rest)
     total = len(top) + len(rest)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
@@ -77,17 +82,17 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         <div class="pkg-buy">{buttons}<a class="pkg-call" href="{CAL}" {EXT}>Not sure? Book a free consultation →</a></div>
         <div class="pkg-lab">What you get</div>
         <ul class="ticks">{items}</ul>
-        <button type="button" class="pkg-all" aria-expanded="false" data-n="{total}">Show all {total} features ↓</button>
+        <button type="button" class="pkg-all" aria-expanded="false">Show all features ↓</button>
       </article>'''
 
 # ---------- compare table: only the differences, wording from the live feature lines ----------
 Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria-label="Not included">✗</span>'
 ROWS = [
     ('Training plan', 'Daily plan built for 12 weeks', 'Daily plan built on a weekly basis', 'Daily plan built on a weekly basis'),
-    ('Initial Assessment Review of your training data', N, Y, Y),
+    ('Deep Initial Assessment of your training data', N, Y, Y),
     ('Contact', 'When needed via email', 'Weekly', 'Daily'),
-    ('Feedback', 'On sessions', 'Weekly', 'Daily'),
-    ('Schedule adjustment', Y, 'Weekly', 'Daily'),
+    ('Feedback', N, 'Weekly', 'Daily'),
+    ('Schedule adjustment', N, 'Weekly', 'Daily'),
     ('Training analysis', N, 'Weekly', 'Daily'),
     ('Catch up call', N, 'Monthly or when needed', 'Weekly or when needed'),
     ('Race strategy', N, Y, Y),
@@ -117,7 +122,7 @@ cards = ''.join([
 QUOTES = re.findall(r'TXT: "(.*?)"\n<img https://[^ ]*/(unnamed-\d+)\.png', '\n'.join(TXT), re.S)
 quotes = ''.join(
     f'<figure class="q"><img src="{img(n + ".png", "athlete-" + n)}" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200">'
-    f'<blockquote>“{E(re.sub(r"\s*\n\s*", " ", q))}”</blockquote></figure>' for q, n in QUOTES)
+    f'<div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“{E(re.sub(r"\s*\n\s*", " ", q))}”</blockquote></figure>' for q, n in QUOTES)
 assert len(QUOTES) == 5
 
 # ---------- Vekta + devices ----------
@@ -149,7 +154,7 @@ faq_html = ''.join(f'<details{" open" if i == 0 else ""}><summary><h3>{E(q)}</h3
 
 # ---------- numbers ----------
 nums = re.findall(r'H3: (.+)\nH4: (.+)', '\n'.join(section_lines('H2: 2026 IN NUMBERS', 'H2:')))
-nums_html = ''.join(f'<div class="stat"><h3 class="n">{E(n)}</h3><h4 class="l">{E(l)}</h4></div>' for n, l in nums)
+nums_html = ''.join(f'<div class="stat"><h3 class="n" data-count="{E(n)}">{E(n)}</h3><h4 class="l">{E(l)}</h4></div>' for n, l in nums)
 
 # ---------- featured athletes gallery (live order) ----------
 WEBPS = {o['url']: o['webp'] for o in json.load(open(ROOT + 'coaching/images.json')) if o.get('webp')}
@@ -167,11 +172,14 @@ logos = ''.join(f'<span><img src="{img(k, n)}" alt="{E(live_alt(k))}" loading="l
 HERO = img('imgi_41_Tuz_W_Vx', 'packages-hero')
 TEAM = img('imgi_21_ZtFBdo0p', 'team-training')  # clean version of the live banner photo (imgi_43, Matteo didn't want the text banner)
 RIDER = img('imgi_42_FoPYDRwS', 'rider')
+COACHPIC = img('imgi_16_g675BzCnYW', 'matteo-coaching')   # Matteo 15 Nov: new photo for Get in touch
 img('SDFASDFASDF.png', 'cigala-x-vekta'); img('PfNJBaCPkS_eSn5J', 'trainingpeaks-levels')
 # dark-background versions (tools/darklogo.py): white background removed, black text turned white
-for n in ('cigala-x-vekta', 'trainingpeaks-levels'):
-    shutil.copy(ROOT + f'coaching/webp/darklogo-{n}.webp', OUT + f'img/{n}-dark.webp')
-VKLOGO, TPLOGO = 'img/cigala-x-vekta-dark.webp', 'img/trainingpeaks-levels-dark.webp'
+# Matteo 15 Nov (2nd review): the dark Cigala x Vekta logo looked bad -> lockup of the new Coaching logo, x, and the Vekta
+# logo remade with smooth edges (tools/unmix_logo.py); the TrainingPeaks badges are cropped tight so they sit centred.
+shutil.copy(ROOT + 'coaching/webp/vekta-white.webp', OUT + 'img/vekta-white.webp')
+shutil.copy(ROOT + 'coaching/webp/darklogo-trainingpeaks-levels-crop.webp', OUT + 'img/trainingpeaks-levels-dark-v2.webp')
+VKLOGO, TPLOGO = 'img/vekta-white.webp', 'img/trainingpeaks-levels-dark-v2.webp'
 
 intro = [l[3:] for l in TXT[TXT.index('TXT: [', 0):TXT.index('TXT: 12 Weeks')] if l.startswith('P: ')]
 MAIN = f'''<div class="hero hero-sm">
@@ -199,12 +207,14 @@ MAIN = f'''<div class="hero hero-sm">
 
     <div class="addons">
       <div class="panel addon">
+        <svg class="addon-ic" viewBox="0 0 24 24" aria-hidden="true">{ICON['person']}</svg>
         <h3 class="h-sm">Purchase multiple One-on-One Sessions</h3>
         <p>Purchase multiple One-on-One Sessions with Head Coach Matteo Cigala.</p>
         <p>Sessions are held in Wicklow Town, Co.Wicklow, Ireland and can be booked after purchase.</p>
         <a class="arrow-link" href="{C}/book-1-on-1-session/" {EXT}>Book a 1-to-1 session →</a>
       </div>
       <div class="panel addon">
+        <svg class="addon-ic" viewBox="0 0 24 24" aria-hidden="true">{ICON['rocket']}</svg>
         <h3 class="h-sm">Talent programme</h3>
         <p>Underage, Juniors &amp; U23 will avail of a 20% student discount for all packages.</p>
         <p>See our talent programme for more information <a href="{C}/talent-scout/" {EXT}><b>HERE</b></a></p>
@@ -238,12 +248,12 @@ MAIN = f'''<div class="hero hero-sm">
       <h2>USING VEKTA - NEXT GENERATION TRAINING &amp; COACHING PLATFORM</h2>
       <div class="bar"></div>
       <div class="vk">{vk_intro}<ul class="ticks">{vk_points}</ul>{vk_end}</div>
-      <div class="ctas"><a class="btn btn-ghost" href="{VEKTA}" {EXT}>Find more about Vekta →</a></div>
+      <div class="ctas"><a class="btn btn-go" href="{VEKTA}" {EXT}>Find more about Vekta →</a></div>
     </div>
     <div class="vk-side">
       <div class="photo"><img src="{TEAM}" alt="{E(live_alt('imgi_43_K2-r3g1h'))}" loading="lazy" width="1600" height="1082"></div>
       <div class="vk-logos">
-        <a href="https://joinvekta.com/partnerships" {EXT}><img src="{VKLOGO}" alt="{E(live_alt('SDFASDFASDF'))}" loading="lazy"></a>
+        <a class="vk-lock" href="https://joinvekta.com/partnerships" {EXT} aria-label="{E(live_alt('SDFASDFASDF'))}"><img src="{LOGO}" alt="" loading="lazy" width="64" height="64"><svg class="vk-x" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg><img src="{VKLOGO}" alt="{E(live_alt('SDFASDFASDF'))}" loading="lazy" width="531" height="139"></a>
         <span><img src="{TPLOGO}" alt="{E(live_alt('PfNJBaCPkS_eSn5J'))}" loading="lazy"></span>
       </div>
     </div>
@@ -283,16 +293,17 @@ MAIN = f'''<div class="hero hero-sm">
 
 <section id="contact">
   <div class="in split">
-    <div class="photo rider"><img src="{RIDER}" alt="{E(live_alt('imgi_42_FoPYDRwS'))}" loading="lazy" width="1000" height="1000"></div>
+    <div class="photo rider"><img src="{COACHPIC}" alt="{E(live_alt('imgi_16_g675BzCnYW'))}" loading="lazy" width="1440" height="1081"></div>
     <div>
       <div class="eyebrow">Check availability</div>
       <h3 class="h-sec">GET IN TOUCH TODAY</h3>
       <div class="bar"></div>
       <p class="lede">{E(intro[2])}</p>
       <form class="form panel" method="post" action="#" onsubmit="return false">
-        <label>Name<input name="form_fields[name]" type="text" placeholder="Name" autocomplete="name"></label>
+        <label>Name<input name="form_fields[name]" type="text" placeholder="Name" required autocomplete="name"></label>
         <label>Email<input name="form_fields[email]" type="email" placeholder="Email" required autocomplete="email"></label>
-        <label>Message<textarea name="form_fields[message]" placeholder="Your Message" rows="5"></textarea></label>
+        <label>Phone<input name="form_fields[phone]" type="tel" placeholder="Phone (with country code)" required autocomplete="tel"></label>
+        <label>Message<textarea name="form_fields[message]" placeholder="Your Message" rows="5" required></textarea></label>
         <button class="btn btn-go" type="submit">Send &gt;</button>
       </form>
     </div>
@@ -423,6 +434,14 @@ PCSS = '''<style>
   .cmp td::before { content: attr(data-l); display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 3px; }
   .cmp td.hot::before { color: var(--green-text); }
 }
+.addon { position: relative; }
+.addon-ic { width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; display: block; margin-bottom: 14px; }
+.q .rv-stars { color: #f5b301; letter-spacing: 2px; font-size: 15px; line-height: 1; }
+.vk-lock { display: flex !important; align-items: center; justify-content: center; gap: 16px; }
+.vk-lock img:first-child { width: 72px; height: 72px; border-radius: 0; }
+.vk-lock .vk-x { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--text-2); stroke-width: 2.4; stroke-linecap: round; }
+.vk-lock img:last-child { width: auto; height: 34px; max-width: 46%; }
+.vk-logos img { margin: 0 auto; }
 </style>'''
 PJS = '''<script>
 document.getElementById('g-more').addEventListener('click', function () {
@@ -435,13 +454,28 @@ document.querySelectorAll('[data-waitlist]').forEach(function (b) {
     if (m && !m.value) m.value = 'Hi Matteo, please add me to the waiting list for the ' + b.dataset.waitlist + ' package.';
   });
 });
-document.querySelectorAll('.pkg-all').forEach(function (b) {
+document.querySelectorAll('.pkg-all').forEach(function (b) {   // one click opens every package (Matteo 15 Nov)
   b.addEventListener('click', function () {
-    var o = b.closest('.pkg').classList.toggle('open');
-    b.setAttribute('aria-expanded', o);
-    b.textContent = o ? 'Show fewer ↑' : 'Show all ' + b.dataset.n + ' features ↓';
+    var o = !b.closest('.pkg').classList.contains('open');
+    document.querySelectorAll('.pkg').forEach(function (p) { p.classList.toggle('open', o); });
+    document.querySelectorAll('.pkg-all').forEach(function (x) { x.setAttribute('aria-expanded', o); x.textContent = o ? 'Show fewer ↑' : 'Show all features ↓'; });
   });
 });
+(function () {   // 2026 in numbers count up when they scroll into view (Matteo 15 Nov); the HTML keeps the real numbers
+  var els = document.querySelectorAll('[data-count]');
+  if (!els.length || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  els.forEach(function (el) {
+    var m = el.dataset.count.match(/^(\\D*)(\\d+)(\\D*)$/); if (!m) return;
+    var to = +m[2], dur = 1600;
+    el.style.minWidth = el.offsetWidth + 'px'; el.textContent = m[1] + '0' + m[3];
+    new IntersectionObserver(function (es, ob) {
+      if (!es[0].isIntersecting) return; ob.disconnect();
+      var t0 = performance.now();
+      (function step(t) { var k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+        el.textContent = m[1] + Math.round(to * e) + m[3]; if (k < 1) requestAnimationFrame(step); })(t0);
+    }, { threshold: 0.4 }).observe(el);
+  });
+})();
 document.getElementById('g-more').dataset.label = document.getElementById('g-more').textContent;
 </script>'''
 

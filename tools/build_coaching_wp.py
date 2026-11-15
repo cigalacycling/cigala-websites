@@ -187,6 +187,13 @@ def build_page(key):
             form = live_widget(3338, 'form')
             form['settings']['_css_classes'] = 'cc-form'
             form['settings']['email_subject'] = 'New message from the Coaching website'
+            # Matteo 15 Nov: add a phone number and make every field compulsory. Phone is a text field: Elementor's
+            # tel field rejects spaces, and people type "+353 87 ...". [all-fields] in the email includes it.
+            ff = form['settings']['form_fields']
+            for f in ff: f['required'] = 'true'; f['width'] = '100'
+            if not any(f.get('custom_id') == 'phone' for f in ff):
+                ff.insert(2, {'custom_id': 'phone', 'field_type': 'text', 'required': 'true', 'field_label': 'Phone',
+                              'placeholder': 'Phone (with country code)', 'width': '100', '_id': 'cc0phon'})
             pre, post = b.split('<form', 1)
             post = post.split('</form>', 1)[1]
             photo = re.search(r'<div class="photo rider">.*?</div>', pre, re.S).group(0)

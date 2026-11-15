@@ -108,3 +108,12 @@ They're probably in the WPCode header (not in the Elementor templates). Not chan
 - Our own review cards, as real page text: 8 athlete quotes chosen from the live Testimonials page, in the athletes' own words, with no star ratings. The source is `REVIEWS` in `tools/coaching_common.py`.
 - Every reviews section has a "Read our reviews on Google" link to Matteo's Google Business Profile (https://share.google/lwboSfcuStGhX0c0p).
 - The Testimonials page keeps all its written testimonials as text.
+
+## 8. Individual Packages, Matteo's second review (15 Nov 2026)
+
+Approved by Matteo (content changes, not SEO-sensitive: H1/H2s, title and meta unchanged):
+- Basic: "Feedback on sessions", "Schedule Adjustment" and "Daily Training Analysis" are not part of Basic; they now show with a red X, together with the things Advanced/Premium add (deep initial assessment, catch up call, race strategy, continuous support, Vekta). Compare table updated to match.
+- New line wording: "Deep Initial Assessment of your training data from the past year or 6 months, depending on the data available" (Advanced and Premium).
+- Advanced summary: weekly feedback, a monthly catch up call and deep training analysis, plus Vekta.
+- Contact form (all Coaching pages): new required Phone field; Name, Email and Message now required too.
+- The live icon images on the add-on panels (user / rocket, with alt text) are replaced by inline line icons in the brand style (decorative, aria-hidden).

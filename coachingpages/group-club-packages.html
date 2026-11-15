@@ -528,6 +528,14 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
   .cmp td::before { content: attr(data-l); display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 3px; }
   .cmp td.hot::before { color: var(--green-text); }
 }
+.addon { position: relative; }
+.addon-ic { width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; display: block; margin-bottom: 14px; }
+.q .rv-stars { color: #f5b301; letter-spacing: 2px; font-size: 15px; line-height: 1; }
+.vk-lock { display: flex !important; align-items: center; justify-content: center; gap: 16px; }
+.vk-lock img:first-child { width: 64px; height: 64px; border-radius: 0; }
+.vk-lock span { font: 400 26px/1 var(--head); color: var(--text-3); }
+.vk-lock img:last-child { width: auto; height: 34px; max-width: 46%; }
+.vk-logos img { margin: 0 auto; }
 </style><style>
 .grp-photo { aspect-ratio: 3 / 2; }
 .split .first { margin-top: 16px; }
@@ -640,9 +648,10 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
       <div class="bar"></div>
       <p class="lede">Tell us about your group or club, how many riders and your goals, and we'll come back to you with the prices.</p>
       <form class="form panel" method="post" action="#" onsubmit="return false">
-        <label>Name<input name="form_fields[name]" type="text" placeholder="Name" autocomplete="name"></label>
+        <label>Name<input name="form_fields[name]" type="text" placeholder="Name" required autocomplete="name"></label>
         <label>Email<input name="form_fields[email]" type="email" placeholder="Email" required autocomplete="email"></label>
-        <label>Message<textarea name="form_fields[message]" placeholder="Your Message" rows="5"></textarea></label>
+        <label>Phone<input name="form_fields[phone]" type="tel" placeholder="Phone (with country code)" required autocomplete="tel"></label>
+        <label>Message<textarea name="form_fields[message]" placeholder="Your Message" rows="5" required></textarea></label>
         <button class="btn btn-go" type="submit">Send &gt;</button>
       </form>
     </div>
