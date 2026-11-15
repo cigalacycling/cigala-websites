@@ -38,6 +38,7 @@ intro = P_(L[1:10])
 why = LI(block("H2: Perche' atleti"))
 ev = block('H2: Gli Eventi'); ev_p, ev_li = P_(ev), LI(ev)
 rg = block('H2: Seguiamo ciclisti'); rg_p, rg_li = P_(rg), LI(rg)
+rg_li += ['**Puglia** — Bari, Lecce', '**Sicilia** — Palermo, Catania', '**Sardegna** — Cagliari, Sassari']   # Matteo 15 Nov: the south and the islands too
 nums = re.findall(r'H3: (.+)\nH4: (.+)', '\n'.join(block('H2: 2025 IN NUMERI', ('H2:', 'H1:'))))
 faq_live = []
 fl = block('H2: DOMANDE FREQUENTI', ('H1:',))
@@ -152,7 +153,8 @@ def italy_map():
     vb = f"{m['minx'] - 10} {m['miny'] - 10} {m['w'] - m['minx'] + 20} {m['h'] - m['miny'] + 20}"
     dots = ''.join(f'<g class="it-city" style="--i:{i}"><circle cx="{x}" cy="{y}" r="9" class="it-halo"/><circle cx="{x}" cy="{y}" r="4"/><title>{E(n)}</title></g>' for i, (n, (x, y)) in enumerate(m['pts'].items()))
     labels = ''.join(f'<text x="{m["pts"][n][0] + dx}" y="{m["pts"][n][1] + dy}" class="it-lab" text-anchor="{a}">{n}</text>' for n, dx, dy, a in
-                     [('Milano', -8, 18, 'end'), ('Venezia', 10, 16, 'start'), ('Torino', -10, 4, 'end'), ('Bolzano', 10, -6, 'start'), ('Firenze', 10, 4, 'start'), ('Siena', -10, 14, 'end'), ('Roma', 10, 4, 'start'), ('Napoli', 10, 4, 'start')])
+                     [('Milano', 0, 24, 'middle'), ('Venezia', 12, 16, 'start'), ('Torino', -12, 5, 'end'), ('Bolzano', 12, -4, 'start'), ('Firenze', 12, -2, 'start'), ('Siena', -12, 10, 'end'),
+                      ('Roma', 12, 5, 'start'), ('Napoli', 12, 5, 'start'), ('Bari', 12, -2, 'start'), ('Cagliari', 0, 22, 'middle'), ('Palermo', 0, -12, 'middle'), ('Catania', 12, 5, 'start')])
     return (f'<svg class="it-map" viewBox="{vb}" role="img" aria-labelledby="it-map-t"><title id="it-map-t">Mappa dell’Italia con le città dove seguiamo ciclisti</title>'
             f'<defs><linearGradient id="it-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#009a44" stop-opacity=".35"/><stop offset="1" stop-color="#009a44" stop-opacity=".08"/></linearGradient>'
             f'<filter id="it-glow" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter></defs>'
@@ -196,28 +198,16 @@ MAIN = f'''<div class="hero hero-sm">
     <div class="gn-txt">
       <div class="eyebrow">Il tuo coach</div>
       <ul class="it-nums">{''.join(f'<li><b>{a}</b><span>{b}</span></li>' for a, b in (('28+', 'anni nel ciclismo'), ('10+', 'anni da preparatore'), ('200+', 'vittorie')))}</ul>
-      <p class="it-lead">{E(intro[1])}</p>
+      <p>{E(intro[1])}</p>
       {''.join(f'<p>{E(x)}</p>' for x in intro[2:])}
     </div>
   </div>
-  <div class="in"><div class="it-facts">{facts}</div></div>
 </section>
 
 <section>
   <div class="in">
     <div class="head"><div><div class="eyebrow">Perché sceglierci</div><h2>{E("Perche' atleti in Italia scelgono Matteo Cigala")}</h2><div class="bar"></div></div></div>
     <ul class="it-why">{''.join(f'<li><svg viewBox="0 0 24 24" aria-hidden="true">{WHY_IC[i % len(WHY_IC)]}</svg><span>{md(x)}</span></li>' for i, x in enumerate(why))}</ul>
-  </div>
-</section>
-
-<section>
-  <div class="in">
-    <div class="it-motto"><p class="it-motto-t">ALLENATI CON METODO, VAI PIÙ FORTE</p><h2 class="it-motto-h">{E("E' il nostro motto")}</h2></div>
-    <div class="head"><div><div class="eyebrow">Cosa dicono i nostri atleti</div><h2>LEGGI LE NOSTRE RECENSIONI</h2><div class="bar"></div></div>
-      <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Le nostre recensioni su Google →</a></div></div>
-    <p class="cn-lede">Scopri cosa dicono i ciclisti di Cigala Cycling: recensioni reali di atleti seguiti da Matteo.</p>
-    {strip}
-    <div class="it-pics">{pics}</div>
   </div>
 </section>
 
@@ -248,7 +238,18 @@ MAIN = f'''<div class="hero hero-sm">
 
 <section>
   <div class="in">
-    <div class="head"><div><div class="eyebrow">Stampa e partner</div><h2>PRESENTE SU</h2><div class="bar"></div></div></div>
+    <div class="it-motto"><p class="it-motto-t">ALLENATI CON METODO, VAI PIÙ FORTE</p><h2 class="it-motto-h">{E("E' il nostro motto")}</h2></div>
+    <div class="head"><div><div class="eyebrow">Cosa dicono i nostri atleti</div><h2>LEGGI LE NOSTRE RECENSIONI</h2><div class="bar"></div></div>
+      <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Le nostre recensioni su Google →</a></div></div>
+    <p class="cn-lede">Scopri cosa dicono i ciclisti di Cigala Cycling: recensioni reali di atleti seguiti da Matteo.</p>
+    {strip}
+    <div class="it-pics">{pics}</div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Stampa e partners</div><h2>PRESENTE SU</h2><div class="bar"></div></div></div>
     {seen_logos()}
   </div>
 </section>
