@@ -148,7 +148,7 @@ FT_CSS = '''<style>
 # ---------- Case studies (Matteo 15 Nov). Every fact comes from the athlete's own testimonial on the live Testimonials
 # page (coaching/text/testimonials.txt); nothing is added. Matteo will add more as he publishes them.
 CASES = [
-    {'slug': 'marine-lenehan', 'name': 'Marine Lenehan', 'where': 'Ireland', 'photo': 'T135849.182',
+    {'slug': 'marine-lenehan', 'photo_file': 'coaching/athletes/marine-lenehan.webp', 'name': 'Marine Lenehan', 'where': 'Ireland', 'photo': 'T135849.182',
      'headline': 'From first ride to European champion', 'stat': 'European champion', 'tag': 'Gran Fondo & gravel',
      'before': 'A complete newcomer to cycling: she started riding in February.',
      'goal': 'Learn the sport and find out how far she could go.',
@@ -231,28 +231,28 @@ CASES = [
      'bests_title': 'The engine',
      'bests': ['Critical Power: 244 → 288 W (+44 W, +18%), Nov 2025 vs Nov 2026', 'VO2max: 52 → 58 ml/kg/min (Vekta estimate)'],
      'source': 'Vekta data, last 12 months against the 12 months before (Nov 2024 – Nov 2026)'},
-    {'slug': 'shane-courtney', 'name': 'Shane Courtney', 'where': 'Tralee Manor West ibike', 'photo': 'T142905.118',
+    {'slug': 'shane-courtney', 'photo_file': 'coaching/athletes/shane-courtney.webp', 'name': 'Shane Courtney', 'where': 'Tralee Manor West ibike', 'photo': 'T142905.118',
      'headline': '+40 W FTP in under 4 months', 'stat': '220 → 260 W FTP', 'tag': 'Road racing',
      'before': 'Training 14–16 hours a week over the winter on a generic plan, and getting nowhere. Racing in A4.',
      'goal': 'Get faster and move up the racing categories.',
      'how': ['Contact by phone or WhatsApp every couple of days, and weekly feedback', 'No junk miles: every interval has a clear purpose', 'Recovery, nutrition, strength and two flexibility sessions a week'],
      'result': 'FTP up from 220 W to 260 W in under 4 months, sprint from about 600 W to 920 W. Upgraded to A3 with points to spare, and county hill-climb champion.',
      'quote': 'Matteo managed to raise my FTP from 220w to 260w in less than 4 months & my sprint from 600w ish to 920w.'},
-    {'slug': 'bernd-ondruch', 'name': 'Bernd Ondruch', 'where': 'Germany', 'photo': 'T134927.535',
+    {'slug': 'bernd-ondruch', 'photo_file': 'coaching/athletes/bernd-ondruch-2x.webp', 'name': 'Bernd Ondruch', 'where': 'Germany', 'photo': 'T134927.535',
      'headline': 'Qualified for the Gran Fondo Worlds', 'stat': 'Worlds qualified', 'tag': 'Gran Fondo',
      'before': 'Three years of trying to qualify on his own, riding consistently but with no structured plan.',
      'goal': 'Qualify for the UCI Gran Fondo World Championship.',
      'how': ['A coaching style adapted to him, with accountability but no pressure', 'Varied workouts targeting different parts of his riding', 'The plan adjusted after a crash, never pushing beyond his limits'],
      'result': 'Clear improvements after 4–6 weeks, and he qualified for the UCI Gran Fondo World Championship after 12 months of coaching.',
      'quote': 'With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.'},
-    {'slug': 'rob-kavanagh', 'name': 'Rob Kavanagh', 'where': 'Ireland', 'photo': 'T143158.190',
+    {'slug': 'rob-kavanagh', 'photo_file': 'coaching/athletes/rob-kavanagh.webp', 'name': 'Rob Kavanagh', 'where': 'Ireland', 'photo': 'T143158.190',
      'headline': 'Close to 16 kg lost in 6 months', 'stat': '−16 kg', 'tag': 'Fitness & weight loss',
      'before': 'Had lost interest in the gym and football and put on a lot of weight. Bought a road bike, but wasn’t making progress riding alone.',
      'goal': 'Lose weight, get fitter and start racing.',
      'how': ['A structured training plan from the first phone call', 'Sessions planned for him, so he knew exactly what to do'],
      'result': 'Close to 16 kg lost in 6 months, and healthier, fitter and happier.',
      'quote': 'To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.'},
-    {'slug': 'derek-lawler', 'name': 'Derek Lawler', 'where': 'Kilkenny, Ireland', 'photo': 'T140239.558',
+    {'slug': 'derek-lawler', 'photo_file': 'coaching/athletes/derek-lawler-2x.webp', 'name': 'Derek Lawler', 'where': 'Kilkenny, Ireland', 'photo': 'T140239.558',
      'headline': 'From the couch to the Haute Route at 60', 'stat': 'Haute Route at 60', 'tag': 'Sportive & health',
      'before': 'Starting, in his words, from the “couch (literally!)”.',
      'goal': 'Ride the Haute Route Pyrenees to mark his 60th birthday.',
@@ -267,7 +267,7 @@ def fstyle(c): return f' style="object-position:{FOCUS[c["slug"]]}"' if c['slug'
 def case_cards(link_base):
     """Scrolling case study cards; link_base is the case studies page URL."""
     def pic(c):
-        if c.get('photo_file'): return f'<span class="cs-img"><img src="{conv(c["photo_file"], "case-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"{fstyle(c)}></span>'
+        if c.get('photo_file'): return f'<span class="cs-img"><img src="{conv(c["photo_file"], "case-" + os.path.basename(c["photo_file"]).rsplit(".", 1)[0])}" alt="{E(c.get("photo_alt") or live_alt(c["photo"]))}" loading="lazy"{fstyle(c)}></span>'
         if not c['photo']: return f'<span class="cs-img cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c.get("stat_label", ""))}</small></span>'
         return f'<span class="cs-img"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="lazy"{fstyle(c)}></span>'
     cards = ''.join(f'<a class="cs-card" href="{link_base}#{c["slug"]}" {EXT}>{pic(c)}'
