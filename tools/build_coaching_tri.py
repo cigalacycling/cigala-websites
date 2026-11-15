@@ -28,7 +28,7 @@ norm = lambda s: s.lower().replace('metabolic inscyd testing', 'inscyd metabolic
 common = [f for f in F['advanced'] if all(norm(f) in map(norm, F[k]) for k in F)]
 own = {k: [f for f in v if norm(f) not in map(norm, common)] for k, v in F.items()}
 PAY = {label.strip(): url for url, label in re.findall(r'<option value="(https://[^"]+)"[^>]*>\s*([^<]+?)\s*<', SRC)}
-NOT_IN_BASIC = {'Daily Training Analysis'}
+NOT_IN_BASIC = {'Feedback on sessions', 'Schedule Adjustment', 'Daily Training Analysis'}   # marked excluded on the live page
 
 FOR = {
     'basic': 'A 12-week plan built in advance, for triathletes who can follow the training on their own.',

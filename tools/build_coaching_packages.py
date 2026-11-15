@@ -23,6 +23,12 @@ def feats(after):
         if l.startswith('LI: '): out.append(re.sub(r'\s+', ' ', l[4:]).strip())
         elif l.startswith('LABEL:'): break
     return out
+# live included / excluded marks (the text extract loses them)
+_LI = re.findall(r'<li class="(included|excluded)[^"]*">(.*?)</li>', SRC, re.S)
+_n = next(i for i, (c, t) in enumerate(_LI) if 'on a weekly basis' in t)   # Basic's list ends where Advanced's starts
+EXCLUDED = [re.sub(r'\s+', ' ', H.unescape(re.sub(r'<[^>]+>', '', t))).strip() for c, t in _LI[:_n] if c == 'excluded']
+assert EXCLUDED == ['Feedback on sessions', 'Schedule Adjustment', 'Daily Training Analysis', 'Daily Session Carbs Recommendations',
+                    'Nutritional Consult with our Sports Nutritionist'], EXCLUDED
 F = {'basic': feats('H2: Basic'), 'advanced': feats('H2: Advanced'), 'premium': feats('H2: Premium')}
 norm = lambda s: s.lower().replace('metabolic inscyd testing', 'inscyd metabolic testing').replace('carb ', 'carbs ')
 common = [f for f in F['advanced'] if all(norm(f) in map(norm, F[k]) for k in F)]
@@ -65,12 +71,13 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     # Matteo, 15 Nov 2026: Basic does NOT include training analysis (the live list said "Daily Training Analysis")
     # Matteo 15 Nov (2nd review): Basic has no feedback, schedule adjustment or training analysis; show with an X
     # everything the coached packages add, so the difference is clear on the card itself.
-    NOT_IN_BASIC = ['Feedback on sessions', 'Schedule Adjustment', 'Daily Training Analysis']
-    no = ([ASSESS] + NOT_IN_BASIC + ['Monthly catch up call', 'Race Strategy', 'Continuous Support & Motivation', 'Vekta membership']) if key == 'basic' else []
+    # The live page marks each line <li class="included|excluded">: Basic's excluded lines come from there (EXCLUDED),
+    # plus what Advanced/Premium add that isn't in Basic's live list at all.
+    no = (EXCLUDED + [ASSESS, 'Monthly catch up call', 'Race Strategy', 'Continuous Support & Motivation', 'Vekta membership']) if key == 'basic' else []
     top = [x for x in top if x not in no]
     # Matteo 15 Nov (3rd review): lead with what you GET. Every card shows its first 8 included lines; "Show all" opens
     # the rest and, on Basic only, the lines it does not include, at the very end under their own label.
-    inc = top + rest; SHOW = 8
+    inc = [x for x in top + rest if x not in no]; SHOW = 10   # Matteo 15 Nov: one or two more lines visible
     items = ''.join(f'<li{" class=\"more\"" if i >= SHOW else ""}>{E(x)}</li>' for i, x in enumerate(inc))
     if no:
         items += '<li class="more no-lab">Included in Advanced &amp; Premium</li>'
@@ -86,7 +93,7 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         <div class="pkg-buy">{buttons}<a class="pkg-call" href="{CAL}" {EXT}>Not sure? Book a free consultation →</a></div>
         <div class="pkg-lab">What you get</div>
         <ul class="ticks">{items}</ul>
-        <button type="button" class="pkg-all" aria-expanded="false">Show all features ↓</button>
+        <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
       </article>'''
 
 # ---------- compare table: only the differences, wording from the live feature lines ----------
@@ -98,6 +105,8 @@ ROWS = [
     ('Feedback', N, 'Weekly', 'Daily'),
     ('Schedule adjustment', N, 'Weekly', 'Daily'),
     ('Training analysis', N, 'Weekly', 'Daily'),
+    ('Daily session carbs recommendations', N, Y, Y),
+    ('Nutritional consult with our Sports Nutritionist', N, Y, Y),
     ('Catch up call', N, 'Monthly or when needed', 'Weekly or when needed'),
     ('Race strategy', N, Y, Y),
     ('Continuous support &amp; motivation', N, Y, Y),
@@ -372,8 +381,10 @@ PCSS = '''<style>
 .cmp-note { margin: 12px 0 0; font-size: 13px; color: var(--text-3); }
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .cmp tbody th { position: sticky; left: 0; background: var(--panel-solid); }
-.pkg-all { margin-top: 14px; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 4px 0; cursor: pointer; }
-.pkg-all:hover { color: #fff; }
+.pkg-all { margin-top: 16px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font: 600 14px var(--body); color: var(--text); background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 10px; padding: 11px 14px; cursor: pointer; }
+.pkg-all svg { width: 18px; height: 18px; fill: none; stroke: var(--green-text); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
+.pkg-all:hover { border-color: var(--green); }
+.pkg.open .pkg-all svg { transform: rotate(180deg); }
 .terms { margin: 22px 0 0; font-size: 13px; color: var(--text-3); text-align: center; }
 .terms b { color: var(--text-2); font-weight: 600; }
 .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
@@ -482,7 +493,7 @@ document.querySelectorAll('.pkg-all').forEach(function (b) {   // one click open
   b.addEventListener('click', function () {
     var o = !b.closest('.pkg').classList.contains('open');
     document.querySelectorAll('.pkg').forEach(function (p) { p.classList.toggle('open', o); });
-    document.querySelectorAll('.pkg-all').forEach(function (x) { x.setAttribute('aria-expanded', o); x.textContent = o ? 'Show fewer ↑' : 'Show all features ↓'; });
+    document.querySelectorAll('.pkg-all').forEach(function (x) { x.setAttribute('aria-expanded', o); x.querySelector('span').textContent = o ? 'Show fewer features' : 'See all features'; });
   });
 });
 (function () {   // 2026 in numbers count up when they scroll into view (Matteo 15 Nov); the HTML keeps the real numbers
