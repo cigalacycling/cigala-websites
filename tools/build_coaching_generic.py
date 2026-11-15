@@ -83,6 +83,9 @@ def heading_html(tag, text, cls=''):
         if u and u != '#': inner = f'<a href="{E(u)}" {EXT}>{inner}</a>'
     else:
         inner = E(re.sub(r'\s*\n\s*', ' ', text))
+    plain = re.sub(r'<[^>]+>', '', inner).strip()
+    if re.fullmatch(r'[\w.+-]+@[\w-]+\.[\w.]+', plain): inner = f'<a href="mailto:{plain}">{inner}</a>'          # contact details tap to email / call
+    elif re.fullmatch(r'\+?[\d ]{8,}', plain): inner = f'<a href="tel:{plain.replace(" ", "")}">{inner}</a>'
     c = f' class="{cls}"' if cls else ''
     return f'<{tag}{c}>{inner}</{tag}>'
 

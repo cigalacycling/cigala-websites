@@ -31,6 +31,10 @@ for t in tests:
     u, alt = t['img'][1], t['img'][2]
     photo = G.pic(u, alt, 'tm-photo') if u in G.WEBP else ''
     first, more = (body[0], body[1:]) if body else ('', [])
+    lines = [x for x in first.split('\n') if x.strip()]
+    if not more and len(lines) > 2: first, more = '\n'.join(lines[:2]), ['\n'.join(lines[2:])]   # long single paragraphs: opening + Read more
+    elif len(first) > 420 and not more:
+        cut = first.rfind('. ', 0, 360) + 1 or 360; first, more = first[:cut], [first[cut:].strip()]
     more_html = ''.join(f'<p>{G.inline(x)}</p>' for x in more)
     cards += (f'<figure class="tm">{photo}<div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div>'
               f'<blockquote><p>{G.inline(first)}</p>' + (f'<details><summary>Read more</summary>{more_html}</details>' if more else '') +
