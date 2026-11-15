@@ -110,9 +110,13 @@ HEADER = f'''<header class="nav">
 
 # ---------- Free Tools band (Matteo 15 Nov: make the tools easy to find on the homepage and packages page) ----------
 FT = [('/tools/training-zones-calculator/', 'Training zones', 'Power and heart-rate zones from your FTP', '<path d="M3 3v18h18"/><path d="M7 15v3M11 11v7M15 8v10M19 5v13"/>'),
+      ('/tools/ftp-test-calculator/', 'FTP test', 'Your FTP from a ramp, 8-min or 20-min test', '<circle cx="12" cy="13" r="8"/><path d="M12 13l4-4M12 3V1M9 1h6"/>'),
       ('/tools/carbs-per-hour-calculator/', 'Carbs per hour', 'Your fuelling plan in gels and bottles', '<path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/>'),
+      ('/tools/sweat-rate-calculator/', 'Sweat rate', 'How much you sweat, and how much to drink', '<path d="M12 2.7l5.7 5.6a8 8 0 1 1-11.4 0z"/>'),
       ('/tools/critical-power-calculator/', 'Critical Power &amp; W′', 'CP, W′ and your best power from 2 to 20 min', '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'),
-      ('/tools/climb-time-calculator/', 'Climb time', 'Your time on the Stelvio, Alpe d’Huez or any climb', '<path d="M2 20h20L14 6l-4 6-2-3-6 11z"/><path d="M14 6l2 3"/>')]
+      ('/tools/climb-time-calculator/', 'Climb time', 'Your time on the Stelvio, Alpe d’Huez or any climb', '<path d="M2 20h20L14 6l-4 6-2-3-6 11z"/><path d="M14 6l2 3"/>'),
+      ('/tools/gear-speed-calculator/', 'Gear &amp; speed', 'Your speed in every gear at any cadence', '<circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8L7 17M17 7l2.8-2.8"/>'),
+      ('/tools/swim-pace-calculator/', 'Swim pace (CSS)', 'Triathlon swim paces from two time trials', '<path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M2 13c2 0 2-1.5 4-1.5S8 13 10 13s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><circle cx="16" cy="5" r="2"/><path d="M6 9l4-3 3 3"/>')]
 def tools_band():
     cards = ''.join(f'<a class="ft-card" href="{C}{u}" {EXT}><svg viewBox="0 0 24 24" aria-hidden="true">{ic}</svg><span><b>{t}</b><small>{d}</small></span><i aria-hidden="true">→</i></a>' for u, t, d, ic in FT)
     return f'''<section class="ft">
@@ -126,10 +130,10 @@ def tools_band():
   </div>
 </section>'''
 FT_CSS = '''<style>
-.ft-box { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 60%), var(--panel-grad), var(--panel); }
+.ft-box { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 60%), var(--panel-grad), var(--panel); }
 .ft-head p { margin: 14px 0 0; color: var(--text-2); }
 .ft-head .arrow-link { display: inline-block; margin-top: 14px; }
-.ft-cards { display: grid; gap: 10px; }
+.ft-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }   /* 8 tools in 2 columns */
 .ft-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.03); text-decoration: none; transition: border-color .2s, transform .2s; }
 .ft-card:hover { border-color: rgba(0,154,68,.6); transform: translateX(3px); }
 .ft-card svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -138,6 +142,7 @@ FT_CSS = '''<style>
 .ft-card small { color: var(--text-3); font-size: 13px; }
 .ft-card i { font-style: normal; color: var(--green-text); font-weight: 700; }
 @media (max-width: 900px) { .ft-box { grid-template-columns: minmax(0, 1fr); padding: 22px; gap: 20px; } }
+@media (max-width: 560px) { .ft-cards { grid-template-columns: minmax(0, 1fr); } }
 </style>'''
 
 def li(u, t): return f'<li>{a(u, t)}</li>'

@@ -20,6 +20,10 @@ Y = {   # same as the previews (tools/build_coaching_tools.py)
               'Free sweat rate calculator: weigh yourself before and after a ride to find how much you sweat per hour and how much to drink on the bike.', 'sweat rate calculator'),
     'swim-pace-calculator': ('CSS Swim Pace Calculator for Triathletes | Cigala Cycling Coaching',
               'Free Critical Swim Speed (CSS) calculator: your CSS pace per 100 m from a 400 m and 200 m time trial, plus training paces for every swim session.', 'css swim calculator'),
+    'ftp-test-calculator': ('FTP Test Calculator (Ramp, 8-min, 20-min) | Cigala Cycling Coaching',
+              'Free FTP calculator: your FTP from a ramp test, an 8-minute or a 20-minute test, with W/kg and your training zones.', 'ftp calculator'),
+    'gear-speed-calculator': ('Bike Gear & Speed Calculator (Cadence, Gear Ratio) | Cigala Cycling Coaching',
+              'Free bike gear calculator: your speed in every gear at any cadence for your chainrings, cassette and tyre size, plus development per pedal turn.', 'bike gear calculator'),
 }
 items = []
 for slug, (t, m, k) in Y.items():

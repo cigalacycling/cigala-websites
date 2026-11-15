@@ -22,14 +22,17 @@ PAGES = {'home': 2924, 'individual-packages': 3338, 'tri-individual-packages': 3
          # new pages (Free Tools, Matteo 15 Nov): created by the push, IDs kept in stg-coaching/new-pages.json
          'tools': 'new-tools', 'tools-training-zones': 'new-training-zones-calculator', 'tools-carbs-per-hour': 'new-carbs-per-hour-calculator',
          'tools-critical-power': 'new-critical-power-calculator', 'tools-climb-time': 'new-climb-time-calculator',
-         'tools-sweat-rate': 'new-sweat-rate-calculator', 'tools-swim-pace': 'new-swim-pace-calculator'}
+         'tools-sweat-rate': 'new-sweat-rate-calculator', 'tools-swim-pace': 'new-swim-pace-calculator',
+         'tools-ftp-test': 'new-ftp-test-calculator', 'tools-gear-speed': 'new-gear-speed-calculator'}
 NEW = {'new-tools': ('Free Cycling Training Tools', 'tools', None),
        'new-training-zones-calculator': ('Training Zones Calculator', 'training-zones-calculator', 'tools'),
        'new-carbs-per-hour-calculator': ('Carbs per Hour Calculator', 'carbs-per-hour-calculator', 'tools'),
        'new-critical-power-calculator': ('Critical Power & W′ Calculator', 'critical-power-calculator', 'tools'),
        'new-climb-time-calculator': ('Climb Time Calculator', 'climb-time-calculator', 'tools'),
        'new-sweat-rate-calculator': ('Sweat Rate Calculator', 'sweat-rate-calculator', 'tools'),
-       'new-swim-pace-calculator': ('Swim Pace (CSS) Calculator', 'swim-pace-calculator', 'tools')}   # 'privacy' = new page, created by the push
+       'new-swim-pace-calculator': ('Swim Pace (CSS) Calculator', 'swim-pace-calculator', 'tools'),
+       'new-ftp-test-calculator': ('FTP Test Calculator', 'ftp-test-calculator', 'tools'),
+       'new-gear-speed-calculator': ('Gear & Speed Calculator', 'gear-speed-calculator', 'tools')}   # 'privacy' = new page, created by the push
 SRC = {k: open(ROOT + f'coachingpages/{k}.html').read() for k in PAGES}
 
 rid = lambda: ''.join(random.choice('0123456789abcdef') for _ in range(7))

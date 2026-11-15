@@ -28,6 +28,8 @@ IC = {  # line icons, same style as the packages page
     'cp': '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
     'climb': '<path d="M2 20h20L14 6l-4 6-2-3-6 11z"/><path d="M14 6l2 3"/>',
     'sweat': '<path d="M12 2.7l5.7 5.6a8 8 0 1 1-11.4 0z"/>',
+    'ftp': '<circle cx="12" cy="13" r="8"/><path d="M12 13l4-4M12 3V1M9 1h6"/>',
+    'gear': '<circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8L7 17M17 7l2.8-2.8"/>',
     'swim': '<path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M2 13c2 0 2-1.5 4-1.5S8 13 10 13s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><circle cx="16" cy="5" r="2"/><path d="M6 9l4-3 3 3"/>',
 }
 TOOLS = [
@@ -37,6 +39,8 @@ TOOLS = [
     ('climb', '/tools/climb-time-calculator/', 'Climb Time Calculator', 'How long a famous climb, or your own, will take at your power and weight, and the power you need for a target time.'),
     ('sweat', '/tools/sweat-rate-calculator/', 'Sweat Rate Calculator', 'Weigh yourself before and after a ride to find how much you sweat, and how much to drink per hour.'),
     ('swim', '/tools/swim-pace-calculator/', 'Swim Pace (CSS) Calculator', 'For triathletes: your Critical Swim Speed from a 400 m and a 200 m time trial, and your training paces.'),
+    ('ftp', '/tools/ftp-test-calculator/', 'FTP Test Calculator', 'Your FTP from a ramp test, an 8-minute or a 20-minute test, with your W/kg and a link to your training zones.'),
+    ('gear', '/tools/gear-speed-calculator/', 'Gear &amp; Speed Calculator', 'Your speed in every gear at any cadence, for your chainrings, cassette and tyre size.'),
 ]
 
 def hero(eyebrow, h1, lede):
@@ -171,6 +175,7 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
 .tl-out { position: relative; }
 .tl-out.locked [id$="-out"] { filter: blur(7px); pointer-events: none; user-select: none; }
 .tl-gate { position: absolute; inset: 64px 16px auto; z-index: 2; display: grid; place-items: center; }
+.tl-gate[hidden] { display: none !important; }   /* the grid display above would otherwise keep it on top after unlocking */
 .tl-gate-form { width: min(440px, 100%); display: grid; gap: 12px; padding: 24px; border-radius: 14px; background: rgba(8,9,10,.94); border: 1px solid rgba(0,154,68,.5); box-shadow: 0 24px 60px rgba(0,0,0,.5); }
 .tl-gate-form h3 { margin: 0; }
 .tl-gate-form p { margin: 0; color: var(--text-2); font-size: 14.5px; }
@@ -314,6 +319,7 @@ ZJS = '''<script>
     }
     out.innerHTML = h + '<p class="tl-note">Power zones: the 7-zone model based on FTP. Heart-rate zones: based on threshold heart rate. A guide, not medical advice.</p>';
   }
+  try { var q = new URLSearchParams(location.search).get('ftp'); if (q && +q > 0) document.getElementById('tl-p').value = Math.round(+q); } catch (e) {}
   f.addEventListener('input', run); f.addEventListener('change', run); run();
 })();
 </script>'''
@@ -753,9 +759,148 @@ CSSJS = """<script>
 </script>"""
 
 # =====================================================================================================================
+# 7. FTP test
+FTMAIN = hero('Free tool', 'FTP Test Calculator', 'Work out your FTP from a ramp test, an 8-minute test or a 20-minute test, then see your training zones.') + f"""
+
+<section class="tl-sec">
+  <div class="in">
+    <div class="tl-box">
+      <form class="tl-in panel" id="tl-ftp" onsubmit="return false">
+        <h2>Your test</h2>
+        <label class="tl-f"><span>Test</span><select id="tl-ft">
+          <option value="r">Ramp test: best 1-minute power</option>
+          <option value="8">8-minute test: average of your best 8-min effort</option>
+          <option value="20" selected>20-minute test: average power</option></select></label>
+        <div class="tl-two">
+          <label class="tl-f"><span>Power (W)</span><input type="number" id="tl-fp" inputmode="numeric" min="60" max="900" placeholder="e.g. 265"></label>
+          <label class="tl-f"><span>Weight (kg)</span><input type="number" id="tl-fkg" inputmode="decimal" min="30" max="160" step="0.1" placeholder="optional"></label>
+        </div>
+        <p class="tl-note" id="tl-fhelp"></p>
+      </form>
+      <div class="tl-out panel" aria-live="polite">
+        <h2>Your FTP</h2>
+        {gate()}<div id="tl-ftp-out"></div>
+      </div>
+    </div>
+    {signup('ftp')}
+  </div>
+</section>
+
+<section>
+  <div class="in"><div class="tl-txt">
+    <div class="eyebrow">How it works</div>
+    <h2>THREE WAYS TO TEST YOUR FTP</h2>
+    <div class="bar"></div>
+    <p>FTP (Functional Threshold Power) is roughly the highest power you can hold for about an hour. Few people want to ride flat out for an hour, so shorter tests estimate it with a standard factor:</p>
+    <ul>
+      <li><b>Ramp test:</b> the power steps up every minute until you can't continue. FTP = 75% of your best 1-minute power. Quick and easy to pace, but it can over-estimate FTP for riders with a strong sprint.</li>
+      <li><b>8-minute test:</b> two 8-minute all-out efforts with 10 minutes' recovery between them. FTP = 90% of the better (or average) effort.</li>
+      <li><b>20-minute test:</b> one 20-minute all-out effort after a proper warm-up. FTP = 95% of your average power. The most widely used test.</li>
+    </ul>
+    <h3>Make the test count</h3>
+    <p>Test when you're fresh, warm up well, and use the same test, bike and trainer each time so your numbers are comparable. Re-test every 6 to 8 weeks. For a fuller picture than one number, our Critical Power calculator uses two or three efforts.</p>
+    {reads([('what-is-ftp-cycling', 'What is FTP in cycling?'), ('critical-power-testing', 'Critical Power testing: how to get reliable data'), ('calibrate-a-power-meter', 'How to calibrate a power meter')])}
+  </div></div>
+</section>
+
+{cta('Our coached riders test with Critical Power and INSCYD, and their zones adapt every week as they get fitter.')}
+
+{more_tools('ftp')}"""
+
+FTJS = """<script>
+(function () {
+  var f = document.getElementById('tl-ftp'), out = document.getElementById('tl-ftp-out'), help = document.getElementById('tl-fhelp');
+  var K = { r: [0.75, 'Enter your best 1-minute power from the ramp test.'], '8': [0.90, 'Enter the average power of your best 8-minute effort.'], '20': [0.95, 'Enter your average power for the 20 minutes.'] };
+  function v(id) { var x = parseFloat(document.getElementById(id).value); return isFinite(x) ? x : 0; }
+  function run() {
+    var t = document.getElementById('tl-ft').value, k = K[t], p = v('tl-fp'), kg = v('tl-fkg');
+    help.textContent = k[1] + ' FTP = ' + Math.round(k[0] * 100) + '% of it.';
+    if (p < 60 || p > 900) { out.innerHTML = '<p class="tl-empty">' + k[1] + '</p>'; return; }
+    var ftp = Math.round(p * k[0]), h = '<div class="tl-big"><div><b>' + ftp + ' W</b><span>Your FTP</span></div>';
+    if (kg >= 30 && kg <= 160) h += '<div><b>' + (ftp / kg).toFixed(2) + '</b><span>W/kg</span></div>';
+    h += '</div><table class="tl-tbl"><tbody>';
+    var prev = Math.round(ftp * .55);   /* zones join up, like the training zones calculator */
+    [['Endurance (Zone 2)', .75], ['Tempo (Zone 3)', .90], ['Threshold (Zone 4)', 1.05], ['VO2max (Zone 5)', 1.20]].forEach(function (z) {
+      var top = Math.round(ftp * z[1]); h += '<tr><th scope="row">' + z[0] + '</th><td>' + (prev + 1) + '–' + top + ' W</td></tr>'; prev = top; });
+    out.innerHTML = h + '</tbody></table><p class="tl-note"><a href="../training-zones-calculator/?ftp=' + ftp + '">See all 7 power zones and your heart-rate zones →</a></p>';
+  }
+  f.addEventListener('input', run); f.addEventListener('change', run); run();
+})();
+</script>"""
+
+# =====================================================================================================================
+# 8. Gear & speed
+TYRES = [('700 × 25c', 2105), ('700 × 28c', 2136), ('700 × 30c', 2146), ('700 × 32c', 2155), ('700 × 35c', 2168), ('700 × 38c', 2180),
+         ('700 × 40c', 2200), ('700 × 45c', 2242), ('650b × 47', 2079)]   # wheel circumference in mm, standard bike-computer values
+topts = ''.join(f'<option value="{c}"{" selected" if n == "700 × 28c" else ""}>{n}</option>' for n, c in TYRES)
+GEMAIN = hero('Free tool', 'Gear &amp; Speed Calculator', 'See your speed in every gear at any cadence, for your chainrings, cassette and tyres. Useful for choosing gearing for a climb, a gravel race or a sportive.') + f"""
+
+<section class="tl-sec">
+  <div class="in">
+    <div class="tl-box">
+      <form class="tl-in panel" id="tl-gear" onsubmit="return false">
+        <h2>Your bike</h2>
+        <div class="tl-two">
+          <label class="tl-f"><span>Big chainring</span><input type="number" id="tl-c1" inputmode="numeric" min="30" max="60" value="50"></label>
+          <label class="tl-f"><span>Small chainring</span><input type="number" id="tl-c2" inputmode="numeric" min="0" max="50" value="34"><small>0 for a single chainring</small></label>
+        </div>
+        <label class="tl-f"><span>Cassette (smallest to largest cog)</span><input type="text" id="tl-cs" inputmode="numeric" value="11,12,13,14,15,17,19,21,24,28,32"><small>Cog sizes separated by commas</small></label>
+        <div class="tl-two">
+          <label class="tl-f"><span>Tyre size</span><select id="tl-ty">{topts}</select></label>
+          <label class="tl-f"><span>Cadence (rpm)</span><input type="number" id="tl-cad" inputmode="numeric" min="30" max="140" value="90"></label>
+        </div>
+      </form>
+      <div class="tl-out panel" aria-live="polite">
+        <h2>Your speeds</h2>
+        {gate()}<div id="tl-gear-out"></div>
+      </div>
+    </div>
+    {signup('gear')}
+  </div>
+</section>
+
+<section>
+  <div class="in"><div class="tl-txt">
+    <div class="eyebrow">How it works</div>
+    <h2>HOW GEARING SETS YOUR SPEED</h2>
+    <div class="bar"></div>
+    <p>Speed = cadence × (chainring ÷ cog) × wheel circumference. A bigger chainring or a smaller cog gives you more speed for each pedal turn; the opposite makes climbing easier.</p>
+    <h3>Development</h3>
+    <p>Development is how far the bike travels for one turn of the pedals, in metres. It's the easiest way to compare gears across different bikes and tyre sizes.</p>
+    <h3>Choosing gears for a climb</h3>
+    <p>On a long climb most riders are happiest at 80–90 rpm. Look at your speed in your easiest gear at 80 rpm and compare it with your speed on the climb (our climb time calculator gives you that). If you'd be grinding below 70 rpm, a bigger cassette or a smaller chainring will help.</p>
+  </div></div>
+</section>
+
+{cta('Not sure what gearing you need for your event? Our coaches will help you set up your bike and your plan for it.')}
+
+{more_tools('gear')}"""
+
+GEJS = """<script>
+(function () {
+  var f = document.getElementById('tl-gear'), out = document.getElementById('tl-gear-out');
+  function v(id) { var x = parseFloat(document.getElementById(id).value); return isFinite(x) ? x : 0; }
+  function run() {
+    var c1 = v('tl-c1'), c2 = v('tl-c2'), circ = v('tl-ty') / 1000, cad = v('tl-cad');
+    var cogs = document.getElementById('tl-cs').value.split(/[^0-9]+/).map(Number).filter(function (x) { return x >= 9 && x <= 60; }).sort(function (a, b) { return a - b; });
+    if (c1 < 20 || !cogs.length || cad < 30) { out.innerHTML = '<p class="tl-empty">Enter your chainrings, cassette and cadence.</p>'; return; }
+    var rings = [c1].concat(c2 >= 20 && c2 < c1 ? [c2] : []);
+    function sp(r, c) { return r / c * circ * cad * 60 / 1000; }
+    var top = sp(c1, cogs[0]), low = sp(rings[rings.length - 1], cogs[cogs.length - 1]);
+    var h = '<div class="tl-big"><div><b>' + top.toFixed(1) + '</b><span>Top speed, km/h</span></div><div><b>' + low.toFixed(1) + '</b><span>Easiest gear, km/h</span></div></div>';
+    h += '<table class="tl-tbl"><caption>Speed at ' + cad + ' rpm (km/h)</caption><thead><tr><th scope="col">Cog</th>' + rings.map(function (r) { return '<th scope="col">' + r + 't</th>'; }).join('') + '</tr></thead><tbody>';
+    cogs.forEach(function (c) { h += '<tr><th scope="row">' + c + 't</th>' + rings.map(function (r) { return '<td>' + sp(r, c).toFixed(1) + '</td>'; }).join('') + '</tr>'; });
+    h += '</tbody></table><p class="tl-note">Development in your easiest gear: ' + (rings[rings.length - 1] / cogs[cogs.length - 1] * circ).toFixed(2) + ' m per pedal turn; hardest: ' + (c1 / cogs[0] * circ).toFixed(2) + ' m.</p>';
+    out.innerHTML = h;
+  }
+  f.addEventListener('input', run); f.addEventListener('change', run); run();
+})();
+</script>"""
+
+# =====================================================================================================================
 # hub
 cards = ''.join(f'<a class="tl-card panel" href="{C}{u}" {EXT}><svg viewBox="0 0 24 24" aria-hidden="true">{IC[k]}</svg><h2 class="h-sm">{t}</h2><p>{d}</p><span class="arrow-link">Open the calculator →</span></a>' for k, u, t, d in TOOLS)
-HMAIN = hero('Free tools', 'Free Cycling Training Tools', 'Free calculators from Head Coach Matteo Cigala to help you train and race smarter: training zones, fuelling, hydration, Critical Power, climb times and swim pace.') + f'''
+HMAIN = hero('Free tools', 'Free Cycling Training Tools', 'Free calculators from Head Coach Matteo Cigala to help you train and race smarter: training zones, FTP, fuelling, hydration, Critical Power, climb times, gearing and swim pace.') + f'''
 
 <section class="tl-sec">
   <div class="in">
@@ -780,3 +925,7 @@ page('tools-sweat-rate', '/tools/sweat-rate-calculator/', 'Sweat Rate Calculator
      'Free sweat rate calculator: weigh yourself before and after a ride to find how much you sweat per hour and how much to drink on the bike.', SWMAIN, SWJS)
 page('tools-swim-pace', '/tools/swim-pace-calculator/', 'Swim Pace (CSS) Calculator', 'CSS Swim Pace Calculator for Triathletes | Cigala Cycling Coaching',
      'Free Critical Swim Speed (CSS) calculator: your CSS pace per 100 m from a 400 m and 200 m time trial, plus training paces for every swim session.', CSSMAIN, CSSJS)
+page('tools-ftp-test', '/tools/ftp-test-calculator/', 'FTP Test Calculator', 'FTP Test Calculator (Ramp, 8-min, 20-min) | Cigala Cycling Coaching',
+     'Free FTP calculator: your FTP from a ramp test, an 8-minute or a 20-minute test, with W/kg and your training zones.', FTMAIN, FTJS)
+page('tools-gear-speed', '/tools/gear-speed-calculator/', 'Gear & Speed Calculator', 'Bike Gear & Speed Calculator (Cadence, Gear Ratio) | Cigala Cycling Coaching',
+     'Free bike gear calculator: your speed in every gear at any cadence for your chainrings, cassette and tyre size, plus development per pedal turn.', GEMAIN, GEJS)

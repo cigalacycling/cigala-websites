@@ -5,5 +5,7 @@
  "critical-power-calculator": 6697,
  "climb-time-calculator": 6729,
  "sweat-rate-calculator": 6732,
- "swim-pace-calculator": 6733
+ "swim-pace-calculator": 6733,
+ "ftp-test-calculator": 6769,
+ "gear-speed-calculator": 6770
 }
