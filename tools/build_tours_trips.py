@@ -377,6 +377,17 @@ def trip(slug):
                f'<a class="btn btn-ghost" href="{L}/contact/">Ask a question</a></div></div></div></section>')
     tabs = ''.join(f'<a href="#{a}">{E(b)}</a>' for a, b in nav)
     out.insert(1, f'<nav class="tabs" aria-label="On this page"><div class="in">{tabs}<a class="btn btn-go" href="{E(book)}" target="_blank" rel="noopener">Book now</a></div></nav>')
+    # structured data (SEO, Matteo: only improve): TouristTrip with the route places and the euro price, linked to the site's Organization
+    num = re.sub(r'[^\d.]', '', pr.replace(',', ''))
+    places = [n for n, la, lo, k, ps in _trm.ROUTES.get(slug, {}).get('pts', [])]
+    intro_txt = text_of(''.join(clean(v) for k, v, s in (intro['items'] if intro else []) if k == 'text'))[:300]
+    ld = {"@context": "https://schema.org", "@type": "TouristTrip", "name": tr['name'], "url": f"{L}/trips/{slug}/",
+          "description": intro_txt or f"Guided {TYPE[tr['type']].lower()} cycling tour in {tr['country']} with Cigala Cycling Tours.",
+          "touristType": "Cyclists", "provider": {"@id": f"{L}/#organization"}}
+    if card: ld["image"] = card['url']
+    if places: ld["itinerary"] = {"@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": i, "item": {"@type": "Place", "name": n}} for i, n in enumerate(places, 1)]}
+    if num: ld["offers"] = {"@type": "Offer", "price": num, "priceCurrency": "EUR", "url": book, "availability": "https://schema.org/InStock"}
+    out.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace('</', '<\\/') + '</script>')
     out.append(YT_JS if 'class="yt"' in ''.join(out) else '')
     main = '\n'.join(x for x in out if x)
     main = main.replace('href="https://staging.tours.cigalacycling.com', 'href="' + L)   # links only; images stay on staging

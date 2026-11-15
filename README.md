@@ -233,6 +233,10 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
     - New hero photo (the Colosseum is gone).
     - Icons for "What we organise".
     - Location ideas on a Europe map (`tourspages/maps/custom-locations.svg`), with numbered dots matching a numbered list. Patagonia is left out.
+- **Finishing touches (15 Nov):**
+  - Link check: 56 rebuilt pages, 84 internal links, none broken.
+  - 404 page (template 7275) is in the new design with the live wording ("404 — Wrong turn"), via `tools/tours_404.py`. It returns a real 404 status.
+  - Every trip page has `TouristTrip` structured data: name, description, photo, route places and the euro price with the WeTravel link, provider = the site's Organization (`build_tours_trips.py`). Existing schema (Organization, WebSite, Service) is unchanged.
 - **Live errors fixed (Matteo 15 Nov: "any error you see, fix it"):**
   - The Gran Canaria H1 now reads "Cycling in Gran Canaria" (live: "Cycling in Mallorca").
   - In the Lake Como guide (post 8945), the second FAQ question is now "How hard is the Muro di Sormano?". Backup: `stg-tours/backup/post-8945-before-faq-fix.json`.
