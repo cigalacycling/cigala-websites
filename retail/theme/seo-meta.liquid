@@ -1,0 +1,51 @@
+{%- comment -%}
+  Page <title> and meta description.
+  Replaces the Booster SEO app snippet, which stopped rendering when the app
+  was uninstalled. Same title format the app used: "[title] | [shop name]".
+  Title: the SEO title from the admin when set, otherwise the item's name
+  (Shopify's page_title). Description: the SEO description when set,
+  otherwise the start of the item's own text (page_description). On products
+  without an SEO description, the shared delivery/finance lines at the top
+  of the description ("Delivery in 1-2 Business Days (...)", "Lead-time ...",
+  "Finance available at checkout with humm by flexifi.") are skipped so the
+  snippet describes the product itself.
+{%- endcomment -%}
+{%- capture seo_title -%}
+  {{- page_title -}}
+  {%- if current_tags -%}{%- assign meta_tags = current_tags | join: ', ' -%}{{ ' &ndash; ' }}{{ 'general.meta.tags' | t: tags: meta_tags }}{%- endif -%}
+  {%- if current_page != 1 -%}{{ ' &ndash; ' }}{{ 'general.meta.page' | t: page: current_page }}{%- endif -%}
+  {%- unless page_title contains shop.name -%}{{ ' | ' }}{{ shop.name }}{%- endunless -%}
+{%- endcapture -%}
+{%- assign seo_desc = page_description -%}
+{%- if template.name == 'product' and product.metafields.global.description_tag == blank -%}
+  {%- assign d = product.description | replace: '</', ' </' | replace: '<br', ' <br' | strip_html | replace: '&nbsp;', ' ' | replace: ' ', ' ' | strip_newlines | replace: '   ', ' ' | replace: '  ', ' ' | replace: '  ', ' ' | strip -%}
+  {%- for i in (1..8) -%}
+    {%- assign head = d | slice: 0, 11 | downcase -%}
+    {%- assign lead = d | slice: 0, 1 -%}
+    {%- if head == 'delivery in' or head == 'lead-time v' or head == 'free delive' -%}
+      {%- assign first = d | split: ')' | first -%}
+      {%- assign d = d | remove_first: first | remove_first: ')' | strip -%}
+    {%- elsif head == 'free shippi' or head == 'or klarna. ' or head == 'or klarna.' -%}
+      {%- assign first = d | split: '.' | first -%}
+      {%- assign d = d | remove_first: first | remove_first: '.' | strip -%}
+    {%- elsif head == 'delivery ti' -%}
+      {%- assign first = d | split: 'days' | first -%}
+      {%- assign d = d | remove_first: first | remove_first: 'days' | strip -%}
+    {%- elsif head == 'klarna | bi' or head == 'klarna. bik' -%}
+      {%- assign d = d | slice: 6, 100000 | strip -%}
+    {%- elsif head == 'biketowork ' -%}
+      {%- assign d = d | remove_first: 'BikeToWork scheme available' | strip -%}
+    {%- elsif lead == '|' or lead == '.' -%}
+      {%- assign d = d | slice: 1, 100000 | strip -%}
+    {%- elsif head == 'finance ava' -%}
+      {%- assign d = d | split: 'flexifi' | slice: 1, 99 | join: 'flexifi' | strip -%}
+    {%- else -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if d != blank -%}{%- assign seo_desc = d -%}{%- endif -%}
+{%- endif -%}
+<title>{{ seo_title | strip }}</title>
+{%- if seo_desc != blank %}
+<meta name="description" content="{{ seo_desc | strip_html | strip_newlines | strip | truncate: 160 | escape_once }}">
+{%- endif %}

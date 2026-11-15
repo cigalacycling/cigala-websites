@@ -64,7 +64,7 @@ There are 9 unused themes (Debut, Venture, Simple, Minimal, District, "Back up 1
 
 ## Suggested order
 
-1. Restore titles and meta descriptions (item 1). Biggest SEO win, small change, test on a theme copy first.
+1. Restore titles and meta descriptions (item 1). **Done on the theme copy "STAGING – SEO titles fix"; see `theme/README.md`. Waiting to go live with Matteo.**
 2. Move tracking behind consent and update the privacy policy (item 5).
 3. Alt text for the 3,088 images, done by brand (item 2).
 4. Stock and drafts tidy-up with Matteo (item 3).
