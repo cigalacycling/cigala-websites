@@ -122,9 +122,11 @@ The new designs fix the last three. The Gran Canaria H1 still has to be fixed on
 
 ## Tours staging: status 15 Nov
 
-- Hostinger created the staging copy as a separate WordPress install in the `/staging` folder of tours.cigalacycling.com. `https://tours.cigalacycling.com/staging/wp-login.php` answers, and its login form posts to `https://staging.tours.cigalacycling.com`.
-- `staging.tours.cigalacycling.com` doesn't resolve to a server yet: the proxy can't connect, while `staging.cigalacycling.com` works. A DNS record for `staging.tours` is needed, pointing to the same server as `tours.cigalacycling.com`.
-- No application password is saved for the Tours staging host yet. It must be created in the **staging** wp-admin, never on live.
+- **Staging:** https://staging.tours.cigalacycling.com. Hostinger's copy sits in the `/staging` folder of tours.cigalacycling.com, with an A record `staging.tours`. WordPress home and siteurl are set to the staging address, and robots.txt has `Disallow: /`.
+- **Login:** an application password ("Claude", user `infocigalacycling-com`, administrator) is saved as a network secret for the staging host only. Matteo logs in through hPanel → Staging → Admin panel.
+- **DNS** was still spreading on 15 Nov, and many requests got a 502 from the proxy. Retry every request in a loop until it returns 200.
+- **Backup:** `stg-tours/backup/` holds all 53 pages, 15 Elementor templates (header 170, footer 228, kit 6, loop items, 404, single post) and 37 posts, taken before any change. Restore from these files.
+- Key page IDs: Home 5212, Trips 8689, Granfondo 2796, Gravel 2821, Italian 4402, Custom 1576, Destinations 10, Guides 5030, About 271, Contact 461, Terms 564, Testimonials 2844.
 
 ## Tours build plan: Matteo's notes, 15 Nov
 
