@@ -164,3 +164,4 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - accent and buttons #009a44
   - main background white
   - fonts Montserrat
+- **Checkout background image:** Matteo is keeping the existing one. Shops on the Grow plan can't add a background image again once it is removed, so don't suggest removing it. The `cigala-retail-checkout-banner.jpg` file is unused.
