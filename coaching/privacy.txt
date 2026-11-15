@@ -2,7 +2,7 @@ H1: PRIVACY POLICY
 LI: Who we are
 P: This website, coaching.cigalacycling.com, is run by Cigala Cycling Limited, a company based in Co. Wicklow, Ireland ("we", "us"). We are the controller of the personal data described in this policy.
 For any privacy question or request, contact us at info@cigalacycling.com or +353 404 78107.
-Our other websites (cigalacycling.com, tours.cigalacycling.com and retail.cigalacycling.com) each have their own privacy policy covering the tools they use.
+Our other websites (cigalacycling.com, tours.cigalacycling.com and retail.cigalacycling.com) each have their own privacy policy covering the services and tools they use. By using this website you confirm that you have read this policy.
 LI: What we collect and why
 P: Contact form: your name, email address and message. We use them only to answer your enquiry. Legal basis: your request and our legitimate interest in replying to it.
 Free consultation: when you book a call through Calendly, your name, email address and any notes you add. We use them to hold the call. Legal basis: your request.
@@ -40,6 +40,13 @@ P: Contact form and chat enquiries: for as long as needed to deal with your enqu
 Coaching records: for as long as we coach you, and no longer than two years after your coaching ends. Invoices and payment records are kept for as long as Irish tax law requires.
 Health information: deleted when your coaching ends, or earlier if you withdraw your consent.
 Analytics data: kept in Google Analytics in line with our retention settings, after which it is deleted automatically.
+LI: How we protect your data
+P: The website uses an encrypted connection (HTTPS). Access to our website, email, payment and training platform accounts is restricted and password-protected, and we only work with reputable providers that apply their own security measures.
+No method of sending or storing data over the internet is completely secure. We take reasonable steps to protect your data, but we cannot guarantee absolute security, and you share information with us at your own risk. If a data breach is likely to affect your rights, we will inform you and the Data Protection Commission as the law requires.
+LI: Children
+P: This website is not intended for children under 16. We do not knowingly collect personal data from children under 16 through the website. We coach younger riders (for example in our talent programme) only through a parent or guardian, who agrees to how we use the rider's data. If you believe a child has sent us personal data, contact us and we will delete it.
+LI: Other websites and social media
+P: This website links to other websites and platforms, including our other Cigala Cycling sites, Calendly, Vekta, TrainingPeaks, Skool, WhatsApp, Instagram, Facebook, YouTube, TikTok, X and Threads. When you follow those links or contact us on those platforms, their own privacy policies apply. We are not responsible for the content or privacy practices of websites and platforms we do not control.
 LI: Your rights
 P: Under the GDPR you have the right to:
 - access the personal data we hold about you;
@@ -49,6 +56,8 @@ P: Under the GDPR you have the right to:
 - withdraw your consent at any time (for example through "Cookie settings", or by telling us you no longer want us to use your health information).
 To use any of these rights, email info@cigalacycling.com. We will reply within one month.
 If you are not happy with how we handle your data, you can complain to the Data Protection Commission in Ireland (www.dataprotection.ie).
+LI: Governing law
+P: This policy is governed by the laws of Ireland. Nothing in it limits any rights you have under data protection law.
 LI: Changes to this policy
 P: We may update this policy when our website or services change. The latest version is always on this page.
 Last updated: November 2026.

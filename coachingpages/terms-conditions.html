@@ -315,6 +315,8 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 /* ---- footer links: green-text on hover, no underline (Matteo, all sites, 15 Nov) ---- */
 footer a { text-decoration: none; transition: color .15s, border-color .15s; }
 footer a:hover, footer ul a:hover, footer .intl h2 a:hover, .legal a:hover, footer .social a:hover { color: var(--green-text); text-decoration: none; }
+/* intro text under page headings: 16px, as on cigalacycling.com (BRAND.md: intro 16px) */
+.hero .lede { font-size: 16px; }
 @media (prefers-reduced-motion: reduce) { .path img, .dest img { transition: none; } .path:hover img, .dest:hover img { transform: none; } }
 </style>
 <style>
@@ -324,10 +326,10 @@ footer a:hover, footer ul a:hover, footer .intl h2 a:hover, .legal a:hover, foot
 .page-hero h1 { font-size: clamp(44px, 7vw, 84px); max-width: none; }
 .crumbs { font-size: 12.5px; color: var(--text-3); margin-bottom: 14px; }
 .crumbs a { color: var(--text-3); text-decoration: none; } .crumbs a:hover { color: #fff; }
-.page-hero .eyebrow { margin-bottom: 10px; }
-section.legal { padding-top: 40px; }
-.panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: clamp(20px, 3vw, 32px); }
-.terms { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; align-items: start; }
+.page-hero .eyebrow { margin-bottom: 10px; color: var(--red-text, #ff3d33); text-shadow: none; }
+section.legal-sec { padding-top: 40px; }
+.legal-doc .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: clamp(20px, 3vw, 32px); }
+.legal-grid { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; align-items: start; }
 .toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 96px); display: grid; gap: 2px; font-size: 13px; }
 .toc a { color: var(--text-3); text-decoration: none; padding: 5px 10px; border-left: 2px solid var(--border); }
 .toc a:hover { color: #fff; border-left-color: var(--green); }
@@ -344,7 +346,7 @@ section.legal { padding-top: 40px; }
 .legal-doc .waiver-head { margin-top: 14px; scroll-margin-top: 100px; }
 .legal-doc .waiver-head h2 { font-size: clamp(24px, 3vw, 34px); }
 .legal-doc .waiver-head .provider { font-family: var(--body); text-transform: none; font-weight: 600; font-size: 15px; color: var(--text-2); letter-spacing: 0; margin-top: 14px; }
-@media (max-width: 900px) { .terms { grid-template-columns: minmax(0, 1fr); } .toc { position: static; display: none; } }
+@media (max-width: 900px) { .legal-grid { grid-template-columns: minmax(0, 1fr); } .toc { position: static; display: none; } }
 </style>
 <div class="topo" aria-hidden="true"></div>
 <div class="page">
@@ -385,8 +387,8 @@ section.legal { padding-top: 40px; }
   </div>
 </div>
 
-<section class="legal">
-  <div class="in terms">
+<section class="legal-sec">
+  <div class="in legal-grid">
     <nav class="toc" aria-label="On this page"><b>On this page</b><a href="#privacy-policy">Privacy Policy</a><a href="#sign-up">Sign Up</a><a href="#sign-off-and-renewal">Sign Off And Renewal</a><a href="#anti-doping-policy">Anti Doping Policy</a><a href="#accident-policy">Accident Policy</a><a href="#individual-sessions">Individual Sessions</a><a href="#data-scraping-screening">Data Scraping &amp; Screening</a><a href="#coaching-discount-codes">Coaching Discount Codes</a><a href="#name-of-trading">Name Of Trading</a><a href="#waiver">Liability waiver</a></nav>
     <div class="legal-doc">
       <div class="panel"><ol><li><h3 id="privacy-policy">Privacy Policy</h3><p>We do not store or maintain credit card details nor do we share customer financial details with any third parties.</p></li><li><h3 id="sign-up">Sign Up</h3><p>For the basic and advanced coaching packages, the minimum sign up is 6 months.</p><p>For the advanced +1 o 2 sessions and premium packages the minimum it’s 3 months.</p><p>Payments will be made automatically monthly GoCardless platform (Direct Debit).</p><p>In the case, during the subscription period, the direct debit payments fail more than twice, an administration fee will be applied to your account to cover processing and follow-up costs.</p></li><li><h3 id="sign-off-and-renewal">Sign Off And Renewal</h3><p>At the end of the subscription, an automatic renewal notification email will be sent. If you intend to change your coaching package or do not continue with your subscription, reply to the email as indicated.</p><p>If you decide to end your coaching before the end of your current subscription period, the full payment for the current month will still apply.</p><p>Additionally, a sign-off fee equivalent to one month of coaching will be charged. This covers your coaching and the continuation of your TrainingPeaks/Vekta subscription until the end of the current block of training built, and also accounts for the fact that Matteo coaches a limited number of athletes. By committing to a coaching plan, you are taking a valuable spot that could otherwise be offered to another athlete, so the sign-off fee reflects the reserved place, the time dedicated to your training, and the effort required to reopen that spot for a new athlete.</p></li><li><h3 id="anti-doping-policy">Anti Doping Policy</h3><p>Cigala Cycling is against to all forms of doping and its practice. We do not take any responsibility on this subject and it is in the rider’s responsibility to respect the following:</p><ul><li>Be aware of the list of prohibited substances available at the World Anti Doping Agency (WADA) website at this link:</li></ul><p><a href="https://www.wada-ama.org/sites/default/files/2025-09/2026list_en_final_clean_september_2025.pdf" target="_blank" rel="noopener">https://www.wada-ama.org/sites/default/files/2025-09/2026list_en_final_clean_september_2025.pdf</a></p><ul><li>Sign a form at the start of the coaching collaboration where the rider takes responsibility of the pharmaceutical and nutritional subject.</li></ul></li><li><h3 id="accident-policy">Accident Policy</h3><p>For that availing of individual sessions, training camps or tours, In the case of a rider falling during training with the coaches, Cigala Cycling Ltd does not accept responsibility of any accident.</p><p>It is in the rider responsibility to have or not a private sports insurance or travel insurance if the training camp or tour is located abroad and at the start of the collaboration, a form must be signed.</p></li><li><h3 id="individual-sessions">Individual Sessions</h3><p>Training Sessions are held in Wicklow, Co. Wicklow. With other arrangements, training sessions can be held in another location.</p><p>In the event of cancellation or rescheduling 1 on 1 session or group session 48 hrs of the notice must be given otherwise the session is lost.</p><p>In the event of the lateness of more than 30 minutes the time of the session will be reduced in accordance with time lost.</p><p>In the unlikely event of the lateness of the coach, the time will be still made up.</p><p>In the event of a no-show the session will be lost.</p><p>In the event of no-show from the coach, the session will be rescheduled and an extra free session will be given.</p></li><li><h3 id="data-scraping-screening">Data Scraping &amp; Screening</h3><p>Across our websites with our domain, it is prohibited to users from recording and extracting sensitive data and give them to their collaborators without our permission. This includes the screening and recording with automated programs, software, bot, or any other method of screen scraping.</p></li><li><h3 id="coaching-discount-codes">Coaching Discount Codes</h3><p>Coaching riders will avail of a discount code on our retail store. This code is only valid (1) when you are currently a coached rider, (2) cannot combined with any other discount code (3) cannot combined with any finance options such as Humm &amp; Klarna (4) cannot be shared with other people.</p><p>If an order will be placed using the discount code with the above reasons, the order will be cancelled.</p></li><li><h3 id="name-of-trading">Name Of Trading</h3><p>Cigala Cycling Limited</p></li></ol></div>

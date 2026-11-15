@@ -48,8 +48,8 @@ def doc(eyebrow, h1, crumb, items, extra_toc='', extra=''):
   </div>
 </div>
 
-<section class="legal">
-  <div class="in terms">
+<section class="legal-sec">
+  <div class="in legal-grid">
     <nav class="toc" aria-label="On this page"><b>On this page</b>{toc}</nav>
     <div class="legal-doc">
       <div class="panel">{render(items)}</div>{extra}
@@ -64,10 +64,10 @@ LCSS = '''<style>
 .page-hero h1 { font-size: clamp(44px, 7vw, 84px); max-width: none; }
 .crumbs { font-size: 12.5px; color: var(--text-3); margin-bottom: 14px; }
 .crumbs a { color: var(--text-3); text-decoration: none; } .crumbs a:hover { color: #fff; }
-.page-hero .eyebrow { margin-bottom: 10px; }
-section.legal { padding-top: 40px; }
-.panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: clamp(20px, 3vw, 32px); }
-.terms { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; align-items: start; }
+.page-hero .eyebrow { margin-bottom: 10px; color: var(--red-text, #ff3d33); text-shadow: none; }
+section.legal-sec { padding-top: 40px; }
+.legal-doc .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: clamp(20px, 3vw, 32px); }
+.legal-grid { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; align-items: start; }
 .toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 96px); display: grid; gap: 2px; font-size: 13px; }
 .toc a { color: var(--text-3); text-decoration: none; padding: 5px 10px; border-left: 2px solid var(--border); }
 .toc a:hover { color: #fff; border-left-color: var(--green); }
@@ -84,7 +84,7 @@ section.legal { padding-top: 40px; }
 .legal-doc .waiver-head { margin-top: 14px; scroll-margin-top: 100px; }
 .legal-doc .waiver-head h2 { font-size: clamp(24px, 3vw, 34px); }
 .legal-doc .waiver-head .provider { font-family: var(--body); text-transform: none; font-weight: 600; font-size: 15px; color: var(--text-2); letter-spacing: 0; margin-top: 14px; }
-@media (max-width: 900px) { .terms { grid-template-columns: minmax(0, 1fr); } .toc { position: static; display: none; } }
+@media (max-width: 900px) { .legal-grid { grid-template-columns: minmax(0, 1fr); } .toc { position: static; display: none; } }
 </style>'''
 
 # ---------- Terms & Conditions (live copy) ----------
