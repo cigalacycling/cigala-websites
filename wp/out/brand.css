@@ -30,6 +30,9 @@ b, strong { color: var(--text); font-weight: 600; }
 .in { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 section { padding-block: 72px 0; }
 h1, h2, h3 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.04; margin: 0; text-wrap: balance; }
+/* a little more air in two-line titles (Matteo, 15 Nov; same on all sites) */
+h1 { line-height: 1.08; }
+h2, h3 { line-height: 1.14; }
 h1 { font-size: clamp(38px, 6.4vw, 76px); }
 h2 { font-size: clamp(30px, 4.6vw, 52px); }
 .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--red-text); margin-bottom: 10px; }
