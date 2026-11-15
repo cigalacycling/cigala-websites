@@ -77,7 +77,8 @@ html .cc .nav { position: relative; top: 0; }
 .e-con.cc-wrap, .cc-wrap > .e-con-inner { padding: 0 !important; gap: 0 !important; max-width: none !important; }
 .cc-wrap .elementor-widget-html, .cc-wrap .elementor-widget-html .elementor-widget-container, .cc-wrap .elementor-widget-shortcode { width: 100%; }
 body:has(.cc-page) .site-header, body:has(.cc-page) .site-footer { display: none; }
-html .cc h1, html .cc h2, html .cc h3, html .cc h4 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.04; }
+html .cc h1, html .cc h2, html .cc h3, html .cc h4 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.14; }
+html .cc h1 { line-height: 1.08; }
 html .cc p, html .cc li, html .cc a, html .cc span, html .cc div, html .cc button, html .cc label, html .cc td, html .cc th, html .cc blockquote { font-family: var(--body); }
 html .cc .tag-line, html .cc .stat .n, html .cc .pkg-price b, html .cc .cmp thead th, html .cc .dest-h { font-family: var(--head); }
 html .cc .faq h3, html .cc footer .intl h2, html .cc footer .tag-sub, html .cc .btn-h { font-family: var(--body); text-transform: none; }
