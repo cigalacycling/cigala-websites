@@ -352,3 +352,4 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   Bernd Ondruch: "Germany & UK" (Matteo: lives in both); UK page leads with his review.
 - Country reviews: the non-duplicated live quotes (William-Wales, Nat-California, Chris-Ontario) are rewordings of
   Marine's testimonial under invented names: not used. Bernd is the one real UK-linked client.
+- USA hero: Matteo riding in the blue Italia kit on a dry, sunny road (live alt of imgi_20); not the Vekta image, nothing that looks like Ireland.

@@ -56,7 +56,7 @@ C_ = {
     },
     extra_q=('Do you coach time trials and hill climbs?', ['Yes. Time trials and hill climbs are short, all-out efforts, and we train them that way: pacing work, efforts at and above Critical Power, and sessions in your race position. Advanced and Premium include race and pacing strategy for each event.'])),
 'usa': dict(
-    name='the USA', adj='US', cur='$', code='USD', hero=('Vekta-x-Cigala', 'country-usa-hero-vekta', 'Vekta x Cigala Cycling: a training session in the Vekta app on a phone and a laptop'), pos='60% 50%', photo=('imgi_17_zCRmNmCA', 'country-usa-events-coaching'),
+    name='the USA', adj='US', cur='$', code='USD', hero=('imgi_20_Fqav', 'country-usa-hero-matteo-sun'), pos='50% 8%', photo=('imgi_17_zCRmNmCA', 'country-usa-events-coaching'),
     vekta='$21.99', guides=[('tips-for-gravel-racing', 'Tips for gravel racing'), ('getting-started-with-gravel', 'Getting started with gravel'), ('heat-training', 'Heat training: why it is a game changer')], reviews=[4, 1, 7, 10, 6, 0],
     facts=[('clock', 'Works across US time zones', 'Feedback is written in Vekta or TrainingPeaks, so you never need to be online at the same time.'),
            ('currency', 'Prices in US dollars', 'You pay in dollars, so no exchange fees on your side.'),
