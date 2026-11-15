@@ -147,6 +147,11 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
 /* inner pages */
 .hero .in.proof-wrap { display: block; padding-block: 0; }
 .proof-mob { display: none; }
+.g-rev { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--text-2); text-decoration: none; transition: color .15s; }
+.g-rev span { color: var(--star); font-size: 15px; }
+.g-rev:hover, .g-rev:active { color: var(--green-text); }
+.proof-wrap .g-rev, .proof-mob .g-rev { float: right; }
+.proof-wrap::after, .proof-mob::after { content: ''; display: block; clear: both; }
 @media (max-width: 640px) { .hero .in.proof-wrap { display: none; } .proof-mob { display: block; } .proof-mob .proof { margin-top: 28px; } }
 .proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 36px; border: 1px solid var(--border); border-radius: var(--r); background: var(--panel-grad), var(--panel); }
 .proof > div { padding: 18px 20px; border-left: 1px solid var(--border); min-width: 0; }

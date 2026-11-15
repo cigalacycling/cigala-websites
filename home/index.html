@@ -155,6 +155,11 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
 /* inner pages */
 .hero .in.proof-wrap { display: block; padding-block: 0; }
 .proof-mob { display: none; }
+.g-rev { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--text-2); text-decoration: none; transition: color .15s; }
+.g-rev span { color: var(--star); font-size: 15px; }
+.g-rev:hover, .g-rev:active { color: var(--green-text); }
+.proof-wrap .g-rev, .proof-mob .g-rev { float: right; }
+.proof-wrap::after, .proof-mob::after { content: ''; display: block; clear: both; }
 @media (max-width: 640px) { .hero .in.proof-wrap { display: none; } .proof-mob { display: block; } .proof-mob .proof { margin-top: 28px; } }
 .proof { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 36px; border: 1px solid var(--border); border-radius: var(--r); background: var(--panel-grad), var(--panel); }
 .proof > div { padding: 18px 20px; border-left: 1px solid var(--border); min-width: 0; }
@@ -267,7 +272,7 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
     <div><b>700+</b><span>Cyclists guided on tour</span></div>
     <div><b>10+</b><span>Years running tours</span></div>
     <div><b>10+</b><span>Years serving customers in Ireland &amp; Europe</span></div>
-  </div></div>
+  </div><a class="g-rev" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener"><span aria-hidden="true">★</span> Read our reviews on Google</a></div>
 </div>
 
 <section style="padding-top:40px">
@@ -309,7 +314,7 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
     <div><b>700+</b><span>Cyclists guided on tour</span></div>
     <div><b>10+</b><span>Years running tours</span></div>
     <div><b>10+</b><span>Years serving customers in Ireland &amp; Europe</span></div>
-  </div></div>
+  </div><a class="g-rev" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener"><span aria-hidden="true">★</span> Read our reviews on Google</a></div>
 
 
 <section>
@@ -377,13 +382,14 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
       <ul>
         <li>info@cigalacycling.com</li>
         <li>+353 404 78107</li>
+        <li><a href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener">★ Google reviews</a></li>
         <li><a href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">WhatsApp</a> · <a href="https://www.instagram.com/cigalacycling/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/CigalaCycling/" target="_blank" rel="noopener">Facebook</a></li>
         <li><a href="https://www.youtube.com/@cigalacycling" target="_blank" rel="noopener">YouTube</a> · <a href="https://www.tiktok.com/@cigalacycling" target="_blank" rel="noopener">TikTok</a> · <a href="https://x.com/CigalaCycling" target="_blank" rel="noopener">X</a> · <a href="https://www.threads.com/@cigalacycling" target="_blank" rel="noopener">Threads</a></li>
       </ul>
     </div>
   </div>
   <div class="legal"><div class="in">
-    <span>© 2026 Cigala Cycling</span>
+    <span>© 2026 Cigala Cycling Ltd · Registered in Ireland No. 675577 · VAT IE3699893CH</span>
     <a href="terms.html">Terms &amp; Conditions</a>
     <a href="privacy.html">Privacy Policy</a>
   </div></div>
