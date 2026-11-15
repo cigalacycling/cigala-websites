@@ -77,8 +77,8 @@ CSS = G.GCSS + '''<style>
 .hero-sm > img { object-position: 50% 25%; }
 .tm-cols { columns: 3 300px; column-gap: 16px; }
 .tm { break-inside: avoid; margin: 0 0 16px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); display: grid; gap: 12px; }
-.tm-photo { aspect-ratio: 16 / 10; border-radius: 10px; overflow: hidden; }
-.tm-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.tm-photo { border-radius: 10px; overflow: hidden; }   /* Matteo 15 Nov: photos not centred -> shown whole, no crop */
+.tm-photo img { display: block; width: 100%; height: auto; max-height: 420px; object-fit: contain; background: #0d0e0f; }
 .tm-photo.gn-png { background: #fff; }
 .tm .rv-stars { color: #f5b301; letter-spacing: 2px; font-size: 15px; line-height: 1; }
 .tm blockquote { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.6; }

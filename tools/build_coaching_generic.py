@@ -8,7 +8,7 @@ Small black icon images (PNG under 200 px) are left out: on the dark site they w
 
   python3 -I tools/build_coaching_generic.py [page ...]
 """
-import os, sys, re
+import os, sys, re, html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from coaching_common import *
 from PIL import Image
@@ -95,10 +95,17 @@ def is_icon(url):
     try: return url.lower().endswith('.png') and max(Image.open(ROOT + 'coaching/webp/' + w).size) < 200
     except Exception: return False
 
+import hashlib, collections
+_slug = lambda a: re.sub(r'[^a-z0-9]+', '-', a.split('|')[0].lower()).strip('-')[:40]
+# alt texts shared by different images (e.g. "Cyclist racing on road bike" on 3 testimonials): those file names get a
+# short hash of the image, or one photo overwrote the others (Matteo 15 Nov: wrong photos on Testimonials)
+_SHARED = {k for k, v in collections.Counter(_slug(html.unescape(a)) for o in json.load(open(ROOT + 'coaching/images.json'))
+                                             if o.get('webp') for a in set(html.unescape(x) for x in (o.get('alt') or [])) if a).items() if v > 1}
 def pic(url, alt, cls='photo', eager=False):
     key = url.split('/uploads/')[1]
     if url.lower().endswith('.png'): cls += ' gn-png'   # logos and infographics: shown whole, not cropped
-    name = 'pg-' + re.sub(r'[^a-z0-9]+', '-', alt.split('|')[0].lower()).strip('-')[:40] if alt else 'pg-' + re.sub(r'[^a-z0-9]+', '-', key.lower())[-40:]
+    name = 'pg-' + _slug(alt) if alt else 'pg-' + re.sub(r'[^a-z0-9]+', '-', key.lower())[-40:]
+    if alt and _slug(alt) in _SHARED: name += '-' + hashlib.md5(key.encode()).hexdigest()[:6]
     return f'<div class="{cls}"><img src="{img(key, name)}" alt="{E(alt)}" loading="{"eager" if eager else "lazy"}"></div>'
 
 def body_html(items):

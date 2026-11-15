@@ -176,3 +176,18 @@ To check with Matteo:
   stays, as "$" alone reads as US dollars); "by GoCardless" removed from the facts (Basic pays by Revolut).
 - Matteo 15 Nov: H2 "2025 IN NUMBERS" -> "2026 IN NUMBERS" on UK/USA/Canada and "2025 IN NUMERI" -> "2026 IN NUMERI" on Italia
   (same numbers as the Packages page, which already says 2026). No green line under the testimonials heading (as on Packages).
+- Marine: turned professional in the WorldTour on 1 January 2026 (Matteo): on her case study timeline and result.
+
+## 12. Blog, blog posts and Testimonials (15 Nov 2026, Matteo)
+
+- Blog posts (staging, all 46 by Matteo): the childhood photo at the end ("Matteo Cigala 6 years old", RGB with a white
+  background that showed as a white card) is replaced by the white-jersey cut-out with his signature in white
+  (`tools/make_author_signature.py`, `tools/coaching_posts_author.py`; originals in stg-coaching/posts-backup/).
+  New alt: "Matteo Cigala, Founder & Head Coach of Cigala Cycling, in the white Cigala Cycling jersey, with his signature".
+- Single post template 4028: topo background (same as the redesigned pages); the "CIGALA CYCLING #TrainSmarterRideFaster"
+  block under every post was unreadable (dark grey hashtag, tiles without their photos): now white/green, four photo tiles.
+- "Strength Training for Cyclists" had no featured image (blank card on /blog/): set to the gym photo from the post itself.
+- /blog/ cards: smaller (16:9 photo, 3-line excerpt, no divider), "Read More →" as an outline button.
+- Testimonials: photos shown whole (no crop). Found and fixed: images with the same alt text were saved under the same file
+  name, so one photo replaced the others (Shane Courtney, Barry Fitzgerald and David Sheanan showed one photo; John Dowley
+  and Jack Caldwell another). File names now get a short hash when an alt is shared (build_coaching_generic.pic).

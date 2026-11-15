@@ -91,7 +91,7 @@ css = ''.join(scope(re.sub(r'/\*.*?\*/', '', b, flags=re.S)) for b in css_blocks
 tile_uri = 'data:image/svg+xml,' + urllib.parse.quote(open(ROOT + 'wp/topo-tile-min.svg').read(), safe=' =:/(),.-')
 css += '''
 /* ---- WordPress / Elementor integration (Coaching) ---- */
-body:has(.cc-page) { background: linear-gradient(rgba(8,9,10,.6),rgba(8,9,10,.6)), #08090a url("''' + tile_uri + '''") top center / auto 3000px repeat-y !important; overflow-x: hidden; }
+body:has(.cc-page), body.single-post { background: linear-gradient(rgba(8,9,10,.6),rgba(8,9,10,.6)), #08090a url("''' + tile_uri + '''") top center / auto 3000px repeat-y !important; overflow-x: hidden; }
 html .cc { background: transparent; color: var(--text-2); font-family: var(--body); font-size: 15px; line-height: 1.6; }
 [data-elementor-type="header"]:has(.cc) { position: sticky; top: 0; z-index: 50; }
 html .cc .nav { position: relative; top: 0; }
@@ -164,8 +164,21 @@ html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 va
 .cc-blog .elementor-button { background: none !important; color: #34c46a !important; padding: 0 !important; font: 600 14px Montserrat, system-ui, sans-serif !important; text-transform: none !important; border: 0 !important; box-shadow: none !important; }
 .cc-blog .elementor-button:hover { color: #fff !important; }
 .cc-blog .e-load-more-anchor + div .elementor-button, .cc-blog .elementor-button-wrapper .e-load-more-spinner + .elementor-button-text { color: #fff !important; }
-body.single-post { background: #08090a !important; }
-.single-post .elementor-4028, .single-post .elementor-4028 .e-con { background: transparent !important; background-image: none !important; }
+/* Matteo 15 Nov: cards were too big with a lot of empty space; "Read more" as a button with an arrow */
+.cc-blog .elementor-loop-container { max-width: 1200px; margin: 0 auto !important; gap: 18px !important; }
+.cc-blog .e-loop-item img { aspect-ratio: 16 / 9 !important; height: auto !important; }
+.cc-blog .e-loop-item > .e-con > .e-con:last-child, .cc-blog .e-loop-item .e-con + .e-con { padding: 16px 18px 18px !important; gap: 8px !important; justify-content: flex-start !important; min-height: 0 !important; }
+.cc-blog .e-loop-item .elementor-widget { margin: 0 !important; width: 100% !important; max-width: 100% !important; --container-widget-width: 100% !important; }
+.cc-blog .e-loop-item, .cc-blog .e-loop-item > .e-con { height: 100%; }
+.cc-blog .elementor-widget-theme-post-title .elementor-heading-title, .cc-blog .elementor-widget-theme-post-title a { font-size: 21px !important; }
+.cc-blog .elementor-widget-heading:not(.elementor-widget-theme-post-title) .elementor-heading-title { font-size: 11px !important; }
+.cc-blog .e-loop-item .elementor-widget-divider { display: none !important; }
+.cc-blog .elementor-widget-theme-post-excerpt, .cc-blog .elementor-widget-theme-post-excerpt p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0 !important; font-size: 14px !important; }
+.cc-blog .e-loop-item .elementor-widget-button { margin-top: auto !important; padding-top: 6px; }
+.cc-blog .e-loop-item .elementor-button { border: 1px solid rgba(0,154,68,.7) !important; border-radius: 999px !important; padding: 8px 16px !important; color: #34c46a !important; font: 600 13px/1.2 Montserrat, system-ui, sans-serif !important; letter-spacing: .02em !important; transition: background .2s, color .2s; }
+.cc-blog .e-loop-item .elementor-button .elementor-button-text::after { content: " →"; }
+.cc-blog .e-loop-item .elementor-button:hover { background: #009a44 !important; color: #fff !important; }
+.single-post .elementor-4028, .single-post .elementor-4028 .e-con:not(a) { background: transparent !important; background-image: none !important; }
 .single-post .elementor-4028 { max-width: 860px; margin: 0 auto; padding: 40px 16px 0; }
 .single-post .elementor-4028 .elementor-widget-theme-post-excerpt, .single-post .elementor-4028 .elementor-widget-theme-post-excerpt p { font: 500 19px/1.6 Montserrat, system-ui, sans-serif !important; color: #f7f8f8 !important; }
 .single-post .elementor-4028 .elementor-widget-theme-post-content strong, .single-post .elementor-4028 .elementor-widget-theme-post-content b, .single-post .elementor-4028 .elementor-widget-theme-post-content h4 { color: #f7f8f8 !important; }
@@ -177,6 +190,22 @@ body.single-post { background: #08090a !important; }
 .single-post .elementor-4028 .elementor-widget-theme-post-content a { color: #34c46a !important; }
 .single-post .elementor-4028 img { border-radius: 12px; }
 .single-post .elementor-4028 .elementor-divider-separator { border-color: #009a44 !important; }
+/* Matteo 15 Nov: the author image (white jersey + white signature, no box) and the "CIGALA CYCLING #TrainSmarterRideFaster" block
+   under every post: the hashtag was dark grey on the dark page and the four tiles had lost their photos */
+.single-post .elementor-4028 figure.cc-author img, .single-post .elementor-4028 img[src*="matteo-cigala-author-signature"] { border-radius: 0 !important; background: none !important; width: 240px !important; height: auto !important; }
+.single-post .elementor-element-4493ab3 { text-align: center; padding: 56px 0 40px !important; gap: 10px !important; align-items: center !important; }
+.single-post .elementor-element-4493ab3 .elementor-divider-separator { width: 56px !important; margin: 0 auto !important; border-top-width: 3px !important; }
+.single-post .elementor-4028 .elementor-widget-heading.elementor-element-57713bd:not(.elementor-widget-theme-post-title) .elementor-heading-title { font: 400 clamp(30px, 4vw, 42px)/1.1 Anton, Impact, sans-serif !important; color: #f7f8f8 !important; letter-spacing: .01em; }
+.single-post .elementor-element-2bc2c98, .single-post .elementor-element-2bc2c98 p { width: 100% !important; max-width: none !important; margin: 0 !important; font: 600 16px/1.4 Montserrat, system-ui, sans-serif !important; color: #34c46a !important; text-align: center; }
+.single-post .elementor-element-e5504e1, .single-post .elementor-element-29c6d12 { width: 100% !important; --width: 100% !important; }
+.single-post .elementor-element-29c6d12 { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px !important; margin-top: 18px; }
+@media (max-width: 760px) { .single-post .elementor-element-29c6d12 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.single-post .elementor-element-29c6d12 > a.e-con { position: relative; min-height: 130px !important; width: auto !important; --width: auto !important; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,.1);
+  background-size: cover !important; background-position: center !important; justify-content: flex-end !important; align-items: flex-start !important; padding: 14px !important; transition: border-color .2s, transform .2s; }
+.single-post .elementor-element-29c6d12 > a.e-con::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,9,10,.15), rgba(8,9,10,.85)); z-index: 0; }
+.single-post .elementor-element-29c6d12 > a.e-con:hover { border-color: rgba(0,154,68,.7); transform: translateY(-2px); }
+.single-post .elementor-element-29c6d12 > a.e-con .elementor-widget { position: relative; z-index: 1; }
+.single-post .elementor-4028 .elementor-element-29c6d12 .elementor-widget-heading:not(.elementor-widget-theme-post-title) .elementor-heading-title { font: 400 20px/1.1 Anton, Impact, sans-serif !important; color: #f7f8f8 !important; text-align: left; letter-spacing: .01em !important; text-transform: uppercase; }
 '''
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap">'
 
@@ -216,7 +245,7 @@ PIXEL = '1986332861692106'     # Matteo's Meta Pixel, confirmed for Coaching 15 
 OW = '43e5f685-37fc-4f78-9420-122fd2a3c5e3'   # OpenWidget org on the live coaching site
 banner = render_banner(ga_id=GA, privacy_url='/privacy-policy/', pixel_id=PIXEL, openwidget_org=OW)
 # moving topo background (shared/parallax, Matteo: same on every site); only on redesigned pages (.cc-page), like Tours
-PARALLAX = open(ROOT + 'shared/parallax/parallax.html').read().strip().replace("(function(){", "(function(){if(!document.querySelector('.cc-page'))return;", 1)
+PARALLAX = open(ROOT + 'shared/parallax/parallax.html').read().strip().replace("(function(){", "(function(){if(!document.querySelector('.cc-page')&&!document.body.classList.contains('single-post'))return;", 1)
 assert '.cc-page' in PARALLAX
 # newsletter pop-up: the cigalacycling.com one (wp/nl-popup.html, same look and timing), with coaching wording and the
 # Coaching Brevo list. Not on /tools/ pages (they have their own sign-up) or /contact/. Off until COACH_NL_URL is set.
