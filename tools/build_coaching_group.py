@@ -64,7 +64,6 @@ MAIN = f'''<div class="hero hero-sm">
       <div class="tx">
         <div class="eyebrow eb-pill"><span class="dot"></span>Club talks</div>
         <h3 class="h-sec">CLUB INFORMATION DAYS, COACHING NIGHTS, Q&amp;A AND GROUP SESSIONS</h3>
-        <div class="bar"></div>
         <span class="btn btn-go">See club talks</span>
       </div>
     </a>
@@ -109,7 +108,8 @@ GCSS = P.PCSS + '''<style>
 .clubs li { font-size: 14px; font-weight: 600; color: var(--text); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 8px 16px; }
 .club-band { display: block; text-decoration: none; }
 .club-band .h-sec { max-width: 22ch; }
-.club-band:hover { border-color: rgba(0,154,68,.6); }
+.club-band .h-sec { margin-bottom: 22px; }   /* Matteo 15 Nov: no green bar or green outline, just the button */
+.club-band:hover { border-color: var(--border); }
 </style>'''
 GJS = '''<script>
 document.querySelectorAll('[data-waitlist="group"]').forEach(function (b) {

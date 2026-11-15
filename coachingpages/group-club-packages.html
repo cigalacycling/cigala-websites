@@ -507,8 +507,12 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .nums .stat:nth-child(-n+4) .n { color: var(--text); }
 /* Matteo 15 Nov: "What you get" in red (green got lost), a second button at the end of each card, Premium clearly sold out */
 .pkg .pkg-lab { color: #ff3d33; }
-.pkg .ticks li:not(.no):not(.no-lab)::before { background: rgba(225,6,0,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%23ff3d33' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+/* Matteo 15 Nov (later): ticks back to green, the X stays red */
 .pkg-buy2 { margin-top: 12px; }
+.addon-aj { display: flex; align-items: center; gap: 14px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--border); }
+.addon-aj img { flex: none; width: 110px; height: auto; background: #fff; border-radius: 8px; padding: 8px; }
+.addon-aj span { font-size: 14px; color: var(--text-2); }
+.addon-aj b { color: var(--text); }
 .pkg-buy2 .pay2 { min-height: 0; padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
 .pkg.sold { border-color: rgba(255,61,51,.55); background: repeating-linear-gradient(135deg, rgba(255,61,51,.035) 0 14px, transparent 14px 28px), var(--panel-grad), var(--panel); }
 .pkg.sold .pkg-badge.sold { background: #e10600; border-color: #e10600; color: #fff; }
@@ -610,7 +614,8 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .clubs li { font-size: 14px; font-weight: 600; color: var(--text); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 8px 16px; }
 .club-band { display: block; text-decoration: none; }
 .club-band .h-sec { max-width: 22ch; }
-.club-band:hover { border-color: rgba(0,154,68,.6); }
+.club-band .h-sec { margin-bottom: 22px; }   /* Matteo 15 Nov: no green bar or green outline, just the button */
+.club-band:hover { border-color: var(--border); }
 </style>
 <div class="topo" aria-hidden="true"></div>
 <div class="page">
@@ -688,7 +693,6 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
       <div class="tx">
         <div class="eyebrow eb-pill"><span class="dot"></span>Club talks</div>
         <h3 class="h-sec">CLUB INFORMATION DAYS, COACHING NIGHTS, Q&amp;A AND GROUP SESSIONS</h3>
-        <div class="bar"></div>
         <span class="btn btn-go">See club talks</span>
       </div>
     </a>

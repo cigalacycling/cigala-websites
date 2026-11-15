@@ -185,6 +185,7 @@ No matter where you are in the world, we coach remotely in different countries, 
 
 # Matteo 15 Nov: the four squares under the hero were plain: colour, a hover lift and a count-up
 HS_CSS = """<style>
+.stats-wrap { margin-top: -20px !important; }   /* Matteo 15 Nov: the squares sat too close to the hero buttons */
 .stats-wrap .stat { --c: #34c46a; position: relative; transition: transform .25s, box-shadow .25s, background .25s; cursor: default; }
 .stats-wrap .stat:nth-child(2) { --c: #f0bf00; } .stats-wrap .stat:nth-child(3) { --c: #ff3d33; } .stats-wrap .stat:nth-child(4) { --c: #5f86c9; }
 .stats-wrap .stat::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); transform: scaleX(.18); transform-origin: left; transition: transform .35s; }

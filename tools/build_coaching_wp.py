@@ -131,6 +131,9 @@ html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 va
 .cc-contact .cc-form { width: 100% !important; max-width: 100% !important; --container-widget-width: 100% !important; margin: 22px 0 0 !important; box-sizing: border-box; }
 .e-con.cc-wrap.cc-contact { padding: 72px 16px 0 !important; max-width: 1232px !important; margin: 0 auto !important; gap: 48px !important; }
 .cc-contact .cc-page > div > .eyebrow { margin-top: 0; }
+/* Matteo 15 Nov: the photo next to the form was much smaller than the form: as tall as the form now */
+.cc-contact-ph .photo.rider { aspect-ratio: 4 / 5; }
+.cc-contact-ph .photo.rider img { width: 100%; height: 100%; object-fit: cover; }
 .cc-contact .cc-form .elementor-form, .cc-contact .cc-form .elementor-field-group { max-width: 100%; }
 @media (max-width: 900px) {
   .cc-contact.e-con, .cc-contact > .e-con-inner { flex-direction: column !important; gap: 24px !important; }
@@ -351,13 +354,14 @@ def build_page(key):
                     if f.get('field_type') == 'textarea': f['placeholder'] = html.unescape(hint.group(1))
             pre, post = b.split('<form', 1)
             post = post.split('</form>', 1)[1]
+            lcls = 'cc-wrap'
             if '<!--side-->' in pre:
                 photo = pre[pre.index('<!--side-->') + 11:pre.index('<!--/side-->')]
                 pre = pre[pre.index('<!--/side-->'):]
             else:
-                photo = re.search(r'<div class="photo rider">.*?</div>', pre, re.S).group(0)
+                photo = re.search(r'<div class="photo rider">.*?</div>', pre, re.S).group(0); lcls = 'cc-wrap cc-contact-ph'
             text = pre[pre.index('<div class="eyebrow">'):]
-            left = wrap([html_widget('<div class="cc cc-page">' + photo + '</div>')], 'cc-wrap', True, width={"unit": "%", "size": 42}, width_mobile={"unit": "%", "size": 100})
+            left = wrap([html_widget('<div class="cc cc-page">' + photo + '</div>')], lcls, True, width={"unit": "%", "size": 42}, width_mobile={"unit": "%", "size": 100})
             right = wrap([html_widget('<div class="cc cc-page"><div>' + text + '</div></div>'), form], 'cc-wrap', True, width={"unit": "%", "size": 58}, width_mobile={"unit": "%", "size": 100})
             row = wrap([left, right], 'cc-wrap cc-contact', True, flex_direction='row', flex_direction_mobile='column',
                        flex_gap={"unit": "px", "size": 48, "column": "48", "row": "24"}, flex_align_items='center',

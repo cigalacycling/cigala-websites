@@ -282,3 +282,9 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   "READ OUR CASE STUDIES" (with the case study cards under it, as on Vision/countries). All live copy kept word for word
   (typo "we provides" -> "we provide"), all live images with their live alt (unnamed-35.png had no alt and no content:
   left out). Added photos: Strade Bianche win, Volta Almodovar win. Old cigalacycling.com links point to the coaching pages.
+- Later fixes (15 Nov): Group page club band without the green bar and hover outline; the contact photo next to the form is
+  as tall as the form (4:5) on every page; 1-to-1 page: Matteo's presentation photo beside the booking form (the live
+  "Matteo Cigala Coaching" photo stays), hover highlight on the packs, a line joining the step dots (all step lists);
+  homepage stats strip 24px lower; Italia "2026 IN NUMERI" uses the coloured, counting boxes; packages note reworded to
+  "a limited number of athletes" (Matteo, replaces "get in touch before signing up") and a sample note from Marine
+  under the Vekta calendar.

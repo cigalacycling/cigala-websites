@@ -144,7 +144,7 @@ def book():
     price = '<div class="sv-prices">' + ''.join(
         f'<div class="panel sv-price{" hot" if b else ""}">{f"<span class=sv-badge>{b}</span>" if b else ""}<div class="sv-pn">{n}</div><div class="sv-pp">€{p:,}</div>'
         f'<div class="sv-ps">{per(n, p)}</div><a class="btn btn-go" href="{SHOP_1TO1}?variant={v}" {EXT}>Buy {n.lower()}</a></div>' for n, p, v, b in PRICES) + '</div>'
-    side = f'''{photo('IMG_4003AWDWWWU', 'one-to-one-group-coaching', cls='photo rider')}
+    side = f'''<div class="photo rider"><img src="{conv('coaching/matteo-uploads/matteo-club-talk-queens-bay.webp', 'club-talk-matteo-speaking')}" alt="Matteo Cigala in the white Cigala Cycling jersey, talking to a group of riders before a ride" loading="lazy" style="object-position:40% 22%"></div>
       <ul class="sv-facts">
         <li>{ic(I['pin'])}<span>Sessions are held in Wicklow Town, Co.Wicklow, Ireland</span></li>
         <li>{ic(I['cal'])}<span>Choose your dates after purchase: send us your preferred days and times</span></li>
@@ -874,6 +874,9 @@ CSS = '''<style>
 .sv-prices-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-width: 820px; }
 .sv-price { position: relative; padding: 24px 22px; display: grid; gap: 6px; align-content: start; }
 .sv-price.hot { border-color: rgba(0,154,68,.7); }
+.sv-price { transition: transform .25s, box-shadow .25s, border-color .25s; }
+.sv-price:hover { transform: translateY(-4px); border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 22px 50px rgba(0,154,68,.18); }   /* Matteo 15 Nov: highlight on hover */
+.sv-price:hover .sv-pp { color: var(--green-text); }
 .sv-price p { margin: 6px 0 0; color: var(--text-2); font-size: 14px; }
 .sv-badge { position: absolute; top: -11px; left: 18px; background: var(--green); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
 .sv-pn { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
@@ -884,7 +887,8 @@ CSS = '''<style>
 .ts-h { display: grid; gap: 6px; margin: 0; font: inherit; text-transform: none; }
 .ts-h .sv-pp, .ts-h .sv-pn { text-transform: uppercase; }
 .sv-steps { list-style: none; counter-reset: s; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; }
-.sv-steps li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 2px 14px; }
+.sv-steps li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 2px 14px; position: relative; }
+.sv-steps li:not(:last-child)::after { content: ""; position: absolute; left: 16px; top: 36px; bottom: -14px; width: 2px; background: var(--border-strong); }   /* Matteo 15 Nov: a line joining the dots */
 .sv-steps li::before { content: counter(s); grid-row: span 2; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-weight: 800; }
 .sv-steps b { color: var(--text); }
 .sv-steps span { color: var(--text-2); font-size: 15px; }

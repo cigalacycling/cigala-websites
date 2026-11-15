@@ -501,6 +501,9 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .sv-prices-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-width: 820px; }
 .sv-price { position: relative; padding: 24px 22px; display: grid; gap: 6px; align-content: start; }
 .sv-price.hot { border-color: rgba(0,154,68,.7); }
+.sv-price { transition: transform .25s, box-shadow .25s, border-color .25s; }
+.sv-price:hover { transform: translateY(-4px); border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 22px 50px rgba(0,154,68,.18); }   /* Matteo 15 Nov: highlight on hover */
+.sv-price:hover .sv-pp { color: var(--green-text); }
 .sv-price p { margin: 6px 0 0; color: var(--text-2); font-size: 14px; }
 .sv-badge { position: absolute; top: -11px; left: 18px; background: var(--green); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
 .sv-pn { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
@@ -511,7 +514,8 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .ts-h { display: grid; gap: 6px; margin: 0; font: inherit; text-transform: none; }
 .ts-h .sv-pp, .ts-h .sv-pn { text-transform: uppercase; }
 .sv-steps { list-style: none; counter-reset: s; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; }
-.sv-steps li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 2px 14px; }
+.sv-steps li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 2px 14px; position: relative; }
+.sv-steps li:not(:last-child)::after { content: ""; position: absolute; left: 16px; top: 36px; bottom: -14px; width: 2px; background: var(--border-strong); }   /* Matteo 15 Nov: a line joining the dots */
 .sv-steps li::before { content: counter(s); grid-row: span 2; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-weight: 800; }
 .sv-steps b { color: var(--text); }
 .sv-steps span { color: var(--text-2); font-size: 15px; }
@@ -634,7 +638,7 @@ a.ct-card:hover { border-color: rgba(0,154,68,.7); }
 
 <section id="contact" data-subject="1-to-1 session booking (Coaching website)" data-msg="Pack bought, preferred days and times *">
   <div class="in split">
-    <!--side--><div class="sv-side"><div class="photo rider"><img src="img/one-to-one-group-coaching.webp" alt="Matteo Cigala coaching a group of riders" loading="lazy"></div>
+    <!--side--><div class="sv-side"><div class="photo rider"><img src="img/club-talk-matteo-speaking.webp" alt="Matteo Cigala in the white Cigala Cycling jersey, talking to a group of riders before a ride" loading="lazy" style="object-position:40% 22%"></div>
       <ul class="sv-facts">
         <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Sessions are held in Wicklow Town, Co.Wicklow, Ireland</span></li>
         <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Choose your dates after purchase: send us your preferred days and times</span></li>
