@@ -12,7 +12,7 @@ python3 -I tools/push_tours_list.py trip-<slug>.
 """
 import os, re, sys, json, html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from build_tours_pages import items, text_of, clean, img_tag, reviews_block, PARTNERS_H2, PAGE_CSS, L, EXT, E, YT_JS
+from build_tours_pages import fix_text, items, text_of, clean, img_tag, reviews_block, PARTNERS_H2, PAGE_CSS, L, EXT, E, YT_JS
 from tours_img import media, webp
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
@@ -404,6 +404,7 @@ if __name__ == '__main__':
     prev_shell = open(ROOT + 'tourspages/trips.html').read()
     for slug in sys.argv[1:] or IDS:
         d = trip(slug)
+        d['main'] = fix_text(d['main'])
         a, b = prev_shell.index('<div class="cl cl-page">'), prev_shell.index('<div class="cc"><footer>')
         prev = prev_shell[:a] + '<div class="cl cl-page">\n' + d['main'] + '\n</div>\n' + prev_shell[b:]
         prev = prev.replace('</style>', '</style>\n<style>\n' + d['css'] + '\n</style>', 1)

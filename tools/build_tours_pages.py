@@ -222,6 +222,7 @@ def card_list(it, a, b):
     return out
 
 FIX_NAME = {'SWIZERLAND': 'SWITZERLAND'}   # typo on the live page
+FIX_H1 = {'gran-canaria': 'Cycling in Gran Canaria'}   # live H1 said 'Cycling in Mallorca' (copied page)
 FIX_URL = {'/destinations/belgium/': '/trips/tour-of-flanders-experience/'}   # live link is a 404: Belgium = the Flanders tour
 
 def destinations():
@@ -334,7 +335,7 @@ def destination(slug):
     pid = DEST_IDS[slug]
     it = [x for x in items(elementor(pid)) if x[0] not in ('open', 'close', 'divider', 'spacer')]
     h1i = next(i for i, x in enumerate(it) if x[0] == 'h1')
-    h1 = it[h1i][1]
+    h1 = FIX_H1.get(slug, it[h1i][1])
     name = re.sub(r'^(cycling in( the)?)\s+', '', text_of(h1), flags=re.I).strip()
     name = name.title() if name.isupper() or name.islower() or name == name.capitalize() else name
     hero_bg = next(v for k, v, s in it if k == 'bg')
@@ -575,6 +576,33 @@ def custom():
 </section>'''
     return {'id': 1576, 'slug': 'private-trips', 'main': main, 'css': PAGE_CSS, 'crumb': 'Custom tours', 'form': True}
 
+
+# Spelling mistakes on the live pages (Matteo 15 Nov: "any error you see, fix it"). Visible text only, never links.
+TYPOS = [(r'\bMechnical\b', 'Mechanical'), (r'\bmechnical\b', 'mechanical'), (r'\bDurace\b', 'Dura-Ace'), (r'\bACCOMODATION', 'ACCOMMODATION'),
+         (r'\bAccomodation\b', 'Accommodation'), (r'\baccomodation\b', 'accommodation'), (r'\baccomodate\b', 'accommodate'), (r'\bCOFFE\b', 'COFFEE'),
+         (r'\bAlantejo\b', 'Alentejo'), (r'\bMarocco\b', 'Morocco'), (r'\brecipies\b', 'recipes'), (r'\bcusine\b', 'cuisine'), (r'\bTentino\b', 'Trentino'),
+         (r'\blagguages\b', 'luggage'), (r'\bsuitcaseses\b', 'suitcases'), (r'\bwinfe\b', 'wine'), (r'\bprive viewing\b', 'private viewing'),
+         (r'\bpreparatio\.', 'preparation.'), (r'\bFframeset\b', 'Frameset'), (r'\bClimate reland\b', 'Climate Ireland'), (r'\bGiminiano\b', 'Gimignano'),
+         (r'\bNova Goricia\b', 'Nova Gorica'), (r'\bWashing maching\b', 'Washing machine'), (r'\bBarcellonette\b', 'Barcelonnette'),
+         (r'\bGrossetto\b', 'Grosseto'), (r'\bpenisula\b', 'peninsula'), (r'\bcontryside\b', 'countryside'), (r'TÉLÉGRAPHIE', 'TÉLÉGRAPHE'),
+         (r'\bCrostine\b', 'Crostini'), (r'\bREASTURANTS\b', 'RESTAURANTS'), (r'\bACTIVITES\b', 'ACTIVITIES'), (r'\bSWIZERLAND\b', 'SWITZERLAND'),
+         (r'\bBOOOK\b', 'BOOK')]
+def fix_text(h):
+    parts = re.split(r'(<[^>]+>)', h)
+    out = []
+    for x in parts:
+        if not x.startswith('<'):
+            for a, b in TYPOS: x = re.sub(a, b, x)
+        elif ' alt="' in x:   # image alt text too
+            def _alt(m):
+                v = m.group(1)
+                for a, b in TYPOS: v = re.sub(a, b, v)
+                return f' alt="{v}"'
+            x = re.sub(r' alt="([^"]*)"', _alt, x)
+        out.append(x)
+    h = ''.join(out)
+    return re.sub(r'<p>\s*harmony\.\s*</p>', '', h)   # an editing leftover on the Dolomites page
+
 # small additions on top of the design CSS, scoped to .cl by the kit build
 PAGE_CSS = '''
 html .cl .band .lede p { margin: 0; }
@@ -650,6 +678,7 @@ if __name__ == '__main__':
     lists_prev = open(ROOT + 'tourspages/trips.html').read()   # header/footer/CSS exactly as the tour pages
     for name in sys.argv[1:] or PAGES:
         d = PAGES[name]()
+        d['main'] = fix_text(d['main'])
         a, b = lists_prev.index('<div class="cl cl-page">'), lists_prev.index('<div class="cc"><footer>')
         prev = lists_prev[:a] + '<div class="cl cl-page">\n' + d['main'] + '\n</div>\n' + lists_prev[b:]
         prev = prev.replace('</style>', '</style>\n<style>\n' + d['css'] + '\n</style>', 1)
