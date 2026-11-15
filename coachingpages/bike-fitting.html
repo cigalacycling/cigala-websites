@@ -461,10 +461,106 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
 .faq h3 { display: inline; font: 600 15px/1.4 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); }
 @media (max-width: 900px) { .gn-photo { aspect-ratio: 16 / 10; } }
+</style><style>
+.ft-box { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 60%), var(--panel-grad), var(--panel); }
+.ft-head p { margin: 14px 0 0; color: var(--text-2); }
+.ft-head .arrow-link { display: inline-block; margin-top: 14px; }
+.ft-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }   /* 8 tools in 2 columns */
+.ft-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.03); text-decoration: none; transition: border-color .2s, transform .2s; }
+.ft-card:hover { border-color: rgba(0,154,68,.6); transform: translateX(3px); }
+.ft-card svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ft-card span { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.ft-card b { color: var(--text); font-size: 15px; }
+.ft-card small { color: var(--text-3); font-size: 13px; }
+.ft-card i { font-style: normal; color: var(--green-text); font-weight: 700; }
+@media (max-width: 900px) { .ft-box { grid-template-columns: minmax(0, 1fr); padding: 22px; gap: 20px; } }
+@media (max-width: 560px) { .ft-cards { grid-template-columns: minmax(0, 1fr); } }
+</style><style>
+.sv-ic { width: 26px; height: 26px; flex: none; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sv-lede { color: var(--text-2); max-width: 75ch; margin: 0 0 22px; line-height: 1.65; }
+.sv-note { color: var(--text-3); font-size: 14px; margin: 16px 0 0; }
+.sv-note a { color: var(--green-text); }
+.sv-center { justify-content: center; margin-top: 22px; }
+.sv-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.sv-cards li { padding: 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); display: grid; gap: 8px; align-content: start; }
+.sv-cards h3 { margin: 4px 0 0; }
+.sv-cards p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.sv-cards p:empty { display: none; }
+.sv-mini { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.sv-mini li { grid-template-columns: auto 1fr; align-items: center; padding: 16px 18px; }
+.sv-mini h3 { margin: 0; font-size: 18px; }
+.sv-photo { aspect-ratio: 4 / 3; }
+.sv-photo img { width: 100%; height: 100%; object-fit: cover; }
+.sv-prices { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+.sv-prices-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-width: 820px; }
+.sv-price { position: relative; padding: 24px 22px; display: grid; gap: 6px; align-content: start; }
+.sv-price.hot { border-color: rgba(0,154,68,.7); }
+.sv-price p { margin: 6px 0 0; color: var(--text-2); font-size: 14px; }
+.sv-badge { position: absolute; top: -11px; left: 18px; background: var(--green); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+.sv-pn { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.sv-pp { font: 400 44px/1 var(--head); color: var(--text); }
+.sv-pp small { font: 600 15px var(--body); color: var(--text-3); margin-left: 4px; }
+.sv-ps { color: var(--text-2); font-size: 14px; margin-bottom: 8px; }
+.sv-price .btn { justify-self: start; margin-top: 8px; }
+.ts-h { display: grid; gap: 6px; margin: 0; font: inherit; text-transform: none; }
+.ts-h .sv-pp, .ts-h .sv-pn { text-transform: uppercase; }
+.sv-steps { list-style: none; counter-reset: s; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; }
+.sv-steps li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 2px 14px; }
+.sv-steps li::before { content: counter(s); grid-row: span 2; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-weight: 800; }
+.sv-steps b { color: var(--text); }
+.sv-steps span { color: var(--text-2); font-size: 15px; }
+.sv-side { display: grid; gap: 16px; }
+.sv-facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.sv-facts li { display: flex; gap: 12px; align-items: flex-start; color: var(--text-2); font-size: 15px; line-height: 1.5; }
+.sv-facts a { color: var(--green-text); }
+/* contact */
+.ct-hero { min-height: min(440px, 60svh); }
+.ct-cards { display: grid; gap: 12px; }
+.ct-card { display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); text-decoration: none; color: var(--text); transition: border-color .2s; }
+a.ct-card:hover { border-color: rgba(0,154,68,.7); }
+.ct-card > div { display: grid; gap: 2px; min-width: 0; }
+.ct-card .ct-k { margin: 0; font: 700 11px/1.4 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+.ct-card .ct-v { margin: 0; font: 600 19px/1.3 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); overflow-wrap: anywhere; }
+.ct-card span:last-child:not(.ct-v) { color: var(--text-3); font-size: 13px; }
+.ct-soc .cc-social { margin-top: 8px; }
+.ct-quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.ct-q { display: grid; gap: 8px; padding: 22px; text-decoration: none; color: var(--text); transition: border-color .2s, transform .2s; }
+.ct-q:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
+.ct-q h3, .ct-q p { margin: 0; }
+.ct-q p { color: var(--text-2); font-size: 15px; }
+/* bike fit */
+.bf-quote { margin: 18px 0 0; padding: 18px 22px; border-left: 3px solid var(--green); background: rgba(255,255,255,.03); border-radius: 0 12px 12px 0; }
+.bf-quote p { font-style: italic; color: var(--text) !important; margin: 0 0 10px !important; }
+.bf-quote cite { font-style: normal; font-size: 13px; font-weight: 700; color: var(--green-text); }
+.bf-main { aspect-ratio: 1; max-width: 520px; justify-self: center; }
+.bf-main img { width: 100%; height: 100%; object-fit: cover; }
+.bf-gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.bf-gal .g { aspect-ratio: 1; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.bf-gal .bf-g, .bf-gal .bf-g img { width: 100%; height: 100%; }
+.bf-gal img { object-fit: cover; }
+.bf-info { padding: 22px; display: grid; gap: 14px; }
+.bf-info h3 { margin: 0; }
+.bf-cost { padding-top: 12px; border-top: 1px solid var(--border); color: var(--text-2); }
+.bf-cost b { color: var(--text); }
+/* testing */
+.ts-claim { font-weight: 700; color: var(--text) !important; }
+.ts-logo { background: #fff; aspect-ratio: 16 / 7; display: grid; place-items: center; border-radius: 14px; }
+.ts-logo img { width: 80%; height: auto; object-fit: contain; }
+.ts-more { margin-top: 18px; max-width: 900px; }
+.ts-infs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.ts-inf { display: block; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid var(--border); }
+.ts-inf img { width: 100%; height: auto; display: block; }
+.ts-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.ts-steps li { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); }
+.ts-n { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-weight: 800; }
+.ts-steps h3 { margin: 4px 0 6px; }
+.ts-steps p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.ts-pro { margin: 20px 0 0; color: var(--text-2); font-size: 14px; }
+.ts-pro b { color: var(--text); }
 </style>
 <div class="topo" aria-hidden="true"></div>
 <div class="page">
-<div class="ribbon"><div class="in"><b>Preview</b><span>New /bike-fitting/ in the Cigala Cycling design: live H1, H2s, copy and images kept.</span></div></div>
+<div class="ribbon"><div class="in"><b>Preview</b><span>Bike fitting redesigned: photos, new prices (€80/£70, second bike €60/£50), reservation form, free tools.</span></div></div>
 <header class="nav">
   <div class="in">
     <a class="brand" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo-v2.webp" alt="Cigala Cycling Coaching Logo" width="58" height="58"></a>
@@ -493,34 +589,86 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
     </details>
   </div>
 </header>
-<div class="hero hero-sm">
-  <img src="img/pg-hero-bike-fitting.webp" alt="Cigala Cycling Coaching group riding in Wicklow, Ireland">
+<div class="hero hero-sm bf-hero">
+  <img src="img/bike-fit-hero.webp" alt="Cigala Cycling riders climbing together in Wicklow" style="object-position:50% 40%">
   <div class="in">
+    <div class="eyebrow eb-pill"><span class="dot"></span>Bike fitting in Wicklow, Ireland</div>
     <h1>BIKE FITTING</h1>
-    <p class="lede">By working alongside Italy’s most famous bike fitter Michele Dalla Piazza for many occasion, Matteo had a chance to learn from the best and apply the learning with the knowledge of the sport in his 25 years cycling experience.</p>
-    
+    <p class="lede">A precise, hands-on bike fit with Head Coach Matteo Cigala: more comfort, more power, fewer niggles. €80 / £70 per bike.</p>
+    <div class="ctas"><a class="btn btn-go" href="#contact">Make your reservation</a><a class="btn btn-ghost" href="#prices">Prices ↓</a></div>
   </div>
 </div>
 
 <section>
-  <div class="in gn-txt gn-solo"><p>“As a performance obsessed person, I am very meticulous about the little details in bike fitting, I work on every millimeter and I believe that the smallest adjustments are the one that make the difference, both for confort and performance.<br>By working alongside Michele, I have learned a lot and my approach is the same. No fancy tools or software. Just precision and experience by seeing each person’s pedal stroke, flexibility, bone construction, muscle mass and knowing their cycling and injury history.<br>Software are great tool for bike fitting, but they only give a good range to work with, is then the experience of the bike fitter to make the best possible fit.”</p><p>To book your bike fitting appointment with our Head Coach Matteo Cigala, please email bikefit@cigalacycling.com or fill up the form below.</p><p>Appointments are approximately 40 min to 1hr per bike.<br>Bike fit are held in Wicklow Town, Co. Wicklow, Ireland.</p><p>Cost €70/£60 for 1 bike. Second bike + €50/£40</p><p>Bring your bike, kit, cycling shoes.</p><p>Limited availability.</p><p>MAKE YOUR RESERVATION</p><p>Book an appointment by entering your details below</p></div>
+  <div class="in split">
+    <div class="gn-txt">
+      <div class="eyebrow">Learned from the best</div>
+      <h2>PRECISION AND EXPERIENCE</h2><div class="bar"></div>
+      <p>By working alongside Italy’s most famous bike fitter Michele Dalla Piazza on many occasions, Matteo had a chance to learn from the best and apply the learning with the knowledge of the sport in his 25 years cycling experience.</p>
+      <blockquote class="bf-quote"><p>As a performance obsessed person, I am very meticulous about the little details in bike fitting, I work on every millimeter and I believe that the smallest adjustments are the one that make the difference, both for comfort and performance.</p><p>By working alongside Michele, I have learned a lot and my approach is the same. No fancy tools or software. Just precision and experience by seeing each person’s pedal stroke, flexibility, bone construction, muscle mass and knowing their cycling and injury history.</p><p>Software is a great tool for bike fitting, but they only give a good range to work with, it is then the experience of the bike fitter to make the best possible fit.</p><cite>Matteo Cigala, Founder &amp; Head Coach</cite></blockquote>
+    </div>
+    <div class="photo sv-photo bf-main"><img src="img/pg-bike-fit-session-with-matteo-cigala-meas.webp" alt="Bike fit session with Matteo Cigala: measuring position on a time trial bike" loading="lazy"></div>
+  </div>
 </section>
 
-<section id="contact">
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">What we look at</div><h2>EVERY MILLIMETRE COUNTS</h2><div class="bar"></div></div></div>
+    <ul class="sv-cards"><li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><h3 class="h-sm">Saddle height &amp; setback</h3><p>Set from how you pedal, not only from a formula.</p></li><li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 11.5M5.5 17.5 9 9h7l-4 8.5M9 9 8 6H6"/></svg><h3 class="h-sm">Reach &amp; handlebar</h3><p>A position you can hold for hours, on the road or on the TT bike.</p></li><li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg><h3 class="h-sm">Flexibility &amp; injuries</h3><p>Your flexibility, bone structure, muscle mass and injury history.</p></li><li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg><h3 class="h-sm">Comfort &amp; power</h3><p>The smallest adjustments that make the difference for comfort and performance.</p></li></ul>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Behind the scenes</div><h2>BIKE FITS WITH MATTEO</h2><div class="bar"></div></div></div>
+    <div class="bf-gal"><div class="g"><div class="bf-g"><img src="img/pg-bike-fit-session-with-matteo-cigala-meas.webp" alt="Bike fit session with Matteo Cigala: measuring position on a time trial bike" loading="lazy"></div></div><div class="g"><div class="bf-g"><img src="img/pg-matteo-cigala-adjusting-a-rider-s-positi.webp" alt="Matteo Cigala adjusting a rider’s position during a bike fit" loading="lazy"></div></div><div class="g"><div class="bf-g"><img src="img/pg-riders-and-matteo-cigala-after-a-bike-fi.webp" alt="Riders and Matteo Cigala after a bike fit on a time trial bike" loading="lazy"></div></div><div class="g"><div class="bf-g"><img src="img/pg-matteo-cigala-checking-a-road-bike-fit-o.webp" alt="Matteo Cigala checking a road bike fit on the trainer" loading="lazy"></div></div><div class="g"><div class="bf-g"><img src="img/pg-bike-fitting-a-rider-in-cigala-cycling-k.webp" alt="Bike fitting a rider in Cigala Cycling kit" loading="lazy"></div></div><div class="g"><div class="bf-g"><img src="img/pg-matteo-cigala-fitting-a-young-rider-on-a.webp" alt="Matteo Cigala fitting a young rider on a road bike" loading="lazy"></div></div><div class="g"><div class="bf-g"><img src="img/pg-bike-fit-adjustment-on-a-road-bike.webp" alt="Bike fit adjustment on a road bike" loading="lazy"></div></div><div class="g"><div class="bf-g"><img src="img/pg-time-trial-position-bike-fit.webp" alt="Time trial position bike fit" loading="lazy"></div></div></div>
+  </div>
+</section>
+
+<section id="prices">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Prices</div><h2>BIKE FIT PRICES</h2><div class="bar"></div></div></div>
+    <div class="sv-prices sv-prices-2"><div class="panel sv-price"><div class="sv-pn">One bike</div><div class="sv-pp">€80<small> / £70</small></div><div class="sv-ps">About 40 min to 1 hr</div></div><div class="panel sv-price"><div class="sv-pn">Second bike</div><div class="sv-pp">+ €60<small> / + £50</small></div><div class="sv-ps">Same appointment</div></div></div>
+    <p class="sv-note">Pay at your appointment. Limited availability: reserve your slot below.</p>
+  </div>
+</section>
+
+<section id="contact" data-subject="Bike fit reservation (Coaching website)" data-msg="Number of bikes, road or TT, preferred days *">
   <div class="in split">
-    <div class="photo rider"><img src="img/matteo-coaching.webp" alt="Matteo Cigala Coaching" loading="lazy" width="1440" height="1081"></div>
+    <!--side--><div class="sv-side"><div class="panel bf-info">
+        <h3 class="h-sm">Your appointment</h3>
+        <ul class="sv-facts">
+          <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Appointments are approximately 40 min to 1hr per bike.</span></li>
+          <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Bike fit are held in Wicklow Town, Co. Wicklow, Ireland.</span></li>
+          <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 11.5M5.5 17.5 9 9h7l-4 8.5M9 9 8 6H6"/></svg><span>Bring your bike, kit, cycling shoes.</span></li>
+          <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><span>Limited availability.</span></li>
+          <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg><span>Or email <a href="mailto:bikefit@cigalacycling.com">bikefit@cigalacycling.com</a></span></li>
+        </ul>
+        <div class="bf-cost"><b>€80 / £70</b> for 1 bike · second bike <b>+ €60 / £50</b></div>
+      </div></div><!--/side-->
     <div>
-      <div class="eyebrow">Contact</div>
-      <h3 class="h-sec">GET IN TOUCH TODAY</h3>
+      <div class="eyebrow">Make your reservation</div>
+      <h3 class="h-sec">MAKE YOUR RESERVATION</h3>
       <div class="bar"></div>
-      <p class="lede">Send us a message and we will get back to you.</p>
+      <p class="lede">Book an appointment by entering your details below: tell us how many bikes and the days that suit you, and we confirm your slot.</p>
       <form class="form panel" method="post" action="#" onsubmit="return false">
         <label>Name<input name="form_fields[name]" type="text" placeholder="Name *" required autocomplete="name"></label>
         <label>Email<input name="form_fields[email]" type="email" placeholder="Email *" required autocomplete="email"></label>
         <label>Phone<input name="form_fields[phone]" type="tel" placeholder="Phone (with country code) *" required autocomplete="tel"></label>
-        <label>Message<textarea name="form_fields[message]" placeholder="Your Message *" rows="5" required></textarea></label>
+        <label>Message<textarea name="form_fields[message]" placeholder="Number of bikes, road or TT, preferred days *" rows="5" required></textarea></label>
         <button class="btn btn-go" type="submit">Send &gt;</button>
       </form>
+    </div>
+  </div>
+</section>
+
+<section class="ft">
+  <div class="in">
+    <div class="ft-box">
+      <div class="ft-head"><div class="eyebrow">Train smarter</div><h3 class="h-sec">FREE TRAINING TOOLS</h3><div class="bar"></div>
+        <p>Free calculators from Head Coach Matteo Cigala. Work out your numbers in seconds.</p>
+        <a class="arrow-link" href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">See all free tools →</a></div>
+      <div class="ft-cards"><a class="ft-card" href="https://coaching.cigalacycling.com/tools/training-zones-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15v3M11 11v7M15 8v10M19 5v13"/></svg><span><b>Training zones</b><small>Power and heart-rate zones from your FTP</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/ftp-test-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 13l4-4M12 3V1M9 1h6"/></svg><span><b>FTP test</b><small>Your FTP from a ramp, 8-min or 20-min test</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/carbs-per-hour-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/></svg><span><b>Carbs per hour</b><small>Your fuelling plan in gels and bottles</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/sweat-rate-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7l5.7 5.6a8 8 0 1 1-11.4 0z"/></svg><span><b>Sweat rate</b><small>How much you sweat, and how much to drink</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/critical-power-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span><b>Critical Power &amp; W′</b><small>CP, W′ and your best power from 2 to 20 min</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/climb-time-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20h20L14 6l-4 6-2-3-6 11z"/><path d="M14 6l2 3"/></svg><span><b>Climb time</b><small>Your time on the Stelvio, Alpe d’Huez or any climb</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/gear-speed-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8L7 17M17 7l2.8-2.8"/></svg><span><b>Gear &amp; speed</b><small>Your speed in every gear at any cadence</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/swim-pace-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M2 13c2 0 2-1.5 4-1.5S8 13 10 13s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><circle cx="16" cy="5" r="2"/><path d="M6 9l4-3 3 3"/></svg><span><b>Swim pace (CSS)</b><small>Triathlon swim paces from two time trials</small></span><i aria-hidden="true">→</i></a></div>
     </div>
   </div>
 </section>

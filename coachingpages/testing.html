@@ -461,10 +461,106 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
 .faq h3 { display: inline; font: 600 15px/1.4 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); }
 @media (max-width: 900px) { .gn-photo { aspect-ratio: 16 / 10; } }
+</style><style>
+.ft-box { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 60%), var(--panel-grad), var(--panel); }
+.ft-head p { margin: 14px 0 0; color: var(--text-2); }
+.ft-head .arrow-link { display: inline-block; margin-top: 14px; }
+.ft-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }   /* 8 tools in 2 columns */
+.ft-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.03); text-decoration: none; transition: border-color .2s, transform .2s; }
+.ft-card:hover { border-color: rgba(0,154,68,.6); transform: translateX(3px); }
+.ft-card svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ft-card span { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.ft-card b { color: var(--text); font-size: 15px; }
+.ft-card small { color: var(--text-3); font-size: 13px; }
+.ft-card i { font-style: normal; color: var(--green-text); font-weight: 700; }
+@media (max-width: 900px) { .ft-box { grid-template-columns: minmax(0, 1fr); padding: 22px; gap: 20px; } }
+@media (max-width: 560px) { .ft-cards { grid-template-columns: minmax(0, 1fr); } }
+</style><style>
+.sv-ic { width: 26px; height: 26px; flex: none; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sv-lede { color: var(--text-2); max-width: 75ch; margin: 0 0 22px; line-height: 1.65; }
+.sv-note { color: var(--text-3); font-size: 14px; margin: 16px 0 0; }
+.sv-note a { color: var(--green-text); }
+.sv-center { justify-content: center; margin-top: 22px; }
+.sv-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.sv-cards li { padding: 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); display: grid; gap: 8px; align-content: start; }
+.sv-cards h3 { margin: 4px 0 0; }
+.sv-cards p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.sv-cards p:empty { display: none; }
+.sv-mini { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.sv-mini li { grid-template-columns: auto 1fr; align-items: center; padding: 16px 18px; }
+.sv-mini h3 { margin: 0; font-size: 18px; }
+.sv-photo { aspect-ratio: 4 / 3; }
+.sv-photo img { width: 100%; height: 100%; object-fit: cover; }
+.sv-prices { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+.sv-prices-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-width: 820px; }
+.sv-price { position: relative; padding: 24px 22px; display: grid; gap: 6px; align-content: start; }
+.sv-price.hot { border-color: rgba(0,154,68,.7); }
+.sv-price p { margin: 6px 0 0; color: var(--text-2); font-size: 14px; }
+.sv-badge { position: absolute; top: -11px; left: 18px; background: var(--green); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+.sv-pn { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.sv-pp { font: 400 44px/1 var(--head); color: var(--text); }
+.sv-pp small { font: 600 15px var(--body); color: var(--text-3); margin-left: 4px; }
+.sv-ps { color: var(--text-2); font-size: 14px; margin-bottom: 8px; }
+.sv-price .btn { justify-self: start; margin-top: 8px; }
+.ts-h { display: grid; gap: 6px; margin: 0; font: inherit; text-transform: none; }
+.ts-h .sv-pp, .ts-h .sv-pn { text-transform: uppercase; }
+.sv-steps { list-style: none; counter-reset: s; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; }
+.sv-steps li { counter-increment: s; display: grid; grid-template-columns: 36px 1fr; gap: 2px 14px; }
+.sv-steps li::before { content: counter(s); grid-row: span 2; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-weight: 800; }
+.sv-steps b { color: var(--text); }
+.sv-steps span { color: var(--text-2); font-size: 15px; }
+.sv-side { display: grid; gap: 16px; }
+.sv-facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.sv-facts li { display: flex; gap: 12px; align-items: flex-start; color: var(--text-2); font-size: 15px; line-height: 1.5; }
+.sv-facts a { color: var(--green-text); }
+/* contact */
+.ct-hero { min-height: min(440px, 60svh); }
+.ct-cards { display: grid; gap: 12px; }
+.ct-card { display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); text-decoration: none; color: var(--text); transition: border-color .2s; }
+a.ct-card:hover { border-color: rgba(0,154,68,.7); }
+.ct-card > div { display: grid; gap: 2px; min-width: 0; }
+.ct-card .ct-k { margin: 0; font: 700 11px/1.4 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+.ct-card .ct-v { margin: 0; font: 600 19px/1.3 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); overflow-wrap: anywhere; }
+.ct-card span:last-child:not(.ct-v) { color: var(--text-3); font-size: 13px; }
+.ct-soc .cc-social { margin-top: 8px; }
+.ct-quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.ct-q { display: grid; gap: 8px; padding: 22px; text-decoration: none; color: var(--text); transition: border-color .2s, transform .2s; }
+.ct-q:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
+.ct-q h3, .ct-q p { margin: 0; }
+.ct-q p { color: var(--text-2); font-size: 15px; }
+/* bike fit */
+.bf-quote { margin: 18px 0 0; padding: 18px 22px; border-left: 3px solid var(--green); background: rgba(255,255,255,.03); border-radius: 0 12px 12px 0; }
+.bf-quote p { font-style: italic; color: var(--text) !important; margin: 0 0 10px !important; }
+.bf-quote cite { font-style: normal; font-size: 13px; font-weight: 700; color: var(--green-text); }
+.bf-main { aspect-ratio: 1; max-width: 520px; justify-self: center; }
+.bf-main img { width: 100%; height: 100%; object-fit: cover; }
+.bf-gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.bf-gal .g { aspect-ratio: 1; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.bf-gal .bf-g, .bf-gal .bf-g img { width: 100%; height: 100%; }
+.bf-gal img { object-fit: cover; }
+.bf-info { padding: 22px; display: grid; gap: 14px; }
+.bf-info h3 { margin: 0; }
+.bf-cost { padding-top: 12px; border-top: 1px solid var(--border); color: var(--text-2); }
+.bf-cost b { color: var(--text); }
+/* testing */
+.ts-claim { font-weight: 700; color: var(--text) !important; }
+.ts-logo { background: #fff; aspect-ratio: 16 / 7; display: grid; place-items: center; border-radius: 14px; }
+.ts-logo img { width: 80%; height: auto; object-fit: contain; }
+.ts-more { margin-top: 18px; max-width: 900px; }
+.ts-infs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.ts-inf { display: block; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid var(--border); }
+.ts-inf img { width: 100%; height: auto; display: block; }
+.ts-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.ts-steps li { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); }
+.ts-n { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font-weight: 800; }
+.ts-steps h3 { margin: 4px 0 6px; }
+.ts-steps p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.ts-pro { margin: 20px 0 0; color: var(--text-2); font-size: 14px; }
+.ts-pro b { color: var(--text); }
 </style>
 <div class="topo" aria-hidden="true"></div>
 <div class="page">
-<div class="ribbon"><div class="in"><b>Preview</b><span>New /testing/ in the Cigala Cycling design: live H1, H2s, copy and images kept.</span></div></div>
+<div class="ribbon"><div class="in"><b>Preview</b><span>INSCYD testing redesigned: what it measures, report graphics, the six steps with real text, prices with the shop link.</span></div></div>
 <header class="nav">
   <div class="in">
     <a class="brand" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo-v2.webp" alt="Cigala Cycling Coaching Logo" width="58" height="58"></a>
@@ -493,41 +589,88 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
     </details>
   </div>
 </header>
-<div class="hero hero-sm">
-  <img src="img/pg-hero-testing.webp" alt="Cigala Cycling Coaching group riding in Wicklow, Ireland">
+<div class="hero hero-sm ">
+  <img src="img/testing-hero.webp" alt="Matteo Cigala analysing race data on a laptop in a team car" style="object-position:50% 40%">
   <div class="in">
+    <div class="eyebrow eb-pill"><span class="dot"></span>Physiological testing</div>
     <h1>INSCYD METABOLIC TESTING</h1>
-    <p class="lede">INSCYD’s Power-Performance Decoder (PPD) enable us at Cigala Cycling to create a full 360° physiological assessment of each athlete – the same as you already know from lactate testing in the lab or in the field – BUT without the need to test in the lab or even be physically present with each athlete. The test can be carried out indoor or outdoor with even a Zwift protocol for you to use. This is a game-changer.</p>
-    
+    <p class="lede">Lab-quality metabolic testing from your own power data. €189, or included in Premium.</p>
+    <div class="ctas"><a class="btn btn-go" href="https://retail.cigalacycling.com/products/inscyd-metabolic-ppd-testing" target="_blank" rel="noopener">Buy the test · €189</a><a class="btn btn-ghost" href="#inscyd" target="_blank" rel="noopener">What you get ↓</a></div>
   </div>
 </div>
 
-<section>
-  <div class="in split gn-split">
-    <div class="gn-txt"><p>WE OFFER THE CUTTING EDGE METABOLIC TESTING TO ENSURE YOUR TRAINING IS OPTIMISED TO YOUR PHYSIOLOGY MEANING MAXIMAL TRAINING ADAPTATIONS</p><p>INSCYD will benefit your training schedule and performance with both a scientific foundation and precise predictability.</p><p>With INSCYD you’ll get full picture of your physical capacities and also a prediction of your training and racing outcomes. ​</p><p>The performance you are looking for is composed of a variety of components and metrics, but if you only focus on FTP, heart rate zones, or keep training only according to your Rate of Perceived Exertion, you’ll miss accuracy and efficiency.</p><p>For example, with INSCYD you can finally understand the interactions between your aerobic system and your fuelling needs. Do you wonder, “How much should I consume per hour in order to maintain my performance?” With INSCYD, you’ll know.</p><p>INSCYD takes into account, and connect to one another, the most important metrics for training purposes:</p><ul class="ticks"><li>VO2max</li><li>Anaerobic threshold</li><li>Lactate accumulation and recovery</li><li>Fat and carbohydrates combustion</li><li>Recovery</li><li>VLamax (or glycolytic capacity)</li></ul><p>Each of the above metrics measured by INSCYD is critical to performance and remember, each sport performance is predictable and can be broken down to these fundamental elements.</p><p>Take VLamax, for example. Although you might have never heard of it, VLamax. It is the single most important measurement to enhance your performance. VLamax is the maximum production of lactic acid in your blood and gives you a complete understanding of your anaerobic metabolism (which yes, is crucial in endurance events, too!). VO2max is aerobic, now we know the anaerobic piece, which turns out to be at least as important.</p></div>
-    <div class="photo gn-photo gn-png"><img src="img/pg-inscyd-logo-with-inscyder-text.webp" alt="INSCYD logo with &quot;INSCYDer&quot; text | Cigala Cycling Coaching" loading="lazy"></div>
+<section id="inscyd">
+  <div class="in split">
+    <div class="gn-txt">
+      <div class="eyebrow">INSCYD Power-Performance Decoder</div>
+      <h2>A FULL 360° PHYSIOLOGICAL ASSESSMENT</h2><div class="bar"></div>
+      <p>INSCYD’s Power-Performance Decoder (PPD) enable us at Cigala Cycling to create a full 360° physiological assessment of each athlete – the same as you already know from lactate testing in the lab or in the field – BUT without the need to test in the lab or even be physically present with each athlete. The test can be carried out indoor or outdoor with even a Zwift protocol for you to use. This is a game-changer.</p>
+      <p class="ts-claim">We offer the cutting edge metabolic testing to ensure your training is optimised to your physiology meaning maximal training adaptations</p>
+      <p>INSCYD will benefit your training schedule and performance with both a scientific foundation and precise predictability.</p><p>With INSCYD you’ll get full picture of your physical capacities and also a prediction of your training and racing outcomes. ​</p><p>The performance you are looking for is composed of a variety of components and metrics, but if you only focus on FTP, heart rate zones, or keep training only according to your Rate of Perceived Exertion, you’ll miss accuracy and efficiency.</p>
+    </div>
+    <div class="photo gn-png ts-logo"><img src="img/inscyd-logo.webp" alt="INSCYD logo with &quot;INSCYDer&quot; text | Cigala Cycling Coaching" loading="lazy"></div>
   </div>
-  <div class="in"><div class="gn-gal"><div class="g gn-png"><img src="img/pg-ftp-conventional-vs-inscyd.webp" alt="FTP: Conventional vs INSCYD | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-marathon-training-infographic.webp" alt="Marathon training infographic | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-race-fueling-inscyd-vs-athlete.webp" alt="Race fueling: INSCYD vs athlete | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-vo2max-conventional-vs-inscyd.webp" alt="VO2max: Conventional vs INSCYD | Cigala Cycling Coaching" loading="lazy"></div></div></div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>pricing</h2><div class="bar"></div></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">What INSCYD measures</div><h2>THE METRICS THAT MATTER</h2><div class="bar"></div></div></div>
+    <p class="sv-lede">INSCYD takes into account, and connect to one another, the most important metrics for training purposes:</p>
+    <ul class="sv-cards sv-mini"><li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg><h3 class="h-sm">VO2max</h3><p></p></li><li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><h3 class="h-sm">Anaerobic threshold</h3><p></p></li><li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg><h3 class="h-sm">Lactate accumulation and recovery</h3><p></p></li><li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg><h3 class="h-sm">Fat and carbohydrates combustion</h3><p></p></li><li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><h3 class="h-sm">Recovery</h3><p></p></li><li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2v6L4 18a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3L15 8V2M8 2h8M7 14h10"/></svg><h3 class="h-sm">VLamax (or glycolytic capacity)</h3><p></p></li></ul>
+    <div class="gn-txt ts-more"><p>For example, with INSCYD you can finally understand the interactions between your aerobic system and your fuelling needs. Do you wonder, “How much should I consume per hour in order to maintain my performance?” With INSCYD, you’ll know.</p><p>Each of the above metrics measured by INSCYD is critical to performance and remember, each sport performance is predictable and can be broken down to these fundamental elements.</p><p>Take VLamax, for example. Although you might have never heard of it, VLamax. It is the single most important measurement to enhance your performance. VLamax is the maximum production of lactic acid in your blood and gives you a complete understanding of your anaerobic metabolism (which yes, is crucial in endurance events, too!). VO2max is aerobic, now we know the anaerobic piece, which turns out to be at least as important.</p></div>
+  </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2><a href="https://cigala-cycling-retail.myshopify.com/cart/31875614310446:1?channel=buy_button" target="_blank" rel="noopener"><span>€189*</span> <span>STAND ALONE TEST</span> <span>*20% Discount for Members</span> <span>BUY NOW</span></a></h2><div class="bar"></div></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">What the report shows</div><h2>INSCYD VS CONVENTIONAL TESTING</h2><div class="bar"></div></div></div>
+    <div class="ts-infs"><a class="ts-inf" href="img/inscyd-ftp.webp" target="_blank" rel="noopener"><img src="img/inscyd-ftp.webp" alt="FTP: Conventional vs INSCYD | Cigala Cycling Coaching" loading="lazy"></a><a class="ts-inf" href="img/inscyd-vo2max.webp" target="_blank" rel="noopener"><img src="img/inscyd-vo2max.webp" alt="VO2max: Conventional vs INSCYD | Cigala Cycling Coaching" loading="lazy"></a><a class="ts-inf" href="img/inscyd-fueling.webp" target="_blank" rel="noopener"><img src="img/inscyd-fueling.webp" alt="Race fueling: INSCYD vs athlete | Cigala Cycling Coaching" loading="lazy"></a><a class="ts-inf" href="img/inscyd-marathon.webp" target="_blank" rel="noopener"><img src="img/inscyd-marathon.webp" alt="Marathon training infographic | Cigala Cycling Coaching" loading="lazy"></a></div>
+  </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2><a href="https://coaching.cigalacycling.com/testing" target="_blank" rel="noopener"><span>iNCLUDED</span> <span>For premium Package</span> <span>Athlete with minimum 6</span> <span>months subcription</span></a></h2><div class="bar"></div></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">How it works</div><h2>WHAT WE ORGANISE</h2><div class="bar"></div></div></div>
+    <ol class="ts-steps"><li><span class="ts-n">1</span><div><h3 class="h-sm">ALL YOU NEED IS A POWER METER</h3><p>Test on your own bike with your own power meter or smart trainer: no special equipment.</p></div></li><li><span class="ts-n">2</span><div><h3 class="h-sm">NO LAB NEEDED</h3><p>No masks and no blood samples, and you don’t need to travel to a lab or be with us in person.</p></div></li><li><span class="ts-n">3</span><div><h3 class="h-sm">SIMPLE PROTOCOL</h3><p>A short set of all-out efforts, indoors or outdoors. There is even a Zwift protocol for you to use.</p></div></li><li><span class="ts-n">4</span><div><h3 class="h-sm">FULL PROFILE</h3><p>VO2max, anaerobic threshold, VLamax, fat and carbohydrate combustion, lactate accumulation and recovery.</p></div></li><li><span class="ts-n">5</span><div><h3 class="h-sm">FULL METABOLIC PROFILE</h3><p>How your aerobic and anaerobic systems work together, and how much you need to eat per hour to keep your performance.</p></div></li><li><span class="ts-n">6</span><div><h3 class="h-sm">RESULTS REPORT</h3><p>Your INSCYD report, with the training zones and the focus your training needs next.</p></div></li></ol>
+    <p class="ts-pro"><b>USED BY THE WORLD’S BEST ATHLETES</b> · WorldTour teams include Bora Hansgrohe, Lotto Jumbo Visma, Team CCC and Team Alpecin Fenix.</p>
+  </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>WHAT WE ORGANISE</h2><div class="bar"></div><h3 class="gn-sub">ALL YOU NEED IS A POWER METER</h3><p>The Premium package is for those triathletes that want very best in life and the utmost from their personal coach.<br>Those choosing the Premium can be anyone, from first-timer to seasoned pro.</p><h3 class="gn-sub">NO LAB NEEDED</h3><p>The Premium package is for those triathletes that want very best in life and the utmost from their personal coach.<br>Those choosing the Premium can be anyone, from first-timer to seasoned pro.</p><h3 class="gn-sub">SIMPLE PROTOCOL</h3><p>The Premium package is for those triathletes that want very best in life and the utmost from their personal coach.<br>Those choosing the Premium can be anyone, from first-timer to seasoned pro.</p><h3 class="gn-sub">FULL PROFILE</h3><p>The Premium package is for those triathletes that want very best in life and the utmost from their personal coach.<br>Those choosing the Premium can be anyone, from first-timer to seasoned pro.</p><h3 class="gn-sub">FULL METABOLIC PROFILE</h3><p>The Premium package is for those triathletes that want very best in life and the utmost from their personal coach.<br>Those choosing the Premium can be anyone, from first-timer to seasoned pro.</p><h3 class="gn-sub">RESULTS REPORT</h3><p>The Premium package is for those triathletes that want very best in life and the utmost from their personal coach.<br>Those choosing the Premium can be anyone, from first-timer to seasoned pro.</p><p>USED BY THE WORLD’S BEST ATHLETES<br>world tour teams includes: bora hansgrohe, lotto jumbo visma, team ccc, team alpecin fenix</p></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Prices</div><h2>pricing</h2><div class="bar"></div></div></div>
+    <div class="sv-prices sv-prices-2">
+      <div class="panel sv-price hot"><h2 class="ts-h"><span class="sv-pp">€189*</span> <span class="sv-pn">STAND ALONE TEST</span> <span class="sv-ps">*20% Discount for Members</span> <a class="btn btn-go" href="https://retail.cigalacycling.com/products/inscyd-metabolic-ppd-testing" target="_blank" rel="noopener">BUY NOW</a></h2></div>
+      <div class="panel sv-price"><h2 class="ts-h"><span class="sv-pp">iNCLUDED</span> <span class="sv-pn">For premium Package</span> <span class="sv-ps">Athlete with minimum 6 months subcription</span></h2>
+        <a class="btn btn-ghost" href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">See Premium</a></div>
+    </div>
+  </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>WANT TO JOIN CIGALA CYCLING?</h2><div class="bar"></div><div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">VIEW INDIVIDUAL COACHING PACKAGE</a></div></div>
+  <div class="in">
+    <div class="band band-cta">
+      <img src="img/testing-cta.webp" alt="Matteo Cigala coaching a group of riders" loading="lazy" width="2560" height="1707">
+      <div class="tx">
+        <div class="eyebrow">Train to your physiology</div>
+        <h2>WANT TO JOIN CIGALA CYCLING?</h2>
+        <div class="bar"></div>
+        <p class="lede">Your INSCYD profile sets your zones and the focus of your training plan.</p>
+        <div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">VIEW INDIVIDUAL COACHING PACKAGE</a><a class="btn btn-ghost" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book a free consultation</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ft">
+  <div class="in">
+    <div class="ft-box">
+      <div class="ft-head"><div class="eyebrow">Train smarter</div><h3 class="h-sec">FREE TRAINING TOOLS</h3><div class="bar"></div>
+        <p>Free calculators from Head Coach Matteo Cigala. Work out your numbers in seconds.</p>
+        <a class="arrow-link" href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">See all free tools →</a></div>
+      <div class="ft-cards"><a class="ft-card" href="https://coaching.cigalacycling.com/tools/training-zones-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15v3M11 11v7M15 8v10M19 5v13"/></svg><span><b>Training zones</b><small>Power and heart-rate zones from your FTP</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/ftp-test-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 13l4-4M12 3V1M9 1h6"/></svg><span><b>FTP test</b><small>Your FTP from a ramp, 8-min or 20-min test</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/carbs-per-hour-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/></svg><span><b>Carbs per hour</b><small>Your fuelling plan in gels and bottles</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/sweat-rate-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7l5.7 5.6a8 8 0 1 1-11.4 0z"/></svg><span><b>Sweat rate</b><small>How much you sweat, and how much to drink</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/critical-power-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span><b>Critical Power &amp; W′</b><small>CP, W′ and your best power from 2 to 20 min</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/climb-time-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20h20L14 6l-4 6-2-3-6 11z"/><path d="M14 6l2 3"/></svg><span><b>Climb time</b><small>Your time on the Stelvio, Alpe d’Huez or any climb</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/gear-speed-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8L7 17M17 7l2.8-2.8"/></svg><span><b>Gear &amp; speed</b><small>Your speed in every gear at any cadence</small></span><i aria-hidden="true">→</i></a><a class="ft-card" href="https://coaching.cigalacycling.com/tools/swim-pace-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M2 13c2 0 2-1.5 4-1.5S8 13 10 13s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><circle cx="16" cy="5" r="2"/><path d="M6 9l4-3 3 3"/></svg><span><b>Swim pace (CSS)</b><small>Triathlon swim paces from two time trials</small></span><i aria-hidden="true">→</i></a></div>
+    </div>
+  </div>
 </section>
 <footer>
   <div class="in fcols">

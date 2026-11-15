@@ -11,7 +11,7 @@ Writes stg-coaching/out/:
 
 Run the preview builders and tools/coaching_media.py first. Push with tools/push_coaching_wp.py.
 """
-import os, re, sys, json, copy, random, urllib.parse
+import html, os, re, sys, json, copy, random, urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 OUT = ROOT + 'stg-coaching/out/'
@@ -322,9 +322,21 @@ def build_page(key):
             if not any(f.get('custom_id') == 'phone' for f in ff):
                 ff.insert(2, {'custom_id': 'phone', 'field_type': 'text', 'required': 'true', 'field_label': 'Phone',
                               'placeholder': 'Phone (with country code) *', 'width': '100', '_id': 'cc0phon'})
+            # per-page enquiry forms (Matteo 15 Nov: bike fit reservation, 1-to-1, club talks...): the section can set the
+            # email subject and the message placeholder, and put any content on the left between <!--side--> markers
+            subj = re.search(r'data-subject="([^"]+)"', b); hint = re.search(r'data-msg="([^"]+)"', b)
+            if subj:
+                st['email_subject'] = st['email_subject_2'] = html.unescape(subj.group(1))
+            if hint:
+                for f in ff:
+                    if f.get('field_type') == 'textarea': f['placeholder'] = html.unescape(hint.group(1))
             pre, post = b.split('<form', 1)
             post = post.split('</form>', 1)[1]
-            photo = re.search(r'<div class="photo rider">.*?</div>', pre, re.S).group(0)
+            if '<!--side-->' in pre:
+                photo = pre[pre.index('<!--side-->') + 11:pre.index('<!--/side-->')]
+                pre = pre[pre.index('<!--/side-->'):]
+            else:
+                photo = re.search(r'<div class="photo rider">.*?</div>', pre, re.S).group(0)
             text = pre[pre.index('<div class="eyebrow">'):]
             left = wrap([html_widget('<div class="cc cc-page">' + photo + '</div>')], 'cc-wrap', True, width={"unit": "%", "size": 42}, width_mobile={"unit": "%", "size": 100})
             right = wrap([html_widget('<div class="cc cc-page"><div>' + text + '</div></div>'), form], 'cc-wrap', True, width={"unit": "%", "size": 58}, width_mobile={"unit": "%", "size": 100})

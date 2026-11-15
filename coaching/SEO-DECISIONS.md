@@ -191,3 +191,26 @@ To check with Matteo:
 - Testimonials: photos shown whole (no crop). Found and fixed: images with the same alt text were saved under the same file
   name, so one photo replaced the others (Shane Courtney, Barry Fitzgerald and David Sheanan showed one photo; John Dowley
   and Jack Caldwell another). File names now get a short hash when an alt is shared (build_coaching_generic.pic).
+
+## 13. Service pages redesigned, Nutrition upgrade, Triathlon prices (15 Nov 2026, Matteo)
+
+Builder `tools/build_coaching_services.py` (Contact 461, Book 1-to-1 3750, Bike Fitting 4256, Testing 3865, Triathlon About 3770,
+Club Talks 4395). Each keeps its URL, Yoast title and meta, H1 and every live H2 (checked by build()); live copy kept, typos fixed.
+New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "PRECISION AND EXPERIENCE", "EVERY MILLIMETRE COUNTS",
+"BIKE FITS WITH MATTEO", "BIKE FIT PRICES"; Testing "A FULL 360° PHYSIOLOGICAL ASSESSMENT", "THE METRICS THAT MATTER",
+"INSCYD VS CONVENTIONAL TESTING"; Triathlon "SWIM, BIKE, RUN: ONE PLAN", "WHAT YOU GET", "TRIATHLON COACHING PACKAGES",
+"KNOW YOUR NUMBERS", "FREQUENTLY ASKED QUESTIONS" (+ FAQPage JSON-LD).
+- 1-to-1: buy buttons go to the shop product "One-on-One Sessions" (3/6/10/20 sessions, €240/€480/€750/€1,400). The shop
+  product description still says "Navan, Co.Meath": Matteo to update it to Wicklow Town (not changed from here).
+- Bike fit: new prices (Matteo): €80/£70 per bike, second bike €60/£50 (live said €70/£60, +€50/£40). Reservation form
+  (subject "Bike fit reservation"), bikefit@cigalacycling.com kept, free tools band.
+- Testing: the six "What we organise" steps had placeholder text (the Premium package line, six times): now real text for
+  each step title. "Buy now" goes to the shop product "INSCYD Metabolic PPD Testing" (€189) instead of a cart link.
+- Club talks: Matteo presenting (the only presentation photo in the media library) + group coaching photos; quote form.
+- Contact: phone, email, WhatsApp, area and socials beside the form; quick links. No street address (shared/BUSINESS.md).
+- Forms: per-page subject and message hint (build_coaching_wp: data-subject / data-msg; side content between <!--side--> marks).
+- Nutrition: Marine's own portrait and credentials from vivifysports.com/about (MSc, LIDL-TREK, titles); every "VIVIFY SPORTS"
+  links to vivifysports.com; "What's covered" + 7 items from Vivify's coaching page; nutrition coaching as an upgrade
+  (calendar redrawn from Matteo's screenshot, food diary, race fuelling from CP, gut training; price set by Marine).
+- Triathlon packages: same prices, wording and payment links as Individual (Matteo); intro "2 packages" -> 3.
+- Package buttons: Basic buy and Premium waiting list are solid green on every packages page (Matteo).
