@@ -55,6 +55,7 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     t = trips[slug]
     g = lambda rx: re.search(rx, a, re.S).group(1)
     name = g(r'<h2>(.*?)</h2>').replace('Maratona dles Dolomites – Enel', 'Maratona dles Dolomites - Enel')   # live H2 wording
+    name = name.replace(' | Gravel', '')   # Matteo 15 Nov: "Gravel" is already the tag on the photo
     where = g(r'<h3 class="where">(.*?)</h3>').rstrip('.').strip()   # no full stop after the country
     chips = re.findall(r'<span class="chip[^"]*">(.*?)</span>', g(r'<div class="meta">(.*?)</div>'))
     nights = [c for c in chips if 'night' in c.lower()][0]
