@@ -13,5 +13,5 @@ Source: Matteo, 15 Nov 2026.
 
 - **Footer legal row:** "© 2026 <entity> · Registered in Ireland No. <CRO> · VAT <VAT>".
 - **Privacy policy:** the controller is the site's entity, with its CRO number.
-- **Registered office address:** Irish company websites should also show it. Still to get from Matteo.
+- **Registered office address:** do NOT publish it on any site. It's Matteo's home address (his decision, 15 Nov 2026). Show the company name, CRO number, VAT number and "Co. Wicklow, Ireland" only. If he later moves the registered office to a business address (accountant, or a registered-office service, via CRO Form B2), add that address.
 - **Reviews:** no star ratings in schema for your own reviews. Show real review text on the page and link to the right Google profile (see coaching/ and the Coaching chat's reviews_strip()).
