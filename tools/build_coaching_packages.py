@@ -81,7 +81,8 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     items = ''.join(f'<li{" class=\"more\"" if i >= SHOW else ""}>{E(x)}</li>' for i, x in enumerate(inc))
     if no:
         items += '<li class="more no-lab">Included in Advanced &amp; Premium</li>'
-        items += ''.join(f'<li class="more no">{E(x)}<span class="vh"> (not included in Basic)</span></li>' for x in no)
+        NO_LABEL = {'Daily Training Analysis': 'Training Analysis'}   # Matteo 15 Nov: Basic has no training analysis at all, not just no daily one
+        items += ''.join(f'<li class="more no">{E(NO_LABEL.get(x, x))}<span class="vh"> (not included in Basic)</span></li>' for x in no)
     total = len(inc)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
         {badge}
@@ -99,7 +100,7 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
 # ---------- compare table: only the differences, wording from the live feature lines ----------
 Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria-label="Not included">✗</span>'
 ROWS = [
-    ('Training plan', 'Daily plan built for 12 weeks', 'Daily plan built on a weekly basis', 'Daily plan built on a weekly basis'),
+    ('Coaching package', 'Daily plan built for 12 weeks', 'Daily plan built on a weekly basis', 'Daily plan built on a weekly basis'),
     ('Deep Initial Assessment of your training data', N, Y, Y),
     ('Contact', 'When needed via email', 'Weekly', 'Daily'),
     ('Feedback', N, 'Weekly', 'Daily'),
@@ -113,7 +114,7 @@ ROWS = [
     ('Platform', 'Training Peaks Basic account', 'Vekta membership included (value €19.99/m)', 'Vekta membership included (value €19.99/m)'),
     ('Price', '€228 one-time for 12 weeks', '€149/mo, 6 months', '€249/mo for 3 months, €239/mo for 6'),
 ]
-compare = ('<div class="cmp-wrap"><h3 class="h-sm">Compare packages</h3><div class="bar"></div><div class="cmp-scroll"><table class="cmp">'
+compare = ('<div class="cmp-wrap"><h3 class="h-sm">Compare coaching packages</h3><div class="bar"></div><div class="cmp-scroll"><table class="cmp">'
            '<thead><tr><th scope="col"><span class="vh">Feature</span></th><th scope="col">Basic</th><th scope="col" class="hot">Advanced</th><th scope="col">Premium</th></tr></thead><tbody>'
            + ''.join(f'<tr><th scope="row">{r[0]}</th><td data-l="Basic">{r[1]}</td><td class="hot" data-l="Advanced">{r[2]}</td><td data-l="Premium">{r[3]}</td></tr>' for r in ROWS)
            + '</tbody></table></div><p class="cmp-note">Every package also includes the plan tailored to your availability, testing, nutrition support, the gym &amp; winter program, our community and more: open “Show all” on each card for the full list.</p></div>')
@@ -209,7 +210,7 @@ MAIN = f'''<div class="hero hero-sm">
     <p class="lede">I have 3 coaching packages: Basic, Advanced and Premium<br>For all you can add 1 or 2 One-on-One sessions a month with myself, Matteo Cigala</p>
     <div class="ctas">
       <a class="btn btn-go" href="{CAL}" {EXT}>Book free consultation</a>
-      <a class="btn btn-ghost" href="#packages">Compare packages ↓</a>
+      <a class="btn btn-ghost" href="#packages">Compare coaching packages ↓</a>
     </div>
   </div>
 </div>

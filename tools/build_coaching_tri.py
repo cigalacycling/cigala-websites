@@ -39,7 +39,7 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     top = [x for x in own[key] if not (key == 'basic' and x in NOT_IN_BASIC)]
     no = [x for x in own[key] if key == 'basic' and x in NOT_IN_BASIC]
     rest = [f for f in F[key] if f not in own[key]]
-    items = ''.join(f'<li>{E(x)}</li>' for x in top) + ''.join(f'<li class="no">{E(x)} <span>(not included)</span></li>' for x in no) \
+    items = ''.join(f'<li>{E(x)}</li>' for x in top) + ''.join(f'<li class="no">{E({"Daily Training Analysis": "Training Analysis"}.get(x, x))} <span>(not included)</span></li>' for x in no) \
         + ''.join(f'<li class="more">{E(x)}</li>' for x in rest)
     total = len(top) + len(rest)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
@@ -68,7 +68,7 @@ cards = ''.join([
 ])
 Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria-label="Not included">✗</span>'
 ROWS = [
-    ('Training plan', 'Daily plan built for 12 weeks', 'Daily plan built on a weekly basis', 'Daily plan built on a weekly basis'),
+    ('Coaching package', 'Daily plan built for 12 weeks', 'Daily plan built on a weekly basis', 'Daily plan built on a weekly basis'),
     ('Contact', 'When needed via email', 'Weekly', 'Daily'),
     ('Feedback', 'On sessions', 'Weekly', 'Daily'),
     ('Schedule adjustment', Y, 'Weekly', 'Daily'),
@@ -79,7 +79,7 @@ ROWS = [
     ('Platform', 'Training Peaks membership included (value €19.99/m)', 'Training Peaks membership included (value €19.99/m)', 'Training Peaks membership included (value €19.99/m)'),
     ('Price', '€237 one-time for 12 weeks', '€149/mo', '€249/mo for 3 months'),
 ]
-compare = ('<div class="cmp-wrap"><h3 class="h-sm">Compare packages</h3><div class="bar"></div><div class="cmp-scroll"><table class="cmp">'
+compare = ('<div class="cmp-wrap"><h3 class="h-sm">Compare coaching packages</h3><div class="bar"></div><div class="cmp-scroll"><table class="cmp">'
            '<thead><tr><th scope="col"><span class="vh">Feature</span></th><th scope="col">Basic</th><th scope="col" class="hot">Advanced</th><th scope="col">Premium</th></tr></thead><tbody>'
            + ''.join(f'<tr><th scope="row">{r[0]}</th><td data-l="Basic">{r[1]}</td><td class="hot" data-l="Advanced">{r[2]}</td><td data-l="Premium">{r[3]}</td></tr>' for r in ROWS)
            + '</tbody></table></div><p class="cmp-note">Every package also includes the plan tailored to your availability, testing, nutrition support, the gym &amp; winter program, our community and more: open “Show all” on each card for the full list.</p></div>')
@@ -112,7 +112,7 @@ MAIN = f'''<div class="hero hero-sm">
     <p class="lede">{E(intro[1])}<br>{E(intro[2])}<br>{E(intro[3])}</p>
     <div class="ctas">
       <a class="btn btn-go" href="{P.CAL}" {EXT}>Book free consultation</a>
-      <a class="btn btn-ghost" href="#packages">Compare packages ↓</a>
+      <a class="btn btn-ghost" href="#packages">Compare coaching packages ↓</a>
     </div>
   </div>
 </div>
