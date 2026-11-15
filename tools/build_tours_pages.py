@@ -107,7 +107,7 @@ def about():
     ready_p = next(v for k, v, s in it[ready_i:op_i] if k == 'text')
     btn_t, btn_u = next(v for k, v, s in it[ready_i:op_i] if k == 'btn')
     hero_bg = next(v for k, v, s in it if k == 'bg')
-    band_bg = [v for k, v, s in it[:why_i] if k == 'bg'][-1]   # the photo behind "Why riders choose us" live
+    band_bg = 2650   # Matteo 15 Nov: the live "Why riders choose us" photo is a tilted shot; the About hero group photo instead
     matteo = next(src for src, n, r in team if n.upper().startswith('MATTEO'))
     main = f'''<div class="hero plain-hero">
   <div class="in">
@@ -242,12 +242,12 @@ def destinations():
                     f'<span class="go">View destination →</span></div></a>')
         return f'<a class="panel region" href="{path}"><h2>{E(n.title() if n.isupper() else n)}</h2><span>View →</span></a>'
     countries = ''.join(card(n, u, bg, True) for n, u, bg in card_list(it, c_i, r_i))
-    regions = ''.join(card(n, u, bg, False) for n, u, bg in card_list(it, r_i, u_i))
+    regions = ''.join(card(n, u, bg, True) for n, u, bg in card_list(it, r_i, u_i))   # photo cards like the countries (Matteo 15 Nov)
     ult_p = next(v for k, v, s in it[u_i:p_i] if k == 'text')
     ult_btn = next(v for k, v, s in it[u_i:p_i] if k == 'btn')
     priv_btn = next(v for k, v, s in it[p_i:t_i] if k == 'btn')
     priv_bg = [v for k, v, s in it[:p_i] if k == 'bg'][-1]
-    ult_bg = [v for k, v, s in it[:u_i] if k == 'bg'][-1]
+    ult_bg = 4900   # Matteo 15 Nov: not the live photo here; the Dolomites group photo
     title = lambda h: re.sub(r'<[^>]+>', '', h)
     def browse(h):   # live: 'Browse by <span style="color:#D64A4A">Country</span>' -> keep the words, red word as in the design eyebrow
         return E(title(h))
@@ -271,7 +271,7 @@ def destinations():
 <section id="region">
   <div class="in">
     {head_block('Regions', browse(it[r_i][1]))}
-    <div class="regions">{regions}</div>
+    <div class="dgrid">{regions}</div>
   </div>
 </section>
 <section>

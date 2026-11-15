@@ -8413,5 +8413,47 @@
    1600
   ],
   "orig": 1632
+ },
+ "src-2650-1600": {
+  "id": 10073,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-23T075405.720-1600.webp",
+  "alt": "Cigala Cycling Tours Mallorca",
+  "from": [
+   1600,
+   1032
+  ],
+  "size": [
+   1600,
+   1032
+  ],
+  "orig": 2650
+ },
+ "src-4602-900": {
+  "id": 10074,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-shogun-sea-2727251_1920-900.webp",
+  "alt": "Algarve Cycling Tour",
+  "from": [
+   1920,
+   1440
+  ],
+  "size": [
+   900,
+   675
+  ],
+  "orig": 4602
+ },
+ "src-4900-1600": {
+  "id": 10075,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-1720641-1600.webp",
+  "alt": "Cycling in the Dolomites",
+  "from": [
+   3448,
+   4592
+  ],
+  "size": [
+   1600,
+   2131
+  ],
+  "orig": 4900
  }
 }

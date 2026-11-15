@@ -191,7 +191,7 @@ if TOURS_NL_URL:
     ftr_widgets[0] = html_widget('<div class="cc">' + nlband + ftr + '</div>' + PARALLAX)
     ftr_widgets.append(html_widget(nlpop))
     # Tours: the .cc text rule would turn the band title into Montserrat; and the pop-up must sit above the chat widget
-    css += '\n/* ---- newsletter (shared wp/nl-*) ---- */\nhtml .cc .nl-band .nl-t { font-family: Anton, Impact, "Arial Narrow", sans-serif; font-weight: 400; }\nhtml .cc .nl-band + footer { margin-top: 32px !important; }\n#nl-pop { z-index: 2147483647 !important; }\n'
+    css += '\n/* ---- newsletter (shared wp/nl-*) ---- */\nhtml .cc .nl-band .nl-t { font-family: Anton, Impact, "Arial Narrow", sans-serif; font-weight: 400; }\nhtml .cc .nl-band { border-bottom: 0 !important; }\nhtml .cc .nl-band .nl-band-in { padding-bottom: 8px !important; }\nhtml .cc .nl-band + footer { margin-top: 0 !important; }\n#nl-pop { z-index: 2147483647 !important; }\n'
 json.dump({"meta": {"_elementor_data": json.dumps([wrap(ftr_widgets)])}}, open(OUT + 'lib-228.json', 'w'))
 
 # head snippet (Elementor custom code 9279): the shared one. The consent-default line goes first in WPCode Header (Matteo).
