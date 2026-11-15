@@ -138,8 +138,7 @@ def brep(a, b):
     global banner
     assert banner.count(a) == 1, a[:70]
     banner = banner.replace(a, b)
-brep("We use cookies for website analytics (Google Analytics), advertising (Meta Pixel) and our live chat, to improve your experience.",
-     "We use cookies for website analytics (Google Analytics) and our live chat, to improve your experience.")
+# banner text: identical on every Cigala site (Matteo, 15 Nov)
 brep("var GA='G-955J6LHQ2P', PX='1986332861692106';", "var GA='" + GA + "', PX='';")
 brep("    if(window.fbq)return;", "    if(!PX||window.fbq)return;")
 brep("    if(typeof gtag==='function'){gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted'});gtag('config',GA);}",
