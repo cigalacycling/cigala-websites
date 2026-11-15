@@ -44,10 +44,10 @@ C_ = {
     facts=[('clock', 'Same time as Ireland', 'GMT/BST: calls and replies happen in your own day, not overnight.'),
            ('currency', 'Prices in pounds', 'Pay in GBP by GoCardless: no exchange fees on your side.'),
            ('route', 'Built for UK roads', 'Short steep climbs, wind, wet winters and the TT and sportive calendar.')],
-    how=[('Free call', 'Book a free consultation with Matteo. Ireland and the UK share a time zone, so pick a lunch break or an evening that suits you.'),
-         ('Deep assessment', 'Matteo goes through your last 6–12 months of training data and sets your Critical Power, W′ and zones.'),
+    how=[('Sign up or talk first', 'Choose your package and sign up straight away, or book a free consultation with Matteo first. Ireland and the UK share a time zone, so a lunch break or an evening works.'),
+         ('Testing & zones', 'Every package starts with tests (CP, FTP, FTHR or INSCYD) to set your zones. On Advanced and Premium, Matteo also does a deep assessment of your last 6–12 months of training data.'),
          ('Your plan', 'Sessions land in Vekta or TrainingPeaks and sync to your Garmin, Wahoo or Zwift: commute, club run and turbo nights included.'),
-         ('Feedback', 'Matteo reviews your sessions and adjusts the week around work, family and the weather.')],
+         ('Feedback', 'On Advanced and Premium, Matteo reviews your sessions (weekly or daily) and adjusts the week around work, family and the weather.')],
     region='The UK has some of the steepest climbs in Europe and a long, wet winter. Your plan uses both: hard, short efforts that suit the Peak District, the Lakes or the Welsh hills, and indoor sessions on the turbo when the roads are flooded.',
     faq={
      'Which package is right for me?': ['It depends on your budget and how much direct feedback you want. Basic (£195, one payment for 12 weeks) is a plan you follow on your own. Advanced (£135/month) adds Matteo: weekly feedback and schedule changes, a monthly call and Vekta membership, and it is our most popular package. Premium is the closest coaching, with daily contact; it is full at the moment, but you can join the waiting list.'],
@@ -64,10 +64,10 @@ C_ = {
     facts=[('clock', 'Works across US time zones', 'Feedback is written in Vekta or TrainingPeaks, so you never need to be online at the same time.'),
            ('currency', 'Prices in US dollars', 'Pay in USD by GoCardless.'),
            ('route', 'Climate and terrain', 'Altitude in Colorado, heat in Texas, long gravel days: the plan follows where you ride.')],
-    how=[('Free call', 'Book a free consultation with Matteo. The booking page shows the times in your own time zone.'),
-         ('Deep assessment', 'Matteo goes through your last 6–12 months of training data and sets your Critical Power, W′ and zones.'),
+    how=[('Sign up or talk first', 'Choose your package and sign up straight away, or book a free consultation with Matteo first: the booking page shows the times in your own time zone.'),
+         ('Testing & zones', 'Every package starts with tests (CP, FTP, FTHR or INSCYD) to set your zones. On Advanced and Premium, Matteo also does a deep assessment of your last 6–12 months of training data.'),
          ('Your plan', 'Sessions land in Vekta or TrainingPeaks and sync to your Garmin, Wahoo, Hammerhead or Zwift.'),
-         ('Feedback', 'Matteo is in Ireland, 5 hours ahead of the East Coast and 8 ahead of the West Coast: your ride is usually reviewed by the time you wake up.')],
+         ('Feedback', 'On Advanced and Premium, Matteo reviews your sessions (weekly or daily). He is in Ireland, 5 hours ahead of the East Coast and 8 ahead of the West Coast: your ride is usually reviewed by the time you wake up.')],
     region='From altitude in Colorado to heat and humidity in Texas and Florida and long gravel days in the Midwest, where you ride changes how you should train. Your plan is built for your terrain and climate, with heat, altitude and fuelling advice where you need it.',
     faq={
      'Which package is right for me?': ['It depends on your budget and how much direct feedback you want. Basic ($264, one payment for 12 weeks) is a plan you follow on your own. Advanced ($179/month) adds Matteo: weekly feedback and schedule changes, a monthly call and Vekta membership, and it is our most popular package. Premium is the closest coaching, with daily contact; it is full at the moment, but you can join the waiting list.'],
@@ -84,10 +84,10 @@ C_ = {
     facts=[('snow', 'A real winter plan', 'Indoor blocks on Zwift, MyWhoosh or ROUVY so you start spring fit, not from zero.'),
            ('currency', 'Prices in Canadian dollars', 'Pay in CAD by GoCardless.'),
            ('clock', 'Coast to coast', 'Feedback is written in Vekta or TrainingPeaks, so time zones don’t matter.')],
-    how=[('Free call', 'Book a free consultation with Matteo. The booking page shows the times in your own time zone.'),
-         ('Deep assessment', 'Matteo goes through your last 6–12 months of training data and sets your Critical Power, W′ and zones.'),
+    how=[('Sign up or talk first', 'Choose your package and sign up straight away, or book a free consultation with Matteo first: the booking page shows the times in your own time zone.'),
+         ('Testing & zones', 'Every package starts with tests (CP, FTP, FTHR or INSCYD) to set your zones. On Advanced and Premium, Matteo also does a deep assessment of your last 6–12 months of training data.'),
          ('Your plan', 'Sessions land in Vekta or TrainingPeaks and sync to your Garmin, Wahoo or your indoor app for the winter.'),
-         ('Feedback', 'Matteo is in Ireland, 4½ hours ahead of Newfoundland and 8 ahead of BC: your ride is usually reviewed by the time you wake up.')],
+         ('Feedback', 'On Advanced and Premium, Matteo reviews your sessions (weekly or daily). He is in Ireland, 4½ hours ahead of Newfoundland and 8 ahead of BC: your ride is usually reviewed by the time you wake up.')],
     region='In most of Canada the road season is short and the winter is long. Your year is planned around that: an indoor block with structured trainer sessions and gym work through the winter, then a short, focused build to your summer Gran Fondo.',
     faq={
      'Which package is right for me?': ['It depends on your budget and how much direct feedback you want. Basic (one payment for 12 weeks) is a plan you follow on your own. Advanced ($250 CAD/month) adds Matteo: weekly feedback and schedule changes, a monthly call and Vekta membership, and it is our most popular package. Premium is the closest coaching, with daily contact; it is full at the moment, but you can join the waiting list.'],
@@ -274,7 +274,7 @@ def build_country(key):
   <div class="in">
     <div class="head">
       <div><div class="eyebrow">Real results</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2></div>
-      <div class="rv-links"><a class="btn btn-ghost" href="{C}/testimonials/" {EXT}>Read more testimonials</a></div>
+      <div class="rv-links"><a class="btn btn-go" href="{C}/testimonials/" {EXT}>Read more testimonials</a></div>
     </div>
     {case_cards(C + '/case-studies/')}
   </div>
