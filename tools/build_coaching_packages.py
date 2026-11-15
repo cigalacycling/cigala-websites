@@ -31,6 +31,17 @@ own = {k: [f for f in v if norm(f) not in map(norm, common)] for k, v in F.items
 for k, v in F.items():
     for f in v: assert f in common or f in own[k] or norm(f) in map(norm, common), f
 
+# "Good to know" strip with icons, separate from the package cards (Matteo 15 Nov: the notes looked like part of a package)
+ICON = {
+    'spots': '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+    'currency': '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+    'platform': '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+    'student': '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/>',
+}
+def notes_strip(items):
+    cells = ''.join(f'<div class="note"><svg viewBox="0 0 24 24" aria-hidden="true">{ICON[k]}</svg><p>{t}</p></div>' for k, t in items)
+    return f'<div class="notes-wrap"><div class="notes-lab">Good to know</div><div class="notes">{cells}</div></div>'
+
 PAY = dict(re.findall(r'<option value="(https://[^"]+)"[^>]*>\s*([^<]+?)\s*<', SRC))
 pay = {label: url for url, label in PAY.items()}
 def btn(label, url, cls='btn-go', note=''):
@@ -178,11 +189,7 @@ MAIN = f'''<div class="hero hero-sm">
 
 <section id="packages">
   <div class="in">
-    <div class="notes">
-      <p>{E(intro[2])}</p>
-      <p>{E(intro[1])}</p>
-      <p>For Advanced &amp; Premium Packages Vekta membership is included (worth €19.99/ month)<br>On demand Training Peaks Premium is also an option.</p>
-    </div>
+    {notes_strip([('spots', E(intro[2])), ('currency', E(intro[1])), ('platform', 'For Advanced &amp; Premium Packages Vekta membership is included (worth €19.99/ month)<br>On demand Training Peaks Premium is also an option.')])}
     <div class="pkgs">
       {cards}
     </div>
@@ -296,9 +303,14 @@ PCSS = '''<style>
 .hero-sm { min-height: min(560px, 74svh); }
 .hero-sm .in { padding-block: 110px 48px; }
 .hero-sm h1 { max-width: 16ch; font-size: clamp(38px, 6vw, 72px); }
-.notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 28px; }
-.notes p { margin: 0; padding: 14px 16px; border-left: 2px solid var(--green); background: var(--wash); border-radius: 0 8px 8px 0; font-size: 14px; }
-.pkgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.notes-wrap { margin: 0 0 44px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.notes-lab { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+.notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 32px; }
+.note { display: flex; gap: 12px; align-items: flex-start; }
+.note svg { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-top: 1px; }
+.note p { margin: 0; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+.pkgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 16px; align-items: start; }
+.pkg { display: grid; grid-row: span 9; grid-template-rows: subgrid; row-gap: 0; align-content: start; }   /* term, name, for, price, sub, buy, label, list, button line up across the cards */
 .pkg { position: relative; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px 24px; min-width: 0; }
 .pkg.hot { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 24px 60px rgba(0,154,68,.18); }
 .pkg-badge { position: absolute; top: -13px; left: 24px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--green); border-radius: 999px; padding: 5px 12px; }
@@ -308,16 +320,16 @@ PCSS = '''<style>
 .pkg-price { display: flex; align-items: baseline; gap: 4px; margin-top: 14px; }
 .pkg-price b { font: 400 54px/1 var(--head); color: var(--text); }
 .pkg-price span { color: var(--text-3); font-weight: 600; }
-.pkg-sub { font-size: 13px; color: var(--text-3); margin: 8px 0 18px; min-height: 40px; }
+.pkg-sub { font-size: 13px; color: var(--text-3); margin: 8px 0 18px; }
 .pkg-buy { display: grid; gap: 8px; }
 .pay { width: 100%; text-align: center; }
 .pay-note { display: block; font-size: 12.5px; color: var(--text-3); text-align: center; }
 .pkg-lab { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
-.ticks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.ticks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; align-content: start; }
 .ticks li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-2); line-height: 1.45; }
 .ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%2334c46a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
 .pkg:not(.open) .ticks li.more { display: none; }
-.pkg-for { margin: 8px 0 0; font-size: 13.5px; color: var(--text-2); line-height: 1.5; min-height: 42px; }
+.pkg-for { margin: 8px 0 0; font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
 .pkg-call { font-size: 13px; font-weight: 600; color: var(--green-text); text-decoration: none; text-align: center; padding: 4px 0; }
 .pkg-call:hover { color: #fff; }
 .ticks li.no { color: var(--text-4, #62666d); }

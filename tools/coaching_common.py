@@ -257,7 +257,8 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .mono-logos img:hover { opacity: 1; }
 @media (max-width: 640px) { .mono-logos { justify-content: center; gap: 24px 32px; } .mono-logos img { height: 36px; max-width: 130px; } }
 /* ---- Matteo 15 Nov homepage feedback ---- */
-.hero::after { background: linear-gradient(180deg, rgba(8,9,10,.62) 0%, rgba(8,9,10,.5) 40%, rgba(8,9,10,.95) 100%) !important; }   /* hero photo darker */
+.hero::after { background: linear-gradient(180deg, rgba(8,9,10,.67) 0%, rgba(8,9,10,.55) 40%, rgba(8,9,10,.95) 100%) !important; }   /* hero photo darker (Matteo: twice, -5% each) */
+.path img { filter: brightness(.95); }   /* coaching cards -5% (Matteo) */
 .rv-stars { color: var(--star); letter-spacing: 3px; font-size: 15px; line-height: 1; }
 .matteo .photo.cutout { position: relative; background: none; border: 0; aspect-ratio: auto; overflow: visible; display: flex; justify-content: center; align-items: flex-end; isolation: isolate; }
 .matteo .photo.cutout::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }

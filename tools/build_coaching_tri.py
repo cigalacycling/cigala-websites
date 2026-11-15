@@ -119,10 +119,7 @@ MAIN = f'''<div class="hero hero-sm">
 
 <section id="packages">
   <div class="in">
-    <div class="notes notes-2">
-      <p>{E(intro[4])}</p>
-      <p>*Underage, Juniors &amp; U23 will avail of a 20% student discount for all packages</p>
-    </div>
+    {P.notes_strip([('currency', E(intro[4])), ('student', '*Underage, Juniors &amp; U23 will avail of a 20% student discount for all packages')]).replace('class="notes"', 'class="notes notes-2"')}
     <div class="pkgs">
       {cards}
     </div>

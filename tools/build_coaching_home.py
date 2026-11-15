@@ -41,7 +41,7 @@ MAIN = f'''<div class="hero">
   <div class="in">
     <h2 class="eyebrow-h">#TrainSmarterRideFaster</h2>
     <h1>Premium Cycling &amp; Triathlon Coaching</h1>
-    <p class="lede">Personalised training plans, expert feedback and support from Head Coach Matteo Cigala, on TrainingPeaks and Vekta.</p>
+    <p class="lede">World-class coaching from a former pro and European Gran Fondo Champion, for cyclists and triathletes of every level.</p>
     <div class="ctas">
       <a class="btn btn-go" href="{C}/individual-packages/" {EXT}>Cycling coaching →</a>
       <a class="btn btn-ghost" href="{C}/tri-individual-packages/" {EXT}>Triathlon coaching</a>
@@ -122,7 +122,7 @@ No matter where you are in the world, we coach remotely in different countries, 
       <a class="card" href="{T}/" {EXT}>
         <img src="{I['tours']}" alt="Cigala Cycling Tours riders celebrating on the coast in Cyprus" loading="lazy" width="1600" height="1067">
         <div class="tx">
-          <span class="k">Ride with us</span>
+          <span class="k">Cigala Cycling Tours</span>
           <h3>BIKE TOURS</h3>
           <p>With the partner company, Cigala Cycling Tours, we have selected the most beautiful cycling locations in Europe with a rich heritage, local culture and cuisine and combined them with amazing cycling routes to ensure that your vacation will be truly unforgettable.</p>
           <span class="btn btn-go">Go to tours site →</span>
