@@ -266,6 +266,12 @@ assert '.cc-page' in PARALLAX
 # Coaching Brevo list. Not on /tools/ pages (they have their own sign-up) or /contact/. Off until COACH_NL_URL is set.
 sys.path.insert(0, ROOT + 'tools'); from coaching_common import COACH_NL_URL
 widgets = [html_widget('<div class="cc">' + ftr + '</div>'), html_widget(banner), html_widget(PARALLAX)]
+# newsletter footer band (main chat 15 Nov: same as cigalacycling.com and Tours, "everything consistent across sites"):
+# wp/nl-band.html as it is, above the footer columns; the pop-up script below binds it and posts to the Coaching Brevo form
+if COACH_NL_URL:
+    widgets[0] = html_widget('<div class="cc">' + open(ROOT + 'wp/nl-band.html').read() + ftr + '</div>')
+    css += ('\n/* ---- newsletter band (shared wp/nl-band.html) ---- */\nhtml .cc .nl-band .nl-t { font-family: Anton, Impact, "Arial Narrow", sans-serif; font-weight: 400; }'
+            '\nhtml .cc .nl-band { border-bottom: 0 !important; }\nhtml .cc .nl-band .nl-band-in { padding-block: 40px !important; }\nhtml .cc .nl-band + footer { margin-top: 0 !important; }\n')
 if COACH_NL_URL:
     pop = open(ROOT + 'wp/nl-popup.html').read()
     for a, b in [('<p class="nl-eyebrow">Newsletter</p>', '<p class="nl-eyebrow">Free training tips</p>'),
