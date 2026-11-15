@@ -192,7 +192,7 @@ MAIN = f'''<div class="hero hero-sm">
   </div>
 </div>
 
-<section>
+<section class="it-intro-sec">
   <div class="in it-intro">
     <div class="it-me"><img src="{conv('coaching/brand/matteo-cigala-author-signature.webp', 'italia-matteo-firma')}" alt="Matteo Cigala, preparatore di ciclismo, con la maglia bianca Cigala Cycling e la sua firma" loading="lazy" width="720" height="943"></div>
     <div class="gn-txt">
@@ -376,6 +376,7 @@ ITCSS = '''<style>
 .it-ev-tag { position: absolute; top: 16px; right: 16px; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--tc); }
 .it-ev-grid b { font: 400 20px/1.15 var(--head); text-transform: uppercase; color: var(--text); }
 .it-ev-pl { font-size: 13.5px; color: var(--text-2); line-height: 1.45; }
+.it-intro-sec { padding-top: 24px !important; }   /* Matteo 15 Nov: photo a little closer to the hero */
 .it-intro { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 40px; align-items: center; }
 @media (max-width: 900px) { .it-intro { grid-template-columns: 1fr; } .it-me { max-width: 280px; margin: 0 auto; } }
 .it-me img { width: 100%; height: auto; display: block; filter: drop-shadow(0 24px 50px rgba(0,0,0,.5)); }
@@ -415,9 +416,39 @@ ITCSS = '''<style>
 @media (max-width: 700px) { .it-pics { grid-template-columns: repeat(3, minmax(0, 1fr)); } .it-pics .it-pic:nth-child(n+4) { display: none; } }
 </style>'''
 
+# Matteo 15 Nov: the Italian page in the first person ("agli italiani piace la prima persona"); his name stays where it
+# matters for search (H1 area, the H2 "Perche' atleti in Italia scelgono Matteo Cigala", the hero line). Quotes untouched.
+FIRST = [("vittorie, Matteo offre una preparazione", "vittorie, offro una preparazione"), ("Perché sceglierci", "Perché scegliere me"),
+         ("Comunicazione diretta in italiano con Matteo", "Comunicazione diretta in italiano con me"), ("Matteo come tuo coach:", "Io come tuo coach:"),
+         ("consulenza gratuita con Matteo.", "consulenza gratuita con me."), ("Con Avanzato e Premium Matteo analizza anche", "Con Avanzato e Premium analizzo anche"),
+         ("Con Avanzato e Premium Matteo rivede le tue sessioni (ogni settimana o ogni giorno) e adatta", "Con Avanzato e Premium rivedo le tue sessioni (ogni settimana o ogni giorno) e adatto"),
+         ("con la nostra nutrizionista sportiva Marine Lenehan", "con la nutrizionista sportiva con cui lavoro, Marine Lenehan"),
+         ("con la nostra nutrizionista sportiva, Marine Lenehan", "con la nutrizionista sportiva con cui lavoro, Marine Lenehan"),
+         ("E&#x27; il nostro motto", "È il mio motto"), ("Cosa dicono i nostri atleti", "Cosa dicono i miei atleti"),
+         ("LEGGI LE NOSTRE RECENSIONI", "LEGGI LE MIE RECENSIONI"), ("Le nostre recensioni su Google", "Le mie recensioni su Google"),
+         ("recensioni reali di atleti seguiti da Matteo.", "recensioni reali degli atleti che alleno."),
+         ("Gli Eventi per Cui Prepariamo i Nostri Atleti", "Gli Eventi per Cui Preparo i Miei Atleti"), ("Prepariamo atleti per granfondo", "Preparo atleti per granfondo"),
+         ("Costruiamo anche il piano dei nostri atleti italiani", "Costruisco anche il piano dei miei atleti italiani"),
+         ("Obbiettivi raggiunti dai nostri atleti", "Obiettivi raggiunti dai miei atleti"),
+         ("LEGGI I NOSTRI CASI STUDIO", "LEGGI I MIEI CASI STUDIO"), ("Leggi i nostri casi studio", "Leggi i miei casi studio"),
+         ("Dove alleniamo", "Dove alleno"), ("Seguiamo ciclisti in tutta Italia</h2>", "Seguo ciclisti in tutta Italia</h2>"),
+         ("Matteo segue da remoto atleti in tutta Italia", "Seguo da remoto atleti in tutta Italia"), ("dove seguiamo ciclisti", "dove seguo ciclisti"),
+         ("perché include accesso settimanale a Matteo oltre", "perché include un contatto settimanale con me oltre"), ("No. Seguiamo ciclisti", "No. Seguo ciclisti"),
+         ("Inizia a collaborare con Matteo", "Inizia a collaborare con me"),
+         ("Seguiamo ciclisti in tutta Italia e in tutto il mondo.", "Seguo ciclisti in tutta Italia e in tutto il mondo."),
+         ("Hai domande sulla preparazione? Scrivici e Matteo ti risponderà, in italiano.", "Hai domande sulla preparazione? Scrivimi."),
+         ("Iscrivendoti a uno dei nostri pacchetti", "Iscrivendoti a uno dei miei pacchetti")]
+for _a, _b in FIRST:
+    assert _a in MAIN, _a
+    MAIN = MAIN.replace(_a, _b)
+
 if __name__ == '__main__':
     build(NAME, PATH, MAIN, f'{PATH} rebuilt like the UK/USA/Canada pages, in Italian: package cards and buy buttons, steps, calendar, case studies, real reviews, form.',
           h1='PREPARATORE DI CICLISMO ITALIA',
-          h2_changes={'drop': ['2025 IN NUMERI', 'LEGGI LE NOSTRE RECENSIONI – SCOPRI COSA DICONO I CICLISTI DI CIGALA CYCLING'], 'add': ['2026 IN NUMERI', 'LEGGI I NOSTRI CASI STUDIO', 'LEGGI LE NOSTRE RECENSIONI']},
+          h2_changes={'drop': ['2025 IN NUMERI', 'LEGGI LE NOSTRE RECENSIONI – SCOPRI COSA DICONO I CICLISTI DI CIGALA CYCLING', "E' il nostro motto",
+                               'Gli Eventi per Cui Prepariamo i Nostri Atleti', 'Seguiamo ciclisti in tutta Italia',
+                               'Un coaching personalizzato in base ai tuoi obiettivi. Seguiamo ciclisti in tutta Italia e in tutto il mondo.'],
+                      'add': ['2026 IN NUMERI', 'LEGGI I MIEI CASI STUDIO', 'LEGGI LE MIE RECENSIONI', 'È il mio motto', 'Gli Eventi per Cui Preparo i Miei Atleti',
+                              'Seguo ciclisti in tutta Italia', 'Un coaching personalizzato in base ai tuoi obiettivi. Seguo ciclisti in tutta Italia e in tutto il mondo.']},   # Matteo 15 Nov: first person
           extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + P.CAL_CSS + CN.CCSS + ITCSS, extra_js=JS)
     print('faq', len(faq), '| why', len(why), '| events', len(ev_li), '| regions', len(rg_li), '| features', {k: len(v) for k, v in FEAT.items()})

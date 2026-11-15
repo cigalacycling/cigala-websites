@@ -361,3 +361,9 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Italia: map of Italy in the brand style (Natural Earth outline, public domain) with a pulsing dot for each listed city, next to the region list (list kept as text for SEO); device logos moved under it.
 - Italia intro: Matteo's cut-out with signature, 28+/10+/200+ numbers, the two live paragraphs (first larger), facts as a row; 'Perché sceglierci' list as icon cards. All live copy kept.
 - Italia: intro paragraphs one size; 'Comunicazione in italiano / Prezzi in euro / ...' cards removed (Matteo); motto + reviews moved after packages and how it works, just before Presente su; 'Stampa e partners'; regions + Puglia, Sicilia, Sardegna (new list items and map dots); map labels repositioned.
+- Italia in the first person (Matteo: "agli italiani piace la prima persona"). H2s approved by Matteo: "E' il nostro motto" ->
+  "È il mio motto"; "Gli Eventi per Cui Prepariamo i Nostri Atleti" -> "... Preparo i Miei Atleti"; "Seguiamo ciclisti in
+  tutta Italia" -> "Seguo ..."; the closing H2 "... Seguiamo ciclisti ..." -> "... Seguo ciclisti ..."; reviews/case study
+  H2s "LEGGI LE MIE RECENSIONI", "LEGGI I MIEI CASI STUDIO". Body copy in the first person too (offro, preparo, seguo,
+  alleno); "Matteo Cigala" kept in the hero line and in the H2 "Perche' atleti in Italia scelgono Matteo Cigala" (search).
+  Contact: "Hai domande sulla preparazione? Scrivimi." Intro section 24px closer to the hero.
