@@ -8,7 +8,7 @@ Changes on top of the design (approved by Matteo, 15 Nov 2026):
   - Bike Tours menu keeps the live split and adds Road Tours
 Images are copied into tourspages/img/ (home-*) so the preview opens locally.
 """
-import os, re, json, html, shutil, urllib.request, ssl
+import os, re, sys, json, html, shutil, urllib.request, ssl
 from datetime import date
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
@@ -322,6 +322,13 @@ rep('<span>© 2026 Cigala Cycling Tours Ltd</span>\n    <span>VAT No: IE4385007E
 s = s.replace('<div class="stars" aria-label="5 out of 5">★★★★★</div>', '')   # no star ratings on our own reviews (same as Coaching)
 rep(f'<a class="arrow-link" href="{L}/testimonials/" {EXT}>All testimonials →</a>',
     f'<div class="rv-links"><a class="arrow-link" href="https://share.google/WNvIKe4CJP8CnL8ns" {EXT}>★ Read our reviews on Google →</a><a class="arrow-link" href="{L}/testimonials/" {EXT}>All testimonials →</a></div>')
+
+# footer social links -> shared icon row (shared/social, Matteo 15 Nov), under phone / email / Google reviews
+sys.path.insert(0, ROOT + 'shared/social'); from social import social_row, SOCIAL_CSS
+m = re.search(r'(<h4>Contact</h4>\s*<ul>\s*<li>tours@cigalacycling\.com</li>\s*<li>\+353 40478107</li>)\s*<li><a href="https://wa\.me.*?</li>\s*<li><a href="https://www\.youtube.*?</li>\s*</ul>', s, re.S)
+assert m, 'footer contact column'
+s = s[:m.start()] + m.group(1) + f'\n        <li><a href="https://share.google/WNvIKe4CJP8CnL8ns" {EXT}>★ Google reviews</a></li>\n      </ul>\n      ' + social_row() + s[m.end():]
+s = s.replace('@media (max-width: 1080px)', SOCIAL_CSS + '\n@media (max-width: 1080px)', 1)
 
 # more FAQs (facts from the live terms, custom tours and Dolomites pages)
 FAQ = [
