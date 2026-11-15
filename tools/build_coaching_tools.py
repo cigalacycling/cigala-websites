@@ -26,11 +26,13 @@ IC = {  # line icons, same style as the packages page
     'zones': '<path d="M3 3v18h18"/><path d="M7 15v3M11 11v7M15 8v10M19 5v13"/>',
     'carbs': '<path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/>',
     'cp': '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+    'climb': '<path d="M2 20h20L14 6l-4 6-2-3-6 11z"/><path d="M14 6l2 3"/>',
 }
 TOOLS = [
     ('zones', '/tools/training-zones-calculator/', 'Training Zones Calculator', 'Your 7 power zones from FTP or a 20-minute test, plus heart-rate zones from your threshold heart rate.'),
     ('carbs', '/tools/carbs-per-hour-calculator/', 'Carbs per Hour Calculator', 'How many grams of carbs to take each hour, and what that means in gels and bottles, for your ride.'),
     ('cp', '/tools/critical-power-calculator/', 'Critical Power &amp; W′ Calculator', 'Your Critical Power and W′ from two all-out efforts, and the power you can hold from 2 to 20 minutes.'),
+    ('climb', '/tools/climb-time-calculator/', 'Climb Time Calculator', 'How long a famous climb, or your own, will take at your power and weight, and the power you need for a target time.'),
 ]
 
 def hero(eyebrow, h1, lede):
@@ -107,6 +109,7 @@ TCSS = '''<style>
 .tl-f select option { background: #0f1011; }
 .tl-f input:focus, .tl-f select:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: transparent; }
 .tl-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tl-two[hidden] { display: none !important; }
 fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
 .tl-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 10px; padding: 4px; }
 .tl-seg label { position: relative; text-align: center; font-size: 14px; font-weight: 600; color: var(--text-2); padding: 9px 6px; border-radius: 7px; cursor: pointer; }
@@ -140,7 +143,7 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
 .tl-txt ul.tl-reads { padding-left: 0; margin-top: 20px; }
 .tl-reads { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 8px; }
 .tl-reads a { color: var(--green-text); font-weight: 600; text-decoration: none; }
-.tl-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.tl-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 .tl-card { display: flex; flex-direction: column; gap: 10px; padding: 24px; text-decoration: none; transition: border-color .2s, transform .2s; }
 .tl-card:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
 .tl-card svg, .tl-ic { width: 44px; height: 44px; padding: 10px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -478,9 +481,123 @@ PJS = '''<script>
 </script>'''
 
 # =====================================================================================================================
+# 4. Climb time
+# Famous climbs: distance (km), average gradient (%), summit altitude (m). Commonly published figures for the classic sides;
+# the time uses the average gradient, so real climbs with steeper ramps take a little longer.
+CLIMBS = [
+    ('Stelvio (from Prato)', 24.3, 7.4, 2758),
+    ('Mortirolo (from Mazzo)', 12.4, 10.5, 1852),
+    ('Passo Giau (from Selva)', 9.9, 9.3, 2236),
+    ('Alpe d’Huez', 13.8, 8.1, 1850),
+    ('Mont Ventoux (from Bédoin)', 21.5, 7.5, 1910),
+    ('Tourmalet (from Luz)', 19.0, 7.4, 2115),
+    ('Sa Calobra (Mallorca)', 9.4, 7.1, 682),
+]
+copts = ''.join(f'<option value="{d},{g},{top}">{E(n)} · {d} km, {g}%</option>' for n, d, g, top in CLIMBS)
+CLMAIN = hero('Free tool', 'Climb Time Calculator', 'How long will a climb take you? Enter your weight and power to get your time on the Stelvio, Alpe d’Huez, Ventoux or your own climb, and the power you need for a target time.') + f"""
+
+<section class="tl-sec">
+  <div class="in">
+    <div class="tl-box">
+      <form class="tl-in panel" id="tl-climb" onsubmit="return false">
+        <h2>You and the climb</h2>
+        <label class="tl-f"><span>Climb</span><select id="tl-c">{copts}<option value="custom">My own climb…</option></select></label>
+        <div class="tl-two tl-custom" hidden>
+          <label class="tl-f"><span>Distance (km)</span><input type="number" id="tl-cd" inputmode="decimal" min="0.5" max="60" step="0.1" placeholder="e.g. 8"></label>
+          <label class="tl-f"><span>Avg gradient (%)</span><input type="number" id="tl-cg" inputmode="decimal" min="1" max="20" step="0.1" placeholder="e.g. 6.5"></label>
+        </div>
+        <div class="tl-two">
+          <label class="tl-f"><span>Your weight (kg)</span><input type="number" id="tl-rw" inputmode="decimal" min="35" max="150" step="0.1" placeholder="e.g. 72"></label>
+          <label class="tl-f"><span>Bike + kit (kg)</span><input type="number" id="tl-bw" inputmode="decimal" min="5" max="25" step="0.1" value="9"></label>
+        </div>
+        <div class="tl-two">
+          <label class="tl-f"><span>Your power (W)</span><input type="number" id="tl-pw" inputmode="numeric" min="50" max="600" placeholder="e.g. 250"><small>Power you can hold for the climb</small></label>
+          <label class="tl-f"><span>Target time (min)</span><input type="number" id="tl-tt" inputmode="numeric" min="5" max="400" placeholder="optional"><small>Power needed for it</small></label>
+        </div>
+      </form>
+      <div class="tl-out panel" aria-live="polite">
+        <h2>Your climb</h2>
+        {gate()}<div id="tl-climb-out"></div>
+      </div>
+    </div>
+    {signup('climb')}
+  </div>
+</section>
+
+<section>
+  <div class="in"><div class="tl-txt">
+    <div class="eyebrow">How it works</div>
+    <h2>HOW WE WORK OUT YOUR CLIMB TIME</h2>
+    <div class="bar"></div>
+    <p>On a climb, most of your power goes into lifting you and your bike against gravity, which is why watts per kilo matter so much. The rest goes into rolling resistance and, a little, the air.</p>
+    <p>We use the standard cycling power equation: gravity, rolling resistance (good road tyres), air resistance for a rider on the hoods, and 2.5% lost in the drivetrain. Air is thinner higher up, so the summit altitude is taken into account.</p>
+    <h3>Why your real time can differ</h3>
+    <ul>
+      <li><b>Steeper ramps:</b> the calculation uses the average gradient. Climbs with steep sections and flatter parts usually take a little longer.</li>
+      <li><b>Pacing:</b> riding evenly is fastest. Going too hard at the bottom costs time at the top.</li>
+      <li><b>Wind, heat and altitude:</b> above about 2,000 m, most riders can't hold their usual power.</li>
+    </ul>
+    <h3>Use it to plan</h3>
+    <p>Enter a target time to see the power you need, then train for it. Your coach can build that target into your plan.</p>
+    {reads([('how-to-improve-on-descents', 'How to improve on descents'), ('what-is-ftp-cycling', 'What is FTP in cycling?'), ('the-secrets-of-weight-loss', 'The secrets of weight loss')])}
+  </div></div>
+</section>
+
+{cta('Want to ride the Stelvio or the Mortirolo faster? A plan built for your target climb, by a former pro who races them.')}
+
+<section>
+  <div class="in">
+    <div class="tl-cta panel">
+      <div><h3 class="h-sm">Ride these climbs with us</h3><p>Cigala Cycling Tours rides the Stelvio, the Dolomites, the Alps and the Pyrenees, with guides and support.</p></div>
+      <div class="ctas"><a class="btn btn-ghost" href="{T}/" {EXT}>See the bike tours →</a></div>
+    </div>
+  </div>
+</section>
+
+{more_tools('climb')}"""
+
+CLJS = """<script>
+(function () {
+  var f = document.getElementById('tl-climb'), out = document.getElementById('tl-climb-out'), sel = document.getElementById('tl-c'), cus = f.querySelector('.tl-custom');
+  var G = 9.81, CRR = 0.004, CDA = 0.40, EFF = 0.975;
+  function v(id) { var x = parseFloat(document.getElementById(id).value); return isFinite(x) ? x : 0; }
+  function hms(s) { s = Math.round(s); var h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + ('0' + m).slice(-2) : m) + ':' + ('0' + x).slice(-2); }
+  /* wheel power needed at speed u (m/s) on gradient gr, total mass m, air density rho */
+  function need(u, m, gr, rho) { var th = Math.atan(gr); return (m * G * (Math.sin(th) + CRR * Math.cos(th)) * u + 0.5 * rho * CDA * u * u * u) / EFF; }
+  function speed(P, m, gr, rho) { var lo = 0.1, hi = 30; for (var i = 0; i < 60; i++) { var mid = (lo + hi) / 2; if (need(mid, m, gr, rho) > P) hi = mid; else lo = mid; } return (lo + hi) / 2; }
+  function run() {
+    var c = sel.value, d, gp, top;
+    cus.hidden = c !== 'custom';
+    if (c === 'custom') { d = v('tl-cd'); gp = v('tl-cg'); top = 0; } else { c = c.split(','); d = +c[0]; gp = +c[1]; top = +c[2]; }
+    var rw = v('tl-rw'), bw = v('tl-bw') || 9, P = v('tl-pw'), tt = v('tl-tt');
+    if (!(d > 0) || !(gp > 0)) { out.innerHTML = '<p class="tl-empty">Enter the distance and average gradient of your climb.</p>'; return; }
+    if (rw < 35 || rw > 150) { out.innerHTML = '<p class="tl-empty">Enter your weight, then your power or a target time.</p>'; return; }
+    if (!P && !tt) { out.innerHTML = '<p class="tl-empty">Enter the power you can hold, or a target time.</p>'; return; }
+    var m = rw + bw, gr = gp / 100, gain = d * 1000 * gr, mid = Math.max(0, top - gain / 2), rho = 1.225 * Math.exp(-mid / 8500), h = '';
+    if (P) {
+      var u = speed(P, m, gr, rho), t = d * 1000 / u;
+      h += '<div class="tl-big"><div><b>' + hms(t) + '</b><span>Your time</span></div><div><b>' + (P / rw).toFixed(2) + '</b><span>W/kg</span></div></div>';
+      h += '<table class="tl-tbl"><tbody><tr><th scope="row">Average speed</th><td>' + (u * 3.6).toFixed(1) + ' km/h</td></tr>';
+      h += '<tr><th scope="row">Climbing speed (VAM)</th><td>' + Math.round(gain / t * 3600) + ' m/h</td></tr>';
+      h += '<tr><th scope="row">Elevation gain</th><td>' + Math.round(gain) + ' m</td></tr></tbody></table>';
+      h += '<table class="tl-tbl"><caption>At other powers</caption><thead><tr><th scope="col">Power</th><th scope="col">Time</th></tr></thead><tbody>';
+      [-30, -15, 15, 30].forEach(function (k) { var q = P + k; if (q > 40) h += '<tr><th scope="row">' + q + ' W (' + (q / rw).toFixed(1) + ' W/kg)</th><td>' + hms(d * 1000 / speed(q, m, gr, rho)) + '</td></tr>'; });
+      h += '</tbody></table>';
+    }
+    if (tt) {
+      var ut = d * 1000 / (tt * 60), pn = need(ut, m, gr, rho);
+      h += '<div class="tl-big"><div><b>' + Math.round(pn) + ' W</b><span>For ' + hms(tt * 60) + '</span></div><div><b>' + (pn / rw).toFixed(2) + '</b><span>W/kg needed</span></div></div>';
+    }
+    out.innerHTML = h + '<p class="tl-note">Average gradient, good road tyres, rider on the hoods, no wind. A guide: real climbs with steeper ramps take a little longer.</p>';
+  }
+  f.addEventListener('input', run); f.addEventListener('change', run); run();
+})();
+</script>"""
+
+# =====================================================================================================================
 # hub
 cards = ''.join(f'<a class="tl-card panel" href="{C}{u}" {EXT}><svg viewBox="0 0 24 24" aria-hidden="true">{IC[k]}</svg><h2 class="h-sm">{t}</h2><p>{d}</p><span class="arrow-link">Open the calculator →</span></a>' for k, u, t, d in TOOLS)
-HMAIN = hero('Free tools', 'Free Cycling Training Tools', 'Free calculators from Head Coach Matteo Cigala to help you train and race smarter: training zones, fuelling and Critical Power.') + f'''
+HMAIN = hero('Free tools', 'Free Cycling Training Tools', 'Free calculators from Head Coach Matteo Cigala to help you train and race smarter: training zones, fuelling, Critical Power and climb times.') + f'''
 
 <section class="tl-sec">
   <div class="in">
@@ -499,3 +616,5 @@ page('tools-carbs-per-hour', '/tools/carbs-per-hour-calculator/', 'Carbs per Hou
      'How many carbs per hour should you eat on the bike? Free fuelling calculator: grams per hour, gels and bottles for your ride length and intensity.', CMAIN, CJS)
 page('tools-critical-power', '/tools/critical-power-calculator/', 'Critical Power & W′ Calculator', 'Critical Power & W Prime Calculator for Cycling | Cigala Cycling Coaching',
      'Free Critical Power and W′ (W prime) calculator: enter two all-out efforts to get your CP, W′ and predicted best power from 2 to 20 minutes.', PMAIN, PJS)
+page('tools-climb-time', '/tools/climb-time-calculator/', 'Climb Time Calculator', 'Cycling Climb Time Calculator (Stelvio, Alpe d’Huez, Ventoux) | Cigala Cycling Coaching',
+     'How long will a climb take you? Free cycling climb time calculator for the Stelvio, Alpe d’Huez, Ventoux or any climb, from your power and weight.', CLMAIN, CLJS)

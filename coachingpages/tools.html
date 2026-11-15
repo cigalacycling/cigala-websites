@@ -439,6 +439,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .tl-f select option { background: #0f1011; }
 .tl-f input:focus, .tl-f select:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: transparent; }
 .tl-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tl-two[hidden] { display: none !important; }
 fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
 .tl-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 10px; padding: 4px; }
 .tl-seg label { position: relative; text-align: center; font-size: 14px; font-weight: 600; color: var(--text-2); padding: 9px 6px; border-radius: 7px; cursor: pointer; }
@@ -472,7 +473,7 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
 .tl-txt ul.tl-reads { padding-left: 0; margin-top: 20px; }
 .tl-reads { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 8px; }
 .tl-reads a { color: var(--green-text); font-weight: 600; text-decoration: none; }
-.tl-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.tl-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 .tl-card { display: flex; flex-direction: column; gap: 10px; padding: 24px; text-decoration: none; transition: border-color .2s, transform .2s; }
 .tl-card:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
 .tl-card svg, .tl-ic { width: 44px; height: 44px; padding: 10px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -540,13 +541,13 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
   <div class="in">
     <div class="eyebrow eb-pill"><span class="dot"></span>Free tools</div>
     <h1>Free Cycling Training Tools</h1>
-    <p class="lede">Free calculators from Head Coach Matteo Cigala to help you train and race smarter: training zones, fuelling and Critical Power.</p>
+    <p class="lede">Free calculators from Head Coach Matteo Cigala to help you train and race smarter: training zones, fuelling, Critical Power and climb times.</p>
   </div>
 </div>
 
 <section class="tl-sec">
   <div class="in">
-    <div class="tl-cards"><a class="tl-card panel" href="https://coaching.cigalacycling.com/tools/training-zones-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15v3M11 11v7M15 8v10M19 5v13"/></svg><h2 class="h-sm">Training Zones Calculator</h2><p>Your 7 power zones from FTP or a 20-minute test, plus heart-rate zones from your threshold heart rate.</p><span class="arrow-link">Open the calculator →</span></a><a class="tl-card panel" href="https://coaching.cigalacycling.com/tools/carbs-per-hour-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/></svg><h2 class="h-sm">Carbs per Hour Calculator</h2><p>How many grams of carbs to take each hour, and what that means in gels and bottles, for your ride.</p><span class="arrow-link">Open the calculator →</span></a><a class="tl-card panel" href="https://coaching.cigalacycling.com/tools/critical-power-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><h2 class="h-sm">Critical Power &amp; W′ Calculator</h2><p>Your Critical Power and W′ from two all-out efforts, and the power you can hold from 2 to 20 minutes.</p><span class="arrow-link">Open the calculator →</span></a></div>
+    <div class="tl-cards"><a class="tl-card panel" href="https://coaching.cigalacycling.com/tools/training-zones-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15v3M11 11v7M15 8v10M19 5v13"/></svg><h2 class="h-sm">Training Zones Calculator</h2><p>Your 7 power zones from FTP or a 20-minute test, plus heart-rate zones from your threshold heart rate.</p><span class="arrow-link">Open the calculator →</span></a><a class="tl-card panel" href="https://coaching.cigalacycling.com/tools/carbs-per-hour-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/></svg><h2 class="h-sm">Carbs per Hour Calculator</h2><p>How many grams of carbs to take each hour, and what that means in gels and bottles, for your ride.</p><span class="arrow-link">Open the calculator →</span></a><a class="tl-card panel" href="https://coaching.cigalacycling.com/tools/critical-power-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><h2 class="h-sm">Critical Power &amp; W′ Calculator</h2><p>Your Critical Power and W′ from two all-out efforts, and the power you can hold from 2 to 20 minutes.</p><span class="arrow-link">Open the calculator →</span></a><a class="tl-card panel" href="https://coaching.cigalacycling.com/tools/climb-time-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20h20L14 6l-4 6-2-3-6 11z"/><path d="M14 6l2 3"/></svg><h2 class="h-sm">Climb Time Calculator</h2><p>How long a famous climb, or your own, will take at your power and weight, and the power you need for a target time.</p><span class="arrow-link">Open the calculator →</span></a></div>
     
   </div>
 </section>

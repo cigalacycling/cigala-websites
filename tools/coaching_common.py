@@ -111,7 +111,8 @@ HEADER = f'''<header class="nav">
 # ---------- Free Tools band (Matteo 15 Nov: make the tools easy to find on the homepage and packages page) ----------
 FT = [('/tools/training-zones-calculator/', 'Training zones', 'Power and heart-rate zones from your FTP', '<path d="M3 3v18h18"/><path d="M7 15v3M11 11v7M15 8v10M19 5v13"/>'),
       ('/tools/carbs-per-hour-calculator/', 'Carbs per hour', 'Your fuelling plan in gels and bottles', '<path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/>'),
-      ('/tools/critical-power-calculator/', 'Critical Power &amp; W′', 'CP, W′ and your best power from 2 to 20 min', '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>')]
+      ('/tools/critical-power-calculator/', 'Critical Power &amp; W′', 'CP, W′ and your best power from 2 to 20 min', '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'),
+      ('/tools/climb-time-calculator/', 'Climb time', 'Your time on the Stelvio, Alpe d’Huez or any climb', '<path d="M2 20h20L14 6l-4 6-2-3-6 11z"/><path d="M14 6l2 3"/>')]
 def tools_band():
     cards = ''.join(f'<a class="ft-card" href="{C}{u}" {EXT}><svg viewBox="0 0 24 24" aria-hidden="true">{ic}</svg><span><b>{t}</b><small>{d}</small></span><i aria-hidden="true">→</i></a>' for u, t, d, ic in FT)
     return f'''<section class="ft">
