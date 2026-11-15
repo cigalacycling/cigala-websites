@@ -24,3 +24,11 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - Theme settings: dark palette, Anton/Montserrat, green buttons, the logo (Files: `cigala-cycling-logo-square.png`, fetched from the staging site), 12px cards, 8px buttons and inputs, red sale badge, cart drawer.
   - `snippets/cigala-brand.liquid`, loaded in `layout/theme.liquid`: contour background, menu hover/current marks, eyebrow and green bar kit, 16px inputs.
 - The contour background needs `topo-background-tile.svg` in the store's Files. The rounded-coordinate copy in this folder is 204 KB and looks the same. Matteo uploads it via the upload box, because uploading from this cloud session wasn't allowed.
+- Matteo's notes from 15 Nov, done:
+  - Product cards: square image box on every listing, and titles held to 2 lines so prices line up.
+  - Home "why" panel: green line icons, and the heading is now "Buy with confidence".
+  - Footer: the shop's own tagline ("Your Cycling & Triathlon needs at your fingertips").
+  - Footer reviews: "★ Google reviews" and "★ Trustpilot reviews" (https://ie.trustpilot.com/review/www.cigalacycling.com) in the Contact column, plus the shared 7-icon social row (`snippets/cigala-social.liquid`, from shared/social).
+  - Menu: uppercase, with the underline only as wide as the word.
+  - Bright inline colours in old product descriptions are toned to brand text.
+- Waiting on Matteo: the new logo file, and the contour background upload.
