@@ -189,7 +189,7 @@ LOGOS = [('imgi_4_wHe4MESD', 'logo-red-bull'), ('imgi_6_6_MxiOhd', 'logo-stickyb
          ('unnamed-86.png', 'logo-trainingpeaks'), ('unnamed-84.png', 'logo-cycling-ireland'), ('unnamed-85.png', 'logo-vekta')]
 logos = ''.join(f'<span><img src="{img(k, n)}" alt="{E(live_alt(k))}" loading="lazy"></span>' for k, n in LOGOS)
 
-HERO = img('imgi_41_Tuz_W_Vx', 'packages-hero')
+HERO = img('IMG_3999AWDWWWU', 'packages-hero-lake')   # Matteo 15 Nov: option A, riders by the lake in Wicklow (2560 px, sharp)
 TEAM = img('imgi_21_ZtFBdo0p', 'team-training')  # clean version of the live banner photo (imgi_43, Matteo didn't want the text banner)
 RIDER = img('imgi_42_FoPYDRwS', 'rider')
 COACHPIC = img('imgi_16_g675BzCnYW', 'matteo-coaching')   # Matteo 15 Nov: new photo for Get in touch
@@ -202,8 +202,8 @@ shutil.copy(ROOT + 'coaching/webp/darklogo-trainingpeaks-levels-crop.webp', OUT 
 VKLOGO, TPLOGO = 'img/vekta-white.webp', 'img/trainingpeaks-levels-dark-v2.webp'
 
 intro = [l[3:] for l in TXT[TXT.index('TXT: [', 0):TXT.index('TXT: 12 Weeks')] if l.startswith('P: ')]
-MAIN = f'''<div class="hero hero-sm">
-  <img src="{HERO}" alt="{E(live_alt('imgi_41_Tuz_W_Vx'))}" width="1148" height="766">
+MAIN = f'''<div class="hero hero-sm hero-lake">
+  <img src="{HERO}" alt="Cigala Cycling Coaching group riding in Wicklow, Ireland" width="2560" height="1707">
   <div class="in">
     <div class="eyebrow eb-pill"><span></span>Cycling coaching</div>
     <h1>Individual Cycling Coaching Packages</h1>
@@ -334,6 +334,8 @@ PCSS = '''<style>
 .hero-sm { min-height: min(560px, 74svh); }
 .hero-sm .in { padding-block: 110px 48px; }
 .hero-sm h1 { max-width: 16ch; font-size: clamp(38px, 6vw, 72px); }
+.hero-lake > img { object-position: 72% 78%; }   /* riders in the clear right-hand side, lake behind the heading */
+@media (max-width: 640px) { .hero-lake > img { object-position: 64% 70%; } }
 #packages { padding-top: 28px; }
 .notes-wrap { margin: 0 0 40px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .notes-lab { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
