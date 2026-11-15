@@ -74,3 +74,12 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - The CM switch was tested by temporarily moving the date, then put back.
   - The theme library is full (20 themes), so a separate Cyber Monday theme couldn't be made. Deleting old themes needs Matteo (the API refuses).
 - Sale price changes: when Matteo asks for Black Friday price drops, log each variant's original price and compare-at price in `retail/price-changes/YYYY-MM-DD-<collection>.json` before changing anything. Set the compare-at price to the original so the sticker shows. Restore from that file after the campaign (scheduled task).
+- Round 6 (15 Nov), Matteo's sale-season notes:
+  - Stickers: black for Black Friday, violet (#7c3aed, light #a78bfa) for Cyber Monday. The cards use the `color-custom-badge-sale` badge.
+  - Every sale product page shows a ticking countdown (`snippets/cigala-deal-clock.liquid`) in the sticker colour:
+    - "Black Friday deals end in", to Sun 29 Nov 23:59
+    - "Cyber Monday deals end in", to Mon 30 Nov 23:59
+  - Season dates (Matteo, 15 Nov): Black Friday look from now until the end of Sunday 29 Nov, Cyber Monday look on Monday 30 Nov.
+    - `cigala-season` returns bf / cm / off. "off" (from Tue 1 Dec 00:00) hides all campaign pieces as a safety net.
+  - On Cyber Monday the page, header, footer and panels turn violet (#120a24 base, violet band).
+  - Bottom campaign bar (`snippets/cigala-campaign-bar.liquid`): text, countdown and "Shop the deals" (/collections/bfcm). It can be closed for the session, and switches wording and colour on Cyber Monday.
