@@ -219,7 +219,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - How: `python3 -I tools/coaching_media.py` (WebP images -> staging media, `stg-coaching/media-webp.json`), `python3 -I tools/build_coaching_wp.py` (payloads -> `stg-coaching/out/`), `python3 -I tools/push_coaching_wp.py lib-6 lib-170 lib-228 page-2924 page-3338 snippet-head` (staging only, clears the Elementor cache).
   - Packages keeps the live Elementor contact form (to info@cigalacycling.com, styled in the brand, 16px fields) and the Shapo testimonials widget.
   - Cookie banner: the shared one (`shared/consent/`), GA4 G-E1WWZCLBRB + Meta Pixel 1986332861692106 + OpenWidget, in footer 228 with a "Cookie settings" link. The old "Got it!" bar and old chat widget are gone. Head snippet = Elementor custom code (ID in `stg-coaching/snippet-head-id.txt`). Tested: nothing before a choice; Accept loads the Pixel; Reject loads nothing.
-  - **Matteo to do on staging:** paste `shared/consent/wpcode-header-line.html` as the first line of WPCode Header, above the Google tag (as on Tours).
+  - WPCode Header (Matteo, 15 Nov): consent default line pasted first, before gtag.js (checked: dataLayer = consent default denied -> js -> config; Accept -> update granted). The hreflang block is fixed too (see `coaching/SEO-DECISIONS.md`).
   - Checked at 390/820/1440: no sideways scroll, one H1, alt on every image.
 - **Terms & Privacy (15 Nov, Matteo's decision via the main chat):** `tools/build_coaching_legal.py`, in the cigalacycling.com Terms style (sidebar "On this page" + numbered sections).
   - Terms (564): live copy, H1 and H2s.
