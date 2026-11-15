@@ -60,12 +60,12 @@ MAIN = f'''<div class="hero hero-sm">
 <section>
   <div class="in">
     <a class="band club-band" href="{C}/club-talk/" {EXT}>
-      <img src="{img('imgi_21_Lu1whOJ', 'cta')}" alt="Group of riders in cycling kit celebrating together on a mountain pass" loading="lazy" width="1367" height="1492">
+      <img src="{img('imgi_19_DIi7do4I', 'club-band-group')}" alt="Cigala Cycling riders together before a group coaching session" loading="lazy" width="1600" height="1067">
       <div class="tx">
         <div class="eyebrow eb-pill"><span class="dot"></span>Club talks</div>
         <h3 class="h-sec">CLUB INFORMATION DAYS, COACHING NIGHTS, Q&amp;A AND GROUP SESSIONS</h3>
         <div class="bar"></div>
-        <span class="arrow-link">See club talks →</span>
+        <span class="btn btn-go">See club talks</span>
       </div>
     </a>
   </div>

@@ -116,7 +116,9 @@ def contact():
              ('target', 'Bike fitting', 'In Wicklow Town, by appointment.', C + '/bike-fitting/', 'Reserve a bike fit'),
              ('user', '1-to-1 sessions', 'Train in person with Matteo.', C + '/book-1-on-1-session/', 'Book sessions'),
              ('star', 'Bike tours', 'Cycling holidays with Cigala Cycling Tours.', T + '/', 'Go to tours'),
-             ('bag', 'Shop', 'Premium brands, with a discount for our athletes.', R, 'Go to the shop')]
+             ('bag', 'Shop', 'Premium brands, with a discount for our athletes.', R, 'Go to the shop'),
+             ('heart', 'Nutrition coaching', 'Performance nutrition with Marine Lenehan.', C + '/nutrition/', 'See nutrition'),
+             ('lab', 'INSCYD testing', 'Your full metabolic profile, no lab needed.', C + '/testing/', 'See testing')]
     quick = '<div class="ct-quick">' + ''.join(f'<a class="panel ct-q" href="{u}" {EXT}>{ic(I[i])}<h3 class="h-sm">{t}</h3><p>{d}</p><span class="arrow-link">{b} →</span></a>' for i, t, d, u, b in QUICK) + '</div>'
     MAIN = f'''{hero('CONTACT US', 'Get in touch', 'Questions about coaching, testing, bike fitting or club talks? Call, email or send us a message and Matteo will get back to you.',
                     img('IMG_3999AWDWWWU', 'contact-hero-lake'), 'Cigala Cycling Coaching group riding in Wicklow, Ireland',
@@ -137,7 +139,7 @@ def contact():
 # ------------------------------------------------------------------ book 1-on-1
 def book():
     PRICES = [('3 Sessions', 240, 32547841572910, ''), ('6 Sessions', 480, 32547841605678, ''),
-              ('10 Sessions', 750, 32547841671214, 'Best value'), ('20 Sessions', 1400, 32547841703982, '')]
+              ('10 Sessions', 750, 32547841671214, ''), ('20 Sessions', 1400, 32547841703982, '')]
     def per(n, p): return f'€{p / int(n.split()[0]):.0f} per session'
     price = '<div class="sv-prices">' + ''.join(
         f'<div class="panel sv-price{" hot" if b else ""}">{f"<span class=sv-badge>{b}</span>" if b else ""}<div class="sv-pn">{n}</div><div class="sv-pp">€{p:,}</div>'
@@ -205,6 +207,7 @@ def bikefit():
           <li>{ic(I['bike'])}<span>Bring your bike, kit, cycling shoes.</span></li>
           <li>{ic(I['star'])}<span>Limited availability.</span></li>
           <li>{ic(I['mail'])}<span>Or email <a href="mailto:bikefit@cigalacycling.com">bikefit@cigalacycling.com</a></span></li>
+          <li>{ic(I['chat'])}<span><a href="{WA}" {EXT}>Message us on WhatsApp</a></span></li>
         </ul>
         <div class="bf-cost"><b>€80 / £70</b> for 1 bike · second bike <b>+ €60 / £50</b></div>
       </div>'''
@@ -214,7 +217,7 @@ def bikefit():
     <div class="eyebrow eb-pill"><span class="dot"></span>Bike fitting in Wicklow, Ireland</div>
     <h1>BIKE FITTING</h1>
     <p class="lede">A precise, hands-on bike fit with Head Coach Matteo Cigala: more comfort, more power, fewer niggles. €80 / £70 per bike.</p>
-    <div class="ctas"><a class="btn btn-go" href="#contact">Make your reservation</a><a class="btn btn-ghost" href="#prices">Prices ↓</a></div>
+    <div class="ctas"><a class="btn btn-go" href="#contact">Make your reservation</a><a class="btn btn-ghost" href="{WA}" {EXT}>WhatsApp us</a><a class="btn btn-ghost" href="#prices">Prices ↓</a></div>
   </div>
 </div>
 
@@ -242,7 +245,7 @@ def bikefit():
 
 <section>
   <div class="in">
-    {head('Behind the scenes', 'BIKE FITS WITH MATTEO')}
+    {head('Behind the scenes', 'BIKE FITS WITH CIGALA CYCLING')}
     <div class="bf-gal">{gal}</div>
   </div>
 </section>
@@ -260,7 +263,7 @@ def bikefit():
 
 {tools_band()}'''
     build('bike-fitting', '/bike-fitting/', MAIN, 'Bike fitting redesigned: photos, new prices (€80/£70, second bike €60/£50), reservation form, free tools.',
-          h1='BIKE FITTING', h2_changes={'add': ['PRECISION AND EXPERIENCE', 'EVERY MILLIMETRE COUNTS', 'BIKE FITS WITH MATTEO', 'BIKE FIT PRICES']},
+          h1='BIKE FITTING', h2_changes={'add': ['PRECISION AND EXPERIENCE', 'EVERY MILLIMETRE COUNTS', 'BIKE FITS WITH CIGALA CYCLING', 'BIKE FIT PRICES']},
           extra_css=G.GCSS + FT_CSS + CSS)
 
 # ------------------------------------------------------------------ testing (INSCYD)
@@ -359,7 +362,10 @@ def about2():
            ('swim', 'Full Triathlon Approach', 'We support all three disciplines — swim, bike, run — with balanced weekly programming and progression.'),
            ('chart', 'Data-Driven Coaching', 'Training is structured around: power and heart-rate metrics; periodisation, fueling strategy, recovery optimisation.'),
            ('chat', 'Dedicated Support', 'Regular check-ins, feedback on workouts, open communication, and guidance to keep you accountable and progressing.'),
-           ('users', 'For All Levels', 'From beginners to advanced age-group or pro athletes — everyone is welcome and supported.')]
+           ('users', 'For All Levels', 'From beginners to advanced age-group or pro athletes — everyone is welcome and supported.'),
+           # Matteo 15 Nov: more from the packages
+           ('lab', 'Testing & Zones', 'Test protocols (CP, FTP, FTHR or INSCYD) and adaptive training zones that change as you get fitter.'),
+           ('heart', 'Nutrition & Mental Coach', 'Access to work 1-to-1 with our sports nutritionist, Marine Lenehan, and our mental coach, with daily carb recommendations on Advanced and Premium.')]
     PK = [('Basic', '€19', '/week', '12 weeks · €228 one payment', 'A personalised plan you follow on your own.'),
           ('Advanced', '€149', '/mo', '6 months subscription', 'Our most popular: weekly feedback, analysis and a monthly call.'),
           ('Premium', '€249', '/mo', '3 months subscription', 'Daily contact and feedback. Waiting list.')]
@@ -369,7 +375,8 @@ def about2():
         ('Do you coach all three disciplines?', 'Yes. Your plan balances swim, bike and run every week, with the bike built on Matteo’s professional cycling background: power, pacing and race strategy.'),
         ('How many hours do I need to train?', 'It depends on your training availability. Your plan is built around the time you have, so every session counts.'),
         ('Which platform do you use?', 'Your plan is delivered in TrainingPeaks or Vekta and syncs to Garmin, Wahoo, Zwift and more.'),
-        ('Do you offer a student discount?', 'Yes. Underage, Juniors &amp; U23 avail of a 20% student discount for all packages.')])
+        ('Do you offer a student discount?', 'Yes. Underage, Juniors &amp; U23 avail of a 20% student discount for all packages.'),
+        ('Can I work 1-to-1 with a sports nutritionist?', f'Yes. Every package includes access to our sports nutritionist, Marine Lenehan (MSc, WorldTour professional cyclist). You can also add nutrition coaching with her: your daily macros and carbs per hour in the same calendar as your training, food diary reviews and a race fuelling plan for swim, bike and run. <a href="{C}/nutrition/">See how it works</a>.')])
     MAIN = f'''<div class="hero hero-sm tri-hero">
   <img src="{img('imgi_16_d3HssY4x', 'triathlon-hero-edmonton')}" alt="{E(live_alt('imgi_16_d3HssY4x'))}" style="object-position:50% 40%">
   <div class="in">
@@ -439,14 +446,14 @@ def clubtalk():
                ('mic', 'Coaching nights', 'Presentations on training, periodisation and nutrition, followed by Q&amp;A.'),
                ('bike', 'Group coaching sessions', 'On the bike with your club: skills, pacing and a structured session together.')]
     TOPICS = ['Training and periodisation', 'Nutrition and fuelling', 'Common mistakes to avoid', 'Power, heart rate and testing', 'Racing and pacing', 'Recovery']
-    side = f'''{photo('imgi_14_NWZxZmK6', 'club-talk-presentation', cls='photo rider', pos='30% 40%')}
+    side = f'''{photo('imgi_14_NWZxZmK6', 'club-talk-presentation', cls='photo rider ck-zoom', pos='30% 40%')}
       <ul class="sv-facts">
         <li>{ic(I['pin'])}<span>These sessions can be held all over Ireland.</span></li>
         <li>{ic(I['users'])}<span>For cycling and triathlon clubs</span></li>
         <li>{ic(I['mail'])}<span>Drop us a line to organise and get a quote.</span></li>
       </ul>'''
     MAIN = f'''<div class="hero hero-sm ck-hero">
-  <img src="{img('imgi_14_NWZxZmK6', 'club-talk-hero')}" alt="{E(live_alt('imgi_14_NWZxZmK6'))}" style="object-position:20% 35%">
+  <img src="{img('imgi_14_NWZxZmK6', 'club-talk-hero')}" alt="{E(live_alt('imgi_14_NWZxZmK6'))}" style="object-position:20% 30%;transform:scale(1.15);transform-origin:70% 20%">
   <div class="in">
     <div class="eyebrow eb-pill"><span class="dot"></span>Club talks across Ireland</div>
     <h1>Club information days, coaching nights, Q&amp;A, group coaching sessions and more</h1>
@@ -684,6 +691,8 @@ TL_CSS = """<style>
 CSS = '''<style>
 #formats h2 a { color: var(--text) !important; font: inherit; text-decoration: none; }
 #formats h2 a:hover { color: var(--green-text) !important; }
+.ck-zoom img { transform: scale(1.18); transform-origin: 75% 25%; }   /* hides the photographer's credit in the corner */
+.ck-hero { overflow: hidden; }
 .sv-ic { width: 26px; height: 26px; flex: none; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .sv-lede { color: var(--text-2); max-width: 75ch; margin: 0 0 22px; line-height: 1.65; }
 .sv-note { color: var(--text-3); font-size: 14px; margin: 16px 0 0; }
@@ -695,7 +704,8 @@ CSS = '''<style>
 .sv-cards p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
 .sv-cards p:empty { display: none; }
 .sv-mini { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
-.sv-mini li { grid-template-columns: auto 1fr; align-items: center; padding: 16px 18px; }
+.sv-mini li { grid-template-columns: 26px 1fr; align-items: center; align-content: center; padding: 16px 18px; min-height: 72px; }
+.sv-mini li .sv-ic { align-self: center; justify-self: center; }
 .sv-mini h3 { margin: 0; font-size: 18px; }
 .sv-photo { aspect-ratio: 4 / 3; }
 .sv-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -724,14 +734,16 @@ CSS = '''<style>
 /* contact */
 .ct-hero { min-height: min(440px, 60svh); }
 .ct-cards { display: grid; gap: 12px; }
-.ct-card { display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); text-decoration: none; color: var(--text); transition: border-color .2s; }
+.ct-card { display: flex; gap: 16px; align-items: center; padding: 18px 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); text-decoration: none; color: var(--text); transition: border-color .2s; }
 a.ct-card:hover { border-color: rgba(0,154,68,.7); }
 .ct-card > div { display: grid; gap: 2px; min-width: 0; }
 .ct-card .ct-k { margin: 0; font: 700 11px/1.4 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
 .ct-card .ct-v { margin: 0; font: 600 19px/1.3 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); overflow-wrap: anywhere; }
 .ct-card span:last-child:not(.ct-v) { color: var(--text-3); font-size: 13px; }
 .ct-soc .cc-social { margin-top: 8px; }
-.ct-quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.ct-quick { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 1000px) { .ct-quick { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .ct-quick { grid-template-columns: minmax(0, 1fr); } }
 .ct-q { display: grid; gap: 8px; padding: 22px; text-decoration: none; color: var(--text); transition: border-color .2s, transform .2s; }
 .ct-q:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
 .ct-q h3, .ct-q p { margin: 0; }

@@ -175,9 +175,12 @@ html .cc .blog-hero > img { object-position: 50% 58%; }
 .cc-blog .e-loop-item > .e-con > .e-con:last-child { position: absolute !important; left: 0; right: 0; bottom: 0; padding: 60px 18px 18px !important;
   background: linear-gradient(180deg, rgba(8,9,10,0), rgba(8,9,10,.82) 45%, rgba(8,9,10,.95)) !important; }
 .cc-blog .e-loop-item .elementor-widget-theme-post-excerpt { display: none !important; }
+/* Matteo 15 Nov: "Read More" in the brand's button style (Montserrat 600, no letter spacing, sentence case) */
+.cc-blog .e-loop-item .elementor-button .elementor-button-text { font-size: 0 !important; letter-spacing: 0 !important; }
+.cc-blog .e-loop-item .elementor-button .elementor-button-text::before { content: "Read more →"; font: 600 14px/1.2 Montserrat, system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
 /* Marine Lenehan's articles (tag "By Marine Lenehan", tools/coaching_vivify_posts.py): her name on the card instead of Matteo's */
 .cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title { font-size: 0 !important; }
-.cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title::after { content: "By Sports Nutritionist, Marine Lenehan"; font-size: 11px; }
+.cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title::after { content: "By Sports Nutritionist, Marine Lenehan"; display: block; font: 600 11px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .08em !important; text-transform: uppercase; color: #d0d6e0; }
 .single-post .elementor-4028 .cc-marine-sig { margin-top: 32px !important; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.12); color: #d0d6e0 !important; }
 .single-post .elementor-4028 .cc-marine-src { font-size: 14px !important; color: #8a8f98 !important; }
 .single-post .elementor-4028 .wp-block-table table { width: 100%; border-collapse: collapse; font: 400 15px/1.5 Montserrat, system-ui, sans-serif; color: #d0d6e0; }
@@ -202,7 +205,7 @@ html .cc .blog-hero > img { object-position: 50% 58%; }
 .cc-blog .e-loop-item .elementor-widget-divider { display: none !important; }
 .cc-blog .elementor-widget-theme-post-excerpt, .cc-blog .elementor-widget-theme-post-excerpt p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0 !important; font-size: 14px !important; }
 .cc-blog .e-loop-item .elementor-widget-button { margin-top: auto !important; padding-top: 6px; }
-.cc-blog .e-loop-item .elementor-button .elementor-button-text::after { content: " →"; }
+
 .single-post .elementor-4028, .single-post .elementor-4028 .e-con:not(a) { background: transparent !important; background-image: none !important; }
 .single-post .elementor-4028 { max-width: 860px; margin: 0 auto; padding: 40px 16px 0; }
 .single-post .elementor-4028 .elementor-widget-theme-post-excerpt, .single-post .elementor-4028 .elementor-widget-theme-post-excerpt p { font: 500 19px/1.6 Montserrat, system-ui, sans-serif !important; color: #f7f8f8 !important; }

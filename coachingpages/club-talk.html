@@ -465,6 +465,8 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 </style><style>
 #formats h2 a { color: var(--text) !important; font: inherit; text-decoration: none; }
 #formats h2 a:hover { color: var(--green-text) !important; }
+.ck-zoom img { transform: scale(1.18); transform-origin: 75% 25%; }   /* hides the photographer's credit in the corner */
+.ck-hero { overflow: hidden; }
 .sv-ic { width: 26px; height: 26px; flex: none; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .sv-lede { color: var(--text-2); max-width: 75ch; margin: 0 0 22px; line-height: 1.65; }
 .sv-note { color: var(--text-3); font-size: 14px; margin: 16px 0 0; }
@@ -476,7 +478,8 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .sv-cards p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
 .sv-cards p:empty { display: none; }
 .sv-mini { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
-.sv-mini li { grid-template-columns: auto 1fr; align-items: center; padding: 16px 18px; }
+.sv-mini li { grid-template-columns: 26px 1fr; align-items: center; padding: 16px 18px; }
+.sv-mini li .sv-ic { align-self: center; justify-self: center; }
 .sv-mini h3 { margin: 0; font-size: 18px; }
 .sv-photo { aspect-ratio: 4 / 3; }
 .sv-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -505,14 +508,16 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 /* contact */
 .ct-hero { min-height: min(440px, 60svh); }
 .ct-cards { display: grid; gap: 12px; }
-.ct-card { display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); text-decoration: none; color: var(--text); transition: border-color .2s; }
+.ct-card { display: flex; gap: 16px; align-items: center; padding: 18px 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); text-decoration: none; color: var(--text); transition: border-color .2s; }
 a.ct-card:hover { border-color: rgba(0,154,68,.7); }
 .ct-card > div { display: grid; gap: 2px; min-width: 0; }
 .ct-card .ct-k { margin: 0; font: 700 11px/1.4 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
 .ct-card .ct-v { margin: 0; font: 600 19px/1.3 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); overflow-wrap: anywhere; }
 .ct-card span:last-child:not(.ct-v) { color: var(--text-3); font-size: 13px; }
 .ct-soc .cc-social { margin-top: 8px; }
-.ct-quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.ct-quick { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 1000px) { .ct-quick { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .ct-quick { grid-template-columns: minmax(0, 1fr); } }
 .ct-q { display: grid; gap: 8px; padding: 22px; text-decoration: none; color: var(--text); transition: border-color .2s, transform .2s; }
 .ct-q:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
 .ct-q h3, .ct-q p { margin: 0; }
@@ -579,7 +584,7 @@ a.ct-card:hover { border-color: rgba(0,154,68,.7); }
   </div>
 </header>
 <div class="hero hero-sm ck-hero">
-  <img src="img/club-talk-hero.webp" alt="Matteo Cigala doing a presentation" style="object-position:20% 35%">
+  <img src="img/club-talk-hero.webp" alt="Matteo Cigala doing a presentation" style="object-position:20% 30%;transform:scale(1.15);transform-origin:70% 20%">
   <div class="in">
     <div class="eyebrow eb-pill"><span class="dot"></span>Club talks across Ireland</div>
     <h1>Club information days, coaching nights, Q&amp;A, group coaching sessions and more</h1>
@@ -622,7 +627,7 @@ a.ct-card:hover { border-color: rgba(0,154,68,.7); }
 
 <section id="contact" data-subject="Club talk enquiry (Coaching website)" data-msg="Club name, location, possible dates and topics *">
   <div class="in split">
-    <!--side--><div class="sv-side"><div class="photo rider"><img src="img/club-talk-presentation.webp" alt="Matteo Cigala doing a presentation" loading="lazy" style="object-position:30% 40%"></div>
+    <!--side--><div class="sv-side"><div class="photo rider ck-zoom"><img src="img/club-talk-presentation.webp" alt="Matteo Cigala doing a presentation" loading="lazy" style="object-position:30% 40%"></div>
       <ul class="sv-facts">
         <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>These sessions can be held all over Ireland.</span></li>
         <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg><span>For cycling and triathlon clubs</span></li>
