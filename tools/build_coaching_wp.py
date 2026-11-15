@@ -137,7 +137,7 @@ def blocks_of(page_html):
 def page_js(page_html):
     """the page's own script (after the shared menu script)"""
     scripts = re.findall(r'<script>.*?</script>', page_html, re.S)
-    return [s for s in scripts if '.dd' not in s or 'pkg-all' in s or 'g-more' in s]
+    return [s for s in scripts if '.dd' not in s or 'pkg-all' in s or 'g-more' in s or 'rv-row' in s]
 
 CURJS = "<script>(function(){var p=location.pathname;document.querySelectorAll('.cc .nav a[href]').forEach(function(a){var h=a.getAttribute('href');if(h&&h.charAt(0)==='/'&&!a.classList.contains('btn')&&!a.classList.contains('brand')&&h===p){a.setAttribute('aria-current','page');var d=a.closest('.dd');if(d){d.querySelector('.dd-btn').classList.add('is-current');}}});})();</script>"
 DDJS = "<script>(function(){document.querySelectorAll('.cc .dd').forEach(function(d){var b=d.querySelector('.dd-btn');b.addEventListener('click',function(){var o=d.classList.toggle('open');b.setAttribute('aria-expanded',o);});d.addEventListener('focusout',function(e){if(!d.contains(e.relatedTarget)){d.classList.remove('open');b.setAttribute('aria-expanded','false');}});});})();</script>"
@@ -194,9 +194,7 @@ def build_page(key):
             els.append(wrap([row]))
             continue
         w = [html_widget('<div class="cc cc-page">' + b + '</div>')]
-        if key == 'individual-packages' and 'READ OUR TESTIMONIALS' in b:
-            shapo = live_widget(3338, 'shortcode'); shapo['settings']['_css_classes'] = 'cc-shapo'
-            w = [html_widget('<div class="cc cc-page">' + b + '</div>'), shapo]
+        # (the Shapo widget is gone: Matteo chose our own review cards + a link to the Google reviews, 15 Nov)
         els.append(wrap(w))
     for s in page_js(src): els[-1]['elements'].append(html_widget(s))
     payload = {"meta": {"_elementor_data": json.dumps(els), "_elementor_edit_mode": "builder", "_elementor_template_type": "wp-page"}, "content": '\n'.join(content)}

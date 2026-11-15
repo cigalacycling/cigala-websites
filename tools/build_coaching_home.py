@@ -175,6 +175,16 @@ No matter where you are in the world, we coach remotely in different countries, 
   </div>
 </section>
 
+<section id="reviews">
+  <div class="in">
+    <div class="head">
+      <div><div class="eyebrow">Our athletes</div><h3 class="h-sec">WHAT OUR ATHLETES SAY</h3><div class="bar"></div></div>
+      <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}>★ Read our reviews on Google →</a><a class="arrow-link" href="{C}/testimonials/" {EXT}>All testimonials →</a></div>
+    </div>
+    {reviews_strip()}
+  </div>
+</section>
+
 <section>
   <div class="in">
     <div class="head"><div><div class="eyebrow">Press &amp; partners</div><h2>AS SEEN IN</h2><div class="bar"></div></div></div>
@@ -197,4 +207,4 @@ No matter where you are in the world, we coach remotely in different countries, 
 </section>'''
 
 
-build('home', '/', MAIN, 'New Coaching homepage in the Cigala Cycling brand. Copy, H1 and H2s are the live ones; links go to the live pages until staging is built.')
+build('home', '/', MAIN, 'New Coaching homepage in the Cigala Cycling brand. Copy, H1 and H2s are the live ones; links go to the live pages until staging is built.', extra_js=REVIEWS_JS)

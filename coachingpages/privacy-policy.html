@@ -312,6 +312,22 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .burger nav a { transition: color .15s; }
 .burger nav a:hover, .burger nav a:active { color: var(--green-text); }
 .burger nav a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
+/* ---- athlete review cards (sideways scroll) ---- */
+.rv-wrap { position: relative; }
+.rv-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, calc((100% - 32px) / 3)); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 14px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.2) transparent; }
+.rv-row:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; border-radius: 12px; }
+.rv { margin: 0; scroll-snap-align: start; display: flex; flex-direction: column; gap: 14px; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; min-width: 0; }
+.rv-tag { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-text); background: var(--green-wash); border-radius: 999px; padding: 4px 10px; }
+.rv blockquote { margin: 0; padding: 0; border: 0; font-style: normal; font-size: 15px; line-height: 1.6; color: var(--text-2); }
+.rv figcaption { font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
+.rv figcaption b { display: block; color: var(--text); }
+.rv figcaption span { color: var(--text-3); font-size: 13px; }
+.rv-nav { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
+.rv-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
+.rv-btn:hover { border-color: var(--green); color: var(--green-text); }
+.rv-links { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
+@media (max-width: 900px) { .rv-row { grid-auto-columns: minmax(260px, 70%); } }
+@media (max-width: 640px) { .rv-row { grid-auto-columns: 86%; } .rv-nav { display: none; } }
 /* ---- footer layout: as cigalacycling.com ---- */
 .fcols { grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)) !important; }
 footer .tag-line { font-size: 22px; line-height: 1.15; margin: 14px 0 0; max-width: 24ch; }

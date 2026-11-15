@@ -211,7 +211,7 @@ MAIN = f'''<div class="hero hero-sm">
   <div class="in">
     <div class="head">
       <div><div class="eyebrow">Our athletes</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2><div class="bar"></div></div>
-      <a class="arrow-link" href="{C}/testimonials/" {EXT}>READ MORE TESTIMONIALS →</a>
+      <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}>★ Read our reviews on Google →</a><a class="arrow-link" href="{C}/testimonials/" {EXT}>READ MORE TESTIMONIALS →</a></div>
     </div>
     <div class="quotes">{quotes}</div>
   </div>

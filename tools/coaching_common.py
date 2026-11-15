@@ -206,6 +206,22 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .burger nav a { transition: color .15s; }
 .burger nav a:hover, .burger nav a:active { color: var(--green-text); }
 .burger nav a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
+/* ---- athlete review cards (sideways scroll) ---- */
+.rv-wrap { position: relative; }
+.rv-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, calc((100% - 32px) / 3)); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 14px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.2) transparent; }
+.rv-row:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; border-radius: 12px; }
+.rv { margin: 0; scroll-snap-align: start; display: flex; flex-direction: column; gap: 14px; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; min-width: 0; }
+.rv-tag { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-text); background: var(--green-wash); border-radius: 999px; padding: 4px 10px; }
+.rv blockquote { margin: 0; padding: 0; border: 0; font-style: normal; font-size: 15px; line-height: 1.6; color: var(--text-2); }
+.rv figcaption { font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
+.rv figcaption b { display: block; color: var(--text); }
+.rv figcaption span { color: var(--text-3); font-size: 13px; }
+.rv-nav { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
+.rv-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
+.rv-btn:hover { border-color: var(--green); color: var(--green-text); }
+.rv-links { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
+@media (max-width: 900px) { .rv-row { grid-auto-columns: minmax(260px, 70%); } }
+@media (max-width: 640px) { .rv-row { grid-auto-columns: 86%; } .rv-nav { display: none; } }
 /* ---- footer layout: as cigalacycling.com ---- */
 .fcols { grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)) !important; }
 footer .tag-line { font-size: 22px; line-height: 1.15; margin: 14px 0 0; max-width: 24ch; }
@@ -239,6 +255,26 @@ document.querySelectorAll('.dd').forEach(function (d) {
 });
 </script>'''
 
+
+# ---------- athlete reviews (Matteo 15 Nov: own review cards instead of the Shapo widget; reviews chosen by Claude) ----------
+# Quotes are the athletes' own words from the live Testimonials page (coaching/text/testimonials.txt); no star ratings,
+# because these are testimonials, not rated reviews. The Google link goes to Matteo's Google Business Profile.
+GOOGLE_REVIEWS = 'https://share.google/lwboSfcuStGhX0c0p'
+REVIEWS = [
+    ('Gran Fondo Worlds qualifier', 'With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.', 'Bernd Ondruch', 'Germany'),
+    ('From couch to Haute Route, and back after heart disease', 'First time was a 9 month training plan to get me from couch (literally!) to Haute Route Pyrenees in 2017 to mark my 60th birthday. More recently, I have worked with Matteo to help me recover from heart disease and a cardiac procedure.', 'Derek Lawler', 'Kilkenny, Ireland'),
+    ('Mallorca 312 in the best shape ever', 'I truly had a tailor-made plan every single week, and as a result, I showed up to the Mallorca 312 in the best shape I’ve ever been in.', 'Ward Den Hollander', 'Dublin, Ireland'),
+    ('PB FTP in 7 weeks', 'After 7 weeks of following his programme, which is mainly working in Z1/2 with bits of Z3, I’ve managed to get a PB FTP of 207W.', 'Lisa Dunne', 'Al Jassra Race Team, Qatar'),
+    ('+40 W FTP, +300 W sprint', 'Matteo managed to raise my FTP from 220w to 260w in less than 4 months & my sprint from 600w ish to 920w.', 'Shane Courtney', 'Tralee Manor West ibike'),
+    ('All-time power PBs, around family and work', 'Matteo Cigala has been an incredible cycling coach, helping me navigate training around my family and work commitments. Thanks to his guidance, I not only reached my targets but also hit all-time personal best power numbers.', 'John Dowley', 'Carrick-on-Suir, Ireland'),
+    ('From A3 to A1 and the Rás', 'I commenced the cycling season in February as an A2 and by March I had gained my first points finishing 2nd in the Lucan GP. Finally last week I achieved one of my goals for the season: I won the Connor Coombes GP.', 'Gerard Dunne', 'Navan Road Club'),
+    ('16 kg lighter, fitter and happier', 'To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.', 'Rob Kavanagh', 'Ireland'),
+]
+def reviews_strip():
+    cards = ''.join(f'<figure class="rv"><div class="rv-tag">{E(t)}</div><blockquote>“{E(q)}”</blockquote><figcaption><b>{E(n)}</b><span>{E(w)}</span></figcaption></figure>' for t, q, n, w in REVIEWS)
+    return (f'<div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Athlete reviews, scroll sideways">{cards}</div>'
+            '<div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Previous reviews">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Next reviews">→</button></div></div>')
+REVIEWS_JS = """<script>(function(){var r=document.getElementById('rv-row');if(!r)return;document.querySelectorAll('.rv-btn').forEach(function(b){b.addEventListener('click',function(){r.scrollBy({left:(+b.dataset.d)*r.clientWidth*0.85,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});});})();</script>"""
 
 LIVE = {r['url']: r for r in json.load(open(ROOT + 'coaching/baseline.json'))}
 ALTS = {}

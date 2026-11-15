@@ -100,3 +100,11 @@ They're probably in the WPCode header (not in the Elementor templates). Not chan
   These are Yoast's own checklist scores, saved when a page is edited in wp-admin. Pushing through the REST API doesn't recalculate them, so they're the scores the live site already had.
 
 - **hreflang fixed on Coaching staging (15 Nov):** Matteo replaced the block in WPCode Header. It's now 5 tags with correct `coaching.cigalacycling.com` URLs, and the stray `<head>`/`</head>` wrapper is gone (checked in the page source). The consent default line isn't in the WPCode Header yet.
+
+## 7. Reviews (Matteo 15 Nov: "do what you suggest")
+
+- No Review/AggregateRating markup on Coaching. Google hasn't shown stars for a business's own reviews on its own site since 2019, so it brings nothing.
+- The Shapo widget (JS-loaded, third-party content, empty in our test) is removed from Individual Packages and won't be used in the rebuilt pages.
+- Our own review cards, as real page text: 8 athlete quotes chosen from the live Testimonials page, in the athletes' own words, with no star ratings. The source is `REVIEWS` in `tools/coaching_common.py`.
+- Every reviews section has a "Read our reviews on Google" link to Matteo's Google Business Profile (https://share.google/lwboSfcuStGhX0c0p).
+- The Testimonials page keeps all its written testimonials as text.
