@@ -77,7 +77,8 @@ def dd(label, items):
     return (f'<div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">{label} <span aria-hidden="true">▾</span></button>'
             f'<div class="dd-menu">{"".join(a(u, t) for u, t in items)}</div></div>')
 def mob(label, items):
-    return f'<div class="mgrp">{label}</div>' + ''.join(a(u, t) for u, t in items)
+    # Matteo 15 Nov: same phone menu as Tours: top-level items, submenus fold open under a green arrow
+    return f'<details class="sub"><summary>{label}</summary><div class="sub-links">' + ''.join(a(u, t) for u, t in items) + '</div></details>'
 
 HEADER = f'''<header class="nav">
   <div class="in">
@@ -97,15 +98,46 @@ HEADER = f'''<header class="nav">
     <details class="burger" id="menu-mobile">
       <summary>Menu</summary>
       <nav aria-label="Main (mobile)">
-        {a(C + '/', 'Home')}{a(C + '/about/', 'About')}
+        {a(C + '/about/', 'About')}
         {mob('Cycling', CYC)}
         {mob('Triathlon', TRI)}
         {mob('Services', SERV)}
-        <div class="mgrp">More</div>{a(C + '/testimonials/', 'Testimonials')}{a(C + '/blog/', 'Blog')}{a(T + '/', 'Bike Tours')}{a(R, 'Shop')}{a(C + '/contact/', 'Contact')}
+        {a(C + '/testimonials/', 'Testimonials')}{a(C + '/blog/', 'Blog')}{a(T + '/', 'Bike Tours')}{a(R, 'Shop')}{a(C + '/contact/', 'Contact')}
       </nav>
     </details>
   </div>
 </header>'''
+
+# ---------- Free Tools band (Matteo 15 Nov: make the tools easy to find on the homepage and packages page) ----------
+FT = [('/tools/training-zones-calculator/', 'Training zones', 'Power and heart-rate zones from your FTP', '<path d="M3 3v18h18"/><path d="M7 15v3M11 11v7M15 8v10M19 5v13"/>'),
+      ('/tools/carbs-per-hour-calculator/', 'Carbs per hour', 'Your fuelling plan in gels and bottles', '<path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/>'),
+      ('/tools/critical-power-calculator/', 'Critical Power &amp; W′', 'CP, W′ and your best power from 2 to 20 min', '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>')]
+def tools_band():
+    cards = ''.join(f'<a class="ft-card" href="{C}{u}" {EXT}><svg viewBox="0 0 24 24" aria-hidden="true">{ic}</svg><span><b>{t}</b><small>{d}</small></span><i aria-hidden="true">→</i></a>' for u, t, d, ic in FT)
+    return f'''<section class="ft">
+  <div class="in">
+    <div class="ft-box">
+      <div class="ft-head"><div class="eyebrow">Train smarter</div><h3 class="h-sec">FREE TRAINING TOOLS</h3><div class="bar"></div>
+        <p>Free calculators from Head Coach Matteo Cigala. Work out your numbers in seconds.</p>
+        <a class="arrow-link" href="{C}/tools/" {EXT}>See all free tools →</a></div>
+      <div class="ft-cards">{cards}</div>
+    </div>
+  </div>
+</section>'''
+FT_CSS = '''<style>
+.ft-box { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 60%), var(--panel-grad), var(--panel); }
+.ft-head p { margin: 14px 0 0; color: var(--text-2); }
+.ft-head .arrow-link { display: inline-block; margin-top: 14px; }
+.ft-cards { display: grid; gap: 10px; }
+.ft-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.03); text-decoration: none; transition: border-color .2s, transform .2s; }
+.ft-card:hover { border-color: rgba(0,154,68,.6); transform: translateX(3px); }
+.ft-card svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ft-card span { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.ft-card b { color: var(--text); font-size: 15px; }
+.ft-card small { color: var(--text-3); font-size: 13px; }
+.ft-card i { font-style: normal; color: var(--green-text); font-weight: 700; }
+@media (max-width: 900px) { .ft-box { grid-template-columns: minmax(0, 1fr); padding: 22px; gap: 20px; } }
+</style>'''
 
 def li(u, t): return f'<li>{a(u, t)}</li>'
 # Footer: same layout as cigalacycling.com (logo + tagline, two link columns, contact), Matteo 15 Nov: "less busy".
@@ -200,7 +232,15 @@ CSS = '''<style>
 .dd:hover .dd-menu, .dd:focus-within .dd-menu, .dd.open .dd-menu { display: grid; }
 .dd-menu a { display: block; padding: 9px 12px; text-transform: none; letter-spacing: 0; font-size: 14px; }
 .burger nav { max-height: calc(100svh - 80px); overflow-y: auto; }
-.burger .mgrp { margin-top: 14px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.burger details.sub { border-bottom: 1px solid var(--border); }   /* same as Tours (tools/build_tours_home.py) */
+.burger details.sub > summary { border: 0; border-radius: 0; background: none; list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 11px 0; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; color: var(--text); }
+.burger details.sub > summary::-webkit-details-marker { display: none; }
+.burger details.sub > summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid var(--green-text); border-bottom: 2px solid var(--green-text); transform: rotate(45deg); margin: -4px 4px 0 0; transition: transform .2s; }
+.burger details.sub[open] > summary::after { transform: rotate(-135deg); margin-top: 4px; }
+.burger details.sub .sub-links { display: grid; padding: 0 0 8px 14px; border-left: 2px solid var(--border); margin: 0 0 6px 2px; }
+.burger details.sub .sub-links a { border-bottom: 0; padding: 9px 0; font-size: 12.5px; color: var(--text-2); }
+.burger details.sub .sub-links a[aria-current="page"] { padding-left: 12px; color: var(--text); }
+.burger details.sub > summary:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 .burger nav a { text-transform: none; font-size: 15px; letter-spacing: 0; }
 .fcols { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) !important; }
 footer .tag-line { font-size: 22px; font-weight: 400; }

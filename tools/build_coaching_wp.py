@@ -102,6 +102,9 @@ html body #cc-consent button, html body #cc-chat { text-transform: none; letter-
 html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current { color: var(--text); box-shadow: inset 0 -2px 0 var(--red); }
 html .cc .dd-menu a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); }
 html .cc .burger nav a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
+html .cc .burger nav a, html .cc .burger details.sub > summary { transition: color .15s; }
+html .cc .burger nav a:hover, html .cc .burger nav a:active, html .cc .burger details.sub > summary:hover { color: var(--green-text); }
+html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
 /* footer links: Elementor's kit link colour (.elementor-kit-6 a) must not win over the green hover */
 .elementor-kit-6 .cc footer a:hover, .elementor-kit-6 .cc .legal a:hover { color: var(--green-text) !important; text-decoration: none !important; }
 .elementor-kit-6 .cc footer a, .elementor-kit-6 .cc .legal a { text-decoration: none; }
@@ -149,7 +152,7 @@ def page_js(page_html):
     scripts = re.findall(r'<script>.*?</script>', page_html, re.S)
     return [s for s in scripts if '.dd' not in s or 'pkg-all' in s or 'g-more' in s or 'rv-row' in s]
 
-CURJS = "<script>(function(){var p=location.pathname;document.querySelectorAll('.cc .nav a[href]').forEach(function(a){var h=a.getAttribute('href');if(h&&h.charAt(0)==='/'&&!a.classList.contains('btn')&&!a.classList.contains('brand')&&h===p){a.setAttribute('aria-current','page');var d=a.closest('.dd');if(d){d.querySelector('.dd-btn').classList.add('is-current');}}});})();</script>"
+CURJS = "<script>(function(){var p=location.pathname;document.querySelectorAll('.cc .nav a[href]').forEach(function(a){var h=a.getAttribute('href');if(h&&h.charAt(0)==='/'&&!a.classList.contains('btn')&&!a.classList.contains('brand')&&h===p){a.setAttribute('aria-current','page');var d=a.closest('.dd');if(d){d.querySelector('.dd-btn').classList.add('is-current');}var sb=a.closest('details.sub');if(sb){sb.querySelector('summary').classList.add('is-current');}}});})();</script>"
 DDJS = "<script>(function(){document.querySelectorAll('.cc .dd').forEach(function(d){var b=d.querySelector('.dd-btn');b.addEventListener('click',function(){var o=d.classList.toggle('open');b.setAttribute('aria-expanded',o);});d.addEventListener('focusout',function(e){if(!d.contains(e.relatedTarget)){d.classList.remove('open');b.setAttribute('aria-expanded','false');}});});})();</script>"
 
 home = SRC['home']

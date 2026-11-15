@@ -244,6 +244,8 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
   </div>
 </section>
 
+{tools_band()}
+
 <section>
   <div class="in">
     <div class="head">
@@ -519,5 +521,5 @@ document.getElementById('g-more').dataset.label = document.getElementById('g-mor
 
 build('individual-packages', PATH, MAIN,
       'New Individual Packages page. Same packages, prices, payment links and copy as live; the page now has its approved H1.',
-      h1='Individual Cycling Coaching Packages', extra_css=PCSS, extra_js=PJS)
+      h1='Individual Cycling Coaching Packages', extra_css=PCSS + FT_CSS, extra_js=PJS)
 print('features:', {k: len(v) for k, v in F.items()}, 'shared:', len(common), 'gallery:', len(gal), 'faq:', len(faq), 'apps:', len(DEV))

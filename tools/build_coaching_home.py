@@ -159,6 +159,8 @@ No matter where you are in the world, we coach remotely in different countries, 
   </div>
 </section>
 
+{tools_band()}
+
 <section>
   <div class="in">
     <div class="head"><div><div class="eyebrow">Press &amp; partners</div><h2>AS SEEN IN</h2><div class="bar"></div></div></div>
@@ -181,5 +183,5 @@ No matter where you are in the world, we coach remotely in different countries, 
 </section>'''
 
 
-build('home', '/', MAIN, 'New Coaching homepage in the Cigala Cycling brand. Copy, H1 and H2s are the live ones; links go to the live pages until staging is built.', extra_js=REVIEWS_JS,
+build('home', '/', MAIN, 'New Coaching homepage in the Cigala Cycling brand. Copy, H1 and H2s are the live ones; links go to the live pages until staging is built.', extra_js=REVIEWS_JS, extra_css=FT_CSS,
       h2_changes={'drop': ['IRELAND']})   # the hidden 'IRELAND' card heading went with the destination grid (Matteo 15 Nov: no tours grid on coaching)
