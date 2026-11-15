@@ -124,7 +124,7 @@ def contact():
                     img('IMG_3999AWDWWWU', 'contact-hero-lake'), 'Cigala Cycling Coaching group riding in Wicklow, Ireland',
                     [('Call +353 404 78107', 'tel:+35340478107'), ('WhatsApp us', WA)], '50% 60%', 'ct-hero')}
 
-{enquiry('Send us a message', 'GET IN TOUCH TODAY', 'Tell us a little about you and your goals. Every field is needed so we can call or email you back.',
+{enquiry('Send us a message', "LET'S TALK ABOUT YOUR GOALS", 'Tell us a little about you and your goals. Every field is needed so we can call or email you back.',
          side, 'New message from the Coaching website (Contact page)', 'Your message *')}
 
 <section>
@@ -762,7 +762,7 @@ def vision():
     MAIN = f'''<div class="hero hero-sm vi-hero">
   <img src="{img('V6A9680-scaled', 'vision-hero-matteo')}" alt="Matteo Cigala in the Cigala Cycling kit looking over a mountain valley" style="object-position:18% 40%">
   <div class="in">
-    <div class="eyebrow eb-pill"><span class="dot"></span>Our coaching vision</div>
+    <div class="eyebrow eb-pill"><span class="dot"></span>Our vision</div>
     <h1>Train Smarter. Ride Faster.</h1>
     <p class="lede">Structured, personalised coaching that makes every hour on the bike count.</p>
     <div class="ctas"><a class="btn btn-go" href="{C}/individual-packages/" {EXT}>View our coaching packages</a><a class="btn btn-ghost" href="{CAL}" {EXT}>Book a free consultation</a></div>
@@ -772,7 +772,7 @@ def vision():
 <section>
   <div class="in split vi-q">
     <div class="gn-txt">
-      <div class="eyebrow">Our vision</div>
+      <div class="eyebrow">Train Smarter. Ride Faster.</div>
       <h2>It's our vision</h2><div class="bar"></div>
       <blockquote class="bf-quote vi-quote"><p>“{E(quote)}”</p><cite>Matteo Cigala – Founder &amp; Head Coach</cite></blockquote>
     </div>
@@ -806,7 +806,7 @@ def vision():
 
 <section>
   <div class="in">
-    <div class="head"><div><div class="eyebrow">Train Smarter. Ride Faster.</div><h2>Time on the bike maximised with structured training periodised to your goals.</h2><div class="bar"></div></div></div>
+    <div class="head"><div><div class="eyebrow">Good value</div><h2>Time on the bike maximised with structured training periodised to your goals.</h2><div class="bar"></div></div></div>
     <p class="vi-value"><b>Good value. No matter what package you choose.</b> The packages start from only 19 euro/week. Yes, you read it right. Less than a coffee a day.</p>
     {pk}
     <div class="ctas sv-center"><a class="btn btn-go" href="{C}/individual-packages/" {EXT}>View our coaching packages</a><a class="btn btn-ghost" href="{C}/tri-individual-packages/" {EXT}>Triathlon packages</a></div>

@@ -327,7 +327,7 @@ def build_country(key):
   </div>
 </section>
 
-{G.contact_block('GET IN TOUCH TODAY', 'Questions about coaching from ' + c["name"] + '? Send us a message and Matteo will get back to you.')}'''
+{G.contact_block('READY TO TAKE YOUR CYCLING TO THE NEXT LEVEL?', 'Questions about coaching from ' + c["name"] + '? Send us a message and Matteo will get back to you.')}'''
     JS = REVIEWS_JS + P.PJS.replace("document.getElementById('g-more').addEventListener", "document.getElementById('g-more') && document.getElementById('g-more').addEventListener") \
         .replace("document.getElementById('g-more').dataset.label = document.getElementById('g-more').textContent;", '')
     build(name, path, MAIN, f'{path} rewritten for {c["name"]}: own copy, real testimonials, prices in {c["code"]}. H1, H2s and lists kept.',

@@ -85,7 +85,7 @@ MAIN = f'''<div class="hero hero-sm">
     <div class="photo rider"><img src="{HERO}" alt="Four Cigala Cycling riders climbing together in team kit" loading="lazy" width="1600" height="1082"></div>
     <div>
       <div class="eyebrow">Group prices</div>
-      <h3 class="h-sec">GET IN TOUCH TODAY</h3>
+      <h3 class="h-sec">READY TO TRAIN TOGETHER?</h3>
       <div class="bar"></div>
       <p class="lede">Tell us about your group or club, how many riders and your goals, and we'll come back to you with the prices.</p>
       <form class="form panel" method="post" action="#" onsubmit="return false">

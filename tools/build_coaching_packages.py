@@ -16,7 +16,11 @@ _c = NUT.CSS
 CAL_CSS = '<style>' + _c[_c.index('.cal-scroll {'):_c.index('.nu-upg-cta {')] + '''
 .pk-cal { margin: 0; display: grid; gap: 10px; }
 .pk-cal .cal-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.pk-note { margin: 0; }
+.pk-notes { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; align-items: start; }
+.pk-notes > .cal-note { scroll-snap-align: start; margin: 0; }
+.pk-nav { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
+.pk-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
+.pk-btn:hover { border-color: var(--green); color: var(--green-text); }
 .pk-note .cal-rm { font-size: 13px; }
 .pk-cal figcaption { color: var(--text-2); font-size: 14px; line-height: 1.55; }
 .pk-cal figcaption a { color: var(--green-text); font-weight: 600; }
@@ -276,7 +280,7 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
 <section>
   <div class="in">
     <div class="head">
-      <div><div class="eyebrow">Our athletes</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2></div>
+      <div><div class="eyebrow">Our athletes</div><h2>READ OUR TESTIMONIALS</h2></div>
       <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Read our reviews on Google →</a><a class="arrow-link" href="{C}/testimonials/" {EXT}>Read more testimonials →</a></div>
     </div>
     <div class="quotes">{quotes}</div>
@@ -312,7 +316,8 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
     <div class="vk-side">
       <figure class="nu-cal pk-cal">
         <div class="cal-scroll" tabindex="0" aria-label="Example days from an athlete's calendar, with nutrition"><div class="cal-row">{NUT.cal_days(('21', '24', '26'))}</div></div>
-        <div class="cal-note pk-note"><div class="cal-nh"><span>Note</span><b>Nutrition</b><em>Breakfast · sample</em></div><p class="cal-rt">{E(NUT.BREAKFAST[0])}</p><p class="cal-rm">{E(NUT.BREAKFAST[1])}</p><p class="cal-rmac">{E(NUT.BREAKFAST[2])}</p><p class="cal-rm">{E(', '.join(x if i == 0 else x[0].lower() + x[1:] for i, x in enumerate(NUT.BREAKFAST[3])))}</p></div>
+        <div class="pk-notes-wrap"><div class="pk-notes" id="pk-notes" tabindex="0" aria-label="Sample notes from Marine, scroll sideways">{NUT.notes}</div>
+          <div class="pk-nav"><button type="button" class="pk-btn" data-d="-1" data-t="pk-notes" aria-label="Previous note">←</button><button type="button" class="pk-btn" data-d="1" data-t="pk-notes" aria-label="Next note">→</button></div></div>
         <figcaption>Working 1-to-1 with our sports nutritionist, Marine Lenehan? Her nutrition notes, daily macros and carbs per hour sit in the same calendar as your sessions. <a href="{C}/nutrition/#upgrade" {EXT}>Read more about nutrition coaching →</a></figcaption>
       </figure>
       <div class="vk-logos">
@@ -359,7 +364,7 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
     <div class="photo rider"><img src="{COACHPIC}" alt="{E(live_alt('imgi_16_g675BzCnYW'))}" loading="lazy" width="1440" height="1081"></div>
     <div>
       <div class="eyebrow">Check availability</div>
-      <h3 class="h-sec">GET IN TOUCH TODAY</h3>
+      <h3 class="h-sec">READY TO TAKE YOUR CYCLING TO THE NEXT LEVEL?</h3>
       <div class="bar"></div>
       <p class="lede">{E(intro[2])}</p>
       <form class="form panel" method="post" action="#" onsubmit="return false">
@@ -574,6 +579,7 @@ document.querySelectorAll('.pkg-all').forEach(function (b) {   // one click open
     if (!('IntersectionObserver' in window)) { g.classList.add('on'); return; }
     new IntersectionObserver(function (es, ob) { if (es[0].isIntersecting) { g.classList.add('on'); ob.disconnect(); } }, { threshold: 0.4 }).observe(g);
   });
+  document.querySelectorAll('.pk-btn').forEach(function (b) { b.addEventListener('click', function () { var r = document.getElementById(b.dataset.t); r.scrollBy({ left: (+b.dataset.d) * r.clientWidth, behavior: 'smooth' }); }); });
   var els = document.querySelectorAll('[data-count]');
   if (!els.length || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   els.forEach(function (el) {
@@ -595,5 +601,6 @@ build('individual-packages', PATH, MAIN,
       'New Individual Packages page. Same packages, prices, payment links and copy as live; the page now has its approved H1.',
       h1='Individual Cycling Coaching Packages', extra_css=PCSS + FT_CSS + CS_CSS + CAL_CSS, extra_js=PJS,
       # Matteo 15 Nov: the devices heading was too long
-      h2_changes={'drop': ['FOLLOW YOUR STRUCTURED TRAINING SESSIONS ON YOUR FAVOURITE DEVICES & APPS (BELOW SOME APPS - THE LIST IS MUCH LONGER)'], 'add': ['SYNC WITH YOUR FAVOURITE DEVICES & APPS']})
+      h2_changes={'drop': ['FOLLOW YOUR STRUCTURED TRAINING SESSIONS ON YOUR FAVOURITE DEVICES & APPS (BELOW SOME APPS - THE LIST IS MUCH LONGER)', 'READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING'],
+                  'add': ['SYNC WITH YOUR FAVOURITE DEVICES & APPS', 'READ OUR TESTIMONIALS']})   # Matteo 15 Nov: just "Read our testimonials"
 print('features:', {k: len(v) for k, v in F.items()}, 'shared:', len(common), 'gallery:', len(gal), 'faq:', len(faq), 'apps:', len(DEV))

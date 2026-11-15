@@ -159,7 +159,8 @@ def section(h2, items, n):
     return f'<section>\n  <div class="in gn-txt gn-solo">{head}{bar}{text}</div>\n</section>'
 
 CONTACT_PHOTO = ('imgi_16_g675BzCnYW', 'matteo-coaching')
-def contact_block(title='GET IN TOUCH TODAY', lede='Send us a message and we will get back to you.'):
+def contact_block(title='READY TO TAKE YOUR CYCLING TO THE NEXT LEVEL?',   # Matteo 15 Nov: 'get in touch today' was too business-like
+                   lede='Send us a message and we will get back to you.'):
     return f'''<section id="contact">
   <div class="in split">
     <div class="photo rider"><img src="{img(CONTACT_PHOTO[0], CONTACT_PHOTO[1])}" alt="{E(live_alt(CONTACT_PHOTO[0]))}" loading="lazy" width="1440" height="1081"></div>

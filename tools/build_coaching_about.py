@@ -76,7 +76,8 @@ def season(y, items):
     return (f'<article class="ab-season panel"><div class="ab-season-img"><img src="{img(k, n)}" alt="{E(live_alt(k))}" loading="lazy" style="object-position:{pos}"></div>'
             f'<div class="ab-season-tx"><div class="ab-year">{y}</div><p class="ab-sh">Season Highlights</p><ul class="ab-list">{lis}</ul></div></article>')
 
-FACTS = [('flag', '28 years', 'of cycling experience'), ('users', 'Over a decade', 'of coaching'), ('trophy', 'Hundreds', 'of race victories'),
+QUALS = ['UCI &amp; Cycling Ireland Level 1 Coach', 'TrainingPeaks Level 2 Coach']   # Matteo 15 Nov
+FACTS = [('flag', '28 years', 'of cycling experience'), ('users', 'Over a decade', 'of coaching'), ('trophy', '200+', 'race victories'),
          ('grad', 'BA &amp; Diploma', 'Business Management Degree, Diploma in Science and Sports')]
 PREM_IC = ['bike', 'globe', 'users', 'target', 'chart', 'chat', 'trophy', 'heart']
 WHO_IC = ['user', 'bike', 'flag', 'star', 'map', 'tri', 'users', 'power']
@@ -87,6 +88,13 @@ def link_md(s):   # the live [text](url) links, pointed at the coaching site's o
            'http://www.cigalacycling.com/group-club-packages': f'{C}/group-club-packages/', 'http://retail.cigalacycling.com/': 'https://retail.cigalacycling.com/'}
     return re.sub(r'\[([^\]]+)\]\(([^)]+)\)', lambda m: f'<a href="{fix.get(m.group(2), m.group(2))}" {EXT}>{E(m.group(1).strip())}</a>' + (' ' if m.group(1)[-1:].isspace() else ''), E(s).replace('&amp;', '&')).replace('&', '&amp;').replace('&amp;amp;', '&amp;')
 
+_pk = open(ROOT + 'coaching/text/individual-packages.txt').read()   # the same numbers as Individual Packages (Matteo 15 Nov)
+NUMS = re.findall(r'H3: (.+)\nH4: (.+)', _pk[_pk.index('H2: 2026 IN NUMBERS'):].split('\nH2:', 1)[0])
+assert len(NUMS) == 6, NUMS
+TILES = [(f'{C}/individual-packages/', 'imgi_20_Fqav', 'about-coaching-pro-cyclist', 'bike', 'CYCLING COACHING', 'Coaching is our CORE: road, gravel, MTB and gran fondos, for every level.', 'Cycling packages'),
+         (f'{C}/tri-individual-packages/', 'imgi_22_lABW', 'about-coaching-an-athlete', 'tri', 'TRIATHLON COACHING', 'Swim, bike and run, planned together around your races.', 'Triathlon packages'),
+         ('https://tours.cigalacycling.com/', 'imgi_21_Lu1w', 'about-tours-tre-cime', 'map', 'BIKE TOURS', 'Memorable Adventures. New Friends. Shared Passion. Lifetime Experience.', 'tours.cigalacycling.com'),
+         ('https://retail.cigalacycling.com/', 'imgi_18_BPZw', 'about-european-champion-medal', 'cart', 'RETAIL', 'Ireland’s #1 Online Shop for all cycling needs', 'retail.cigalacycling.com')]
 bt = after('H3: BIKE TOURS')
 tours_txt = ' '.join(l for l in bt if not l.startswith('<img'))
 dest = re.findall(r'^(Italy|Spain|France|Portugal): (.+)$', tours_txt.replace(' Italy:', '\nItaly:').replace(' Spain:', '\nSpain:').replace(' France:', '\nFrance:').replace(' Portugal:', '\nPortugal:').replace(' P: ', '\nP: '), re.M)
@@ -99,9 +107,10 @@ MAIN = f'''<div class="ab-hero">
       <div class="eyebrow eb-pill"><span class="dot"></span>{E(intro[0])}</div>
       <h1>MATTEO CIGALA</h1>
       <ul class="ab-titles">{''.join(f'<li>{ic(I["medal"])}<span>{E(t)}</span></li>' for t in titles)}</ul>
+      <ul class="ab-quals">{''.join(f'<li>{ic(I["grad"])}<span>{q}</span></li>' for q in QUALS)}</ul>
       <div class="ctas"><a class="btn btn-go" href="{C}/individual-packages/" {EXT}>Train with Matteo</a><a class="btn btn-ghost" href="#story">Matteo’s story ↓</a></div>
     </div>
-    <div class="ab-hero-img"><img src="{img('IMG_5948-1', 'about-hero-matteo')}" alt="{E(live_alt('IMG_5948-1'))}" width="1108" height="1319"></div>
+    <div class="ab-hero-img ab-cut"><img src="{conv('coaching/brand/matteo-cigala-author-signature.webp', 'about-hero-matteo-signature')}" alt="{E(live_alt('IMG_5948-1'))}" width="720" height="943"></div>
   </div>
 </div>
 
@@ -174,10 +183,10 @@ MAIN = f'''<div class="ab-hero">
       <div class="panel ab-col ab-sci">
         <h3 class="h-sm">Science-Backed Performance Coaching</h3>
         <p>{E(coach3[0])}</p>
-        <ul class="ab-tags">{''.join(f'<li>{E(x)}</li>' for x in bul(coach3[1:]))}</ul>
+        {chips(bul(coach3[1:]), 'chart')}
       </div>
     </div>
-    {img_k('imgi_22_lABW', 'about-coaching-an-athlete', '50% 40%', 'photo sv-photo ab-wide')}
+    <div class="ab-pics">{img_k('imgi_22_lABW', 'about-coaching-an-athlete', '50% 40%')}{img_k('imgi_20_Fqav', 'about-coaching-pro-cyclist', '50% 30%')}</div>
   </div>
 </section>
 
@@ -193,47 +202,21 @@ MAIN = f'''<div class="ab-hero">
   <div class="in">
     {head('Real results', 'READ OUR CASE STUDIES', more=f'<div class="rv-links"><a class="btn btn-go" href="{C}/case-studies/" {EXT}>Read our case studies</a></div>')}
     {case_cards(C + '/case-studies/')}
+    <div class="ab-rv">
+      <div class="ab-rv-h"><p class="ab-lab">What our athletes say</p><div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Read our reviews on Google →</a><a class="arrow-link" href="{C}/testimonials/" {EXT}>All testimonials →</a></div></div>
+      {reviews_strip()}
+    </div>
+    <div class="ab-nums">
+      <div class="head"><div><div class="eyebrow">Results</div><h3 class="h-sec">2026 IN NUMBERS</h3><div class="bar"></div></div></div>
+      <div class="stats nums">{''.join(f'<div class="stat"><h3 class="n" data-count="{E(n)}">{E(n)}</h3><h4 class="l">{E(l)}</h4></div>' for n, l in NUMS)}</div>
+    </div>
   </div>
 </section>
 
 <section>
   <div class="in">
     {head('#TrainSmarterRideFaster', 'CIGALA CYCLING')}
-    <div class="ab-brands">
-      <article class="panel ab-brand">
-        {img_k('imgi_20_Fqav', 'about-coaching-pro-cyclist', '50% 30%')}
-        <div class="ab-brand-tx">
-          <h3 class="h-sm">COACHING</h3>
-          {''.join(f'<p>{link_md(p)}</p>' for p in coaching_p if p)}
-        </div>
-      </article>
-      <article class="panel ab-brand">
-        {img_k('imgi_21_Lu1w', 'about-tours-tre-cime', '50% 60%')}
-        <div class="ab-brand-tx">
-          <h3 class="h-sm">BIKE TOURS</h3>
-          <p><a href="https://tours.cigalacycling.com/" {EXT}>tours.cigalacycling.com</a></p>
-          <p class="ab-big">{E(paras(bt)[1])}</p>
-          <p>{E(paras(bt)[2].split(chr(10))[0].replace('we provides', 'we provide'))}</p>
-          <ul class="ab-dest">{''.join(f'<li><b>{c}</b><span>{E(d)}</span></li>' for c, d in dest)}</ul>
-          <p>{E(paras(bt)[-1])}</p>
-        </div>
-      </article>
-      <article class="panel ab-brand">
-        <div class="ab-brand-ic">{ic(I['cart'])}</div>
-        <div class="ab-brand-tx">
-          <h3 class="h-sm">RETAIL</h3>
-          <p><a href="https://retail.cigalacycling.com/" {EXT}>retail.cigalacycling.com</a></p>
-          <p class="ab-big">{E(rt[1])}</p>
-          {''.join(f'<p>{E(p)}</p>' for p in rt[2:])}
-        </div>
-      </article>
-    </div>
-    <ul class="ab-tiles">
-      <li><a href="{C}/individual-packages/" {EXT}>{ic(I['bike'])}<h3 class="h-sm">CYCLING COACHING</h3><span>→</span></a></li>
-      <li><a href="{C}/tri-individual-packages/" {EXT}>{ic(I['tri'])}<h3 class="h-sm">TRIATHLON COACHING</h3><span>→</span></a></li>
-      <li><a href="https://tours.cigalacycling.com/" {EXT}>{ic(I['map'])}<h3 class="h-sm">BIKE TOURS</h3><span>→</span></a></li>
-      <li><a href="https://retail.cigalacycling.com/" {EXT}>{ic(I['cart'])}<h3 class="h-sm">RETAIL</h3><span>→</span></a></li>
-    </ul>
+    <ul class="ab-tiles">{''.join(f'<li><a href="{u}" {EXT}><span class="ab-tile-ic">{ic(I[i])}</span><h3 class="h-sm">{t}</h3><p>{d}</p><em>{l} →</em></a></li>' for u, k, n, i, t, d, l in TILES)}</ul>
   </div>
 </section>'''
 
@@ -331,9 +314,28 @@ CSS = '''<style>
 .ab-tiles span { color: var(--green-text); font-weight: 700; }
 @media (max-width: 900px) { .ab-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .ab-tiles { grid-template-columns: 1fr; } }
+.ab-cut { background: none !important; box-shadow: none !important; aspect-ratio: auto !important; overflow: visible !important; }
+.ab-cut img { height: auto !important; object-fit: contain !important; filter: drop-shadow(0 30px 60px rgba(0,0,0,.5)); }
+.ab-quals { list-style: none; margin: -10px 0 26px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.ab-quals li { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; border: 1px solid rgba(0,154,68,.5); background: rgba(0,154,68,.1); font-size: 13px; font-weight: 600; color: var(--text); }
+.ab-quals .sv-ic { width: 18px; height: 18px; stroke: var(--green-text); }
+.ab-rv { margin-top: 36px; }
+.ab-nums { margin-top: 48px; }
+.ab-rv-h { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 20px; margin-bottom: 14px; }
+.ab-rv-h .ab-lab { margin: 0 !important; }
+.ab-tiles a { flex-direction: column; align-items: flex-start !important; padding: 0 !important; overflow: hidden; height: 100%; }
+.ab-tile-ic { display: grid; place-items: center; width: 100%; aspect-ratio: 16 / 8; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.28), transparent 62%), #0f1011; border-bottom: 1px solid var(--border); }
+.ab-tiles .ab-tile-ic .sv-ic { width: 64px !important; height: 64px !important; padding: 0 !important; background: none !important; stroke-width: 1.3; transition: transform .3s; }
+.ab-tiles a:hover .ab-tile-ic .sv-ic { transform: scale(1.12); }
+.ab-pics { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+.ab-pics .photo { aspect-ratio: 16 / 10; margin: 0; }
+@media (max-width: 600px) { .ab-pics { grid-template-columns: 1fr; } }
+.ab-tiles a h3 { margin: 12px 18px 4px !important; flex: none !important; }
+.ab-tiles a p { margin: 0 18px; font-size: 14px; color: var(--text-2); }
+.ab-tiles a em { margin: auto 18px 18px; padding-top: 12px; font-style: normal; font-size: 13.5px; font-weight: 600; color: var(--green-text); }
 </style>'''
 
 if __name__ == '__main__':
     build('about', '/about/', MAIN, 'About redesigned: split hero, facts, the story as a timeline with season cards, coaching lists as icons, case studies, the three brands.',
           h1='MATTEO CIGALA', h2_changes={'drop': ['READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING'], 'add': ['READ OUR CASE STUDIES']},
-          extra_css=G.GCSS + CS_CSS + S.CSS + CSS)
+          extra_css=G.GCSS + CS_CSS + S.CSS + CSS, extra_js=REVIEWS_JS + G.NUMS_JS)

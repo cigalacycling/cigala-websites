@@ -288,3 +288,12 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   homepage stats strip 24px lower; Italia "2026 IN NUMERI" uses the coloured, counting boxes; packages note reworded to
   "a limited number of athletes" (Matteo, replaces "get in touch before signing up") and a sample note from Marine
   under the Vekta calendar.
+- About round 2 (Matteo): hero = the transparent cut-out with signature (keeps the live alt), qualification badges
+  (UCI & Cycling Ireland Level 1, TrainingPeaks Level 2), "200+ race victories", science list in the same chip style,
+  reviews strip and the coloured 2026 numbers under the case studies; the long COACHING / BIKE TOURS / RETAIL cards
+  replaced by four short icon tiles with links (Matteo: too much text, repeated the tiles). The Tre Cime tour photo
+  (live alt "Cyclists at Tre Cime peaks") is no longer on /about/; its copy is on the Tours site.
+- Individual Packages H2 "READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING" -> "READ OUR TESTIMONIALS" (Matteo).
+- Contact headings (H3, not H2): "GET IN TOUCH TODAY" -> "READY TO TAKE YOUR CYCLING TO THE NEXT LEVEL?" (triathlon /
+  group / contact page variants). Vision: hero eyebrow "Our vision", the quote section eyebrow "Train Smarter. Ride Faster."
+  above the live H2 "It's our vision". Marine's three sample notes in a slider under the Vekta calendar.

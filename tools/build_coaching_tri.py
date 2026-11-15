@@ -189,7 +189,7 @@ MAIN = f'''<div class="hero hero-sm">
     <div class="photo rider"><img src="{HERO}" alt="Triathlete standing by a lake at sunrise" loading="lazy" width="1600" height="1200"></div>
     <div>
       <div class="eyebrow">Check availability</div>
-      <h3 class="h-sec">GET IN TOUCH TODAY</h3>
+      <h3 class="h-sec">READY TO TAKE YOUR TRIATHLON TO THE NEXT LEVEL?</h3>
       <div class="bar"></div>
       <p class="lede">{E(intro[4])}</p>
       <form class="form panel" method="post" action="#" onsubmit="return false">
