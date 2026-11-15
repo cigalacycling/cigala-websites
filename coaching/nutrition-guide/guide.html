@@ -584,9 +584,9 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
   </div>
   <h3>Race day timeline</h3><div class="bar"></div>
   <div class="row"><div class="lab">Before the start</div><div class="bd"><ul class="dots"><li>A carbohydrate-rich meal <b>1.5–3 hours</b> before (porridge, pasta, rice), and an easily digestible snack 30–60 minutes before if needed.</li></ul></div></div>
-  <div class="row"><div class="lab">On the bike</div><div class="bd"><ul class="dots"><li>Carbohydrates per hour to match the race length: see “During training” in section 01 (30–60 g for 1–2.5 hours, 60–90 g for 2.5–4 hours).</li><li>For races of 100 km or more, aim to finish <b>three bottles</b>.</li></ul></div></div>
+  <div class="row"><div class="lab">On the bike</div><div class="bd"><ul class="dots"><li>Carbohydrates per hour to match the race length: see “During training” in section 01 (30–60 g for 1–2.5 hours, 60–90 g for 2.5–4 hours).</li></ul></div></div>
   <div class="row"><div class="lab">Finish line</div><div class="bd"><ul class="dots"><li>10–15 minutes of easy spinning, then a recovery drink and a snack straight away.</li><li>Shower, legs up and rest for an hour before dinner, so blood goes to recovery, not digestion.</li></ul></div></div>
-  <div class="row"><div class="lab">Dinner &amp; night</div><div class="bd"><ul class="dots"><li>Plenty of carbohydrates to fill the tank for tomorrow, protein, fruit and vegetables.</li><li>In stage races, skip red meat at dinner: it is slow to digest. Sleep <b>7–8 hours</b>.</li></ul></div></div>
+  <div class="row"><div class="lab">Dinner &amp; night</div><div class="bd"><ul class="dots"><li>Plenty of carbohydrates to fill the tank for tomorrow, protein, fruit and vegetables.</li><li>In stage races, skip red meat at dinner: it is slow to digest. Sleep <b>7+ hours</b>.</li></ul></div></div>
   <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">13</span></div>
 </section>
 
@@ -675,7 +675,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
   <p class="note" style="margin-top:12px">Fill your plate according to the demands of your day: more fruit and vegetables when training is light, and more grains as training volume and intensity increase.</p>
   <h3>How much energy?</h3><div class="bar"></div>
   <div class="g2" style="align-items:stretch">
-    <div class="tile wide" style="display:flex;flex-direction:column;justify-content:center"><div class="v">2,500 – 10,000</div><div class="u">kcal per day</div><div class="l">Depending on training load</div></div>
+    <div class="tile wide" style="display:flex;flex-direction:column;justify-content:center"><div class="v">1,800 – 4,500</div><div class="u">kcal per day</div><div class="l">Depending on training load</div></div>
     <div class="panel"><p>You can’t drive a van across the country with an empty tank. Your needs depend on your <b>training load, gender, fitness level and body composition</b>.</p><p style="margin:0">Put extra carbs before high-intensity sessions (Zone 4 or higher), long rides of 3+ hours and race days. Protein belongs in every meal.</p></div>
   </div>
   <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">16</span></div>
@@ -690,7 +690,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <h2>Personalised nutrition plan</h2>
     <div class="bar"></div>
   </div>
-  <div class="mphoto"><img src="assets/marine-lenehan-european-champion.jpg" alt="Marine Lenehan biting her European champion gold medal" style="object-position:50% 22%"><span class="pill"><i></i>Marine Lenehan · Sports Nutritionist &amp; European Champion</span></div>
+  <div class="mphoto"><img src="assets/marine-lenehan-riding.jpg" alt="Marine Lenehan riding her road bike on a country lane" style="object-position:50% 30%"><span class="pill"><i></i>Marine Lenehan · Sports Nutritionist &amp; World Tour Cyclist</span></div>
   <p class="lead">This guide provides general nutrition advice. For a more individualised approach, <b>Vivify Sports</b> offers personalised nutrition support tailored to your goals, lifestyle and training demands. Through an assessment of your dietary habits, nutritional intake and individual needs, we help you develop sustainable strategies to improve your health, performance and relationship with food.</p>
   <div class="consult" style="margin-top:14px">
     <div class="l">
@@ -773,17 +773,36 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 // plate pies: data-pie = fruit&veg, grains, protein (percent), drawn clockwise from 12 o'clock
 document.querySelectorAll('.tiles.scale .tile').forEach(t=>{const l=+t.dataset.l,m=document.createElement('div');m.className='m';m.innerHTML=[1,2,3,4,5].map(i=>`<i class="${i<=l?'on':''}"></i>`).join('');t.appendChild(m)});
 document.querySelectorAll('svg[data-pie]').forEach(svg=>{
-  const v=svg.dataset.pie.split(',').map(Number), cols=['#34c46a','#f28c38','#e8606a'], labs=['Fruit & veg.','Grains','Protein'], txt=['#08090a','#08090a','#08090a'];
+  const v=svg.dataset.pie.split(',').map(Number), cols=['#34c46a','#f28c38','#e8606a'], labs=[['Fruit &','veg.'],['Grains'],['Protein']], txt=['#08090a','#08090a','#08090a'];
   let a=0, out='';
   const pt=(ang,r)=>[50+r*Math.sin(ang*2*Math.PI/100),50-r*Math.cos(ang*2*Math.PI/100)];
   v.forEach((p,i)=>{
     const [x1,y1]=pt(a,46),[x2,y2]=pt(a+p,46);
     out+=`<path d="M50 50L${x1.toFixed(2)} ${y1.toFixed(2)}A46 46 0 ${p>50?1:0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}Z" fill="${cols[i]}" stroke="#08090a" stroke-width="1.5"/>`;
-    const [lx,ly]=pt(a+p/2,27);
-    out+=`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat" font-weight="700" font-size="6.2" fill="${txt[i]}">${labs[i]}</text>`;
     a+=p;
   });
   svg.innerHTML=out;
+  // labels: try positions from the slice centre outwards; keep the first whose box sits fully inside the slice
+  a=0;
+  v.forEach((p,i)=>{
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('text-anchor','middle');t.setAttribute('font-family','Montserrat');t.setAttribute('font-weight','700');t.setAttribute('font-size','6');t.setAttribute('fill',txt[i]);
+    labs[i].forEach((ln,k)=>{const s=document.createElementNS('http://www.w3.org/2000/svg','tspan');s.setAttribute('x','0');s.setAttribute('dy',k?'7':'0');s.textContent=ln;t.appendChild(s)});
+    svg.appendChild(t);
+    const inside=(x,y)=>{const dx=x-50,dy=y-50,r=Math.hypot(dx,dy);let ang=Math.atan2(dx,-dy)/(2*Math.PI)*100;if(ang<0)ang+=100;return r<42&&ang>a+2&&ang<a+p-2;};
+    let best=null;
+    for(let r=26;r>=12&&!best;r-=1){for(let d=0;d<=p/2-3&&!best;d+=1){for(const sg of [1,-1]){
+      const [x,y]=pt(a+p/2+sg*d,r);
+      t.setAttribute('transform',`translate(${x.toFixed(2)},${y.toFixed(2)})`);t.querySelectorAll('tspan').forEach(s=>s.setAttribute('x','0'));
+      const b=t.getBBox();const ox=x,oy=y;const cy=b.height/2;
+      t.setAttribute('transform',`translate(${ox.toFixed(2)},${(oy-cy-b.y+ (0)).toFixed(2)})`);
+      const bb=t.getBBox(),m=t.getAttribute('transform').match(/translate\(([-\d.]+),([-\d.]+)\)/),tx=+m[1],ty=+m[2];
+      const c=[[bb.x+tx-1,bb.y+ty-1],[bb.x+bb.width+tx+1,bb.y+ty-1],[bb.x+tx-1,bb.y+bb.height+ty+1],[bb.x+bb.width+tx+1,bb.y+bb.height+ty+1]];
+      if(c.every(q=>inside(q[0],q[1]))){best=true;break;}
+    }}}
+    if(!best) console.log('pie label does not fit',labs[i].join(' '));
+    a+=p;
+  });
 });
 </script>
 </body>
