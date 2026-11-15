@@ -29,7 +29,7 @@ IMG = {
     'img/home-story.jpg': 'story', 'img/home-matteo.png': 'matteo', 'img/logo.png': 'logo-v2',
     'img/cigala-tours-signature.webp': 'signature',
     'img/guides-0.jpg': 'guide-flanders', 'img/guides-1.jpg': 'guide-como', 'img/guides-2.jpg': 'guide-pack',
-    'img/logo-mdd.png': 'logo-mdd', 'img/logo-lombardia.png': 'logo-lombardia', 'img/logo-strade.png': 'logo-strade', 'img/logo-algarve.png': 'logo-algarve',
+    'img/logo-mdd.png': 'logo-mdd', 'img/logo-lombardia.png': 'logo-lombardia-v2', 'img/logo-strade.png': 'logo-strade-v2', 'img/logo-algarve.png': 'logo-algarve-v2',
 }
 def fix_img(m):
     tag = m.group(0)
@@ -106,6 +106,9 @@ html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current { color: var(
 html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current, html .cc .dd .dd-btn { border-radius: 0; }
 html .cc .dd-btn.is-current, html .cc .dd:hover .dd-btn.is-current { background: none; }
 html .cc .dd-btn { display: inline-flex; align-items: center; gap: 4px; line-height: inherit; font-size: 12.5px; }
+/* Algarve Granfondo wordmark: wide tile on its own dark background */
+html .logos span:has(img[src*="logo-algarve-v2"]) { width: auto; height: 96px; padding: 0; overflow: hidden; background: #3b1a0c; }
+html .logos span:has(img[src*="logo-algarve-v2"]) img { height: 96px; max-height: none; width: auto; }
 /* menu: same as cigalacycling.com (brand.css 58-69) */
 html .cc .menu a, html .cc .dd-btn { border-radius: 0; background: none; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
 html .cc .menu a:hover, html .cc .menu a:active, html .cc .dd-btn:hover, html .cc .dd:focus-within .dd-btn, html .cc .dd.open .dd-btn { color: var(--green-text); background: none; box-shadow: inset 0 -2px 0 var(--green); }

@@ -713,5 +713,44 @@
    2400,
    1600
   ]
+ },
+ "logo-algarve-v2": {
+  "id": 9324,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-logo-algarve-v2.webp",
+  "alt": "Yellow circle logo with Algarve Granfondo text. - Cigala Cycling Tours",
+  "from": [
+   1710,
+   640
+  ],
+  "size": [
+   800,
+   299
+  ]
+ },
+ "logo-strade-v2": {
+  "id": 9325,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-logo-strade-v2.webp",
+  "alt": "Red shield logo for Strade Bianche Gran Fondo. - Cigala Cycling Tours",
+  "from": [
+   976,
+   1016
+  ],
+  "size": [
+   400,
+   416
+  ]
+ },
+ "logo-lombardia-v2": {
+  "id": 9326,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-logo-lombardia-v2.webp",
+  "alt": "Green floral logo for Gran Fondo Il Lombardia cycling - Cigala Cycling Tours",
+  "from": [
+   875,
+   768
+  ],
+  "size": [
+   400,
+   351
+  ]
  }
 }
