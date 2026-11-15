@@ -18,7 +18,7 @@ OUT = ROOT + 'stg-coaching/out/'
 os.makedirs(OUT, exist_ok=True)
 C = 'https://coaching.cigalacycling.com'
 M = json.load(open(ROOT + 'stg-coaching/media-webp.json'))
-PAGES = {'home': 2924, 'individual-packages': 3338, 'terms-conditions': 564, 'privacy-policy': 'privacy'}   # 'privacy' = new page, created by the push
+PAGES = {'home': 2924, 'individual-packages': 3338, 'tri-individual-packages': 3795, 'group-club-packages': 3738, 'terms-conditions': 564, 'privacy-policy': 'privacy'}   # 'privacy' = new page, created by the push
 SRC = {k: open(ROOT + f'coachingpages/{k}.html').read() for k in PAGES}
 
 rid = lambda: ''.join(random.choice('0123456789abcdef') for _ in range(7))
@@ -176,7 +176,7 @@ def build_page(key):
     for b in blocks_of(src):
         b = fix(b)
         content.append('<div class="cc cc-page">' + b + '</div>')
-        if key == 'individual-packages' and 'id="contact"' in b:
+        if 'id="contact"' in b:   # any page with the contact section gets the live Elementor form
             # live Elementor form (sends to info@cigalacycling.com) instead of the preview's static form
             form = live_widget(3338, 'form')
             form['settings']['_css_classes'] = 'cc-form'
