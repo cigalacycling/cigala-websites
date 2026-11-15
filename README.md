@@ -3,7 +3,7 @@
 This repository holds the redesign of the Cigala Cycling sites in the Cigala Cycling brand:
 
 1. cigalacycling.com: built on staging, waiting to go live
-2. tours.cigalacycling.com: designs done, WordPress build next
+2. tours.cigalacycling.com: designs done, fresh SEO baseline taken 15 Nov; waiting for Matteo to create the Hostinger staging copy
 3. coaching.cigalacycling.com: not started
 4. retail.cigalacycling.com: runs on Shopify, not started
 
@@ -55,6 +55,7 @@ The repository keeps the original working layout so the build scripts run unchan
 | `survey/NfmCmGsjq4LL9bTAi38NXN/` | Tours homepage design |
 | `trip/` | Tours trip-page design (Dolomites: 323 km, 8,800 m) |
 | `tours/baseline.json` | SEO crawl of the live Tours site before the redesign |
+| `tours/baseline-2026-11-15.json`, `tours/sitemap-urls-2026-11-15.txt` | Fresh live Tours crawl taken before the staging build (121 URLs, 90 from the sitemaps). Identical to `tours/baseline.json`. Re-run: `python3 -I tools/crawl.py tours.cigalacycling.com $(cat tours/sitemap-urls-2026-11-15.txt)` |
 | `cards/` | Tour cards (web, high-quality and story versions) |
 | `cp/`, `cand/`, `live/` | Source photos taken from the coaching and live sites |
 | `tools/*.js` | Playwright checks: images, newsletter, pixel, consent order, iPhone zoom, screenshots |
