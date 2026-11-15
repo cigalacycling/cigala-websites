@@ -44,7 +44,7 @@ def items(els, out=None, depth=0):
     """[(kind, value, settings)]: h1..h6, text (html), img (media id or url), bg (container background), btn (text, url)."""
     out = [] if out is None else out
     for e in els:
-        s = e.get('settings', {}); w = e.get('widgetType')
+        s = e.get('settings') or {}; s = s if isinstance(s, dict) else {}; w = e.get('widgetType')
         if w == 'heading': out.append((s.get('header_size', 'h2'), s.get('title', '').strip(), s))
         elif w == 'text-editor': out.append(('text', clean(s.get('editor', '')), s))
         elif w == 'image': out.append(('img', s.get('image', {}).get('id') or s.get('image', {}).get('url'), s))
@@ -55,7 +55,9 @@ def items(els, out=None, depth=0):
             out.append(('open', depth, s))
             items(e.get('elements', []), out, depth + 1)
             out.append(('close', depth, s))
-        elif w: out.append((w, None, s))
+        elif w:
+            out.append((w, None, s))
+            if e.get('elements'): items(e['elements'], out, depth + 1)   # e.g. nested carousels hold containers
     return out
 
 def text_of(h): return re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', h))).strip()
@@ -188,6 +190,118 @@ def contact():
 </section>'''
     return {'id': 461, 'slug': 'contact', 'main': main, 'css': PAGE_CSS, 'crumb': 'Contact', 'form': True}
 
+
+# ===================== Destinations hub (10) =====================
+def home_block(word):
+    """A block of the new homepage (already pushed with staging image URLs), e.g. the review cards."""
+    els = json.loads(json.load(open(ROOT + 'stg-tours/out/page-5212.json'))['meta']['_elementor_data'])
+    hs = []
+    def walk(xs):
+        for e in xs:
+            if e.get('widgetType') == 'html': hs.append(e['settings']['html'])
+            walk(e.get('elements', []))
+    walk(els)
+    return next(h for h in hs if word in h)
+
+def reviews_block(h2):
+    """The homepage review cards (stars, guest photos, Google + testimonials links) under this page's own live H2."""
+    b = home_block('rv-links')
+    b = re.sub(r'<h2>.*?</h2>', '<h2>' + E(h2) + '</h2>', b, count=1, flags=re.S)
+    return b
+
+def card_list(it, a, b):
+    """Destination cards between two items: (name, url, background photo)."""
+    out, bg, name = [], None, None
+    for k, v, s in it[a:b]:
+        if k == 'bg': bg = v
+        elif k == 'h2' and 'VIEW DESTINATION' not in v.upper(): name = v.replace('\u200b', '').strip()
+        elif k == 'h2':
+            out.append((name, s.get('link', {}).get('url', ''), bg)); name = None
+    return out
+
+FIX_NAME = {'SWIZERLAND': 'SWITZERLAND'}   # typo on the live page
+FIX_URL = {'/destinations/belgium/': '/trips/tour-of-flanders-experience/'}   # live link is a 404: Belgium = the Flanders tour
+
+def destinations():
+    it = items(elementor(10))
+    h1 = next(v for k, v, s in it if k == 'h1')
+    H = [(i, v) for i, (k, v, s) in enumerate(it) if k == 'h2']
+    at = lambda w: next(i for i, v in H if w in text_of(v).upper())
+    c_i, r_i, u_i, p_i, t_i = at('BY COUNTRY'), at('BY REGION'), at('ULTIMATE'), at('PRIVATE/CUSTOM'), at('TESTIMONIALS')
+    intro = next(v for k, v, s in it[:c_i] if k == 'text')
+    btns = [v for k, v, s in it[:c_i] if k == 'btn']
+    hero_bg = next(v for k, v, s in it if k == 'bg')
+    def card(n, u, bg, big):
+        path = FIX_URL.get(link(u).replace(L, ''), link(u).replace(L, ''))
+        n = FIX_NAME.get(n, n)
+        if big:
+            return (f'<a class="dcard" href="{path}">{img_tag(bg, 900)}<div class="tx"><h2>{E(n.title() if n.isupper() else n)}</h2>'
+                    f'<span class="go">View destination →</span></div></a>')
+        return f'<a class="panel region" href="{path}"><h2>{E(n.title() if n.isupper() else n)}</h2><span>View →</span></a>'
+    countries = ''.join(card(n, u, bg, True) for n, u, bg in card_list(it, c_i, r_i))
+    regions = ''.join(card(n, u, bg, False) for n, u, bg in card_list(it, r_i, u_i))
+    ult_p = next(v for k, v, s in it[u_i:p_i] if k == 'text')
+    ult_btn = next(v for k, v, s in it[u_i:p_i] if k == 'btn')
+    priv_btn = next(v for k, v, s in it[p_i:t_i] if k == 'btn')
+    priv_bg = [v for k, v, s in it[:p_i] if k == 'bg'][-1]
+    ult_bg = [v for k, v, s in it[:u_i] if k == 'bg'][-1]
+    title = lambda h: re.sub(r'<[^>]+>', '', h)
+    def browse(h):   # live: 'Browse by <span style="color:#D64A4A">Country</span>' -> keep the words, red word as in the design eyebrow
+        return E(title(h))
+    main = f'''<div class="hero phero">
+  {img_tag(hero_bg, 2000, lazy=False)}
+  <div class="in">
+    <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / Destinations</div>
+    <div class="pill-eyebrow">Where we ride</div>
+    <h1>{E(h1)}</h1>
+    <div class="bar"></div>
+    <div class="lede">{intro}</div>
+    <div class="ctas"><a class="btn btn-go" href="#country">{E(btns[0][0].capitalize())}</a><a class="btn btn-ghost" href="#region">{E(btns[1][0].capitalize())}</a></div>
+  </div>
+</div>
+<section id="country" style="padding-top:44px">
+  <div class="in">
+    {head_block('Countries', browse(it[c_i][1]))}
+    <div class="dgrid">{countries}</div>
+  </div>
+</section>
+<section id="region">
+  <div class="in">
+    {head_block('Regions', browse(it[r_i][1]))}
+    <div class="regions">{regions}</div>
+  </div>
+</section>
+<section>
+  <div class="in">
+    <div class="band">
+      {img_tag(ult_bg, 1600)}
+      <div class="tx">
+        <div class="eyebrow">Every destination</div>
+        <h2>{E(it[u_i][1])}</h2>
+        <div class="bar"></div>
+        <div class="lede">{ult_p}</div>
+        <div class="ctas"><a class="btn btn-go" href="{link(ult_btn[1]).replace(L, '')}">{E(ult_btn[0].capitalize())} →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="in">
+    <div class="band">
+      {img_tag(priv_bg, 1600)}
+      <div class="tx">
+        <div class="eyebrow">Your dates, your group</div>
+        <h2>{E(it[p_i][1])}</h2>
+        <div class="bar"></div>
+        <div class="ctas"><a class="btn btn-go" href="{link(priv_btn[1]).replace(L, '')}">{E(priv_btn[0].capitalize())} →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+{reviews_block(it[t_i][1])}
+{PARTNERS_H2}'''
+    return {'id': 10, 'slug': 'destinations', 'main': main, 'css': PAGE_CSS, 'crumb': 'Destinations'}
+
 # small additions on top of the design CSS, scoped to .cl by the kit build
 PAGE_CSS = '''
 html .cl .band .lede p { margin: 0; }
@@ -202,10 +316,13 @@ html .cl .info .cc-social { margin-top: 2px; }
 .e-con.cl-contact > .elementor-widget-form { margin: 0 !important; width: 100% !important; max-width: 100% !important; --container-widget-width: 100% !important; }
 .e-con.cl-contact > .elementor-widget-form .cc-form, .e-con.cl-contact .elementor-widget-form.cc-form { margin-top: 0 !important; }
 @media (max-width: 900px) { .e-con.cl-contact { grid-template-columns: minmax(0, 1fr); } }
+html .cl .dcard h2 { font-size: clamp(22px, 2.2vw, 28px); }
+html .cl .region h2 { font-size: 18px; }
+html .cl .band .lede p { margin: 0; }
 html .cl h2.lab { font-family: var(--body); font-size: 11px; line-height: 1.4; letter-spacing: .09em; font-weight: 600; color: var(--text-3); text-transform: uppercase; margin: 0 0 12px; }
 '''
 
-PAGES = {'about': about, 'contact': contact}
+PAGES = {'about': about, 'contact': contact, 'destinations': destinations}
 
 from css_scope import scope_css
 from social import SOCIAL_CSS

@@ -1,0 +1,943 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<style>
+
+html .cl .band .lede p { margin: 0; }
+html .cl .member h3 { text-transform: uppercase; }
+html .cl .hero-phone { font-family: var(--body); font-size: 20px; font-weight: 600; letter-spacing: .02em; margin-top: 18px; }
+html .cl .hero-phone a, html .cl .info h2 a { color: var(--text); text-decoration: none; }
+html .cl .hero-phone a:hover, html .cl .info h2 a:hover { color: var(--green-text); }
+html .cl .info h3 { font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: .1em; color: var(--text-3); margin: 0 0 2px; }
+html .cl .info h2 { font-family: var(--body); font-size: 17px; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--text); overflow-wrap: anywhere; }
+html .cl .info .cc-social { margin-top: 2px; }
+.e-con.cl-contact { display: grid !important; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px !important; align-items: start; max-width: 1232px !important; margin: 0 auto !important; padding: 40px 16px 0 !important; }
+.e-con.cl-contact > .elementor-widget-form { margin: 0 !important; width: 100% !important; max-width: 100% !important; --container-widget-width: 100% !important; }
+.e-con.cl-contact > .elementor-widget-form .cc-form, .e-con.cl-contact .elementor-widget-form.cc-form { margin-top: 0 !important; }
+@media (max-width: 900px) { .e-con.cl-contact { grid-template-columns: minmax(0, 1fr); } }
+html .cl .dcard h2 { font-size: clamp(22px, 2.2vw, 28px); }
+html .cl .region h2 { font-size: 18px; }
+html .cl .band .lede p { margin: 0; }
+html .cl h2.lab { font-family: var(--body); font-size: 11px; line-height: 1.4; letter-spacing: .09em; font-weight: 600; color: var(--text-3); text-transform: uppercase; margin: 0 0 12px; }
+html .cl .cc-social { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 0 -10px; }
+html .cl .cc-social a { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; color: var(--text-2, #d0d6e0); text-decoration: none; transition: color .15s, background-color .15s; }
+html .cl .cc-social a:hover, html .cl .cc-social a:active { color: var(--green-text, #34c46a); background: rgba(255,255,255,.04); }
+html .cl .cc-social a:focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 2px; }
+html .cl .cc-social svg { width: 20px; height: 20px; fill: currentColor; display: block; }
+
+
+</style>
+<style>
+html .cl {
+  color-scheme: dark;
+  --bg: #08090a; --panel: rgba(15,16,17,.92); --panel-solid: #0f1011;
+  --panel-grad: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+  --border: rgba(255,255,255,.08); --border-strong: rgba(255,255,255,.14); --wash: rgba(255,255,255,.04);
+  --text: #f7f8f8; --text-2: #d0d6e0; --text-3: #8a8f98; --text-4: #62666d;
+  --green: #009a44; --green-hi: #00b350; --green-text: #34c46a; --green-wash: rgba(0,154,68,.14);
+  --red: #E10600; --red-text: #ff3d33; --gravel: #b9895a; --star: #f0bf00;
+  --head: "Anton", Impact, "Arial Narrow", sans-serif;
+  --body: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 12px;
+}
+html .cl * { box-sizing: border-box; }
+html .cl, html .cl { background: var(--bg); color: var(--text-2); font-family: var(--body); }
+html .cl { position: relative; margin: 0; font-size: 15px; line-height: 1.6; }
+html .cl a { color: var(--text); text-decoration-color: rgba(255,255,255,.3); text-underline-offset: 3px; }
+html .cl a:hover { color: #fff; text-decoration-color: var(--green); }
+html .cl :focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+html .cl img { display: block; max-width: 100%; }
+html .cl b, html .cl strong { color: var(--text); font-weight: 600; }
+html .cl .in { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+html .cl section { padding-block: 64px 0; scroll-margin-top: 130px; }
+html .cl h1, html .cl h2, html .cl h3 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.04; margin: 0; text-wrap: balance; }
+html .cl h1 { font-size: clamp(52px, 9vw, 112px); }
+html .cl h2 { font-size: clamp(30px, 4.4vw, 48px); }
+html .cl h3 { font-size: 22px; }
+html .cl .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--red-text); margin-bottom: 10px; }
+html .cl .bar { width: 40px; height: 3px; border-radius: 2px; background: var(--green); margin-top: 14px; }
+html .cl .lede { max-width: 62ch; margin: 14px 0 0; font-size: 16px; }
+html .cl .head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 32px; margin-bottom: 26px; }
+html .cl .head > div { min-width: 0; }
+html .cl .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--body); font-weight: 600; font-size: 14px; letter-spacing: .02em; text-decoration: none; border-radius: 8px; padding: 12px 22px; border: 1px solid transparent; transition: background .15s, border-color .15s; }
+html .cl .btn-go { background: var(--green); color: #fff; }
+html .cl .btn-go:hover { background: var(--green-hi); color: #fff; }
+html .cl .btn-ghost { background: rgba(8,9,10,.35); color: var(--text); border-color: var(--border-strong); }
+html .cl .btn-ghost:hover { border-color: var(--green); color: #fff; }
+html .cl .btn-lg { padding: 15px 26px; font-size: 15px; width: 100%; }
+html .cl .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+html .cl .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
+html .cl .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(8,9,10,.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+html .cl .nav .in { position: relative; display: flex; align-items: center; gap: 18px; padding-block: 10px; }
+html .cl .brand img { width: 58px; height: 58px; }
+html .cl .menu { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+html .cl .menu a { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-2); text-decoration: none; padding: 8px 10px; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
+html .cl .menu a:hover { color: var(--green-text); box-shadow: inset 0 -2px 0 var(--green); }
+html .cl .menu a[aria-current="page"] { color: var(--text); box-shadow: inset 0 -2px 0 var(--red); }
+html .cl .nav .btn { padding: 9px 16px; font-size: 13px; flex: none; }
+html .cl .burger { display: none; margin-left: auto; }
+html .cl .burger summary { list-style: none; cursor: pointer; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text); border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 14px; }
+html .cl .burger summary::-webkit-details-marker { display: none; }
+html .cl .burger nav { position: absolute; left: 0; right: 0; top: 100%; background: var(--panel-solid); border-bottom: 1px solid var(--border); display: grid; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)); }
+html .cl .burger nav a { padding: 11px 0; border-bottom: 1px solid var(--border); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; }
+html .cl .burger nav a:hover { color: var(--green-text); }
+html .cl .hero { position: relative; overflow: hidden; isolation: isolate; }
+html .cl .hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; z-index: -2; }
+html .cl .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8,9,10,.88) 0%, rgba(8,9,10,.55) 50%, rgba(8,9,10,.35) 100%), linear-gradient(180deg, rgba(8,9,10,0) 60%, rgba(8,9,10,.95) 100%); }
+html .cl .hero .in { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 40px; align-items: end; padding-block: 96px 56px; }
+html .cl .crumbs { font-size: 12.5px; color: var(--text-3); margin-bottom: 18px; }
+html .cl .crumbs a { color: var(--text-3); text-decoration: none; }
+html .cl .crumbs a:hover { color: #fff; }
+html .cl .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+html .cl .tag { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.7); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 11px; }
+html .cl .tag.dot::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
+html .cl .hero .dates { font-family: var(--head); text-transform: uppercase; font-size: clamp(22px, 2.6vw, 30px); color: var(--text); margin-top: 10px; }
+html .cl .hero .lede { color: var(--text); }
+html .cl .book { padding: 24px; display: grid; gap: 14px; background: rgba(15,16,17,.94); border: 1px solid var(--border-strong); border-radius: 14px; }
+html .cl .book .lab { font-size: 11.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
+html .cl .price { font-family: var(--head); font-size: 40px; line-height: 1; color: var(--text); }
+html .cl .price small { font-family: var(--body); font-size: 14px; font-weight: 600; color: var(--text-2); margin-left: 6px; }
+html .cl .early { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; justify-self: start; }
+html .cl .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+html .cl .book ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+html .cl .book ul li { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--border); padding-top: 8px; }
+html .cl .book ul li span:last-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+html .cl .book .note { font-size: 13px; color: var(--text-3); margin: 0; }
+html .cl .tabs { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 79px); z-index: 15; background: rgba(8,9,10,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+html .cl .tabs .in { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding-block: 0; }
+html .cl .tabs .in::-webkit-scrollbar { display: none; }
+html .cl .tabs a { flex: none; font-size: 12.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); text-decoration: none; padding: 14px 12px; box-shadow: inset 0 0 0 var(--green); }
+html .cl .tabs a:hover { color: var(--green-text); box-shadow: inset 0 -2px 0 var(--green); }
+html .cl .tabs .btn { margin-left: auto; align-self: center; padding: 8px 16px; font-size: 13px; }
+html .cl .glance { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+html .cl .glance > div { padding: 20px; border-left: 1px solid var(--border); border-top: 1px solid var(--border); min-width: 0; }
+html .cl .glance > div:nth-child(4n+1) { border-left: 0; }
+html .cl .glance > div:nth-child(-n+4) { border-top: 0; }
+html .cl .glance .n { font-family: var(--head); font-size: clamp(28px, 3.4vw, 40px); line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+html .cl .glance .n small { font-family: var(--body); font-size: 14px; font-weight: 600; color: var(--text-3); margin-left: 4px; }
+html .cl .glance .n.sm { font-family: var(--body); font-size: 16px; font-weight: 600; line-height: 1.35; }
+html .cl .glance .l { font-size: 11.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); margin-top: 8px; }
+html .cl .split { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 5vw, 64px); align-items: start; }
+html .cl .split p { margin: 0 0 14px; max-width: 64ch; }
+html .cl .quote { font-family: var(--head); text-transform: uppercase; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.12; color: var(--text); margin: 18px 0 18px !important; }
+html .cl .climbs { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 18px; padding: 0; list-style: none; }
+html .cl .climbs li { font-size: 12.5px; font-weight: 600; color: var(--text); border: 1px solid var(--border-strong); background: var(--wash); border-radius: 999px; padding: 5px 12px; }
+html .cl .climbs li::before { content: "▲"; color: var(--red-text); font-size: 9px; margin-right: 7px; vertical-align: 1px; }
+html .cl .cardimg { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); aspect-ratio: 4 / 5; max-width: 440px; width: 100%; justify-self: end; }
+html .cl .cardimg img { width: 100%; height: 100%; object-fit: cover; }
+html .cl .route { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px; align-items: stretch; }
+html .cl .map { background: #f4f1ea; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); }
+html .cl .map img { width: 100%; height: auto; }
+html .cl .facts { padding: 22px; display: grid; gap: 0; align-content: start; }
+html .cl .facts div { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 12px; padding: 11px 0; border-top: 1px solid var(--border); font-size: 14px; }
+html .cl .facts div:first-child { border-top: 0; }
+html .cl .facts dt { color: var(--text-3); font-size: 11.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; padding-top: 2px; }
+html .cl .facts dd { margin: 0; color: var(--text); font-weight: 600; }
+html .cl .gpx { font-size: 13px; color: var(--text-3); margin: 14px 0 0; }
+html .cl .days { display: grid; gap: 0; position: relative; }
+html .cl .day { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 20px; position: relative; padding-bottom: 26px; }
+html .cl .day::before { content: ""; position: absolute; left: 31px; top: 56px; bottom: 0; width: 2px; background: var(--border-strong); }
+html .cl .day:last-child::before { display: none; }
+html .cl .num { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--panel-solid); border: 2px solid var(--green); font-family: var(--head); font-size: 26px; color: var(--text); line-height: 1; text-align: center; }
+html .cl .num small { display: block; font-family: var(--body); font-size: 9px; font-weight: 700; letter-spacing: .12em; color: var(--text-3); margin-bottom: 2px; }
+html .cl .day .box { padding: 20px 22px; min-width: 0; }
+html .cl .day .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 12px; }
+html .cl .chip { font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--text); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 6px; padding: 3px 9px; font-variant-numeric: tabular-nums; }
+html .cl .chip.km::before { content: "↔ "; color: var(--text-3); }
+html .cl .chip.up::before { content: "▲ "; color: var(--red-text); font-size: 10px; }
+html .cl .chip.rest { color: var(--text-3); }
+html .cl .day p { margin: 0 0 10px; max-width: 72ch; }
+html .cl .day p:last-child { margin-bottom: 0; }
+html .cl .inc { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px; align-items: start; }
+html .cl .inc .panel { padding: 22px 24px; }
+html .cl .inc h3 { font-size: 20px; margin-bottom: 14px; }
+html .cl .inc ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+html .cl .inc li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; font-size: 14.5px; }
+html .cl .inc li::before { content: ""; width: 20px; height: 20px; border-radius: 50%; margin-top: 2px; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%2334c46a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 20px no-repeat; border: 1px solid rgba(0,154,68,.4); }
+html .cl .inc .no li::before { background: rgba(255,255,255,.04) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M7 7l6 6M13 7l-6 6' fill='none' stroke='%238a8f98' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / 20px no-repeat; border-color: var(--border-strong); }
+html .cl .side { display: grid; gap: 16px; }
+html .cl .transfers { display: grid; gap: 10px; }
+html .cl .transfers div { border-top: 1px solid var(--border); padding-top: 10px; font-size: 14px; }
+html .cl .transfers div:first-of-type { border-top: 0; padding-top: 0; }
+html .cl .transfers b { font-family: var(--head); font-weight: 400; font-size: 18px; letter-spacing: .02em; display: block; }
+html .cl .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 210px; grid-auto-flow: dense; gap: 10px; }
+html .cl .gallery figure { margin: 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+html .cl .gallery img { width: 100%; height: 100%; object-fit: cover; }
+html .cl .g-big { grid-column: span 2; grid-row: span 2; }
+html .cl .hotels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+html .cl .hotel { overflow: hidden; display: flex; flex-direction: column; }
+html .cl .hotel .ph { aspect-ratio: 16 / 9; max-width: 100%; overflow: hidden; }
+html .cl .hotel .ph img { width: 100%; height: 100%; object-fit: cover; }
+html .cl .hotel .tx { padding: 18px 20px 20px; display: grid; gap: 6px; }
+html .cl .stars { color: var(--star); letter-spacing: 2px; font-size: 14px; }
+html .cl .hotel .where { font-size: 13px; color: var(--text-3); }
+html .cl .hotel a.site { font-size: 13px; font-weight: 600; color: var(--green-text); text-decoration: none; }
+html .cl .strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+html .cl .strip img { width: 100%; aspect-ratio: 4 / 3; max-width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
+html .cl .hnote { font-size: 13.5px; color: var(--text-3); margin: 12px 0 0; }
+html .cl .bike { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); overflow: hidden; }
+html .cl .bike .ph { background: #fff; display: grid; place-items: center; padding: 24px; }
+html .cl .bike .ph img { max-height: 320px; width: auto; }
+html .cl .bike .tx { padding: 28px; }
+html .cl .bike dl { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 8px 14px; margin: 18px 0 0; font-size: 14px; }
+html .cl .bike dt { color: var(--text-3); font-size: 11.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; padding-top: 2px; }
+html .cl .bike dd { margin: 0; color: var(--text); }
+html .cl .bike .from { font-weight: 600; color: var(--text); margin-top: 16px; }
+html .cl .guides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+html .cl .guide { display: grid; grid-template-columns: 160px minmax(0, 1fr); overflow: hidden; }
+html .cl .guide .ph img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; min-height: 220px; }
+html .cl .guide .tx { padding: 20px; }
+html .cl .guide .role { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text); margin: 6px 0 10px; }
+html .cl .guide p { margin: 0; font-size: 14px; }
+html .cl .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+html .cl .stat { padding: 22px 20px; border-left: 1px solid var(--border); }
+html .cl .stat:first-child { border-left: 0; }
+html .cl .stat .n { font-family: var(--head); font-size: clamp(34px, 4vw, 48px); line-height: 1; color: var(--text); }
+html .cl .stat .n i { font-style: normal; color: var(--star); }
+html .cl .stat .l { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-top: 8px; }
+html .cl .reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+html .cl .review { padding: 22px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+html .cl .review .s { color: var(--star); letter-spacing: 3px; }
+html .cl .review p { margin: 0; font-size: 14px; }
+html .cl .who { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); font-weight: 600; color: var(--text); font-size: 14px; }
+html .cl .who span { display: block; font-weight: 500; color: var(--text-3); font-size: 12.5px; }
+html .cl .band { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); isolation: isolate; }
+html .cl .band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+html .cl .band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8,9,10,.92) 0%, rgba(8,9,10,.7) 45%, rgba(8,9,10,.15) 100%); }
+html .cl .band .tx { padding: clamp(32px, 6vw, 60px); max-width: 640px; }
+html .cl .final { text-align: center; padding: clamp(36px, 6vw, 64px) 24px; }
+html .cl .final .dates { font-family: var(--head); text-transform: uppercase; font-size: 26px; color: var(--text); margin-top: 8px; }
+html .cl .final .ctas { justify-content: center; }
+html .cl footer { margin-top: 80px; border-top: 1px solid var(--border); background: rgba(8,9,10,.85); }
+html .cl footer .in { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); gap: 28px; padding-block: 44px 28px; }
+html .cl footer .brand img { width: 76px; height: 76px; }
+html .cl footer .tag-line { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: 22px; line-height: 1.15; margin: 14px 0 0; }
+html .cl footer h4 { margin: 0 0 12px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
+html .cl footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+html .cl footer ul a { text-decoration: none; color: var(--text-2); }
+html .cl footer ul a:hover { color: var(--green-text); }
+html .cl .legal { border-top: 1px solid var(--border); }
+html .cl .legal .in { display: flex; flex-wrap: wrap; gap: 6px 20px; padding-block: 16px; font-size: 12px; color: var(--text-4); }
+html .cl .mbar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; background: rgba(15,16,17,.97); border-top: 1px solid var(--border-strong); padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); align-items: center; gap: 12px; }
+html .cl .mbar .p { font-family: var(--head); font-size: 22px; color: var(--text); line-height: 1; }
+html .cl .mbar .p small { display: block; font-family: var(--body); font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: .06em; text-transform: uppercase; margin-top: 3px; }
+html .cl .mbar .btn { margin-left: auto; }
+@media (max-width: 1080px) {html .cl .menu { display: none; }
+html .cl .burger { display: block; }
+html .cl .nav .btn { display: none; }
+ }
+@media (max-width: 980px) {html .cl .hero .in { grid-template-columns: minmax(0, 1fr); padding-block: 72px 32px; }
+html .cl .book { max-width: 520px; }
+html .cl .split, html .cl .route, html .cl .inc { grid-template-columns: minmax(0, 1fr); }
+html .cl .cardimg { justify-self: center; max-width: 480px; }
+html .cl .glance { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html .cl .glance > div:nth-child(n) { border-left: 1px solid var(--border); border-top: 1px solid var(--border); }
+html .cl .glance > div:nth-child(2n+1) { border-left: 0; }
+html .cl .glance > div:nth-child(-n+2) { border-top: 0; }
+html .cl .gallery { grid-auto-rows: 170px; }
+html .cl .hotels, html .cl .guides { grid-template-columns: minmax(0, 1fr); }
+html .cl .bike { grid-template-columns: minmax(0, 1fr); }
+html .cl .reviews { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+html .cl footer .in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+html .cl footer .in > div:first-child { grid-column: 1 / -1; }
+html .cl .tabs { top: calc(env(safe-area-inset-top, 0px) + 79px); }
+html .cl .tabs .btn { display: none; }
+
+}
+@media (max-width: 640px) {html .cl section { padding-block: 52px 0; }
+html .cl .day { grid-template-columns: 48px minmax(0, 1fr); gap: 14px; }
+html .cl .num { width: 48px; height: 48px; font-size: 20px; }
+html .cl .num small { font-size: 7.5px; }
+html .cl .day::before { left: 23px; top: 44px; }
+html .cl .day .box { padding: 16px 16px; }
+html .cl .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 140px; }
+html .cl .cardimg { max-width: 100%; }
+html .cl .strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+html .cl .strip img:nth-child(n+4) { display: none; }
+html .cl .guide { grid-template-columns: 110px minmax(0, 1fr); }
+html .cl .stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+html .cl .stat:nth-child(3) { border-left: 0; }
+html .cl .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+html .cl .reviews { grid-template-columns: minmax(0, 1fr); }
+html .cl .facts div, html .cl .bike dl { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+html .cl .band::after { background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,.93)); }
+html .cl footer .in { grid-template-columns: minmax(0, 1fr); }
+html .cl .mbar { display: flex; }
+
+}
+html .cl .phero { position: relative; overflow: hidden; isolation: isolate; }
+html .cl .phero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+html .cl .phero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8,9,10,.88) 0%, rgba(8,9,10,.6) 55%, rgba(8,9,10,.4) 100%), linear-gradient(180deg, rgba(8,9,10,0) 55%, rgba(8,9,10,.95) 100%); }
+html .cl .hero.phero .in, html .cl .hero.plain-hero .in { display: block; }
+html .cl .phero .in { padding-block: 88px 48px; }
+html .cl .phero h1 { font-size: clamp(44px, 7.4vw, 92px); max-width: 16ch; }
+html .cl .phero .lede { color: var(--text); }
+html .cl .plain-hero .in { padding-block: 64px 8px; }
+html .cl .plain-hero h1 { font-size: clamp(44px, 7.4vw, 92px); }
+html .cl .pill-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.78); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 14px; margin-bottom: 18px; }
+html .cl .pill-eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex: none; }
+html .cl .lede p { margin: 0 0 12px; }
+html .cl .lede p:last-child { margin-bottom: 0; }
+html .cl .note { font-size: 13px; color: var(--text-3); }
+html .cl .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+html .cl .chip { font-family: var(--body); font-size: 12.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+html .cl .chip:hover { color: #fff; border-color: rgba(255,255,255,.3); }
+html .cl .chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+html .cl .chip[data-f="road"]::before, html .cl .chip[data-f="gf"]::before, html .cl .chip[data-f="gravel"]::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
+html .cl .chip[data-f="gravel"]::before { background: var(--gravel); }
+html .cl .chip[aria-pressed="true"]::before { box-shadow: 0 0 0 1.5px #fff; }
+html .cl .tag.gravel::before { background: var(--gravel); }
+html .cl .trips { display: grid; gap: 18px; }
+html .cl .trip { display: grid; grid-template-columns: 300px minmax(0, 1fr); overflow: hidden; }
+html .cl .trip .cimg { display: block; aspect-ratio: 4 / 5; max-width: 100%; }
+html .cl .trip .cimg img { width: 100%; height: 100%; object-fit: cover; }
+html .cl .trip .tx { padding: 24px 26px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+html .cl .trip .tags { margin: 0; }
+html .cl .trip h2 { font-size: clamp(26px, 3vw, 36px); }
+html .cl .trip .where { font-family: var(--body); text-transform: none; font-size: 14px; font-weight: 600; color: var(--text-2); letter-spacing: 0; }
+html .cl .trip .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+html .cl .trip .desc p { margin: 0 0 8px; max-width: 70ch; font-size: 14.5px; }
+html .cl .trip .bottom { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+html .cl .trip .price { font-family: var(--head); font-size: 26px; color: var(--text); line-height: 1.1; }
+html .cl .trip .price small { display: block; font-family: var(--body); font-size: 12px; font-weight: 600; color: var(--text-3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+html .cl .trip .early { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 4px 10px; }
+html .cl .trip .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+html .cl .trip .ctas { margin: 0; }
+html .cl .trip .btn { padding: 10px 18px; }
+html .cl .footnote { font-size: 13px; color: var(--text-3); margin-top: 22px; max-width: 90ch; }
+html .cl .dgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+html .cl .dcard { position: relative; display: flex; align-items: flex-end; aspect-ratio: 4 / 5; max-width: 100%; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); text-decoration: none; isolation: isolate; background: var(--panel-solid); }
+html .cl .dcard img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .5s ease; }
+html .cl .dcard::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 40%, rgba(8,9,10,.92) 100%); }
+html .cl .dcard:hover img { transform: scale(1.04); }
+html .cl .dcard:hover { border-color: rgba(0,154,68,.6); }
+html .cl .dcard .tx { padding: 18px; display: grid; gap: 4px; }
+html .cl .dcard h3 { font-size: 26px; }
+html .cl .dcard .go { font-size: 13px; font-weight: 600; color: var(--green-text); }
+html .cl .regions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+html .cl .region { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 18px; text-decoration: none; }
+html .cl .region h3 { font-size: 20px; }
+html .cl .region span { color: var(--green-text); font-weight: 600; font-size: 13px; white-space: nowrap; }
+html .cl .region:hover { border-color: rgba(0,154,68,.6); }
+html .cl .partners { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+html .cl .partners > div { padding: 18px; min-width: 0; }
+html .cl .logos { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+html .cl .logos span { background: #fff; border-radius: 10px; width: 96px; height: 96px; display: grid; place-items: center; padding: 8px; }
+html .cl .logos img { max-height: 80px; width: auto; }
+html .cl .lab { text-transform: uppercase; font-size: 11px; letter-spacing: .09em; color: var(--text-3); font-weight: 600; }
+html .cl .prose p { margin: 0 0 14px; max-width: 68ch; }
+html .cl .prose p:last-child { margin-bottom: 0; }
+html .cl .gal3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+html .cl .gal3 img { width: 100%; aspect-ratio: 4 / 3; max-width: 100%; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
+html .cl .facts4 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+html .cl .fact { padding: 22px; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; align-items: start; }
+html .cl .fact .ic { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
+html .cl .fact .ic svg { width: 24px; height: 24px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+html .cl .fact h3 { font-size: 20px; margin-bottom: 8px; }
+html .cl .fact p { margin: 0 0 8px; font-size: 14.5px; }
+html .cl .fact p:last-child { margin: 0; }
+html .cl .tcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+html .cl .tcard { overflow: hidden; display: flex; flex-direction: column; text-decoration: none; }
+html .cl .tcard .ph { position: relative; aspect-ratio: 16 / 10; max-width: 100%; overflow: hidden; }
+html .cl .tcard .ph img { width: 100%; height: 100%; object-fit: cover; }
+html .cl .tcard .ph .tag { position: absolute; top: 14px; left: 14px; }
+html .cl .tcard .tx { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+html .cl .tcard h3 { font-size: 22px; }
+html .cl .tcard p { margin: 0; font-size: 14px; }
+html .cl .tcard .go { margin-top: auto; font-size: 13px; font-weight: 600; color: var(--green-text); }
+html .cl .tcard:hover { border-color: rgba(0,154,68,.6); }
+html .cl .ggrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+html .cl .gcard { overflow: hidden; display: flex; flex-direction: column; text-decoration: none; min-width: 0; }
+html .cl .gcard .ph { aspect-ratio: 16 / 10; max-width: 100%; overflow: hidden; }
+html .cl .gcard .ph img { width: 100%; height: 100%; object-fit: cover; }
+html .cl .gcard .tx { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+html .cl .gcard h2 { font-size: 22px; line-height: 1.12; }
+html .cl .gcard .by { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--red-text); }
+html .cl .gcard p { margin: 0; font-size: 14px; }
+html .cl .gcard .go { margin-top: auto; font-size: 13px; font-weight: 600; color: var(--green-text); }
+html .cl .gcard:hover { border-color: rgba(0,154,68,.6); }
+html .cl .article { max-width: 820px; margin: 0 auto; padding: clamp(22px, 4vw, 48px); }
+html .cl .article .by { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--red-text); margin: 0 0 18px; }
+html .cl .article h2 { font-size: clamp(24px, 3vw, 32px); margin: 36px 0 14px; scroll-margin-top: 100px; }
+html .cl .article h2::after { content: ""; display: block; width: 40px; height: 3px; border-radius: 2px; background: var(--green); margin-top: 12px; }
+html .cl .article p, html .cl .article li { max-width: 68ch; font-size: 16px; line-height: 1.7; }
+html .cl .article p { margin: 0 0 16px; }
+html .cl .article ul { margin: 0 0 16px; padding-left: 20px; display: grid; gap: 8px; }
+html .cl .article li::marker { color: var(--green-text); }
+html .cl .article h3 { font-family: var(--body); text-transform: none; font-size: 18px; font-weight: 700; letter-spacing: 0; margin: 22px 0 8px; }
+html .cl .article .intro { font-size: 19px; font-weight: 500; color: var(--text); line-height: 1.55; }
+html .cl .article figure { margin: 24px 0; }
+html .cl .article figure img { width: 100%; border-radius: 10px; border: 1px solid var(--border); max-height: 560px; object-fit: cover; }
+html .cl .article a { color: var(--green-text); }
+html .cl .faq { display: grid; gap: 10px; }
+html .cl .faq details { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 10px; }
+html .cl .faq summary { cursor: pointer; list-style: none; padding: 14px 18px; font-weight: 600; color: var(--text); display: flex; justify-content: space-between; gap: 16px; }
+html .cl .faq summary::-webkit-details-marker { display: none; }
+html .cl .faq summary::after { content: "+"; color: var(--green-text); font-size: 20px; line-height: 1; }
+html .cl .faq details[open] summary::after { content: "–"; }
+html .cl .faq details p { padding: 0 18px 16px; margin: 0; }
+html .cl .author { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 18px; align-items: center; margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--border); }
+html .cl .author img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; object-position: center 20%; background: #fff; }
+html .cl .author b { display: block; font-size: 16px; }
+html .cl .author span { font-size: 13.5px; color: var(--text-3); }
+html .cl .story { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 5vw, 64px); align-items: start; }
+html .cl .story .prose b { color: var(--text); }
+html .cl .story .photo { position: sticky; top: 110px; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); aspect-ratio: 4 / 5; max-width: 100%; }
+html .cl .story .photo img { width: 100%; height: 100%; object-fit: cover; }
+html .cl .why6 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+html .cl .why6 > div { padding: 22px; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; }
+html .cl .why6 .tick { width: 24px; height: 24px; border-radius: 50%; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%2334c46a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 22px no-repeat; border: 1px solid rgba(0,154,68,.4); }
+html .cl .why6 h3 { font-size: 20px; margin-bottom: 6px; }
+html .cl .why6 p { margin: 0; font-size: 14px; }
+html .cl .team { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; }
+html .cl .member { overflow: hidden; }
+html .cl .member img { width: 100%; aspect-ratio: 1 / 1; max-width: 100%; object-fit: cover; object-position: center 25%; display: block; }
+html .cl .member .tx { padding: 12px 14px 14px; }
+html .cl .member h3 { font-size: 18px; }
+html .cl .member p { margin: 4px 0 0; font-size: 12.5px; color: var(--text-3); font-weight: 600; }
+html .cl .contact-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px; align-items: start; }
+html .cl .cpanel { padding: clamp(20px, 3vw, 32px); min-width: 0; }
+html .cl .form { display: grid; gap: 14px; }
+html .cl .form label { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); display: grid; gap: 6px; }
+html .cl .form label i { color: var(--red-text); font-style: normal; }
+html .cl .form input, html .cl .form textarea { font: 15px/1.5 var(--body); color: var(--text); background: rgba(8,9,10,.6); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; width: 100%; }
+html .cl .form input:focus, html .cl .form textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px var(--green-wash); }
+html .cl .form textarea { min-height: 150px; resize: vertical; }
+html .cl .form .btn { justify-self: start; }
+html .cl .form .fnote { font-size: 13px; color: var(--green-text); min-height: 1.2em; margin: 0; }
+html .cl .info { display: grid; gap: 16px; }
+html .cl .info .row { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; align-items: center; }
+html .cl .info .ic { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
+html .cl .info .ic svg { width: 20px; height: 20px; fill: none; stroke: var(--green-text); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+html .cl .info h2 { font-size: 15px; font-family: var(--body); font-weight: 600; letter-spacing: .1em; color: var(--text-3); }
+html .cl .info .val { color: var(--text); font-weight: 600; font-size: 17px; overflow-wrap: anywhere; }
+html .cl .social { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+html .cl .social a { font-size: 13px; font-weight: 600; text-decoration: none; color: var(--text); border: 1px solid var(--border-strong); background: var(--wash); border-radius: 999px; padding: 7px 14px; }
+html .cl .social a:hover { border-color: var(--green); }
+@media (max-width: 980px) {html .cl .trip { grid-template-columns: 220px minmax(0, 1fr); }
+html .cl .dgrid, html .cl .regions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+html .cl .ggrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html .cl .story, html .cl .contact-grid { grid-template-columns: minmax(0, 1fr); }
+html .cl .story .photo { position: static; aspect-ratio: 16 / 10; }
+html .cl .why6 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html .cl .team { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+html .cl .partners { grid-template-columns: minmax(0, 1fr); }
+
+}
+@media (max-width: 640px) {html .cl .trip { grid-template-columns: minmax(0, 1fr); }
+html .cl .trip .cimg { aspect-ratio: 4 / 5; }
+html .cl .trip .tx { padding: 20px; }
+html .cl .dgrid, html .cl .regions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html .cl .dcard h3 { font-size: 20px; }
+html .cl .region h3 { font-size: 17px; }
+html .cl .ggrid, html .cl .why6, html .cl .facts4 { grid-template-columns: minmax(0, 1fr); }
+html .cl .gal3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html .cl .gal3 img:nth-child(3n) { grid-column: span 2; aspect-ratio: 16 / 9; }
+html .cl .team { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html .cl .phero .in { padding-block: 64px 32px; }
+html .cl .author { grid-template-columns: 72px minmax(0, 1fr); }
+html .cl .author img { width: 72px; height: 72px; }
+
+}
+html .cl .entry { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 10px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text); background: rgba(240,191,0,.14); border: 1px solid rgba(240,191,0,.55); border-radius: 6px; padding: 4px 9px; }
+html .cl .entry svg { width: 13px; height: 13px; flex: none; fill: var(--star); }
+html .cl .entry-support { background: rgba(8,9,10,.6); border-color: var(--border-strong); }
+html .cl .entry-support svg { fill: var(--text-2); }
+html .cl .trip .entry { margin: 2px 0 0; width: fit-content; }
+html .cl [hidden] { display: none !important; }
+html .cl .eyebrow { color: #ff3d33; margin-bottom: 10px; }
+html .cl button, html .cl .btn { text-transform: none; letter-spacing: .02em; }
+html .cl .trip .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+html .cl .trip h3.where { margin-top: 2px; }
+html .cl .head .lede { margin-top: 14px; }
+html .cl .browse { display: flex; flex-wrap: wrap; gap: 8px; }
+html .cl .browse .chip { text-decoration: none; }
+html .cl .browse .chip[aria-current="page"] { background: var(--green); border-color: var(--green); color: #fff; }
+html .cl { background: transparent; }
+html .cl .tgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+html .cl .tcard { display: flex; flex-direction: column; min-width: 0; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+html .cl .tcard:hover { border-color: rgba(0,154,68,.5); }
+html .cl .tcard .ph { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; }
+html .cl .tcard .ph img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.95); transition: transform .5s ease; }
+html .cl .tcard:hover .ph img { transform: scale(1.04); }
+html .cl .tcard .ph .tags { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; margin: 0; }
+html .cl .tcard .tag { display: inline-flex; align-items: center; white-space: nowrap; line-height: 1.2; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.78); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 10px; }
+html .cl .tcard .tag::before { content: ""; flex: none; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
+html .cl .tcard .tag.gravel::before { background: var(--gravel); }
+html .cl .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
+html .cl .tcard .entry { width: fit-content; margin: 0; }
+html .cl .tcard .ph .entry { position: absolute; left: 26px; bottom: 26px; background: rgba(8,9,10,.85); border-radius: 999px; padding: 4px 10px; }
+html .cl .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
+html .cl .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -6px; }
+html .cl .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+html .cl .tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
+html .cl .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: 13px; padding: 5px 11px; }
+html .cl .tcard .meta { margin: 2px 0; }
+html .cl .phero .lede a { color: var(--green-text); font-weight: 600; text-decoration: none; }
+html .cl .phero .lede a:hover { color: #fff; }
+html .cl .tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+html .cl .tcard .desc.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+html .cl .tcard .more-txt { align-self: flex-start; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 0; cursor: pointer; margin-top: -4px; }
+html .cl .tcard .bottom { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); display: grid; gap: 10px; }
+html .cl .tcard .price { font-family: var(--head); font-size: 26px; line-height: 1.1; color: var(--text); }
+html .cl .tcard .price small { display: block; padding: 0; margin: 0 0 8px !important; font-family: var(--body); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+html .cl .tcard .early { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; }
+html .cl .tcard .early.none { visibility: hidden; }
+html .cl .tcard .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+html .cl .tcard .early::before { animation: early-pulse 1.8s ease-in-out infinite; }
+@keyframes early-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(225,6,0,.7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(225,6,0,0); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) {html .cl .tcard .early::before { animation: none; }
+ }
+html .cl .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
+html .cl .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
+@media (max-width: 1100px) {html .cl .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+ }
+@media (max-width: 640px) {html .cl .tgrid { grid-template-columns: minmax(0, 1fr); }
+ }
+
+
+body:has(.cl-page) { overflow-x: hidden; }   /* topo background: set in build_tours_wp.py, same as the homepage */
+body:has(.cl-page) .site-header, body:has(.cl-page) .site-footer { display: none; }
+html .cl h1, html .cl h2, html .cl h3, html .cl h4 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.04; }
+html .cl p, html .cl li, html .cl a, html .cl span, html .cl div, html .cl button { font-family: var(--body); }
+html .cl h1, html .cl h2, html .cl h3, html .cl .price { font-family: var(--head); }
+html .cl h3.where { font-family: var(--body); text-transform: none; }
+
+</style></head><body>
+<title>Cigala Cycling Tours | Europe Bike Tour Operator</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+html .cc {
+  color-scheme: dark;
+  --bg: #08090a; --panel: rgba(15,16,17,.92); --panel-solid: #0f1011; --panel-2: #161718;
+  --panel-grad: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+  --border: rgba(255,255,255,.08); --border-strong: rgba(255,255,255,.14); --wash: rgba(255,255,255,.04);
+  --text: #f7f8f8; --text-2: #d0d6e0; --text-3: #8a8f98; --text-4: #62666d;
+  --green: #009a44; --green-hi: #00b350; --green-text: #34c46a; --green-wash: rgba(0,154,68,.14);
+  --red: #E10600; --gravel: #b9895a; --star: #f0bf00;
+  --head: "Anton", Impact, "Arial Narrow", sans-serif;
+  --body: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 12px;
+}
+html .cc * { box-sizing: border-box; }
+html .cc, html .cc { background: var(--bg); color: var(--text-2); font-family: var(--body); }
+html .cc { margin: 0; font-size: 15px; line-height: 1.6; }
+html .cc ::selection { background: rgba(0,154,68,.45); color: #fff; }
+html .cc a { color: var(--text); text-decoration-color: rgba(255,255,255,.3); text-underline-offset: 3px; }
+html .cc a:hover { color: #fff; text-decoration-color: var(--green); }
+html .cc :focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+html .cc img { display: block; max-width: 100%; }
+html .cc b, html .cc strong { color: var(--text); font-weight: 600; }
+html .cc .in { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+html .cc section { padding-block: 72px 0; }
+html .cc h1, html .cc h2, html .cc h3 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.04; margin: 0; text-wrap: balance; }
+html .cc h1 { font-size: clamp(40px, 7vw, 84px); }
+html .cc h2 { font-size: clamp(30px, 4.6vw, 52px); }
+html .cc h3 { font-size: 24px; }
+html .cc .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--green-text); }
+html .cc .bar { width: 40px; height: 3px; border-radius: 2px; background: var(--green); margin-top: 16px; }
+html .cc .lede { color: var(--text-2); max-width: 62ch; margin: 16px 0 0; font-size: 16px; }
+html .cc .head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; margin-bottom: 30px; }
+html .cc .head > div { min-width: 0; }
+html .cc .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--body); font-weight: 600; font-size: 14px; letter-spacing: .02em; text-decoration: none;
+  border-radius: 8px; padding: 12px 22px; border: 1px solid transparent; cursor: pointer; transition: background .15s, border-color .15s; }
+html .cc .btn-go { background: var(--green); color: #fff; }
+html .cc .btn-go:hover { background: var(--green-hi); color: #fff; }
+html .cc .btn-ghost { background: rgba(8,9,10,.35); color: var(--text); border-color: var(--border-strong); backdrop-filter: blur(4px); }
+html .cc .btn-ghost:hover { border-color: var(--green); color: #fff; }
+html .cc .arrow-link { font-weight: 600; font-size: 14px; color: var(--green-text); text-decoration: none; }
+html .cc .arrow-link:hover { color: #fff; }
+html .cc .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(8,9,10,.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+html .cc .nav .in { display: flex; align-items: center; gap: 18px; padding-block: 10px; }
+html .cc .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
+html .cc .brand img { width: 58px; height: 58px; border-radius: 6px; }
+html .cc .brand-lg img { width: 88px; height: 88px; }
+html .cc .brand span { font-weight: 700; color: var(--text); font-size: 15px; line-height: 1.15; }
+html .cc .brand small { display: block; font-weight: 500; color: var(--text-3); font-size: 11.5px; }
+html .cc .menu { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+html .cc .menu a { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-2); text-decoration: none; padding: 8px 10px; border-radius: 6px; }
+html .cc .menu a:hover { color: #fff; background: var(--wash); }
+html .cc .nav .btn { padding: 9px 16px; font-size: 13px; flex: none; }
+html .cc .burger { display: none; margin-left: auto; }
+html .cc .burger summary { list-style: none; cursor: pointer; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text); border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 14px; }
+html .cc .burger summary::-webkit-details-marker { display: none; }
+html .cc .burger nav { position: absolute; left: 0; right: 0; top: 100%; background: var(--panel-solid); border-bottom: 1px solid var(--border); display: grid; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)); }
+html .cc .burger nav a { padding: 11px 0; border-bottom: 1px solid var(--border); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; }
+html .cc .hero { position: relative; min-height: min(760px, 88svh); display: flex; align-items: flex-end; overflow: hidden; }
+html .cc .hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+html .cc .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,9,10,.25) 0%, rgba(8,9,10,.15) 35%, rgba(8,9,10,.92) 100%); }
+html .cc .hero .in { position: relative; z-index: 1; width: 100%; padding-block: 120px 56px; }
+html .cc .hero h1 { max-width: 16ch; }
+html .cc .hero .eyebrow { color: var(--text); text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+html .cc .hero .lede { color: var(--text); font-size: clamp(15px, 1.6vw, 17px); max-width: 60ch; }
+html .cc .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+html .cc .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--border); border-radius: var(--r); background: var(--panel-grad), var(--panel); margin-top: -1px; }
+html .cc .stat { padding: 22px 20px; border-left: 1px solid var(--border); }
+html .cc .stat:first-child { border-left: 0; }
+html .cc .stat .n { font-family: var(--head); font-size: clamp(34px, 4vw, 48px); line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+html .cc .stat .n i { font-style: normal; color: var(--star); }
+html .cc .stat .l { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-top: 8px; }
+html .cc .stats-wrap { position: relative; z-index: 2; margin-top: -44px; }
+html .cc .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+html .cc .chip { font-family: var(--body); font-size: 12.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+html .cc .chip:hover { color: #fff; border-color: rgba(255,255,255,.3); }
+html .cc .chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+html .cc .tours { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: 16px; }
+html .cc .tour { position: relative; display: flex; flex-direction: column; justify-content: flex-end; aspect-ratio: 4 / 5; max-width: 100%; border-radius: var(--r); overflow: hidden; text-decoration: none; border: 1px solid var(--border); background: var(--panel-solid); isolation: isolate; }
+html .cc .tour img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .5s ease; }
+html .cc .tour::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 25%, rgba(8,9,10,.7) 55%, rgba(8,9,10,.96) 100%); }
+html .cc .tour:hover img { transform: scale(1.04); }
+html .cc .tour:hover { border-color: rgba(0,154,68,.6); }
+html .cc .tag { position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.75); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 10px; }
+html .cc .tag::before, html .cc .chip[data-f]:not([data-f="all"])::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
+html .cc .tag.gravel::before, html .cc .chip[data-f="gravel"]:not([data-f="all"])::before { background: var(--gravel); }
+html .cc .chip[aria-pressed="true"]::before { box-shadow: 0 0 0 1.5px #fff; }
+html .cc .tour .tx { padding: 20px; }
+html .cc .entry { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 10px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text); background: rgba(240,191,0,.14); border: 1px solid rgba(240,191,0,.55); border-radius: 6px; padding: 4px 9px; }
+html .cc .entry svg { width: 13px; height: 13px; flex: none; fill: var(--star); }
+html .cc .entry-support { background: rgba(8,9,10,.6); border-color: var(--border-strong); }
+html .cc .entry-support svg { fill: var(--text-2); }
+html .cc .tour h3 { font-size: 26px; }
+html .cc .tour p { margin: 8px 0 12px; font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
+html .cc .tour .go { font-size: 13px; font-weight: 600; color: var(--green-text); }
+html .cc .center { display: flex; justify-content: center; margin-top: 28px; }
+html .cc .band { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); isolation: isolate; }
+html .cc .band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+html .cc .band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8,9,10,.92) 0%, rgba(8,9,10,.7) 45%, rgba(8,9,10,.15) 100%); }
+html .cc .band .tx { padding: clamp(32px, 6vw, 64px); max-width: 620px; }
+html .cc .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
+html .cc .split.flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+html .cc .photo { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); }
+html .cc .photo img { width: 100%; height: 100%; object-fit: cover; }
+html .cc .story .photo { aspect-ratio: 4 / 5; max-width: 100%; }
+html .cc .quote { font-family: var(--head); text-transform: uppercase; font-size: clamp(24px, 3vw, 34px); line-height: 1.12; color: var(--text); margin: 0 0 22px; }
+html .cc .story p { margin: 0 0 14px; max-width: 62ch; }
+html .cc .sig { color: var(--text); font-weight: 600; margin-top: 18px !important; }
+html .cc .sig span { display: block; font-weight: 500; color: var(--text-3); font-size: 13px; }
+html .cc .why { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+html .cc .why > div { background: var(--panel-solid); padding: 26px 24px; min-width: 0; }
+html .cc .why .num { font-family: var(--head); font-size: 15px; color: var(--green-text); letter-spacing: .06em; }
+html .cc .why h3 { font-size: 22px; margin-top: 10px; }
+html .cc .why p { margin: 8px 0 0; font-size: 14px; color: var(--text-3); }
+html .cc .matteo .photo { background: radial-gradient(circle at 50% 40%, rgba(0,154,68,.22), rgba(8,9,10,0) 65%), var(--panel-solid); aspect-ratio: 1 / 1; max-width: 100%; display: flex; align-items: flex-end; justify-content: center; }
+html .cc .matteo .photo img { width: 92%; height: auto; object-fit: contain; }
+html .cc .creds { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; padding: 0; list-style: none; }
+html .cc .creds li { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--text); border: 1px solid var(--border-strong); background: var(--wash); border-radius: 999px; padding: 5px 12px; }
+html .cc .creds li::before { content: "★"; color: var(--star); margin-right: 6px; }
+html .cc .matteo p { max-width: 62ch; margin: 0 0 14px; }
+html .cc .reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+html .cc .review { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+html .cc .stars { color: var(--star); letter-spacing: 3px; font-size: 14px; }
+html .cc .review h3 { font-size: 20px; }
+html .cc .review p { margin: 0; font-size: 14px; color: var(--text-2); }
+html .cc .who { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-weight: 600; color: var(--text); font-size: 14px; }
+html .cc .who img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+html .cc .who span { display: block; font-weight: 500; color: var(--text-3); font-size: 12.5px; }
+html .cc .guides { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+html .cc .guide { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; text-decoration: none; display: flex; flex-direction: column; min-width: 0; }
+html .cc .guide:hover { border-color: rgba(0,154,68,.6); }
+html .cc .guide .im { aspect-ratio: 16 / 10; max-width: 100%; overflow: hidden; }
+html .cc .guide .im img { width: 100%; height: 100%; object-fit: cover; }
+html .cc .guide .tx { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+html .cc .guide h3 { font-size: 21px; line-height: 1.12; }
+html .cc .guide .go { margin-top: auto; font-size: 13px; font-weight: 600; color: var(--green-text); }
+html .cc .faq { display: grid; gap: 10px; max-width: 860px; }
+html .cc .faq details { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 10px; }
+html .cc .faq summary { cursor: pointer; list-style: none; padding: 16px 20px; font-weight: 600; color: var(--text); display: flex; justify-content: space-between; gap: 16px; }
+html .cc .faq summary::-webkit-details-marker { display: none; }
+html .cc .faq summary::after { content: "+"; color: var(--green-text); font-size: 20px; line-height: 1; }
+html .cc .faq details[open] summary::after { content: "–"; }
+html .cc .faq details p { margin: 0; padding: 0 20px 18px; color: var(--text-2); }
+html .cc .partners { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+html .cc .partners > div { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; min-width: 0; }
+html .cc .logos { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+html .cc .logos span { background: #fff; border-radius: 10px; width: 96px; height: 96px; display: grid; place-items: center; padding: 8px; }
+html .cc .logos img { max-height: 80px; width: auto; }
+html .cc .lab { text-transform: uppercase; font-size: 11px; letter-spacing: .09em; color: var(--text-3); font-weight: 600; }
+html .cc footer { margin-top: 80px; border-top: 1px solid var(--border); background: rgba(8,9,10,.85); }
+html .cc footer .in { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); gap: 28px; padding-block: 44px 28px; }
+html .cc footer .tag-line { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: 22px; line-height: 1.15; margin: 14px 0 0; }
+html .cc footer h4 { margin: 0 0 12px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
+html .cc footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+html .cc footer ul a { text-decoration: none; color: var(--text-2); }
+html .cc footer ul a:hover { color: #fff; }
+html .cc .legal { border-top: 1px solid var(--border); }
+html .cc .legal .in { display: flex; flex-wrap: wrap; gap: 6px 20px; padding-block: 16px; font-size: 12px; color: var(--text-4); grid-template-columns: none; }
+html .cc .hero h1 { font-size: clamp(38px, 5.2vw, 72px); max-width: 22ch; }
+html .cc #tours { scroll-margin-top: 70px; }
+@media (min-width: 901px) {html .cc section#tours { padding-top: 52px; }
+ }
+html .cc #tour-grid .tour p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+html .cc .finder { margin-top: 26px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; align-items: stretch; background: rgba(15,16,17,.9); border: 1px solid var(--border-strong); border-radius: 16px; padding: 8px; gap: 0; max-width: 980px; box-shadow: 0 18px 50px rgba(0,0,0,.45); backdrop-filter: blur(6px); }
+html .cc .fi { display: grid; gap: 2px; padding: 8px 14px; border-right: 1px solid var(--border); min-width: 0; position: relative; }
+html .cc .fi span { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red); }
+html .cc .fi select { appearance: none; -webkit-appearance: none; width: 100%; min-width: 0; font: 600 16px/1.3 var(--body); color: var(--text); background: transparent; border: 0; padding: 2px 18px 2px 0; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, var(--green-text) 50%), linear-gradient(135deg, var(--green-text) 50%, transparent 50%); background-position: right 5px center, right 0 center; background-size: 5px 5px; background-repeat: no-repeat; }
+html .cc .fi select:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; border-radius: 4px; }
+html .cc .fi select option { color: #111; background: #fff; }
+html .cc .finder .btn { margin: 4px; padding: 14px 26px; font-size: 14px; border-radius: 10px; white-space: nowrap; }
+html .cc .dd { position: relative; }
+html .cc .dd-btn { font: 600 12.5px var(--body); letter-spacing: .04em; text-transform: uppercase; color: var(--text-2); background: none; border: 0; padding: 8px 10px; border-radius: 6px; cursor: pointer; }
+html .cc .dd-btn:hover, html .cc .dd:focus-within .dd-btn { color: #fff; background: var(--wash); }
+html .cc .dd-menu { position: absolute; top: 100%; left: 0; min-width: 210px; display: none; padding: 8px; background: var(--panel-solid); border: 1px solid var(--border-strong); border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,.5); z-index: 50; }
+html .cc .dd:hover .dd-menu, html .cc .dd:focus-within .dd-menu, html .cc .dd.open .dd-menu { display: grid; }
+html .cc .dd-menu a { display: block; padding: 9px 12px; }
+html .cc .result { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 0 0 18px; font-weight: 600; color: var(--text-2); }
+html .cc .result #r-count { color: var(--text); }
+html .cc .reset { font: 600 13px var(--body); color: var(--text-2); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+html .cc .reset:hover { color: #fff; }
+html .cc .none { color: var(--text-2); margin: 0 0 18px; }
+html .cc .none a { color: var(--green-text); }
+html .cc .tour .entry { display: flex; width: fit-content; max-width: 100%; white-space: nowrap; font-size: 10.5px; letter-spacing: .05em; background: rgba(8,9,10,.72); backdrop-filter: blur(4px); }
+html .cc .tour .when { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--red); border-radius: 6px; padding: 4px 9px; margin-bottom: 10px; }
+html .cc .tour .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: -4px 0 12px; font-size: 12.5px; font-weight: 600; color: var(--text-3); }
+html .cc .tour[hidden] { display: none; }
+html .cc .who .av { width: 40px; height: 40px; border-radius: 50%; flex: none; display: grid; place-items: center; font-family: var(--head); font-size: 18px; color: #fff; background: var(--green); }
+@media (max-width: 900px) {html .cc .finder { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html .cc .fi:nth-child(2) { border-right: 0; }
+html .cc .fi:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+html .cc .finder .btn { grid-column: 1 / -1; }
+
+}
+@media (max-width: 520px) {html .cc .finder { grid-template-columns: minmax(0, 1fr); padding: 6px; }
+html .cc .fi { border-right: 0; border-bottom: 1px solid var(--border); padding: 10px 12px; }
+html .cc .hero .in { padding-block: 96px 36px; }
+
+}
+html .cc .cc-social { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 0 -10px; }
+html .cc .cc-social a { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; color: var(--text-2, #d0d6e0); text-decoration: none; transition: color .15s, background-color .15s; }
+html .cc .cc-social a:hover, html .cc .cc-social a:active { color: var(--green-text, #34c46a); background: rgba(255,255,255,.04); }
+html .cc .cc-social a:focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 2px; }
+html .cc .cc-social svg { width: 20px; height: 20px; fill: currentColor; display: block; }
+html .cc .who img { border: 2px solid var(--green); }
+html .cc .cc [hidden], html .cc [hidden] { display: none !important; }
+html .cc .eyebrow { color: var(--red-text, #ff3d33); margin-bottom: 10px; }
+html .cc .hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--text); text-shadow: none; background: rgba(8,9,10,.78); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 14px; margin-bottom: 16px; }
+html .cc .hero .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex: none; }
+html .cc .story .quote { margin-bottom: 18px; }
+html .cc .brand img { border-radius: 0; }
+html .cc .story img.signature { display: block; width: 150px; max-width: 45%; height: auto; margin: 22px 0 0 -4px; opacity: .92; }
+html .cc .story img.signature + .sig { margin-top: 6px !important; font-size: 14px; }
+html .cc .story img.signature + .sig span { display: block; font-size: 12.5px; margin-top: 2px; }
+html .cc .burger details.sub { border-bottom: 1px solid var(--border); }
+html .cc .burger details.sub > summary { border: 0; border-radius: 0; background: none; list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 11px 0; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; color: var(--text); }
+html .cc .burger details.sub > summary::-webkit-details-marker { display: none; }
+html .cc .burger details.sub > summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid var(--green-text); border-bottom: 2px solid var(--green-text); transform: rotate(45deg); margin: -4px 4px 0 0; transition: transform .2s; }
+html .cc .burger details.sub[open] > summary::after { transform: rotate(-135deg); margin-top: 4px; }
+html .cc .burger details.sub .sub-links { display: grid; padding: 0 0 8px 14px; border-left: 2px solid var(--border); margin: 0 0 6px 2px; }
+html .cc .burger details.sub .sub-links a { border-bottom: 0; padding: 9px 0; font-size: 12.5px; color: var(--text-2); }
+html .cc .burger details.sub .sub-links a[aria-current="page"] { padding-left: 12px; color: var(--text); }
+html .cc .burger details.sub > summary:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+html .cc .rv-links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+html .cc .why .ico { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
+html .cc .why .ico svg { width: 24px; height: 24px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+html .cc .why h3 { margin-top: 16px; }
+@media (min-width: 901px) {html .cc .hero::after { background: linear-gradient(90deg, rgba(8,9,10,.72) 0%, rgba(8,9,10,.45) 50%, rgba(8,9,10,.2) 100%), linear-gradient(180deg, rgba(8,9,10,.3) 0%, rgba(8,9,10,.2) 40%, rgba(8,9,10,.92) 100%); }
+
+}
+html .cc .hero h1, html .cc .hero .lede { text-shadow: 0 2px 18px rgba(0,0,0,.55); }
+html .cc .finder { margin-bottom: 26px; }
+html .cc #tour-grid .tour img { filter: brightness(.82); }
+html .cc #tour-grid .tour::before { content: ""; position: absolute; inset: 0 0 auto; height: 38%; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,0)); }
+html .cc .stat .n i { font-size: .6em; margin-left: .14em; vertical-align: .38em; }
+html .cc .story p { margin-bottom: 16px; }
+html .cc .band .tx .eyebrow + h2, html .cc .band .tx h2 + .bar { margin-top: 0; }
+html .cc .fi select:focus, html .cc .fi select:focus-visible { outline: none; }
+html .cc .fi:focus-within { box-shadow: inset 0 0 0 2px var(--green); border-radius: 10px; }
+html .cc .tour .facts span { white-space: nowrap; }
+html .cc .tour .facts span:not(:last-child)::after { content: "·"; margin-left: 12px; color: var(--red); font-weight: 700; }
+html .cc .matteo .photo { background: none; aspect-ratio: auto; position: relative; display: flex; justify-content: center; align-items: flex-end; isolation: isolate; }
+html .cc .matteo .photo::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }
+html .cc .matteo .photo img { width: 100%; max-width: 480px; height: auto; -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, #000 82%, transparent 100%); }
+html .cc section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; border: 0; border-radius: 0; background: none; }
+@media (max-width: 900px) {html .cc .finder { margin-bottom: 30px; }
+html .cc section.matteo .in .photo img { width: 100%; max-width: 340px; }
+
+}
+html .cc #tour-grid .tour { aspect-ratio: auto; min-height: 380px; }
+html .cc #tour-grid .tour .tx { padding-top: 58px; padding-bottom: 18px; }
+html .cc #tour-grid .tour p { margin: 6px 0 10px; }
+@media (min-width: 1100px) {html .cc #tour-grid .tour .facts { margin-bottom: 8px; }
+ }
+@media (max-width: 1080px) {html .cc .menu { display: none; }
+html .cc .burger { display: block; }
+html .cc .nav .btn { display: none; }
+ }
+@media (max-width: 900px) {html .cc .split, html .cc .split.flip { grid-template-columns: minmax(0, 1fr); }
+html .cc .why, html .cc .reviews, html .cc .guides, html .cc .partners { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+html .cc footer .in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+html .cc footer .in > div:first-child { grid-column: 1 / -1; }
+html .cc .story .photo { aspect-ratio: 16 / 11; }
+html .cc .matteo .photo { aspect-ratio: 4 / 3; }
+
+}
+@media (max-width: 640px) {html .cc .stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+html .cc .stat:nth-child(3) { border-left: 0; }
+html .cc .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+html .cc .why, html .cc .reviews, html .cc .guides, html .cc .partners { grid-template-columns: minmax(0, 1fr); }
+html .cc .band::after { background: linear-gradient(180deg, rgba(8,9,10,.55), rgba(8,9,10,.92)); }
+html .cc section { padding-block: 56px 0; }
+html .cc .tour { aspect-ratio: 4 / 3.4; }
+html .cc .hero::after { background: linear-gradient(180deg, rgba(8,9,10,.3) 0%, rgba(8,9,10,.55) 40%, rgba(8,9,10,.95) 100%); }
+
+}
+@media (prefers-reduced-motion: reduce) {html .cc .tour img { transition: none; }
+html .cc .tour:hover img { transform: none; }
+ }
+
+</style>
+
+<div class="topo" aria-hidden="true"></div>
+<div class="page">
+
+
+
+<div class="cc"><header class="nav">
+  <div class="in">
+    <a class="brand" href="https://tours.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo.png" alt="Cigala Cycling Tours home" width="58" height="58"></a>
+    <nav class="menu" aria-label="Main">
+      <a href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">About</a>
+      <a href="https://tours.cigalacycling.com/destinations/" target="_blank" rel="noopener">Destinations</a>
+      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Bike tours <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All Tours</a><a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road Tours</a><a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel Tours</a><a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo Tours</a><a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian Tours</a></div></div>
+      <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a>
+      <a href="https://tours.cigalacycling.com/guides/" target="_blank" rel="noopener">Guides</a>
+      <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching</a>
+      <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a>
+      <a href="https://tours.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Reviews</a>
+      <a href="https://tours.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
+    </nav>
+    <a class="btn btn-go" href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">Find a tour</a>
+    <details class="burger" id="menu-mobile">
+      <summary>Menu</summary>
+      <nav aria-label="Main (mobile)">
+        <a href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">About us</a>
+        <a href="https://tours.cigalacycling.com/destinations/" target="_blank" rel="noopener">Destinations</a>
+        <details class="sub"><summary>Bike tours</summary><div class="sub-links">
+            <a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All Tours</a>
+            <a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road Tours</a>
+            <a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel Tours</a>
+            <a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo Tours</a>
+            <a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian Tours</a>
+          </div></details>
+        <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a>
+        <a href="https://tours.cigalacycling.com/guides/" target="_blank" rel="noopener">Cycling guides</a>
+        <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching</a>
+        <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a>
+        <a href="https://tours.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a>
+        <a href="https://tours.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
+      </nav>
+    </details>
+  </div>
+</header></div>
+<div class="cl cl-page">
+<div class="hero phero">
+  <img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-01119885-2000.webp" alt="Cyprus Crossing Gravel">
+  <div class="in">
+    <div class="crumbs"><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Home</a> / Destinations</div>
+    <div class="pill-eyebrow">Where we ride</div>
+    <h1>DESTINATIONS</h1>
+    <div class="bar"></div>
+    <div class="lede"><p>What began on the shores of Lake Garda over 10 years ago has grown into unforgettable cycling adventures across Europe. <br />Every destination is carefully selected for its incredible riding, authentic culture, and local connections, giving you an experience that goes far beyond the bike.</p></div>
+    <div class="ctas"><a class="btn btn-go" href="#country">Explore countries</a><a class="btn btn-ghost" href="#region">Explore regions</a></div>
+  </div>
+</div>
+<section id="country" style="padding-top:44px">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Countries</div><h2>Browse by Country</h2><div class="bar"></div></div></div>
+    <div class="dgrid"><a class="dcard" href="/destinations/italy/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-dji_fly_20240907_110658_337_1725700120818_photo_optimizedm-900.webp" alt="Lake Garda Is Italy&#x27;s Best-Kept Cycling Secret" loading="lazy"><div class="tx"><h2>Italy</h2><span class="go">View destination →</span></div></a><a class="dcard" href="/destinations/france/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-1700103-1-900.webp" alt="Col du Galibier Epic Climb in France" loading="lazy"><div class="tx"><h2>France</h2><span class="go">View destination →</span></div></a><a class="dcard" href="/destinations/slovenia/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-neven-krcmarek-pOWBHdgy1Lo-unsplash-900.webp" alt="Slovenia Bike Tours | Cigala Cycling" loading="lazy"><div class="tx"><h2>Slovenia</h2><span class="go">View destination →</span></div></a><a class="dcard" href="/destinations/croatia/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-1750278-900.webp" alt="About Cigala Cycling Tours (Croatia)" loading="lazy"><div class="tx"><h2>Croatia</h2><span class="go">View destination →</span></div></a><a class="dcard" href="/destinations/portugal/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-22T234826.667-900.webp" alt="Algarve &amp; Gran Fondo Cigala Cycling Tours" loading="lazy"><div class="tx"><h2>Portugal</h2><span class="go">View destination →</span></div></a><a class="dcard" href="/destinations/spain/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-480481477_1037993688345924_4923622361467358111_n-900.webp" alt="Cycling Spain Bike Tours" loading="lazy"><div class="tx"><h2>Spain</h2><span class="go">View destination →</span></div></a><a class="dcard" href="/destinations/cyprus/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-imgi_22_jksq1_abH7SzBII_9LJI4w09GOh2nxkiSFkc3RwVx9dcAGr6T1b66HJ-O_KTruBQ9CH2O5FbGMRZ627fMenRel5ZsRo_pQs1600-900.webp" alt="Cyprus Crossing Gravel Cigala Cycling Tours" loading="lazy"><div class="tx"><h2>Cyprus</h2><span class="go">View destination →</span></div></a><a class="dcard" href="/destinations/switzerland/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-Furka-Pass-900.webp" alt="Furka Pass" loading="lazy"><div class="tx"><h2>Switzerland</h2><span class="go">View destination →</span></div></a><a class="dcard" href="/destinations/ireland/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-78-900.webp" alt="Two cyclists high-fiving on a scenic Irish road - Cigala Cycling Tours" loading="lazy"><div class="tx"><h2>Ireland</h2><span class="go">View destination →</span></div></a><a class="dcard" href="/destinations/greece/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-tania-mousinho-vF0l0bqLRKY-unsplash-900.webp" alt="Greece Bike Tours" loading="lazy"><div class="tx"><h2>Greece</h2><span class="go">View destination →</span></div></a><a class="dcard" href="/trips/tour-of-flanders-experience/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-imgi_41_rI0K-AnY0mZm5pfRkVmG4uZ9O4s7Nq4ipNG6AcfxxqZKB7_ciFol067y9ILnc9Qr4meLtQ-fpAM3abdgwgzRAjkQdYUNbess1600-900.webp" alt="Cyclists riding on cobbles - Cigala Cycling Tours" loading="lazy"><div class="tx"><h2>Belgium</h2><span class="go">View destination →</span></div></a></div>
+  </div>
+</section>
+<section id="region">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Regions</div><h2>Browse by Region</h2><div class="bar"></div></div></div>
+    <div class="regions"><a class="panel region" href="/destinations/tuscany/"><h2>Tuscany</h2><span>View →</span></a><a class="panel region" href="/destinations/lake-garda/"><h2>Lake Garda</h2><span>View →</span></a><a class="panel region" href="/destinations/alps-dolomites/"><h2>Alps &amp; Dolomites</h2><span>View →</span></a><a class="panel region" href="/destinations/french-alps/"><h2>French Alps</h2><span>View →</span></a><a class="panel region" href="/destinations/algarve/"><h2>Algarve</h2><span>View →</span></a><a class="panel region" href="/destinations/pyrenees/"><h2>Pyrenees</h2><span>View →</span></a><a class="panel region" href="/destinations/lake-como/"><h2>Lake Como</h2><span>View →</span></a><a class="panel region" href="/destinations/corsica/"><h2>Corsica</h2><span>View →</span></a><a class="panel region" href="/destinations/girona/"><h2>Girona</h2><span>View →</span></a><a class="panel region" href="/destinations/sardinia/"><h2>Sardinia</h2><span>View →</span></a><a class="panel region" href="/destinations/costa-blanca/"><h2>Costa Blanca</h2><span>View →</span></a><a class="panel region" href="/destinations/sicily/"><h2>Sicily</h2><span>View →</span></a><a class="panel region" href="/destinations/mallorca/"><h2>Mallorca</h2><span>View →</span></a><a class="panel region" href="/destinations/gran-canaria/"><h2>Gran Canaria</h2><span>View →</span></a><a class="panel region" href="/destinations/puglia/"><h2>Puglia</h2><span>View →</span></a><a class="panel region" href="/destinations/tenerife/"><h2>Tenerife</h2><span>View →</span></a></div>
+  </div>
+</section>
+<section>
+  <div class="in">
+    <div class="band">
+      <img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-332036421_877719643481163_4127674464832187461_n-1600.webp" alt="Cycling Tenerife" loading="lazy">
+      <div class="tx">
+        <div class="eyebrow">Every destination</div>
+        <h2>YOUR ULTIMATE CYCLING HOLIDAY</h2>
+        <div class="bar"></div>
+        <div class="lede"><p>We have selected the most beautiful cycling locations with a rich heritage, local culture and cuisine and combined them with amazing cycling routes to ensure that your vacation will be truly unforgettable.</p></div>
+        <div class="ctas"><a class="btn btn-go" href="/trips/">View all trips →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="in">
+    <div class="band">
+      <img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-20-1600.webp" alt="Cyclists by Lake Garda | Cigala Cycling Tours" loading="lazy">
+      <div class="tx">
+        <div class="eyebrow">Your dates, your group</div>
+        <h2>PRIVATE/CUSTOM TOURS</h2>
+        <div class="bar"></div>
+        <div class="ctas"><a class="btn btn-go" href="/trips/private-trips/">Find out more →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="cc cc-page"><section>
+  <div class="in">
+    <div class="head">
+      <div><div class="eyebrow">What our riders say</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING TOURS</h2><div class="bar"></div></div>
+      <div class="rv-links"><a class="arrow-link" href="https://share.google/WNvIKe4CJP8CnL8ns" target="_blank" rel="noopener">★ Read our reviews on Google →</a><a class="arrow-link" href="/testimonials/">All testimonials →</a></div>
+    </div>
+    <div class="reviews">
+      <article class="review"><div class="stars" role="img" aria-label="5 stars">★★★★★</div><p>This was my first cycling trip, and I was depending on Cigala Tours to make it a good one. They did not disappoint. Matteo, Marine and company were fantastic, putting together a great itinerary and making sure that everyone had a wonderful time. And if you haven’t been to Lake Garda, you have to go; it’s beautiful.</p><div class="who"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-steve.webp" alt="Person smiling while riding a celeste-colored Bianchi road bicycle" loading="lazy"><div>Steve<span>Canada · Lake Garda</span></div></div></article>
+      <article class="review"><div class="stars" role="img" aria-label="5 stars">★★★★★</div><p>Had a wonderful tour with Cigala in the French Alps in June 2025. I just showed up ready to pedal and they took care of the rest: excellent rental bikes, phenomenal routes with stunning views, gracious accommodations and delicious food with local charm. As an added bonus, Matteo captures the action with amazing photos.</p><div class="who"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-hank.webp" alt="Cycling Alps Cigala Cycling" loading="lazy"><div>Hank<span>USA · French Alps</span></div></div></article>
+      <article class="review"><div class="stars" role="img" aria-label="5 stars">★★★★★</div><p>The riding was spectacular, the scenery was out of this world, the food was amazing and everything ran so smoothly that all we had to do was enjoy ourselves. You can tell this isn’t just a business for them, it’s something they genuinely love.</p><div class="who"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-william.webp" alt="Person wearing a white Cigala Cycling jersey paired with grey Van Rysel bib shorts and a white helmet" loading="lazy"><div>William<span>Ireland · Italy</span></div></div></article>
+      <article class="review"><div class="stars" role="img" aria-label="5 stars">★★★★★</div><p>Very well organised from the very first contact. Marine or Matteo rode with us each day and captured the best moments with hundreds of photos. A special thanks to Alessio, the driver of the support vehicle and bike mechanic.</p><div class="who"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-andreas.webp" alt="Isaac del Toro wearing a special pink jersey during the 2025 Giro d'Italia" loading="lazy"><div>Andreas<span>Mexico · Italian mountains</span></div></div></article>
+      <article class="review"><div class="stars" role="img" aria-label="5 stars">★★★★★</div><p>A perfect blend of epic cycling alongside enjoying the best of Italian cuisine and culture. Tapping into Team Cigala knowledge and support maximises the fun and is great value. I’ll be back for more.</p><div class="who"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-fraser.webp" alt="Cyclist wearing a Cigala Cycling branded white technical jersey with Italian flag" loading="lazy"><div>Fraser<span>Scotland</span></div></div></article>
+      <article class="review"><div class="stars" role="img" aria-label="5 stars">★★★★★</div><p>I have gone on a number of trips organised by Cigala Cycling Tours and they have been fantastic. Matteo pays attention to every last detail, from logistics, food and accommodation to the spectacular routes.</p><div class="who"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-mike.webp" alt="Person wearing a POC Essential Road Light Jersey in azurite multi blue" loading="lazy"><div>Mike<span>Ireland · repeat guest</span></div></div></article>
+    </div>
+  </div>
+</section></div>
+<section>
+  <div class="in partners">
+    <div class="panel"><h2 class="lab">Official tour operator</h2><div class="logos"><span><img src="img/logo-mdd.png" alt="Logo Maratona Dles Dolomites" loading="lazy"></span></div></div>
+    <div class="panel"><h2 class="lab">Official event entry packages</h2><div class="logos"><span><img src="img/logo-lombardia.png" alt="Gran Fondo Il Lombardia logo" loading="lazy"></span><span><img src="img/logo-strade.png" alt="Strade Bianche Gran Fondo logo" loading="lazy"></span></div></div>
+    <div class="panel"><h2 class="lab">Event day support</h2><div class="logos"><span><img src="img/logo-algarve.png" alt="Algarve Granfondo logo" loading="lazy"></span><span class="fill"><img src="img/logo-wrf.png" alt="We Ride Flanders logo" loading="lazy"></span></div></div>
+  </div>
+</section>
+</div>
+<div class="cc"><footer>
+  <div class="in">
+    <div>
+      <a class="brand brand-lg" href="https://tours.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo.png" alt="Cigala Cycling Tours" width="88" height="88"></a>
+      <p class="tag-line">Memorable adventures. New friends.<br>Shared passion. Lifetime experience.</p>
+    </div>
+    <div>
+      <h4>Tours</h4>
+      <ul>
+        <li><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom Tours</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li>tours@cigalacycling.com</li>
+        <li>+353 40478107</li>
+        <li><a href="https://share.google/WNvIKe4CJP8CnL8ns" target="_blank" rel="noopener">★ Google reviews</a></li>
+      </ul>
+      <div class="cc-social"><a href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a><a href="https://www.instagram.com/cigalacycling/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a><a href="https://www.facebook.com/CigalaCycling/" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg></a><a href="https://www.youtube.com/@cigalacycling" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a><a href="https://www.tiktok.com/@cigalacycling" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a><a href="https://x.com/CigalaCycling" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X (Twitter)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg></a><a href="https://www.threads.com/@cigalacycling" target="_blank" rel="noopener" aria-label="Threads" title="Threads"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg></a></div>
+    </div>
+  </div>
+  <div class="legal"><div class="in">
+    <span>© 2026 Cigala Cycling Tours Ltd · Registered in Ireland No. 780307 · VAT IE4385007EH</span>
+    <a href="https://tours.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">Refund/cancellation policy &amp; terms</a>
+  </div></div>
+</footer></div>
+</div>
+
+
+
+</body></html>
