@@ -65,14 +65,14 @@ def cards(items, cls='sv-cards'):
     """items: (icon, title, text)"""
     return f'<ul class="{cls}">' + ''.join(f'<li>{ic(I[i])}<h3 class="h-sm">{t}</h3><p>{x}</p></li>' for i, t, x in items) + '</ul>'
 
-def enquiry(eyebrow, title, lede, side, subject, msg):
+def enquiry(eyebrow, title, lede, side, subject, msg, tag='h3'):
     """the live Elementor form on the right, `side` on the left (build_coaching_wp swaps the static form for the live one)"""
     return f'''<section id="contact" data-subject="{E(subject)}" data-msg="{E(msg)}">
   <div class="in split">
     <!--side--><div class="sv-side">{side}</div><!--/side-->
     <div>
       <div class="eyebrow">{eyebrow}</div>
-      <h3 class="h-sec">{title}</h3>
+      <{tag} class="h-sec">{title}</{tag}>
       <div class="bar"></div>
       <p class="lede">{lede}</p>
       <form class="form panel" method="post" action="#" onsubmit="return false">
@@ -492,6 +492,195 @@ def clubtalk():
     build('club-talk', '/club-talk/', MAIN, 'Club talks redesigned: Matteo presenting, formats, topics, quote form.',
           h1='Club information days, coaching nights, Q&A, group coaching sessions and more', extra_css=G.GCSS + CSS)
 
+# ------------------------------------------------------------------ talent programme
+# Marco B.'s best power, one year apart (his case study, from his Vekta data): seconds -> (before, after)
+PD = [(15, 728, 852), (30, 505, 628), (180, 292, 325), (300, 271, 292), (600, 242, 263), (1200, 222, 236), (3600, 204, 211)]
+def pd_chart():
+    import math
+    W, H, L, Rr, Tt, B = 760, 360, 56, 92, 20, 44
+    x = lambda t: L + (math.log(t) - math.log(15)) / (math.log(3600) - math.log(15)) * (W - L - Rr)
+    y = lambda w: Tt + (900 - w) / (900 - 150) * (H - Tt - B)
+    lab = {15: '15 s', 30: '30 s', 180: '3 min', 300: '5 min', 600: '10 min', 1200: '20 min', 3600: '60 min'}
+    grid = ''.join(f'<line x1="{L}" x2="{W - Rr}" y1="{y(w):.1f}" y2="{y(w):.1f}" class="pd-grid"/><text x="{L - 8}" y="{y(w) + 4:.1f}" class="pd-ax" text-anchor="end">{w}</text>' for w in (200, 400, 600, 800))
+    xt = ''.join(f'<text x="{x(t):.1f}" y="{H - B + 20}" class="pd-ax" text-anchor="middle">{lab[t]}</text>' for t, _, _ in PD)
+    def line(i, cls):
+        pts = ' '.join(f'{x(t):.1f},{y(v[i - 1]):.1f}' for t, *v in PD)
+        dots = ''.join(f'<circle cx="{x(t):.1f}" cy="{y(v[i - 1]):.1f}" r="4" class="{cls}-dot"/>' for t, *v in PD)
+        return f'<polyline points="{pts}" class="{cls}"/>{dots}'
+    end = PD[-1]
+    labels = (f'<text x="{x(3600) + 10:.1f}" y="{y(end[2]) - 6:.1f}" class="pd-lab pd-lab-b">Year 2</text>'
+              f'<text x="{x(3600) + 10:.1f}" y="{y(end[1]) + 14:.1f}" class="pd-lab pd-lab-a">Year 1</text>')
+    hits = ''.join(f'<rect x="{x(t) - 22:.1f}" y="{Tt}" width="44" height="{H - Tt - B}" class="pd-hit" data-x="{x(t):.1f}" data-t="{lab[t]}" data-a="{a}" data-b="{b}" data-d="{b - a:+d}"/>' for t, a, b in PD)
+    svg = (f'<svg class="pd-svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pd-t">'
+           f'<title id="pd-t">Best power from 15 seconds to 60 minutes, one year apart: higher at every duration in year 2</title>'
+           f'{grid}{xt}<line x1="{L}" x2="{W - Rr}" y1="{H - B}" y2="{H - B}" class="pd-base"/>'
+           f'<line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{line(1, "pd-a")}{line(2, "pd-b")}{labels}{hits}</svg>')
+    rows = ''.join(f'<tr><td>{lab[t]}</td><td>{a} W</td><td>{b} W</td><td>{b - a:+d} W</td></tr>' for t, a, b in PD)
+    return f'''<figure class="pd panel">
+      <div class="pd-top"><div><b class="pd-title">Power-duration profile</b><span>Best power, watts · Marco B., road &amp; gravel racer</span></div>
+        <div class="pd-leg"><span><i class="pd-sw pd-sw-a"></i>Year 1</span><span><i class="pd-sw pd-sw-b"></i>Year 2 with Matteo</span></div></div>
+      <div class="pd-wrap">{svg}<div class="pd-tip" hidden></div></div>
+      <figcaption>Higher at every duration: +124 W in the 15-second sprint, +33 W over 3 minutes, +14 W over 20 minutes. <a href="{C}/case-studies/#marco" {EXT}>Read Marco’s case study →</a></figcaption>
+      <details class="pd-tbl"><summary>See the numbers</summary><table><thead><tr><th>Duration</th><th>Year 1</th><th>Year 2</th><th>Change</th></tr></thead><tbody>{rows}</tbody></table></details>
+    </figure>'''
+PD_JS = """<script>(function(){document.querySelectorAll('.pd-wrap').forEach(function(w){var tip=w.querySelector('.pd-tip'),cr=w.querySelector('.pd-cross'),svg=w.querySelector('svg');
+w.querySelectorAll('.pd-hit').forEach(function(h){function on(){var x=+h.dataset.x;cr.setAttribute('x1',x);cr.setAttribute('x2',x);cr.style.opacity=1;
+tip.innerHTML='<b>'+h.dataset.t+'</b><span><i class=\\"pd-sw pd-sw-a\\"></i>Year 1: '+h.dataset.a+' W</span><span><i class=\\"pd-sw pd-sw-b\\"></i>Year 2: '+h.dataset.b+' W</span><em>'+h.dataset.d+' W</em>';
+var r=svg.getBoundingClientRect(),px=x/760*r.width;tip.hidden=false;tip.style.left=Math.min(Math.max(px-70,0),r.width-150)+'px';}
+function off(){tip.hidden=true;cr.style.opacity=0;}h.addEventListener('mouseenter',on);h.addEventListener('mouseleave',off);h.addEventListener('click',on);});});})();</script>"""
+
+def talent():
+    T_ = open(ROOT + 'coaching/text/talent-scout.txt').read()
+    blk = lambda a, b: re.search(re.escape(a) + r'\n(?:H4|H3): (.*?)\n(?=H[23]:|<img|$)', T_, re.S).group(1).strip()
+    what = blk('H3: What is the Cigala Cycling Talent Programme?', '').replace('It is coaching relationship', 'It is a coaching relationship')
+    helpme = blk('H3: How the programme can help me?', '').replace('A&J all sports', 'A&J AllSports')
+    start = blk('H3: What do I need to do to get started?', '').replace('a Skype interview', 'a video call')
+    cost = blk("H3: What's the cost?", '').replace('\nSee the Advanced Package', '')
+    scout = re.search(r'H2: We are a Talent Scout\nH3: (.*?)\n', T_).group(1)
+    aj = re.search(r'H2: TALENT SCOUT\nH3: (.*?)\nH2:', T_, re.S).group(1).replace('mange', 'manage').replace('A&j', 'A&J').replace('to taking care', 'to take care')
+    wins = [w.strip() for w in re.search(r'H2: RACES WON BY ATHLETES WITH A&J\nH3: (.*)', T_, re.S).group(1).replace('​', '').replace('Tour De\n France', 'Tour De France').split('\n') if w.strip()]
+    FIX = {'Jerserys': 'Jerseys', 'Tour Deuphine': 'Critérium du Dauphiné', 'Tour De France': 'Tour de France', "Giro D'Italia": "Giro d'Italia", 'Giro Di Lombardia': 'Il Lombardia', 'Tour De Suisse': 'Tour de Suisse', 'Liege-Bastogne-Liege': 'Liège-Bastogne-Liège'}
+    def fx(w):
+        for a, b in FIX.items(): w = w.replace(a, b)
+        return w
+    wins = [fx(w) for w in wins]
+    def win(w):
+        m = re.match(r'(\d+)\s*x\s*(.*)', w)
+        return f'<li><b>{m.group(1)}×</b><span>{E(m.group(2))}</span></li>' if m else f'<li><b>All</b><span>{E(w[4:] if w.startswith("All ") else w)}</span></li>'
+    wins_html = '<ul class="tl-wins">' + ''.join(win(w) for w in wins) + '</ul>'
+    para = lambda t: ''.join(f'<p>{E(x.strip())}</p>' for x in t.split('\n') if x.strip())
+    LOOK = [('chart', 'Power profile', 'Best power from a 5-second sprint to an hour, compared with what riders at the next level produce.'),
+            ('power', 'Critical Power &amp; W′', 'How much you can sustain, and how many hard efforts you have in the tank.'),
+            ('clock', 'Durability', 'The power you still have after hours of racing: where races are won.'),
+            ('target', 'Race files', 'Every race analysed: where you lost time, where you can win.'),
+            ('heart', 'Recovery &amp; load', 'Training load, sleep and recovery, so you improve without burning out.'),
+            ('star', 'Year-on-year progression', 'The numbers that show a team you are on the way up.')]
+    faq_items = [('What is the Cigala Cycling Talent Programme?', E(what)), ('How can the programme help me?', '<br>'.join(E(x) for x in helpme.split('\n'))),
+                 ('What do I need to do to get started?', '<br>'.join(E(x) for x in start.split('\n'))),
+                 ("What's the cost?", '<br>'.join(E(x) for x in cost.split('\n')) + f' <a href="{C}/individual-packages/" {EXT}>See the Advanced Package</a>')]
+    faq_html, faq_ld = faq(faq_items)
+    side = f'''{photo('imgi_17_zCRmNmCA', 'talent-coaching-session', cls='photo rider', pos='50% 35%')}
+      <ul class="sv-facts">
+        <li>{ic(I['user'])}<span>For riders aged 15 to 22</span></li>
+        <li>{ic(I['chat'])}<span>A video call or face to face interview might be requested before getting started</span></li>
+        <li>{ic(I['star'])}<span>Limited availability</span></li>
+      </ul>'''
+    MAIN = f'''<div class="hero hero-sm tl-hero">
+  <img src="{img('imgi_17_JKPi1bTj', 'talent-hero-ras')}" alt="{E(live_alt('imgi_17_JKPi1bTj'))}" style="object-position:60% 30%">
+  <div class="in">
+    <div class="eyebrow eb-pill"><span class="dot"></span>Ages 15–22 · Talent scout for A&amp;J AllSports</div>
+    <h1>Cigala Cycling Talent Programme</h1>
+    <p class="lede">For young riders who want to turn professional: coached by Matteo Cigala, measured against the numbers of the pro level, and seen by the teams that matter.</p>
+    <div class="ctas"><a class="btn btn-go" href="#contact">Apply to the programme</a><a class="btn btn-ghost" href="#data">How we find talent ↓</a></div>
+  </div>
+</div>
+
+<section>
+  <div class="in split">
+    <div class="gn-txt">
+      <div class="eyebrow">Our aim</div>
+      <h2>We are a Talent Scout</h2><div class="bar"></div>
+      <p class="tl-big">{E(scout)}</p>
+      <p>{E(what)}</p>
+    </div>
+    <div class="photo gn-png tl-aj"><img src="{img('T161857.829', 'talent-aj-allsports')}" alt="{E(live_alt('T161857.829'))}" loading="lazy"></div>
+  </div>
+</section>
+
+<section id="data">
+  <div class="in">
+    {head('How we find talent', 'THE DATA BEHIND THE TALENT')}
+    <p class="sv-lede">Turning pro is not just about numbers, but the numbers open the door. Matteo analyses every ride and race file to see where a rider is today, how fast they are improving, and how far they are from the level the teams look for.</p>
+    {pd_chart()}
+    {cards(LOOK)}
+  </div>
+</section>
+
+<section>
+  <div class="in split">
+    {photo('imgi_22_unnamed', 'talent-race-data', 'Matteo Cigala analysing race data on a laptop in a team car', pos='50% 40%')}
+    <div class="gn-txt">
+      <div class="eyebrow">A&amp;J AllSports</div>
+      <h2>TALENT SCOUT</h2><div class="bar"></div>
+      {para(aj)}
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    {head('The agency’s riders', 'RACES WON BY ATHLETES WITH A&amp;J')}
+    {wins_html}
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    {head('From application to coaching', 'HOW IT WORKS', 'h3')}
+    <ol class="ts-steps">
+      <li><span class="ts-n">1</span><div><h3 class="h-sm">Apply</h3><p>Contact us at info@cigalacycling.com or with the form below to state your interest in the programme.</p></div></li>
+      <li><span class="ts-n">2</span><div><h3 class="h-sm">Interview</h3><p>If we have availability, a video call or face to face interview might be requested.</p></div></li>
+      <li><span class="ts-n">3</span><div><h3 class="h-sm">Sign up</h3><p>We send you the link to sign up to the Advanced Package at the talent price.</p></div></li>
+      <li><span class="ts-n">4</span><div><h3 class="h-sm">Train &amp; race</h3><p>Coached by Matteo, with your data analysed and your progress shared with the right people at the right time.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    {head('Good to know', 'FREQUENTLY ASKED QUESTIONS')}
+    {faq_html}
+  </div>
+</section>
+
+{enquiry('Apply to the programme', "LET'S WORK TOGETHER", 'Tell us about you: age, club, results so far and your goals. If we have availability, we will send you the link to sign up.',
+         side, 'Talent Programme application (Coaching website)', 'Age, club, results so far and goals *', tag='h2')}'''
+    build('talent-scout', '/talent-scout/', MAIN, 'Talent Programme redesigned: the scout and A&J, a real power-duration chart, what Matteo analyses, wins, how it works, FAQ.',
+          h1='Cigala Cycling Talent Programme', h2_changes={'add': ['THE DATA BEHIND THE TALENT']}, extra_css=G.GCSS + CSS + TL_CSS, extra_js=faq_ld + PD_JS)
+
+TL_CSS = """<style>
+.tl-hero { min-height: min(560px, 74svh); }
+.tl-big { font-size: 18px !important; color: var(--text) !important; font-weight: 600; }
+.tl-aj { background: #fff; border-radius: 14px; display: grid; place-items: center; aspect-ratio: 16 / 9; }
+.tl-aj img { width: 70%; height: auto; object-fit: contain; }
+.pd { margin: 0 0 22px; padding: 22px; display: grid; gap: 14px; }
+.pd-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 20px; }
+.pd-top > div:first-child { display: grid; gap: 2px; }
+.pd-title { font: 400 24px/1.1 var(--head); text-transform: uppercase; color: var(--text); }
+.pd-top span { color: var(--text-3); font-size: 13px; }
+.pd-leg { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--text-2); }
+.pd-leg span { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2) !important; }
+.pd-sw { display: inline-block; width: 18px; height: 0; border-top: 2px solid #2fae5f; }
+.pd-sw-a { border-top: 2px dashed #5f86c9; }
+.pd-wrap { position: relative; overflow-x: auto; scrollbar-width: thin; }
+@media (max-width: 640px) { .pd-svg { min-width: 600px; } }
+.pd-svg { width: 100%; height: auto; display: block; }
+.pd-grid { stroke: rgba(255,255,255,.07); stroke-width: 1; }
+.pd-base { stroke: rgba(255,255,255,.25); stroke-width: 1; }
+.pd-ax { fill: #8a8f98; font: 500 12px var(--body); }
+.pd-a { fill: none; stroke: #5f86c9; stroke-width: 2; stroke-dasharray: 6 5; }
+.pd-b { fill: none; stroke: #2fae5f; stroke-width: 2.5; }
+.pd-a-dot { fill: #5f86c9; stroke: #0f1011; stroke-width: 2; }
+.pd-b-dot { fill: #2fae5f; stroke: #0f1011; stroke-width: 2; }
+.pd-lab { font: 700 12px var(--body); fill: #d0d6e0; }
+.pd-cross { stroke: rgba(255,255,255,.35); stroke-width: 1; opacity: 0; }
+.pd-hit { fill: transparent; cursor: crosshair; }
+.pd-tip { position: absolute; top: 6px; width: 150px; padding: 10px 12px; border-radius: 10px; background: rgba(8,9,10,.95); border: 1px solid rgba(255,255,255,.14); display: grid; gap: 4px; font-size: 13px; color: var(--text-2); pointer-events: none; }
+.pd-tip b { color: var(--text); }
+.pd-tip span { display: flex; align-items: center; gap: 6px; }
+.pd-tip em { font-style: normal; font-weight: 700; color: var(--text); }
+.pd figcaption { color: var(--text-2); font-size: 14px; }
+.pd figcaption a { color: var(--green-text); }
+.pd-tbl summary { cursor: pointer; color: var(--green-text); font-size: 13px; font-weight: 600; }
+.pd-tbl table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; color: var(--text-2); }
+.pd-tbl th, .pd-tbl td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+.pd-tbl th { color: var(--text); }
+.tl-wins { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.tl-wins li { padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel-grad), var(--panel); display: grid; gap: 2px; }
+.tl-wins b { font: 400 30px/1 var(--head); color: var(--green-text); }
+.tl-wins span { color: var(--text); font-weight: 600; font-size: 14px; }
+</style>"""
+
 CSS = '''<style>
 #formats h2 a { color: var(--text) !important; font: inherit; text-decoration: none; }
 #formats h2 a:hover { color: var(--green-text) !important; }
@@ -578,7 +767,7 @@ a.ct-card:hover { border-color: rgba(0,154,68,.7); }
 .ts-pro b { color: var(--text); }
 </style>'''
 
-PAGES = {'contact': contact, 'book-1-on-1-session': book, 'bike-fitting': bikefit, 'testing': testing, 'about2': about2, 'club-talk': clubtalk}
+PAGES = {'contact': contact, 'book-1-on-1-session': book, 'bike-fitting': bikefit, 'testing': testing, 'about2': about2, 'club-talk': clubtalk, 'talent-scout': talent}
 if __name__ == '__main__':
     for n in (sys.argv[1:] or PAGES):
         PAGES[n]()

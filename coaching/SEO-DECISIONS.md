@@ -214,3 +214,8 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   (calendar redrawn from Matteo's screenshot, food diary, race fuelling from CP, gut training; price set by Marine).
 - Triathlon packages: same prices, wording and payment links as Individual (Matteo); intro "2 packages" -> 3.
 - Package buttons: Basic buy and Premium waiting list are solid green on every packages page (Matteo).
+- Talent Programme (/talent-scout/, page 896, Matteo 15 Nov: "completely to be redone"): `build_coaching_services.py talent`.
+  H1 and all five live H2s kept; FAQ answers kept (typos fixed; "Skype" -> "video call"), FAQPage JSON-LD; A&J results as tiles
+  (race names spelled correctly). New H2 "THE DATA BEHIND THE TALENT" with a power-duration chart from Marco B.'s case-study
+  numbers (year 1 vs year 2; hover values, "See the numbers" table) and what Matteo analyses. Apply form (subject "Talent
+  Programme application"). To check with Matteo: the live price "Advanced Package at €104" vs "20% discount" (20% off €149 is €119).
