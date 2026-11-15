@@ -1,5 +1,7 @@
 """Build the Coaching homepage preview: coachingpages/home.html
 
+Approved by Matteo, 15 Nov 2026: layout, new short copy, Algarve photo, menu. Facts strip: 28 years of racing, 200+ race victories.
+
 Same design system as the Tours homepage (survey/NfmCmGsjq4LL9bTAi38NXN/index.html): its <style> block is reused
 as-is and coaching-only rules are added after it.
 SEO (CLAUDE.md): the live title, meta, H1 and every live H2 keep their exact wording; all live copy is kept.
@@ -177,8 +179,8 @@ MAIN = f'''<div class="hero">
 
 <div class="in stats-wrap">
   <div class="stats">
-    <div class="stat"><div class="n">20+</div><div class="l">Years of racing experience</div></div>
-    <div class="stat"><div class="n">100s</div><div class="l">Of race victories</div></div>
+    <div class="stat"><div class="n">28</div><div class="l">Years of racing</div></div>
+    <div class="stat"><div class="n">200+</div><div class="l">Race victories</div></div>
     <div class="stat"><div class="n">1-to-1</div><div class="l">Sessions in Wicklow</div></div>
     <div class="stat"><div class="n">Worldwide</div><div class="l">Remote coaching</div></div>
   </div>
