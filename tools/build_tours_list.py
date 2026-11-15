@@ -192,7 +192,7 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .tcard .tag.gravel::before { background: var(--gravel); }
 .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
 .tcard .entry { width: fit-content; margin: 0; }
-.tcard .ph .entry { position: absolute; left: 12px; bottom: 12px; background: rgba(8,9,10,.85); }   /* badge on the photo, so every title lines up */
+.tcard .ph .entry { position: absolute; left: 26px; bottom: 26px; background: rgba(8,9,10,.85); border-radius: 999px; padding: 4px 10px; }   /* badge on the photo, lined up with the type tag above it */
 .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
 .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -6px; }
 .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -210,6 +210,9 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .tcard .early { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; }
 .tcard .early.none { visibility: hidden; }   /* keeps prices level across a row */
 .tcard .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.tcard .early::before { animation: early-pulse 1.8s ease-in-out infinite; }   /* the red dot gently glows: the early-bird price ends soon */
+@keyframes early-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(225,6,0,.7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(225,6,0,0); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .tcard .early::before { animation: none; } }
 .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
 .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
 @media (max-width: 1100px) { .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

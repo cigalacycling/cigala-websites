@@ -462,7 +462,7 @@ html .cl .tcard .tag::before { content: ""; flex: none; display: inline-block; w
 html .cl .tcard .tag.gravel::before { background: var(--gravel); }
 html .cl .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
 html .cl .tcard .entry { width: fit-content; margin: 0; }
-html .cl .tcard .ph .entry { position: absolute; left: 12px; bottom: 12px; background: rgba(8,9,10,.85); }
+html .cl .tcard .ph .entry { position: absolute; left: 26px; bottom: 26px; background: rgba(8,9,10,.85); border-radius: 999px; padding: 4px 10px; }
 html .cl .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
 html .cl .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -6px; }
 html .cl .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -480,6 +480,10 @@ html .cl .tcard .price small { display: block; padding: 0; margin: 0 0 8px !impo
 html .cl .tcard .early { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; }
 html .cl .tcard .early.none { visibility: hidden; }
 html .cl .tcard .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+html .cl .tcard .early::before { animation: early-pulse 1.8s ease-in-out infinite; }
+@keyframes early-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(225,6,0,.7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(225,6,0,0); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) {html .cl .tcard .early::before { animation: none; }
+ }
 html .cl .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
 html .cl .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
 @media (max-width: 1100px) {html .cl .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -703,6 +707,7 @@ html .cc .cc-social a { display: inline-grid; place-items: center; width: 40px; 
 html .cc .cc-social a:hover, html .cc .cc-social a:active { color: var(--green-text, #34c46a); background: rgba(255,255,255,.04); }
 html .cc .cc-social a:focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 2px; }
 html .cc .cc-social svg { width: 20px; height: 20px; fill: currentColor; display: block; }
+html .cc .who img { border: 2px solid var(--green); }
 html .cc .cc [hidden], html .cc [hidden] { display: none !important; }
 html .cc .eyebrow { color: var(--red-text, #ff3d33); margin-bottom: 10px; }
 html .cc .hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--text); text-shadow: none; background: rgba(8,9,10,.78); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 14px; margin-bottom: 16px; }

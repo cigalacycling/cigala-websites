@@ -21,6 +21,11 @@ def _scope(block, P):
             while depth:
                 depth += {'{': 1, '}': -1}.get(block[k], 0); k += 1
             out.append(head + ' {' + _scope(block[j + 1:k - 1], P) + '}\n'); i = k; continue
+        if head.startswith(('@keyframes', '@-webkit-keyframes', '@font-face')):   # copied as is (keyframe steps are not selectors)
+            depth, k = 1, j + 1
+            while depth:
+                depth += {'{': 1, '}': -1}.get(block[k], 0); k += 1
+            out.append(head + ' {' + block[j + 1:k - 1] + '}\n'); i = k; continue
         k = block.index('}', j)
         body = block[j + 1:k]
         if head.startswith('@'): out.append(head + ' {' + body + '}\n')
