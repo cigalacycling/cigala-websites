@@ -3,7 +3,7 @@
 All live copy is kept: package names, prices, every feature line, the payment links (Shopify / GoCardless),
 testimonials, Vekta text, FAQ, 2026 numbers, featured athletes gallery, contact form.
 Approved SEO change (coaching/SEO-DECISIONS.md): the page gets the H1 "Individual Cycling Coaching Packages".
-Layout changes: the payment dropdowns become buttons; features shared by all three packages are listed once
+Layout changes: the payment dropdowns become buttons; Premium (sold out) gets a waiting-list button to the contact form; features shared by all three packages are listed once
 under the cards ("Included in every package"), each card lists what is specific to it.
 """
 import os, sys, re, html as H
@@ -57,8 +57,9 @@ cards = ''.join([
          btn('Subscribe to Advanced · €149/mo', pay['Advanced 6 months: 149 EUR - monthly']),
          '<span class="pkg-badge">Monthly (Our Most Popular)</span>', 'hot'),
     card('premium', 'Premium', '3 months subscription (€10 off for 6 mo)', '€249', '/mo', '',
-         btn('Premium 3 Months · €249/mo', pay['Premium 3 months : 249 EUR - monthly'], 'btn-ghost') +
-         btn('Premium 6 Months · €239/mo', pay['Premium 6 months : 239 EUR - monthly'], 'btn-ghost'),
+         # Premium is sold out: Matteo chose a waiting list instead of the GoCardless links (15 Nov 2026)
+         '<a class="btn btn-ghost pay" href="#contact" data-waitlist="Premium">Join the waiting list</a>'
+         '<span class="pay-note">Premium 3 months €249/mo · 6 months €239/mo</span>',
          '<span class="pkg-badge sold">Monthly (SOLD OUT!)</span>', 'sold'),
 ])
 every = ''.join(f'<li>{E(x)}</li>' for x in common)
@@ -272,6 +273,7 @@ PCSS = '''<style>
 .pkg-sub { font-size: 13px; color: var(--text-3); margin: 8px 0 18px; min-height: 40px; }
 .pkg-buy { display: grid; gap: 8px; }
 .pay { width: 100%; text-align: center; }
+.pay-note { display: block; font-size: 12.5px; color: var(--text-3); text-align: center; }
 .pkg-lab { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
 .ticks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
 .ticks li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-2); line-height: 1.45; }
@@ -346,6 +348,12 @@ PJS = '''<script>
 document.getElementById('g-more').addEventListener('click', function () {
   var g = document.getElementById('gallery'), all = g.classList.toggle('all');
   this.textContent = all ? 'Show fewer photos' : this.dataset.label;
+});
+document.querySelectorAll('[data-waitlist]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var m = document.querySelector('#contact textarea');
+    if (m && !m.value) m.value = 'Hi Matteo, please add me to the waiting list for the ' + b.dataset.waitlist + ' package.';
+  });
 });
 document.getElementById('g-more').dataset.label = document.getElementById('g-more').textContent;
 </script>'''
