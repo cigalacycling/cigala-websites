@@ -500,39 +500,38 @@ def clubtalk():
           h1='Club information days, coaching nights, Q&A, group coaching sessions and more', extra_css=G.GCSS + CSS)
 
 # ------------------------------------------------------------------ talent programme
-# Marco B.'s best power, one year apart (his case study, from his Vekta data): seconds -> (before, after)
-PD = [(15, 728, 852), (30, 505, 628), (180, 292, 325), (300, 271, 292), (600, 242, 263), (1200, 222, 236), (3600, 204, 211)]
+# Tilen Č.'s best power this year, from his Vekta data (case study in coaching_common.CASES); year-earlier bests where we have them
+PD = [(15, 1063, 851), (120, 556, None), (480, 429, None), (1200, 382, None), (7200, 316, 296), (10800, 298, None)]
 def pd_chart():
     import math
-    W, H, L, Rr, Tt, B = 760, 360, 56, 92, 20, 44
-    x = lambda t: L + (math.log(t) - math.log(15)) / (math.log(3600) - math.log(15)) * (W - L - Rr)
-    y = lambda w: Tt + (900 - w) / (900 - 150) * (H - Tt - B)
-    lab = {15: '15 s', 30: '30 s', 180: '3 min', 300: '5 min', 600: '10 min', 1200: '20 min', 3600: '60 min'}
-    grid = ''.join(f'<line x1="{L}" x2="{W - Rr}" y1="{y(w):.1f}" y2="{y(w):.1f}" class="pd-grid"/><text x="{L - 8}" y="{y(w) + 4:.1f}" class="pd-ax" text-anchor="end">{w}</text>' for w in (200, 400, 600, 800))
+    W, H, L, Rr, Tt, B = 760, 360, 56, 36, 20, 44
+    t0, t1 = 15, 10800
+    x = lambda t: L + (math.log(t) - math.log(t0)) / (math.log(t1) - math.log(t0)) * (W - L - Rr)
+    y = lambda w: Tt + (1150 - w) / (1150 - 200) * (H - Tt - B)
+    lab = {15: '15 s', 120: '2 min', 480: '8 min', 1200: '20 min', 7200: '2 h', 10800: '3 h'}
+    grid = ''.join(f'<line x1="{L}" x2="{W - Rr}" y1="{y(w):.1f}" y2="{y(w):.1f}" class="pd-grid"/><text x="{L - 8}" y="{y(w) + 4:.1f}" class="pd-ax" text-anchor="end">{w}</text>' for w in (300, 500, 700, 900, 1100))
     xt = ''.join(f'<text x="{x(t):.1f}" y="{H - B + 20}" class="pd-ax" text-anchor="middle">{lab[t]}</text>' for t, _, _ in PD)
-    def line(i, cls):
-        pts = ' '.join(f'{x(t):.1f},{y(v[i - 1]):.1f}' for t, *v in PD)
-        dots = ''.join(f'<circle cx="{x(t):.1f}" cy="{y(v[i - 1]):.1f}" r="4" class="{cls}-dot"/>' for t, *v in PD)
-        return f'<polyline points="{pts}" class="{cls}"/>{dots}'
-    end = PD[-1]
-    labels = (f'<text x="{x(3600) + 10:.1f}" y="{y(end[2]) - 6:.1f}" class="pd-lab pd-lab-b">Year 2</text>'
-              f'<text x="{x(3600) + 10:.1f}" y="{y(end[1]) + 14:.1f}" class="pd-lab pd-lab-a">Year 1</text>')
-    hits = ''.join(f'<rect x="{x(t) - 22:.1f}" y="{Tt}" width="44" height="{H - Tt - B}" class="pd-hit" data-x="{x(t):.1f}" data-t="{lab[t]}" data-a="{a}" data-b="{b}" data-d="{b - a:+d}"/>' for t, a, b in PD)
+    pts = ' '.join(f'{x(t):.1f},{y(b):.1f}' for t, b, _ in PD)
+    line = f'<polyline points="{pts}" class="pd-b"/>' + ''.join(f'<circle cx="{x(t):.1f}" cy="{y(b):.1f}" r="4.5" class="pd-b-dot"/>' for t, b, _ in PD)
+    old = ''.join(f'<line x1="{x(t):.1f}" x2="{x(t):.1f}" y1="{y(a) - 6:.1f}" y2="{y(b) + 6:.1f}" class="pd-gain"/><circle cx="{x(t):.1f}" cy="{y(a):.1f}" r="4.5" class="pd-a-dot"/>'
+                  + (f'<text x="{x(t) + 12:.1f}" y="{y(a) + 4:.1f}" class="pd-lab">+{b - a} W</text>' if t < 1000 else f'<text x="{x(t):.1f}" y="{y(a) + 22:.1f}" class="pd-lab" text-anchor="middle">+{b - a} W</text>') for t, b, a in PD if a)
+    labels = ''
+    hits = ''.join(f'<rect x="{x(t) - 22:.1f}" y="{Tt}" width="44" height="{H - Tt - B}" class="pd-hit" data-x="{x(t):.1f}" data-t="{lab[t]}" data-b="{b}" data-a="{a or ''}"/>' for t, b, a in PD)
     svg = (f'<svg class="pd-svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pd-t">'
-           f'<title id="pd-t">Best power from 15 seconds to 60 minutes, one year apart: higher at every duration in year 2</title>'
+           f'<title id="pd-t">Tilen’s best power from 15 seconds to 3 hours this year: 1,063 W for 15 seconds, 382 W for 20 minutes, 298 W for 3 hours</title>'
            f'{grid}{xt}<line x1="{L}" x2="{W - Rr}" y1="{H - B}" y2="{H - B}" class="pd-base"/>'
-           f'<line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{line(1, "pd-a")}{line(2, "pd-b")}{labels}{hits}</svg>')
-    rows = ''.join(f'<tr><td>{lab[t]}</td><td>{a} W</td><td>{b} W</td><td>{b - a:+d} W</td></tr>' for t, a, b in PD)
+           f'<line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{line}{old}{labels}{hits}</svg>')
+    rows = ''.join(f'<tr><td>{lab[t]}</td><td>{b} W</td><td>{f"{a} W" if a else "–"}</td><td>{f"{b - a:+d} W" if a else "–"}</td></tr>' for t, b, a in PD)
     return f'''<figure class="pd panel">
-      <div class="pd-top"><div><b class="pd-title">Power-duration profile</b><span>Best power, watts · Marco B., road &amp; gravel racer</span></div>
-        <div class="pd-leg"><span><i class="pd-sw pd-sw-a"></i>Year 1</span><span><i class="pd-sw pd-sw-b"></i>Year 2 with Matteo</span></div></div>
+      <div class="pd-top"><div><b class="pd-title">Power-duration profile</b><span>Best power, watts · Tilen Č., road racer, Slovenia</span></div>
+        <div class="pd-leg"><span><i class="pd-sw pd-sw-b"></i>This year with Matteo</span><span><i class="pd-sw pd-sw-a pd-sw-dot"></i>A year earlier</span></div></div>
       <div class="pd-wrap">{svg}<div class="pd-tip" hidden></div></div>
-      <figcaption>Higher at every duration: +124 W in the 15-second sprint, +33 W over 3 minutes, +14 W over 20 minutes. <a href="{C}/case-studies/#marco" {EXT}>Read Marco’s case study →</a></figcaption>
-      <details class="pd-tbl"><summary>See the numbers</summary><table><thead><tr><th>Duration</th><th>Year 1</th><th>Year 2</th><th>Change</th></tr></thead><tbody>{rows}</tbody></table></details>
+      <figcaption>A year ago Tilen couldn’t sprint standing up. Now: 1,063 W for 15 seconds (+212 W), 382 W for 20 minutes and a Critical Power of 375 W. <a href="{C}/case-studies/#tilen" {EXT}>Read Tilen’s case study →</a></figcaption>
+      <details class="pd-tbl"><summary>See the numbers</summary><table><thead><tr><th>Duration</th><th>This year</th><th>A year earlier</th><th>Change</th></tr></thead><tbody>{rows}</tbody></table></details>
     </figure>'''
 PD_JS = """<script>(function(){document.querySelectorAll('.pd-wrap').forEach(function(w){var tip=w.querySelector('.pd-tip'),cr=w.querySelector('.pd-cross'),svg=w.querySelector('svg');
 w.querySelectorAll('.pd-hit').forEach(function(h){function on(){var x=+h.dataset.x;cr.setAttribute('x1',x);cr.setAttribute('x2',x);cr.style.opacity=1;
-tip.innerHTML='<b>'+h.dataset.t+'</b><span><i class=\\"pd-sw pd-sw-a\\"></i>Year 1: '+h.dataset.a+' W</span><span><i class=\\"pd-sw pd-sw-b\\"></i>Year 2: '+h.dataset.b+' W</span><em>'+h.dataset.d+' W</em>';
+var a=h.dataset.a,b=h.dataset.b;tip.innerHTML='<b>'+h.dataset.t+'</b><span><i class=\\"pd-sw pd-sw-b\\"></i>This year: '+b+' W</span>'+(a?'<span><i class=\\"pd-sw pd-sw-a pd-sw-dot\\"></i>A year earlier: '+a+' W</span><em>+'+(b-a)+' W</em>':'');
 var r=svg.getBoundingClientRect(),px=x/760*r.width;tip.hidden=false;tip.style.left=Math.min(Math.max(px-70,0),r.width-150)+'px';}
 function off(){tip.hidden=true;cr.style.opacity=0;}h.addEventListener('mouseenter',on);h.addEventListener('mouseleave',off);h.addEventListener('click',on);});});})();</script>"""
 
@@ -542,7 +541,7 @@ def talent():
     what = blk('H3: What is the Cigala Cycling Talent Programme?', '').replace('It is coaching relationship', 'It is a coaching relationship')
     helpme = blk('H3: How the programme can help me?', '').replace('A&J all sports', 'A&J AllSports')
     start = blk('H3: What do I need to do to get started?', '').replace('a Skype interview', 'a video call')
-    cost = blk("H3: What's the cost?", '').replace('\nSee the Advanced Package', '')
+    cost = blk("H3: What's the cost?", '').replace('\nSee the Advanced Package', '').replace('at €104', 'at €119.20 a month (20% off €149)')
     scout = re.search(r'H2: We are a Talent Scout\nH3: (.*?)\n', T_).group(1)
     aj = re.search(r'H2: TALENT SCOUT\nH3: (.*?)\nH2:', T_, re.S).group(1).replace('mange', 'manage').replace('A&j', 'A&J').replace('to taking care', 'to take care')
     wins = [w.strip() for w in re.search(r'H2: RACES WON BY ATHLETES WITH A&J\nH3: (.*)', T_, re.S).group(1).replace('​', '').replace('Tour De\n France', 'Tour De France').split('\n') if w.strip()]
@@ -553,7 +552,7 @@ def talent():
     wins = [fx(w) for w in wins]
     def win(w):
         m = re.match(r'(\d+)\s*x\s*(.*)', w)
-        return f'<li><b>{m.group(1)}×</b><span>{E(m.group(2))}</span></li>' if m else f'<li><b>All</b><span>{E(w[4:] if w.startswith("All ") else w)}</span></li>'
+        return f'<li><b><span class="tl-n" data-n="{m.group(1)}">{m.group(1)}</span>×</b><span>{E(m.group(2))}</span></li>' if m else f'<li><b>All</b><span>{E(w[4:] if w.startswith("All ") else w)}</span></li>'
     wins_html = '<ul class="tl-wins">' + ''.join(win(w) for w in wins) + '</ul>'
     para = lambda t: ''.join(f'<p>{E(x.strip())}</p>' for x in t.split('\n') if x.strip())
     LOOK = [('chart', 'Power profile', 'Best power from a 5-second sprint to an hour, compared with what riders at the next level produce.'),
@@ -561,11 +560,28 @@ def talent():
             ('clock', 'Durability', 'The power you still have after hours of racing: where races are won.'),
             ('target', 'Race files', 'Every race analysed: where you lost time, where you can win.'),
             ('heart', 'Recovery &amp; load', 'Training load, sleep and recovery, so you improve without burning out.'),
-            ('star', 'Year-on-year progression', 'The numbers that show a team you are on the way up.')]
+            ('star', 'Year-on-year progression', 'The numbers that show a team you are on the way up.'),
+            ('bike', 'Pacing &amp; race tactics', 'How you spend your energy in a race: when to sit in, when to go, and how to finish the job.'),
+            ('lab', 'Physiology testing', 'INSCYD metabolic testing: VO2max, VLamax, fat and carb use, so training targets what holds you back.')]
     faq_items = [('What is the Cigala Cycling Talent Programme?', E(what)), ('How can the programme help me?', '<br>'.join(E(x) for x in helpme.split('\n'))),
                  ('What do I need to do to get started?', '<br>'.join(E(x) for x in start.split('\n'))),
-                 ("What's the cost?", '<br>'.join(E(x) for x in cost.split('\n')) + f' <a href="{C}/individual-packages/" {EXT}>See the Advanced Package</a>')]
+                 ("What's the cost?", '<br>'.join(E(x) for x in cost.split('\n')) + f' <a href="{C}/individual-packages/" {EXT}>See the Advanced Package</a>'),
+                 ('Does the programme include nutrition?', f'Yes, if you want it. You can add 1-to-1 nutrition coaching with our sports nutritionist, Marine Lenehan: a WorldTour Pro with LIDL-TREK, 2× Irish National Champion and Amateur Gravel World Champion 2024. She writes your daily macros, carbs per hour and nutrition notes into the same calendar as your training, reviews your food diary and builds your race fuelling and gut training. <a href="{C}/nutrition/#upgrade" {EXT}>Read more about nutrition coaching</a>'),
+                 ('What does my training calendar look like?', 'Every session is planned in your calendar on Vekta, synced to your devices and apps, with the targets for the day. If you work with Marine, her nutrition notes and carbs per hour sit next to each session (see the example above). After each ride you add your RPE and a comment, so Matteo can adapt the plan.'),
+                 ('Who are A&amp;J AllSports?', 'A&amp;J AllSports is the sports management agency of Alex and Johnny Carera, founded in 1997. It represents some of the best riders in the WorldTour, such as Tadej Pogačar, Isaac Del Toro, Biniam Girmay and Jasper Philipsen, and in the past Chris Froome and Vincenzo Nibali.'),
+                 ('Can I stay with my club or team?', 'Yes. The programme is your coaching: you keep racing with your club or team, and Matteo plans your training around your race calendar.'),
+                 ('Does joining guarantee a professional contract?', 'No. Nobody can promise that. What we promise is world-class coaching, an honest analysis of your numbers, and that when a rider is ready, the right people hear about it.')]
     faq_html, faq_ld = faq(faq_items)
+    import io, contextlib
+    with contextlib.redirect_stdout(io.StringIO()):
+        import build_coaching_nutrition as NUT
+        import build_coaching_packages as PK
+    STEPS = [('Apply', 'Contact us at info@cigalacycling.com or with the form below to state your interest in the programme. Tell us your age, club, results so far and goals.'),
+             ('Interview', 'If we have availability, a video call or face to face interview might be requested, so we get to know you and your goals.'),
+             ('Sign up', 'We send you the link to sign up to the Advanced Package at the talent price: €119.20 a month, 20% off €149.'),
+             ('Deep assessment', 'Your power data, race files and testing: where you are today and how far you are from the level the teams look for.'),
+             ('Train &amp; race', 'Your plan in your calendar, adjusted week by week around school, work and your race calendar.'),
+             ('Get seen', 'Your progress is shared with the right people at the right time: A&amp;J AllSports and the professional teams we work with.')]
     side = f'''{photo('imgi_17_zCRmNmCA', 'talent-coaching-session', cls='photo rider', pos='50% 35%')}
       <ul class="sv-facts">
         <li>{ic(I['user'])}<span>For riders aged 15 to 22</span></li>
@@ -577,7 +593,7 @@ def talent():
   <div class="in">
     <div class="eyebrow eb-pill"><span class="dot"></span>Ages 15–22 · Talent scout for A&amp;J AllSports</div>
     <h1>Cigala Cycling Talent Programme</h1>
-    <p class="lede">For young riders who want to turn professional: coached by Matteo Cigala, measured against the numbers of the pro level, and seen by the teams that matter.</p>
+    <p class="lede">World-class coaching for young riders who want to turn professional, from a coach who is a talent scout for A&amp;J AllSports: the agency of Tadej Pogačar and other WorldTour stars.</p>
     <div class="ctas"><a class="btn btn-go" href="#contact">Apply to the programme</a><a class="btn btn-ghost" href="#data">How we find talent ↓</a></div>
   </div>
 </div>
@@ -589,6 +605,8 @@ def talent():
       <h2>We are a Talent Scout</h2><div class="bar"></div>
       <p class="tl-big">{E(scout)}</p>
       <p>{E(what)}</p>
+      <p>Matteo Cigala is a talent scout for <b>A&amp;J AllSports</b>, the agency of some of the best riders in the WorldTour, such as <b>Tadej Pogačar</b>, <b>Isaac Del Toro</b>, <b>Biniam Girmay</b> and <b>Jasper Philipsen</b>. On the programme you get world-class coaching from him, and when you are ready, the agency and the teams hear about you.</p>
+      <ul class="tl-riders" aria-label="Riders represented by A&amp;J AllSports">{''.join(f'<li>{n}</li>' for n in ('Tadej Pogačar', 'Isaac Del Toro', 'Biniam Girmay', 'Jasper Philipsen'))}</ul>
     </div>
     <div class="photo gn-png tl-aj"><img src="{img('T161857.829', 'talent-aj-allsports')}" alt="{E(live_alt('T161857.829'))}" loading="lazy"></div>
   </div>
@@ -624,12 +642,22 @@ def talent():
 <section>
   <div class="in">
     {head('From application to coaching', 'HOW IT WORKS', 'h3')}
-    <ol class="ts-steps">
-      <li><span class="ts-n">1</span><div><h3 class="h-sm">Apply</h3><p>Contact us at info@cigalacycling.com or with the form below to state your interest in the programme.</p></div></li>
-      <li><span class="ts-n">2</span><div><h3 class="h-sm">Interview</h3><p>If we have availability, a video call or face to face interview might be requested.</p></div></li>
-      <li><span class="ts-n">3</span><div><h3 class="h-sm">Sign up</h3><p>We send you the link to sign up to the Advanced Package at the talent price.</p></div></li>
-      <li><span class="ts-n">4</span><div><h3 class="h-sm">Train &amp; race</h3><p>Coached by Matteo, with your data analysed and your progress shared with the right people at the right time.</p></div></li>
-    </ol>
+    <ol class="tl-days">{''.join(f'<li class="tl-day"><div class="tl-num"><span><small>STEP</small>{n}</span></div><div class="panel tl-box"><h3 class="h-sm">{t}</h3><p>{d}</p></div></li>' for n, (t, d) in enumerate(STEPS, 1))}</ol>
+  </div>
+</section>
+
+<section>
+  <div class="in split tl-cal">
+    <div class="gn-txt">
+      <div class="eyebrow">Training &amp; nutrition</div>
+      <h3 class="band-title">ONE CALENDAR</h3><div class="bar"></div>
+      <p>Your sessions, targets and, if you add nutrition coaching with our sports nutritionist Marine Lenehan, your daily macros, carbs per hour and nutrition notes: all in one calendar, synced to your devices.</p>
+      <div class="ctas"><a class="btn btn-go" href="{C}/nutrition/#upgrade" {EXT}>Read more about nutrition coaching</a></div>
+    </div>
+    <figure class="nu-cal pk-cal">
+      <div class="cal-scroll" tabindex="0" aria-label="Example days from an athlete's calendar, with nutrition"><div class="cal-row">{NUT.cal_days(('21', '24', '26'))}</div></div>
+      <figcaption>Example days from an athlete’s calendar.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -643,14 +671,17 @@ def talent():
 {enquiry('Apply to the programme', "LET'S WORK TOGETHER", 'Tell us about you: age, club, results so far and your goals. If we have availability, we will send you the link to sign up.',
          side, 'Talent Programme application (Coaching website)', 'Age, club, results so far and goals *', tag='h2')}'''
     build('talent-scout', '/talent-scout/', MAIN, 'Talent Programme redesigned: the scout and A&J, a real power-duration chart, what Matteo analyses, wins, how it works, FAQ.',
-          h1='Cigala Cycling Talent Programme', h2_changes={'add': ['THE DATA BEHIND THE TALENT']}, extra_css=G.GCSS + CSS + TL_CSS, extra_js=faq_ld + PD_JS)
+          h1='Cigala Cycling Talent Programme', h2_changes={'add': ['THE DATA BEHIND THE TALENT']}, extra_css=G.GCSS + CSS + TL_CSS + PK.CAL_CSS, extra_js=faq_ld + PD_JS + WIN_JS)
 
+WIN_JS = """<script>(function(){var l=document.querySelectorAll('.tl-n');if(!l.length||!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+l.forEach(function(e){e.textContent='0';});var io=new IntersectionObserver(function(es){es.forEach(function(x){if(!x.isIntersecting)return;io.unobserve(x.target);var el=x.target,n=+el.dataset.n,t0=null;
+function f(t){if(!t0)t0=t;var k=Math.min((t-t0)/1400,1);el.textContent=Math.round(n*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f);}requestAnimationFrame(f);});},{threshold:.4});l.forEach(function(e){io.observe(e);});})();</script>"""
 TL_CSS = """<style>
 .tl-hero { min-height: min(560px, 74svh); }
 .tl-big { font-size: 18px !important; color: var(--text) !important; font-weight: 600; }
 .tl-aj { background: #fff; border-radius: 14px; display: grid; place-items: center; aspect-ratio: 16 / 9; }
-.tl-aj img { width: 70%; height: auto; object-fit: contain; }
-.pd { margin: 0 0 22px; padding: 22px; display: grid; gap: 14px; }
+.tl-aj img { width: min(70%, 300px); height: auto; object-fit: contain; }
+.pd { margin: 0 0 clamp(36px, 5vw, 56px) !important; padding: 22px; display: grid; gap: 14px; }
 .pd-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 20px; }
 .pd-top > div:first-child { display: grid; gap: 2px; }
 .pd-title { font: 400 24px/1.1 var(--head); text-transform: uppercase; color: var(--text); }
@@ -673,6 +704,7 @@ TL_CSS = """<style>
 .pd-cross { stroke: rgba(255,255,255,.35); stroke-width: 1; opacity: 0; }
 .pd-hit { fill: transparent; cursor: crosshair; }
 .pd-tip { position: absolute; top: 6px; width: 150px; padding: 10px 12px; border-radius: 10px; background: rgba(8,9,10,.95); border: 1px solid rgba(255,255,255,.14); display: grid; gap: 4px; font-size: 13px; color: var(--text-2); pointer-events: none; }
+.pd-tip[hidden] { display: none !important; }
 .pd-tip b { color: var(--text); }
 .pd-tip span { display: flex; align-items: center; gap: 6px; }
 .pd-tip em { font-style: normal; font-weight: 700; color: var(--text); }
@@ -684,7 +716,25 @@ TL_CSS = """<style>
 .pd-tbl th { color: var(--text); }
 .tl-wins { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
 .tl-wins li { padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel-grad), var(--panel); display: grid; gap: 2px; }
-.tl-wins b { font: 400 30px/1 var(--head); color: var(--green-text); }
+.tl-wins b { font: 400 30px/1 var(--head); color: var(--green-text); font-variant-numeric: tabular-nums; }
+.tl-wins b span { color: inherit !important; font: inherit !important; }
+.tl-riders { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.tl-riders li { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border-strong); font-size: 13px; font-weight: 600; color: var(--text); }
+.pd-gain { stroke: #2fae5f; stroke-width: 1.5; stroke-dasharray: 2 3; }
+.pd-sw-dot { width: 9px; height: 9px; border: 0 !important; border-radius: 50%; background: #5f86c9; }
+.tl-days { list-style: none; margin: 0; padding: 0; max-width: 860px; }
+.tl-day { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 20px; position: relative; padding-bottom: 22px; }
+.tl-day::before { content: ""; position: absolute; left: 31px; top: 64px; bottom: 0; width: 2px; background: var(--border-strong); }
+.tl-day:last-child { padding-bottom: 0; }
+.tl-day:last-child::before { display: none; }
+.tl-num { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--panel-solid, #16181a); border: 2px solid var(--green); font: 400 26px/1 var(--head); color: var(--text); text-align: center; }
+.tl-num small { display: block; font: 700 9px/1 var(--body); letter-spacing: .12em; color: var(--text-3); margin-bottom: 3px; }
+.tl-box { padding: 18px 22px; min-width: 0; }
+.tl-box h3 { margin: 0 0 6px; }
+.tl-box p { margin: 0; }
+.tl-cal { align-items: center; }
+.tl-cal .pk-cal figcaption { font-size: 13px; color: var(--text-3); }
+@media (max-width: 600px) { .tl-day { grid-template-columns: 48px minmax(0, 1fr); gap: 14px; } .tl-num { width: 48px; height: 48px; font-size: 20px; } .tl-num small { font-size: 8px; } .tl-day::before { left: 23px; top: 48px; } .tl-box { padding: 16px; } }
 .tl-wins span { color: var(--text); font-weight: 600; font-size: 14px; }
 </style>"""
 

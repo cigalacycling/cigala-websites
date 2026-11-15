@@ -256,3 +256,9 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Small fixes: Group page club band photo + button; club talk photo zoomed past the photographer's credit; 1-to-1 without
   "Best value"; Triathlon "What you get" + 2 cards and a nutrition FAQ; bike fit "BIKE FITS WITH CIGALA CYCLING" + WhatsApp;
   contact 8 quick links; testimonials hero with the sharper Marine photo; blog "Read more" in the brand font.
+- /talent-scout/ round 2: H1 and all 11 live H2s kept, live copy kept (cost line updated to the current talent price,
+  €119.20 a month = 20% off €149, Matteo). Added: intro naming A&J AllSports' riders (Pogačar, Del Toro, Girmay, Philipsen;
+  press sources: cyclingnews, cyclingweekly, escapecollective), power-duration chart now Tilen's (Vekta data, case study),
+  8 analysis boxes, the wins count up on scroll (numbers as on live: no official A&J site found to verify them), itinerary-style
+  steps, one-calendar block with nutrition, 5 more FAQs (FAQPage JSON-LD). Still needed from Matteo: a larger A&J logo
+  (live file is 205×105) and a photo of Alex & Johnny Carera we are allowed to use.
