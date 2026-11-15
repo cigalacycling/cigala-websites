@@ -153,7 +153,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Consent and chat (15 Nov):** Tours uses the **shared banner** `shared/consent/` (`render.py`), with GA4 G-QRF16ZZVDB and OpenWidget org 43e5f685…, both confirmed on the live site.
   - It sits in footer 228, and the footer has a "Cookie settings" link. The old Elementor cookie popup is gone.
   - Elementor custom code **9279** (head) is the shared `head-snippet.html`.
-  - **Meta Pixel:** not added. Live Tours has none, and the shared rule is that it's added only after Matteo confirms. The banner text therefore leaves out "advertising (Meta Pixel)". To add it, set `PIXEL` in `build_tours_wp.py`.
+  - **Meta Pixel 1986332861692106:** added on 15 Nov after Matteo confirmed the same pixel on all sites. It loads only after Accept (init + PageView); nothing loads before a choice or after Reject (tested). The banner text is identical to cigalacycling.com.
   - The other tags on live Tours are only GA4, OpenWidget and the WeTravel booking widget (Book now checkout, functional). No GTM, Pixel, Hotjar or Clarity.
   - **Matteo to do on staging:** paste `shared/consent/wpcode-header-line.html` as the **first line** of WPCode → Header & Footer → Header, above the Google tag. This replaces the earlier "delete the Google tag" note. Until then, Analytics' `config` runs before any consent default.
   - **Chat:** OpenWidget picks the template by page address. tours.cigalacycling.com gets the Tours template (196a47eb…); any other address, including the staging one, gets the default Cigala Cycling template. On live it will be right automatically. To preview it on staging, add `staging.tours.cigalacycling.com` to the Tours template's address rule in OpenWidget.

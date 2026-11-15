@@ -134,11 +134,11 @@ ftr = fix(between(home, '<footer>', '</footer>'))
 # consent banner + "Chat with us" button: same as cigalacycling.com (wp/consent-banner.html), Tours version.
 # Tours has Google Analytics G-QRF16ZZVDB and no Meta Pixel. gtag.js only loads after Accept.
 # Shared Cigala cookie banner (shared/consent/, README there). Tours IDs checked on the live site 15 Nov:
-# GA4 G-QRF16ZZVDB, OpenWidget org 43e5f685-...; no Meta Pixel on live Tours, so none until Matteo confirms.
+# GA4 G-QRF16ZZVDB, OpenWidget org 43e5f685-...; Meta Pixel added on Matteo's confirmation (15 Nov), loads only after Accept.
 sys.path.insert(0, ROOT + 'shared/consent')
 from render import banner as render_banner, head_snippet
 GA = 'G-QRF16ZZVDB'
-PIXEL = ''   # '1986332861692106' once Matteo confirms the Pixel on Tours
+PIXEL = '1986332861692106'   # Matteo's single Meta Pixel, confirmed for Tours on 15 Nov (same on all Cigala sites)
 banner = render_banner(ga_id=GA, pixel_id=PIXEL, openwidget_org='43e5f685-37fc-4f78-9420-122fd2a3c5e3')
 ftr = ftr.replace('<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>', '<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
 assert 'data-cc-settings' in ftr
