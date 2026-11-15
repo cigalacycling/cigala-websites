@@ -177,7 +177,21 @@ banner = render_banner(ga_id=GA, privacy_url='/privacy-policy/', pixel_id=PIXEL,
 # moving topo background (shared/parallax, Matteo: same on every site); only on redesigned pages (.cc-page), like Tours
 PARALLAX = open(ROOT + 'shared/parallax/parallax.html').read().strip().replace("(function(){", "(function(){if(!document.querySelector('.cc-page'))return;", 1)
 assert '.cc-page' in PARALLAX
-json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>'), html_widget(banner), html_widget(PARALLAX)])])}}, open(OUT + 'lib-228.json', 'w'))
+# newsletter pop-up: the cigalacycling.com one (wp/nl-popup.html, same look and timing), with coaching wording and the
+# Coaching Brevo list. Not on /tools/ pages (they have their own sign-up) or /contact/. Off until COACH_NL_URL is set.
+sys.path.insert(0, ROOT + 'tools'); from coaching_common import COACH_NL_URL
+widgets = [html_widget('<div class="cc">' + ftr + '</div>'), html_widget(banner), html_widget(PARALLAX)]
+if COACH_NL_URL:
+    pop = open(ROOT + 'wp/nl-popup.html').read()
+    for a, b in [('<p class="nl-eyebrow">Newsletter</p>', '<p class="nl-eyebrow">Free training tips</p>'),
+                 ('<p class="nl-t" id="nl-pop-t">Stay in the loop</p>', '<p class="nl-t" id="nl-pop-t">Train smarter, ride faster</p>'),
+                 ('<p class="nl-d">News, blogs, tips, special deals and tour dates from Cigala Cycling.</p>',
+                  '<p class="nl-d">Sessions, fuelling and racing tips from Head Coach Matteo Cigala, and first news when coaching places open.</p>'),
+                 ("if(/^\\/contact\\/?$/.test(location.pathname)){return;}", "if(/^\\/(contact|tools)(\\/|$)/.test(location.pathname)){return;}")]:
+        assert a in pop, a; pop = pop.replace(a, b)
+    pop = re.sub(r"var URL='https://[^']+';", "var URL='" + COACH_NL_URL + "';", pop); assert COACH_NL_URL in pop
+    widgets.append(html_widget(pop))
+json.dump({"meta": {"_elementor_data": json.dumps([wrap(widgets)])}}, open(OUT + 'lib-228.json', 'w'))
 json.dump({"title": "Cigala consent mode default", "status": "publish",
            "meta": {"_elementor_location": "elementor_head", "_elementor_priority": 1, "_elementor_code": head_snippet()}}, open(OUT + 'snippet-head.json', 'w'))
 

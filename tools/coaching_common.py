@@ -148,6 +148,9 @@ SITE = [(C + '/about/', 'About'), (C + '/testimonials/', 'Testimonials'), (C + '
 COACH = [(C + '/individual-packages/', 'Cycling Packages'), (C + '/tri-individual-packages/', 'Triathlon Packages'), (C + '/group-club-packages/', 'Group &amp; Club Packages'),
          (C + '/book-1-on-1-session/', 'Book a 1-to-1 Session'), (C + '/testing/', 'INSCYD Testing'), (C + '/nutrition/', 'Nutrition'), (C + '/tools/', 'Free Training Tools')]
 INTL = [('/cycling-coach-uk/', 'Cycling Coach UK'), ('/cycling-coach-usa/', 'Cycling Coach USA'), ('/cycling-coach-canada/', 'Cycling Coach Canada'), ('/preparatore-di-ciclismo-italia/', 'Preparatore di Ciclismo Italia')]
+# Brevo form for the separate "coaching.cigalacycling.com" list (id 17, made by Matteo 15 Nov). Used by the newsletter
+# pop-up and the Free Tools sign-up. Empty = both stay off. Set it to the form's …sibforms.com/serve/… URL + '?isAjax=1'.
+COACH_NL_URL = ''
 GOOGLE_REVIEWS = 'https://share.google/lwboSfcuStGhX0c0p'   # Cigala Cycling Ltd Google Business Profile (shared/BUSINESS.md)
 FOOTER = f'''<footer>
   <div class="in fcols">

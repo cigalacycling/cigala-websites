@@ -13,7 +13,7 @@ import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from coaching_common import *
 
-NL_URL = ''   # Brevo form URL for the Coaching list (…sibforms.com/serve/…?isAjax=1). Empty = no sign-up, tools open.
+NL_URL = COACH_NL_URL   # Brevo form URL (tools/coaching_common.py) for the Coaching list (…sibforms.com/serve/…?isAjax=1). Empty = no sign-up, tools open.
 # Matteo 15 Nov: people must sign up before they see their results. Only active once NL_URL is set (otherwise nobody
 # could unlock the tools). Once signed up, a flag in the browser keeps all three tools open for that visitor.
 GATE = True
@@ -218,7 +218,7 @@ GATEJS = '''<script>
     btn.disabled = true; btn.textContent = 'One moment…';
     fetch(%s, { method: 'POST', body: fd }).then(function (r) { return r.json(); }).then(function (d) {
       if (!d || !d.success) throw new Error('fail');
-      try { localStorage.setItem(K, '1'); } catch (x) {}
+      try { localStorage.setItem(K, '1'); localStorage.setItem('cc_nl', JSON.stringify({ s: 1 })); } catch (x) {}
       out.classList.remove('locked'); g.hidden = true;
       try { if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'tools' }); if (window.fbq) fbq('track', 'Lead'); } catch (x) {}
     }).catch(function () { msg.className = 'tl-nl-msg err'; msg.textContent = 'Sorry, that didn’t work. Please try again.'; })
