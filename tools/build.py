@@ -2,6 +2,7 @@ import re, html, os
 S=__import__('os').path.dirname(__import__('os').path.dirname(__import__('os').path.abspath(__file__))) + '/'
 OUT=S+'home/'
 css=open(S+'brand.css').read()
+import sys as _sys; _sys.path.insert(0, S+'shared/social'); from social import social_row, SOCIAL_CSS
 header=open(S+'part_header.html').read(); footer=open(S+'part_footer.html').read(); home_main=open(S+'part_home_main.html').read()
 LINKS={'https://cigalacycling.com/about/':'about.html','https://cigalacycling.com/contact/':'contact.html','https://cigalacycling.com/terms-conditions/':'terms.html','https://cigalacycling.com/privacy-policy/':'privacy.html','https://cigalacycling.com/':'./'}
 def local(x):
@@ -10,7 +11,7 @@ def local(x):
     return x
 header=local(header).replace(' aria-current="page"',''); footer=local(footer); home_main=local(home_main)
 # footer phone format to match contact page
-footer=footer.replace('+353 40478107','+353 404 78107'); home_main=home_main.replace('+353 40478107','+353 404 78107')
+footer=footer.replace('<!--SOCIAL-->', social_row()); footer=footer.replace('+353 40478107','+353 404 78107'); home_main=home_main.replace('+353 40478107','+353 404 78107')
 def hdr(cur):
     h=header
     if cur: h=h.replace(f'<a href="{cur}">',f'<a href="{cur}" aria-current="page">')
@@ -92,6 +93,7 @@ EXTRA='''
   .toc { position: static; display: none; }
 }
 '''
+EXTRA += SOCIAL_CSS
 def page(title, cur, main, full=True):
     head=f'''<title>{title}</title>
 <meta name="claude:viewport-fit-sides" content="cover">

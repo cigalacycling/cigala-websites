@@ -220,6 +220,15 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
   .toc { position: static; display: none; }
 }
 
+.cc-social { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 0 -10px; }
+.cc-social a { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; color: var(--text-2, #d0d6e0); text-decoration: none; transition: color .15s, background-color .15s; }
+.cc-social a:hover, .cc-social a:active { color: var(--green-text, #34c46a); background: rgba(255,255,255,.04); }
+.cc-social a:focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 2px; }
+.cc-social svg { width: 20px; height: 20px; fill: currentColor; display: block; }
+
+.elementor-kit-6 .cc-social a { color: var(--text-2); }
+.elementor-kit-6 .cc-social a:hover, .elementor-kit-6 .cc-social a:active { color: var(--green-text); }
+
 /* WordPress / Elementor integration */
 body { overflow-x: hidden; }
 [data-elementor-type="header"] { position: sticky; top: 0; z-index: 50; }
