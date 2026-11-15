@@ -106,6 +106,18 @@ html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current { color: var(
 html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current, html .cc .dd .dd-btn { border-radius: 0; }
 html .cc .dd-btn.is-current, html .cc .dd:hover .dd-btn.is-current { background: none; }
 html .cc .dd-btn { display: inline-flex; align-items: center; gap: 4px; line-height: inherit; font-size: 12.5px; }
+/* menu: same as cigalacycling.com (brand.css 58-69) */
+html .cc .menu a, html .cc .dd-btn { border-radius: 0; background: none; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
+html .cc .menu a:hover, html .cc .menu a:active, html .cc .dd-btn:hover, html .cc .dd:focus-within .dd-btn, html .cc .dd.open .dd-btn { color: var(--green-text); background: none; box-shadow: inset 0 -2px 0 var(--green); }
+html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current, html .cc .dd:hover .dd-btn.is-current { color: var(--text); background: none; box-shadow: inset 0 -2px 0 var(--red); }
+html .cc .dd-menu a { border-radius: 0; background: none; box-shadow: none; transition: color .15s, box-shadow .15s; }
+html .cc .dd-menu a:hover, html .cc .dd-menu a:active { color: var(--green-text); background: none; box-shadow: inset 2px 0 0 var(--green); }
+html .cc .dd-menu a[aria-current="page"] { color: var(--text); box-shadow: inset 2px 0 0 var(--red); }
+html .cc .burger nav a, html .cc .burger details.sub > summary { transition: color .15s; }
+html .cc .burger nav a:hover, html .cc .burger nav a:active, html .cc .burger details.sub > summary:hover { color: var(--green-text); }
+/* footer links: green on hover like the menu, no underline (Matteo left the choice to us) */
+html .cc footer a { text-decoration: none; transition: color .15s; }
+html .cc footer a:hover, html .cc footer a:active, html .cc footer a:focus-visible { color: var(--green-text); }
 html .cc footer h4 { font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); line-height: 1.4; }
 html .cc .dd-menu a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); }
 html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
