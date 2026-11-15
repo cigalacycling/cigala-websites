@@ -116,7 +116,7 @@ LOGOS = [('imgi_4_wHe4MESD', 'logo-red-bull'), ('imgi_6_6_MxiOhd', 'logo-stickyb
 logos = ''.join(f'<span><img src="{img(k, n)}" alt="{E(live_alt(k))}" loading="lazy"></span>' for k, n in LOGOS)
 
 HERO = img('imgi_41_Tuz_W_Vx', 'packages-hero')
-TEAM = img('imgi_43_K2-r3g1h', 'team-training')
+TEAM = img('imgi_21_ZtFBdo0p', 'team-training')  # clean version of the live banner photo (imgi_43, Matteo didn't want the text banner)
 RIDER = img('imgi_42_FoPYDRwS', 'rider')
 VKLOGO = img('SDFASDFASDF.png', 'cigala-x-vekta')
 TPLOGO = img('PfNJBaCPkS_eSn5J', 'trainingpeaks-levels')
@@ -196,7 +196,7 @@ MAIN = f'''<div class="hero hero-sm">
       <div class="ctas"><a class="btn btn-ghost" href="{VEKTA}" {EXT}>FIND MORE ABOUT VEKTA →</a></div>
     </div>
     <div class="vk-side">
-      <div class="photo"><img src="{TEAM}" alt="{E(live_alt('imgi_43_K2-r3g1h'))}" loading="lazy" width="1600" height="900"></div>
+      <div class="photo"><img src="{TEAM}" alt="{E(live_alt('imgi_43_K2-r3g1h'))}" loading="lazy" width="1600" height="1082"></div>
       <div class="vk-logos">
         <a href="https://joinvekta.com/partnerships" {EXT}><img src="{VKLOGO}" alt="{E(live_alt('SDFASDFASDF'))}" loading="lazy"></a>
         <span><img src="{TPLOGO}" alt="{E(live_alt('PfNJBaCPkS_eSn5J'))}" loading="lazy"></span>
