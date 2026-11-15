@@ -46,3 +46,21 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - App embeds copied from the old theme: Labeler, Judge.me, PushOwl, Selecty, STOQ; Inbox stays off.
   - Prices are bigger (cards 15px, product page 24px).
   - YouTube iframes, images and tables in descriptions are now responsive. A 560px video was causing sideways scroll on phones.
+- Round 4 (15 Nov, "finish the rest"):
+  - The new theme has every app piece the old theme had:
+    - Ordersify Restocked Alerts (`snippets/ordersify-bis.liquid` + `#osf_bis`, brand colours)
+    - Hextom Sales Boost (`hextom_usb_main`, `hextom_usb_coll` in product cards; `hextom_usb_cart` is copied but not placed)
+    - Judge.me review widget (custom-liquid section under the product)
+    - Labeler's data feed (`templates/search.acoProductLabelJson.liquid`)
+    - `templates/product.pre-order.json`
+  - Google Tag Manager GTM-5D9TJGX5 and Google Ads AW-806343489 are back, behind cookie consent (`snippets/cigala-tracking.liquid`, Customer Privacy API).
+  - The test browser exits in the US, where Shopify needs no consent. The EU behaviour needs checking from Ireland (LAUNCH.md).
+  - Contact page: `sections/cigala-contact.liquid` + `templates/page.contact.json` (Tours/Coaching layout). The live H1 "Contact" and the live intro wording are kept.
+  - Search page gets an H1. Horizon's title/description are replaced by `snippets/seo-meta.liquid` (same rules as the SEO fix), with a fallback description for collections that have none.
+  - `snippets/cigala-schema.liquid` puts back the structured data the old theme had: WebSite + SearchAction on home, ItemList on collections and the blog.
+  - The Shopify cookie banner is restyled like shared/consent (dark bottom bar, Decline outlined first, Accept green). The wording is set in the admin (LAUNCH.md).
+- Black Friday copy: "STAGING – Black Friday (Cigala)", `gid://shopify/OnlineStoreTheme/193226244420`. Preview: https://retail.cigalacycling.com/?preview_theme_id=193226244420
+  - `sections/cigala-bf.liquid` band above the hero ("BLACK FRIDAY", countdown to 2026-11-30 23:59 Irish time, "Shop the deals" to /collections/bfcm).
+  - A "Black Friday deals" row from the BFCM collection, and a BF announcement bar.
+  - Any later change to the main theme must be repeated here.
+- Tools: `tools/crawl_preview.sh` (curl crawl of an unpublished theme) and `tools/compare_preview.py` (checks against the baseline).
