@@ -227,7 +227,10 @@ def build_country(key):
     {cad_note}
     <div class="pkgs">{cards}</div>
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="{C}/terms-conditions/" {EXT}>HERE</a></b></p>
-    <div class="cn-tp"><img src="{TP_LEVELS}" alt="{E(live_alt('PfNJBaCPkS_eSn5J'))}" loading="lazy"></div>
+    <div class="vk-logos cn-tp">
+      <a class="vk-lock" href="https://joinvekta.com/partnerships" {EXT} aria-label="{E(live_alt('SDFASDFASDF'))}"><img src="{LOGO}" alt="" loading="lazy" width="64" height="64"><svg class="vk-x" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg><img src="{P.VKLOGO}" alt="{E(live_alt('SDFASDFASDF'))}" loading="lazy" width="531" height="139"></a>
+      <span><img src="{TP_LEVELS}" alt="{E(live_alt('PfNJBaCPkS_eSn5J'))}" loading="lazy"></span>
+    </div>
   </div>
 </section>
 
@@ -332,8 +335,8 @@ CCSS = '''<style>
 .cn-why .ticks { columns: 2 340px; column-gap: 32px; }
 .cn-why .ticks li { break-inside: avoid; }
 .cur-note { color: var(--text-3); font-size: 14px; margin: 0 0 14px; }
-.cn-tp { display: flex; justify-content: center; margin-top: 22px; }
-.cn-tp img { max-height: 90px; width: auto; }
+.cn-tp { max-width: 760px; margin: 26px auto 0; }
+@media (max-width: 600px) { .cn-tp { grid-template-columns: 1fr; } }
 .cn-how { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; counter-reset: none; }
 .cn-how li { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); }
 .cn-how .hw-n { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #08090a; font-weight: 800; }
