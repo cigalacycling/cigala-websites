@@ -502,39 +502,45 @@ def clubtalk():
           h1='Club information days, coaching workshops, Q&A, group coaching sessions and more', extra_css=G.GCSS + CSS)
 
 # ------------------------------------------------------------------ talent programme
-# David O.'s best power, Nov 2024–Nov 2025 vs Nov 2025–Nov 2026 (Vekta data; his case study in coaching_common.CASES).
-# Matteo 15 Nov: not Eoin; someone who improved a lot -> David: +128 W over 30 s, +44 W Critical Power.
-PD = [(30, '30 s', 505, 633), (120, '2 min', None, None), (300, '5 min', 288, 320), (1200, '20 min', 250, 276)]
-PD = [p for p in PD if p[2]]
+# Matteo 15 Nov: a benchmark instead of one athlete: typical W/kg at each level (approximate values after Allen &
+# Coggan's power profile, men; the WorldTour row is the profile's "world class" row). No athlete is named or invented.
+PD_D = ['5 s', '1 min', '5 min', 'Threshold']
+PD_L = [('WorldTour', '#34c46a', [24.0, 11.5, 7.6, 6.4]), ('Continental pro', '#f0bf00', [21.5, 10.5, 6.8, 5.7]),
+        ('Elite amateur / U23', '#5f86c9', [19.0, 9.3, 6.0, 5.0]), ('Club racer', '#8a8f98', [15.5, 7.8, 4.6, 3.9])]
 def pd_chart():
     import math
-    W, H, L, Rr, Tt, B = 760, 360, 56, 40, 24, 44
-    t0, t1 = 30, 1200
-    x = lambda t: L + (math.log(t) - math.log(t0)) / (math.log(t1) - math.log(t0)) * (W - L - Rr)
-    y = lambda w: Tt + (700 - w) / (700 - 200) * (H - Tt - B)
-    grid = ''.join(f'<line x1="{L}" x2="{W - Rr}" y1="{y(w):.1f}" y2="{y(w):.1f}" class="pd-grid"/><text x="{L - 8}" y="{y(w) + 4:.1f}" class="pd-ax" text-anchor="end">{w}</text>' for w in (200, 300, 400, 500, 600, 700))
-    xt = ''.join(f'<text x="{x(t):.1f}" y="{H - B + 20}" class="pd-ax" text-anchor="{"end" if t == t1 else "middle"}">{lab}</text>' for t, lab, _, _ in PD)
-    def line(i, cls):
-        pts = ' '.join(f'{x(t):.1f},{y(v[i]):.1f}' for t, _, *v in PD)
-        return f'<polyline points="{pts}" class="{cls}"/>' + ''.join(f'<circle cx="{x(t):.1f}" cy="{y(v[i]):.1f}" r="4.5" class="{cls}-dot"/>' for t, _, *v in PD)
-    gains = ''.join(f'<text x="{x(t) + (10 if t < t1 else -10):.1f}" y="{y(b) - 10:.1f}" class="pd-lab pd-up" text-anchor="{"start" if t < t1 else "end"}">+{b - a} W</text>' for t, _, a, b in PD)
-    hits = ''.join(f'<rect x="{x(t) - 22:.1f}" y="{Tt}" width="44" height="{H - Tt - B}" class="pd-hit" data-x="{x(t):.1f}" data-t="{lab}" data-b="{b}" data-a="{a}"/>' for t, lab, a, b in PD)
+    W, H, L, Rr, Tt, B = 760, 380, 56, 150, 24, 44
+    x = lambda i: L + i * (W - L - Rr) / (len(PD_D) - 1)
+    lo, hi = math.log(3), math.log(26)
+    y = lambda v: Tt + (hi - math.log(v)) / (hi - lo) * (H - Tt - B)
+    grid = ''.join(f'<line x1="{L}" x2="{W - Rr}" y1="{y(v):.1f}" y2="{y(v):.1f}" class="pd-grid"/><text x="{L - 8}" y="{y(v) + 4:.1f}" class="pd-ax" text-anchor="end">{v}</text>' for v in (4, 6, 8, 12, 16, 24))
+    xt = ''.join(f'<text x="{x(i):.1f}" y="{H - B + 20}" class="pd-ax" text-anchor="middle">{d}</text>' for i, d in enumerate(PD_D))
+    lines = ''
+    for n, c, v in PD_L:
+        pts = ' '.join(f'{x(i):.1f},{y(w):.1f}' for i, w in enumerate(v))
+        lines += f'<polyline points="{pts}" fill="none" stroke="{c}" stroke-width="{3 if n == "WorldTour" else 2.2}"/>'
+        lines += ''.join(f'<circle cx="{x(i):.1f}" cy="{y(w):.1f}" r="4" fill="{c}" stroke="#0f1011" stroke-width="2"/>' for i, w in enumerate(v))
+        lines += f'<text x="{x(len(PD_D) - 1) + 12:.1f}" y="{y(v[-1]) + 4:.1f}" class="pd-lab" style="fill:{c}">{n}</text>'
+    hits = ''.join(f'<rect x="{x(i) - 26:.1f}" y="{Tt}" width="52" height="{H - Tt - B}" class="pd-hit" data-x="{x(i):.1f}" data-t="{d}" data-v="'
+                   + '|'.join(f'{n}:{v[i]}:{c}' for n, c, v in PD_L) + '"/>' for i, d in enumerate(PD_D))
     svg = (f'<svg class="pd-svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pd-t">'
-           f'<title id="pd-t">David’s best power one season apart: higher at every point, from 505 to 633 W for 30 seconds and from 250 to 276 W for 20 minutes</title>'
-           f'{grid}{xt}<line x1="{L}" x2="{W - Rr}" y1="{H - B}" y2="{H - B}" class="pd-base"/>'
-           f'<line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{line(0, "pd-a")}{line(1, "pd-b")}{gains}{hits}</svg>')
-    rows = ''.join(f'<tr><td>{lab}</td><td>{a} W</td><td>{b} W</td><td>+{b - a} W</td></tr>' for _, lab, a, b in PD)
-    return f'''<figure class="pd panel">
-      <div class="pd-top"><div><b class="pd-title">Power-duration profile</b><span>Best power, watts · David O., sportive rider, Ireland</span></div>
-        <div class="pd-leg"><span class="pd-cp">Critical Power <b>244 → 288 W</b> <em>+18%</em></span><span><i class="pd-sw pd-sw-b"></i>This year with Matteo</span><span><i class="pd-sw pd-sw-a"></i>A year earlier</span></div></div>
-      <div class="pd-wrap">{svg}<div class="pd-tip" hidden></div></div>
-      <figcaption>Higher at every point: +128 W over 30 seconds (a quarter more kick), +32 W over 5 minutes, +26 W over 20 minutes, and a Critical Power up 44 W, from 244 to 288 W. <a href="{C}/case-studies/#david" {EXT}>Read David’s case study →</a></figcaption>
-      <details class="pd-tbl"><summary>See the numbers</summary><table><thead><tr><th>Duration</th><th>A year earlier</th><th>This year</th><th>Change</th></tr></thead><tbody>{rows}</tbody></table></details>
-    </figure>'''
+           f'<title id="pd-t">Typical power in watts per kilo at each level, from club racer to WorldTour, for 5 seconds, 1 minute, 5 minutes and threshold</title>'
+           f'{grid}{xt}<line x1="{L}" x2="{W - Rr}" y1="{H - B}" y2="{H - B}" class="pd-base"/><line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{lines}{hits}</svg>')
+    rows = ''.join(f'<tr><td>{n}</td>' + ''.join(f'<td>{w}</td>' for w in v) + '</tr>' for n, c, v in PD_L)
+    leg = ''.join(f'<span><i class="pd-sw" style="border-top-color:{c}"></i>{n}</span>' for n, c, v in PD_L)
+    heads = ''.join(f'<th>{d}</th>' for d in PD_D)
+    return ('<figure class="pd panel">'
+            '<div class="pd-top"><div><b class="pd-title">What the teams look for</b><span>Typical best power, watts per kilo, by level</span></div>'
+            f'<div class="pd-leg">{leg}</div></div>'
+            f'<div class="pd-wrap">{svg}<div class="pd-tip" hidden></div></div>'
+            '<figcaption>Every step up is a jump in watts per kilo, from the sprint to threshold. On the programme Matteo measures where you are on this chart '
+            'and how fast you are closing the gap to the next level. Approximate values for men, after Allen &amp; Coggan’s power profile; women’s values are around 10–15% lower.</figcaption>'
+            f'<details class="pd-tbl"><summary>See the numbers (W/kg)</summary><table><thead><tr><th>Level</th>{heads}</tr></thead><tbody>{rows}</tbody></table></details>'
+            '</figure>')
 PD_JS = """<script>(function(){document.querySelectorAll('.pd-wrap').forEach(function(w){var tip=w.querySelector('.pd-tip'),cr=w.querySelector('.pd-cross'),svg=w.querySelector('svg');
 w.querySelectorAll('.pd-hit').forEach(function(h){function on(){var x=+h.dataset.x;cr.setAttribute('x1',x);cr.setAttribute('x2',x);cr.style.opacity=1;
-var a=h.dataset.a,b=h.dataset.b;tip.innerHTML='<b>'+h.dataset.t+'</b><span><i class=\\"pd-sw pd-sw-b\\"></i>This year: '+b+' W</span>'+(a?'<span><i class=\\"pd-sw pd-sw-a\\"></i>A year earlier: '+a+' W</span><em>+'+(b-a)+' W</em>':'');
-var r=svg.getBoundingClientRect(),px=x/760*r.width;tip.hidden=false;tip.style.left=Math.min(Math.max(px-70,0),r.width-150)+'px';}
+tip.innerHTML='<b>'+h.dataset.t+'</b>'+h.dataset.v.split('|').map(function(r){var p=r.split(':');return '<span><i class="pd-sw" style="border-top-color:'+p[2]+'"></i>'+p[0]+': '+p[1]+' W/kg</span>';}).join('');
+var r=svg.getBoundingClientRect(),px=x/760*r.width;tip.hidden=false;tip.style.left=Math.min(Math.max(px-95,0),r.width-200)+'px';}
 function off(){tip.hidden=true;cr.style.opacity=0;}h.addEventListener('mouseenter',on);h.addEventListener('mouseleave',off);h.addEventListener('click',on);});});})();</script>"""
 
 def talent():
@@ -554,9 +560,20 @@ def talent():
     wins = [fx(w) for w in wins]
     VER = {'Tour de France': '7', "Giro d'Italia": '6', 'Vuelta': '4', 'World Championships': '45'}   # aejallsports.ch, 15 Nov 2026
     wins = [re.sub(r'^\d+(\s*x\s*)(.*)$', lambda m: (VER.get(m.group(2).strip()) or m.group(0).split('x')[0].strip()) + m.group(1) + m.group(2), w) for w in wins]
+    # Matteo 15 Nov: each win lights up in its own colour on hover (the jersey or the race's colour)
+    WC = [('Green Jerseys', '#34c46a', ''), ('Polka Dot', '#e1251b', 'wc-polka'), ('Violet', '#8b5cf6', ''), ('Tour de France', '#f5d000', ''), ("Giro d'Italia", '#ff6fb1', ''), ('Vuelta', '#e1251b', ''), ('World Championships', '#5f86c9', 'wc-rainbow'),
+          ('monuments', '#3b82f6', ''), ('Olympic', '#d4af37', ''), ('Green Jerseys', '#34c46a', ''), ('Polka Dot', '#e1251b', 'wc-polka'),
+          ('Violet', '#8b5cf6', ''), ('Milan', '#5ec8f2', ''), ('Roubaix', '#5ec8f2', ''), ('Liège', '#5ec8f2', ''), ('Amstel', '#5ec8f2', ''),
+          ('Lombardia', '#5ec8f2', ''), ('Suisse', '#e1251b', ''), ('Dauphiné', '#f5d000', ''), ('Romandie', '#e1251b', '')]
+    def wc(label):
+        for k, c, cls in WC:
+            if k in label: return f' class="{cls}" style="--wc:{c}"' if cls else f' style="--wc:{c}"'
+        return ''
     def win(w):
         m = re.match(r'(\d+)\s*x\s*(.*)', w)
-        return f'<li><b><span class="tl-n" data-n="{m.group(1)}">{m.group(1)}</span>×</b><span>{E(m.group(2))}</span></li>' if m else f'<li><b>All</b><span>{E(w[4:] if w.startswith("All ") else w)}</span></li>'
+        if m: return f'<li{wc(m.group(2))}><b><span class="tl-n" data-n="{m.group(1)}">{m.group(1)}</span>×</b><span>{E(m.group(2))}</span></li>'
+        lab = w[4:] if w.startswith("All ") else w
+        return f'<li{wc(lab)}><b>All</b><span>{E(lab)}</span></li>'
     wins_html = '<ul class="tl-wins">' + ''.join(win(w) for w in wins) + '</ul>'
     para = lambda t: ''.join(f'<p>{E(x.strip())}</p>' for x in t.split('\n') if x.strip())
     LOOK = [('chart', 'Power profile', 'Best power from a 5-second sprint to an hour, compared with what riders at the next level produce.'),
@@ -572,7 +589,7 @@ def talent():
                  ("What's the cost?", '<br>'.join(E(x) for x in cost.split('\n')) + f' <a href="{C}/individual-packages/" {EXT}>See the Advanced Package</a>'),
                  ('Does the programme include nutrition?', f'Yes, if you want it. You can add 1-to-1 nutrition coaching with our sports nutritionist, Marine Lenehan: a WorldTour Pro with LIDL-TREK, 2× Irish National Champion and Amateur Gravel World Champion 2024. She writes your daily macros, carbs per hour and nutrition notes into the same calendar as your training, reviews your food diary and builds your race fuelling and gut training. <a href="{C}/nutrition/#upgrade" {EXT}>Read more about nutrition coaching</a>'),
                  ('What does my training calendar look like?', 'Every session is planned in your calendar on Vekta, synced to your devices and apps, with the targets for the day. If you work with Marine, her nutrition notes and carbs per hour sit next to each session (see the example above). After each ride you add your RPE and a comment, so Matteo can adapt the plan.'),
-                 ('Who are A&amp;J AllSports?', 'A&amp;J AllSports is the sports management agency of Alex and Johnny Carera, founded in 1997. It represents some of the best riders in the WorldTour, such as Tadej Pogačar, Isaac Del Toro, Biniam Girmay and Jasper Philipsen, and in the past Chris Froome and Vincenzo Nibali.'),
+                 ('Who are A&J AllSports?', 'A&amp;J AllSports is the sports management agency of Alex and Johnny Carera, founded in 1997. It represents some of the best riders in the WorldTour, such as Tadej Pogačar, Isaac Del Toro, Biniam Girmay and Jasper Philipsen, and in the past Chris Froome and Vincenzo Nibali.'),
                  ('Can I stay with my club or team?', 'Yes. The programme is your coaching: you keep racing with your club or team, and Matteo plans your training around your race calendar.'),
                  ('Does joining guarantee a professional contract?', 'No. Nobody can promise that. What we promise is world-class coaching, an honest analysis of your numbers, and that when a rider is ready, the right people hear about it.')]
     faq_html, faq_ld = faq(faq_items)
@@ -720,7 +737,7 @@ TL_CSS = """<style>
 .pd-lab { font: 700 12px var(--body); fill: #d0d6e0; }
 .pd-cross { stroke: rgba(255,255,255,.35); stroke-width: 1; opacity: 0; }
 .pd-hit { fill: transparent; cursor: crosshair; }
-.pd-tip { position: absolute; top: 6px; width: 150px; padding: 10px 12px; border-radius: 10px; background: rgba(8,9,10,.95); border: 1px solid rgba(255,255,255,.14); display: grid; gap: 4px; font-size: 13px; color: var(--text-2); pointer-events: none; }
+.pd-tip { position: absolute; top: 6px; width: 200px; padding: 10px 12px; border-radius: 10px; background: rgba(8,9,10,.95); border: 1px solid rgba(255,255,255,.14); display: grid; gap: 4px; font-size: 13px; color: var(--text-2); pointer-events: none; }
 .pd-tip[hidden] { display: none !important; }
 .pd-tip b { color: var(--text); }
 .pd-tip span { display: flex; align-items: center; gap: 6px; }
@@ -733,8 +750,14 @@ TL_CSS = """<style>
 .pd-tbl th { color: var(--text); }
 .tl-wins { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
 .tl-wins li { transition: transform .25s, border-color .25s, background .25s; }
-.tl-wins li:hover { transform: translateY(-4px); border-color: var(--green); background: linear-gradient(160deg, rgba(0,154,68,.22), transparent 70%), var(--panel); }
-.tl-wins li:hover b { color: #f0bf00; }
+.tl-wins li { --wc: #34c46a; }
+.tl-wins li:hover { transform: translateY(-4px); border-color: var(--wc); background: linear-gradient(160deg, color-mix(in srgb, var(--wc) 30%, transparent), transparent 75%), var(--panel); }
+.tl-wins li:hover b { color: var(--wc); }
+.tl-wins li.wc-rainbow:hover { border-color: transparent; background: linear-gradient(var(--panel-solid, #16181a), var(--panel-solid, #16181a)) padding-box, linear-gradient(90deg, #5f86c9, #e1251b, #111, #f5d000, #34c46a) border-box; }
+.tl-wins li.wc-rainbow:hover b { background: linear-gradient(90deg, #5f86c9, #e1251b, #f5d000, #34c46a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.tl-wins li.wc-rainbow:hover b span { color: transparent !important; }
+.tl-wins li.wc-polka:hover { background: radial-gradient(circle, rgba(225,37,27,.55) 3px, transparent 3.5px) 0 0 / 16px 16px, #f4f4f2; }
+.tl-wins li.wc-polka:hover span:not(.tl-n) { color: #111 !important; }
 .tl-wins li { padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel-grad), var(--panel); display: grid; gap: 2px; }
 .tl-wins b { font: 400 30px/1 var(--head); color: var(--green-text); font-variant-numeric: tabular-nums; }
 .tl-wins b span { color: inherit !important; font: inherit !important; }

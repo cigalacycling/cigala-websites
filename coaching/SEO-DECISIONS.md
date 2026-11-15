@@ -330,3 +330,7 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   review cards highlight on hover. Blog hero: Matteo winning in Siena, whole rider in frame (the riding photo cut his face).
 - Individual Packages: the 5 live testimonials (same quotes and photos with their live alt) now in the moving review strip
   like the rest of the site; the currency note in the first person ("please contact me"), like the note beside it.
+- Talent chart (Matteo chose this): "What the teams look for": typical W/kg at 5 s, 1 min, 5 min and threshold for club
+  racer, elite amateur/U23, Continental pro and WorldTour; approximate values after Allen & Coggan's power profile (men),
+  labelled as such. No athlete named or invented. A&J wins light up in their own colour on hover (yellow Tour, pink Giro,
+  red Vuelta, rainbow Worlds, polka dots, etc.). FAQ "Who are A&J AllSports?" showed "&amp;": fixed.
