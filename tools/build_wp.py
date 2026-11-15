@@ -1,6 +1,7 @@
 # Builds Elementor data for cigalacycling.com staging from the approved preview pages.
 # Writes JSON payloads to scratchpad/wp/out/ ; push_wp.py sends them.
 import re, json, copy, urllib.parse, random, string
+random.seed(20261115)  # repeatable Elementor element IDs, so rebuilds only change what really changed
 S = __import__('os').path.dirname(__import__('os').path.dirname(__import__('os').path.abspath(__file__))) + '/'
 H = S + 'home/'
 OUT = S + 'wp/out/'
