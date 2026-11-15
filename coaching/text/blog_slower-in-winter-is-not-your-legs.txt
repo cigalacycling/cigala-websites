@@ -1,0 +1,129 @@
+H1: Slower in Winter? It’s Not Your Legs
+H2: Founder & Head Coach, Matteo Cigala
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/08/gran_fondo_strade_bianche_2022_img_1.jpg alt='Cigala Matteo Gran Fondo Strade Bianche'>
+TXT: Every November the same message lands in my inbox: "Matteo, I've lost my fitness. Same loop, same
+effort, and I'm slower." In most cases nothing was lost. The air got heavier, the tyres got stiffer, and the
+muscles got colder.
+P: Winter slows you down through three separate mechanisms that stack. Understanding them is the
+difference between a rider who panics in December and one who arrives in spring fresh and fast.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-24.jpg alt='Tips to train in the cold by Matteo Cigala'>
+H2: The short version, with real numbers
+P: Here is a simple model of one rider on a flat road with no wind, holding a steady 200 W. The only thing
+that changes is the temperature. Rider and bike weigh 72 kg, CdA is 0.36 m² (hands on the hoods), Crr is
+0.0045, drivetrain efficiency is 97.5%, at sea level in dry air.
+TXT: **Air temperature****Air density (kg/m³)****Speed at 200 W (km/h)****Time for 60 km**25°C1.18433.11:48:4415°C1.22532.81:49:545°C1.26932.41:51:08– 5°C1.31632.01:52:24
+P: Between 25°C and 5°C the air is 7.2% denser. To hold 32 km/h you need about 182 W in summer and
+about 194 W at 5°C, which is 11 W more for the same speed. At 40 km/h the gap grows to about 22 W
+(336 W vs 358 W), because the power needed to beat the air rises with the cube of speed.
+
+Now add what winter really looks like: a jacket, thermal tights and overshoes. If I add just 0.02 m² to CdA
+and 10% to Crr, the same 200 W at 5°C gives 31.7 km/h and a 60 km time of 1:53:39. That is nearly 5
+minutes slower than summer on the same legs. To hold 32 km/h in that kit you need about 206 W, 23
+W more than in July.
+H2: The physics in one line
+P: The power you must produce on the flat is the sum of air resistance, rolling resistance, and the small loss
+in your drivetrain:
+
+P = \frac{\tfrac{1}{2}\,\rho\,C_dA\,v^3 + C_{rr}\,m\,g\,v}{\eta}
+
+Here ρ is air density, CdA is your drag area, v is speed, Crr is the rolling resistance coefficient, m is rider
+plus bike mass, g is 9.81 m/s² and η is drivetrain efficiency. Cold changes two of these terms directly (ρ
+goes up, Crr goes up), and winter clothing changes a third (CdA).
+
+At 32 km/h about 84% of the power in my model goes into the air. At 40 km/h it is 89%. At 20 km/h it
+falls to 67%. So the faster you ride on the flat, the more the weather taxes you, and the less it matters
+on a steep climb at low speed.
+H2: What the research says
+LI: **Cold air is a heavier air. 
+**A 2019 study in the Journal of Biomechanics (Beaumont and colleagues)
+combined computer fluid simulation with a power model across −10°C to 40°C. It found that the power
+needed to hold a constant speed drops as temperature rises, because aerodynamic resistance drops. A
+separate numerical analysis of freezing to scorching conditions put the change in total drag at roughly
+2.8% for every 10°C. That matches my table: 20°C of difference is about 5.6% in drag, and about 6% in
+power at 32 km/h once rolling resistance is included. Track cycling takes this seriously: engineers
+working on the London velodrome estimated that warming the air from 20°C to 25°C is worth roughly
+1.4 seconds over 4 km for a world-class pursuiter.
+LI: **Cold tyres roll worse. 
+**Rolling resistance is not a constant. In a lab test series,
+bicyclerollingresistance.com found that raising tyre surface temperature from 20°C to 40°C cut rolling
+resistance by 17.6% on average. Rothhämel (2023, International Journal of Vehicle Systems Modelling
+and Testing) measured the same trend with ambient temperature: as it falls, the coefficient rises,
+especially in the range above freezing. Higher pressure lowers it, which is one reason a slightly firmer
+tyre can help on a clean, dry winter road. On wet or gritty roads, grip comes first.
+LI: **Cold muscles make less power. 
+**This is the part most riders underestimate. A review by Racinais and
+Oksa (2010, Scandinavian Journal of Medicine & Science in Sports) reports that in short-duration exercise
+performance changes by around 2% to 5% for each 1°C of muscle temperature. Earlier work by Davies
+and Young (1983, Journal of Applied Physiology) showed that peak cycling power rises and falls in a
+straight line with muscle temperature: cooling the muscle by 8.4°C reduced force, while warming it by
+3.1°C sped up the contraction. A 2009 study by Racinais and colleagues found that pre-cooling the legs
+lowered sprint power, and their advice to athletes was simple: never cool the legs before a sprint.
+My reading as a coach: this third effect matters most in the first 20 to 30 minutes, on hard efforts and
+on sprints. Once you are warm and riding steady, the air and the tyres are doing most of the damage.
+That is why a winter ride often feels “flat” early and then settles.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/10/IMG_8617-scaled.jpg alt='Winter Training Cigala Cycling'>
+H2: Why your winter average looks worse than the model
+P: The model above is clean. Real winter adds friction in every direction:
+LI: Wet roads and spray raise rolling resistance beyond what dry-road lab tests show.
+LI: Cold chain lubricant and stiffer bearings cost a few extra watts.
+LI: Gloves, buffs and thick layers raise CdA more than my 0.02 m² if they flap.
+LI: Stop-start riding, traffic lights and ice patches reduce your steady average.
+Add all of that up and a rider who is exactly as fit as in August can easily be 3% to 6% slower on the same
+route. That is not lost fitness. That is physics.
+H2: How I coach riders through the cold months
+P: 1- Judge fitness by power, not speed. If your watts for a given perceived effort or heart rate are
+stable, your engine is stable.
+P: 2- Compare winter to winter. Use the same loop in similar temperatures, or run a fixed test
+indoors where nothing else moves.
+P: 3- Warm up longer than you think. The research says muscle temperature drives power. Ten extra
+minutes of easy spinning before the first hard effort is cheap insurance.
+P: 4- Dress to stay warm, not to be heavy. A close-fitting layer flaps less and costs fewer watts than a
+loose, bulky one. Do not freeze to save drag, because a cold muscle costs you more than a
+flapping jacket.
+P: 5- Reset your speed targets. Plan a group ride or a tour stage with a lower average speed in the
+cold, and keep the effort the same.
+P: 6- Keep the base work honest. Winter is for aerobic volume and strength. Do not chase a summer
+average in December and arrive in spring tired.
+H2: Honest caveats
+P: My table is a model, not a lab test. It assumes dry air at standard pressure, no wind, steady effort, a flat
+road and the same rider position. Your CdA, mass and tyres will differ, so your numbers will too. Wind,
+altitude, humidity and drafting can easily outweigh any of the figures above. Use the table to
+understand the direction and the rough size of the effect, and trust your own power file for the rest.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/download-1.png alt='Matteo Cigala at Rás Tailteann | Cigala Cycling Coaching'>
+H2: The takeaway
+P: If you are slower in winter, check three things before you doubt your fitness: the air density, the tyres
+and the temperature of your legs. Then check your power. In most cases the engine is fine and the
+environment is the culprit.
+Send this to the friend who is convinced they lost their form in November.
+Want a winter plan that builds your base without chasing numbers that do not matter? Get in touch
+about coaching at coaching.cigalacycling.com.
+H2: Sources
+P: Engineering Sport, The heat is on for cyclists in the London velodrome
+P: Beaumont F. et al. (2019), Aerodynamic investigation of the thermo-dependent flow structure in
+the wake of a cyclist, Journal of Biomechanics 82:387–391. Abstract
+P: Racinais S., Oksa J. (2010), Temperature and neuromuscular function, Scandinavian Journal of
+Medicine & Science in Sports 20(S3):1–18. Record
+P: Davies C.T.M., Young K. (1983), Effect of temperature on the contractile properties and muscle
+power of triceps surae in humans, Journal of Applied Physiology 55(1):191–195. PubMed
+P: Racinais S. et al. (2009), Does the diurnal increase in central temperature interact with pre-
+cooling or passive warm-up of the leg?, Journal of Science and Medicine in Sport. Abstract
+P: Rothhämel M. (2023), On rolling resistance of bicycle tyres with ambient temperature in focus,
+International Journal of Vehicle Systems Modelling and Testing. Summary
+P: bicyclerollingresistance.com, CRR at different temperatures
+P: Matteo Cigala
+Founder & Head Coach
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/Matteo-Cigala-6-years-old-1.png alt='Matteo Cigala 6 years old'>
+H2: CIGALA CYCLING
+P: #TrainSmarterRideFaster
+TXT: [
+H2: CYCLING COACHING
+TXT: ](https://coaching.cigalacycling.com/)
+ [
+H2: TRIATHLON COACHING
+TXT: ](https://coaching.cigalacycling.com/tri-individual-packages/)
+ [
+H2: BIKE TOURS
+TXT: ](https://tours.cigalacycling.com/)
+ [
+H2: RETAIL
+TXT: ](https://retail.cigalacycling.com/)

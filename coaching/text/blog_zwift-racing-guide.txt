@@ -1,0 +1,73 @@
+H1: Zwift racing guide
+H2: Founder and Head Coach, Matteo Cigala
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-27.jpg alt='Zwift Racing Guide by Matteo Cigala'>
+TXT: This is fast. If you need to pick up your towel, grab some water or turn your fan if you have lost already. Make sure you are ready before the start. Have a towel, full water bottles, windows open and fan turned on. Have a checklist.
+P: **The 20 best tips for racing on Zwift**
+H3: 1 – Be prepared
+P: This is fast. If you need to pick up your towel, grab some water or turn your fan if you have lost already. Make sure you are ready before the start. Have a towel, full water bottles, windows open and fan turned on. Have a checklist.
+H3: 2 – Double check devices
+P: Make sure you are paired up successfully and you have enough time to re-calibrate. Also, make sure your laptop or phone is plugged in. You don’t want your battery to run out with a few kilometers to go.
+H3: 3 – Have a good starting position
+P: Zwift races start hard and fast. Being there at the front of the start line is key. To do that, you need to join the event at least 15 minutes before the start.
+H3: 4 – Have a good warm-up
+P: As the pace is so hard from the start, if not warmed up, you will be at the back in no time. Try to warm up for at least 15–20 minutes with some sharp efforts to get the heart rate up. If the race is not a criterium, like in real-world racing, the pace will slow down, so don’t worry, you are not the only one that finds the start difficult.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/download-3.png alt='Cigala Matteo Zwift Racing'>
+H3: 5 – Accelerate at about 3 to 5 seconds before the start
+P: You don’t want to start by a standing position. If you start acceleration before the official start, as soon as the flag drops, your avatar will start moving fast.
+H3: 6 – Don’t go too hard at the start
+P: You must start fast and be ready for a strong start, however, try not to burn all your matches early. If you attack too early, it is possible that you won’t recover quickly enough and you run the risk of getting dropped. In Zwift racing, it is much more difficult to “rest in the bunch”.
+H3: 7 – Maintain a good position
+P: Splits in the group happen quickly. If someone lets the wheel go when the bunch is lining up, and you are halfway of the peloton, there is a risk that you miss that split and see the riders in front of you riding away. To try to close that gap, you will lose a lot more energy than someone who was at the front for that split. So look beyond the rider in front of you.
+H3: 8 – Use drafting
+P: The draft effect in Zwift works. Stay out of the wind and try to take advantage of the draft as much as you can. Like in the real world, drafting lets you save your energy so that you have something left in the tank when it’s time to hit hard.
+H3: 9 – Move towards the front when the bunch is “resting up”
+P: If you are falling off the back, a good moment to come back near the front, like in real life races, is when the bunch is “resting up”.
+H3: 10 – Watch for signs and be ready
+LI: If a rider’s watts per kilogram goes over 8 w/kg, the number in the right-hand section of the screen will go orange.
+LI: Check the watts per kilogram of the people around you.
+LI: If a rider’s watts per kilogram goes over their FTP, their avatar will stand up.
+LI: When in a draft, the avatar positions their hands on the hoods.
+LI: If a rider is pushing below 10 watts on a -3% or greater descent at more than 58 km/h, they go into an aero position.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/download-4.png alt='Matteo Cigala Zwift Racing'>
+H3: 11 – Know your capabilities
+P: Like in real life races, you must know your strengths and weaknesses.
+H3: 12 – Know the courses
+P: Knowledge is power. By knowing when a climb is approaching, how long it will be, or how the last kilometer looks, you can be smarter with your moves.
+H3: 13 – Starting your sprints at the right time
+P: In Zwift, you start winding it up earlier than in the real world. You will almost never get an easy ride for your position and kick with 200m to go.
+H3: 14 – Choose the right equipment
+P: If the race is flat, select an aero bike and aero wheels. If it is a climbing event, select a lightweight bike. For gravel, a gravel bike will make a big difference.
+H3: 15 – Use the map
+P: The map is a useful tool in Zwift racing. The map allows you to see how many riders are around, how big the group is, and how many are in the same category.
+H3: 16 – Eat something before the race and don’t forget to drink
+P: Races in Zwift are mostly short and intense, therefore need some fuel. Eat something before the race, at least 2 hours before.
+H3: 17 – Pay attention at riders working together
+P: Like in real life, teamwork can make a difference.
+H3: 18 – Have your Zwift Companion App easy to reach
+P: The Zwift Companion App is essential in order to use your PowerUps.
+H3: 19 – Understand your PowerUps and use them at the right time
+LI: Draft Boost
+LI: Aero Boost
+LI: Featherweight
+LI: Burrito
+LI: Cloaking
+H3: 20 – Analyse your race
+P: Last but not least, analyse your race. Discuss what happened and use the race data to understand your areas of strength and weakness.
+P: **Hope you enjoyed the reading.**
+P: Matteo Cigala 
+Founder & Head Coach
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/Matteo-Cigala-6-years-old-1.png alt='Matteo Cigala 6 years old'>
+H2: CIGALA CYCLING
+P: #TrainSmarterRideFaster
+TXT: [
+H2: CYCLING COACHING
+TXT: ](https://coaching.cigalacycling.com/)
+ [
+H2: TRIATHLON COACHING
+TXT: ](https://coaching.cigalacycling.com/tri-individual-packages/)
+ [
+H2: BIKE TOURS
+TXT: ](https://tours.cigalacycling.com/)
+ [
+H2: RETAIL
+TXT: ](https://retail.cigalacycling.com/)

@@ -1,0 +1,19 @@
+H1: Club information days, coaching nights, Q&A, group coaching sessions and more
+H2: [LEARN MORE](#)
+P: CLUB INFORMATION DAYS
+P: At Cigala Cycling we offer club information days, coaching nights with presentations and Q&A, group coaching sessions.
+Those events are led by Founder & Head Coach Matteo Cigala for cycling clubs. In the case of triathlon clubs, the events are led by both Matteo Cigala and Michael Black (Triathlon Coach at Cigala Cycling).
+P: During these information days or coaching nights, we provide valuable information for cyclists and triathletes. Information about training, periodisation, nutrition, common mistakes to avoid and much more.
+P: These sessions can be held all over Ireland. Drop us a line below to organise and get a quote.
+P: We will be glad to hear from to organise a club talk
+<input name=post_id type=hidden placeholder=None required=False>
+<input name=form_id type=hidden placeholder=None required=False>
+<input name=referer_title type=hidden placeholder=None required=False>
+<input name=queried_id type=hidden placeholder=None required=False>
+LABEL: Name
+<input name=form_fields[name] type=text placeholder=Name required=False>
+LABEL: Email
+<input name=form_fields[email] type=email placeholder=Email required=True>
+LABEL: Message
+<textarea name=form_fields[message] type=None placeholder=Your Message required=False>
+BUTTON: Send >

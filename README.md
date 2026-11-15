@@ -4,7 +4,7 @@ This repository holds the redesign of the Cigala Cycling sites in the Cigala Cyc
 
 1. cigalacycling.com: built on staging, waiting to go live
 2. tours.cigalacycling.com: designs done, fresh SEO baseline taken 15 Nov; waiting for Matteo to create the Hostinger staging copy
-3. coaching.cigalacycling.com: not started
+3. coaching.cigalacycling.com: SEO baseline, content extraction and approved SEO fixes done (15 Nov); staging build waits for Tours (see `coaching/SEO-DECISIONS.md`)
 4. retail.cigalacycling.com: runs on Shopify, not started
 
 ## Ground rules (from Matteo)
@@ -54,6 +54,10 @@ The repository keeps the original working layout so the build scripts run unchan
 | `tools/build_tours.py`, `tourspages/`, `tp/`, `tp2/` | **tours.cigalacycling.com**: the 7 page designs and the extracted live content |
 | `survey/NfmCmGsjq4LL9bTAi38NXN/` | Tours homepage design |
 | `trip/` | Tours trip-page design (Dolomites: 323 km, 8,800 m) |
+| `coaching/baseline.json` | SEO crawl of the live Coaching site before the redesign: 76 sitemap URLs (23 pages, 53 posts), all 200 |
+| `coaching/SEO-DECISIONS.md` | **Approved** coaching SEO fixes (typos, one H1 per page, redirects for `/dummy-page/` and `/group-club-packages2/`, missing alt text). Apply on staging only |
+| `coaching/html/`, `coaching/text/`, `coaching/css/` | Live coaching pages: raw HTML, extracted copy/headings/links/images, Elementor CSS |
+| `coaching/webp/`, `coaching/images.json` | Every coaching image as WebP q90 (long edge ≤2560) + manifest: original URL, alt, background or not, pages. Originals go to `coaching/img/` (gitignored). Re-run: `python3 -I tools/extract_site.py coaching.cigalacycling.com coaching` |
 | `tours/baseline.json` | SEO crawl of the live Tours site before the redesign |
 | `tours/baseline-2026-11-15.json`, `tours/sitemap-urls-2026-11-15.txt` | Fresh live Tours crawl taken before the staging build (121 URLs, 90 from the sitemaps). Identical to `tours/baseline.json`. Re-run: `python3 -I tools/crawl.py tours.cigalacycling.com $(cat tours/sitemap-urls-2026-11-15.txt)` |
 | `cards/` | Tour cards (web, high-quality and story versions) |

@@ -1,0 +1,269 @@
+H1: CYCLING COACH CANADA
+P: Train with Italian Head Coach [Matteo Cigala](https://coaching.cigalacycling.com/about) — from anywhere in Canada.
+P: Matteo brings over 28 years of cycling experience, more than a decade of coaching riders around the world, and hundreds of race victories. He provides personalised coaching for road cycling, gravel, MTB, gran fondos and endurance riders, with every training plan built around your goals, your schedule and your lifestyle.
+P: Whether you’re in British Columbia, Alberta, Ontario, Quebec or anywhere else in Canada, training for a gran fondo, preparing for a gravel race, competing in local or Cycling Canada events, or working towards your next big cycling goal, your coaching is fully tailored to help you perform at your best.
+TXT: [
+ 
+ BOOK FREE CONSULTATION
+ 
+ ](https://calendly.com/cigalacycling)
+H2: Why Canadian Cyclists Choose Cigala Cycling Coaching
+LI: Personalised daily/weekly training plans built around Critical Power (CP) and W′ modelling — going beyond basic FTP training
+LI: Powered by **Vekta**, a next-generation training platform used by WorldTour teams (membership worth €19.99/month included free)
+LI: Training Peaks also available if you’re already set up there
+LI: Adaptive training zones that update as your fitness changes
+LI: Full support for sportives, Gran Fondos, time trials, road racing and general performance goals
+LI: Syncs with Garmin, Wahoo, Zwift and more
+LI: Nutritional guidance and access to a sports nutritionist and mental coach
+LI: Daily session carb reccomendations
+LI: Communication designed around Canada time zones — daily/weekly contact regardless of your coast
+H1: #TrainSmarterRideFaster
+H2: It's our vision
+TXT: "Matteo's attention to detail is exceptional. Every part of the coaching is tailored to you, and it shows in the results. 
+ ★★★★★Chris - Ontario, Canada
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-5-1.jpg alt='Bianchi Arcadex celeste gravel bike | Cigala Cycling Coaching'>
+TXT: "The most exciting part of working with Matteo is the noticeable improvements I started to experience after just 4-6 weeks.
+
+Since then, these improvements have been consistent and remarkable" 
+ ★★★★★Greg - Colorado, USA
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/08/01098521-scaled.jpg alt='USA Gravel | Cigala Cycling '>
+TXT: "Matteo schedules sessions that are built around your available time and utilizes quality over quantity. I have seen improvement year on year while working with Matteo." 
+ ★★★★★Mark - Alberta, Canada
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/IMG_6241-scaled.jpeg alt="What is W' Prime and why it explains how you get dropped.">
+TXT: "Matteo has maximised every hour I can dedicate to training, making every session count." 
+ ★★★★★John - Quebec, Canda
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-2026-06-24T140307.879.jpg alt='Cyclist on a Scott road bike | Cigala Cycling Coaching'>
+TXT: "You don't need to be an elite cyclist to benefit from Matteo's coaching. I can highly recommend him to anyone looking to get fitter and achieve their cycling goals, whatever their age or experience." 
+ ★★★★★Peter - British Columbia, Canda
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/08/1670521-scaled.jpg alt='Cycling in the Alps | Cigala Cycling'>
+H2: COACHING PACKAGES
+P: Prices in Canadian Dollar (CAD)
+TXT: 12 Weeks
+H2: Basic
+P: Charged with one-time payment of $387 for the 12 weeks.
+TXT: $129/mo
+LI: Personalised Daily Training Plan build for 12 weeks
+LI: Plan Tailored to your Training Availability
+LI: Stretching & Core Exercises
+LI: Gym & Winter Program + Support
+LI: Test Protocols (CP, FTP, FTHR or INSCYD)
+LI: Tests Analysis
+LI: Adaptive Training Zones changing weekly
+LI: Training Periodized based on goals
+LI: Blood panel review from our Sport Nutritionist
+LI: Discount membership for products at retail.cigalacycling.com
+LI: Nutritional Guide
+LI: Blog posts for tips
+LI: Sync & follow workouts on Garmin/Wahoo/Zwift etc
+LI: Access to World Class Nutritionist & Mental Coach
+LI: Access to our online Community (value $15/m)
+LI: Discounted metabolic INSCYD testing
+LI: Training Peaks Basic Account
+LI: Contact when needed via email
+LI: Feedback on sessions
+LI: Schedule Adjustment
+LI: Daily Training Analysis
+LI: Daily Session Carbs Recommendations
+LI: Nutritional Consult with our Sports Nutritionist
+LABEL: Basic 12 Weeks
+<select name=None type=None placeholder=None required=False>
+TXT: Basic 12 Weeks Options
+ Basic 12 Weeks: 390 CAD - one-time payment
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ Monthly (Our Most Popular)
+H2: Advanced
+P: 6 months subscription
+TXT: $250/mo
+LI: Personalised Daily Training Plan build on a weekly basis
+LI: Plan Tailored to your Training Availability
+LI: Stretching & Core Exercises
+LI: Gym & Winter Program + Support
+LI: Test Protocols (CP, FTP, FTHR or INSCYD)
+LI: Tests Analysis
+LI: Adaptive Training Zones changing weekly
+LI: Training Periodized based on goals
+LI: Blood panel review from our Sport Nutritionist
+LI: Discount membership for products at retail.cigalacycling.com
+LI: Nutritional Guide
+LI: Blog posts for tips
+LI: Sync & follow workouts on Garmin/Wahoo/Zwift etc
+LI: Access to World Class Nutritionist & Mental Coach
+LI: Access to our online Community (value $15/m)
+LI: Discounted INSCYD Metabolic Testing
+LI: Vekta membership included (value $30.99/m)
+LI: Race Strategy
+LI: Continuous Support & Motivation
+LI: Contact Frequency weekly
+LI: Weekly Feedback
+LI: Weekly Schedule Adjustment
+LI: Weekly Training Analysis
+LI: Daily Session Carbs Recommendations
+LI: Monthly catch up call or when needed
+LI: Nutritional Consult with our Sports Nutritionist
+LABEL: Advanced 6 Months
+<select name=None type=None placeholder=None required=False>
+TXT: Advanced 6 Month Package Options
+ Advanced 6 months: 250 CAD - monthly
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ Monthly
+H2: Premium
+P: 3 months subscription ($20 off for 6 mo)
+TXT: $420/mo
+LI: Personalised Daily Training Plan build on a weekly basis
+LI: Plan Tailored to your Training Availability
+LI: Stretching & Core Exercises
+LI: Gym & Winter Program + Support
+LI: Test Protocols (CP, FTP, FTHR or INSCYD)
+LI: Tests Analysis
+LI: Adaptive Training Zones changing weekly
+LI: Training Periodized based on goals
+LI: Blood panel review from our Sport Nutritionist
+LI: Discount membership for products at retail.cigalacycling.com
+LI: Nutritional Guide
+LI: Blog posts for tips
+LI: Sync & follow workouts on Garmin/Wahoo/Zwift etc
+LI: Access to World Class Nutritionist & Mental Coach
+LI: Access to our online Community (value $15/m)
+LI: Discounted INSCYD Metabolic Testing
+LI: Vekta membership included (value $30.99/m)
+LI: Race Strategy
+LI: Continuous Support & Motivation
+LI: Contact Frequency daily
+LI: Daily Feedback
+LI: Daily Schedule Adjustment
+LI: Daily Training Analysis
+LI: Daily Session Carbs Recommendations
+LI: Weekly catch up call or when needed
+LI: Nutritional Consult with our Sports Nutritionist
+LABEL: Premium 6 Months
+<select name=None type=None placeholder=None required=False>
+TXT: Premium 6 Month Package Options
+ Premium 6 months - 400 CAD - monthly
+LABEL: Premium 3 Months
+<select name=None type=None placeholder=None required=False>
+TXT: Premium 3 Month Package Options
+ Premium 3 months : 420 CAD - monthly
+P: **By subscribing to any of our packages, you accept our Terms & Conditions.
+View T&C [HERE](https://coaching.cigalacycling.com/terms-conditions/)**
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/PfNJBaCPkS_eSn5JUIIhJpgnxmG1igR15Ms-kImNNvwSOW2r4e162m8WjpIJ1G-LmjDpPLyVhpM8pxSe4SB74pz4oS1JVAs1000.png alt='TrainingPeaks Level 1 & 2 logos | Cigala Cycling Coaching'>
+H2: AS SEEN IN
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_4_wHe4MESD1mnVHaZLbvuAhQJPRfY_Y5o8LcB8Lf3hrcFJpSm5_f1Fh3tg2984Rf0cBx002ew3PaAFuURUAEzSyL8POc4YmRpKs280.png alt='Red Bull Racing logo | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_6_6_MxiOhdNhpHCpQ19k2O9Hg_l4BkANJJibpd7zIS7U_HF96ckCMSXqh-IHtcfYoyUvsoPKU-8T6O96GckP-s4g4xIlj-jb8s280.png alt='StickyBottle.com cycling logo | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-87.png alt='White Zwift logo on orange bg | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-86.png alt='TrainingPeaks logo with icon | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-84.png alt='Cycling Ireland logo | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-85.png alt='Vekta logo with yellow icon | Cigala Cycling Coaching'>
+H2: Events We Help Canadian Riders Prepare For
+P: Training toward a specific date changes everything about how a plan should be built. We coach riders preparing for Gran Fondos and races across the Canadian calendar, including:
+LI: **RBC GranFondo Whistler** (Vancouver to Whistler, BC)
+LI: **Gran Fondo Axel Merckx Okanagan** (Kelowna, BC)
+LI: **Gran Fondo Baie Sainte-Marie** (Nova Scotia)
+LI: **Gran Fondo PEI** (Prince Edward Island)
+**
+**
+LI: **Revelstoke Gran Fondo** (BC)
+LI: **Ride to Conquer Cancer** events (multiple provinces)
+LI: Cycling BC, Ontario and provincial road race/criterium calendars
+P: Targeting an event further afield — a European Gran Fondo or a US Gran Fondo World Series qualifier? We build Canadian athletes’ training blocks around those goals too, including winter indoor periodisation ahead of the trip.
+H2: 2025 IN NUMBERS
+H3: 1348
+H4: Top 10
+H3: 149
+H4: 3rd places
+H3: 129
+H4: 2nd places
+H3: 164
+H4: 1st places
+H3: 100%
+H4: Performance improvement
+H3: >90%
+H4: Goals Achieved by clients
+H2: READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING
+TXT: [
+ 
+ READ MORE TESTIMONIALS
+ 
+ ](https://coaching.cigalacycling.com/testimonials/)
+H2: Coaching Cyclists Across Canada
+P: Matteo coaches riders remotely delivering in from coast to coast in Canda, including:
+LI: **British Columbia** — Vancouver, Whistler, Victoria, Kelowna/Okanagan
+LI: **Ontario** — Toronto, Ottawa, Barrie
+LI: **Alberta** — Calgary, Edmonton
+LI: **Quebec** — Montreal, Quebec City
+LI: **Atlantic Canada** — Nova Scotia, PEI, New Brunswick
+P: Wherever you’re based, coaching is delivered the same way: personalised plan, remote feedback, and testing built around your local terrain, climate and event calendar.
+TXT: [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-96.png alt='Garmin logo with blue triangle | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-97.png alt='Wahoo Fitness brand logo text'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-98.png alt='Hammerhead logo with keywords | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-99.png alt='Bryton logo black and white | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-2026-06-23T221525.917.png alt='ROUVY logo on gray background | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-2026-06-23T221522.108.png alt='MyWhoosh cycling logo | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-2026-06-23T221517.917.png alt='Zwift logo with orange Z | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-100.png alt='iGPSPORT black and red logo | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+H2: FREQUENTLY ASKED QUESTIONS
+TXT: Which package is right for me?
+P: It depends on your budget and how much direct feedback you want. If you’re happy following a plan independently, Basic is enough. Advanced is our most popular package because it includes weekly access to Matteo plus Vekta membership.
+TXT: I'm based in Canada — does coaching work remotely? How you handle winter training?
+P: All coaching is delivered online — plans, feedback, testing and communication happen asynchronously via Vekta or Training Peaks, with calls scheduled to suit your time zone, whether you’re on the East Coast, West Coast, or anywhere between.
+P: Your plan includes a dedicated gym & winter programme, built for indoor trainer work (Zwift, RGT, MyWhoosh, etc.) during the colder months, periodised so you come into spring with a real fitness base rather than starting over.
+TXT: Do you only coach people who race?
+P: No. We coach riders working toward weight loss, their first century ride, general fitness, Gran Fondos, triathlon or racing — the only requirement is that you ride a bike and want to improve.
+TXT: Do I need to switch from Training Peaks to Vekta?
+P: No — we can continue working in Training Peaks if you’re already comfortable there, or explore Vekta’s Critical Power and W′ analytics alongside it.
+TXT: What age do I need to be?
+P: We coach all ages, 14 and up — no upper limit. Riders under U23 receive a 20% student discount.
+TXT: My event is months away — can I still sign up now?
+P: Yes. Based on how far away is the event you can choose any suitable package.
+H1: START WORKING WITH MATTEO
+H2: Personalised to your goals. Coaching cyclists in Canada and worldwide.
+TXT: [
+ 
+ Book Free Consultation
+ 
+ ](https://calendly.com/cigalacycling)

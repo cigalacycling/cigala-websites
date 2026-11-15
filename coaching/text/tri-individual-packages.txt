@@ -1,0 +1,165 @@
+P: TRIATHLON INDIVIDUAL PACKAGES
+P: We have 2 coaching packages: Advanced and Premium
+P: Our triathlon coaching packages are led by former pro Matteo Cigala.
+P: Our triathlon coaching covers all disciplines of triathlon from Sprint to Ironman.
+P: To sign up with another currency, please contact us and we will provide you the required link
+TXT: 12 Weeks
+H2: Basic Package
+P: Charged with one-time payment of €237 for the 12 weeks.
+TXT: €79/mo
+LI: Personalised Daily Training Plan build for 12 weeks
+LI: Plan Tailored to your Training Availability
+LI: Stretching & Core Exercises
+LI: Gym & Winter Program + Support
+LI: Test Protocols (CP, FTP, FTHR or INSCYD)
+LI: Tests Analysis
+LI: Adaptive Training Zones changing weekly
+LI: Training Periodized based on goals
+LI: Blood panel review from our Sport Nutritionist
+LI: Discount membership for products at retail.cigalacycling.com
+LI: Nutritional Guide
+LI: Blog posts for tips
+LI: Sync & follow workouts on Garmin/Wahoo/Zwift etc
+LI: Access to World Class Nutritionist & Mental Coach
+LI: Access to our online Community (value €9/m)
+LI: Discounted metabolic INSCYD testing
+LI: Training Peaks membership included (value €19.99/m)
+LI: Contact when needed via email
+LI: Feedback on sessions
+LI: Schedule Adjustment
+LI: Daily Training Analysis
+LABEL: Basic 12 Weeks
+<select name=None type=None placeholder=None required=False>
+TXT: Basic 12 Weeks Options
+ Basic 12 Weeks: 237 EUR - one-time payment
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ Monthly (Our Most Popular)
+H2: Advanced
+P: 5 months subscription
+TXT: €149/mo
+LI: Personalised Daily Training Plan build on a weekly basis
+LI: Plan Tailored to your Training Availability
+LI: Stretching & Core Exercises
+LI: Gym & Winter Program + Support
+LI: Test Protocols (CP, FTP, FTHR or INSCYD)
+LI: Tests Analysis
+LI: Adaptive Training Zones changing weekly
+LI: Training Periodized based on goals
+LI: Blood panel review from our Sport Nutritionist
+LI: Discount membership for products at retail.cigalacycling.com
+LI: Nutritional Guide
+LI: Blog posts for tips
+LI: Sync & follow workouts on Garmin/Wahoo/Zwift etc
+LI: Access to World Class Nutritionist & Mental Coach
+LI: Access to our online Community (value €9/m)
+LI: Discounted INSCYD Metabolic Testing
+LI: Training Peaks membership included (value €19.99/m)
+LI: Race Strategy
+LI: Continuous Support & Motivation
+LI: Contact Frequency weekly
+LI: Weekly Feedback
+LI: Weekly Schedule Adjustment
+LI: Weekly Training Analysis
+LI: Monthly catch up call or when needed
+LABEL: Advanced 6 Months
+<select name=None type=None placeholder=None required=False>
+TXT: Advanced 6 Month Package Options
+ Advanced 6 months: 149 EUR - monthly
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ Monthly (SOLD OUT!)
+H2: Premium
+P: 3 months subscription (€10 off for 6 mo)
+TXT: €249/mo
+LI: Personalised Daily Training Plan build on a weekly basis
+LI: Plan Tailored to your Training Availability
+LI: Stretching & Core Exercises
+LI: Gym & Winter Program + Support
+LI: Test Protocols (CP, FTP, FTHR or INSCYD)
+LI: Tests Analysis
+LI: Adaptive Training Zones changing weekly
+LI: Training Periodized based on goals
+LI: Blood panel review from our Sport Nutritionist
+LI: Discount membership for products at retail.cigalacycling.com
+LI: Nutritional Guide
+LI: Blog posts for tips
+LI: Sync & follow workouts on Garmin/Wahoo/Zwift etc
+LI: Access to World Class Nutritionist & Mental Coach
+LI: Access to our online Community (value €9/m)
+LI: Discounted INSCYD Metabolic Testing
+LI: Training Peaks membership included (value €19.99/m)
+LI: Race Strategy
+LI: Continuous Support & Motivation
+LI: Contact Frequency daily
+LI: Daily Feedback
+LI: Daily Schedule Adjustment
+LI: Daily Training Analysis
+LI: Weekly catch up call or when needed
+LABEL: Premium 6 Months (SOLD OUT!)
+<select name=None type=None placeholder=None required=False>
+TXT: Premium 6 Month Package Options
+ Premium 6 months - Check availability
+LABEL: Premium 3 Months (SOLD OUT!)
+<select name=None type=None placeholder=None required=False>
+TXT: Premium 3 Month Package Options
+ Premium 3 months : 249 EUR - monthly
+ 
+ 
+ 
+ 
+
+
+
+ 
+ 
+ *Underage, Juniors & U23 will avail of a 20% student discount for all packages
+P: **By subscribing to any of our packages, you accept our Terms & Conditions.
+View T&C [HERE](http://www.cigalacycling.com/terms-conditions)**
+H2: FOLLOW YOUR PLAN ON
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-86.png alt='TrainingPeaks logo with icon | Cigala Cycling Coaching'>
+TXT: [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-87.png alt='White Zwift logo on orange bg | Cigala Cycling Coaching'>
+TXT: ](https://zwift.com/)
+H2: FREQUENTLY ASKED QUESTIONS
+H2: What would the most suitable package for me?
+P: The Advanced package is for those who knows ahead of time that they are committed to a disciplined training program and wants to see definitive seasonal goals achieved. The Advanced is our most popular package and covers everything that you need.
+P: The Premium package is for those triathletes that want very best in life and the utmost from their personal coach.
+Those choosing the Premium can be anyone, from first-timer to seasoned pro.
+H2: Do you only coach people who compete?
+P: No. We coach all sorts of people. You may be interested in losing weight, trying to complete a 100 mile ride, being fitter, completing a sprint event or and Ironman event.
+H2: What is Training Peaks?
+P: Training Peaks is the leading online training logs in the market. It allows you to follow your plan in a interactive way with your coach.
+It enables planning and analysing your training in the same manner as top professional athletes would do.
+P: Your coach will be able to make your plan and review your session via the platform. You can leave comments for the coach and get access to many graphs and analytics tools.
+P: You can also have your plan/calendar and all of the other features via the mobile app and have all of your training stored in your pocket.
+With TP, you can also sync your upcoming training sessions and completed rides from your Garmin cycle computer, Zwift, Wahoo ELEMNT or Android device.
+H2: How many hours do I need to follow the plan?
+P: It depends by your training availability.
+We hand-build your plan only for you and to suits your needs.
+Your life commitments are important and we design the plan around them.
+If you have 5 hours a week available to train, we will schedule the training for 5 hours.
+If you have 10 hours, we will schedule 10 hours and so on.
+H2: What age do need to be to be coached?
+P: We coach all ages. From 14 years old to….wait there is no limit. One of our past coached riders was 75 years old.
+We have a 20% student discount for all people below U23
+H2: #TrainSmarterRideFaster
+H2: AS SEEN IN
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_4_wHe4MESD1mnVHaZLbvuAhQJPRfY_Y5o8LcB8Lf3hrcFJpSm5_f1Fh3tg2984Rf0cBx002ew3PaAFuURUAEzSyL8POc4YmRpKs280.png alt='Red Bull Racing logo | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_6_6_MxiOhdNhpHCpQ19k2O9Hg_l4BkANJJibpd7zIS7U_HF96ckCMSXqh-IHtcfYoyUvsoPKU-8T6O96GckP-s4g4xIlj-jb8s280.png alt='StickyBottle.com cycling logo | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-87.png alt='White Zwift logo on orange bg | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-86.png alt='TrainingPeaks logo with icon | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-84.png alt='Cycling Ireland logo | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-85.png alt='Vekta logo with yellow icon | Cigala Cycling Coaching'>

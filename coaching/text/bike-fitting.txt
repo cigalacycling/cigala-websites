@@ -1,0 +1,56 @@
+H1: BIKE FITTING
+P: By working alongside Italy’s most famous bike fitter Michele Dalla Piazza for many occasion, Matteo had a chance to learn from the best and apply the learning with the knowledge of the sport in his 25 years cycling experience.
+P: “As a performance obsessed person, I am very meticulous about the little details in bike fitting, I work on every millimeter and I believe that the smallest adjustments are the one that make the difference, both for confort and performance.
+By working alongside Michele, I have learned a lot and my approach is the same. No fancy tools or software. Just precision and experience by seeing each person’s pedal stroke, flexibility, bone construction, muscle mass and knowing their cycling and injury history.
+Software are great tool for bike fitting, but they only give a good range to work with, is then the experience of the bike fitter to make the best possible fit.”
+P: To book your bike fitting appointment with our Head Coach Matteo Cigala, please email bikefit@cigalacycling.com or fill up the form below.
+P: Appointments are approximately 40 min to 1hr per bike.
+Bike fit are held in Wicklow Town, Co. Wicklow, Ireland.
+P: Cost €70/£60 for 1 bike. Second bike + €50/£40
+P: Bring your bike, kit, cycling shoes.
+P: Limited availability.
+P: MAKE YOUR RESERVATION
+P: Book an appointment by entering your details below
+<input name=post_id type=hidden placeholder=None required=False>
+<input name=form_id type=hidden placeholder=None required=False>
+<input name=referer_title type=hidden placeholder=None required=False>
+<input name=queried_id type=hidden placeholder=None required=False>
+LABEL: Name
+<input name=form_fields[name] type=text placeholder=Name required=False>
+LABEL: Email
+<input name=form_fields[email] type=email placeholder=Email required=True>
+LABEL: Message
+<textarea name=form_fields[message] type=None placeholder=Your Message required=False>
+BUTTON: Send >
+TXT: [
+ 
+ 
+ ](https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_25_XtZo9CHPOrqo5vgdonRt84w_ojLlcXxTKpBWchTOCZlT62_lr3hvvMSrLqslgFT_t-ARpe8I3T58V4uJjr4s960.jpg)
+ [
+ 
+ 
+ ](https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_21_rurBHtPaolil9LyUfBj2OU5Hk8Ll-i-myQBfXpxUwfeahcTP2LkyT8hnOdIYPNB5w1wbzK-DXL6zYa7IyQs468.jpg)
+ [
+ 
+ 
+ ](https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_20_K4nM_bCz1OUrh-MO5mRvo0U_TVF5DDszjwi7L7yqvh4YiW6CnRQxv8rTzm-2hvGoQDrY0gD8_0aNLwzdgs468.jpg)
+ [
+ 
+ 
+ ](https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_18_wFsVB_lfQ06qKLoY4smFZbaVmX1qEVQ5YPYY6nCcZnKcSGloqdptxwv3rf2ArDTToVyWQkctq_PIAM-j1gs468.jpg)
+ [
+ 
+ 
+ ](https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_17_VqidUJ6rdQtoaHim3LjMi39KJDFE34A1wJ7bexnTj2MDdJztrO9w5KaAf717AKKzdGvCqsj0JkkGhVgeIQs468.jpg)
+ [
+ 
+ 
+ ](https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_23_dqRgxSDepynUtJgFXCSBsdO84lPFtScY_jpZ-0uUPpW-rMG8h1Wy1Ba68PCBOX5kH47za7EPD5PqOEf3Qs468.jpg)
+ [
+ 
+ 
+ ](https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_22_NgDIQLB8VTaWDjOQ7BW75YZzhrUXjzkdLoZfOtvBtKD4PyRxEaVpNiCUR8A75SkbW8tIONkP283iQ3vZJOgs468.jpg)
+ [
+ 
+ 
+ ](https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_19_kjv2uGnO8aZ1dYwbj4Rig01fqjsDbHwHPMb9lLuwFXkPf1kdU09dwMC9zoF7FJxJWv7oNC81RbbmwxBS6oAs468.jpg)

@@ -1,0 +1,187 @@
+H1: What is FTP in Cycling? The Complete Guide to Functional Threshold Power
+H2: Founder & Head Coach, Matteo Cigala
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/07/Screenshot-2026-06-19-104131.png alt='Cycling Coach Matteo Cigala with coached riders in Wicklow, Ireland'>
+TXT: Functional Threshold Power (FTP) is one of the most widely used metrics in modern cycling training. Whether you are a beginner cyclist looking to structure your training, an amateur racer chasing better results, or an experienced rider aiming to improve performance, understanding your FTP can help you train more effectively.
+P: Functional Threshold Power (FTP) is one of the most widely used metrics in modern cycling training. Whether you are a beginner cyclist looking to structure your training, an amateur racer chasing better results, or an experienced rider aiming to improve performance, understanding your FTP can help you train more effectively.
+P: FTP gives cyclists a benchmark for measuring fitness, setting training zones, pacing efforts, and tracking improvements over time. However, FTP is only one piece of the performance puzzle, and knowing how to use it correctly is just as important as knowing your number.
+P: In this guide, we explain what FTP means, how it is tested, why it matters, what makes a good FTP, and how you can improve yours.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/07/Screenshot-2026-06-19-103604.png alt='Cycling Coaching in Ireland'>
+H2: What does FTP mean in cycling?
+P: FTP stands for **Functional Threshold Power**.
+P: It is defined as the highest average power a cyclist can theoretically sustain for approximately one hour.
+P: Power is measured in **watts (W)** and represents the amount of work you are producing on the bike. Unlike speed, which changes depending on terrain, wind, and road conditions, power provides a more objective measurement of your effort.
+P: For example:
+LI: A cyclist producing 250 watts uphill into a headwind is working harder than a cyclist producing 180 watts on a flat road with a tailwind.
+LI: Your FTP allows your training to be based on your actual physical capabilities rather than external factors.
+P: FTP is usually expressed in two ways:
+P: **Absolute FTP:**
+The total power output in watts.
+P: Example:
+LI: FTP = 300 watts
+P: **Relative FTP:**
+Your power compared to your body weight, expressed as watts per kilogram (W/kg).
+P: Example:
+LI: 300 watts ÷ 75 kg = 4 W/kg
+P: Watts per kilogram is particularly important for climbing performance, where lighter riders often have an advantage.
+H2: Why is FTP important for cyclists?
+P: FTP is useful because it allows you to personalise your training.
+P: Without an accurate FTP, training zones may be too easy or too hard, reducing the effectiveness of your workouts.
+P: Your FTP can help determine:
+LI: Endurance training intensity
+LI: Sweet Spot workouts
+LI: Threshold intervals
+LI: VO₂ Max sessions
+LI: Race pacing strategies
+LI: Training load
+P: For example, a rider with an FTP of 300 watts and a rider with an FTP of 200 watts should not complete the same interval session at the same power output. Their training needs to be individualised based on their current fitness level.
+P: This is why power-based training has become such an important tool for cyclists.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/download-3.png alt='Cigala Matteo Zwift Racing'>
+H3: How is FTP tested?
+P: There are several ways to estimate your FTP. While the original definition was based on the maximum power a rider could sustain for one hour, most cyclists now use shorter tests because a true one-hour maximal effort is extremely demanding.
+H2: The 20-minute FTP test
+P: One of the most common methods is:
+LI: Complete a thorough warm-up.
+LI: Ride as hard as possible for 20 minutes.
+LI: Take 95% of your average power from the effort.
+P: Example:
+P: 20-minute average power:
+300 watts
+P: FTP estimate:
+300 × 0.95 = 285 watts
+P: The advantage of this test is that it is simple and widely used. The disadvantage is that pacing ability and fatigue resistance can influence the result.
+H2: Ramp test
+P: A ramp test gradually increases the required power every minute until exhaustion.
+P: The final stage achieved is used to estimate FTP.
+P: Advantages:
+LI: Easy to perform
+LI: Requires less pacing experience
+LI: Useful for less experienced riders
+P: Limitations:
+LI: Can overestimate FTP for riders with strong anaerobic capacity
+LI: May underestimate FTP for riders with excellent endurance
+H2: 8-minute FTP test
+P: Another popular method involves two eight-minute maximal efforts, with a calculation applied afterwards.
+P: Like all FTP tests, it provides an estimate rather than a perfect measurement.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/IMG_4003AWDWWWU-scaled.jpg alt='Matteo Cigala coaching a group of riders'>
+H2: How accurate is FTP?
+P: FTP is a useful training metric, but it is not a perfect measurement of your cycling ability.
+P: Your FTP can be affected by:
+LI: Fatigue levels
+LI: Sleep quality
+LI: Nutrition
+LI: Hydration
+LI: Temperature
+LI: Testing protocol
+LI: Motivation
+LI: Previous training load
+P: A cyclist may have a slightly different FTP indoors compared to outdoors because of differences in cooling, position, and mental demands.
+P: The most important thing is consistency. Using the same testing method allows you to accurately track progress over time.
+H2: What is a good FTP for cycling?
+P: There is no single FTP number that defines a good cyclist because performance depends on many factors, including:
+LI: Body weight
+LI: Age
+LI: Training history
+LI: Gender
+LI: Racing experience
+LI: Duration of effort
+P: However, watts per kilogram can provide a useful comparison.
+TXT: LevelApproximate FTPBeginner cyclist1.5–2.5 W/kgRecreational cyclist2.5–3.5 W/kgStrong amateur cyclist3.5–4.5 W/kgElite amateur cyclist4.5–5.5 W/kgProfessional level5.5+ W/kg
+P: These numbers are only general guidelines. A rider with excellent endurance and race skills can often outperform someone with a higher FTP.
+H2: FTP vs watts per kilogram
+P: FTP in watts is important, but it does not tell the whole story.
+P: Consider two cyclists:
+P: Cyclist A:
+LI: FTP: 300 watts
+LI: Weight: 85 kg
+LI: 3.5 W/kg
+P: Cyclist B:
+LI: FTP: 280 watts
+LI: Weight: 65 kg
+LI: 4.3 W/kg
+P: On a flat road, Cyclist A may have an advantage because they produce more absolute power.
+P: On a steep climb, Cyclist B may be faster because they have a higher power-to-weight ratio.
+P: This is why professional cyclists focus heavily on W/kg for mountain stages.rice, but by the level of personalisation, feedback, and ongoing support you receive.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/IMG_5144.jpg alt=''>
+H2: FTP vs Critical Power
+P: FTP and Critical Power are closely related, but they are not exactly the same.
+P: FTP estimates the highest sustainable power over approximately one hour.
+P: Critical Power is based on a mathematical model that describes the relationship between power and duration.
+P: Critical Power can provide additional insights into:
+LI: Short-duration power
+LI: Long-duration endurance
+LI: Fatigue resistance
+LI: Performance limitations
+P: For many cyclists, FTP remains a practical and useful training metric. However, understanding Critical Power can provide a more detailed picture of your physiology.
+P: [Read Critical Power Article ](https://coaching.cigalacycling.com/critical-power/)
+H2: How can you improve your FTP?
+P: Improving FTP requires consistent training, appropriate intensity, and good recovery.
+P: Some of the most effective methods include:
+H2: 1. Sweet Spot training
+P: Sweet Spot intervals are performed just below FTP and allow cyclists to accumulate significant time at a high intensity without creating excessive fatigue.
+P: They are especially useful for riders who have limited training time.
+H2: 2. Threshold intervals
+P: Training close to FTP improves your ability to sustain high power for longer periods.
+P: Examples:
+LI: 3 × 10 minutes at threshold
+LI: 2 × 20 minutes at threshold
+LI: 4 × 8 minutes at threshold
+H2: 3. VO₂ Max training
+P: VO₂ Max sessions improve your ability to produce high power and can help raise your overall aerobic ceiling.
+H2: 4. Consistency
+P: The biggest improvements usually come from months and years of consistent training.
+P: A perfectly designed training plan is ineffective without consistency.
+H2: 5. Recovery and nutrition
+P: Training creates the stimulus, but adaptation happens during recovery.
+P: Sleep, nutrition, hydration, and managing fatigue all influence your ability to improve.
+P: [Read Nutrition Article](https://coaching.cigalacycling.com/diet-of-a-cyclist/)
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/07/V6A9680-scaled.jpg alt='Matteo Cigala Coaching '>
+H2: Common FTP mistakes cyclists make
+H2: Testing too often
+P: FTP does not improve every week. Testing too frequently can create unnecessary pressure and distract from productive training.
+P: Most cyclists benefit from testing every 6–12 weeks.
+H2: Training only around FTP
+P: FTP is important, but cycling performance requires more than threshold power.
+P: Successful cyclists also need:
+LI: Aerobic endurance
+LI: Sprint power
+LI: Climbing ability
+LI: Tactical awareness
+LI: Recovery capacity
+H2: Comparing your FTP to others
+P: FTP is highly individual.
+P: Comparing your number to another cyclist without considering weight, age, training history, and experience can be misleading.
+H2: Using an outdated FTP
+P: As your fitness changes, your training zones should be updated.
+P: An inaccurate FTP can make workouts ineffective.
+H2: Frequently Asked Questions about FTP
+H2: Is FTP the same as lactate threshold?
+P: They are related but not identical.
+P: FTP is a practical performance estimate, while lactate threshold is a physiological measurement based on blood lactate response.
+H2: How often should I test FTP?
+P: Most cyclists should test every 6–12 weeks or after a significant change in fitness.
+H2: Can beginners use FTP?
+P: Yes. FTP is useful for cyclists of all levels because it allows training intensity to be personalised.
+H2: Does a higher FTP always mean a faster cyclist?
+P: Not necessarily.
+P: Race performance depends on many factors including tactics, endurance, recovery, aerodynamics, and technical skills.
+H2: Conclusion
+P: FTP is one of the most valuable tools available to cyclists who want to train smarter and improve performance. It provides a clear benchmark for setting training zones, measuring progress, and understanding your current fitness level.
+P: However, FTP should be viewed as one part of a complete training system. The best cyclists combine structured training, proper recovery, nutrition, and smart race preparation.
+P: At Cigala Cycling Coaching, we use science-based training principles to help cyclists understand their performance, train effectively, and achieve their goals.
+P: Matteo Cigala
+Founder & Head Coach
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/Matteo-Cigala-6-years-old-1.png alt='Matteo Cigala 6 years old'>
+H2: CIGALA CYCLING
+P: #TrainSmarterRideFaster
+TXT: [
+H2: CYCLING COACHING
+TXT: ](https://coaching.cigalacycling.com/)
+ [
+H2: TRIATHLON COACHING
+TXT: ](https://coaching.cigalacycling.com/tri-individual-packages/)
+ [
+H2: BIKE TOURS
+TXT: ](https://tours.cigalacycling.com/)
+ [
+H2: RETAIL
+TXT: ](https://retail.cigalacycling.com/)

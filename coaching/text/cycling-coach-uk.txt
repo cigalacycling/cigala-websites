@@ -1,0 +1,264 @@
+H1: CYCLING COACH UK
+P: Train with Italian Head Coach [Matteo Cigala](https://coaching.cigalacycling.com/about) — from anywhere in the UK.
+P: Matteo brings over 28 years of cycling experience, more than a decade of coaching riders around the world, and hundreds of race victories. He provides personalised coaching for road cycling, gravel, MTB, gran fondo and endurance riders, with every training plan built around your goals, your schedule and your lifestyle.
+P: Whether you’re in England, Scotland, Wales or Northern Ireland, training for a sportive like RideLondon, preparing for a gravel event, racing in your local league, or working towards your next British Cycling category upgrade, your coaching is fully tailored to help you perform at your best.
+TXT: [
+ 
+ BOOK FREE CONSULTATION
+ 
+ ](https://calendly.com/cigalacycling)
+H2: Why UK Cyclists Choose Cigala Cycling Coaching
+LI: Personalised daily/weekly training plans built around Critical Power (CP) and W′ modelling — going beyond basic FTP training
+LI: Powered by **Vekta**, a next-generation training platform used by WorldTour teams (membership worth €19.99/month included free)
+LI: Training Peaks also available if you’re already set up there
+LI: Adaptive training zones that update as your fitness changes
+LI: Full support for sportives, Gran Fondos, time trials, road racing and general performance goals
+LI: Syncs with Garmin, Wahoo, Zwift and more
+LI: Nutritional guidance and access to a sports nutritionist and mental coach
+LI: Daily session carb reccomendations
+LI: No minimum time zone friction — UK clients coach in real time with Matteo. Coaching is delivered 100% remotely.
+H1: #TrainSmarterRideFaster
+H2: It's our vision
+TXT: "Matteo is a true perfectionist. He pays attention to every detail, and I think that's what makes his coaching so effective for me." 
+ ★★★★★William - Wales, UK
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-91.png alt='Smiling man in blue cycling jersey | Cigala Cycling Coaching'>
+TXT: "The most exciting part of working with Matteo is the noticeable improvements I started to experience after just 4-6 weeks.
+
+Since then, these improvements have been consistent and remarkable" 
+ ★★★★★Bernd - England, UK
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-89.png alt='★★★★★'>
+TXT: "Matteo schedules sessions that are built around your available time and utilizes quality over quantity. I have seen improvement year on year while working with Matteo." 
+ ★★★★★Daniel - Northern Ireland, UK
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/IMG_6241-scaled.jpeg alt="What is W' Prime and why it explains how you get dropped.">
+TXT: "Matteo has perfectly optimised my training to adapt to what time I do have." 
+ ★★★★★Bryan - Scotland, UK
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/07/536278406_801416828893242_6477082831613061112_n.jpeg alt='Cyclist doing a Time Trial | Cigala Cycling'>
+TXT: "As a non-elite or serious cyclist, I can highly recommend Matteo to anyone interested in getting fit and ready for any cycling goal, no matter what level you're at or what age you are!" 
+ ★★★★★John - England, UK
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-93.png alt='★★★★★'>
+H2: COACHING PACKAGES
+TXT: 12 Weeks
+H2: Basic
+P: Charged with one-time payment of £195 for the 12 weeks.
+TXT: £65/mo
+LI: Personalised Daily Training Plan build for 12 weeks
+LI: Plan Tailored to your Training Availability
+LI: Stretching & Core Exercises
+LI: Gym & Winter Program + Support
+LI: Test Protocols (CP, FTP, FTHR or INSCYD)
+LI: Tests Analysis
+LI: Adaptive Training Zones changing weekly
+LI: Training Periodized based on goals
+LI: Blood panel review from our Sport Nutritionist
+LI: Discount membership for products at retail.cigalacycling.com
+LI: Nutritional Guide
+LI: Blog posts for tips
+LI: Sync & follow workouts on Garmin/Wahoo/Zwift etc
+LI: Access to World Class Nutritionist & Mental Coach
+LI: Access to our online Community (value £9/m)
+LI: Discounted metabolic INSCYD testing
+LI: Training Peaks Basic Account
+LI: Contact when needed via email
+LI: Feedback on sessions
+LI: Schedule Adjustment
+LI: Daily Training Analysis
+LI: Daily Session Carbs Recommendations
+LI: Nutritional Consult with our Sports Nutritionist
+LABEL: Basic 12 Weeks
+<select name=None type=None placeholder=None required=False>
+TXT: Basic 12 Weeks Options
+ Basic 12 Weeks: 195 GBP - one-time payment
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ Monthly (Our Most Popular)
+H2: Advanced
+P: 6 months subscription
+TXT: £135/mo
+LI: Personalised Daily Training Plan build on a weekly basis
+LI: Plan Tailored to your Training Availability
+LI: Stretching & Core Exercises
+LI: Gym & Winter Program + Support
+LI: Test Protocols (CP, FTP, FTHR or INSCYD)
+LI: Tests Analysis
+LI: Adaptive Training Zones changing weekly
+LI: Training Periodized based on goals
+LI: Blood panel review from our Sport Nutritionist
+LI: Discount membership for products at retail.cigalacycling.com
+LI: Nutritional Guide
+LI: Blog posts for tips
+LI: Sync & follow workouts on Garmin/Wahoo/Zwift etc
+LI: Access to World Class Nutritionist & Mental Coach
+LI: Access to our online Community (value £9/m)
+LI: Discounted INSCYD Metabolic Testing
+LI: Vekta membership included (value £17.99/m)
+LI: Race Strategy
+LI: Continuous Support & Motivation
+LI: Contact Frequency weekly
+LI: Weekly Feedback
+LI: Weekly Schedule Adjustment
+LI: Weekly Training Analysis
+LI: Daily Session Carbs Recommendations
+LI: Monthly catch up call or when needed
+LI: Nutritional Consult with our Sports Nutritionist
+LABEL: Advanced 6 Months
+<select name=None type=None placeholder=None required=False>
+TXT: Advanced 6 Month Package Options
+ Advanced 6 months: 135 GBP - monthly
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ Monthly
+H2: Premium
+P: 3 months subscription (£10 off for 6 mo)
+TXT: £219/mo
+LI: Personalised Daily Training Plan build on a weekly basis
+LI: Plan Tailored to your Training Availability
+LI: Stretching & Core Exercises
+LI: Gym & Winter Program + Support
+LI: Test Protocols (CP, FTP, FTHR or INSCYD)
+LI: Tests Analysis
+LI: Adaptive Training Zones changing weekly
+LI: Training Periodized based on goals
+LI: Blood panel review from our Sport Nutritionist
+LI: Discount membership for products at retail.cigalacycling.com
+LI: Nutritional Guide
+LI: Blog posts for tips
+LI: Sync & follow workouts on Garmin/Wahoo/Zwift etc
+LI: Access to World Class Nutritionist & Mental Coach
+LI: Access to our online Community (value £9/m)
+LI: Discounted INSCYD Metabolic Testing
+LI: Vekta membership included (value £17.99/m)
+LI: Race Strategy
+LI: Continuous Support & Motivation
+LI: Contact Frequency daily
+LI: Daily Feedback
+LI: Daily Schedule Adjustment
+LI: Daily Training Analysis
+LI: Daily Session Carbs Recommendations
+LI: Weekly catch up call or when needed
+LI: Nutritional Consult with our Sports Nutritionist
+LABEL: Premium 6 Months
+<select name=None type=None placeholder=None required=False>
+TXT: Premium 6 Month Package Options
+ Premium 6 months - 209 GBP - monthly
+LABEL: Premium 3 Months
+<select name=None type=None placeholder=None required=False>
+TXT: Premium 3 Month Package Options
+ Premium 3 months : 219 GBP - monthly
+P: **By subscribing to any of our packages, you accept our Terms & Conditions.
+View T&C [HERE](https://coaching.cigalacycling.com/terms-conditions/)**
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/PfNJBaCPkS_eSn5JUIIhJpgnxmG1igR15Ms-kImNNvwSOW2r4e162m8WjpIJ1G-LmjDpPLyVhpM8pxSe4SB74pz4oS1JVAs1000.png alt='TrainingPeaks Level 1 & 2 logos | Cigala Cycling Coaching'>
+H2: AS SEEN IN
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_4_wHe4MESD1mnVHaZLbvuAhQJPRfY_Y5o8LcB8Lf3hrcFJpSm5_f1Fh3tg2984Rf0cBx002ew3PaAFuURUAEzSyL8POc4YmRpKs280.png alt='Red Bull Racing logo | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_6_6_MxiOhdNhpHCpQ19k2O9Hg_l4BkANJJibpd7zIS7U_HF96ckCMSXqh-IHtcfYoyUvsoPKU-8T6O96GckP-s4g4xIlj-jb8s280.png alt='StickyBottle.com cycling logo | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-87.png alt='White Zwift logo on orange bg | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-86.png alt='TrainingPeaks logo with icon | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-84.png alt='Cycling Ireland logo | Cigala Cycling Coaching'>
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-85.png alt='Vekta logo with yellow icon | Cigala Cycling Coaching'>
+H2: Events We Help UK Riders Prepare For
+P: Training toward a specific date changes everything about how a plan should be built. We coach riders preparing for sportives and Gran Fondos across the UK calendar, including:
+LI: **Dragon Ride** (Brecon Beacons, Wales) — the UK’s toughest sportive
+LI: **Fred Whitton Challenge** (Lake District)
+LI: **Etape Caledonia** (Scottish Highlands)
+LI: **Tour of Cambridgeshire** (UCI Gran Fondo World Series qualifier)
+LI: **CiCLE Classic** (Rutland/Leicestershire)
+LI: **RideLondon-Essex** (London to Essex)
+LI: Local club time trials, hill climbs and road race calendars run by British Cycling
+P: Racing further afield — Mallorca 312, the Maratona dles Dolomites, Strade Bianche or a Gran Fondo World Championship qualifier? We build UK-based athletes’ training blocks around those targets too.
+H2: 2025 IN NUMBERS
+H3: 1348
+H4: Top 10
+H3: 149
+H4: 3rd places
+H3: 129
+H4: 2nd places
+H3: 164
+H4: 1st places
+H3: 100%
+H4: Performance improvement
+H3: >90%
+H4: Goals Achieved by clients
+H2: READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING
+TXT: [
+ 
+ READ MORE TESTIMONIALS
+ 
+ ](https://coaching.cigalacycling.com/testimonials/)
+H2: Coaching Cyclists Across the UK
+P: Matteo coaches riders remotely delivering in every region and nation of the UK, including:
+LI: **England** — London, Yorkshire, the Cotswolds, Surrey Hills, Peak District, Lake District, South West
+LI: **Scotland** — Glasgow, Edinburgh, the Highlands, Perthshire
+LI: **Wales** — Cardiff, Brecon Beacons, Snowdonia
+LI: **Northern Ireland** — Belfast
+P: Wherever you’re based, coaching is delivered the same way: personalised plan, remote feedback, and testing built around your local terrain and event calendar.
+TXT: [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-96.png alt='Garmin logo with blue triangle | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-97.png alt='Wahoo Fitness brand logo text'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-98.png alt='Hammerhead logo with keywords | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-99.png alt='Bryton logo black and white | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-2026-06-23T221525.917.png alt='ROUVY logo on gray background | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-2026-06-23T221522.108.png alt='MyWhoosh cycling logo | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-2026-06-23T221517.917.png alt='Zwift logo with orange Z | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+ 
+ 
+ [
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-100.png alt='iGPSPORT black and red logo | Cigala Cycling Coaching'>
+TXT: ](https://joinvekta.com/partnerships)
+H2: FREQUENTLY ASKED QUESTIONS
+TXT: Which package is right for me?
+P: It depends on your budget and how much direct feedback you want. If you’re happy following a plan independently, Basic is enough. Advanced is our most popular package because it includes weekly access to Matteo plus Vekta membership.
+TXT: I'm based in the UK — does coaching work remotely?
+P: Yes, entirely. Training plans, feedback, video calls and testing are all delivered online. The UK’s time zone alignment with Ireland makes live communication straightforward.
+TXT: Do you only coach people who race?
+P: No. We coach riders working toward weight loss, their first 100-mile ride, general fitness, sportives, triathlon or racing — the only requirement is that you ride a bike and want to improve.
+TXT: Do I need to switch from Training Peaks to Vekta?
+P: No — we can continue working in Training Peaks if you’re already comfortable there, or explore Vekta’s Critical Power and W′ analytics alongside it.
+TXT: What age do I need to be?
+P: We coach all ages, 14 and up — no upper limit. Riders under U23 receive a 20% student discount.
+TXT: My event is months away — can I still sign up now?
+P: Yes. Based on how far away is the event you can choose any suitable package.
+H1: START WORKING WITH MATTEO
+H2: Personalised to your goals. Coaching cyclists in United Kingdom and worldwide.
+TXT: [
+ 
+ Book Free Consultation
+ 
+ ](https://calendly.com/cigalacycling)

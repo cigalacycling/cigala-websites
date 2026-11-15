@@ -1,0 +1,130 @@
+H1: Critical Power Testing: How to Get Reliable Data
+H2: Founder & Head Coach, Matteo Cigala
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/10/download-2026-10-20T183643.559.png alt=''>
+TXT: Critical Power (CP) testing is more than simply finding the highest average power you can produce.
+P: A good CP test should give us a reliable estimate of your power-duration relationship, including CP and, depending on the protocol, W′ (W-prime).
+P: The quality of the data depends heavily on how the test is performed.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-5.jpg alt='Matteo Cigala doing indoor potentiations'>
+H2: 1. Understand what we are actually testing
+P: The CP model describes the relationship between the power you can sustain and the duration for which you can sustain it.
+P: In its simplest form:
+P: Work = CP × time + W′
+P: Where:
+LI: CP represents the sustainable aerobic power associated with the asymptote of the power-duration relationship.
+LI: W′ represents a finite amount of work that can be performed above CP.
+P: This is why we need maximal efforts of different durations.
+P: A single 20-minute effort cannot properly describe your entire power-duration curve.
+H2: 2. Choose appropriate test durations
+P: For a traditional 3-point CP test, the efforts should be sufficiently separated in duration to provide useful information about the curve.
+P: For example:
+P: 3 min + 7 min + 12 min
+P: or
+P: 3 min + 12 min + 20 min
+P: The exact protocol can vary, but the important principle is that the efforts should provide different physiological demands.
+P: A very short effort is heavily influenced by anaerobic capacity and W′, while longer efforts increasingly reflect aerobic energy production and the sustainable portion of the power-duration curve.
+P: The more appropriate the duration range, the more useful the resulting model.
+H2: 3. The efforts need to be genuinely maximal
+P: This is critical.
+P: A CP model assumes that each trial represents a maximal effort for that duration.
+P: If you ride a 5-minute effort at 95% of what you are capable of because you are afraid of blowing up, the resulting CP calculation can be distorted.
+P: Equally, if you start far too hard and dramatically fade, the effort may be influenced by pacing error rather than your actual physiological capacity.
+P: The objective is therefore:
+P: Maximal sustainable power for the prescribed duration.
+P: Not simply the highest power you can produce in the first 30 seconds.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/imgi_22_lABWBM7FErVkOJGL8UDTN1Z-EV04aciBrbmpBQQYuP4SgiuiYxpyA3w8Y8Lg754cSC_-syFi5pp2pl6Js1600.jpg alt='Matteo Cigala Coaching an athlete'>
+H2: 4. Pacing is part of the test
+P: Different durations require different pacing strategies.
+P: For a short effort, you can tolerate a relatively high initial power because W′ contributes significantly to the effort.
+P: For a longer effort, starting substantially above your sustainable level can deplete W′ too quickly and cause a large power decline.
+P: A useful approach is to think about the effort as:
+P: Aggressive → controlled → empty the tank
+P: rather than:
+P: Sprint → survive → fade
+P: The objective is to minimise pacing error while still producing a maximal result.
+H2: 5. Recovery between efforts matters
+P: Recovery needs to be long enough to allow you to repeat a maximal effort, but the protocol should still be standardised.
+P: The problem with insufficient recovery is obvious: the second and third efforts may become limited by residual fatigue and incomplete recovery of W′, rather than by the physiological capacity we are trying to measure.
+P: However, excessive or inconsistent recovery can also affect the test.
+P: Therefore, use the same recovery duration every time you repeat the protocol.
+P: Consistency is extremely important when comparing tests.
+H2: 6. Start the test in a controlled physiological state
+P: Try to standardise:
+LI: Sleep
+LI: Nutrition
+LI: Hydration
+LI: Caffeine intake
+LI: Time of day
+LI: Training load beforehand
+LI: Temperature
+LI: Cooling
+LI: Bike and power meter
+P: You don’t necessarily need perfect laboratory conditions.
+P: You need repeatable conditions.
+P: If your first test is performed at 8am after a rest day in 15°C and your next test is performed at 6pm after a hard training block in 30°C, changes in the result become much harder to interpret.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/08/Vekta-x-Cigala-Cycling.png alt=''>
+TXT: Vekta x Cigala Cycling
+H2: 7. Temperature and cooling are particularly important
+P: Indoor testing can be significantly affected by thermoregulation.
+P: During a maximal effort, metabolic heat production is very high. If cooling is inadequate, core temperature can rise and cardiovascular strain can increase.
+P: A strong fan isn’t just about comfort.
+P: It can influence your ability to sustain power.
+P: Therefore, if you test indoors, use consistent and adequate airflow every time.
+H2: 8. Don’t rely on FTP alone
+P: One of the advantages of CP testing is that it gives us more information than a single threshold number.
+P: Two riders can have a similar CP but very different:
+LI: 1-minute power
+LI: 3-minute power
+LI: 5-minute power
+LI: W′
+LI: fatigue resistance
+LI: power-duration curves
+P: This is why I prefer looking at the entire power-duration relationship rather than simply asking:
+P: “What is your FTP?”
+P: CP gives us another way of understanding the interaction between aerobic power and finite work capacity above CP.
+H2: 9. Look at the data, not just the result
+P: After the test, I want to see the complete files.
+P: Important variables include:
+P: Power → duration → cadence → heart rate → pacing → W′ → CP
+P: I also want to know how the efforts felt.
+P: For example, two tests could produce the same CP but very different physiological responses.
+P: The combination of objective data and subjective feedback gives us much more information than a single number.
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/08/336532986_744351717353638_5968526271425914243_n.jpg alt=''>
+H2: 10. Don’t test too frequently
+P: Testing itself creates a significant training stimulus.
+P: Repeated maximal efforts have a cost, particularly when using protocols involving several maximal efforts.
+P: The purpose of testing is therefore not to constantly chase a new number.
+P: The purpose is to measure adaptation.
+P: If training is working, we should eventually see changes in the power-duration relationship.
+P: That could mean:
+LI: Higher CP
+LI: Increased power at longer durations
+LI: Increased W′
+LI: Improved durability
+LI: Reduced physiological cost at a given power
+LI: Improved ability to repeat high-intensity efforts
+P: The interesting question isn’t simply:
+P: “Did my CP increase?”
+P: It’s:
+P: “How has my entire performance profile changed?”
+P: The most important principle
+P: A CP test is a measurement tool.
+P: To make it useful, we need to control as many variables as possible and ensure that the efforts genuinely represent your maximal capacity for those durations.
+P: Good testing = good data.
+P: And good data allows us to make better training decisions.
+P: Matteo Cigala
+Founder & Head Coach
+<img https://coaching.cigalacycling.com/wp-content/uploads/2026/06/Matteo-Cigala-6-years-old-1.png alt='Matteo Cigala 6 years old'>
+H2: CIGALA CYCLING
+P: #TrainSmarterRideFaster
+TXT: [
+H2: CYCLING COACHING
+TXT: ](https://coaching.cigalacycling.com/)
+ [
+H2: TRIATHLON COACHING
+TXT: ](https://coaching.cigalacycling.com/tri-individual-packages/)
+ [
+H2: BIKE TOURS
+TXT: ](https://tours.cigalacycling.com/)
+ [
+H2: RETAIL
+TXT: ](https://retail.cigalacycling.com/)
