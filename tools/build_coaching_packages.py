@@ -83,7 +83,8 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     if NUT in inc: inc.remove(NUT); inc.insert(3 if key != 'basic' else 2, NUT)
     AZ = 'Adaptive Training Zones changing weekly'   # now a coached-only line (not in Basic), so show it with the other differences
     if key != 'basic' and AZ in inc: inc.remove(AZ); inc.insert(11, AZ)
-    LBL = {'Race Strategy': 'Race & Pacing Strategy'}   # Matteo 15 Nov: pacing on the same line
+    LBL = {'Race Strategy': 'Race & Pacing Strategy',   # Matteo 15 Nov: pacing on the same line
+           'Access to World Class Nutritionist & Mental Coach': 'Access to work 1-to-1 with our World Class Nutritionist & Mental Coach'}
     items = ''.join(f'<li{" class=\"more\"" if i >= SHOW else ""}>{E(LBL.get(x, x))}</li>' for i, x in enumerate(inc))
     if no:
         items += '<li class="more no-lab">Included in Advanced &amp; Premium</li>'
@@ -367,7 +368,7 @@ PCSS = '''<style>
 .pkg-buy { display: grid; gap: 8px; }
 .pay { width: 100%; text-align: center; }
 .pay-note { display: block; font-size: 12.5px; color: var(--text-3); text-align: center; }
-.pkg-lab { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+.pkg-lab { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--green-text); }   /* Matteo 15 Nov: stands out from the grey notes */
 .ticks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; align-content: start; }
 .ticks li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-2); line-height: 1.45; }
 .ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%2334c46a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
