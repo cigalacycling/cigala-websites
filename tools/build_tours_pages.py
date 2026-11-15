@@ -20,15 +20,17 @@ EXT = 'target="_blank" rel="noopener"'
 E = lambda x: html.escape(x, quote=True)
 
 # ---------- Elementor data -> a flat list of content items, in page order ----------
-def elementor(pid, refresh=True):
+def elementor(pid):
+    """The page's ORIGINAL Elementor data: stg-tours/backup/page-<id>.json (saved before the first change).
+    Never the current staging page, which holds our new layout once pushed."""
     f = ROOT + f'stg-tours/backup/page-{pid}.json'
-    if refresh or not os.path.exists(f):
+    if not os.path.exists(f):
         code, r = req(f'{B}/wp/v2/pages/{pid}?context=edit&_fields=id,link,meta,featured_media')
         assert code == 200, (pid, code)
-        if not os.path.exists(f): open(f, 'w').write(r.decode())   # keep the first copy as the backup
-        p = json.loads(r)
-    else:
-        p = json.load(open(f))
+        d = json.loads(r)['meta']['_elementor_data'] or '[]'
+        assert '"widgetType":"html"' not in d.replace(' ', '') or 'cl-page' not in d, f'page {pid} already rebuilt: restore its backup first'
+        open(f, 'w').write(r.decode())
+    p = json.load(open(f))
     return json.loads(p['meta']['_elementor_data'] or '[]')
 
 def clean(h):
@@ -146,14 +148,68 @@ def about():
 {PARTNERS_H2}'''
     return {'id': 271, 'slug': 'about', 'main': main, 'css': PAGE_CSS, 'crumb': 'About'}
 
+
+# ===================== Contact (461) =====================
+# The live Elementor form stays (tools/tours_forms.py: Coaching style, sends to tours@): the push puts it where
+# <!--FORM--> is, next to the info panel (push_tours_list.py, 'form': True).
+sys.path.insert(0, ROOT + 'shared/social')
+from social import social_row
+IC_MAIL = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>'
+IC_PHONE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18h2"/></svg>'
+IC_SOC = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.6M8.2 13.2l7.6 4.6"/></svg>'
+def contact():
+    it = items(elementor(461))
+    h1 = next(v for k, v, s in it if k == 'h1')
+    h2s = [v for k, v, s in it if k == 'h2']          # '+353 404 78107', 'tours@cigalacycling.com', '+353 404 78107'
+    h3s = [v for k, v, s in it if k == 'h3']          # 'EMAIL', 'PHONE', 'follow us online'
+    phone, email = h2s[0], h2s[1]
+    tel = 'tel:' + re.sub(r'[^+\d]', '', phone)
+    hero_bg = next(v for k, v, s in it if k == 'bg')
+    main = f'''<div class="hero phero">
+  {img_tag(hero_bg, 2000, lazy=False)}
+  <div class="in">
+    <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / Contact</div>
+    <div class="pill-eyebrow">Get in touch</div>
+    <h1>{E(h1)}</h1>
+    <div class="bar"></div>
+    <h2 class="hero-phone"><a href="{tel}">{E(phone)}</a></h2>
+  </div>
+</div>
+<section style="padding-top:40px">
+  <div class="in contact-grid">
+<!--FORM-->
+    <div class="panel cpanel info">
+      <div class="row"><div class="ic">{IC_MAIL}</div><div><h3>{E(h3s[0])}</h3><h2><a href="mailto:{email}">{E(email)}</a></h2></div></div>
+      <div class="row"><div class="ic">{IC_PHONE}</div><div><h3>{E(h3s[1])}</h3><h2><a href="{tel}">{E(h2s[2])}</a></h2></div></div>
+      <div class="row"><div class="ic">{IC_SOC}</div><div><h3>{E(h3s[2])}</h3></div></div>
+      {social_row()}
+    </div>
+  </div>
+</section>'''
+    return {'id': 461, 'slug': 'contact', 'main': main, 'css': PAGE_CSS, 'crumb': 'Contact', 'form': True}
+
 # small additions on top of the design CSS, scoped to .cl by the kit build
 PAGE_CSS = '''
 html .cl .band .lede p { margin: 0; }
 html .cl .member h3 { text-transform: uppercase; }
+html .cl .hero-phone { font-family: var(--body); font-size: 20px; font-weight: 600; letter-spacing: .02em; margin-top: 18px; }
+html .cl .hero-phone a, html .cl .info h2 a { color: var(--text); text-decoration: none; }
+html .cl .hero-phone a:hover, html .cl .info h2 a:hover { color: var(--green-text); }
+html .cl .info h3 { font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: .1em; color: var(--text-3); margin: 0 0 2px; }
+html .cl .info h2 { font-family: var(--body); font-size: 17px; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--text); overflow-wrap: anywhere; }
+html .cl .info .cc-social { margin-top: 2px; }
+.e-con.cl-contact { display: grid !important; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px !important; align-items: start; max-width: 1232px !important; margin: 0 auto !important; padding: 40px 16px 0 !important; }
+.e-con.cl-contact > .elementor-widget-form { margin: 0 !important; width: 100% !important; max-width: 100% !important; --container-widget-width: 100% !important; }
+.e-con.cl-contact > .elementor-widget-form .cc-form, .e-con.cl-contact .elementor-widget-form.cc-form { margin-top: 0 !important; }
+@media (max-width: 900px) { .e-con.cl-contact { grid-template-columns: minmax(0, 1fr); } }
 html .cl h2.lab { font-family: var(--body); font-size: 11px; line-height: 1.4; letter-spacing: .09em; font-weight: 600; color: var(--text-3); text-transform: uppercase; margin: 0 0 12px; }
 '''
 
-PAGES = {'about': about}
+PAGES = {'about': about, 'contact': contact}
+
+from css_scope import scope_css
+from social import SOCIAL_CSS
+PAGE_CSS += scope_css(SOCIAL_CSS, 'html .cl')   # the shared social icon row, outside the footer too
 
 if __name__ == '__main__':
     lists_prev = open(ROOT + 'tourspages/trips.html').read()   # header/footer/CSS exactly as the tour pages

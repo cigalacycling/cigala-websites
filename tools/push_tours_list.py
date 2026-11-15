@@ -40,8 +40,28 @@ slug = sys.argv[1]
 d = json.load(open(ROOT + f'stg-tours/out/list-{slug}.json'))
 main = fix(d['main'])
 blocks = [b.strip() for b in re.split(r'\n(?=<(?:div class="hero|section)[ >])', '\n' + main) if b.strip()]
-els = [wrap([widget('<div class="cl cl-page">' + b + '</div>')]) for b in blocks]
-content = '\n'.join('<div class="cl cl-page">' + b + '</div>' for b in blocks)
+def live_form(pid):
+    """The page's current Elementor form widget (Coaching style, set by tools/tours_forms.py), unchanged."""
+    code, r = req(f'{B}/wp/v2/pages/{pid}?context=edit&_fields=meta')
+    found = []
+    def walk(xs):
+        for e in xs:
+            if e.get('widgetType') == 'form': found.append(e)
+            walk(e.get('elements', []))
+    walk(json.loads(json.loads(r)['meta']['_elementor_data']))
+    assert len(found) == 1 and 'cc-form' in found[0]['settings'].get('_css_classes', ''), 'run tools/tours_forms.py first'
+    return found[0]
+
+def block_el(b):
+    if '<!--FORM-->' not in b: return wrap([widget('<div class="cl cl-page">' + b + '</div>')])
+    # the form sits in a 2-column Elementor container next to the rest of the section (the info panel)
+    rest = re.search(r'<!--FORM-->(.*)</div>\s*</section>\s*$', b, re.S).group(1)
+    c = wrap([live_form(d['id']), widget('<div class="cl cl-page">' + rest.strip() + '</div>')])
+    c['settings']['css_classes'] = 'cc-wrap cl-contact'
+    return c
+
+els = [block_el(b) for b in blocks]
+content = '\n'.join('<div class="cl cl-page">' + b.replace('<!--FORM-->', '') + '</div>' for b in blocks)
 meta = {"_elementor_data": json.dumps(els), "_elementor_edit_mode": "builder", "_elementor_template_type": "wp-page"}
 if d.get('id'):   # existing page: only the layout changes; title, slug, parent, status and Rank Math SEO stay as they are
     ids[slug] = d['id']

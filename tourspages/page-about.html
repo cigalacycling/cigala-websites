@@ -3,7 +3,23 @@
 
 html .cl .band .lede p { margin: 0; }
 html .cl .member h3 { text-transform: uppercase; }
+html .cl .hero-phone { font-family: var(--body); font-size: 20px; font-weight: 600; letter-spacing: .02em; margin-top: 18px; }
+html .cl .hero-phone a, html .cl .info h2 a { color: var(--text); text-decoration: none; }
+html .cl .hero-phone a:hover, html .cl .info h2 a:hover { color: var(--green-text); }
+html .cl .info h3 { font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: .1em; color: var(--text-3); margin: 0 0 2px; }
+html .cl .info h2 { font-family: var(--body); font-size: 17px; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--text); overflow-wrap: anywhere; }
+html .cl .info .cc-social { margin-top: 2px; }
+.e-con.cl-contact { display: grid !important; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px !important; align-items: start; max-width: 1232px !important; margin: 0 auto !important; padding: 40px 16px 0 !important; }
+.e-con.cl-contact > .elementor-widget-form { margin: 0 !important; width: 100% !important; max-width: 100% !important; --container-widget-width: 100% !important; }
+.e-con.cl-contact > .elementor-widget-form .cc-form, .e-con.cl-contact .elementor-widget-form.cc-form { margin-top: 0 !important; }
+@media (max-width: 900px) { .e-con.cl-contact { grid-template-columns: minmax(0, 1fr); } }
 html .cl h2.lab { font-family: var(--body); font-size: 11px; line-height: 1.4; letter-spacing: .09em; font-weight: 600; color: var(--text-3); text-transform: uppercase; margin: 0 0 12px; }
+html .cl .cc-social { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 0 -10px; }
+html .cl .cc-social a { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; color: var(--text-2, #d0d6e0); text-decoration: none; transition: color .15s, background-color .15s; }
+html .cl .cc-social a:hover, html .cl .cc-social a:active { color: var(--green-text, #34c46a); background: rgba(255,255,255,.04); }
+html .cl .cc-social a:focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 2px; }
+html .cl .cc-social svg { width: 20px; height: 20px; fill: currentColor; display: block; }
+
 
 </style>
 <style>
