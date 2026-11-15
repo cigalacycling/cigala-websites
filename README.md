@@ -54,7 +54,7 @@ The repository keeps the original working layout so the build scripts run unchan
 | `tools/build_tours.py`, `tourspages/`, `tp/`, `tp2/` | **tours.cigalacycling.com**: the 7 page designs and the extracted live content |
 | `survey/NfmCmGsjq4LL9bTAi38NXN/` | Tours homepage design |
 | `trip/` | Tours trip-page design (Dolomites: 323 km, 8,800 m) |
-| `tools/build_coaching_home.py`, `coachingpages/` | **Coaching** homepage preview (`coachingpages/home.html`, screenshots in `coachingpages/shots/`). Reuses the Tours design system; asserts the live H1 and all live H2s are kept |
+| `tools/coaching_common.py`, `tools/build_coaching_*.py`, `coachingpages/` | **Coaching** page previews (`coachingpages/*.html`, screenshots in `coachingpages/shots/`). `coaching_common.py` holds the shared header, footer, design system and the SEO check (live H1/H2s kept, every image has alt). Homepage approved by Matteo 15 Nov; Individual Packages waiting for review |
 | `coaching/baseline.json` | SEO crawl of the live Coaching site before the redesign: 76 sitemap URLs (23 pages, 53 posts), all 200 |
 | `coaching/SEO-DECISIONS.md` | **Approved** coaching SEO fixes (typos, one H1 per page, redirects for `/dummy-page/` and `/group-club-packages2/`, missing alt text). Apply on staging only |
 | `coaching/html/`, `coaching/text/`, `coaching/css/` | Live coaching pages: raw HTML, extracted copy/headings/links/images, Elementor CSS |

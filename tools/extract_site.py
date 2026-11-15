@@ -25,6 +25,7 @@ for r in pages:
         s = re.search(r'\s(?:data-src|src)="([^"]+)"', tag); a = re.search(r'\salt="([^"]*)"', tag)
         if s and not s.group(1).startswith('data:'): add(s.group(1), [slug], a.group(1) if a else None)
     for m in re.finditer(r'url\((["\']?)(https?://[^)"\']+\.(?:jpe?g|png|webp|gif|svg))\1\)', t): add(m.group(2), [slug], bg=True)
+    for u in re.findall(r'(?:data-thumbnail|href)="(https?://[^"]+/wp-content/uploads/[^"]+\.(?:jpe?g|png|webp|gif))"', t): add(u, [slug])  # galleries, lightbox links
     for c in re.findall(rf'href=["\'](https://{re.escape(host)}/wp-content/uploads/elementor/css/post-\d+\.css)', t): css.setdefault(c, set()).add(slug)
 for c, slugs in css.items():
     f = f'{out}/css/' + c.rsplit('/', 1)[1]; get(c, f)

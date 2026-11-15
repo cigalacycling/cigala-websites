@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Individual Cycling Coaching Packages | Cigala Cycling Coaching</title>
+<meta name="description" content="Individual cycling coaching packages from Cigala Cycling — personalised online plans, expert feedback, real performance gains.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="img/logo.webp">
+</head><body>
+<style>
+/* Cigala Cycling kit applied to tours.cigalacycling.com: Anton uppercase headlines, Montserrat body,
+   near-black contour background, round logo, green = action, red = attention only. Single dark look.
+   Layout: sticky nav, photo hero, stat strip, filterable tour grid, alternating story bands, footer. */
+:root {
+  color-scheme: dark;
+  --bg: #08090a; --panel: rgba(15,16,17,.92); --panel-solid: #0f1011; --panel-2: #161718;
+  --panel-grad: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+  --border: rgba(255,255,255,.08); --border-strong: rgba(255,255,255,.14); --wash: rgba(255,255,255,.04);
+  --text: #f7f8f8; --text-2: #d0d6e0; --text-3: #8a8f98; --text-4: #62666d;
+  --green: #009a44; --green-hi: #00b350; --green-text: #34c46a; --green-wash: rgba(0,154,68,.14);
+  --red: #E10600; --gravel: #b9895a; --star: #f0bf00;
+  --head: "Anton", Impact, "Arial Narrow", sans-serif;
+  --body: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 12px;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--text-2); font-family: var(--body); }
+body { margin: 0; font-size: 15px; line-height: 1.6; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: rgba(8,9,10,.92); }
+.topo { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(rgba(8,9,10,.6), rgba(8,9,10,.6)), #08090a url(img/topo-background-tile.svg) top center / auto 3000px repeat-y; }
+.page { position: relative; z-index: 1; }
+::selection { background: rgba(0,154,68,.45); color: #fff; }
+a { color: var(--text); text-decoration-color: rgba(255,255,255,.3); text-underline-offset: 3px; }
+a:hover { color: #fff; text-decoration-color: var(--green); }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+img { display: block; max-width: 100%; }
+b, strong { color: var(--text); font-weight: 600; }
+
+.in { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+section { padding-block: 72px 0; }
+h1, h2, h3 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.04; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(40px, 7vw, 84px); }
+h2 { font-size: clamp(30px, 4.6vw, 52px); }
+h3 { font-size: 24px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--green-text); }
+.bar { width: 40px; height: 3px; border-radius: 2px; background: var(--green); margin-top: 16px; }
+.lede { color: var(--text-2); max-width: 62ch; margin: 16px 0 0; font-size: 16px; }
+.head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; margin-bottom: 30px; }
+.head > div { min-width: 0; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--body); font-weight: 600; font-size: 14px; letter-spacing: .02em; text-decoration: none;
+  border-radius: 8px; padding: 12px 22px; border: 1px solid transparent; cursor: pointer; transition: background .15s, border-color .15s; }
+.btn-go { background: var(--green); color: #fff; }
+.btn-go:hover { background: var(--green-hi); color: #fff; }
+.btn-ghost { background: rgba(8,9,10,.35); color: var(--text); border-color: var(--border-strong); backdrop-filter: blur(4px); }
+.btn-ghost:hover { border-color: var(--green); color: #fff; }
+.arrow-link { font-weight: 600; font-size: 14px; color: var(--green-text); text-decoration: none; }
+.arrow-link:hover { color: #fff; }
+
+/* preview ribbon */
+.ribbon { position: relative; z-index: 2; background: var(--green-wash); border-bottom: 1px solid rgba(0,154,68,.35); font-size: 12.5px; color: var(--text-2); }
+.ribbon .in { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; padding-block: 8px; }
+.ribbon b { color: var(--green-text); letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; }
+
+/* nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(8,9,10,.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+.nav .in { display: flex; align-items: center; gap: 18px; padding-block: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
+.brand img { width: 58px; height: 58px; border-radius: 6px; }
+.brand-lg img { width: 88px; height: 88px; }
+.brand span { font-weight: 700; color: var(--text); font-size: 15px; line-height: 1.15; }
+.brand small { display: block; font-weight: 500; color: var(--text-3); font-size: 11.5px; }
+.menu { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+.menu a { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-2); text-decoration: none; padding: 8px 10px; border-radius: 6px; }
+.menu a:hover { color: #fff; background: var(--wash); }
+.nav .btn { padding: 9px 16px; font-size: 13px; flex: none; }
+.burger { display: none; margin-left: auto; }
+.burger summary { list-style: none; cursor: pointer; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text); border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 14px; }
+.burger summary::-webkit-details-marker { display: none; }
+.burger nav { position: absolute; left: 0; right: 0; top: 100%; background: var(--panel-solid); border-bottom: 1px solid var(--border); display: grid; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)); }
+.burger nav a { padding: 11px 0; border-bottom: 1px solid var(--border); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; }
+
+/* hero */
+.hero { position: relative; min-height: min(760px, 88svh); display: flex; align-items: flex-end; overflow: hidden; }
+.hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,9,10,.25) 0%, rgba(8,9,10,.15) 35%, rgba(8,9,10,.92) 100%); }
+.hero .in { position: relative; z-index: 1; width: 100%; padding-block: 120px 56px; }
+.hero h1 { max-width: 16ch; }
+.hero .eyebrow { color: var(--text); text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+.hero .lede { color: var(--text); font-size: clamp(15px, 1.6vw, 17px); max-width: 60ch; }
+.ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+/* stats */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--border); border-radius: var(--r); background: var(--panel-grad), var(--panel); margin-top: -1px; }
+.stat { padding: 22px 20px; border-left: 1px solid var(--border); }
+.stat:first-child { border-left: 0; }
+.stat .n { font-family: var(--head); font-size: clamp(34px, 4vw, 48px); line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+.stat .n i { font-style: normal; color: var(--star); }
+.stat .l { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-top: 8px; }
+.stats-wrap { position: relative; z-index: 2; margin-top: -44px; }
+
+/* tours */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: var(--body); font-size: 12.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+.chip:hover { color: #fff; border-color: rgba(255,255,255,.3); }
+.chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+.tours { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: 16px; }
+.tour { position: relative; display: flex; flex-direction: column; justify-content: flex-end; aspect-ratio: 4 / 5; max-width: 100%; border-radius: var(--r); overflow: hidden; text-decoration: none; border: 1px solid var(--border); background: var(--panel-solid); isolation: isolate; }
+.tour img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .5s ease; }
+.tour::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 25%, rgba(8,9,10,.7) 55%, rgba(8,9,10,.96) 100%); }
+.tour:hover img { transform: scale(1.04); }
+.tour:hover { border-color: rgba(0,154,68,.6); }
+.tag { position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.75); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 10px; }
+.tag::before, .chip[data-f]:not([data-f="all"])::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
+.tag.gravel::before, .chip[data-f="gravel"]:not([data-f="all"])::before { background: var(--gravel); }
+.chip[aria-pressed="true"]::before { box-shadow: 0 0 0 1.5px #fff; }
+.tour .tx { padding: 20px; }
+.entry { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 10px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text); background: rgba(240,191,0,.14); border: 1px solid rgba(240,191,0,.55); border-radius: 6px; padding: 4px 9px; }
+.entry svg { width: 13px; height: 13px; flex: none; fill: var(--star); }
+.entry-support { background: rgba(8,9,10,.6); border-color: var(--border-strong); }
+.entry-support svg { fill: var(--text-2); }
+.tour h3 { font-size: 26px; }
+.tour p { margin: 8px 0 12px; font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
+.tour .go { font-size: 13px; font-weight: 600; color: var(--green-text); }
+.center { display: flex; justify-content: center; margin-top: 28px; }
+
+/* custom band */
+.band { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); isolation: isolate; }
+.band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8,9,10,.92) 0%, rgba(8,9,10,.7) 45%, rgba(8,9,10,.15) 100%); }
+.band .tx { padding: clamp(32px, 6vw, 64px); max-width: 620px; }
+
+/* story */
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
+.split.flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+.photo { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); }
+.photo img { width: 100%; height: 100%; object-fit: cover; }
+.story .photo { aspect-ratio: 4 / 5; max-width: 100%; }
+.quote { font-family: var(--head); text-transform: uppercase; font-size: clamp(24px, 3vw, 34px); line-height: 1.12; color: var(--text); margin: 0 0 22px; }
+.story p { margin: 0 0 14px; max-width: 62ch; }
+.sig { color: var(--text); font-weight: 600; margin-top: 18px !important; }
+.sig span { display: block; font-weight: 500; color: var(--text-3); font-size: 13px; }
+
+/* why */
+.why { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.why > div { background: var(--panel-solid); padding: 26px 24px; min-width: 0; }
+.why .num { font-family: var(--head); font-size: 15px; color: var(--green-text); letter-spacing: .06em; }
+.why h3 { font-size: 22px; margin-top: 10px; }
+.why p { margin: 8px 0 0; font-size: 14px; color: var(--text-3); }
+
+/* matteo */
+.matteo .photo { background: radial-gradient(circle at 50% 40%, rgba(0,154,68,.22), rgba(8,9,10,0) 65%), var(--panel-solid); aspect-ratio: 1 / 1; max-width: 100%; display: flex; align-items: flex-end; justify-content: center; }
+.matteo .photo img { width: 92%; height: auto; object-fit: contain; }
+.creds { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; padding: 0; list-style: none; }
+.creds li { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--text); border: 1px solid var(--border-strong); background: var(--wash); border-radius: 999px; padding: 5px 12px; }
+.creds li::before { content: "★"; color: var(--star); margin-right: 6px; }
+.matteo p { max-width: 62ch; margin: 0 0 14px; }
+
+/* reviews */
+.reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.review { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.stars { color: var(--star); letter-spacing: 3px; font-size: 14px; }
+.review h3 { font-size: 20px; }
+.review p { margin: 0; font-size: 14px; color: var(--text-2); }
+.who { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-weight: 600; color: var(--text); font-size: 14px; }
+.who img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.who span { display: block; font-weight: 500; color: var(--text-3); font-size: 12.5px; }
+
+/* guides */
+.guides { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.guide { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; text-decoration: none; display: flex; flex-direction: column; min-width: 0; }
+.guide:hover { border-color: rgba(0,154,68,.6); }
+.guide .im { aspect-ratio: 16 / 10; max-width: 100%; overflow: hidden; }
+.guide .im img { width: 100%; height: 100%; object-fit: cover; }
+.guide .tx { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.guide h3 { font-size: 21px; line-height: 1.12; }
+.guide .go { margin-top: auto; font-size: 13px; font-weight: 600; color: var(--green-text); }
+
+/* faq */
+.faq { display: grid; gap: 10px; max-width: 860px; }
+.faq details { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 10px; }
+.faq summary { cursor: pointer; list-style: none; padding: 16px 20px; font-weight: 600; color: var(--text); display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--green-text); font-size: 20px; line-height: 1; }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { margin: 0; padding: 0 20px 18px; color: var(--text-2); }
+
+/* partners */
+.partners { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.partners > div { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; min-width: 0; }
+.logos { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.logos span { background: #fff; border-radius: 10px; width: 96px; height: 96px; display: grid; place-items: center; padding: 8px; }
+.logos img { max-height: 80px; width: auto; }
+.lab { text-transform: uppercase; font-size: 11px; letter-spacing: .09em; color: var(--text-3); font-weight: 600; }
+
+/* footer */
+footer { margin-top: 80px; border-top: 1px solid var(--border); background: rgba(8,9,10,.85); }
+footer .in { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); gap: 28px; padding-block: 44px 28px; }
+footer .tag-line { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: 22px; line-height: 1.15; margin: 14px 0 0; }
+footer h4 { margin: 0 0 12px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+footer ul a { text-decoration: none; color: var(--text-2); }
+footer ul a:hover { color: #fff; }
+.legal { border-top: 1px solid var(--border); }
+.legal .in { display: flex; flex-wrap: wrap; gap: 6px 20px; padding-block: 16px; font-size: 12px; color: var(--text-4); grid-template-columns: none; }
+
+@media (max-width: 1080px) { .menu { display: none; } .burger { display: block; } .nav .btn { display: none; } }
+@media (max-width: 900px) {
+  .split, .split.flip { grid-template-columns: minmax(0, 1fr); }
+  .why, .reviews, .guides, .partners { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  footer .in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  footer .in > div:first-child { grid-column: 1 / -1; }
+  .story .photo { aspect-ratio: 16 / 11; }
+  .matteo .photo { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 640px) {
+  .stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .stat:nth-child(3) { border-left: 0; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+  .why, .reviews, .guides, .partners { grid-template-columns: minmax(0, 1fr); }
+  .band::after { background: linear-gradient(180deg, rgba(8,9,10,.55), rgba(8,9,10,.92)); }
+  section { padding-block: 56px 0; }
+  .tour { aspect-ratio: 4 / 3.4; }
+  .hero::after { background: linear-gradient(180deg, rgba(8,9,10,.3) 0%, rgba(8,9,10,.55) 40%, rgba(8,9,10,.95) 100%); }
+}
+@media (prefers-reduced-motion: reduce) { .tour img { transition: none; } .tour:hover img { transform: none; } }
+</style>
+<style>
+/* ---- coaching homepage additions ---- */
+.eyebrow { color: var(--red-text, #ff3d33); }
+.hero .eyebrow-h { font: 600 12px/1.4 var(--body); letter-spacing: .14em; text-transform: none; color: #fff; display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(8,9,10,.7); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; margin: 0 0 18px; }
+.hero .eyebrow-h::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.hero h1 { max-width: 14ch; }
+.hero .lede { max-width: 54ch; }
+.stat .n { font-size: clamp(28px, 3.4vw, 44px); }
+.h-sec { font-size: clamp(30px, 4.6vw, 52px); }
+.head h2 { max-width: 24ch; }
+.paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.path { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 420px; border-radius: var(--r); overflow: hidden; text-decoration: none; border: 1px solid var(--border); isolation: isolate; }
+.path img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .5s ease; }
+.path::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 30%, rgba(8,9,10,.75) 62%, rgba(8,9,10,.96) 100%); }
+.path:hover img { transform: scale(1.04); }
+.path:hover { border-color: rgba(0,154,68,.6); }
+.path .tx { padding: 26px; }
+.path h3 { font-size: clamp(28px, 3vw, 38px); }
+.path p { margin: 8px 0 14px; color: var(--text-2); font-size: 14.5px; }
+.path .go { font-size: 14px; font-weight: 600; color: var(--green-text); }
+.offer .photo { aspect-ratio: 4 / 5; }
+.offer p { margin: 0 0 14px; max-width: 62ch; }
+.offer .first { margin-top: 16px; }
+.matteo .photo img { width: auto; max-width: 92%; max-height: 100%; }
+.matteo .role { color: var(--text); font-weight: 600; margin: 16px 0 0; }
+.matteo .ctas { align-items: center; gap: 16px; }
+.dests { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px; }
+.dest { position: relative; display: flex; align-items: flex-end; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); text-decoration: none; isolation: isolate; }
+.dest img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .5s ease; }
+.dest::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 35%, rgba(8,9,10,.9) 100%); }
+.dest:hover img { transform: scale(1.05); }
+.dest:hover { border-color: rgba(0,154,68,.6); }
+.dest-h { margin: 0; padding: 12px 14px; font: 400 18px/1.1 var(--head); letter-spacing: .02em; text-transform: uppercase; color: var(--text); }
+.eb-pill { display: inline-flex; align-items: center; gap: 8px; color: #fff; background: rgba(8,9,10,.7); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; margin-bottom: 18px; }
+.eb-pill span { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.btn-h { margin: 0; font: inherit; text-transform: none; letter-spacing: normal; }
+.band .tx { min-height: 360px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.decade img { width: 100%; height: auto; max-width: 1000px; margin: 0 auto; border-radius: var(--r); border: 1px solid var(--border); }
+.seen { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.seen span { width: auto; height: 96px; }
+.seen img { max-height: 64px; max-width: 100%; object-fit: contain; }
+.band-cta::after { background: linear-gradient(90deg, rgba(8,9,10,.94) 0%, rgba(8,9,10,.75) 50%, rgba(8,9,10,.2) 100%); }
+.band-cta > img { object-position: center 30%; }
+.dd { position: relative; }
+.dd-btn { font: 600 12.5px var(--body); letter-spacing: .04em; text-transform: uppercase; color: var(--text-2); background: none; border: 0; padding: 8px 10px; border-radius: 6px; cursor: pointer; }
+.dd-btn:hover, .dd:focus-within .dd-btn { color: #fff; background: var(--wash); }
+.dd-menu { position: absolute; top: 100%; left: 0; min-width: 230px; display: none; padding: 8px; background: var(--panel-solid); border: 1px solid var(--border-strong); border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,.5); z-index: 50; }
+.dd:hover .dd-menu, .dd:focus-within .dd-menu, .dd.open .dd-menu { display: grid; }
+.dd-menu a { display: block; padding: 9px 12px; text-transform: none; letter-spacing: 0; font-size: 14px; }
+.burger nav { max-height: calc(100svh - 80px); overflow-y: auto; }
+.burger .mgrp { margin-top: 14px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.burger nav a { text-transform: none; font-size: 15px; letter-spacing: 0; }
+.fcols { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) !important; }
+footer .tag-line { font-size: 22px; font-weight: 400; }
+footer .tag-sub { margin: 10px 0 0; font: 600 13px var(--body); letter-spacing: .06em; text-transform: none; color: var(--green-text); }
+footer .contact { margin-top: 16px; }
+footer .mt { margin-top: 22px; }
+footer .intl h2 { margin: 0; font: 400 14px/1.5 var(--body); text-transform: none; letter-spacing: 0; }
+footer .intl h2 a { color: var(--text-2); text-decoration: none; }
+footer .intl h2 a:hover { color: #fff; }
+footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24px; }
+.social a { font-size: 12.5px; font-weight: 600; text-decoration: none; color: var(--text-2); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; }
+.social a:hover { color: #fff; border-color: var(--green); }
+@media (max-width: 1080px) { .fcols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; } .fcols > div:first-child { grid-column: 1 / -1; } }
+@media (max-width: 900px) { .matteo .photo { max-width: 520px; width: 100%; } .seen { grid-template-columns: repeat(3, minmax(0, 1fr)); } .offer .photo { aspect-ratio: 16 / 10; } }
+@media (max-width: 640px) {
+  .paths { grid-template-columns: minmax(0, 1fr); }
+  .path { min-height: 340px; }
+  .dests { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .dest-h { font-size: 16px; padding: 10px; }
+  .seen { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fcols { grid-template-columns: minmax(0, 1fr) !important; }
+  .band-cta::after { background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,.94)); }
+}
+@media (prefers-reduced-motion: reduce) { .path img, .dest img { transition: none; } .path:hover img, .dest:hover img { transform: none; } }
+</style>
+<style>
+.hero-sm { min-height: min(560px, 74svh); }
+.hero-sm .in { padding-block: 110px 48px; }
+.hero-sm h1 { max-width: 16ch; font-size: clamp(38px, 6vw, 72px); }
+.notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 28px; }
+.notes p { margin: 0; padding: 14px 16px; border-left: 2px solid var(--green); background: var(--wash); border-radius: 0 8px 8px 0; font-size: 14px; }
+.pkgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.pkg { position: relative; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px 24px; min-width: 0; }
+.pkg.hot { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 24px 60px rgba(0,154,68,.18); }
+.pkg-badge { position: absolute; top: -13px; left: 24px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--green); border-radius: 999px; padding: 5px 12px; }
+.pkg-badge.sold { background: var(--panel-solid); border: 1px solid var(--red); color: var(--red-text, #ff3d33); }
+.pkg-term { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.pkg h2 { font-size: 40px; margin-top: 10px; }
+.pkg-price { display: flex; align-items: baseline; gap: 4px; margin-top: 14px; }
+.pkg-price b { font: 400 54px/1 var(--head); color: var(--text); }
+.pkg-price span { color: var(--text-3); font-weight: 600; }
+.pkg-sub { font-size: 13px; color: var(--text-3); margin: 8px 0 18px; min-height: 40px; }
+.pkg-buy { display: grid; gap: 8px; }
+.pay { width: 100%; text-align: center; }
+.pkg-lab { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+.ticks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.ticks li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-2); line-height: 1.45; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%2334c46a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.pkg-plus { margin: 14px 0 0; font-size: 13px; color: var(--text-3); }
+.pkg-plus a { color: var(--green-text); }
+.terms { margin: 22px 0 0; font-size: 13px; color: var(--text-3); text-align: center; }
+.terms b { color: var(--text-2); font-weight: 600; }
+.panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
+.every { margin-top: 40px; padding: 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr); gap: 24px 40px; }
+.h-sm { font-size: clamp(24px, 2.6vw, 30px); }
+.ticks.cols { columns: 2; column-gap: 32px; display: block; margin: 0; }
+.ticks.cols li { break-inside: avoid; margin-bottom: 9px; }
+.addons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.addon { padding: 24px; }
+.addon p { margin: 10px 0 0; font-size: 14.5px; }
+.addon p a { color: var(--green-text); }
+.addon .arrow-link { display: inline-block; margin-top: 14px; }
+.quotes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.q { margin: 0; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.q img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); }
+.q blockquote { margin: 0; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+.nums { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.nums .n { margin: 0; font-family: var(--head); font-weight: 400; font-size: clamp(32px, 3.6vw, 46px); line-height: 1; color: var(--text); }
+.nums .l { margin: 8px 0 0; }
+.nums .stat:nth-child(-n+4) .n { color: var(--text); }
+.vk p { margin: 14px 0 0; max-width: 62ch; }
+.vk p a { color: var(--green-text); }
+.vk .ticks { margin-top: 14px; }
+.vk-side { display: grid; gap: 14px; }
+.vk-side .photo { aspect-ratio: 3 / 2; }
+.vk-logos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vk-logos > * { display: grid; place-items: center; background: #fff; border-radius: var(--r); padding: 14px; min-height: 96px; }
+.vk-logos img { max-height: 72px; width: auto; }
+.h-long { font-size: clamp(24px, 3vw, 36px); max-width: 32ch; }
+.apps { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.apps a { background: #fff; border-radius: 10px; height: 84px; display: grid; place-items: center; padding: 10px; }
+.apps img { max-height: 54px; max-width: 100%; object-fit: contain; }
+.faq h3 { display: inline; font: 600 15px/1.4 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); }
+.faq details p a { color: var(--green-text); }
+.gallery { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.gallery .g { aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.gallery .g img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.gallery .g:hover img { transform: scale(1.05); }
+.gallery:not(.all) .g.more { display: none; }
+.rider { aspect-ratio: 1; }
+.form { display: grid; gap: 14px; padding: 22px; margin-top: 22px; }
+.form label { display: grid; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.form input, .form textarea { font: 400 16px/1.4 var(--body); color: var(--text); background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; width: 100%; }
+.form input:focus, .form textarea:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: transparent; }
+.form .btn { justify-self: start; }
+@media (max-width: 1080px) { .quotes { grid-template-columns: repeat(3, minmax(0, 1fr)); } .apps { grid-template-columns: repeat(4, minmax(0, 1fr)); } .nums { grid-template-columns: repeat(3, minmax(0, 1fr)); } .nums .stat:nth-child(4) { border-left: 0; } .nums .stat:nth-child(n+4) { border-top: 1px solid var(--border); } }
+@media (max-width: 900px) {
+  .pkgs, .notes { grid-template-columns: minmax(0, 1fr); }
+  .pkgs { gap: 26px; }
+  .every { grid-template-columns: minmax(0, 1fr); }
+  .gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .rider { aspect-ratio: 16 / 10; }
+}
+@media (max-width: 640px) {
+  .addons, .quotes { grid-template-columns: minmax(0, 1fr); }
+  .ticks.cols { columns: 1; }
+  .apps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nums .stat:nth-child(odd) { border-left: 0; } .nums .stat:nth-child(even) { border-left: 1px solid var(--border); } .nums .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+  .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .gallery:not(.all) .g:nth-child(n+13) { display: none; }
+  .pkg h2 { font-size: 34px; }
+}
+</style>
+<div class="topo" aria-hidden="true"></div>
+<div class="page">
+<div class="ribbon"><div class="in"><b>Preview</b><span>New Individual Packages page. Same packages, prices, payment links and copy as live; the page now has its approved H1.</span></div></div>
+<header class="nav">
+  <div class="in">
+    <a class="brand" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo.webp" alt="Cigala Cycling Coaching home" width="58" height="58"></a>
+    <nav class="menu" aria-label="Main">
+      <a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a>
+      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Cycling <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://coaching.cigalacycling.com/coaching-vision/" target="_blank" rel="noopener">Coaching Vision</a><a href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Individual Packages</a><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a><a href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 Session</a><a href="https://www.skool.com/cigala-cycling-collective-1115" target="_blank" rel="noopener">Community</a></div></div>
+      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Triathlon <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://coaching.cigalacycling.com/about2/" target="_blank" rel="noopener">About Triathlon Coaching</a><a href="https://coaching.cigalacycling.com/tri-individual-packages/" target="_blank" rel="noopener">Individual Packages</a><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a><a href="https://www.skool.com/cigala-cycling-collective-1115" target="_blank" rel="noopener">Community</a></div></div>
+      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a><a href="https://coaching.cigalacycling.com/bike-fitting/" target="_blank" rel="noopener">Bike Fit</a><a href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener">Talent Programme</a><a href="https://coaching.cigalacycling.com/club-talk/" target="_blank" rel="noopener">Club Talk</a></div></div>
+      <a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a>
+      <a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a>
+      <a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a>
+      <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a>
+      <a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
+    </nav>
+    <a class="btn btn-go" href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Find Your Package</a>
+    <details class="burger" id="menu-mobile">
+      <summary>Menu</summary>
+      <nav aria-label="Main (mobile)">
+        <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Home</a><a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a>
+        <div class="mgrp">Cycling</div><a href="https://coaching.cigalacycling.com/coaching-vision/" target="_blank" rel="noopener">Coaching Vision</a><a href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Individual Packages</a><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a><a href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 Session</a><a href="https://www.skool.com/cigala-cycling-collective-1115" target="_blank" rel="noopener">Community</a>
+        <div class="mgrp">Triathlon</div><a href="https://coaching.cigalacycling.com/about2/" target="_blank" rel="noopener">About Triathlon Coaching</a><a href="https://coaching.cigalacycling.com/tri-individual-packages/" target="_blank" rel="noopener">Individual Packages</a><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a><a href="https://www.skool.com/cigala-cycling-collective-1115" target="_blank" rel="noopener">Community</a>
+        <div class="mgrp">Services</div><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a><a href="https://coaching.cigalacycling.com/bike-fitting/" target="_blank" rel="noopener">Bike Fit</a><a href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener">Talent Programme</a><a href="https://coaching.cigalacycling.com/club-talk/" target="_blank" rel="noopener">Club Talk</a>
+        <div class="mgrp">More</div><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a><a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
+      </nav>
+    </details>
+  </div>
+</header>
+<div class="hero hero-sm">
+  <img src="img/packages-hero.webp" alt="Two cyclists in branded gear | Cigala Cycling Coaching" width="1148" height="766">
+  <div class="in">
+    <div class="eyebrow eb-pill"><span></span>Cycling coaching</div>
+    <h1>Individual Cycling Coaching Packages</h1>
+    <p class="lede">I have 3 coaching packages: Basic, Advanced and Premium<br>For all you can add 1 or 2 One-on-One sessions a month with myself, Matteo Cigala</p>
+    <div class="ctas">
+      <a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">BOOK FREE CONSULTATION</a>
+      <a class="btn btn-ghost" href="#packages">Compare packages ↓</a>
+    </div>
+  </div>
+</div>
+
+<section id="packages">
+  <div class="in">
+    <div class="notes">
+      <p>As I coach and focus on a limited numbers of people, I kindly ask to get in touch before signing up to any coaching packages to ensure availability.</p>
+      <p>To sign up with another currency, please contact us and we will provide you the required link.</p>
+      <p>For Advanced &amp; Premium Packages Vekta membership is included (worth €19.99/ month)<br>On demand Training Peaks Premium is also an option.</p>
+    </div>
+    <div class="pkgs">
+      <article class="pkg " id="pkg-basic">
+        
+        <div class="pkg-term">12 Weeks</div>
+        <h2>Basic</h2>
+        <div class="pkg-price"><b>€19</b><span>/week</span></div>
+        <p class="pkg-sub">Charged with one-time payment of €228 for the 12 weeks.</p>
+        <div class="pkg-buy"><a class="btn btn-ghost pay" href="https://cigala-cycling-retail.myshopify.com/cart/31567870165038:1?channel=buy_button" target="_blank" rel="noopener">Buy Basic 12 Weeks · €228</a></div>
+        <div class="pkg-lab">What you get</div>
+        <ul class="ticks"><li>Personalised Daily Training Plan build for 12 weeks</li><li>Training Peaks Basic Account</li><li>Contact when needed via email</li><li>Feedback on sessions</li><li>Schedule Adjustment</li><li>Daily Training Analysis</li></ul>
+        <p class="pkg-plus">+ everything in <a href="#every">every package</a></p>
+      </article><article class="pkg hot" id="pkg-advanced">
+        <span class="pkg-badge">Monthly (Our Most Popular)</span>
+        <div class="pkg-term">6 months subscription</div>
+        <h2>Advanced</h2>
+        <div class="pkg-price"><b>€149</b><span>/mo</span></div>
+        <p class="pkg-sub"></p>
+        <div class="pkg-buy"><a class="btn btn-go pay" href="https://pay.gocardless.com/BRT0004AR2PG9DT" target="_blank" rel="noopener">Subscribe to Advanced · €149/mo</a></div>
+        <div class="pkg-lab">What you get</div>
+        <ul class="ticks"><li>Personalised Daily Training Plan build on a weekly basis</li><li>Vekta membership included (value €19.99/m)</li><li>Race Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency weekly</li><li>Weekly Feedback</li><li>Weekly Schedule Adjustment</li><li>Weekly Training Analysis</li><li>Monthly catch up call or when needed</li></ul>
+        <p class="pkg-plus">+ everything in <a href="#every">every package</a></p>
+      </article><article class="pkg sold" id="pkg-premium">
+        <span class="pkg-badge sold">Monthly (SOLD OUT!)</span>
+        <div class="pkg-term">3 months subscription (€10 off for 6 mo)</div>
+        <h2>Premium</h2>
+        <div class="pkg-price"><b>€249</b><span>/mo</span></div>
+        <p class="pkg-sub"></p>
+        <div class="pkg-buy"><a class="btn btn-ghost pay" href="https://pay.gocardless.com/BRT0003VKKVP6DJ" target="_blank" rel="noopener">Premium 3 Months · €249/mo</a><a class="btn btn-ghost pay" href="https://pay.gocardless.com/BRT0003VKKXFP2A" target="_blank" rel="noopener">Premium 6 Months · €239/mo</a></div>
+        <div class="pkg-lab">What you get</div>
+        <ul class="ticks"><li>Personalised Daily Training Plan build on a weekly basis</li><li>Vekta membership included (value €19.99/m)</li><li>Race Strategy</li><li>Continuous Support &amp; Motivation</li><li>Contact Frequency daily</li><li>Daily Feedback</li><li>Daily Schedule Adjustment</li><li>Daily Training Analysis</li><li>Weekly catch up call or when needed</li></ul>
+        <p class="pkg-plus">+ everything in <a href="#every">every package</a></p>
+      </article>
+    </div>
+    <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">HERE</a></b></p>
+
+    <div class="every panel" id="every">
+      <div><div class="eyebrow">Basic · Advanced · Premium</div><h3 class="h-sm">Included in every package</h3><div class="bar"></div></div>
+      <ul class="ticks cols"><li>Plan Tailored to your Training Availability</li><li>Stretching &amp; Core Exercises</li><li>Gym &amp; Winter Program + Support</li><li>Test Protocols (CP, FTP, FTHR or INSCYD)</li><li>Tests Analysis</li><li>Adaptive Training Zones changing weekly</li><li>Training Periodized based on goals</li><li>Blood panel review from our Sport Nutritionist</li><li>Discount membership for products at retail.cigalacycling.com</li><li>Nutritional Guide</li><li>Blog posts for tips</li><li>Sync &amp; follow workouts on Garmin/Wahoo/Zwift etc</li><li>Access to World Class Nutritionist &amp; Mental Coach</li><li>Access to our online Community (value €9/m)</li><li>Discounted INSCYD Metabolic Testing</li><li>Daily Session Carbs Recommendations</li><li>Nutritional Consult with our Sports Nutritionist</li></ul>
+    </div>
+
+    <div class="addons">
+      <div class="panel addon">
+        <h3 class="h-sm">Purchase multiple One-on-One Sessions</h3>
+        <p>Purchase multiple One-on-One Sessions with Head Coach Matteo Cigala.</p>
+        <p>Sessions are held in Wicklow Town, Co.Wicklow, Ireland and can be booked after purchase.</p>
+        <a class="arrow-link" href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 session →</a>
+      </div>
+      <div class="panel addon">
+        <h3 class="h-sm">Talent programme</h3>
+        <p>Underage, Juniors &amp; U23 will avail of a 20% student discount for all packages.</p>
+        <p>See our talent programme for more information <a href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener"><b>HERE</b></a></p>
+        <a class="arrow-link" href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener">Talent programme →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head">
+      <div><div class="eyebrow">Our athletes</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2><div class="bar"></div></div>
+      <a class="arrow-link" href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">READ MORE TESTIMONIALS →</a>
+    </div>
+    <div class="quotes"><figure class="q"><img src="img/athlete-unnamed-88.webp" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200"><blockquote>“I would describe Matteo as a perfectionist. He never misses a detail and I think that&#x27;s why his coaching works well for me.”</blockquote></figure><figure class="q"><img src="img/athlete-unnamed-89.webp" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200"><blockquote>“The most exciting part of working with Matteo is the noticeable improvements I started to experience after just 4-6 weeks. Since then, these improvements have been consistent and remarkable”</blockquote></figure><figure class="q"><img src="img/athlete-unnamed-90.webp" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200"><blockquote>“Matteo schedules sessions that are built around your available time and utilizes quality over quantity. I have seen improvement year on year while working with Matteo.”</blockquote></figure><figure class="q"><img src="img/athlete-unnamed-91.webp" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200"><blockquote>“Matteo has perfectly optimised my training to adapt to what time I do have.”</blockquote></figure><figure class="q"><img src="img/athlete-unnamed-93.webp" alt="Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching" loading="lazy" width="200" height="200"><blockquote>“As a non-elite or serious cyclist, I can highly recommend Matteo to anyone interested in getting fit and ready for any cycling goal, no matter what level you&#x27;re at or what age you are!”</blockquote></figure></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Results</div><h2>2026 IN NUMBERS</h2><div class="bar"></div></div></div>
+    <div class="stats nums"><div class="stat"><h3 class="n">1348</h3><h4 class="l">Top 10</h4></div><div class="stat"><h3 class="n">149</h3><h4 class="l">3rd places</h4></div><div class="stat"><h3 class="n">129</h3><h4 class="l">2nd places</h4></div><div class="stat"><h3 class="n">164</h3><h4 class="l">1st places</h4></div><div class="stat"><h3 class="n">100%</h3><h4 class="l">Performance improvement</h4></div><div class="stat"><h3 class="n">&gt;90%</h3><h4 class="l">Goals Achieved by clients</h4></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="in split">
+    <div>
+      <div class="eyebrow">Training platform</div>
+      <h2>USING VEKTA - NEXT GENERATION TRAINING &amp; COACHING PLATFORM</h2>
+      <div class="bar"></div>
+      <div class="vk"><p>With my coaching service, powered by <a href="https://joinvekta.com/" target="_blank" rel="noopener">Vekta</a>, you get more than a plan — you get a system that helps you understand your body, optimize your training, and achieve results faster.</p><p>Vekta goes far beyond traditional metrics like FTP, using Critical Power (CP) and W′ modelling to measure your true performance capacity, track endurance under fatigue, and guide every effort.</p><p>Your training will be precise and purposeful thanks to:</p><ul class="ticks"><li><b>Adaptive training zones</b>: Every workout is calibrated to your current fitness, so you’re always training at the right intensity.</li><li><b>AI-powered modelling</b>: Advanced algorithms analyze your sessions to identify trends, strengths, and areas to improve.</li><li><b>Beyond FTP metrics:</b> Understand your true power, endurance, and recovery capacity with insights used by professional athletes.</li><li><b>Personalized guidance</b>: Plans are tailored to your goals, lifestyle, and schedule, helping you stay consistent and motivated.</li><li><b>Elite-level tools trusted by pros:</b> Vekta is used by WorldTour teams, giving you access to the same science that powers elite performance.</li></ul><p>With this approach, every ride, interval, and effort has purpose. You’ll see clear progress, stay motivated, and know exactly how to push yourself safely toward your personal best.</p></div>
+      <div class="ctas"><a class="btn btn-ghost" href="https://joinvekta.com/" target="_blank" rel="noopener">FIND MORE ABOUT VEKTA →</a></div>
+    </div>
+    <div class="vk-side">
+      <div class="photo"><img src="img/team-training.webp" alt="Cigala Cycling team training | Cigala Cycling Coaching" loading="lazy" width="1600" height="900"></div>
+      <div class="vk-logos">
+        <a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/cigala-x-vekta.webp" alt="Cigala Cycling x Vekta logo | Cigala Cycling Coaching" loading="lazy"></a>
+        <span><img src="img/trainingpeaks-levels.webp" alt="TrainingPeaks Level 1 &amp; 2 logos | Cigala Cycling Coaching" loading="lazy"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Works with</div><h2 class="h-long">FOLLOW YOUR STRUCTURED TRAINING SESSIONS ON YOUR FAVOURITE DEVICES &amp; APPS (BELOW SOME APPS - THE LIST IS MUCH LONGER)</h2><div class="bar"></div></div></div>
+    <div class="logos apps"><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-garmin-logo-with-blue-tr.webp" alt="Garmin logo with blue triangle | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-wahoo-fitness-brand-logo.webp" alt="Wahoo Fitness brand logo text" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-hammerhead-logo-with-key.webp" alt="Hammerhead logo with keywords | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-bryton-logo-black-and-wh.webp" alt="Bryton logo black and white | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-rouvy-logo-on-gray-backg.webp" alt="ROUVY logo on gray background | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-mywhoosh-cycling-logo.webp" alt="MyWhoosh cycling logo | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-zwift-logo-with-orange-z.webp" alt="Zwift logo with orange Z | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-igpsport-black-and-red-l.webp" alt="iGPSPORT black and red logo | Cigala Cycling Coaching" loading="lazy"></a></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Good to know</div><h2>FREQUENTLY ASKED QUESTIONS</h2><div class="bar"></div></div></div>
+    <div class="faq"><details open><summary><h3>What would the most suitable package for me?</h3></summary><p>It depends on your needs: budget, tools available and how much feedback you want to get. The main difference between packages is the level of feedback and communication with the coach. If you are a person that is able to follow the training without the human aspect of a coach, then the Basic will be enough. However, the Advanced Package is the most popular because not only you have access to Matteo as you coach with feedback, phone calls, training analysis, but because you get Vekta membership included worth €19.99/month.</p></details><details><summary><h3>Do you only coach people who race?</h3></summary><p>No. We coach all sorts of people. You may be interested in losing weight, trying to complete a 100 mile ride, being fitter, completing a sportive, taking part in a triathlon, or bike-racing. All that we ask is you ride a bike, and want to improve in some way.</p></details><details><summary><h3>What is Vekta?</h3></summary><p><a href="https://joinvekta.com/" target="_blank" rel="noopener">Vekta</a>is one of the leading online training platforms, giving you the same tools professional riders use. Follow your plan interactively, track every session, and communicate directly with your coach. Access advanced metrics like Critical Power, W′, and beyond-FTP insights, adaptive training zones, and detailed performance analytics — all from your computer or mobile app. Sync your rides from Garmin, Zwift, Wahoo, or Android, and make every ride count toward your goals.</p></details><details><summary><h3>I am used to Training Peaks, do I need to make the switch to Vekta or can we work also on Training Peaks?</h3></summary><p>You don’t need to switch if you’re already comfortable with TrainingPeaks — we can absolutely continue working there. That said, Vekta offers some additional features that can give you deeper insights, like Critical Power and W′ metrics, adaptive training zones, and advanced analytics, all presented in a clear, interactive way. So if you’re curious, we can explore Vekta together alongside your current setup — but the most important thing is that your training stays consistent and effective, no matter the platform.</p></details><details><summary><h3>Where the 1to1 sessions take place?</h3></summary><p>The 1to1 sssions take place in Wicklow Town, Co.Wicklow.</p></details><details><summary><h3>How many hours do I need to follow the plan?</h3></summary><p>It depends by your training availability.<br>We hand-build your plan only for you and to suits your needs. Your life commitments are important and we design the plan around them. If you have 5 hours a week available to train, we will schedule the training for 5 hours. If you have 10 hours, we will schedule 10 hours and so on.</p></details><details><summary><h3>What age do need to be to be coached?</h3></summary><p>We coach all ages. From 14 years old to….wait there is no limit. One of our past coached riders was 75 years old.<br>We have a 20% student discount for all people below U23.</p></details><details><summary><h3>My event is not until 16 weeks from now, can I still sign up now to the Basic Package?</h3></summary><p>Yes, of course. You will receive everything that you need when you sign up. The plan should be followed for the 12 weeks before the event. Therefore, even if you sign up a bit earlier, you can still take advantage of the nutritional guide, core and stretching exercises, training and lifestyle analysis, nutritional and time management assessment.</p></details></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head">
+      <div><div class="eyebrow">Our riders</div><h2>SOME FEATURED ATHLETES</h2><div class="bar"></div></div>
+      <button type="button" class="btn btn-ghost" id="g-more">Show all 142 photos</button>
+    </div>
+    <div class="gallery" id="gallery"><a href="../coaching/webp/2026_06_gallery-4.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-4.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-4-png.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-4-png.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-5.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-5.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-5-png.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-5-png.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-6.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-6.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-7.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-7.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-8.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-8.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-9.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-9.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-10.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-10.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-1.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-1.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-1-png.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-1-png.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-2.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-2.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-2-png.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-2-png.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-3.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-3.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-3-png.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-3-png.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-21.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-21.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-22.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-22.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-23.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-23.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-24.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-24.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-25.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-25.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-11.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-11.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-12.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-12.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-13.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-13.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-14.webp" target="_blank" rel="noopener" class="g"><img src="../coaching/webp/2026_06_gallery-14.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-15.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-15.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-16.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-16.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-17.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-17.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-18.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-18.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-19.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-19.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-20.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-20.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-37.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-37.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-38.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-38.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-39.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-39.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-40.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-40.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-26.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-26.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-27.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-27.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-28.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-28.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-29.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-29.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-30.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-30.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-31.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-31.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-32.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-32.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-33.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-33.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-34.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-34.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-35.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-35.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-36.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-36.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-97.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-97.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-98.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-98.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-99.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-99.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-100.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-100.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-41.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-41.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-42.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-42.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-43.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-43.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-44.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-44.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-45.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-45.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-46.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-46.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-47.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-47.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-48.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-48.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-49.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-49.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-50.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-50.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-51.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-51.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-52.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-52.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-53.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-53.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-54.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-54.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-55.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-55.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-56.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-56.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-57.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-57.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-58.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-58.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-59.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-59.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-60.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-60.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-61.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-61.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-62.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-62.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-63.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-63.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-64.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-64.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-65.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-65.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-66.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-66.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-67.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-67.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-68.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-68.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-69.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-69.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-70.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-70.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-71.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-71.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-72.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-72.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-73.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-73.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-74.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-74.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-75.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-75.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-76.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-76.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-77.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-77.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-78.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-78.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-79.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-79.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-80.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-80.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-81.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-81.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-82.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-82.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-83.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-83.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-84.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-84.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-85.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-85.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-86.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-86.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-87.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-87.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-88.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-88.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-89.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-89.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-90.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-90.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-91.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-91.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-92.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-92.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-93.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-93.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-94.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-94.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-95.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-95.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-96.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-96.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-131.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-131.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-132.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-132.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-133.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-133.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-134.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-134.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-135.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-135.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-136.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-136.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-137.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-137.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-101.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-101.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-102.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-102.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-103.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-103.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-104.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-104.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-105.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-105.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-106.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-106.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-107.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-107.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-108.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-108.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-109.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-109.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-110.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-110.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-111.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-111.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-112.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-112.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-113.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-113.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-114.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-114.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-115.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-115.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-116.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-116.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-117.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-117.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-118.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-118.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-119.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-119.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-120.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-120.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-121.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-121.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-122.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-122.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-123.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-123.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-124.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-124.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-125.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-125.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-126.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-126.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-127.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-127.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-128.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-128.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-129.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-129.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a><a href="../coaching/webp/2026_06_gallery-130.webp" target="_blank" rel="noopener" class="g more"><img src="../coaching/webp/2026_06_gallery-130.webp" alt="Athlete coached by Cigala Cycling" loading="lazy"></a></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Press &amp; partners</div><h2>AS SEEN IN</h2><div class="bar"></div></div></div>
+    <div class="logos seen"><span><img src="img/logo-red-bull.webp" alt="Red Bull Racing logo | Cigala Cycling Coaching" loading="lazy"></span><span><img src="img/logo-stickybottle.webp" alt="StickyBottle.com cycling logo | Cigala Cycling Coaching" loading="lazy"></span><span><img src="img/logo-zwift.webp" alt="White Zwift logo on orange bg | Cigala Cycling Coaching" loading="lazy"></span><span><img src="img/logo-trainingpeaks.webp" alt="TrainingPeaks logo with icon | Cigala Cycling Coaching" loading="lazy"></span><span><img src="img/logo-cycling-ireland.webp" alt="Cycling Ireland logo | Cigala Cycling Coaching" loading="lazy"></span><span><img src="img/logo-vekta.webp" alt="Vekta logo with yellow icon | Cigala Cycling Coaching" loading="lazy"></span></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="in split">
+    <div class="photo rider"><img src="img/rider.webp" alt="Cyclist in racing kit on bike | Cigala Cycling Coaching" loading="lazy" width="1000" height="1000"></div>
+    <div>
+      <div class="eyebrow">Check availability</div>
+      <h3 class="h-sec">GET IN TOUCH TODAY</h3>
+      <div class="bar"></div>
+      <p class="lede">As I coach and focus on a limited numbers of people, I kindly ask to get in touch before signing up to any coaching packages to ensure availability.</p>
+      <form class="form panel" method="post" action="#" onsubmit="return false">
+        <label>Name<input name="form_fields[name]" type="text" placeholder="Name" autocomplete="name"></label>
+        <label>Email<input name="form_fields[email]" type="email" placeholder="Email" required autocomplete="email"></label>
+        <label>Message<textarea name="form_fields[message]" placeholder="Your Message" rows="5"></textarea></label>
+        <button class="btn btn-go" type="submit">Send &gt;</button>
+      </form>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="in fcols">
+    <div>
+      <a class="brand brand-lg" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo.webp" alt="Cigala Cycling Coaching" width="76" height="76"></a>
+      <h2 class="tag-line">Cycling &amp; Triathlon Coaching - Bike Tours - Retail</h2>
+      <h3 class="tag-sub">#TrainSmarterRideFaster</h3>
+      <ul class="contact">
+        <li><a href="mailto:info@cigalacycling.com">info@cigalacycling.com</a></li>
+        <li><a href="tel:+35340478107">+353 404 78107</a></li>
+      </ul>
+    </div>
+    <div><h4>Cycling</h4><ul><li><a href="https://coaching.cigalacycling.com/coaching-vision/" target="_blank" rel="noopener">Coaching Vision</a></li><li><a href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Individual Packages</a></li><li><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a></li><li><a href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 Session</a></li><li><a href="https://www.skool.com/cigala-cycling-collective-1115" target="_blank" rel="noopener">Community</a></li></ul></div>
+    <div><h4>Triathlon</h4><ul><li><a href="https://coaching.cigalacycling.com/about2/" target="_blank" rel="noopener">About Triathlon Coaching</a></li><li><a href="https://coaching.cigalacycling.com/tri-individual-packages/" target="_blank" rel="noopener">Individual Packages</a></li><li><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a></li><li><a href="https://www.skool.com/cigala-cycling-collective-1115" target="_blank" rel="noopener">Community</a></li></ul>
+      <h4 class="mt">Services</h4><ul><li><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a></li><li><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a></li><li><a href="https://coaching.cigalacycling.com/bike-fitting/" target="_blank" rel="noopener">Bike Fit</a></li><li><a href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener">Talent Programme</a></li><li><a href="https://coaching.cigalacycling.com/club-talk/" target="_blank" rel="noopener">Club Talk</a></li></ul></div>
+    <div><h4>International Coaching</h4>
+      <ul class="intl">
+        <li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-uk/" target="_blank" rel="noopener">Cycling Coach UK</a></h2></li>
+        <li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-usa/" target="_blank" rel="noopener">Cycling Coach USA</a></h2></li>
+        <li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-canada/" target="_blank" rel="noopener">Cycling Coach Canada</a></h2></li>
+        <li><h2><a href="https://coaching.cigalacycling.com/preparatore-di-ciclismo-italia/" target="_blank" rel="noopener">Preparatore di Ciclismo Italia</a></h2></li>
+      </ul>
+      <h4 class="mt">Cigala Cycling</h4>
+      <ul><li><a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Home</a></li><li><a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a></li><li><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a></li><li><a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a></li><li><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a></li><li><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a></li><li><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a></li></ul>
+    </div>
+  </div>
+  <div class="in social">
+    <a href="https://www.instagram.com/cigalacycling/" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/CigalaCycling/" target="_blank" rel="noopener">Facebook</a><a href="https://www.youtube.com/@cigalacycling" target="_blank" rel="noopener">YouTube</a><a href="http://tiktok.com/@cigalacycling" target="_blank" rel="noopener">TikTok</a><a href="https://x.com/CigalaCycling" target="_blank" rel="noopener">X</a><a href="https://www.threads.com/@cigalacycling" target="_blank" rel="noopener">Threads</a><a href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+  <div class="legal"><div class="in">
+    <span>© 2026, Cigala Cycling Ltd</span>
+    <span>VAT No: IE 3699893CH | Company Registration No: 675577</span>
+    <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">Terms &amp; Conditions</a>
+  </div></div>
+</footer>
+</div>
+<script>
+document.querySelectorAll('.dd').forEach(function (d) {
+  var b = d.querySelector('.dd-btn');
+  b.addEventListener('click', function () { var o = d.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
+  d.addEventListener('focusout', function (e) { if (!d.contains(e.relatedTarget)) { d.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
+});
+</script><script>
+document.getElementById('g-more').addEventListener('click', function () {
+  var g = document.getElementById('gallery'), all = g.classList.toggle('all');
+  this.textContent = all ? 'Show fewer photos' : this.dataset.label;
+});
+document.getElementById('g-more').dataset.label = document.getElementById('g-more').textContent;
+</script>
+</body></html>
