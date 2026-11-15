@@ -22,16 +22,18 @@ H1 = T[0][4:].strip()
 INTRO = next(l[3:] for l in T if l.startswith('P: Whether you are looking'))
 INTRO = INTRO.replace('VIFIFY SPORTS', 'VIVIFY SPORTS').replace('help..The', 'help. The')
 # the live paragraph runs sentences together ("home.You"): split it back into sentences
-sents = re.split(r'(?<=[.])(?=[A-Z])', INTRO)
-lead, how = sents[0], sents[1:]
-# Matteo 15 Nov (3rd review): the live "Vital Hygiene Program ... healthy lifestyle ... physical exercises to promote movement ...
-# stress and emotions" is not accurate: it is sports nutrition only. Rewritten; the scheduling and multiple-sessions lines stay.
-assert any('Vital Hygiene' in x for x in how), how
-how = [how[0],
-       'You will receive a full, in-depth report of Marine’s observations, so you understand exactly what your body needs to train, race and recover.',
-       'Marine then builds your personalised sports nutrition plan, adapted to your training load, your goals and your physiology.',
+sents = re.split(r'(?<=[.])\s*(?=[A-Z])', INTRO)
+lead = sents[0]
+SCHED = next(x for x in sents if x.startswith('The consultation is scheduled'))
+MULTI = next(x for x in sents if x.startswith('You also have the option'))
+# Matteo 15 Nov (3rd + 4th review): performance nutrition, not general health. The live "full in depth report ... be responsible
+# for your own health" and "Vital Hygiene Program ... movement ... stress and emotions" sentences are replaced.
+assert any('Vital Hygiene' in x for x in sents) and any('responsible for your own health' in x for x in sents)
+how = [SCHED,
+       'You will receive a full, in-depth report of Marine’s observations, so you understand exactly what your body needs to train, race and recover at your best.',
+       'Marine then builds your personalised performance nutrition plan, adapted to your training load, your goals and your physiology.',
        'You get practical advice on what to eat and when: your daily meals and macros, fuelling before, during and after training, hydration, and supplements only where you need them.',
-       next(x for x in how if x.startswith('You also have the option'))]
+       MULTI]
 WHAT = next(l[3:] for l in T if l.startswith('P: By assessing your dietary patterns'))
 COVERED = [l[5:].strip() for l in T if l.startswith('P: ➔ ')]
 assert len(COVERED) == 7, COVERED
@@ -62,7 +64,7 @@ VP = json.load(open(ROOT + 'stg-coaching/vivify-posts.json'))['posts']
 POSTS = [(slug, p['title'], p['featured'], p['featured_alt']) for slug, p in VP.items()]
 POSTS.append(('is-cherry-juice-really-worth-the-hype', 'Cherry Juice: is it really worth the hype?', 'https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-30.jpg', 'Cherry Juice in sports. Is really worth the hype?'))
 posts = ''.join(f'<a class="nu-post" href="{C}/blog/{s}/" {EXT}><span class="nu-pimg"><img src="{u}" alt="{E(a)}" loading="lazy"></span>'
-                f'<span class="nu-ptx">{"<span class=nu-by>By Marine Lenehan</span>" if s in VP else ""}<h3 class="h-sm">{E(t)}</h3><span class="arrow-link">Read the article →</span></span></a>' for s, t, u, a in POSTS)
+                f'<span class="nu-ptx"><span class="nu-by">By Marine Lenehan</span><h3 class="h-sm">{E(t)}</h3><span class="arrow-link">Read the article →</span></span></a>' for s, t, u, a in POSTS)
 covered = ''.join(f'<li><svg viewBox="0 0 24 24" aria-hidden="true">{IC[x]}</svg><span>{E(x)}</span></li>' for x in COVERED + MORE)
 
 def viv(text):
@@ -108,11 +110,14 @@ svgi = lambda k, c='cal-ic': f'<svg class="{c}" viewBox="0 0 24 24" aria-hidden=
 def trace(v):
     w = 100 / len(v)
     return '<svg class="cal-trace" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">' + ''.join(f'<rect x="{i * w:.2f}" y="{10 - h}" width="{w - .6:.2f}" height="{h}"/>' for i, h in enumerate(v)) + '</svg>'
+CPH = {'4×6 min torque efforts alternating + bursts': '40–50 g/h', 'LDT + 3×10′ at SS, high cadence': '60 g/h', 'LDT 4h aim at 2000 m elevation': '60 g/h'}
 def wk_card(kind, d, km, t, tag, com, tr):
     tg = f'<span class="cal-tag" style="background:{TAGC[tag]}">{tag}</span>' if tag else ''
     cm = f'<span class="cal-com">{svgi("msg", "cal-ic2")}<b>{com}</b></span>' if com else ''
     return (f'<div class="cal-w"><div class="cal-wt">{svgi(kind)}<span>{E(d)}{" · " + E(km) if km else ""}</span>{tg}</div>'
-            f'<div class="cal-wn"><span>{E(t)}</span><span class="cal-st">{cm}{svgi("ok", "cal-ic2 cal-done")}</span></div>{trace(tr) if tr else ""}</div>')
+            f'<div class="cal-wn"><span>{E(t)}</span><span class="cal-st">{cm}{svgi("ok", "cal-ic2 cal-done")}</span></div>'
+            + (f'<span class="cal-cph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6 6.6 6 11.3a6 6 0 0 1-12 0c0-4.7 6-11.3 6-11.3z"/></svg>{CPH[t]}</span>' if t in CPH else '')
+            + f'{trace(tr) if tr else ""}</div>')
 cal = ''.join(f'<div class="cal-d"><div class="cal-h"><b>{d}</b></div><div class="cal-cnt">{c}</div>'
               + ''.join(f'<div class="cal-n"><b>{svgi("leaf")}Nutrition</b><span>{E(n)}</span></div>' for n in ns)
               + ''.join(wk_card(*w) for w in ws) + '</div>' for d, c, ns, ws in WEEK)
@@ -120,19 +125,37 @@ cal = ''.join(f'<div class="cal-d"><div class="cal-h"><b>{d}</b></div><div class
 RECIPE = ('Post-ride recovery bowl', 'Serves 1 · 15 minutes', 'Approx. 85 g carbs · 50 g protein · 19 g fat',
           ['100 g basmati rice (dry weight)', '150 g chicken breast', '1 small sweet pepper and a handful of spinach', '1 tbsp olive oil', 'Lemon, salt, pepper, paprika'],
           ['Cook the rice.', 'Slice the chicken, season with paprika and pan-fry in the olive oil for 6–8 minutes.', 'Add the pepper and spinach for the last 2 minutes, then serve on the rice with a squeeze of lemon.'])
-note = (f'<p class="cal-rt">{E(RECIPE[0])}</p><p class="cal-rm">{E(RECIPE[1])}</p><p class="cal-rmac">{E(RECIPE[2])}</p>'
-        f'<p class="cal-rh">Ingredients</p><ul>{"".join(f"<li>{E(x)}</li>" for x in RECIPE[3])}</ul>'
-        f'<p class="cal-rh">Method</p><ol>{"".join(f"<li>{E(x)}</li>" for x in RECIPE[4])}</ol>')
+BREAKFAST = ('Pre-ride overnight oats', 'Serves 1 · 5 minutes, the night before', 'Approx. 115 g carbs · 35 g protein · 13 g fat',
+             ['80 g rolled oats', '250 ml milk', '150 g Greek yoghurt', '1 banana', '1 tbsp honey', 'A handful of berries'],
+             ['Mix the oats, milk and yoghurt in a jar and leave in the fridge overnight.', 'In the morning, top with sliced banana, berries and honey.', 'Eat 2–3 hours before a long or hard ride.'])
+SUPPS = [('Morning', 'Vitamin D3 with breakfast, in the winter months'), ('Before key sessions', 'Caffeine, about 3 mg per kg, 45–60 minutes before hard sessions and races only'),
+         ('During long rides', 'Electrolytes in your bottles, more sodium on hot days'), ('After training', '20–30 g protein (whey or food) if your next meal is more than an hour away'),
+         ('Only if needed', 'Iron, only when your blood panel shows low ferritin')]
+def recipe(r, tag):
+    return (f'<div class="cal-note"><div class="cal-nh"><span>Note</span><b>Nutrition</b><em>{tag}</em></div>'
+            f'<p class="cal-rt">{E(r[0])}</p><p class="cal-rm">{E(r[1])}</p><p class="cal-rmac">{E(r[2])}</p>'
+            f'<p class="cal-rh">Ingredients</p><ul>{"".join(f"<li>{E(x)}</li>" for x in r[3])}</ul>'
+            f'<p class="cal-rh">Method</p><ol>{"".join(f"<li>{E(x)}</li>" for x in r[4])}</ol></div>')
+notes = (recipe(RECIPE, 'Recipe') + recipe(BREAKFAST, 'Breakfast')
+         + '<div class="cal-note"><div class="cal-nh"><span>Note</span><b>Nutrition</b><em>Supplements</em></div><p class="cal-rt">Supplement plan</p>'
+           '<p class="cal-rm">Food first: supplements only where they help</p><dl class="cal-sup">'
+         + ''.join(f'<dt>{E(t)}</dt><dd>{E(d)}</dd>' for t, d in SUPPS) + '</dl></div>')
 
 FAQ = [
     ('Who is the nutrition consultation for?',
      'Anyone who wants to clean up their diet, boost energy levels and performance, manage their weight, support their immune system, improve their relationship with food, or simply get general guidance on nutrition.'),
     ('How does the consultation work?',
-     ' '.join(how[:1]) + ' You receive a full, in-depth report and a personalised sports nutrition plan for your training and goals: daily meals and macros, fuelling around training, hydration and supplements where needed. You can book several sessions to add feedback and monitoring over a longer period.'),
+     SCHED + ' You receive a full, in-depth report and a personalised sports nutrition plan for your training and goals: daily meals and macros, fuelling around training, hydration and supplements where needed. You can book several sessions to add feedback and monitoring over a longer period.'),
     ('Can I add nutrition coaching to my cycling coaching?',
      'Yes. Nutrition coaching with Marine is an upgrade to any Cigala Cycling coaching package. She works from the same calendar as your coach, plans your nutrition around your training load, reviews your food diary and builds your race fuelling strategy. The price of the nutrition plan depends on the support you need: Marine will advise you in a free discovery call.'),
     ('Is nutrition included in my coaching package?',
      'Yes. Every package includes a nutritional guide, a blood panel review from our sports nutritionist and access to our nutritionist and mental coach. Advanced and Premium add a carbohydrate recommendation for every session and a nutritional consult with our sports nutritionist.'),
+    ('What does a sports nutritionist do?',
+     'A sports nutritionist plans what you eat around your training and racing: daily meals and macros for your training load, fuelling before, during and after sessions, hydration, recovery and race-day strategy, so you have the energy to train hard and perform.'),
+    ('Do you work with triathletes and runners?',
+     'Yes. Marine works with cyclists, triathletes, runners and other endurance athletes, from first-timers to professionals, in Ireland and worldwide.'),
+    ('Can you help with stomach problems during races?',
+     'Yes. Gut health and gastro-intestinal issues are part of what Marine covers, and gut training lets you build up to the carbs per hour your race needs without stomach problems.'),
     ('How many carbs per hour should I eat on the bike?',
      'It depends on how long and how hard the ride is, and on how much your gut is trained to take. Our free carbs-per-hour calculator gives you a starting number in seconds, and in coaching every session comes with its own recommendation (Advanced and Premium).'),
     ('How much should I drink when I ride?',
@@ -143,7 +166,8 @@ FAQ_LD = {'@context': 'https://schema.org', '@type': 'FAQPage',
           'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in FAQ]}
 
 HERO = img('unnamed-2.jpg', 'nutrition-hero-pasta')   # Matteo 15 Nov: not the strawberries
-MARINE = conv('coaching/vivify/marine-lenehan-sports-nutritionist.webp', 'nutrition-marine-lenehan-portrait')   # her own portrait (vivifysports.com/about)
+MARINE = conv('coaching/vivify/marine-lenehan-cutout.webp', 'nutrition-marine-lenehan-cutout')   # Matteo 15 Nov: background removed
+MSIG = conv('coaching/vivify/marine-lenehan-signature-white.webp', 'nutrition-marine-lenehan-signature')   # her own portrait (vivifysports.com/about)
 MARINE_ALT = 'Marine Lenehan, MSc sports nutritionist and founder of Vivify Sports'
 
 MAIN = f'''<div class="hero hero-sm nu-hero">
@@ -165,7 +189,7 @@ MAIN = f'''<div class="hero hero-sm nu-hero">
       <div class="ctas"><a class="btn btn-go" href="{VIVIFY}" {EXT}>Book your consultation</a><a class="btn btn-ghost" href="{VIVSITE}" {EXT}>Visit Vivify Sports</a></div>
     </div>
     <figure class="nu-marine">
-      <div class="photo"><img src="{MARINE}" alt="{E(MARINE_ALT)}" loading="lazy" width="1400" height="1400"></div>
+      <div class="nu-cut"><img src="{MARINE}" alt="{E(MARINE_ALT)}" loading="lazy" width="1385" height="1400"><img class="nu-sig" src="{MSIG}" alt="Marine Lenehan’s signature" loading="lazy" width="1820" height="405"></div>
       <figcaption>
         <b>Marine Lenehan</b>
         <span>MSc Sports Nutritionist · founder of <a class="viv" href="{VIVSITE}" {EXT}>Vivify Sports</a></span>
@@ -191,7 +215,8 @@ MAIN = f'''<div class="hero hero-sm nu-hero">
     <ul class="nu-upg">{upg}</ul>
     <figure class="nu-cal">
       <div class="cal-scroll" tabindex="0" aria-label="Example training week with nutrition notes"><div class="cal-row">{cal}</div></div>
-      <div class="cal-note"><div class="cal-nh"><span>Note</span><b>Nutrition</b><em>Recipe</em></div>{note}</div>
+      <div class="cal-notes">{notes}</div>
+      <p class="cal-sample">These are samples only: Marine writes your recipes, meal plans and any supplement plan for you, after your assessment.</p>
       <figcaption>An athlete’s week: every session, Marine’s nutrition for each day, and recipes in the same calendar. <span class="cal-swipe">Swipe to see the whole week →</span></figcaption>
     </figure>
     <div class="nu-upg-cta panel">
@@ -255,8 +280,9 @@ CSS = G.GCSS + '''<style>
 a.viv { color: var(--green-text) !important; font-weight: 700; text-decoration: none; }
 a.viv:hover { text-decoration: underline; }
 .nu-marine { margin: 0; display: grid; gap: 14px; max-width: 440px; justify-self: center; }
-.nu-marine .photo { aspect-ratio: 1; }
-.nu-marine img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.nu-cut { position: relative; }
+.nu-cut > img:first-child { display: block; width: 100%; height: auto; -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent); mask-image: linear-gradient(180deg, #000 78%, transparent); }
+.nu-sig { position: absolute; left: 9%; right: 9%; bottom: 2%; width: 82%; height: auto; }
 .nu-marine figcaption { display: grid; gap: 4px; font-size: 14px; color: var(--text-2); }
 .nu-marine figcaption b { font: 400 24px/1.1 var(--head); color: var(--text); text-transform: uppercase; }
 .nu-lede { color: var(--text-2); max-width: 75ch; margin: 0 0 20px; line-height: 1.65; }
@@ -269,7 +295,14 @@ a.viv:hover { text-decoration: underline; }
 .nu-upg h3 { margin: 0 0 6px; }
 .nu-upg p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
 .nu-cal { margin: 0 0 22px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; align-items: start; }
-.nu-cal .cal-note { max-width: 560px; }
+.cal-notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; align-items: start; }
+.cal-scroll { order: 0; }
+.nu-cal figcaption { order: 1; }
+.cal-notes { order: 2; }
+.cal-sample { order: 3; margin: 0; color: var(--text-3); font-size: 13px; font-style: italic; }
+.cal-sup { margin: 6px 0 0; display: grid; gap: 2px; }
+.cal-sup dt { font-weight: 700; color: var(--text); margin-top: 8px; }
+.cal-sup dd { margin: 0; }
 .nu-cal figcaption { grid-column: 1 / -1; color: var(--text-3); font-size: 13px; }
 @media (max-width: 1000px) { .nu-cal { grid-template-columns: minmax(0, 1fr); } }
 .cal-scroll { border-radius: 14px; border: 1px solid var(--border); background: var(--panel-grad), var(--panel); }
@@ -293,6 +326,8 @@ a.viv:hover { text-decoration: underline; }
 .cal-st { display: inline-flex; align-items: flex-start; gap: 4px; flex: none; }
 .cal-com { display: inline-flex; align-items: center; gap: 2px; font-size: 10px; color: var(--text-3); }
 .cal-com b { color: #f0bf00; font-weight: 700; }
+.cal-cph { justify-self: start; display: inline-flex; align-items: center; gap: 4px; margin: 0 8px 4px; padding: 2px 9px; border: 1px solid #2bb3b1; border-radius: 999px; color: #47cbc9; font-size: 11px; font-weight: 700; }
+.cal-cph svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 2.2; }
 .cal-trace { display: block; width: 100%; height: 22px; margin-top: -4px; }
 .cal-trace rect { fill: rgba(255,255,255,.18); }
 .cal-swipe { display: none; color: var(--green-text); font-style: normal; }

@@ -31,7 +31,23 @@ POSTS = {   # vivify slug -> our slug
     'why-am-i-so-tired-after-exercise-understanding-post-exercise-fatigue-in-endurance-athletes': 'fatigue-after-exercise-endurance-athletes',
     'daily-fat-intake-guide': 'daily-fat-intake-guide',
     'cycling-nutrition-what-to-eat-and-drink-during-bike-rides-of-any-length': 'cycling-nutrition-what-to-eat-and-drink-on-the-bike',
+    # Matteo 15 Nov (2nd round): two more, "even the old ones", so the Nutrition page has 8
+    'why-do-you-always-bonk-out-on-the-bike': 'why-do-you-bonk-on-the-bike',
+    'top-5-foods-for-cyclists-why': 'top-5-foods-for-cyclists',
 }
+AUTHOR_ALT = 'Marine Lenehan, MSc sports nutritionist and founder of Vivify Sports, with her signature'
+def author_image(state):
+    """Marine's author image (tools/make_marine_signature.py), uploaded once"""
+    if 'author_img' not in state:
+        r = json.loads(req(B + '/media', data=open(ROOT + 'coaching/vivify/marine-lenehan-author-signature.webp', 'rb').read(), method='POST',
+                           headers={'Content-Type': 'image/webp', 'Content-Disposition': 'attachment; filename="marine-lenehan-author-signature.webp"', 'User-Agent': 'Mozilla/5.0'}))
+        req(B + f'/media/{r["id"]}', data=json.dumps({'alt_text': AUTHOR_ALT}).encode(), method='POST', headers=HDR)
+        state['author_img'] = {'id': r['id'], 'url': r['source_url']}; json.dump(state, open(STATE, 'w'), indent=1)
+    return state['author_img']
+def author_block(state):
+    m = author_image(state)
+    return (f'<!-- wp:image {{"id":{m["id"]},"width":"240px","sizeSlug":"full","linkDestination":"none","className":"cc-author"}} -->\n'
+            f'<figure class="wp-block-image size-full is-resized cc-author"><img src="{m["url"]}" alt="{AUTHOR_ALT}" class="wp-image-{m["id"]}" style="width:240px"/></figure>\n<!-- /wp:image -->')
 
 def wix_full(u):
     """largest original of a Wix image URL"""
@@ -146,8 +162,8 @@ def gutenberg(blocks, imgs):
                        f'<figure class="wp-block-image size-full"><img src="{m["url"]}" alt="{html.escape(b[2])}" class="wp-image-{m["id"]}"/></figure>\n<!-- /wp:image -->')
     return '\n\n'.join(out)
 
-def signature(vslug):
-    return ('<!-- wp:paragraph {"className":"cc-marine-sig"} -->\n<p class="cc-marine-sig"><strong>Marine Lenehan</strong><br>MSc Sports Nutritionist · founder of '
+def signature(vslug, state):
+    return (author_block(state) + '\n\n' +'<!-- wp:paragraph {"className":"cc-marine-sig"} -->\n<p class="cc-marine-sig"><strong>Marine Lenehan</strong><br>MSc Sports Nutritionist · founder of '
             f'<a href="{VIV}/">Vivify Sports</a> · WorldTour professional cyclist</p>\n<!-- /wp:paragraph -->\n\n'
             '<!-- wp:paragraph {"className":"cc-marine-src"} -->\n<p class="cc-marine-src"><em>This article was first published on '
             f'<a href="{VIV}/post/{vslug}">vivifysports.com</a>. Want nutrition coaching with Marine alongside your cycling coaching? '
@@ -169,6 +185,7 @@ def parse(path):
     og = re.search(r'<meta property="og:image" content="([^"]+)"', s)
     if not hero and og: hero = (wix_full(og.group(1)), title)
     hero_alt = next((x[2] for x in blocks if x[0] == 'img' and x[1] == (hero or ('',))[0]), '') or title
+    title = re.sub(r'\s+\?', '?', title)
     if title.isupper(): title = title.capitalize().replace("day's", "Day's").replace(' fat ', ' Fat ')
     if len(desc) > 160: desc = desc[:desc.rfind(' ', 0, 155)] + '…'
     return {'title': title, 'date': ld.get('datePublished', '')[:19], 'desc': desc, 'seo_title': seo_t, 'blocks': blocks, 'hero': hero, 'hero_alt': hero_alt}
@@ -176,6 +193,8 @@ def parse(path):
 # cycling-nutrition-what-to-eat-and-drink-on-the-bike: its Wix hero is the same photo as the carbs article, so its featured
 # image was set to the road cyclist photo from vivifysports.com's homepage (media id in stg-coaching/vivify-posts.json).
 # the fatigue article has no hero image on Wix: an existing staging photo of a rider resting before a ride
+OWN_FEATURED = {'cycling-nutrition-what-to-eat-and-drink-on-the-bike': ('https://static.wixstatic.com/media/nsplsh_586757424e557349764f45~mv2_d_5000_3333_s_4_2.jpg',
+                                                                       'Road cyclist riding fast in a blue team kit, fuelled for a long ride')}
 FALLBACK = {'fatigue-after-exercise-endurance-athletes': {'id': 6344, 'url': 'https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/10/emma-harrisova-SqPuXo9yuoM-unsplash-scaled.jpg'}}
 def main(folder):
     state = json.load(open(STATE)) if os.path.exists(STATE) else {'media': {}, 'posts': {}}
@@ -185,8 +204,10 @@ def main(folder):
         for n, x in enumerate([b for b in d['blocks'] if b[0] == 'img']):
             imgs[x[1]] = upload_image(x[1], f'{slug}-{n + 1}', x[2] or d['title'], state)
         feat = upload_image(d['hero'][0], f'{slug}-featured', d['hero_alt'], state) if d['hero'] else FALLBACK.get(slug)
+        if slug in OWN_FEATURED:   # its Wix hero is the carbs article's photo: own featured image (road cyclist, vivifysports.com home)
+            feat = upload_image(OWN_FEATURED[slug][0], slug + '-featured', OWN_FEATURED[slug][1], state); d['hero_alt'] = OWN_FEATURED[slug][1]
         blocks = [b for b in d['blocks'] if not (b[0] == 'img' and d['hero'] and b[1] == d['hero'][0] and b is d['blocks'][0])]
-        content = gutenberg(blocks, imgs) + '\n\n' + signature(vslug)
+        content = gutenberg(blocks, imgs) + '\n\n' + signature(vslug, state)
         first_p = next((re.sub(r'<[^>]+>', '', b[1]) for b in d['blocks'] if b[0] == 'p'), d['desc'])
         body = {'title': d['title'], 'slug': slug, 'status': 'publish', 'content': content, 'excerpt': d['desc'] or first_p[:300],
                 'categories': [CAT_BLOG], 'tags': [TAG_MARINE], 'date': d['date'] or None}

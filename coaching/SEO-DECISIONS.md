@@ -235,3 +235,11 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   cycling-nutrition-what-to-eat-and-drink-on-the-bike. Yoast title, meta and keyphrase set. To decide with Matteo: the same
   text is on vivifysports.com (duplicate content); a canonical to her site, or rewording, would avoid the two competing.
 - The Nutrition page lists these five plus her cherry juice article.
+- Nutrition (4th review): the consultation copy no longer repeats the report sentence; "responsible for your own health" removed
+  (performance nutrition). Marine's photo with the background removed (rembg isnet + alpha matting) and her signature in white
+  (`tools/make_marine_signature.py`); carbs per hour on the calendar rides (Matteo: torque 40–50 g/h, both LDT 60 g/h, none on
+  recovery, dynamic, stretch, strength); three sample notes (recovery bowl, breakfast, supplement plan) marked "samples only";
+  3 more FAQs (FAQPage JSON-LD); 8 articles listed, all Marine's.
+- Two more of Marine's articles published (why-do-you-bonk-on-the-bike, top-5-foods-for-cyclists). Every article signed by Marine
+  (the 7 new + 6 that were already on the blog: cherry juice, Christmas, weight loss, winter fuelling, homemade sports drinks,
+  hydration) is tagged "By Marine Lenehan" and ends with her new author image (`tools/coaching_marine_existing_posts.py`).

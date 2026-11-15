@@ -41,6 +41,30 @@
    "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cycling-nutrition-on-the-bike-featured.webp",
    "w": 2400,
    "h": 1600
+  },
+  "https://static.wixstatic.com/media/0e1488_592b0a2e3daf4c4ca46f4a1e54b31384~mv2.jpg": {
+   "id": 7148,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/why-do-you-bonk-on-the-bike-1.webp",
+   "w": 1606,
+   "h": 2400
+  },
+  "https://static.wixstatic.com/media/nsplsh_9dbd55bacdba4daf8d7b3e2610db1fcc~mv2.jpg": {
+   "id": 7149,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/why-do-you-bonk-on-the-bike-2.webp",
+   "w": 2400,
+   "h": 1600
+  },
+  "https://static.wixstatic.com/media/0e1488_ea9952f14fad4087b3f16312aabe9528~mv2.jpg": {
+   "id": 7151,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/top-5-foods-for-cyclists-1.webp",
+   "w": 2400,
+   "h": 1802
+  },
+  "https://static.wixstatic.com/media/0e1488_a84e67f6b046433a93b9e74cc94b5ffa~mv2.jpg": {
+   "id": 7152,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/top-5-foods-for-cyclists-2.webp",
+   "w": 1800,
+   "h": 2400
   }
  },
  "posts": {
@@ -138,6 +162,48 @@
     "img": 1,
     "table": 1
    }
+  },
+  "why-do-you-bonk-on-the-bike": {
+   "id": 7150,
+   "link": "https://staging.coaching.cigalacycling.com/blog/why-do-you-bonk-on-the-bike/",
+   "title": "Avoid bonking out on the bike",
+   "seo_title": "AVOID BONKING OUT ON THE BIKE",
+   "desc": "Marine Lenehan, Sports Nutritionist. Sports Nutrition to optimise performance, energy levels.",
+   "featured": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/why-do-you-bonk-on-the-bike-1.webp",
+   "featured_alt": "AVOID BONKING OUT ON THE BIKE",
+   "source": "https://www.vivifysports.com/post/why-do-you-always-bonk-out-on-the-bike",
+   "blocks": {
+    "p": 14,
+    "h2": 0,
+    "h3": 0,
+    "ul": 0,
+    "ol": 0,
+    "img": 2,
+    "table": 0
+   }
+  },
+  "top-5-foods-for-cyclists": {
+   "id": 7153,
+   "link": "https://staging.coaching.cigalacycling.com/blog/top-5-foods-for-cyclists/",
+   "title": "Top 5 wholefoods for cyclists & why?",
+   "seo_title": "TOP 5 WHOLEFOODS FOR CYCLISTS & WHY ?",
+   "desc": "As any cyclist knows, good nutrition plays a crucial role in optimizing performance and endurance on the road. Here is a non-exhaustive list of 5\u2026",
+   "featured": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/top-5-foods-for-cyclists-1.webp",
+   "featured_alt": "TOP 5 WHOLEFOODS FOR CYCLISTS & WHY ?",
+   "source": "https://www.vivifysports.com/post/top-5-foods-for-cyclists-why",
+   "blocks": {
+    "p": 21,
+    "h2": 0,
+    "h3": 0,
+    "ul": 0,
+    "ol": 0,
+    "img": 2,
+    "table": 0
+   }
   }
+ },
+ "author_img": {
+  "id": 7142,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/marine-lenehan-author-signature.webp"
  }
 }
