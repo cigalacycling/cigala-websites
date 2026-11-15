@@ -243,3 +243,16 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Two more of Marine's articles published (why-do-you-bonk-on-the-bike, top-5-foods-for-cyclists). Every article signed by Marine
   (the 7 new + 6 that were already on the blog: cherry juice, Christmas, weight loss, winter fuelling, homemade sports drinks,
   hydration) is tagged "By Marine Lenehan" and ends with her new author image (`tools/coaching_marine_existing_posts.py`).
+
+## 15. Matteo's page-by-page review (15 Nov 2026, evening)
+
+- /coaching-vision/ redesigned (`build_coaching_services.py vision`): H1 "#TrainSmarterRideFaster" -> "Train Smarter. Ride Faster."
+  (Matteo: no hashtag); H2 "READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING" -> "READ OUR CASE STUDIES" (case studies
+  instead of testimonials, Matteo). Other H2s and all copy kept. New hero photo (the lake photo is on the packages pages); the
+  "Over a decade" montage without the white frame; homepage-style As Seen In logos; package cards with "from €19/week".
+- /individual-packages/: the team photo in the Vekta section is replaced by the athlete calendar with nutrition (live alt of
+  imgi_43 no longer on the page); H2 "FOLLOW YOUR STRUCTURED TRAINING SESSIONS ON YOUR FAVOURITE DEVICES & APPS (BELOW SOME APPS -
+  THE LIST IS MUCH LONGER)" -> "SYNC WITH YOUR FAVOURITE DEVICES & APPS" (Matteo: too long); FAQ + nutritionist question.
+- Small fixes: Group page club band photo + button; club talk photo zoomed past the photographer's credit; 1-to-1 without
+  "Best value"; Triathlon "What you get" + 2 cards and a nutrition FAQ; bike fit "BIKE FITS WITH CIGALA CYCLING" + WhatsApp;
+  contact 8 quick links; testimonials hero with the sharper Marine photo; blog "Read more" in the brand font.

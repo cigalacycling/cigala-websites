@@ -688,6 +688,108 @@ TL_CSS = """<style>
 .tl-wins span { color: var(--text); font-weight: 600; font-size: 14px; }
 </style>"""
 
+# ------------------------------------------------------------------ coaching vision
+def vision():
+    T_ = open(ROOT + 'coaching/text/coaching-vision.txt').read()
+    quote = re.search(r'P: “(.*?)”', T_).group(1)
+    why = re.search(r'H3: WHY A CYCLING COACH\?\nP: (.*?)\n', T_).group(1)
+    APP = [('target', 'Your goals first', 'At Cigala Cycling, we start by understanding your goals, abilities, and limitations.'),
+           ('cal', 'A periodised annual plan', 'From there, we build an annual training plan that is periodised and tailored with daily sessions designed specifically for you.'),
+           ('clock', 'Built around your life', 'Your plan is created to maximise your time on the bike and fit around your schedule, goals, and lifestyle. Every plan is hand-crafted, completely customised, and built for your training availability — no two plans are alike, no copy-paste templates.'),
+           ('chat', 'A two-way process', 'Coaching is a two-way process. With your ongoing feedback, we adjust your training load and schedule as needed to ensure continuous improvement.')]
+    PK = [('Basic', '€19', '/week', '12 weeks · €228 one payment', 'A personalised plan you follow on your own.'),
+          ('Advanced', '€149', '/mo', '6 months subscription', 'Our most popular: weekly feedback, analysis, a monthly call and Vekta.'),
+          ('Premium', '€249', '/mo', '3 months subscription', 'The closest coaching: daily contact and feedback.')]
+    pk = '<div class="sv-prices">' + ''.join(f'<div class="panel sv-price{" hot" if n == "Advanced" else ""}"><div class="sv-pn">{n}</div><div class="sv-pp">{p}<small>{u}</small></div><div class="sv-ps">{s_}</div><p>{d}</p></div>' for n, p, u, s_, d in PK) + '</div>'
+    MAIN = f'''<div class="hero hero-sm vi-hero">
+  <img src="{img('V6A9680-scaled', 'vision-hero-matteo')}" alt="Matteo Cigala in the Cigala Cycling kit looking over a mountain valley" style="object-position:18% 40%">
+  <div class="in">
+    <div class="eyebrow eb-pill"><span class="dot"></span>Our coaching vision</div>
+    <h1>Train Smarter. Ride Faster.</h1>
+    <p class="lede">Structured, personalised coaching that makes every hour on the bike count.</p>
+    <div class="ctas"><a class="btn btn-go" href="{C}/individual-packages/" {EXT}>View our coaching packages</a><a class="btn btn-ghost" href="{CAL}" {EXT}>Book a free consultation</a></div>
+  </div>
+</div>
+
+<section>
+  <div class="in split vi-q">
+    <div class="gn-txt">
+      <div class="eyebrow">Our vision</div>
+      <h2>It's our vision</h2><div class="bar"></div>
+      <blockquote class="bf-quote vi-quote"><p>“{E(quote)}”</p><cite>Matteo Cigala – Founder &amp; Head Coach</cite></blockquote>
+    </div>
+    <div class="vi-sig"><img src="{conv('coaching/brand/matteo-cigala-author-signature.webp', 'vision-matteo-signature')}" alt="Matteo Cigala, Founder &amp; Head Coach, in the white Cigala Cycling jersey, with his signature" loading="lazy" width="720" height="933"></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="gn-txt vi-why">
+      <div class="eyebrow">Why a coach</div>
+      <h3 class="h-sec">WHY A CYCLING COACH?</h3><div class="bar"></div>
+      <p>{E(why)}</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    {head('How we coach', 'OUR COACHING APPROACH', 'h3')}
+    {cards([(i, t, E(d)) for i, t, d in APP])}
+    <p class="vi-result">The result? You train smarter, ride faster, and achieve your goals. That’s our vision.</p>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="vi-montage"><img src="{img('imgi_23_IRXpnPR4', 'vision-over-a-decade')}" alt="{E(live_alt('imgi_23_IRXpnPR4'))}" loading="lazy" width="1600" height="900"></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Train Smarter. Ride Faster.</div><h2>Time on the bike maximised with structured training periodised to your goals.</h2><div class="bar"></div></div></div>
+    <p class="vi-value"><b>Good value. No matter what package you choose.</b> The packages start from only 19 euro/week. Yes, you read it right. Less than a coffee a day.</p>
+    {pk}
+    <div class="ctas sv-center"><a class="btn btn-go" href="{C}/individual-packages/" {EXT}>View our coaching packages</a><a class="btn btn-ghost" href="{C}/tri-individual-packages/" {EXT}>Triathlon packages</a></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head">
+      <div><div class="eyebrow">Real results</div><h2>READ OUR CASE STUDIES</h2><div class="bar"></div></div>
+      <div class="rv-links"><a class="btn btn-go" href="{C}/case-studies/" {EXT}>Read our case studies</a><a class="btn btn-ghost" href="{C}/testimonials/" {EXT}>Read more testimonials</a></div>
+    </div>
+    {case_cards(C + '/case-studies/')}
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    {head('Press &amp; partners', 'AS SEEN IN')}
+    {seen_logos()}
+  </div>
+</section>
+
+{tools_band()}'''
+    build('coaching-vision', '/coaching-vision/', MAIN, 'Coaching Vision redesigned: quote, approach with icons, value, packages, case studies, As seen in.',
+          h1='Train Smarter. Ride Faster.', h2_changes={'drop': ['READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING'], 'add': ['READ OUR CASE STUDIES']},
+          extra_css=G.GCSS + FT_CSS + CS_CSS + CSS + VI_CSS)
+
+VI_CSS = """<style>
+.vi-hero { min-height: min(560px, 74svh); }
+.vi-q { align-items: center; }
+.vi-quote p { font-size: 18px !important; line-height: 1.6 !important; }
+.vi-sig { justify-self: center; max-width: 340px; }
+.vi-sig img { width: 100%; height: auto; display: block; }
+.vi-why { max-width: 900px; }
+.vi-result { margin: 22px 0 0; font: 400 24px/1.2 var(--head); text-transform: uppercase; color: var(--green-text); }
+.vi-montage img { width: 100%; height: auto; display: block; border-radius: 16px; }
+.vi-value { color: var(--text-2); font-size: 17px; margin: 0 0 20px; max-width: 70ch; }
+.vi-value b { color: var(--text); }
+</style>"""
+
 CSS = '''<style>
 #formats h2 a { color: var(--text) !important; font: inherit; text-decoration: none; }
 #formats h2 a:hover { color: var(--green-text) !important; }
@@ -779,7 +881,7 @@ a.ct-card:hover { border-color: rgba(0,154,68,.7); }
 .ts-pro b { color: var(--text); }
 </style>'''
 
-PAGES = {'contact': contact, 'book-1-on-1-session': book, 'bike-fitting': bikefit, 'testing': testing, 'about2': about2, 'club-talk': clubtalk, 'talent-scout': talent}
+PAGES = {'contact': contact, 'book-1-on-1-session': book, 'bike-fitting': bikefit, 'testing': testing, 'about2': about2, 'club-talk': clubtalk, 'talent-scout': talent, 'coaching-vision': vision}
 if __name__ == '__main__':
     for n in (sys.argv[1:] or PAGES):
         PAGES[n]()
