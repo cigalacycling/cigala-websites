@@ -54,10 +54,10 @@ def gate():
     return f'''<div class="tl-gate" hidden>
           <form class="tl-gate-form" novalidate>
             <h3 class="h-sm">See your results</h3>
-            <p>Enter your email to unlock all our free tools, and get training tips from Head Coach Matteo Cigala.</p>
+            <p>Enter your email to unlock all our free tools. You'll also get our newsletter: training tips from Head Coach Matteo Cigala, coaching news, and offers on our bike tours and shop.</p>
             <label class="vh" for="tl-g-email">Email</label>
             <input id="tl-g-email" type="email" name="EMAIL" required autocomplete="email" inputmode="email" placeholder="Your email address *">
-            <label class="tl-ok"><input type="checkbox" required><span>Yes, email me training tips and news from Cigala Cycling Coaching. I can unsubscribe at any time. See our <a href="{C}/privacy-policy/" {EXT}>privacy policy</a>.</span></label>
+            <label class="tl-ok"><input type="checkbox" required><span>Yes, send me the Cigala Cycling newsletter: training tips, coaching news, and news and offers from Cigala Cycling Tours and our shop. I can unsubscribe at any time. See our <a href="{C}/privacy-policy/" {EXT}>privacy policy</a>.</span></label>
             <input type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" class="tl-hp" aria-hidden="true">
             <button class="btn btn-go" type="submit">Show my results</button>
             <p class="tl-nl-msg" role="status" aria-live="polite"></p>
@@ -67,11 +67,11 @@ def gate():
 def signup(topic):
     if not NL_URL or GATE: return ''
     return f'''<div class="tl-nl panel">
-      <div><h3 class="h-sm">Get free training tips by email</h3><p>Sessions, fuelling and racing advice from Head Coach Matteo Cigala. No spam; unsubscribe any time.</p></div>
+      <div><h3 class="h-sm">Get free training tips by email</h3><p>Training tips from Head Coach Matteo Cigala, coaching news, and offers on our bike tours and shop. Unsubscribe any time.</p></div>
       <form class="tl-nl-form" novalidate data-topic="{topic}">
         <label class="vh" for="tl-email">Email</label>
         <div class="tl-nl-row"><input id="tl-email" type="email" name="EMAIL" required autocomplete="email" inputmode="email" placeholder="Your email address *"><button class="btn btn-go" type="submit">Subscribe</button></div>
-        <label class="tl-ok"><input type="checkbox" required><span>Yes, email me training tips and news from Cigala Cycling Coaching. See our <a href="{C}/privacy-policy/" {EXT}>privacy policy</a>.</span></label>
+        <label class="tl-ok"><input type="checkbox" required><span>Yes, send me the Cigala Cycling newsletter: training tips, coaching news, and news and offers from Cigala Cycling Tours and our shop. I can unsubscribe at any time. See our <a href="{C}/privacy-policy/" {EXT}>privacy policy</a>.</span></label>
         <input type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" class="tl-hp" aria-hidden="true">
         <p class="tl-nl-msg" role="status" aria-live="polite"></p>
       </form>

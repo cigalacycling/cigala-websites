@@ -593,5 +593,28 @@ document.querySelectorAll('.dd').forEach(function (d) {
   b.addEventListener('click', function () { var o = d.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
   d.addEventListener('focusout', function (e) { if (!d.contains(e.relatedTarget)) { d.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
 });
+</script><script>
+(function () {   /* sign up to see the results (Matteo 15 Nov); the flag keeps every tool open afterwards */
+  var out = document.querySelector('.tl-out'), g = document.querySelector('.tl-gate'); if (!out || !g) return;
+  var K = 'cc_tools_ok', open = false; try { open = localStorage.getItem(K) === '1'; } catch (e) {}
+  if (open) return;
+  out.classList.add('locked'); g.hidden = false;
+  var f = g.querySelector('form'), em = f.querySelector('input[type=email]'), ok = f.querySelector('.tl-ok input'), msg = f.querySelector('.tl-nl-msg'), btn = f.querySelector('button');
+  f.addEventListener('submit', function (e) {
+    e.preventDefault(); msg.className = 'tl-nl-msg';
+    if (!em.value.trim() || !em.checkValidity()) { msg.className += ' err'; msg.textContent = 'Please enter a valid email address.'; em.focus(); return; }
+    if (!ok.checked) { msg.className += ' err'; msg.textContent = 'Please tick the box to continue.'; ok.focus(); return; }
+    if (f.querySelector('[name=email_address_check]').value) return;
+    var fd = new FormData(); fd.append('EMAIL', em.value.trim()); fd.append('email_address_check', ''); fd.append('locale', 'en');
+    btn.disabled = true; btn.textContent = 'One moment…';
+    fetch("https://c20401b9.sibforms.com/serve/MUIFACJOu7ccgvzQx0Os6Ufdk7qgrrQshoPPXrCqUL3B6oEQ3ZH8GYNYsXln9tQ-g7SSytfQLolkvE5ZqLO1uADraBt1sZCRx6kQblp5154MNVlZl7Iy9x6MyrcorkvpSaaksa6KFnVDBLc8HlZMfGEnMbXcEFbgvKVKkFFEQYKm0kCexECB51T1wepBk1_8yIoblC3zdbT1bQ9g?isAjax=1", { method: 'POST', body: fd }).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.success) throw new Error('fail');
+      try { localStorage.setItem(K, '1'); localStorage.setItem('cc_nl', JSON.stringify({ s: 1 })); } catch (x) {}
+      out.classList.remove('locked'); g.hidden = true;
+      try { if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'tools' }); if (window.fbq) fbq('track', 'Lead'); } catch (x) {}
+    }).catch(function () { msg.className = 'tl-nl-msg err'; msg.textContent = 'Sorry, that didn’t work. Please try again.'; })
+      .then(function () { btn.disabled = false; btn.textContent = 'Show my results'; });
+  });
+})();
 </script>
 </body></html>

@@ -565,7 +565,18 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
       </form>
       <div class="tl-out panel" aria-live="polite">
         <h2>Your fuelling plan</h2>
-        <div id="tl-carbs-out"></div>
+        <div class="tl-gate" hidden>
+          <form class="tl-gate-form" novalidate>
+            <h3 class="h-sm">See your results</h3>
+            <p>Enter your email to unlock all our free tools. You'll also get our newsletter: training tips from Head Coach Matteo Cigala, coaching news, and offers on our bike tours and shop.</p>
+            <label class="vh" for="tl-g-email">Email</label>
+            <input id="tl-g-email" type="email" name="EMAIL" required autocomplete="email" inputmode="email" placeholder="Your email address *">
+            <label class="tl-ok"><input type="checkbox" required><span>Yes, send me the Cigala Cycling newsletter: training tips, coaching news, and news and offers from Cigala Cycling Tours and our shop. I can unsubscribe at any time. See our <a href="https://coaching.cigalacycling.com/privacy-policy/" target="_blank" rel="noopener">privacy policy</a>.</span></label>
+            <input type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" class="tl-hp" aria-hidden="true">
+            <button class="btn btn-go" type="submit">Show my results</button>
+            <p class="tl-nl-msg" role="status" aria-live="polite"></p>
+          </form>
+        </div><div id="tl-carbs-out"></div>
       </div>
     </div>
     
@@ -666,6 +677,29 @@ document.querySelectorAll('.dd').forEach(function (d) {
     out.innerHTML = h + '<p class="tl-note" style="margin-top:10px">A general guide for healthy adults, not medical advice.</p>';
   }
   f.addEventListener('input', run); f.addEventListener('change', run); run();
+})();
+</script><script>
+(function () {   /* sign up to see the results (Matteo 15 Nov); the flag keeps every tool open afterwards */
+  var out = document.querySelector('.tl-out'), g = document.querySelector('.tl-gate'); if (!out || !g) return;
+  var K = 'cc_tools_ok', open = false; try { open = localStorage.getItem(K) === '1'; } catch (e) {}
+  if (open) return;
+  out.classList.add('locked'); g.hidden = false;
+  var f = g.querySelector('form'), em = f.querySelector('input[type=email]'), ok = f.querySelector('.tl-ok input'), msg = f.querySelector('.tl-nl-msg'), btn = f.querySelector('button');
+  f.addEventListener('submit', function (e) {
+    e.preventDefault(); msg.className = 'tl-nl-msg';
+    if (!em.value.trim() || !em.checkValidity()) { msg.className += ' err'; msg.textContent = 'Please enter a valid email address.'; em.focus(); return; }
+    if (!ok.checked) { msg.className += ' err'; msg.textContent = 'Please tick the box to continue.'; ok.focus(); return; }
+    if (f.querySelector('[name=email_address_check]').value) return;
+    var fd = new FormData(); fd.append('EMAIL', em.value.trim()); fd.append('email_address_check', ''); fd.append('locale', 'en');
+    btn.disabled = true; btn.textContent = 'One moment…';
+    fetch("https://c20401b9.sibforms.com/serve/MUIFACJOu7ccgvzQx0Os6Ufdk7qgrrQshoPPXrCqUL3B6oEQ3ZH8GYNYsXln9tQ-g7SSytfQLolkvE5ZqLO1uADraBt1sZCRx6kQblp5154MNVlZl7Iy9x6MyrcorkvpSaaksa6KFnVDBLc8HlZMfGEnMbXcEFbgvKVKkFFEQYKm0kCexECB51T1wepBk1_8yIoblC3zdbT1bQ9g?isAjax=1", { method: 'POST', body: fd }).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d || !d.success) throw new Error('fail');
+      try { localStorage.setItem(K, '1'); localStorage.setItem('cc_nl', JSON.stringify({ s: 1 })); } catch (x) {}
+      out.classList.remove('locked'); g.hidden = true;
+      try { if (typeof gtag === 'function') gtag('event', 'sign_up', { method: 'tools' }); if (window.fbq) fbq('track', 'Lead'); } catch (x) {}
+    }).catch(function () { msg.className = 'tl-nl-msg err'; msg.textContent = 'Sorry, that didn’t work. Please try again.'; })
+      .then(function () { btn.disabled = false; btn.textContent = 'Show my results'; });
+  });
 })();
 </script>
 </body></html>

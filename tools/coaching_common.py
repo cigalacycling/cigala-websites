@@ -150,7 +150,7 @@ COACH = [(C + '/individual-packages/', 'Cycling Packages'), (C + '/tri-individua
 INTL = [('/cycling-coach-uk/', 'Cycling Coach UK'), ('/cycling-coach-usa/', 'Cycling Coach USA'), ('/cycling-coach-canada/', 'Cycling Coach Canada'), ('/preparatore-di-ciclismo-italia/', 'Preparatore di Ciclismo Italia')]
 # Brevo form for the separate "coaching.cigalacycling.com" list (id 17, made by Matteo 15 Nov). Used by the newsletter
 # pop-up and the Free Tools sign-up. Empty = both stay off. Set it to the form's …sibforms.com/serve/… URL + '?isAjax=1'.
-COACH_NL_URL = ''
+COACH_NL_URL = 'https://c20401b9.sibforms.com/serve/MUIFACJOu7ccgvzQx0Os6Ufdk7qgrrQshoPPXrCqUL3B6oEQ3ZH8GYNYsXln9tQ-g7SSytfQLolkvE5ZqLO1uADraBt1sZCRx6kQblp5154MNVlZl7Iy9x6MyrcorkvpSaaksa6KFnVDBLc8HlZMfGEnMbXcEFbgvKVKkFFEQYKm0kCexECB51T1wepBk1_8yIoblC3zdbT1bQ9g?isAjax=1'   # Matteo's Coaching form, 15 Nov
 GOOGLE_REVIEWS = 'https://share.google/lwboSfcuStGhX0c0p'   # Cigala Cycling Ltd Google Business Profile (shared/BUSINESS.md)
 FOOTER = f'''<footer>
   <div class="in fcols">
