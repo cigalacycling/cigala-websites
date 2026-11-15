@@ -195,6 +195,8 @@ if COACH_NL_URL:
     pop = re.sub(r"var URL='https://[^']+';", "var URL='" + COACH_NL_URL + "';", pop); assert COACH_NL_URL in pop
     # the description: same wording on every site now (one newsletter); set it whatever the main site's file says
     pop = re.sub(r'<p class="nl-d">.*?</p>', '<p class="nl-d">Training tips, news, blogs and deals on coaching, bike tours and our shop.</p>', pop, count=1)
+    # the OpenWidget chat (loaded after Accept) sat above the pop-up on phones and covered the email field (main chat, 15 Nov)
+    pop += '<style>#nl-pop{z-index:2147483647!important}#nl-pop .nl-t{font-family:Anton,Impact,"Arial Narrow",sans-serif!important}</style>'
     widgets.append(html_widget(pop))
 json.dump({"meta": {"_elementor_data": json.dumps([wrap(widgets)])}}, open(OUT + 'lib-228.json', 'w'))
 json.dump({"title": "Cigala consent mode default", "status": "publish",
