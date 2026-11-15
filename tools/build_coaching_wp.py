@@ -185,11 +185,11 @@ if COACH_NL_URL:
     pop = open(ROOT + 'wp/nl-popup.html').read()
     for a, b in [('<p class="nl-eyebrow">Newsletter</p>', '<p class="nl-eyebrow">Free training tips</p>'),
                  ('<p class="nl-t" id="nl-pop-t">Stay in the loop</p>', '<p class="nl-t" id="nl-pop-t">Train smarter, ride faster</p>'),
-                 ('<p class="nl-d">News, blogs, tips, special deals and tour dates from Cigala Cycling.</p>',
-                  '<p class="nl-d">Training tips, news, blogs and deals on coaching, bike tours and our shop.</p>'),
                  ("if(/^\\/contact\\/?$/.test(location.pathname)){return;}", "if(/^\\/(contact|tools)(\\/|$)/.test(location.pathname)){return;}")]:
         assert a in pop, a; pop = pop.replace(a, b)
     pop = re.sub(r"var URL='https://[^']+';", "var URL='" + COACH_NL_URL + "';", pop); assert COACH_NL_URL in pop
+    # the description: same wording on every site now (one newsletter); set it whatever the main site's file says
+    pop = re.sub(r'<p class="nl-d">.*?</p>', '<p class="nl-d">Training tips, news, blogs and deals on coaching, bike tours and our shop.</p>', pop, count=1)
     widgets.append(html_widget(pop))
 json.dump({"meta": {"_elementor_data": json.dumps([wrap(widgets)])}}, open(OUT + 'lib-228.json', 'w'))
 json.dump({"title": "Cigala consent mode default", "status": "publish",
