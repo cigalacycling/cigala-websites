@@ -31,4 +31,5 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - Footer reviews: "★ Google reviews" and "★ Trustpilot reviews" (https://ie.trustpilot.com/review/www.cigalacycling.com) in the Contact column, plus the shared 7-icon social row (`snippets/cigala-social.liquid`, from shared/social).
   - Menu: uppercase, with the underline only as wide as the word.
   - Bright inline colours in old product descriptions are toned to brand text.
-- Waiting on Matteo: the new logo file, and the contour background upload.
+- New logo "Cigala Cycling Retail" (`logo/cigala-cycling-retail-logo.png`, 343px) is in Files as `cigala-cycling-retail-logo.png`. It was fetched by Shopify from the staging WordPress media library (id 733) and is set as the header logo, footer logo and favicon.
+- Waiting on Matteo: the contour background upload. Staging WordPress refuses SVG files, so it can't be routed that way.
