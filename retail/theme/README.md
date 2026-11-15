@@ -64,3 +64,13 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - A "Black Friday deals" row from the BFCM collection, and a BF announcement bar.
   - Any later change to the main theme must be repeated here.
 - Tools: `tools/crawl_preview.sh` (curl crawl of an unpublished theme) and `tools/compare_preview.py` (checks against the baseline).
+- Round 5 (15 Nov): consistency with the other sites and the sale season.
+  - Shared status dot (shared/dot) on product pages via `blocks/cigala-stock.liquid` (In stock / Low stock ≤3 / Available to order / Out of stock).
+  - "Cookie settings" link in the footer legal row (reopens Shopify's preferences).
+  - The sale-season theme `193226244420` is renamed "STAGING – Black Friday + Cyber Monday (Cigala)". It switches itself by date via `snippets/cigala-season.liquid`:
+    - before Mon 30 Nov 2026 00:00 UTC: Black Friday look, red accents, "Black Friday deal" stickers
+    - from then: Cyber Monday look, green accents, "Cyber Monday deal" stickers
+  - Every product on sale (compare-at price above price) gets the sticker on cards and on the product page.
+  - The CM switch was tested by temporarily moving the date, then put back.
+  - The theme library is full (20 themes), so a separate Cyber Monday theme couldn't be made. Deleting old themes needs Matteo (the API refuses).
+- Sale price changes: when Matteo asks for Black Friday price drops, log each variant's original price and compare-at price in `retail/price-changes/YYYY-MM-DD-<collection>.json` before changing anything. Set the compare-at price to the original so the sticker shows. Restore from that file after the campaign (scheduled task).
