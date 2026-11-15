@@ -626,7 +626,7 @@
  "card-maratona-dles-dolomites": {
   "id": 9296,
   "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-maratona-dles-dolomites.webp",
-  "alt": "Maratona Dles Dolomites cycling tour: 250–350 km, 5,000–7,000 m climbing",
+  "alt": "Maratona Dles Dolomites cycling tour: 250\u2013350 km, 5,000\u20137,000 m climbing",
   "from": [
    1100,
    1375
@@ -639,7 +639,7 @@
  "card-tour-of-flanders-experience": {
   "id": 9297,
   "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-tour-of-flanders-experience.webp",
-  "alt": "Tour of Flanders Experience cycling tour: 120–300 km, 1,000–3,000 m climbing",
+  "alt": "Tour of Flanders Experience cycling tour: 120\u2013300 km, 1,000\u20133,000 m climbing",
   "from": [
    1100,
    1375
@@ -778,5 +778,10 @@
    355,
    355
   ]
+ },
+ "share": {
+  "id": 9364,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-cycling-tours-share.jpg",
+  "alt": "Cigala Cycling Tours riders celebrating with their bikes on the coast in Cyprus: guided cycling tours and holidays across Europe"
  }
 }

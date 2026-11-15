@@ -159,6 +159,11 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - **WPCode line done (Matteo, 15 Nov).** Checked: `consent default` comes before `gtag/js` and `config` on /, /trips/ and /trips/road-trips/. `tools/dlcheck_tours.js` gives default denied → update granted on Accept → re-granted for returning visitors. `tools/pxcheck_tours.js` gives Pixel only after Accept and none after Reject.
   - **Chat:** OpenWidget picks the template by page address. tours.cigalacycling.com gets the Tours template (196a47eb…); any other address, including the staging one, gets the default Cigala Cycling template. On live it will be right automatically. To preview it on staging, add `staging.tours.cigalacycling.com` to the Tours template's address rule in OpenWidget.
 - **Logo:** header and footer use the file Matteo sent on 15 Nov, `tours/brand/ccToursLogo-matteo-2026-11-15.png` (WebP media 9281), with square corners.
+- **Share image (15 Nov):** `brand-assets/share/cigala-cycling-tours-share.jpg` (1200x630), made from `share-image-template.html`; the filled-in template is `tours-share.html`. It uses the Cyprus homepage hero photo.
+  - Uploaded to Tours staging as media **9364** with alt text, by `tools/tours_share_image.py`.
+  - JPG on purpose, because some apps don't show WebP link previews.
+  - **To do (Matteo):** set it as the Rank Math default: Rank Math SEO -> Titles & Meta -> Global Meta -> OpenGraph Thumbnail -> choose `cigala-cycling-tours-share.jpg` -> Save Changes. Today the homepage shares the small square logo.
+  - Not set over REST: on Rank Math 1.0.280 I couldn't confirm that `updateSettings` merges settings rather than replacing all of Titles & Meta.
 - **Signature:** under "Matteo Cigala, Tours Director" in Our story. Cut from the coaching blog image `Matteo-Cigala-6-years-old.png` as white ink on transparent (media 9282).
 - **Road tours page (new, 15 Nov):** https://staging.tours.cigalacycling.com/trips/road-trips/, page **9301**, child of Trips 8689.
   - Made with the trip-list design: `tools/build_tours_list.py` (preview `tourspages/road-trips.html`), pushed with `python3 -I tools/push_tours_list.py road-trips`.
