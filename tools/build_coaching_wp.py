@@ -18,7 +18,14 @@ OUT = ROOT + 'stg-coaching/out/'
 os.makedirs(OUT, exist_ok=True)
 C = 'https://coaching.cigalacycling.com'
 M = json.load(open(ROOT + 'stg-coaching/media-webp.json'))
-PAGES = {'home': 2924, 'individual-packages': 3338, 'tri-individual-packages': 3795, 'group-club-packages': 3738, 'terms-conditions': 564, 'privacy-policy': 'privacy'}   # 'privacy' = new page, created by the push
+PAGES = {'home': 2924, 'individual-packages': 3338, 'tri-individual-packages': 3795, 'group-club-packages': 3738, 'terms-conditions': 564, 'privacy-policy': 'privacy',
+         # new pages (Free Tools, Matteo 15 Nov): created by the push, IDs kept in stg-coaching/new-pages.json
+         'tools': 'new-tools', 'tools-training-zones': 'new-training-zones-calculator', 'tools-carbs-per-hour': 'new-carbs-per-hour-calculator',
+         'tools-critical-power': 'new-critical-power-calculator'}
+NEW = {'new-tools': ('Free Cycling Training Tools', 'tools', None),
+       'new-training-zones-calculator': ('Training Zones Calculator', 'training-zones-calculator', 'tools'),
+       'new-carbs-per-hour-calculator': ('Carbs per Hour Calculator', 'carbs-per-hour-calculator', 'tools'),
+       'new-critical-power-calculator': ('Critical Power & W′ Calculator', 'critical-power-calculator', 'tools')}   # 'privacy' = new page, created by the push
 SRC = {k: open(ROOT + f'coachingpages/{k}.html').read() for k in PAGES}
 
 rid = lambda: ''.join(random.choice('0123456789abcdef') for _ in range(7))
@@ -216,6 +223,9 @@ def build_page(key):
     payload = {"meta": {"_elementor_data": json.dumps(els), "_elementor_edit_mode": "builder", "_elementor_template_type": "wp-page"}, "content": '\n'.join(content)}
     if PAGES[key] == 'privacy':
         payload.update({"title": "Privacy Policy", "slug": "privacy-policy", "status": "publish"})
+    if PAGES[key] in NEW:
+        t, slug, parent = NEW[PAGES[key]]
+        payload.update({"title": t, "slug": slug, "status": "publish", "parent_slug": parent})
     json.dump(payload, open(OUT + f'page-{PAGES[key]}.json', 'w'))
     return len(els)
 

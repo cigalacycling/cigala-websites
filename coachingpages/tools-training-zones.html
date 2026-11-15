@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cycling Training Zones Calculator (Power &amp; Heart Rate) | Cigala Cycling Coaching</title>
+<meta name="description" content="Free cycling training zones calculator: your 7 power zones from FTP or a 20-minute test, and heart-rate zones from threshold heart rate, with W/kg.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="img/logo-v2.webp">
+</head><body>
+<style>
+/* Cigala Cycling kit applied to tours.cigalacycling.com: Anton uppercase headlines, Montserrat body,
+   near-black contour background, round logo, green = action, red = attention only. Single dark look.
+   Layout: sticky nav, photo hero, stat strip, filterable tour grid, alternating story bands, footer. */
+:root {
+  color-scheme: dark;
+  --bg: #08090a; --panel: rgba(15,16,17,.92); --panel-solid: #0f1011; --panel-2: #161718;
+  --panel-grad: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+  --border: rgba(255,255,255,.08); --border-strong: rgba(255,255,255,.14); --wash: rgba(255,255,255,.04);
+  --text: #f7f8f8; --text-2: #d0d6e0; --text-3: #8a8f98; --text-4: #62666d;
+  --green: #009a44; --green-hi: #00b350; --green-text: #34c46a; --green-wash: rgba(0,154,68,.14);
+  --red: #E10600; --gravel: #b9895a; --star: #f0bf00;
+  --head: "Anton", Impact, "Arial Narrow", sans-serif;
+  --body: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 12px;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--text-2); font-family: var(--body); }
+body { margin: 0; font-size: 15px; line-height: 1.6; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: rgba(8,9,10,.92); }
+.topo { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(rgba(8,9,10,.6), rgba(8,9,10,.6)), #08090a url(img/topo-background-tile.svg) top center / auto 3000px repeat-y; }
+.page { position: relative; z-index: 1; }
+::selection { background: rgba(0,154,68,.45); color: #fff; }
+a { color: var(--text); text-decoration-color: rgba(255,255,255,.3); text-underline-offset: 3px; }
+a:hover { color: #fff; text-decoration-color: var(--green); }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+img { display: block; max-width: 100%; }
+b, strong { color: var(--text); font-weight: 600; }
+
+.in { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+section { padding-block: 72px 0; }
+h1, h2, h3 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.04; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(40px, 7vw, 84px); }
+h2 { font-size: clamp(30px, 4.6vw, 52px); }
+h3 { font-size: 24px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--green-text); }
+.bar { width: 40px; height: 3px; border-radius: 2px; background: var(--green); margin-top: 16px; }
+.lede { color: var(--text-2); max-width: 62ch; margin: 16px 0 0; font-size: 16px; }
+.head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; margin-bottom: 30px; }
+.head > div { min-width: 0; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--body); font-weight: 600; font-size: 14px; letter-spacing: .02em; text-decoration: none;
+  border-radius: 8px; padding: 12px 22px; border: 1px solid transparent; cursor: pointer; transition: background .15s, border-color .15s; }
+.btn-go { background: var(--green); color: #fff; }
+.btn-go:hover { background: var(--green-hi); color: #fff; }
+.btn-ghost { background: rgba(8,9,10,.35); color: var(--text); border-color: var(--border-strong); backdrop-filter: blur(4px); }
+.btn-ghost:hover { border-color: var(--green); color: #fff; }
+.arrow-link { font-weight: 600; font-size: 14px; color: var(--green-text); text-decoration: none; }
+.arrow-link:hover { color: #fff; }
+
+/* preview ribbon */
+.ribbon { position: relative; z-index: 2; background: var(--green-wash); border-bottom: 1px solid rgba(0,154,68,.35); font-size: 12.5px; color: var(--text-2); }
+.ribbon .in { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; padding-block: 8px; }
+.ribbon b { color: var(--green-text); letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; }
+
+/* nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(8,9,10,.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+.nav .in { display: flex; align-items: center; gap: 18px; padding-block: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
+.brand img { width: 58px; height: 58px; border-radius: 6px; }
+.brand-lg img { width: 88px; height: 88px; }
+.brand span { font-weight: 700; color: var(--text); font-size: 15px; line-height: 1.15; }
+.brand small { display: block; font-weight: 500; color: var(--text-3); font-size: 11.5px; }
+.menu { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+.menu a { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-2); text-decoration: none; padding: 8px 10px; border-radius: 6px; }
+.menu a:hover { color: #fff; background: var(--wash); }
+.nav .btn { padding: 9px 16px; font-size: 13px; flex: none; }
+.burger { display: none; margin-left: auto; }
+.burger summary { list-style: none; cursor: pointer; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text); border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 14px; }
+.burger summary::-webkit-details-marker { display: none; }
+.burger nav { position: absolute; left: 0; right: 0; top: 100%; background: var(--panel-solid); border-bottom: 1px solid var(--border); display: grid; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)); }
+.burger nav a { padding: 11px 0; border-bottom: 1px solid var(--border); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; }
+
+/* hero */
+.hero { position: relative; min-height: min(760px, 88svh); display: flex; align-items: flex-end; overflow: hidden; }
+.hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,9,10,.25) 0%, rgba(8,9,10,.15) 35%, rgba(8,9,10,.92) 100%); }
+.hero .in { position: relative; z-index: 1; width: 100%; padding-block: 120px 56px; }
+.hero h1 { max-width: 16ch; }
+.hero .eyebrow { color: var(--text); text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+.hero .lede { color: var(--text); font-size: clamp(15px, 1.6vw, 17px); max-width: 60ch; }
+.ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+
+/* stats */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--border); border-radius: var(--r); background: var(--panel-grad), var(--panel); margin-top: -1px; }
+.stat { padding: 22px 20px; border-left: 1px solid var(--border); }
+.stat:first-child { border-left: 0; }
+.stat .n { font-family: var(--head); font-size: clamp(34px, 4vw, 48px); line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+.stat .n i { font-style: normal; color: var(--star); }
+.stat .l { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-top: 8px; }
+.stats-wrap { position: relative; z-index: 2; margin-top: -44px; }
+
+/* tours */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-family: var(--body); font-size: 12.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+.chip:hover { color: #fff; border-color: rgba(255,255,255,.3); }
+.chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+.tours { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: 16px; }
+.tour { position: relative; display: flex; flex-direction: column; justify-content: flex-end; aspect-ratio: 4 / 5; max-width: 100%; border-radius: var(--r); overflow: hidden; text-decoration: none; border: 1px solid var(--border); background: var(--panel-solid); isolation: isolate; }
+.tour img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .5s ease; }
+.tour::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 25%, rgba(8,9,10,.7) 55%, rgba(8,9,10,.96) 100%); }
+.tour:hover img { transform: scale(1.04); }
+.tour:hover { border-color: rgba(0,154,68,.6); }
+.tag { position: absolute; top: 14px; left: 14px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.75); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 10px; }
+.tag::before, .chip[data-f]:not([data-f="all"])::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
+.tag.gravel::before, .chip[data-f="gravel"]:not([data-f="all"])::before { background: var(--gravel); }
+.chip[aria-pressed="true"]::before { box-shadow: 0 0 0 1.5px #fff; }
+.tour .tx { padding: 20px; }
+.entry { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 10px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text); background: rgba(240,191,0,.14); border: 1px solid rgba(240,191,0,.55); border-radius: 6px; padding: 4px 9px; }
+.entry svg { width: 13px; height: 13px; flex: none; fill: var(--star); }
+.entry-support { background: rgba(8,9,10,.6); border-color: var(--border-strong); }
+.entry-support svg { fill: var(--text-2); }
+.tour h3 { font-size: 26px; }
+.tour p { margin: 8px 0 12px; font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
+.tour .go { font-size: 13px; font-weight: 600; color: var(--green-text); }
+.center { display: flex; justify-content: center; margin-top: 28px; }
+
+/* custom band */
+.band { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); isolation: isolate; }
+.band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8,9,10,.92) 0%, rgba(8,9,10,.7) 45%, rgba(8,9,10,.15) 100%); }
+.band .tx { padding: clamp(32px, 6vw, 64px); max-width: 620px; }
+
+/* story */
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 5vw, 64px); align-items: center; }
+.split.flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+.photo { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); }
+.photo img { width: 100%; height: 100%; object-fit: cover; }
+.story .photo { aspect-ratio: 4 / 5; max-width: 100%; }
+.quote { font-family: var(--head); text-transform: uppercase; font-size: clamp(24px, 3vw, 34px); line-height: 1.12; color: var(--text); margin: 0 0 22px; }
+.story p { margin: 0 0 14px; max-width: 62ch; }
+.sig { color: var(--text); font-weight: 600; margin-top: 18px !important; }
+.sig span { display: block; font-weight: 500; color: var(--text-3); font-size: 13px; }
+
+/* why */
+.why { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.why > div { background: var(--panel-solid); padding: 26px 24px; min-width: 0; }
+.why .num { font-family: var(--head); font-size: 15px; color: var(--green-text); letter-spacing: .06em; }
+.why h3 { font-size: 22px; margin-top: 10px; }
+.why p { margin: 8px 0 0; font-size: 14px; color: var(--text-3); }
+
+/* matteo */
+.matteo .photo { background: radial-gradient(circle at 50% 40%, rgba(0,154,68,.22), rgba(8,9,10,0) 65%), var(--panel-solid); aspect-ratio: 1 / 1; max-width: 100%; display: flex; align-items: flex-end; justify-content: center; }
+.matteo .photo img { width: 92%; height: auto; object-fit: contain; }
+.creds { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; padding: 0; list-style: none; }
+.creds li { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--text); border: 1px solid var(--border-strong); background: var(--wash); border-radius: 999px; padding: 5px 12px; }
+.creds li::before { content: "★"; color: var(--star); margin-right: 6px; }
+.matteo p { max-width: 62ch; margin: 0 0 14px; }
+
+/* reviews */
+.reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.review { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.stars { color: var(--star); letter-spacing: 3px; font-size: 14px; }
+.review h3 { font-size: 20px; }
+.review p { margin: 0; font-size: 14px; color: var(--text-2); }
+.who { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-weight: 600; color: var(--text); font-size: 14px; }
+.who img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.who span { display: block; font-weight: 500; color: var(--text-3); font-size: 12.5px; }
+
+/* guides */
+.guides { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.guide { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; text-decoration: none; display: flex; flex-direction: column; min-width: 0; }
+.guide:hover { border-color: rgba(0,154,68,.6); }
+.guide .im { aspect-ratio: 16 / 10; max-width: 100%; overflow: hidden; }
+.guide .im img { width: 100%; height: 100%; object-fit: cover; }
+.guide .tx { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.guide h3 { font-size: 21px; line-height: 1.12; }
+.guide .go { margin-top: auto; font-size: 13px; font-weight: 600; color: var(--green-text); }
+
+/* faq */
+.faq { display: grid; gap: 10px; max-width: 860px; }
+.faq details { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 10px; }
+.faq summary { cursor: pointer; list-style: none; padding: 16px 20px; font-weight: 600; color: var(--text); display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--green-text); font-size: 20px; line-height: 1; }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { margin: 0; padding: 0 20px 18px; color: var(--text-2); }
+
+/* partners */
+.partners { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.partners > div { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; min-width: 0; }
+.logos { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.logos span { background: #fff; border-radius: 10px; width: 96px; height: 96px; display: grid; place-items: center; padding: 8px; }
+.logos img { max-height: 80px; width: auto; }
+.lab { text-transform: uppercase; font-size: 11px; letter-spacing: .09em; color: var(--text-3); font-weight: 600; }
+
+/* footer */
+footer { margin-top: 80px; border-top: 1px solid var(--border); background: rgba(8,9,10,.85); }
+footer .in { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); gap: 28px; padding-block: 44px 28px; }
+footer .tag-line { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: 22px; line-height: 1.15; margin: 14px 0 0; }
+footer h4 { margin: 0 0 12px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+footer ul a { text-decoration: none; color: var(--text-2); }
+footer ul a:hover { color: #fff; }
+.legal { border-top: 1px solid var(--border); }
+.legal .in { display: flex; flex-wrap: wrap; gap: 6px 20px; padding-block: 16px; font-size: 12px; color: var(--text-4); grid-template-columns: none; }
+
+@media (max-width: 1080px) { .menu { display: none; } .burger { display: block; } .nav .btn { display: none; } }
+@media (max-width: 900px) {
+  .split, .split.flip { grid-template-columns: minmax(0, 1fr); }
+  .why, .reviews, .guides, .partners { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  footer .in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  footer .in > div:first-child { grid-column: 1 / -1; }
+  .story .photo { aspect-ratio: 16 / 11; }
+  .matteo .photo { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 640px) {
+  .stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .stat:nth-child(3) { border-left: 0; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+  .why, .reviews, .guides, .partners { grid-template-columns: minmax(0, 1fr); }
+  .band::after { background: linear-gradient(180deg, rgba(8,9,10,.55), rgba(8,9,10,.92)); }
+  section { padding-block: 56px 0; }
+  .tour { aspect-ratio: 4 / 3.4; }
+  .hero::after { background: linear-gradient(180deg, rgba(8,9,10,.3) 0%, rgba(8,9,10,.55) 40%, rgba(8,9,10,.95) 100%); }
+}
+@media (prefers-reduced-motion: reduce) { .tour img { transition: none; } .tour:hover img { transform: none; } }
+</style>
+<style>
+/* ---- coaching homepage additions ---- */
+.eyebrow { color: var(--red-text, #ff3d33); }
+.hero .eyebrow-h { font: 600 12px/1.4 var(--body); letter-spacing: .14em; text-transform: none; color: #fff; display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(8,9,10,.7); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; margin: 0 0 18px; }
+.hero .eyebrow-h::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.hero h1 { max-width: 14ch; }
+.hero .lede { max-width: 54ch; }
+.stat .n { font-size: clamp(28px, 3.4vw, 44px); }
+.h-sec { font-size: clamp(30px, 4.6vw, 52px); }
+.head h2 { max-width: 24ch; }
+.paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.path { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 340px; border-radius: var(--r); overflow: hidden; text-decoration: none; border: 1px solid var(--border); isolation: isolate; }
+.path img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .5s ease; }
+.path::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 30%, rgba(8,9,10,.75) 62%, rgba(8,9,10,.96) 100%); }
+.path:hover img { transform: scale(1.04); }
+.path:hover { border-color: rgba(0,154,68,.6); }
+.path .tx { padding: 26px; }
+.path h3 { font-size: clamp(28px, 3vw, 38px); }
+.path p { margin: 8px 0 14px; color: var(--text-2); font-size: 14.5px; }
+.path .go { font-size: 14px; font-weight: 600; color: var(--green-text); }
+.offer .photo { aspect-ratio: 4 / 5; }
+.offer p { margin: 0 0 14px; max-width: 62ch; }
+.offer .first { margin-top: 16px; }
+.matteo .photo img { width: auto; max-width: 92%; max-height: 100%; }
+.matteo .role { color: var(--text); font-weight: 600; margin: 16px 0 0; }
+.matteo .ctas { align-items: center; gap: 16px; }
+.dests { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px; }
+.dest { position: relative; display: flex; align-items: flex-end; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); text-decoration: none; isolation: isolate; }
+.dest img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .5s ease; }
+.dest::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 35%, rgba(8,9,10,.9) 100%); }
+.dest:hover img { transform: scale(1.05); }
+.dest:hover { border-color: rgba(0,154,68,.6); }
+.dest-h { margin: 0; padding: 12px 14px; font: 400 18px/1.1 var(--head); letter-spacing: .02em; text-transform: uppercase; color: var(--text); }
+.eb-pill { display: inline-flex; align-items: center; gap: 8px; color: #fff; background: rgba(8,9,10,.7); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; margin-bottom: 18px; }
+.eb-pill span { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.btn-h { margin: 0; font: inherit; text-transform: none; letter-spacing: normal; }
+.band .tx { min-height: 360px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.decade img { width: 100%; height: auto; max-width: 760px; margin: 0 auto; border-radius: var(--r); border: 1px solid var(--border); }
+.seen { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.seen span { width: auto; height: 96px; }
+.seen img { max-height: 64px; max-width: 100%; object-fit: contain; }
+.band-cta::after { background: linear-gradient(90deg, rgba(8,9,10,.94) 0%, rgba(8,9,10,.75) 50%, rgba(8,9,10,.2) 100%); }
+.band-cta > img { object-position: center 30%; }
+.dd { position: relative; }
+.dd-btn { font: 600 12.5px var(--body); letter-spacing: .04em; text-transform: uppercase; color: var(--text-2); background: none; border: 0; padding: 8px 10px; border-radius: 6px; cursor: pointer; }
+.dd-btn:hover, .dd:focus-within .dd-btn { color: #fff; background: var(--wash); }
+.dd-menu { position: absolute; top: 100%; left: 0; min-width: 230px; display: none; padding: 8px; background: var(--panel-solid); border: 1px solid var(--border-strong); border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,.5); z-index: 50; }
+.dd:hover .dd-menu, .dd:focus-within .dd-menu, .dd.open .dd-menu { display: grid; }
+.dd-menu a { display: block; padding: 9px 12px; text-transform: none; letter-spacing: 0; font-size: 14px; }
+.burger nav { max-height: calc(100svh - 80px); overflow-y: auto; }
+.burger .mgrp { margin-top: 14px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.burger nav a { text-transform: none; font-size: 15px; letter-spacing: 0; }
+.fcols { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) !important; }
+footer .tag-line { font-size: 22px; font-weight: 400; }
+footer .tag-sub { margin: 10px 0 0; font: 600 13px var(--body); letter-spacing: .06em; text-transform: none; color: var(--green-text); }
+footer .contact { margin-top: 16px; }
+footer .mt { margin-top: 22px; }
+footer .intl h2 { margin: 0; font: 400 14px/1.5 var(--body); text-transform: none; letter-spacing: 0; }
+footer .intl h2 a { color: var(--text-2); text-decoration: none; }
+footer .intl h2 a:hover { color: #fff; }
+footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24px; }
+.social a { font-size: 12.5px; font-weight: 600; text-decoration: none; color: var(--text-2); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; }
+.social a:hover { color: #fff; border-color: var(--green); }
+@media (max-width: 1080px) { .fcols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; } .fcols > div:first-child { grid-column: 1 / -1; } }
+@media (max-width: 900px) { .matteo .photo { max-width: 520px; width: 100%; } .seen { grid-template-columns: repeat(3, minmax(0, 1fr)); } .offer .photo { aspect-ratio: 16 / 10; } }
+@media (max-width: 640px) {
+  .paths { grid-template-columns: minmax(0, 1fr); }
+  .path { min-height: 340px; }
+  .dests { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .dest-h { font-size: 16px; padding: 10px; }
+  .seen { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fcols { grid-template-columns: minmax(0, 1fr) !important; }
+  .band-cta::after { background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,.94)); }
+}
+/* logo with its own border: square corners (Matteo's file, 15 Nov) */
+.brand img, .brand-lg img { border-radius: 0 !important; }
+/* menu: every item on the same line, submenus in capitals like the other sites */
+.menu { align-items: center; }
+.dd-btn { line-height: 1.6; }
+.dd-menu a { text-transform: uppercase !important; letter-spacing: .04em !important; font-size: 12.5px !important; font-weight: 600; }
+.burger nav a { text-transform: uppercase !important; letter-spacing: .05em !important; font-size: 13px !important; }
+/* ---- menu: same as cigalacycling.com (brand.css): hover = green word + 2px green line, current page = red line ---- */
+.nav .in { position: relative; }
+.menu a, .dd-btn { border-radius: 0; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
+.menu a:hover, .menu a:active, .dd-btn:hover, .dd:focus-within .dd-btn, .dd.open .dd-btn { color: var(--green-text); background: none; box-shadow: inset 0 -2px 0 var(--green); }
+.menu a[aria-current="page"], .dd-btn.is-current { color: var(--text); box-shadow: inset 0 -2px 0 var(--red); }
+.dd-menu a { border-radius: 0; color: var(--text-2); transition: color .15s, box-shadow .15s; }
+.dd-menu a:hover, .dd-menu a:active { color: var(--green-text); background: none; box-shadow: inset 2px 0 0 var(--green); }
+.dd-menu a[aria-current="page"] { color: var(--text); box-shadow: inset 2px 0 0 var(--red); }
+.burger nav a { transition: color .15s; }
+.burger nav a:hover, .burger nav a:active { color: var(--green-text); }
+.burger nav a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
+/* ---- athlete review cards (sideways scroll) ---- */
+.rv-wrap { position: relative; }
+.rv-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, calc((100% - 32px) / 3)); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 14px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.2) transparent; }
+.rv-row:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; border-radius: 12px; }
+.rv { margin: 0; scroll-snap-align: start; display: flex; flex-direction: column; gap: 14px; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; min-width: 0; }
+.rv-tag { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-text); background: var(--green-wash); border-radius: 999px; padding: 4px 10px; }
+.rv blockquote { margin: 0; padding: 0; border: 0; font-style: normal; font-size: 15px; line-height: 1.6; color: var(--text-2); }
+.rv figcaption { display: flex; align-items: center; gap: 12px; font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
+.rv figcaption b { display: block; color: var(--text); }
+.rv figcaption img { width: 48px; height: 48px; flex: none; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); }   /* like the Tours guest photos */
+.rv figcaption span { color: var(--text-3); font-size: 13px; }
+.rv-nav { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
+.rv-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
+.rv-btn:hover { border-color: var(--green); color: var(--green-text); }
+.rv-links { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
+@media (max-width: 900px) { .rv-row { grid-auto-columns: minmax(260px, 70%); } }
+@media (max-width: 640px) { .rv-row { grid-auto-columns: 86%; } .rv-nav { display: none; } }
+/* ---- shared social icon row (shared/social) ---- */
+
+.cc-social { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 0 -10px; }
+.cc-social a { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; color: var(--text-2, #d0d6e0); text-decoration: none; transition: color .15s, background-color .15s; }
+.cc-social a:hover, .cc-social a:active { color: var(--green-text, #34c46a); background: rgba(255,255,255,.04); }
+.cc-social a:focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 2px; }
+.cc-social svg { width: 20px; height: 20px; fill: currentColor; display: block; }
+
+.seen-tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.seen-tile { height: 96px; border-radius: 12px; overflow: hidden; display: grid; place-items: center; border: 1px solid var(--border); }
+.seen-tile img.cover { width: 100%; height: 100%; object-fit: cover; }
+.seen-tile img.mark { max-width: 64%; max-height: 46px; width: auto; height: auto; object-fit: contain; }
+.seen-tile img.contain { max-width: 78%; max-height: 72px; width: auto; height: auto; object-fit: contain; }
+@media (max-width: 900px) { .seen-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .seen-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } .seen-tile { height: 84px; } }
+.mono-logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px 40px; padding: 8px 0; }
+.mono-logos img { height: 46px; width: auto; max-width: 170px; object-fit: contain; opacity: .72; transition: opacity .15s; }
+.mono-logos img:hover { opacity: 1; }
+@media (max-width: 640px) { .mono-logos { justify-content: center; gap: 24px 32px; } .mono-logos img { height: 36px; max-width: 130px; } }
+/* ---- Matteo 15 Nov homepage feedback ---- */
+.hero::after { background: linear-gradient(180deg, rgba(8,9,10,.67) 0%, rgba(8,9,10,.55) 40%, rgba(8,9,10,.95) 100%) !important; }   /* hero photo darker (Matteo: twice, -5% each) */
+.path img { filter: brightness(.95); }   /* coaching cards -5% (Matteo) */
+.rv-stars { color: var(--star); letter-spacing: 3px; font-size: 15px; line-height: 1; }
+.matteo .photo.cutout { position: relative; background: none; border: 0; aspect-ratio: auto; overflow: visible; display: flex; justify-content: center; align-items: flex-end; isolation: isolate; }
+.matteo .photo.cutout::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }
+.matteo .photo.cutout img { width: 100%; max-width: 460px; max-height: none; height: auto; -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, #000 82%, transparent 100%); }
+.fam { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 380px; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); background: var(--panel-solid); isolation: isolate; text-decoration: none; }
+.card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .6s ease; }
+.card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 15%, rgba(8,9,10,.8) 50%, rgba(8,9,10,.98) 100%); }
+.card:hover > img { transform: scale(1.04); }
+.card:hover { border-color: rgba(0,154,68,.6); }
+.card .tx { padding: 26px; display: grid; gap: 10px; text-shadow: 0 1px 10px rgba(0,0,0,.65); }
+.card .k { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #fff; text-shadow: none; background: rgba(8,9,10,.75); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; }
+.card .k::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }   /* BRAND.md: eyebrow on a photo = dark pill + red dot */
+.card h2, .card h3 { font-size: clamp(28px, 3vw, 38px); margin: 0; }
+.card p { margin: 0; font-size: 14.5px; font-weight: 500; color: var(--text); }
+.card .btn { justify-self: start; margin-top: 8px; text-shadow: none; }
+.card .btn-h { margin: 0; }
+.card .host { font-size: 12px; color: var(--text-2); }
+@media (max-width: 900px) { .fam { grid-template-columns: minmax(0, 1fr); } .card { min-height: 420px; } }
+@media (prefers-reduced-motion: reduce) { .card > img { transition: none; } .card:hover > img { transform: none; } }
+/* ---- footer layout: as cigalacycling.com ---- */
+.fcols { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.45fr) !important; }
+footer .tag-line { font-size: 22px; line-height: 1.15; margin: 14px 0 0; max-width: 24ch; }
+footer ul { font-size: 14px; }
+footer ul a { color: var(--text-2); }
+.legal .in { align-items: center; }
+.intl-dd { position: relative; }
+.intl-dd summary { list-style: none; cursor: pointer; font-size: 12px; color: var(--text-3); }
+.intl-dd summary::-webkit-details-marker { display: none; }
+.intl-dd summary::after { content: " ▾"; }
+.intl-dd[open] summary::after { content: " ▴"; }
+.intl-dd summary:hover { color: var(--green-text); }
+.intl-dd .intl { list-style: none; margin: 0; padding: 10px 12px; position: absolute; bottom: calc(100% + 8px); left: 0; min-width: 240px; display: grid; gap: 4px; background: var(--panel-solid); border: 1px solid var(--border-strong); border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,.5); z-index: 5; }
+.intl-dd .intl h2 { margin: 0; font: 400 13px/1.6 var(--body); text-transform: none; letter-spacing: 0; }
+.intl-dd .intl a { color: var(--text-2); text-decoration: none; }
+@media (max-width: 1080px) { .fcols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; } .fcols > div:first-child { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .intl-dd .intl { left: auto; right: 0; } .fcols { grid-template-columns: minmax(0, 1fr) !important; } }
+/* ---- footer links: green-text on hover, no underline (Matteo, all sites, 15 Nov) ---- */
+footer a { text-decoration: none; transition: color .15s, border-color .15s; }
+footer a:hover, footer ul a:hover, footer .intl h2 a:hover, .legal a:hover, footer .social a:hover { color: var(--green-text); text-decoration: none; }
+/* Anton titles: a little more line spacing (Matteo, all sites): H1 1.08, H2/H3 1.14 */
+h1 { line-height: 1.08; }
+h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
+/* intro text under page headings: 16px, as on cigalacycling.com (BRAND.md: intro 16px) */
+.hero .lede { font-size: 16px; }
+@media (prefers-reduced-motion: reduce) { .path img, .dest img { transition: none; } .path:hover img, .dest:hover img { transform: none; } }
+</style>
+<style>
+.tl-hero > img { object-position: 50% 40%; }
+.tl-box { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; align-items: start; }
+.tl-in, .tl-out { padding: 24px; }
+.tl-in h2, .tl-out h2 { font-size: clamp(22px, 2.4vw, 28px); margin: 0 0 16px; }
+.tl-f { display: grid; gap: 6px; margin-bottom: 16px; }
+.tl-f > span, .tl-f legend { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.tl-f small { font-size: 12.5px; color: var(--text-3); }
+.tl-f input[type=number], .tl-f select { font: 400 16px/1.4 var(--body); color: var(--text); background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; width: 100%; }
+.tl-f select option { background: #0f1011; }
+.tl-f input:focus, .tl-f select:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: transparent; }
+.tl-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
+.tl-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 10px; padding: 4px; }
+.tl-seg label { position: relative; text-align: center; font-size: 14px; font-weight: 600; color: var(--text-2); padding: 9px 6px; border-radius: 7px; cursor: pointer; }
+.tl-seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.tl-seg label:has(input:checked) { background: var(--green); color: #fff; }
+.tl-seg label:has(input:focus-visible) { outline: 2px solid var(--green); outline-offset: 2px; }
+.tl-check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--text-2); margin-bottom: 16px; }
+.tl-check input { width: 20px; height: 20px; accent-color: #009a44; flex: none; margin-top: 1px; }
+.tl-big { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+.tl-big div { flex: 1 1 140px; background: rgba(0,154,68,.08); border: 1px solid rgba(0,154,68,.35); border-radius: 12px; padding: 14px 16px; }
+.tl-big b { display: block; font: 400 clamp(30px, 3.4vw, 40px)/1 var(--head); color: var(--text); text-transform: none; }
+.tl-big span { display: block; margin-top: 6px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.tl-empty { color: var(--text-3); font-size: 15px; margin: 0; }
+.tl-err { color: #ff6b63; font-size: 14px; margin: 0 0 12px; }
+.tl-tbl { width: 100%; border-collapse: collapse; font-size: 14.5px; margin-bottom: 18px; }
+.tl-tbl caption { text-align: left; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); padding: 0 0 8px; }
+.tl-tbl th, .tl-tbl td { text-align: left; padding: 10px 10px; border: 0 !important; border-bottom: 1px solid var(--border) !important; background: none !important; }
+.tl-tbl, .tl-tbl tr, .tl-tbl tbody, .tl-tbl thead { border: 0 !important; background: none !important; }
+.tl-tbl thead th { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.tl-tbl td:last-child, .tl-tbl th:last-child { text-align: right; font-weight: 700; color: var(--text); white-space: nowrap; }
+.tl-tbl tbody th { font-weight: 600; color: var(--text); }
+.tl-z { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: 1px; }
+.tl-note { font-size: 13.5px; color: var(--text-3); margin: 0; }
+.tl-note a, .tl-txt a { color: var(--green-text); }
+.tl-txt { max-width: 72ch; }
+.tl-txt h2 { font-size: clamp(24px, 2.8vw, 34px); margin-top: 8px; }
+.tl-txt p, .tl-txt li { color: var(--text-2); font-size: 16px; line-height: 1.65; }
+.tl-txt h3 { font-size: 22px; margin: 26px 0 0; }
+.tl-reads { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 8px; }
+.tl-reads a { color: var(--green-text); font-weight: 600; text-decoration: none; }
+.tl-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.tl-card { display: flex; flex-direction: column; gap: 10px; padding: 24px; text-decoration: none; transition: border-color .2s, transform .2s; }
+.tl-card:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
+.tl-card svg, .tl-ic { width: 44px; height: 44px; padding: 10px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tl-card h3 { font-size: 24px; margin: 4px 0 0; color: var(--text); }
+.tl-card p { margin: 0; font-size: 15px; color: var(--text-2); flex: 1; }
+.tl-cta { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px; flex-wrap: wrap; }
+.tl-cta p { margin: 8px 0 0; color: var(--text-2); max-width: 60ch; }
+.tl-cta .ctas { margin: 0; }
+.tl-nl { margin-top: 20px; padding: 24px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: center; }
+.tl-nl p { margin: 8px 0 0; color: var(--text-2); font-size: 15px; }
+.tl-nl-row { display: flex; gap: 10px; }
+.tl-nl-row input { flex: 1; min-width: 0; font: 400 16px/1.4 var(--body); color: var(--text); background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; }
+.tl-ok { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
+.tl-ok input { width: 18px; height: 18px; accent-color: #009a44; flex: none; margin-top: 2px; }
+.tl-ok a { color: var(--green-text); }
+.tl-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.tl-nl-msg { margin: 10px 0 0; font-size: 14px; min-height: 1em; }
+.tl-nl-msg.err { color: #ff6b63; } .tl-nl-msg.ok { color: var(--green-text); }
+.tl-nl-form.done .tl-nl-row, .tl-nl-form.done .tl-ok { display: none; }
+@media (max-width: 900px) { .tl-box, .tl-nl { grid-template-columns: minmax(0, 1fr); } .tl-cards { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 640px) { .tl-in, .tl-out { padding: 18px; } .tl-tbl { font-size: 13.5px; } .tl-tbl th, .tl-tbl td { padding: 9px 6px; } .tl-nl-row { flex-direction: column; } }
+</style>
+<div class="topo" aria-hidden="true"></div>
+<div class="page">
+<div class="ribbon"><div class="in"><b>Preview</b><span>New page: Training Zones Calculator. Calculated in the browser; nothing is stored.</span></div></div>
+<header class="nav">
+  <div class="in">
+    <a class="brand" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo-v2.webp" alt="Cigala Cycling Coaching home" width="58" height="58"></a>
+    <nav class="menu" aria-label="Main">
+      <a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a>
+      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Cycling <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://coaching.cigalacycling.com/coaching-vision/" target="_blank" rel="noopener">Coaching Vision</a><a href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Individual Packages</a><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a><a href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 Session</a><a href="https://www.skool.com/cigala-cycling-collective-1115" target="_blank" rel="noopener">Community</a></div></div>
+      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Triathlon <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://coaching.cigalacycling.com/about2/" target="_blank" rel="noopener">About Triathlon Coaching</a><a href="https://coaching.cigalacycling.com/tri-individual-packages/" target="_blank" rel="noopener">Individual Packages</a><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a><a href="https://www.skool.com/cigala-cycling-collective-1115" target="_blank" rel="noopener">Community</a></div></div>
+      <div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Services <span aria-hidden="true">▾</span></button><div class="dd-menu"><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a><a href="https://coaching.cigalacycling.com/bike-fitting/" target="_blank" rel="noopener">Bike Fit</a><a href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener">Talent Programme</a><a href="https://coaching.cigalacycling.com/club-talk/" target="_blank" rel="noopener">Club Talk</a><a href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">Free Training Tools</a></div></div>
+      <a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a>
+      <a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a>
+      <a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a>
+      <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a>
+      <a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
+    </nav>
+    <a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book Consultation</a>
+    <details class="burger" id="menu-mobile">
+      <summary>Menu</summary>
+      <nav aria-label="Main (mobile)">
+        <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Home</a><a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a>
+        <div class="mgrp">Cycling</div><a href="https://coaching.cigalacycling.com/coaching-vision/" target="_blank" rel="noopener">Coaching Vision</a><a href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Individual Packages</a><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a><a href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 Session</a><a href="https://www.skool.com/cigala-cycling-collective-1115" target="_blank" rel="noopener">Community</a>
+        <div class="mgrp">Triathlon</div><a href="https://coaching.cigalacycling.com/about2/" target="_blank" rel="noopener">About Triathlon Coaching</a><a href="https://coaching.cigalacycling.com/tri-individual-packages/" target="_blank" rel="noopener">Individual Packages</a><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a><a href="https://www.skool.com/cigala-cycling-collective-1115" target="_blank" rel="noopener">Community</a>
+        <div class="mgrp">Services</div><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a><a href="https://coaching.cigalacycling.com/bike-fitting/" target="_blank" rel="noopener">Bike Fit</a><a href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener">Talent Programme</a><a href="https://coaching.cigalacycling.com/club-talk/" target="_blank" rel="noopener">Club Talk</a><a href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">Free Training Tools</a>
+        <div class="mgrp">More</div><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a><a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
+      </nav>
+    </details>
+  </div>
+</header>
+<div class="hero hero-sm tl-hero">
+  <img src="img/tools-hero.webp" alt="Matteo Cigala coaching a group of riders" width="2560" height="1707">
+  <div class="in">
+    <div class="eyebrow eb-pill"><span></span>Free tool</div>
+    <h1>Training Zones Calculator</h1>
+    <p class="lede">Work out your cycling power zones from your FTP or a 20-minute test, and your heart-rate zones from your threshold heart rate.</p>
+  </div>
+</div>
+
+<section class="tl-sec">
+  <div class="in">
+    <div class="tl-box">
+      <form class="tl-in panel" id="tl-zones" onsubmit="return false">
+        <h2>Your numbers</h2>
+        <fieldset class="tl-f"><legend>I know</legend>
+          <div class="tl-seg"><label><input type="radio" name="src" value="ftp" checked>My FTP</label><label><input type="radio" name="src" value="t20">A 20-min test</label></div>
+        </fieldset>
+        <label class="tl-f"><span id="tl-p-lab">FTP (watts)</span><input type="number" id="tl-p" inputmode="numeric" min="50" max="600" placeholder="e.g. 250"><small id="tl-p-help">Your Functional Threshold Power.</small></label>
+        <div class="tl-two">
+          <label class="tl-f"><span>Threshold HR (bpm)</span><input type="number" id="tl-hr" inputmode="numeric" min="100" max="220" placeholder="optional"></label>
+          <label class="tl-f"><span>Weight (kg)</span><input type="number" id="tl-kg" inputmode="decimal" min="30" max="160" step="0.1" placeholder="optional"></label>
+        </div>
+        <p class="tl-note">Threshold heart rate is your average heart rate for the last 20 minutes of a 30-minute solo all-out effort. Leave it empty if you don't know it.</p>
+      </form>
+      <div class="tl-out panel" aria-live="polite">
+        <h2>Your zones</h2>
+        <div id="tl-zones-out"><p class="tl-empty">Enter your FTP or 20-minute power to see your zones.</p></div>
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<section>
+  <div class="in tl-txt">
+    <div class="eyebrow">How it works</div>
+    <h2>HOW TO USE YOUR TRAINING ZONES</h2>
+    <div class="bar"></div>
+    <p>Training zones turn one number, your FTP, into clear targets for every session. Riding in the right zone makes sure an easy day is really easy and a hard day is hard enough to make you faster.</p>
+    <h3>Power zones</h3>
+    <p>These are the classic 7 power zones, each a percentage of your FTP. If you did a 20-minute test, your FTP is 95% of your average power for the 20 minutes.</p>
+    <ul>
+      <li><b>Zones 1–2:</b> recovery and endurance. Most of your weekly riding, building your aerobic base.</li>
+      <li><b>Zone 3:</b> tempo. Steady and controlled, useful in long efforts and Gran Fondo pacing.</li>
+      <li><b>Zone 4:</b> threshold. Intervals that raise your FTP.</li>
+      <li><b>Zones 5–7:</b> VO2max, anaerobic and sprint. Short, very hard efforts.</li>
+    </ul>
+    <h3>Heart-rate zones</h3>
+    <p>Heart rate reacts slowly and drifts with heat, tiredness and caffeine, so use it alongside power, or on its own if you don't have a power meter.</p>
+    <h3>Keep your zones up to date</h3>
+    <p>Your zones change as you get fitter. Re-test every 6 to 8 weeks. Our coached riders get adaptive zones that change every week, and testing with Critical Power or INSCYD, which goes beyond FTP.</p>
+    <ul class="tl-reads"><li><a href="https://coaching.cigalacycling.com/blog/what-is-ftp-cycling/" target="_blank" rel="noopener">What is FTP in cycling? →</a></li><li><a href="https://coaching.cigalacycling.com/blog/zone-2-training/" target="_blank" rel="noopener">The power of Zone 2 training →</a></li><li><a href="https://coaching.cigalacycling.com/blog/zone-2-isnt-easy/" target="_blank" rel="noopener">Zone 2 isn’t easy →</a></li></ul>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="tl-cta panel">
+      <div><h3 class="h-sm">Want a plan built around these numbers?</h3><p>These zones are a starting point. With coaching, your zones adapt every week to your training and your plan is built around your goals and your time.</p></div>
+      <div class="ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book a free consultation →</a><a class="btn btn-ghost" href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">See the coaching packages</a></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Free tools</div><h2>MORE FREE TOOLS</h2><div class="bar"></div></div></div>
+    <div class="tl-cards"><a class="tl-card panel" href="https://coaching.cigalacycling.com/tools/carbs-per-hour-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/></svg><h3>Carbs per Hour Calculator</h3><p>How many grams of carbs to take each hour, and what that means in gels and bottles, for your ride.</p><span class="arrow-link">Open the calculator →</span></a><a class="tl-card panel" href="https://coaching.cigalacycling.com/tools/critical-power-calculator/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><h3>Critical Power &amp; W′ Calculator</h3><p>Your Critical Power and W′ from two all-out efforts, and the power you can hold from 2 to 20 minutes.</p><span class="arrow-link">Open the calculator →</span></a></div>
+  </div>
+</section>
+<footer>
+  <div class="in fcols">
+    <div>
+      <a class="brand brand-lg" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo-v2.webp" alt="Cigala Cycling Coaching" width="76" height="76"></a>
+      <h2 class="tag-line">Train Smarter, Ride Faster</h2>
+    </div>
+    <div><h4>Coaching</h4><ul><li><a href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">Cycling Packages</a></li><li><a href="https://coaching.cigalacycling.com/tri-individual-packages/" target="_blank" rel="noopener">Triathlon Packages</a></li><li><a href="https://coaching.cigalacycling.com/group-club-packages/" target="_blank" rel="noopener">Group &amp; Club Packages</a></li><li><a href="https://coaching.cigalacycling.com/book-1-on-1-session/" target="_blank" rel="noopener">Book a 1-to-1 Session</a></li><li><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a></li><li><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a></li><li><a href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">Free Training Tools</a></li></ul></div>
+    <div><h4>Cigala Cycling</h4><ul><li><a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">About</a></li><li><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a></li><li><a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a></li><li><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a></li><li><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Retail Store</a></li><li><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a></li></ul></div>
+    <div><h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:info@cigalacycling.com">info@cigalacycling.com</a></li>
+        <li><a href="tel:+35340478107">+353 404 78107</a></li>
+        <li><a href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener">★ Google reviews</a></li>
+      </ul>
+      <div class="cc-social"><a href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a><a href="https://www.instagram.com/cigalacycling/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a><a href="https://www.facebook.com/CigalaCycling/" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg></a><a href="https://www.youtube.com/@cigalacycling" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a><a href="https://www.tiktok.com/@cigalacycling" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a><a href="https://x.com/CigalaCycling" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X (Twitter)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg></a><a href="https://www.threads.com/@cigalacycling" target="_blank" rel="noopener" aria-label="Threads" title="Threads"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z"/></svg></a></div>
+    </div>
+  </div>
+  <div class="legal"><div class="in">
+    <span>© 2026 Cigala Cycling Ltd · Registered in Ireland No. 675577 · VAT IE3699893CH</span>
+    <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">Terms &amp; Conditions</a>
+    <a href="https://coaching.cigalacycling.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a>
+    <details class="intl-dd"><summary>International coaching</summary>
+      <ul class="intl"><li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-uk/" target="_blank" rel="noopener">Cycling Coach UK</a></h2></li><li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-usa/" target="_blank" rel="noopener">Cycling Coach USA</a></h2></li><li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-canada/" target="_blank" rel="noopener">Cycling Coach Canada</a></h2></li><li><h2><a href="https://coaching.cigalacycling.com/preparatore-di-ciclismo-italia/" target="_blank" rel="noopener">Preparatore di Ciclismo Italia</a></h2></li></ul>
+    </details>
+  </div></div>
+</footer>
+</div>
+<script>
+document.querySelectorAll('.dd').forEach(function (d) {
+  var b = d.querySelector('.dd-btn');
+  b.addEventListener('click', function () { var o = d.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
+  d.addEventListener('focusout', function (e) { if (!d.contains(e.relatedTarget)) { d.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
+});
+</script><script>
+(function () {
+  var f = document.getElementById('tl-zones'), out = document.getElementById('tl-zones-out');
+  var P = [['1', 'Active recovery', 0, .55, '#6b7280'], ['2', 'Endurance', .56, .75, '#3b82f6'], ['3', 'Tempo', .76, .90, '#22c55e'], ['4', 'Threshold', .91, 1.05, '#eab308'],
+           ['5', 'VO2max', 1.06, 1.20, '#f97316'], ['6', 'Anaerobic capacity', 1.21, 1.50, '#ef4444'], ['7', 'Neuromuscular power', 1.51, 0, '#a855f7']];
+  var H = [['1', 'Recovery', 0, .81], ['2', 'Aerobic', .81, .89], ['3', 'Tempo', .90, .93], ['4', 'Sub-threshold', .94, .99], ['5a', 'Super-threshold', 1.00, 1.02], ['5b', 'Aerobic capacity', 1.03, 1.06], ['5c', 'Anaerobic capacity', 1.07, 0]];
+  function num(id) { var v = parseFloat(document.getElementById(id).value); return isFinite(v) ? v : 0; }
+  /* zones join up: each one starts 1 above the previous zone's top, so no watt or beat falls between two zones */
+  function rows(x, Z) { var prev = 0; return Z.map(function (z) { var top = z[3] ? Math.round(x * z[3]) : 0, s = z[2] === 0 ? 'up to ' + top : (top ? (prev + 1) + '–' + top : (prev + 1) + '+'); prev = top; return s; }); }
+  function pct(lo, hi) { return lo === 0 ? '< ' + Math.round(hi * 100) + '%' : (hi === 0 ? '> ' + Math.round(lo * 100 - 1) + '%' : Math.round(lo * 100) + '–' + Math.round(hi * 100) + '%'); }
+  function run() {
+    var t20 = f.querySelector('input[name=src]:checked').value === 't20';
+    document.getElementById('tl-p-lab').textContent = t20 ? '20-min average power (watts)' : 'FTP (watts)';
+    document.getElementById('tl-p-help').textContent = t20 ? 'Your FTP will be 95% of this.' : 'Your Functional Threshold Power.';
+    var p = num('tl-p'), hr = num('tl-hr'), kg = num('tl-kg');
+    if (p < 50 || p > 700) { out.innerHTML = '<p class="tl-empty">Enter your ' + (t20 ? '20-minute power' : 'FTP') + ' (50–700 W) to see your zones.</p>'; return; }
+    var ftp = t20 ? p * 0.95 : p, h = '<div class="tl-big"><div><b>' + Math.round(ftp) + ' W</b><span>FTP</span></div>';
+    if (kg >= 30 && kg <= 160) h += '<div><b>' + (ftp / kg).toFixed(2) + '</b><span>W/kg</span></div>';
+    h += '</div><table class="tl-tbl"><caption>Power zones</caption><thead><tr><th scope="col">Zone</th><th scope="col">% FTP</th><th scope="col">Watts</th></tr></thead><tbody>';
+    var pw = rows(ftp, P); P.forEach(function (z, i) { h += '<tr><th scope="row"><span class="tl-z" style="background:' + z[4] + '"></span>Z' + z[0] + ' ' + z[1] + '</th><td>' + pct(z[2], z[3]) + '</td><td>' + pw[i] + ' W</td></tr>'; });
+    h += '</tbody></table>';
+    if (hr >= 100 && hr <= 220) {
+      h += '<table class="tl-tbl"><caption>Heart-rate zones</caption><thead><tr><th scope="col">Zone</th><th scope="col">% threshold HR</th><th scope="col">bpm</th></tr></thead><tbody>';
+      var hz = rows(hr, H); H.forEach(function (z, i) { h += '<tr><th scope="row">Z' + z[0] + ' ' + z[1] + '</th><td>' + pct(z[2], z[3]) + '</td><td>' + hz[i] + '</td></tr>'; });
+      h += '</tbody></table>';
+    }
+    out.innerHTML = h + '<p class="tl-note">Power zones: the 7-zone model based on FTP. Heart-rate zones: based on threshold heart rate. A guide, not medical advice.</p>';
+  }
+  f.addEventListener('input', run); f.addEventListener('change', run); run();
+})();
+</script>
+</body></html>

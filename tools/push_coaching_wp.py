@@ -44,6 +44,16 @@ if __name__ == '__main__':
             else:
                 code, r = req(f'{B}/wp/v2/pages', body, 'POST')
                 if code in (200, 201): open(f, 'w').write(str(json.loads(r)['id']))
+        elif n.startswith('page-new-'):   # new pages: created once, then updated; IDs in stg-coaching/new-pages.json
+            f = ROOT + 'stg-coaching/new-pages.json'; ids = json.load(open(f)) if os.path.exists(f) else {}
+            d = json.loads(body); parent = d.pop('parent_slug', None)
+            if parent: d['parent'] = ids[parent]   # the parent is pushed first
+            body = json.dumps(d).encode()
+            if d['slug'] in ids:
+                code, r = req(f'{B}/wp/v2/pages/{ids[d["slug"]]}', body, 'POST')
+            else:
+                code, r = req(f'{B}/wp/v2/pages', body, 'POST')
+                if code in (200, 201): ids[d['slug']] = json.loads(r)['id']; json.dump(ids, open(f, 'w'), indent=1)
         else:
             kind, pid = n.split('-', 1)
             code, r = req(f'{B}/wp/v2/{ {"lib": "elementor_library", "page": "pages"}[kind] }/{pid}', body, 'POST')

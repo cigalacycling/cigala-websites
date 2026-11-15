@@ -72,7 +72,7 @@ CYC = [(C + '/coaching-vision/', 'Coaching Vision'), (C + '/individual-packages/
 TRI = [(C + '/about2/', 'About Triathlon Coaching'), (C + '/tri-individual-packages/', 'Individual Packages'),
        (C + '/group-club-packages/', 'Group &amp; Club Packages'), (SKOOL, 'Community')]
 SERV = [(C + '/testing/', 'INSCYD Testing'), (C + '/nutrition/', 'Nutrition'), (C + '/bike-fitting/', 'Bike Fit'),
-        (C + '/talent-scout/', 'Talent Programme'), (C + '/club-talk/', 'Club Talk')]
+        (C + '/talent-scout/', 'Talent Programme'), (C + '/club-talk/', 'Club Talk'), (C + '/tools/', 'Free Training Tools')]   # a top-level item wrapped the menu at 1440
 def dd(label, items):
     return (f'<div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">{label} <span aria-hidden="true">▾</span></button>'
             f'<div class="dd-menu">{"".join(a(u, t) for u, t in items)}</div></div>')
@@ -113,7 +113,7 @@ def li(u, t): return f'<li>{a(u, t)}</li>'
 # "International coaching" toggle in the bottom row instead of a visible column. Closed <details> content is still in the HTML.
 SITE = [(C + '/about/', 'About'), (C + '/testimonials/', 'Testimonials'), (C + '/blog/', 'Blog'), (T + '/', 'Bike Tours'), (R, 'Retail Store'), (C + '/contact/', 'Contact')]
 COACH = [(C + '/individual-packages/', 'Cycling Packages'), (C + '/tri-individual-packages/', 'Triathlon Packages'), (C + '/group-club-packages/', 'Group &amp; Club Packages'),
-         (C + '/book-1-on-1-session/', 'Book a 1-to-1 Session'), (C + '/testing/', 'INSCYD Testing'), (C + '/nutrition/', 'Nutrition')]
+         (C + '/book-1-on-1-session/', 'Book a 1-to-1 Session'), (C + '/testing/', 'INSCYD Testing'), (C + '/nutrition/', 'Nutrition'), (C + '/tools/', 'Free Training Tools')]
 INTL = [('/cycling-coach-uk/', 'Cycling Coach UK'), ('/cycling-coach-usa/', 'Cycling Coach USA'), ('/cycling-coach-canada/', 'Cycling Coach Canada'), ('/preparatore-di-ciclismo-italia/', 'Preparatore di Ciclismo Italia')]
 GOOGLE_REVIEWS = 'https://share.google/lwboSfcuStGhX0c0p'   # Cigala Cycling Ltd Google Business Profile (shared/BUSINESS.md)
 FOOTER = f'''<footer>
