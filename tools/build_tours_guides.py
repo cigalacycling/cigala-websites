@@ -20,7 +20,7 @@ from push_tours_wp import req, B
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 M = json.load(open(ROOT + 'stg-tours/media-webp.json'))
 from tours_img import webp
-HERO = webp(4877, 2000)   # Guides hero: Col du Galibier (large original; the earlier one was too small)
+HERO = webp(8611, 2000)   # Guides hero: riders on a Dolomites road (Matteo 15 Nov: clearer than the Galibier photo)
 E = lambda x: html.escape(x, quote=True)
 
 def rid(): return ''.join(random.choice('0123456789abcdef') for _ in range(7))
@@ -151,7 +151,7 @@ GUIDES_CSS = '''
 .cl-gcard-ph img { width: 100% !important; aspect-ratio: 4 / 3; height: auto !important; object-fit: cover; border-radius: 0 !important; display: block; transition: transform .5s ease; }
 .e-con.cl-gcard:hover .cl-gcard-ph img { transform: scale(1.04); }
 .e-con.cl-gcard-tx { position: absolute !important; left: 0; right: 0; bottom: 0; padding: 70px 18px 18px !important; gap: 6px !important; background: linear-gradient(180deg, rgba(8,9,10,0) 0%, rgba(8,9,10,.78) 45%, rgba(8,9,10,.96) 100%); }
-.cl-gcard-by .elementor-heading-title { font: 600 10.5px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .12em !important; text-transform: uppercase; color: #d0d6e0 !important; }
+.cl-gcard-by .elementor-heading-title { font: 600 10.5px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .12em !important; text-transform: uppercase; color: #ff3d33 !important; }   /* red, like the eyebrows (Matteo) */
 .cl-gcard-title .elementor-heading-title, .cl-gcard-title .elementor-heading-title a { font-family: Anton, Impact, sans-serif !important; font-weight: 400 !important; text-transform: uppercase; color: #f7f8f8 !important; font-size: 21px !important; line-height: 1.14 !important; letter-spacing: .01em; text-decoration: none; }
 .cl-gcard-ex { display: none !important; }
 .cl-gcard-go { margin-top: 6px !important; }

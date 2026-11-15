@@ -8469,5 +8469,33 @@
    2500
   ],
   "orig": 4877
+ },
+ "src-8763-1600": {
+  "id": 10084,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-lake-como-bike-tours-Cigala-Cycling-1600.webp",
+  "alt": "Lake Como Bike Tours Cigala Cycling",
+  "from": [
+   1600,
+   1200
+  ],
+  "size": [
+   1600,
+   1200
+  ],
+  "orig": 8763
+ },
+ "src-8611-2000": {
+  "id": 10085,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-bestof_mdd2026-082-planinschekfreddy-2000.webp",
+  "alt": "Maratona Dles Dolomites | Corner with cyclists",
+  "from": [
+   4096,
+   2730
+  ],
+  "size": [
+   2000,
+   1333
+  ],
+  "orig": 8611
  }
 }

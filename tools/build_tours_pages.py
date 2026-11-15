@@ -255,7 +255,7 @@ def destinations():
     ult_p = next(v for k, v, s in it[u_i:p_i] if k == 'text')
     ult_btn = next(v for k, v, s in it[u_i:p_i] if k == 'btn')
     priv_btn = next(v for k, v, s in it[p_i:t_i] if k == 'btn')
-    priv_bg = [v for k, v, s in it[:p_i] if k == 'bg'][-1]
+    priv_bg = 8763   # Matteo 15 Nov: the live photo is low quality; a sharp group photo (Lake Como)
     ult_bg = 4900   # Matteo 15 Nov: not the live photo here; the Dolomites group photo
     title = lambda h: re.sub(r'<[^>]+>', '', h)
     def browse(h):   # live: 'Browse by <span style="color:#D64A4A">Country</span>' -> keep the words, red word as in the design eyebrow
@@ -299,7 +299,7 @@ def destinations():
 </section>
 <section>
   <div class="in">
-    <div class="band">
+    <div class="band band-up priv">
       {img_tag(priv_bg, 1600)}
       <div class="tx">
         <div class="eyebrow">Your dates, your group</div>
@@ -658,7 +658,8 @@ html .cl .band .lede p { margin: 0; }
 html .cl .vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 1000px) { html .cl .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { html .cl .vgrid { grid-template-columns: minmax(0, 1fr); } }
-html .cl .band-up > img { object-position: center 22% !important; }   /* show the faces (Matteo) */
+html .cl .band-up > img { object-position: center 58% !important; }   /* show the riders' faces (Matteo) */
+html .cl .band-up.priv > img { object-position: center 75% !important; }
 html .cl .vgrid.few .vcard:nth-child(n+7) { display: none; }
 html .cl .vmore-wrap { justify-content: center; margin-top: 22px; }
 html .cl .info h2.wa a { color: var(--green-text); }
