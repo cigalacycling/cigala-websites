@@ -674,5 +674,44 @@
    1100,
    1375
   ]
+ },
+ "hero-gravel": {
+  "id": 9305,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-hero-gravel.webp",
+  "alt": "Group of riders on a gravel road with a beautiful field beside",
+  "from": [
+   5184,
+   3888
+  ],
+  "size": [
+   2400,
+   1800
+  ]
+ },
+ "hero-granfondo": {
+  "id": 9306,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-hero-granfondo.webp",
+  "alt": "Maratona Dles Dolomites | The Magic start",
+  "from": [
+   4096,
+   2732
+  ],
+  "size": [
+   2400,
+   1601
+  ]
+ },
+ "hero-italian": {
+  "id": 9307,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-hero-italian.webp",
+  "alt": "Maratona Dles Dolomites | View from Passo Gardena",
+  "from": [
+   4096,
+   2730
+  ],
+  "size": [
+   2400,
+   1600
+  ]
  }
 }

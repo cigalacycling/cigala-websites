@@ -165,7 +165,13 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Sections: 6 road tours, then the 5 Gran Fondo tours as "Road tours with a Gran Fondo". Dates appear as text on every card.
   - The intro is new copy and still needs Matteo's OK.
   - The list-page CSS is scoped to `.cl` and added to the kit by `build_tours_wp.py`.
-- **Next:** rebuild the other trip-list pages (All 8689, Gravel 2821, Gran Fondo 2796, Italian 4402) with the same builder, keeping their live titles, H1s and copy.
+- **All five tour pages are rebuilt on staging (15 Nov):** All tours 8689, Road 9301, Gravel 2821, Gran Fondo 2796, Italian 4402. They come from one builder, `tools/build_tours_list.py`.
+  - Existing pages keep their live H1, intro text and tour order (`tours/list-pages-live.json`), and the live card alt text.
+  - `push_tours_list.py` only changes their content and layout. Title, slug, parent, status and Rank Math SEO are untouched; checked against the baseline, title, meta, robots, OG and schema are identical.
+  - Heading tidy-ups approved by Matteo: "2027 Calendar" is an H2; "MORE DETAILS" is no longer a heading; the Italy intro (an H2 on live) is now a paragraph; "Can't find the perfect one?" is the banner's H2.
+  - Each page has a row of links to the other tour pages (All, Road, Gravel, Gran Fondo, Italy).
+  - Checked at 390/820/1440: no sideways scroll, one H1, alt text on every image, no broken images.
+- **Next:** destinations, guides, about, contact, testimonials, terms, the trip pages, and the custom-tour page.
   - The other pages haven't been rebuilt.
 
 ## Tours build plan: Matteo's notes, 15 Nov

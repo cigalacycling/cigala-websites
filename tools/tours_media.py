@@ -53,6 +53,9 @@ A = {
     'signature': ('webp-tours/cigala-tours-signature.webp', 924, "Matteo Cigala's signature"),
     # trip-list pages
     'hero-road': (4911, 2400, None),
+    'hero-gravel': (7766, 2400, None),
+    'hero-granfondo': (8601, 2400, None),
+    'hero-italian': (8616, 2400, None),
     'card-alpine-gravel-escape': ('webp-tours/cigala-tours-card-alpine-gravel-escape.webp', 1100, "Alpine Gravel Escape cycling tour: 320 km, 9,300 m climbing"),
     'card-chianti-gran-fondo-strade-bianche': ('webp-tours/cigala-tours-card-chianti-gran-fondo-strade-bianche.webp', 1100, "Chianti Strade Bianche cycling tour: 350 km, 6,000 m climbing"),
     'card-cyprus-crossing-gravel': ('webp-tours/cigala-tours-card-cyprus-crossing-gravel.webp', 1100, "Cyprus Crossing cycling tour: 415 km, 8,700 m climbing"),

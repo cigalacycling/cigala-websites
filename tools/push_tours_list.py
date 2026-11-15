@@ -18,7 +18,7 @@ def rid(): return ''.join(random.choice('0123456789abcdef') for _ in range(7))
 def widget(h): return {"id": rid(), "elType": "widget", "widgetType": "html", "settings": {"html": h}, "elements": [], "isInner": False}
 def wrap(els): return {"id": rid(), "elType": "container", "settings": {"content_width": "full", "css_classes": "cc-wrap", "padding": {"unit": "px", "top": "0", "right": "0", "bottom": "0", "left": "0", "isLinked": True}, "flex_gap": {"unit": "px", "size": 0, "column": "0", "row": "0"}}, "elements": els, "isInner": False}
 
-IMG = {'img/dest-private-custom-tours.jpg': 'custom', 'img/logo-mdd.png': 'logo-mdd', 'img/logo-lombardia.png': 'logo-lombardia',
+IMG = {'img/home-hero.jpg': 'hero', 'img/dest-private-custom-tours.jpg': 'custom', 'img/logo-mdd.png': 'logo-mdd', 'img/logo-lombardia.png': 'logo-lombardia',
        'img/logo-strade.png': 'logo-strade', 'img/logo-algarve.png': 'logo-algarve'}
 def fix_img(m):
     tag = m.group(0); src = re.search(r'src="([^"]+)"', tag).group(1)
@@ -40,21 +40,22 @@ d = json.load(open(ROOT + f'stg-tours/out/list-{slug}.json'))
 main = fix(d['main'])
 blocks = [b.strip() for b in re.split(r'\n(?=<(?:div class="hero|section)[ >])', '\n' + main) if b.strip()]
 els = [wrap([widget('<div class="cl cl-page">' + b + '</div>')]) for b in blocks]
-body = {"title": d['title'], "slug": d['slug'], "parent": d['parent'], "status": "publish", "template": "",
-        "content": '\n'.join('<div class="cl cl-page">' + b + '</div>' for b in blocks),
-        "meta": {"_elementor_data": json.dumps(els), "_elementor_edit_mode": "builder", "_elementor_template_type": "wp-page"}}
-if slug not in ids:   # look for an existing page first, so a re-run never makes a duplicate
-    code, r = req(f'{B}/wp/v2/pages?slug={d["slug"]}&status=publish,draft&context=edit&_fields=id,parent')
-    found = [p for p in json.loads(r) if p['parent'] == d['parent']] if code == 200 else []
-    if found: ids[slug] = found[0]['id']
-if slug in ids:
-    code, r = req(f'{B}/wp/v2/pages/{ids[slug]}', json.dumps(body).encode(), 'POST')
-else:
-    code, r = req(f'{B}/wp/v2/pages', json.dumps(body).encode(), 'POST')
+content = '\n'.join('<div class="cl cl-page">' + b + '</div>' for b in blocks)
+meta = {"_elementor_data": json.dumps(els), "_elementor_edit_mode": "builder", "_elementor_template_type": "wp-page"}
+if d.get('id'):   # existing page: only the layout changes; title, slug, parent, status and Rank Math SEO stay as they are
+    ids[slug] = d['id']
+    code, r = req(f'{B}/wp/v2/pages/{d["id"]}', json.dumps({"content": content, "meta": meta}).encode(), 'POST')
+else:             # new page (Road tours): create it once, then update
+    body = {"title": d['title'], "slug": d['slug'], "parent": d['parent'], "status": "publish", "template": "", "content": content, "meta": meta}
+    if slug not in ids:
+        code, r = req(f'{B}/wp/v2/pages?slug={d["slug"]}&status=publish,draft&context=edit&_fields=id,parent')
+        found = [p for p in json.loads(r) if p['parent'] == d['parent']] if code == 200 else []
+        if found: ids[slug] = found[0]['id']
+    code, r = req(f'{B}/wp/v2/pages/{ids[slug]}' if slug in ids else f'{B}/wp/v2/pages', json.dumps(body).encode(), 'POST')
     if code == 201: ids[slug] = json.loads(r)['id']
 json.dump(ids, open(IDS, 'w'), indent=1)
 print('page', slug, code, ids.get(slug), '' if code in (200, 201) else r[:300])
-pid = ids[slug]
-code, r = req(f'{B}/rankmath/v1/updateMeta', json.dumps({"objectType": "post", "objectID": pid, "meta": {"rank_math_title": d['seo_title'], "rank_math_description": d['seo_description']}}).encode(), 'POST')
-print('rank math meta', code, r[:200])
+if d.get('seo_title'):   # only pages we own the SEO for (the new Road page)
+    code, r = req(f'{B}/rankmath/v1/updateMeta', json.dumps({"objectType": "post", "objectID": ids[slug], "meta": {"rank_math_title": d['seo_title'], "rank_math_description": d['seo_description']}}).encode(), 'POST')
+    print('rank math meta', code, r[:200])
 code, r = req(f'{B}/elementor/v1/cache', method='DELETE'); print('elementor cache', code)

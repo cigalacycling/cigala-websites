@@ -1,0 +1,104 @@
+{
+ "trips": {
+  "id": 8689,
+  "h1": "UPCOMING BIKE TOURS",
+  "intro": [
+   [
+    "h4",
+    "From Italy's lakes, Tuscan hills, and legendary climbs to Portugal's Atlantic coast, Spain's hidden roads, France's greatest passes, sun-soaked islands, and all the way to Slovenia, Croatia and Cyprus — fully supported cycling tours across Europe's best roads. <br>Every trip is guided by former pro riders who handle the routes, logistics, and bike support, so all you need to do is ride.<br>\n<br>Whether you're chasing a Gran Fondo weekend, a multi-day mountain challenge, or a relaxed lakeside escape, there's a trip built for every level."
+   ],
+   [
+    "p",
+    "Can’t find the perfect one? Build your own tour. Find out more HERE"
+   ]
+  ],
+  "calendar_tag": "h3",
+  "trips": [
+   "discover-the-algarve-granfondo",
+   "chianti-gran-fondo-strade-bianche",
+   "tour-of-flanders-experience",
+   "cyprus-crossing-gravel",
+   "tuscany-epic-gravel",
+   "maratona-dles-dolomites",
+   "dolomites",
+   "italian-alps",
+   "alpine-gravel-escape",
+   "french-alps",
+   "wonderful-slovenia",
+   "lake-garda-and-stelvio",
+   "lake-garda-gravel",
+   "italys-coast-to-coast",
+   "lake-como-gran-fondo-il-lombardia"
+  ]
+ },
+ "gravel-trips": {
+  "id": 2821,
+  "h1": "GRAVEL BIKE TOURS",
+  "intro": [
+   [
+    "h4",
+    "Gravel opens up the terrain a road bike can't reach — white roads through Tuscany, remote mountain trails in Spain or Cyprus, hidden tracks across Sardinia, Sicily, Slovenia or Croatia. Every trip is fully supported by former pro guides, covering logistics, routes, and bike support, so all you have to do is ride.Whether you're chasing a multi-day gravel epic or a shorter escape, we've built routes for intermediate to expert riders across some of Europe's best-kept cycling terrain."
+   ],
+   [
+    "p",
+    "Can’t find the perfect one? Build your own tour. Find out more HERE"
+   ]
+  ],
+  "calendar_tag": "h3",
+  "trips": [
+   "cyprus-crossing-gravel",
+   "tuscany-epic-gravel",
+   "alpine-gravel-escape",
+   "lake-garda-gravel"
+  ]
+ },
+ "granfondo-trips": {
+  "id": 2796,
+  "h1": "GRANFONDO BIKE TOURS",
+  "intro": [
+   [
+    "h4",
+    "Ride the same roads as the pros. Our Gran Fondo trips pair guaranteed race entry with a fully guided holiday, so you never have to worry about registration deadlines, transport, or logistics — just show up and ride. Tackle Tuscany's white gravel roads at Strade Bianche, take on the cobbles and bergs of the Tour of Flanders, or chase the final monument of the season at Il Lombardia on the shores of Lake Como.Each trip is built around the race weekend itself: ride the course, soak up the atmosphere, and then watch the world's best professionals battle it out on the very same roads the next day. With small groups, hand-built routes, and support from former pro riders, it's the closest thing to living the pro cycling calendar from the inside."
+   ],
+   [
+    "p",
+    "Can’t find the perfect one? Build your own tour. Find out more HERE"
+   ]
+  ],
+  "calendar_tag": "h3",
+  "trips": [
+   "discover-the-algarve-granfondo",
+   "chianti-gran-fondo-strade-bianche",
+   "tour-of-flanders-experience",
+   "maratona-dles-dolomites",
+   "lake-como-gran-fondo-il-lombardia"
+  ]
+ },
+ "italian-trips": {
+  "id": 4402,
+  "h1": "ITALY BIKE TOURS",
+  "intro": [
+   [
+    "h2",
+    "Italy is the heartland of road cycling, and our guided bike tours take you through its most iconic terrain — from the hairpin switchbacks of the Passo dello Stelvio to the white gravel roads of Chianti to the postcard peaks of the Dolomites and the blue water of Puglia. \nRoutes are hand-built by our team of former pro riders, covering everything from the lakeside charm of Lake Garda & Lake Como to the high-altitude legends of the Italian Alps.<br>\nEvery holiday combines expertly planned routes with local culture, food, and hospitality, for riders of every level. Chase a Gran Fondo like Il Lombardia or Strade Bianche, tackle a multi-day climb, or just explore Italy bike tours at your own pace."
+   ],
+   [
+    "p",
+    "Can’t find the perfect one? Build your own tour. Find out more HERE"
+   ]
+  ],
+  "calendar_tag": "h2",
+  "trips": [
+   "chianti-gran-fondo-strade-bianche",
+   "tuscany-epic-gravel",
+   "maratona-dles-dolomites",
+   "dolomites",
+   "italian-alps",
+   "alpine-gravel-escape",
+   "lake-garda-and-stelvio",
+   "lake-garda-gravel",
+   "italys-coast-to-coast",
+   "lake-como-gran-fondo-il-lombardia"
+  ]
+ }
+}
