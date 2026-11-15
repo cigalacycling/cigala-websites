@@ -75,6 +75,7 @@ A = {
     'logo-algarve-v2': ('tours/brand/events/algarve-granfondo-wordmark.png', 800, None),
     'logo-strade-v2': ('tours/brand/events/strade-bianche-gran-fondo.png', 400, None),
     'logo-lombardia-v2': ('tours/brand/events/il-lombardia-gran-fondo.png', 400, None),
+    'logo-wrf': ('tours/brand/events/we-ride-flanders.png', 400, 'We Ride Flanders logo'),
     'logo-strade-v3': ('tours/brand/events/strade-bianche-gran-fondo.png', 400, None),   # recentred
     # guest photos: square crops from the originals matching the live crops (made by hand, already WebP q90)
     'guest-steve': ('webp-tours/cigala-tours-guest-steve.webp', 240, 'Person smiling while riding a celeste-colored Bianchi road bicycle'),

@@ -97,7 +97,7 @@ hero_custom = re.search(r'<p class="lede" style="margin-top:10px">Can’t find t
 band = re.search(r'<section>\s*<div class="in">\s*<div class="band">.*?</section>', idx, re.S).group(0)
 partners = re.search(r'<section>\s*<div class="in partners">.*?</section>', idx, re.S).group(0)
 partners = partners.replace('<div class="lab">Official event partner</div>', '<div class="lab">Event day support</div>')   # Matteo, 15 Nov
-partners = partners.replace('alt="Algarve Granfondo logo" loading="lazy"></span>', 'alt="Algarve Granfondo logo" loading="lazy"></span><span class="txt">Tour of Flanders</span>', 1)
+partners = partners.replace('alt="Algarve Granfondo logo" loading="lazy"></span>', 'alt="Algarve Granfondo logo" loading="lazy"></span><span class="fill"><img src="img/logo-wrf.png" alt="We Ride Flanders logo" loading="lazy"></span>', 1)
 footnote = ('<p class="footnote">*Prices in GBP or USD could be slightly different at the time of booking based on the current exchange rate. '
             'By signing up to any of our Cycling Holidays (public or custom) you accept our Terms &amp; Conditions. '
             f'<a href="{L}/terms-conditions/" {EXT}>View T&amp;C</a></p>')

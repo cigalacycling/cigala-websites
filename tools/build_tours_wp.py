@@ -29,7 +29,7 @@ IMG = {
     'img/home-story.jpg': 'story', 'img/home-matteo.png': 'matteo', 'img/logo.png': 'logo-v2',
     'img/cigala-tours-signature.webp': 'signature',
     'img/guides-0.jpg': 'guide-flanders', 'img/guides-1.jpg': 'guide-como', 'img/guides-2.jpg': 'guide-pack',
-    'img/logo-mdd.png': 'logo-mdd', 'img/logo-lombardia.png': 'logo-lombardia-v2', 'img/logo-strade.png': 'logo-strade-v3', 'img/logo-algarve.png': 'logo-algarve',   # previous Algarve logo (Matteo)
+    'img/logo-mdd.png': 'logo-mdd', 'img/logo-lombardia.png': 'logo-lombardia-v2', 'img/logo-strade.png': 'logo-strade-v3', 'img/logo-algarve.png': 'logo-algarve', 'img/logo-wrf.png': 'logo-wrf',   # previous Algarve logo (Matteo)
 }
 def fix_img(m):
     tag = m.group(0)
@@ -106,7 +106,9 @@ html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current { color: var(
 html .cc .menu a[aria-current="page"], html .cc .dd-btn.is-current, html .cc .dd .dd-btn { border-radius: 0; }
 html .cc .dd-btn.is-current, html .cc .dd:hover .dd-btn.is-current { background: none; }
 html .cc .dd-btn { display: inline-flex; align-items: center; gap: 4px; line-height: inherit; font-size: 12.5px; }
-/* text tile for events without a logo on file (Tour of Flanders) */
+/* square logos with their own background fill the tile (We Ride Flanders) */
+html body .logos span.fill { padding: 0 !important; overflow: hidden; background: #ffe500 !important; }
+html body .logos span.fill img { width: 100% !important; height: 100% !important; max-height: none !important; object-fit: cover; transform: scale(1.06); }
 html .logos span.txt { width: 96px; height: 96px; padding: 8px; font-family: var(--head); font-size: 15px; line-height: 1.05; text-align: center; text-transform: uppercase; color: #111; }
 /* menu: same as cigalacycling.com (brand.css 58-69) */
 html .cc .menu a, html .cc .dd-btn { border-radius: 0; background: none; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }

@@ -315,7 +315,7 @@ for n, svg in WHY_ICONS.items():
 
 # partners: no longer an official partner of the Algarve Granfondo (Matteo, 15 Nov) -> 'Event day support' with Algarve + Flanders
 rep('<div class="lab">Official event partner</div><div class="logos"><span><img src="img/logo-algarve.png" alt="Algarve Granfondo" loading="lazy"></span></div>',
-    '<div class="lab">Event day support</div><div class="logos"><span><img src="img/logo-algarve.png" alt="Algarve Granfondo" loading="lazy"></span><span class="txt">Tour of Flanders</span></div>')
+    '<div class="lab">Event day support</div><div class="logos"><span><img src="img/logo-algarve.png" alt="Algarve Granfondo" loading="lazy"></span><span class="fill"><img src="img/logo-wrf.png" alt="We Ride Flanders logo" loading="lazy"></span></div>')
 # more FAQs (facts from the live terms, custom tours and Dolomites pages)
 FAQ = [
   ('What is included in the price?', 'Each tour page lists exactly what is included. As an example, the Dolomites tour includes hotel nights, buffet breakfasts, airport transfers with bike and luggage at set times, guided rides every day with our ex-pro guides, a support vehicle, snacks and water on the route, and GPX files sent in advance. Flights, dinners, bike rental and travel insurance are extra.'),
