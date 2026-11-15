@@ -136,6 +136,13 @@ The new designs fix the last three. The Gran Canaria H1 still has to be fixed on
   - `/italian-trips/`: Italy tours
   - `/trips/private-trips/`: custom tours
   - Each page uses the trip-list design from `tourspages/index.html`, already showing that category. The chips become links to these pages, not a JavaScript filter.
+- **Bike Tours menu** (Matteo, 15 Nov): keep the live dropdown and add Road.
+  - All Tours → `/trips/`
+  - Granfondo Tours → `/trips/granfondo-trips/`. Live links to `/trips/granfondo/`, which 301-redirects there. Link straight to the final URL, and keep the redirect.
+  - Italian Tours → `/italian-trips/`
+  - Gravel Tours → `/trips/gravel-trips/`
+  - **Road Tours (new)** → `/trips/road-trips/`
+  - Custom Tours → `/trips/private-trips/`
 - **Road tours:** approved. Add a new `/trips/road-trips/` page (a new URL, so nothing is lost).
 - **Homepage H1:** keep the live wording, "Bike Tours & Cycling Holidays Across Europe's Best Cycling Destinations", in the new design (approved).
 - **Homepage tour finder** (approved idea, inspired by italybiketours.com's hero search bar). A bar in the homepage hero with three dropdowns: **Tour type** (Road, Gran Fondo, Gravel), **Country** (Italy, France, Portugal, Belgium, Cyprus, Slovenia) and **Level** (Beginner, Intermediate, Expert), plus a **Find tours** button.
