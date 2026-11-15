@@ -123,8 +123,11 @@ logos = ''.join(f'<span><img src="{img(k, n)}" alt="{E(live_alt(k))}" loading="l
 HERO = img('imgi_41_Tuz_W_Vx', 'packages-hero')
 TEAM = img('imgi_21_ZtFBdo0p', 'team-training')  # clean version of the live banner photo (imgi_43, Matteo didn't want the text banner)
 RIDER = img('imgi_42_FoPYDRwS', 'rider')
-VKLOGO = img('SDFASDFASDF.png', 'cigala-x-vekta')
-TPLOGO = img('PfNJBaCPkS_eSn5J', 'trainingpeaks-levels')
+img('SDFASDFASDF.png', 'cigala-x-vekta'); img('PfNJBaCPkS_eSn5J', 'trainingpeaks-levels')
+# dark-background versions (tools/darklogo.py): white background removed, black text turned white
+for n in ('cigala-x-vekta', 'trainingpeaks-levels'):
+    shutil.copy(ROOT + f'coaching/webp/darklogo-{n}.webp', OUT + f'img/{n}-dark.webp')
+VKLOGO, TPLOGO = 'img/cigala-x-vekta-dark.webp', 'img/trainingpeaks-levels-dark.webp'
 
 intro = [l[3:] for l in TXT[TXT.index('TXT: [', 0):TXT.index('TXT: 12 Weeks')] if l.startswith('P: ')]
 MAIN = f'''<div class="hero hero-sm">
@@ -307,8 +310,8 @@ PCSS = '''<style>
 .vk-side { display: grid; gap: 14px; }
 .vk-side .photo { aspect-ratio: 3 / 2; }
 .vk-logos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.vk-logos > * { display: grid; place-items: center; background: #fff; border-radius: var(--r); padding: 14px; min-height: 96px; }
-.vk-logos img { max-height: 72px; width: auto; }
+.vk-logos > * { display: grid; place-items: center; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; min-height: 130px; }
+.vk-logos img { max-height: 92px; width: auto; max-width: 100%; }
 .h-long { font-size: clamp(24px, 3vw, 36px); max-width: 32ch; }
 .apps { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; margin: 0; }
 .apps a { background: #fff; border-radius: 10px; height: 84px; display: grid; place-items: center; padding: 10px; }
