@@ -18,7 +18,7 @@ OUT = ROOT + 'stg-coaching/out/'
 os.makedirs(OUT, exist_ok=True)
 C = 'https://coaching.cigalacycling.com'
 M = json.load(open(ROOT + 'stg-coaching/media-webp.json'))
-PAGES = {'home': 2924, 'individual-packages': 3338}
+PAGES = {'home': 2924, 'individual-packages': 3338, 'terms-conditions': 564, 'privacy-policy': 'privacy'}   # 'privacy' = new page, created by the push
 SRC = {k: open(ROOT + f'coachingpages/{k}.html').read() for k in PAGES}
 
 rid = lambda: ''.join(random.choice('0123456789abcdef') for _ in range(7))
@@ -153,7 +153,7 @@ from render import banner as render_banner, head_snippet
 GA = 'G-E1WWZCLBRB'            # live coaching site, checked 15 Nov (coaching/TRACKING.md)
 PIXEL = '1986332861692106'     # Matteo's Meta Pixel, confirmed for Coaching 15 Nov; loads only after Accept
 OW = '43e5f685-37fc-4f78-9420-122fd2a3c5e3'   # OpenWidget org on the live coaching site
-banner = render_banner(ga_id=GA, pixel_id=PIXEL, openwidget_org=OW)
+banner = render_banner(ga_id=GA, privacy_url='/privacy-policy/', pixel_id=PIXEL, openwidget_org=OW)
 json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>'), html_widget(banner)])])}}, open(OUT + 'lib-228.json', 'w'))
 json.dump({"title": "Cigala consent mode default", "status": "publish",
            "meta": {"_elementor_location": "elementor_head", "_elementor_priority": 1, "_elementor_code": head_snippet()}}, open(OUT + 'snippet-head.json', 'w'))
@@ -196,8 +196,10 @@ def build_page(key):
             w = [html_widget('<div class="cc cc-page">' + b + '</div>'), shapo]
         els.append(wrap(w))
     for s in page_js(src): els[-1]['elements'].append(html_widget(s))
-    json.dump({"meta": {"_elementor_data": json.dumps(els), "_elementor_edit_mode": "builder"}, "content": '\n'.join(content)},
-              open(OUT + f'page-{PAGES[key]}.json', 'w'))
+    payload = {"meta": {"_elementor_data": json.dumps(els), "_elementor_edit_mode": "builder", "_elementor_template_type": "wp-page"}, "content": '\n'.join(content)}
+    if PAGES[key] == 'privacy':
+        payload.update({"title": "Privacy Policy", "slug": "privacy-policy", "status": "publish"})
+    json.dump(payload, open(OUT + f'page-{PAGES[key]}.json', 'w'))
     return len(els)
 
 n = {k: build_page(k) for k in PAGES}

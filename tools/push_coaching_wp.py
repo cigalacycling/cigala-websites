@@ -37,6 +37,13 @@ if __name__ == '__main__':
             else:
                 code, r = req(f'{B}/wp/v2/elementor_snippet', body, 'POST')
                 if code in (200, 201): open(SNIP, 'w').write(str(json.loads(r)['id']))
+        elif n == 'page-privacy':   # new page: created once, then updated; ID kept in stg-coaching/page-privacy-id.txt
+            f = ROOT + 'stg-coaching/page-privacy-id.txt'
+            if os.path.exists(f):
+                code, r = req(f'{B}/wp/v2/pages/{open(f).read().strip()}', body, 'POST')
+            else:
+                code, r = req(f'{B}/wp/v2/pages', body, 'POST')
+                if code in (200, 201): open(f, 'w').write(str(json.loads(r)['id']))
         else:
             kind, pid = n.split('-', 1)
             code, r = req(f'{B}/wp/v2/{ {"lib": "elementor_library", "page": "pages"}[kind] }/{pid}', body, 'POST')

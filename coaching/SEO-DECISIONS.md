@@ -65,3 +65,14 @@ No page gets a plain noindex. Redirecting the two empty or duplicate pages is be
 `2026/06/unnamed-35.png` on `/about/` is a **broken image on live** (the file returns 404, and the image has an empty alt). Leave it out of the staging build.
 
 These alt texts describe the scene and don't name anyone. If Matteo wants riders named (for example, the testimonial photos), swap in the names.
+
+## 5. Found 15 Nov, waiting for Matteo: hreflang tags
+
+Every live coaching page has the same five `<link rel="alternate" hreflang>` tags in the head: en-gb UK page, en-us USA page, en-ca Canada page, it Italia page, and **x-default -> `https://coaching.cigala**cycy**cling.com/cycling-coach-uk/`**, a misspelled domain that doesn't exist.
+
+Proposed fix, on staging only:
+- correct the domain;
+- point x-default at the homepage;
+- only put the tags on the country pages and the homepage, not on every blog post.
+
+They're probably in the WPCode header (not in the Elementor templates). Not changed yet.

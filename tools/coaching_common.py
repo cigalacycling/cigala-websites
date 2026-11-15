@@ -112,6 +112,7 @@ FOOTER = f'''<footer>
     <span>© 2026, Cigala Cycling Ltd</span>
     <span>VAT No: IE 3699893CH | Company Registration No: 675577</span>
     {a(C + '/terms-conditions/', 'Terms &amp; Conditions')}
+    {a(C + '/privacy-policy/', 'Privacy Policy')}
   </div></div>
 </footer>'''
 
@@ -231,10 +232,11 @@ def live_alt(key):
     assert len(hits) == 1, (key, hits)
     return hits.pop()
 
-def build(name, path, main, ribbon, h1=None, h2_changes=None, extra_css='', extra_js=''):
+def build(name, path, main, ribbon, h1=None, h2_changes=None, extra_css='', extra_js='', new_page=None):
     """Write coachingpages/<name>.html and check it against the live page at <path>.
     h1: the approved H1 when it differs from live (SEO-DECISIONS.md). h2_changes: {'drop': [...], 'add': [...]} approved H2 changes."""
-    live = LIVE[C + path]
+    # new_page: {'title', 'meta'} for a page that does not exist on live yet (no H2s to keep)
+    live = LIVE[C + path] if not new_page else {'title': new_page['title'], 'meta_description': new_page['meta'], 'h1': [h1], 'h2': None}
     page = f'''<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -263,6 +265,7 @@ def build(name, path, main, ribbon, h1=None, h2_changes=None, extra_css='', extr
     assert got_h1 == want_h1, (got_h1, want_h1)
     h2 = [html.unescape(re.sub(r'<[^>]+>', '', x)).strip() for x in re.findall(r'<h2[^>]*>(.*?)</h2>', page, re.S)]
     ch = h2_changes or {}
+    if live['h2'] is None: live = dict(live, h2=[x for x in h2])   # new page: nothing on live to keep
     want = [x for x in live['h2'] if x not in ch.get('drop', [])] + ch.get('add', [])
     missing = sorted({x for x in want if x not in h2}); extra = sorted({x for x in h2 if x not in want})
     assert not missing and not extra, ('H2 missing', missing, 'extra', extra)

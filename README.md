@@ -216,3 +216,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Cookie banner: the shared one (`shared/consent/`), GA4 G-E1WWZCLBRB + Meta Pixel 1986332861692106 + OpenWidget, in footer 228 with a "Cookie settings" link. The old "Got it!" bar and old chat widget are gone. Head snippet = Elementor custom code (ID in `stg-coaching/snippet-head-id.txt`). Tested: nothing before a choice; Accept loads the Pixel; Reject loads nothing.
   - **Matteo to do on staging:** paste `shared/consent/wpcode-header-line.html` as the first line of WPCode Header, above the Google tag (as on Tours).
   - Checked at 390/820/1440: no sideways scroll, one H1, alt on every image.
+- **Terms & Privacy (15 Nov, Matteo's decision via the main chat):** `tools/build_coaching_legal.py`, in the cigalacycling.com Terms style (sidebar "On this page" + numbered sections).
+  - Terms (564): live copy, H1 and H2s.
+  - Privacy Policy is a **new page**, https://staging.coaching.cigalacycling.com/privacy-policy/ (ID in `stg-coaching/page-privacy-id.txt`), text in `coaching/privacy.txt`. It is a **draft for Matteo to check**: health data, retention periods and the list of providers (Calendly, Shopify, GoCardless, Vekta, TrainingPeaks, Skool, Shapo, nutritionist/mental coach). Yoast title is the default; the page is in the page sitemap.
+  - The footer has Terms, Privacy Policy and Cookie settings; the cookie banner links to /privacy-policy/.
