@@ -24,6 +24,14 @@ INTRO = INTRO.replace('VIFIFY SPORTS', 'VIVIFY SPORTS').replace('help..The', 'he
 # the live paragraph runs sentences together ("home.You"): split it back into sentences
 sents = re.split(r'(?<=[.])(?=[A-Z])', INTRO)
 lead, how = sents[0], sents[1:]
+# Matteo 15 Nov (3rd review): the live "Vital Hygiene Program ... healthy lifestyle ... physical exercises to promote movement ...
+# stress and emotions" is not accurate: it is sports nutrition only. Rewritten; the scheduling and multiple-sessions lines stay.
+assert any('Vital Hygiene' in x for x in how), how
+how = [how[0],
+       'You will receive a full, in-depth report of Marine’s observations, so you understand exactly what your body needs to train, race and recover.',
+       'Marine then builds your personalised sports nutrition plan, adapted to your training load, your goals and your physiology.',
+       'You get practical advice on what to eat and when: your daily meals and macros, fuelling before, during and after training, hydration, and supplements only where you need them.',
+       next(x for x in how if x.startswith('You also have the option'))]
 WHAT = next(l[3:] for l in T if l.startswith('P: By assessing your dietary patterns'))
 COVERED = [l[5:].strip() for l in T if l.startswith('P: ➔ ')]
 assert len(COVERED) == 7, COVERED
@@ -48,16 +56,13 @@ IC = {   # simple line icons, one per item
     'Recovery nutrition': '<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>',
 }
 # nutrition posts (title and featured image from the post itself)
-POSTS = [
-    ('diet-of-a-cyclist', 'Diet of a cyclist', 'unnamed-3-1.png', 'What should a diet of a cyclist look like?'),
-    ('effective-fuelling-techniques-for-winter-training', 'Fuelling for winter training', 'unnamed-4-1.png', 'Fueling techniques during winter for cyclists'),
-    ('hydration-tips', 'Hydration Tips', 'imgi_18_photo-1592103634714', 'Water and hydrations tips'),
-    ('why-is-hydration-vital-to-optimise-athletic-performance-2', 'Why is hydration vital to optimise performance', 'unnamed-11.jpg', 'Water is vital for cycling performance'),
-    ('the-secrets-of-weight-loss', 'The secrets of weight loss', 'unnamed-7.jpg', 'Weight loss for cycling. The secret'),
-    ('a-nutritionists-guide-on-surviving-christmas', 'Nutritionist’s guide on surviving Christmas', 'unnamed-6.jpg', 'Nutritionist guide for christmas'),
-]
-posts = ''.join(f'<a class="nu-post" href="{C}/blog/{s}/" {EXT}><span class="nu-pimg"><img src="{img(k, "nutrition-post-" + s[:40])}" alt="{E(a)}" loading="lazy"></span>'
-                f'<span class="nu-ptx"><h3 class="h-sm">{E(t)}</h3><span class="arrow-link">Read the article →</span></span></a>' for s, t, k, a in POSTS)
+# Matteo 15 Nov: Marine's articles, published on the Coaching blog from vivifysports.com (tools/coaching_vivify_posts.py), plus her
+# cherry juice article that was already there. Images are the posts' featured images on the site.
+VP = json.load(open(ROOT + 'stg-coaching/vivify-posts.json'))['posts']
+POSTS = [(slug, p['title'], p['featured'], p['featured_alt']) for slug, p in VP.items()]
+POSTS.append(('is-cherry-juice-really-worth-the-hype', 'Cherry Juice: is it really worth the hype?', 'https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/06/unnamed-30.jpg', 'Cherry Juice in sports. Is really worth the hype?'))
+posts = ''.join(f'<a class="nu-post" href="{C}/blog/{s}/" {EXT}><span class="nu-pimg"><img src="{u}" alt="{E(a)}" loading="lazy"></span>'
+                f'<span class="nu-ptx">{"<span class=nu-by>By Marine Lenehan</span>" if s in VP else ""}<h3 class="h-sm">{E(t)}</h3><span class="arrow-link">Read the article →</span></span></a>' for s, t, u, a in POSTS)
 covered = ''.join(f'<li><svg viewBox="0 0 24 24" aria-hidden="true">{IC[x]}</svg><span>{E(x)}</span></li>' for x in COVERED + MORE)
 
 def viv(text):
@@ -74,36 +79,56 @@ pkg = ''.join(f'<li><span>{E(t)}</span><small>{E(w)}</small></li>' for t, w in P
 # Matteo 15 Nov: nutrition coaching as an UPGRADE to cycling coaching. Marine sees the athlete's calendar, training load and
 # sessions, plans the nutrition day by day, reviews the food diary; fuelling strategy per race from Critical Power; gut training.
 UPG = [
-    ('One calendar', 'Your nutrition sits next to your training in Vekta or TrainingPeaks: daily macros and carbs, written for the sessions you are doing that day.'),
+    ('One calendar', 'Your nutrition sits next to your training in Vekta or TrainingPeaks: your daily macros (carbohydrates, protein and fat), written for the sessions you are doing that day.'),
     ('Planned from your training load', 'Marine sees your calendar, training load and sessions, and adjusts your plan as the training changes: more carbs on the big days, less on the easy ones.'),
-    ('Food diary review', 'Log what you eat (MyFitnessPal or a note in your calendar). Marine reviews your diary and sends suggestions.'),
+    ('Food diary review', 'Log what you eat in MyFitnessPal. Marine reviews your food diary and sends you suggestions.'),
     ('Race & event fuelling', 'A fuelling strategy for each race, built from your Critical Power and the demands of the event, with gut training so your stomach can take it on the day.'),
 ]
-upg = ''.join(f'<li><h3 class="h-sm">{E(t)}</h3><p>{E(d)}</p></li>' for t, d in UPG)
+UIC = ['<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h3M8 18h6"/>',       # calendar
+       '<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>',                                                       # training load
+       '<path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5"/>',                                                   # food diary
+       '<path d="M4 22V4M4 4h13l-2 4 2 4H4"/>']                                                                     # race flag
+upg = ''.join(f'<li><svg class="nu-uic" viewBox="0 0 24 24" aria-hidden="true">{i}</svg><h3 class="h-sm">{E(t)}</h3><p>{E(d)}</p></li>' for i, (t, d) in zip(UIC, UPG))
 # the calendar: redrawn from Matteo's screenshot of an athlete's week (15 Nov 2026), not a photo
-WEEK = [('20', 'Nutritional note: focus on nutrient-dense foods that support immune function', [('str', '45m', 'Core & Strength Circuit | 2 lap', '')]),
-        ('21', 'Daily macronutrient intake: 300 g carbohydrates · 160 g protein · 75 g fat', [('ride', '1h31m · 54 km', '4×6 min torque efforts alternating + bursts', 'TEM')]),
-        ('22', 'Daily macronutrient intake: 300 g carbohydrates · 160 g protein · 75 g fat', [('ride', '58m · 33 km', 'Dynamic Efforts', 'AN')]),
-        ('23', 'Daily macros: 280 g carbohydrates = 1,120 kcal (48.9%) · 140 g protein', [('str', '30m', 'Stretch Routine', '')]),
-        ('24', 'Daily macronutrient intake: 560 g carbohydrates = 2,240 kcal (62.2%)', [('ride', '3h23m · 102 km', 'LDT + 3×10′ at SS, high cadence', 'THR')]),
-        ('25', 'Daily macros: 280 g carbohydrates = 1,120 kcal (48.9%) · 140 g protein', [('ride', '2h05m · 63 km', 'Active Recovery 1h30', 'AER')]),
-        ('26', 'Daily macronutrient intake: 560 g carbohydrates = 2,240 kcal (62.2%)', [('ride', '4h23m · 110 km', 'LDT 4h aim at 2000 m elevation', 'AER')])]
-TAGC = {'TEM': '#0e7c86', 'AN': '#7c4dff', 'THR': '#22a35a', 'AER': '#2f80ed'}
-def wk_card(kind, d, t, tag):
-    ic = ('<svg class="cal-ic" viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 11.5M5.5 17.5 9 9h7l-4 8.5"/></svg>' if kind == 'ride'
-          else '<svg class="cal-ic" viewBox="0 0 24 24"><path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/></svg>')
+# the calendar, redrawn from Matteo's screenshot of an athlete's week (15 Nov 2026)
+WEEK = [('20', '8/28', ['Nutritional note: focus on nutrient-dense foods that support immune function'], [('str', '45m', '', 'Core & Strength Circuit | 2 lap', '', 0, None)]),
+        ('21', '8/28', ['Daily macronutrient intake: 300 g carbohydrates · 160 g protein · 75 g fat'], [('ride', '1h31m', '54 km', '4×6 min torque efforts alternating + bursts', 'TEM', 1, [3, 3, 7, 7, 3, 7, 7, 3, 7, 7, 3, 2])]),
+        ('22', '8/28', ['Daily macronutrient intake: 300 g carbohydrates · 160 g protein · 75 g fat'], [('ride', '58m', '33 km', 'Dynamic Efforts', 'AN', 0, [3, 4, 9, 3, 9, 3, 9, 3, 4, 2])]),
+        ('23', '8/28', ['Daily macros: 280 g carbohydrates = 1,120 kcal (48.9%) · 140 g protein', 'Daily macros: 280 g carbohydrates = 1,120 kcal (48.9%) · 140 g protein'], [('str', '30m', '', 'Stretch Routine', '', 0, None)]),
+        ('24', '9/28', ['Daily macronutrient intake: 560 g carbohydrates = 2,240 kcal (62.2%)'], [('ride', '3h23m', '102 km', 'LDT + 3×10′ at SS, high cadence', 'THR', 13, [4, 4, 4, 6, 6, 4, 6, 6, 4, 6, 6, 4, 4, 3])]),
+        ('25', '8/28', ['Daily macros: 280 g carbohydrates = 1,120 kcal (48.9%) · 140 g protein'], [('ride', '2h05m', '63 km', 'Active Recovery 1h30', 'AER', 0, [3, 3, 3, 3, 3, 3, 3, 3, 3, 3])]),
+        ('26', '8/28', ['Daily macronutrient intake: 560 g carbohydrates = 2,240 kcal (62.2%)'], [('ride', '4h23m', '110 km', 'LDT 4h aim at 2000 m elevation', 'AER', 3, [4, 5, 4, 6, 4, 5, 6, 4, 5, 4, 6, 5, 4, 3])])]
+TAGC = {'TEM': '#0e8a95', 'AN': '#7c4dff', 'THR': '#22a35a', 'AER': '#2f80ed'}
+CI = {'ride': '<circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 11.5M5.5 17.5 9 9h7l-4 8.5"/>',
+      'str': '<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>',
+      'leaf': '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/>',
+      'msg': '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/>',
+      'ok': '<circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/>'}
+svgi = lambda k, c='cal-ic': f'<svg class="{c}" viewBox="0 0 24 24" aria-hidden="true">{CI[k]}</svg>'
+def trace(v):
+    w = 100 / len(v)
+    return '<svg class="cal-trace" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true">' + ''.join(f'<rect x="{i * w:.2f}" y="{10 - h}" width="{w - .6:.2f}" height="{h}"/>' for i, h in enumerate(v)) + '</svg>'
+def wk_card(kind, d, km, t, tag, com, tr):
     tg = f'<span class="cal-tag" style="background:{TAGC[tag]}">{tag}</span>' if tag else ''
-    return f'<div class="cal-w"><div class="cal-wt">{ic} {E(d)}{tg}</div><div class="cal-wn">{E(t)}</div></div>'
-cal = ''.join(f'<div class="cal-d"><div class="cal-h">{d}</div><div class="cal-n"><b>Nutrition</b><span>{E(n)}</span></div>{"".join(wk_card(*w) for w in ws)}</div>' for d, n, ws in WEEK)
-NOTE = ['LUNCH', 'Target: ~80 g carbs | ~45 g protein | ~25 g fat', '', 'Option 1', '• Grilled chicken breast', '• Rice', '• Mixed vegetables', '• Olive oil dressing',
-        '', 'Option 2', '• Lean beef', '• Baked potato', '• Side salad']
-note = '<br>'.join(E(x) for x in NOTE)
+    cm = f'<span class="cal-com">{svgi("msg", "cal-ic2")}<b>{com}</b></span>' if com else ''
+    return (f'<div class="cal-w"><div class="cal-wt">{svgi(kind)}<span>{E(d)}{" · " + E(km) if km else ""}</span>{tg}</div>'
+            f'<div class="cal-wn"><span>{E(t)}</span><span class="cal-st">{cm}{svgi("ok", "cal-ic2 cal-done")}</span></div>{trace(tr) if tr else ""}</div>')
+cal = ''.join(f'<div class="cal-d"><div class="cal-h"><b>{d}</b></div><div class="cal-cnt">{c}</div>'
+              + ''.join(f'<div class="cal-n"><b>{svgi("leaf")}Nutrition</b><span>{E(n)}</span></div>' for n in ns)
+              + ''.join(wk_card(*w) for w in ws) + '</div>' for d, c, ns, ws in WEEK)
+# Matteo 15 Nov: "replace with a recipe you invent ... a basic recipe for sports people" (an example; macros approximate)
+RECIPE = ('Post-ride recovery bowl', 'Serves 1 · 15 minutes', 'Approx. 85 g carbs · 50 g protein · 19 g fat',
+          ['100 g basmati rice (dry weight)', '150 g chicken breast', '1 small sweet pepper and a handful of spinach', '1 tbsp olive oil', 'Lemon, salt, pepper, paprika'],
+          ['Cook the rice.', 'Slice the chicken, season with paprika and pan-fry in the olive oil for 6–8 minutes.', 'Add the pepper and spinach for the last 2 minutes, then serve on the rice with a squeeze of lemon.'])
+note = (f'<p class="cal-rt">{E(RECIPE[0])}</p><p class="cal-rm">{E(RECIPE[1])}</p><p class="cal-rmac">{E(RECIPE[2])}</p>'
+        f'<p class="cal-rh">Ingredients</p><ul>{"".join(f"<li>{E(x)}</li>" for x in RECIPE[3])}</ul>'
+        f'<p class="cal-rh">Method</p><ol>{"".join(f"<li>{E(x)}</li>" for x in RECIPE[4])}</ol>')
 
 FAQ = [
     ('Who is the nutrition consultation for?',
      'Anyone who wants to clean up their diet, boost energy levels and performance, manage their weight, support their immune system, improve their relationship with food, or simply get general guidance on nutrition.'),
     ('How does the consultation work?',
-     ' '.join(how[:1]) + ' You receive a full, in-depth report and a Vital Hygiene Program with personalised advice on food, movement and tools to manage stress. You can book several sessions to add feedback and monitoring over a longer period.'),
+     ' '.join(how[:1]) + ' You receive a full, in-depth report and a personalised sports nutrition plan for your training and goals: daily meals and macros, fuelling around training, hydration and supplements where needed. You can book several sessions to add feedback and monitoring over a longer period.'),
     ('Can I add nutrition coaching to my cycling coaching?',
      'Yes. Nutrition coaching with Marine is an upgrade to any Cigala Cycling coaching package. She works from the same calendar as your coach, plans your nutrition around your training load, reviews your food diary and builds your race fuelling strategy. The price of the nutrition plan depends on the support you need: Marine will advise you in a free discovery call.'),
     ('Is nutrition included in my coaching package?',
@@ -145,7 +170,7 @@ MAIN = f'''<div class="hero hero-sm nu-hero">
         <b>Marine Lenehan</b>
         <span>MSc Sports Nutritionist · founder of <a class="viv" href="{VIVSITE}" {EXT}>Vivify Sports</a></span>
         <span>WorldTour professional cyclist with LIDL-TREK</span>
-        <span>Irish National Gravel Champion 2026 · Amateur Gravel World Champion 2024</span>
+        <span>2× Irish National Champion (gravel 2026, criterium 2024) · Amateur Gravel World Champion 2024</span>
       </figcaption>
     </figure>
   </div>
@@ -165,13 +190,13 @@ MAIN = f'''<div class="hero hero-sm nu-hero">
     <p class="nu-lede"><b>Train like a pro, with everything in one place.</b> Add nutrition coaching with Marine to your Cigala Cycling coaching: she works from the same calendar as your coach, so your training and your nutrition are planned together.</p>
     <ul class="nu-upg">{upg}</ul>
     <figure class="nu-cal">
-      <div class="cal-scroll" tabindex="0" aria-label="Example training week with nutrition notes, scroll sideways"><div class="cal-row">{cal}</div></div>
-      <div class="cal-note"><div class="cal-nh"><span>Note</span><b>Nutrition</b></div><p>{note}</p></div>
-      <figcaption>An athlete’s week: training sessions with Marine’s nutrition for each day, and a meal note in the same calendar.</figcaption>
+      <div class="cal-scroll" tabindex="0" aria-label="Example training week with nutrition notes"><div class="cal-row">{cal}</div></div>
+      <div class="cal-note"><div class="cal-nh"><span>Note</span><b>Nutrition</b><em>Recipe</em></div>{note}</div>
+      <figcaption>An athlete’s week: every session, Marine’s nutrition for each day, and recipes in the same calendar. <span class="cal-swipe">Swipe to see the whole week →</span></figcaption>
     </figure>
     <div class="nu-upg-cta panel">
       <p><b>An upgrade to any coaching package.</b> The price of your nutrition plan depends on the support you need: Marine will tell you in a free discovery call.</p>
-      <div class="ctas"><a class="btn btn-go" href="{VIVIFY}" {EXT}>Book a call with Marine</a><a class="btn btn-ghost" href="{C}/individual-packages/" {EXT}>See the coaching packages</a></div>
+      <div class="ctas"><a class="btn btn-go" href="{VIVSITE}contact" {EXT}>Book a free discovery call with Marine</a><a class="btn btn-ghost" href="{C}/individual-packages/" {EXT}>See the coaching packages</a></div>
     </div>
     <div class="split nu-inc">
       <div class="gn-txt">
@@ -243,28 +268,54 @@ a.viv:hover { text-decoration: underline; }
 .nu-upg li { padding: 18px 20px; border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 12px; background: var(--panel-grad), var(--panel); }
 .nu-upg h3 { margin: 0 0 6px; }
 .nu-upg p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
-.nu-cal { margin: 0 0 22px; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; align-items: start; }
+.nu-cal { margin: 0 0 22px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; align-items: start; }
+.nu-cal .cal-note { max-width: 560px; }
 .nu-cal figcaption { grid-column: 1 / -1; color: var(--text-3); font-size: 13px; }
 @media (max-width: 1000px) { .nu-cal { grid-template-columns: minmax(0, 1fr); } }
-.cal-scroll { overflow-x: auto; border-radius: 12px; border: 1px solid rgba(0,0,0,.1); background: #fff; scrollbar-width: thin; }
-.cal-row { display: grid; grid-template-columns: repeat(7, minmax(150px, 1fr)); min-width: 1050px; }
-.cal-d { border-right: 1px solid #e8e8e8; padding: 0 8px 10px; display: grid; align-content: start; gap: 8px; font-family: Inter, system-ui, sans-serif; }
+.cal-scroll { border-radius: 14px; border: 1px solid var(--border); background: var(--panel-grad), var(--panel); }
+.cal-row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.cal-d { border-right: 1px solid var(--border); padding: 0 7px 10px; display: grid; align-content: start; gap: 7px; min-width: 0; }
 .cal-d:last-child { border-right: 0; }
-.cal-h { background: #fbefc8; margin: 0 -8px; padding: 8px 10px; font-size: 13px; color: #444; }
-.cal-n { background: #f2f2f2; border-radius: 6px; padding: 8px 10px; display: grid; gap: 4px; }
-.cal-n b { font-size: 13px; color: #222; }
-.cal-n span { font-size: 11px; line-height: 1.4; color: #444; }
-.cal-w { border: 2px solid #3cc068; border-radius: 6px; padding: 8px 10px; background: #fff; display: grid; gap: 6px; }
-.cal-wt { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #222; }
-.cal-ic { width: 16px; height: 16px; fill: none; stroke: #333; stroke-width: 2; stroke-linecap: round; flex: none; }
-.cal-tag { margin-left: auto; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 3px; }
-.cal-wn { font-size: 13px; color: #222; line-height: 1.35; }
-.cal-note { background: #fff; border-radius: 12px; padding: 14px 16px; font-family: Inter, system-ui, sans-serif; color: #333; }
-.cal-nh { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.cal-nh span { font-weight: 700; color: #111; }
-.cal-nh b { background: #fbd96b; border-radius: 6px; padding: 4px 10px; font-size: 13px; }
-.cal-note p { margin: 0; font-size: 13px; line-height: 1.55; }
-.nu-upg-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 22px; margin-bottom: 26px; }
+.cal-h { margin: 0 -7px; padding: 8px 10px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.04); }
+.cal-h b { font: 400 18px/1 var(--head); color: var(--text); }
+.cal-cnt { justify-self: stretch; text-align: center; font-size: 11px; color: var(--text-3); border: 1px solid var(--border); border-radius: 6px; padding: 3px 0; }
+.cal-n { background: rgba(0,154,68,.08); border: 1px solid rgba(0,154,68,.25); border-radius: 8px; padding: 7px 8px; display: grid; gap: 4px; }
+.cal-n b { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text); }
+.cal-n span { font-size: 11px; line-height: 1.4; color: var(--text-2); }
+.cal-w { border: 1.5px solid #2fae5f; border-radius: 8px; background: rgba(255,255,255,.03); display: grid; gap: 5px; overflow: hidden; }
+.cal-wt { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 5px; padding: 7px 8px 0; font-size: 11px; font-weight: 700; color: var(--text); }
+.cal-wt span { min-width: 0; }
+.cal-ic { width: 14px; height: 14px; fill: none; stroke: var(--green-text); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.cal-ic2 { width: 14px; height: 14px; fill: none; stroke: var(--text-3); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.cal-done { stroke: #2fae5f; }
+.cal-tag { margin-left: auto; flex: none; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 3px; }
+.cal-wn { display: flex; justify-content: space-between; gap: 6px; padding: 0 8px 7px; font-size: 12px; color: var(--text); line-height: 1.35; }
+.cal-st { display: inline-flex; align-items: flex-start; gap: 4px; flex: none; }
+.cal-com { display: inline-flex; align-items: center; gap: 2px; font-size: 10px; color: var(--text-3); }
+.cal-com b { color: #f0bf00; font-weight: 700; }
+.cal-trace { display: block; width: 100%; height: 22px; margin-top: -4px; }
+.cal-trace rect { fill: rgba(255,255,255,.18); }
+.cal-swipe { display: none; color: var(--green-text); font-style: normal; }
+@media (max-width: 1100px) {
+  .cal-scroll { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+  .cal-row { grid-template-columns: repeat(7, 165px); }
+  .cal-d { scroll-snap-align: start; }
+  .cal-swipe { display: inline; }
+}
+.cal-note { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; color: var(--text-2); font-size: 13px; line-height: 1.55; }
+.cal-nh { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.cal-nh span { font-weight: 700; color: var(--text); }
+.cal-nh b { background: rgba(0,154,68,.18); color: var(--green-text); border-radius: 6px; padding: 3px 9px; font-size: 12px; }
+.cal-nh em { font-style: normal; font-size: 12px; color: var(--text-3); }
+.cal-note p { margin: 0; }
+.cal-rt { font: 400 20px/1.15 var(--head) !important; text-transform: uppercase; color: var(--text); }
+.cal-rm { color: var(--text-3); font-size: 12px; margin-top: 2px !important; }
+.cal-rmac { color: var(--green-text); font-weight: 700; margin: 6px 0 4px !important; }
+.cal-rh { font-weight: 700; color: var(--text); margin-top: 10px !important; }
+.cal-note ul, .cal-note ol { margin: 4px 0 0; padding-left: 18px; }
+.nu-uic { width: 28px; height: 28px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 8px; }
+.nu-cal figcaption { margin-bottom: 8px; }
+.nu-upg-cta { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 22px; margin-bottom: 26px; }
 .nu-upg-cta p { margin: 0; color: var(--text-2); max-width: 60ch; }
 .nu-upg-cta p b { color: var(--text); }
 .nu-upg-cta .ctas { margin: 0; }
@@ -284,6 +335,7 @@ a.viv:hover { text-decoration: underline; }
 .nu-pimg { aspect-ratio: 16 / 10; overflow: hidden; background: #111; }
 .nu-pimg img { width: 100%; height: 100%; object-fit: cover; }
 .nu-ptx { display: grid; gap: 8px; padding: 16px 18px 18px; }
+.nu-by { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
 .nu-ptx h3 { margin: 0; color: var(--text); font-size: 20px; }
 </style>'''
 LD = f'<script type="application/ld+json">{json.dumps(FAQ_LD, ensure_ascii=False)}</script>'

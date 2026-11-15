@@ -219,3 +219,19 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   (race names spelled correctly). New H2 "THE DATA BEHIND THE TALENT" with a power-duration chart from Marco B.'s case-study
   numbers (year 1 vs year 2; hover values, "See the numbers" table) and what Matteo analyses. Apply form (subject "Talent
   Programme application"). To check with Matteo: the live price "Advanced Package at €104" vs "20% discount" (20% off €149 is €119).
+
+## 14. Nutrition (3rd review) and Marine's articles (15 Nov 2026)
+
+- Nutrition copy: the live "Vital Hygiene Program ... healthy lifestyle ... physical exercises to promote movement ... stress and
+  emotions" was not accurate (Matteo: sports nutrition only). Rewritten as the personalised sports nutrition plan; FAQ to match.
+- Marine: "2× Irish National Champion (gravel 2026, criterium 2024) · Amateur Gravel World Champion 2024" (no e-sport title).
+- Upgrade cards with icons; "daily macros (carbohydrates, protein and fat)"; food diary in MyFitnessPal; calendar redrawn closer to
+  Matteo's screenshot (day counters, both notes on the 23rd, comments, completed ticks, power traces) in the site's style; the
+  meal note is now an example recipe; "Book a free discovery call with Marine" -> vivifysports.com/contact.
+- Five of Marine's articles published on the Coaching blog (staging) from vivifysports.com, word for word, images as WebP with
+  their alt text, tag "By Marine Lenehan" (her name on the blog cards), her signature and a "first published on vivifysports.com"
+  link (`tools/coaching_vivify_posts.py`, `tools/yoast_coaching_vivify_posts.py`): carbs-per-hour-endurance-fueling,
+  ironman-70-3-nutrition-plan, fatigue-after-exercise-endurance-athletes, daily-fat-intake-guide,
+  cycling-nutrition-what-to-eat-and-drink-on-the-bike. Yoast title, meta and keyphrase set. To decide with Matteo: the same
+  text is on vivifysports.com (duplicate content); a canonical to her site, or rewording, would avoid the two competing.
+- The Nutrition page lists these five plus her cherry juice article.

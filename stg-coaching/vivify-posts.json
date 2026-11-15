@@ -1,0 +1,143 @@
+{
+ "media": {
+  "https://static.wixstatic.com/media/0e1488_45f685e5e5e54029b7cf7b5211aa547c~mv2.jpg": {
+   "id": 7127,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/carbs-per-hour-endurance-fueling-1.webp",
+   "w": 1802,
+   "h": 2400
+  },
+  "https://static.wixstatic.com/media/11062b_0da56823899b498ca4a4e0232b376d02~mv2.jpg": {
+   "id": 7128,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/carbs-per-hour-endurance-fueling-2.webp",
+   "w": 1602,
+   "h": 2400
+  },
+  "https://static.wixstatic.com/media/nsplsh_619a870cc0354aa08c1dff2156851932~mv2.jpg": {
+   "id": 7129,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/carbs-per-hour-endurance-fueling-3.webp",
+   "w": 2400,
+   "h": 2031
+  },
+  "https://static.wixstatic.com/media/nsplsh_5aa897658f1e4fb8bd88bbd8b1654ea5~mv2.jpg": {
+   "id": 7131,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/ironman-70-3-nutrition-plan-1.webp",
+   "w": 2400,
+   "h": 2029
+  },
+  "https://static.wixstatic.com/media/nsplsh_2db864e403a64bad8b9d61bbfe0e322d~mv2.jpg": {
+   "id": 7134,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/daily-fat-intake-guide-1.webp",
+   "w": 2400,
+   "h": 1600
+  },
+  "https://static.wixstatic.com/media/nsplsh_ebc537ec14224f66a8b373ee870af7df~mv2.jpg": {
+   "id": 7135,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/daily-fat-intake-guide-2.webp",
+   "w": 2400,
+   "h": 1600
+  },
+  "https://static.wixstatic.com/media/nsplsh_586757424e557349764f45~mv2_d_5000_3333_s_4_2.jpg": {
+   "id": 7139,
+   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cycling-nutrition-on-the-bike-featured.webp",
+   "w": 2400,
+   "h": 1600
+  }
+ },
+ "posts": {
+  "carbs-per-hour-endurance-fueling": {
+   "id": 7130,
+   "link": "https://staging.coaching.cigalacycling.com/blog/carbs-per-hour-endurance-fueling/",
+   "title": "Carbohydrate Fueling for Endurance Sports: How Many Carbs Per Hour Do You Need?",
+   "seo_title": "How Many Carbs Per Hour? Endurance Fueling Guide | Vivify Sports",
+   "desc": "Learn how many carbs per hour you need for cycling and endurance sports. Discover glucose, fructose, SGLT1, GLUT5, gut training, and smart fueling strategies.",
+   "featured": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/carbs-per-hour-endurance-fueling-1.webp",
+   "featured_alt": "Cyclist eating a carbohydrate energy bar during a long-distance bike ride, fueling with carbohydrates to support endurance performance.",
+   "source": "https://www.vivifysports.com/post/carbohydrate-fueling-endurance-sports",
+   "blocks": {
+    "p": 55,
+    "h2": 12,
+    "h3": 8,
+    "ul": 5,
+    "ol": 0,
+    "img": 3,
+    "table": 1
+   }
+  },
+  "ironman-70-3-nutrition-plan": {
+   "id": 7132,
+   "link": "https://staging.coaching.cigalacycling.com/blog/ironman-70-3-nutrition-plan/",
+   "title": "Ironman 70.3 Nutrition Plan: How to Fuel Your Training and Race Day",
+   "seo_title": "Ironman 70.3 Nutrition Plan: Training & Race Day",
+   "desc": "Learn how to fuel an Ironman 70.3 with practical advice on carbohydrates, hydration, race-day nutrition and recovery.",
+   "featured": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/ironman-70-3-nutrition-plan-1.webp",
+   "featured_alt": "Triathlete competing in an Ironman 70.3, combining swimming, cycling and running during an endurance race.",
+   "source": "https://www.vivifysports.com/post/ironman-70-3-nutrition-plan",
+   "blocks": {
+    "p": 32,
+    "h2": 8,
+    "h3": 0,
+    "ul": 4,
+    "ol": 0,
+    "img": 1,
+    "table": 0
+   }
+  },
+  "fatigue-after-exercise-endurance-athletes": {
+   "id": 7133,
+   "link": "https://staging.coaching.cigalacycling.com/blog/fatigue-after-exercise-endurance-athletes/",
+   "title": "Why Am I So Tired After Exercise? Understanding Post-Exercise Fatigue in Endurance Athletes",
+   "seo_title": "Fatigue After Exercise: Causes & Recovery | Vivify Sports",
+   "desc": "Struggling with fatigue after exercise? Learn why your recovery may be suffering and how nutrition, training and lifestyle can support better energy and\u2026",
+   "featured": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/10/emma-harrisova-SqPuXo9yuoM-unsplash-scaled.jpg",
+   "featured_alt": "Why Am I So Tired After Exercise? Understanding Post-Exercise Fatigue in Endurance Athletes",
+   "source": "https://www.vivifysports.com/post/why-am-i-so-tired-after-exercise-understanding-post-exercise-fatigue-in-endurance-athletes",
+   "blocks": {
+    "p": 86,
+    "h2": 11,
+    "h3": 5,
+    "ul": 14,
+    "ol": 0,
+    "img": 0,
+    "table": 0
+   }
+  },
+  "daily-fat-intake-guide": {
+   "id": 7136,
+   "link": "https://staging.coaching.cigalacycling.com/blog/daily-fat-intake-guide/",
+   "title": "What should a Day's worth of Fat look like?",
+   "seo_title": "How Much Fat Should You Eat a Day? A Practical Guide",
+   "desc": "Learn how much fat you should eat each day, the best sources of healthy fats, and how to build a balanced diet for your health and goals.",
+   "featured": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/daily-fat-intake-guide-1.webp",
+   "featured_alt": "Person measuring waist circumference with tape measure to assess abdominal fat",
+   "source": "https://www.vivifysports.com/post/daily-fat-intake-guide",
+   "blocks": {
+    "p": 47,
+    "h2": 0,
+    "h3": 0,
+    "ul": 11,
+    "ol": 0,
+    "img": 2,
+    "table": 0
+   }
+  },
+  "cycling-nutrition-what-to-eat-and-drink-on-the-bike": {
+   "id": 7137,
+   "link": "https://staging.coaching.cigalacycling.com/blog/cycling-nutrition-what-to-eat-and-drink-on-the-bike/",
+   "title": "Cycling Nutrition: What to Eat and Drink During Bike Rides of Any Length",
+   "seo_title": "Cycling Nutrition: What to Eat and Drink During Bike Rides of Any Length",
+   "desc": "When you ask your group of friends on social rides what they eat and drink on their ride, you\u2019ll get almost as many answers as there are riders in the\u2026",
+   "featured": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cycling-nutrition-on-the-bike-featured.webp",
+   "featured_alt": "Road cyclist riding fast in a blue team kit, fuelled for a long ride",
+   "source": "https://www.vivifysports.com/post/cycling-nutrition-what-to-eat-and-drink-during-bike-rides-of-any-length",
+   "blocks": {
+    "p": 20,
+    "h2": 0,
+    "h3": 0,
+    "ul": 0,
+    "ol": 1,
+    "img": 1,
+    "table": 1
+   }
+  }
+ }
+}

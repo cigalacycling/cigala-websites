@@ -49,6 +49,7 @@ def between(s, a, b):
 # ---------- images and links ----------
 def fix_img(m):
     tag = m.group(0); src = re.search(r'src="([^"]+)"', tag).group(1)
+    if src.startswith('https://staging.coaching.cigalacycling.com/wp-content/uploads/'): return tag   # already in the staging media library (e.g. post images)
     if src not in M: raise SystemExit('not uploaded: ' + src + ' (run tools/coaching_media.py)')
     return tag.replace(f'src="{src}"', f'src="{M[src]["url"]}"')   # alt stays as in the preview (live alt or approved)
 
@@ -174,6 +175,15 @@ html .cc .blog-hero > img { object-position: 50% 58%; }
 .cc-blog .e-loop-item > .e-con > .e-con:last-child { position: absolute !important; left: 0; right: 0; bottom: 0; padding: 60px 18px 18px !important;
   background: linear-gradient(180deg, rgba(8,9,10,0), rgba(8,9,10,.82) 45%, rgba(8,9,10,.95)) !important; }
 .cc-blog .e-loop-item .elementor-widget-theme-post-excerpt { display: none !important; }
+/* Marine Lenehan's articles (tag "By Marine Lenehan", tools/coaching_vivify_posts.py): her name on the card instead of Matteo's */
+.cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title { font-size: 0 !important; }
+.cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title::after { content: "By Sports Nutritionist, Marine Lenehan"; font-size: 11px; }
+.single-post .elementor-4028 .cc-marine-sig { margin-top: 32px !important; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.12); color: #d0d6e0 !important; }
+.single-post .elementor-4028 .cc-marine-src { font-size: 14px !important; color: #8a8f98 !important; }
+.single-post .elementor-4028 .wp-block-table table { width: 100%; border-collapse: collapse; font: 400 15px/1.5 Montserrat, system-ui, sans-serif; color: #d0d6e0; }
+.single-post .elementor-4028 .wp-block-table th, .single-post .elementor-4028 .wp-block-table td { border: 1px solid rgba(255,255,255,.14); padding: 8px 10px; text-align: left; vertical-align: top; }
+.single-post .elementor-4028 .wp-block-table th { color: #f7f8f8; background: rgba(255,255,255,.05); }
+.single-post .elementor-4028 .wp-block-table { overflow-x: auto; }
 .cc-blog .e-loop-item > .e-con > .e-con:last-child { top: auto !important; height: auto !important; min-height: 0 !important; flex-grow: 0 !important; justify-content: flex-end !important; gap: 6px !important; }
 .cc-blog .e-loop-item > .e-con > .e-con:first-child { height: auto !important; min-height: 0 !important; }
 .cc-blog .e-loop-item > .e-con, .cc-blog .e-loop-item > .e-con > .e-con:first-child .elementor-widget, .cc-blog .e-loop-item .elementor-widget-theme-post-featured-image a { min-height: 0 !important; height: auto !important; display: block; }
