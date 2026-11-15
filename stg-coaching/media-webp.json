@@ -1,0 +1,952 @@
+{
+ "img/logo.webp": {
+  "id": 6414,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-logo.webp",
+  "alt": "Cigala Cycling Coaching home"
+ },
+ "img/hero.webp": {
+  "id": 6415,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hero.webp",
+  "alt": "Four Cigala Cycling riders climbing together in team kit"
+ },
+ "img/cycling-coaching.webp": {
+  "id": 6416,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-cycling-coaching.webp",
+  "alt": "Cyclist riding a quiet country road"
+ },
+ "img/triathlon-coaching.webp": {
+  "id": 6417,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-triathlon-coaching.webp",
+  "alt": "Triathlete standing by a lake at sunrise"
+ },
+ "img/what-we-offer.webp": {
+  "id": 6418,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-what-we-offer.webp",
+  "alt": "Cyclist finishing the Gran Fondo Strade Bianche in Siena"
+ },
+ "img/matteo.webp": {
+  "id": 6419,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-matteo.webp",
+  "alt": "Matteo Cigala, Head Coach, in the white Cigala Cycling jersey"
+ },
+ "img/dest-algarve.webp": {
+  "id": 6420,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-algarve.webp",
+  "alt": "Cycling in The Algarve, Portugal"
+ },
+ "img/dest-lake-garda.webp": {
+  "id": 6421,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-lake-garda.webp",
+  "alt": "Cycling in Lake Garda, Italy"
+ },
+ "img/dest-italian-alps.webp": {
+  "id": 6422,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-italian-alps.webp",
+  "alt": "Cycling in Italian Alps"
+ },
+ "img/dest-dolomites.webp": {
+  "id": 6423,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-dolomites.webp",
+  "alt": "Cycling in Dolomites, Italy"
+ },
+ "img/dest-lake-como.webp": {
+  "id": 6424,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-lake-como.webp",
+  "alt": "Cycling in Lake Como, Italy"
+ },
+ "img/dest-tuscany.webp": {
+  "id": 6425,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-tuscany.webp",
+  "alt": "Cycling in Tuscany, Italy"
+ },
+ "img/dest-puglia.webp": {
+  "id": 6426,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-puglia.webp",
+  "alt": "Cycling in Puglia, Italy"
+ },
+ "img/dest-sicily.webp": {
+  "id": 6427,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-sicily.webp",
+  "alt": "Cycling in Sicily, Italy"
+ },
+ "img/dest-french-alps.webp": {
+  "id": 6428,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-french-alps.webp",
+  "alt": "Cycling in French Alps, France"
+ },
+ "img/dest-balearic-islands.webp": {
+  "id": 6429,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-balearic-islands.webp",
+  "alt": "Cycling in Balearic Islands, Spain"
+ },
+ "img/dest-costa-blanca.webp": {
+  "id": 6430,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-costa-blanca.webp",
+  "alt": "Cycling in Costa Blanca, Spain"
+ },
+ "img/dest-slovenia.webp": {
+  "id": 6431,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-slovenia.webp",
+  "alt": "Cycling in Slovenia"
+ },
+ "img/dest-cyprus.webp": {
+  "id": 6432,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-cyprus.webp",
+  "alt": "Cycling in Cyprus"
+ },
+ "img/dest-croatia.webp": {
+  "id": 6433,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-croatia.webp",
+  "alt": "Cycling in Croatia"
+ },
+ "img/dest-ireland.webp": {
+  "id": 6434,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-dest-ireland.webp",
+  "alt": "Cycling in Ireland"
+ },
+ "img/retail.webp": {
+  "id": 6435,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-retail.webp",
+  "alt": "Cyclist training on an indoor smart trainer in a garage"
+ },
+ "img/over-a-decade.webp": {
+  "id": 6436,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-over-a-decade.webp",
+  "alt": "Over a decade of dedication, expertise and results: athletes coached by Cigala Cycling"
+ },
+ "img/logo-red-bull.webp": {
+  "id": 6437,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-logo-red-bull.webp",
+  "alt": "Red Bull Racing logo | Cigala Cycling Coaching"
+ },
+ "img/logo-stickybottle.webp": {
+  "id": 6438,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-logo-stickybottle.webp",
+  "alt": "StickyBottle.com cycling logo | Cigala Cycling Coaching"
+ },
+ "img/logo-zwift.webp": {
+  "id": 6439,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-logo-zwift.webp",
+  "alt": "White Zwift logo on orange bg | Cigala Cycling Coaching"
+ },
+ "img/logo-trainingpeaks.webp": {
+  "id": 6440,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-logo-trainingpeaks.webp",
+  "alt": "TrainingPeaks logo with icon | Cigala Cycling Coaching"
+ },
+ "img/logo-cycling-ireland.webp": {
+  "id": 6441,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-logo-cycling-ireland.webp",
+  "alt": "Cycling Ireland logo | Cigala Cycling Coaching"
+ },
+ "img/logo-vekta.webp": {
+  "id": 6442,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-logo-vekta.webp",
+  "alt": "Vekta logo with yellow icon | Cigala Cycling Coaching"
+ },
+ "img/cta.webp": {
+  "id": 6443,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-cta.webp",
+  "alt": "Cyclists riding below the Tre Cime di Lavaredo peaks"
+ },
+ "img/packages-hero.webp": {
+  "id": 6444,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-packages-hero.webp",
+  "alt": "Two cyclists in branded gear | Cigala Cycling Coaching"
+ },
+ "img/athlete-unnamed-88.webp": {
+  "id": 6445,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-athlete-unnamed-88.webp",
+  "alt": "Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching"
+ },
+ "img/athlete-unnamed-89.webp": {
+  "id": 6446,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-athlete-unnamed-89.webp",
+  "alt": "Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching"
+ },
+ "img/athlete-unnamed-90.webp": {
+  "id": 6447,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-athlete-unnamed-90.webp",
+  "alt": "Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching"
+ },
+ "img/athlete-unnamed-91.webp": {
+  "id": 6448,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-athlete-unnamed-91.webp",
+  "alt": "Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching"
+ },
+ "img/athlete-unnamed-93.webp": {
+  "id": 6449,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-athlete-unnamed-93.webp",
+  "alt": "Photo of a coached athlete, shown with their testimonial | Cigala Cycling Coaching"
+ },
+ "img/team-training.webp": {
+  "id": 6450,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-team-training.webp",
+  "alt": "Cigala Cycling team training | Cigala Cycling Coaching"
+ },
+ "img/cigala-x-vekta-dark.webp": {
+  "id": 6451,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-cigala-x-vekta-dark.webp",
+  "alt": "Cigala Cycling x Vekta logo | Cigala Cycling Coaching"
+ },
+ "img/trainingpeaks-levels-dark.webp": {
+  "id": 6452,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-trainingpeaks-levels-dark.webp",
+  "alt": "TrainingPeaks Level 1 & 2 logos | Cigala Cycling Coaching"
+ },
+ "img/app-garmin-logo-with-blue-tr.webp": {
+  "id": 6453,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-app-garmin-logo-with-blue-tr.webp",
+  "alt": "Garmin logo with blue triangle | Cigala Cycling Coaching"
+ },
+ "img/app-wahoo-fitness-brand-logo.webp": {
+  "id": 6454,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-app-wahoo-fitness-brand-logo.webp",
+  "alt": "Wahoo Fitness brand logo text"
+ },
+ "img/app-hammerhead-logo-with-key.webp": {
+  "id": 6455,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-app-hammerhead-logo-with-key.webp",
+  "alt": "Hammerhead logo with keywords | Cigala Cycling Coaching"
+ },
+ "img/app-bryton-logo-black-and-wh.webp": {
+  "id": 6456,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-app-bryton-logo-black-and-wh.webp",
+  "alt": "Bryton logo black and white | Cigala Cycling Coaching"
+ },
+ "img/app-rouvy-logo-on-gray-backg.webp": {
+  "id": 6457,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-app-rouvy-logo-on-gray-backg.webp",
+  "alt": "ROUVY logo on gray background | Cigala Cycling Coaching"
+ },
+ "img/app-mywhoosh-cycling-logo.webp": {
+  "id": 6458,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-app-mywhoosh-cycling-logo.webp",
+  "alt": "MyWhoosh cycling logo | Cigala Cycling Coaching"
+ },
+ "img/app-zwift-logo-with-orange-z.webp": {
+  "id": 6459,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-app-zwift-logo-with-orange-z.webp",
+  "alt": "Zwift logo with orange Z | Cigala Cycling Coaching"
+ },
+ "img/app-igpsport-black-and-red-l.webp": {
+  "id": 6460,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-app-igpsport-black-and-red-l.webp",
+  "alt": "iGPSPORT black and red logo | Cigala Cycling Coaching"
+ },
+ "../coaching/webp/2026_06_gallery-4.webp": {
+  "id": 6461,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-4.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-4-png.webp": {
+  "id": 6462,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-4-png.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-5.webp": {
+  "id": 6463,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-5.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-5-png.webp": {
+  "id": 6464,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-5-png.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-6.webp": {
+  "id": 6465,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-6.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-7.webp": {
+  "id": 6466,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-7.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-8.webp": {
+  "id": 6467,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-8.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-9.webp": {
+  "id": 6468,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-9.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-10.webp": {
+  "id": 6469,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-10.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-1.webp": {
+  "id": 6470,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-1.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-1-png.webp": {
+  "id": 6471,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-1-png.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-2.webp": {
+  "id": 6472,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-2.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-2-png.webp": {
+  "id": 6473,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-2-png.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-3.webp": {
+  "id": 6474,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-3.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-3-png.webp": {
+  "id": 6475,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-3-png.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-21.webp": {
+  "id": 6476,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-21.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-22.webp": {
+  "id": 6477,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-22.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-23.webp": {
+  "id": 6478,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-23.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-24.webp": {
+  "id": 6479,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-24.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-25.webp": {
+  "id": 6480,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-25.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-11.webp": {
+  "id": 6481,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-11.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-12.webp": {
+  "id": 6482,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-12.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-13.webp": {
+  "id": 6483,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-13.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-14.webp": {
+  "id": 6484,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-14.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-15.webp": {
+  "id": 6485,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-15.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-16.webp": {
+  "id": 6486,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-16.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-17.webp": {
+  "id": 6487,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-17.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-18.webp": {
+  "id": 6488,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-18.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-19.webp": {
+  "id": 6489,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-19.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-20.webp": {
+  "id": 6490,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-20.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-37.webp": {
+  "id": 6491,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-37.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-38.webp": {
+  "id": 6492,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-38.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-39.webp": {
+  "id": 6493,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-39.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-40.webp": {
+  "id": 6494,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-40.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-26.webp": {
+  "id": 6495,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-26.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-27.webp": {
+  "id": 6496,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-27.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-28.webp": {
+  "id": 6497,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-28.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-29.webp": {
+  "id": 6498,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-29.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-30.webp": {
+  "id": 6499,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-30.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-31.webp": {
+  "id": 6500,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-31.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-32.webp": {
+  "id": 6501,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-32.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-33.webp": {
+  "id": 6502,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-33.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-34.webp": {
+  "id": 6503,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-34.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-35.webp": {
+  "id": 6504,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-35.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-36.webp": {
+  "id": 6505,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-36.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-97.webp": {
+  "id": 6506,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-97.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-98.webp": {
+  "id": 6507,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-98.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-99.webp": {
+  "id": 6508,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-99.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-100.webp": {
+  "id": 6509,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-100.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-41.webp": {
+  "id": 6510,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-41.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-42.webp": {
+  "id": 6511,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-42.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-43.webp": {
+  "id": 6512,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-43.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-44.webp": {
+  "id": 6513,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-44.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-45.webp": {
+  "id": 6514,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-45.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-46.webp": {
+  "id": 6515,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-46.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-47.webp": {
+  "id": 6516,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-47.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-48.webp": {
+  "id": 6517,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-48.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-49.webp": {
+  "id": 6518,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-49.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-50.webp": {
+  "id": 6519,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-50.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-51.webp": {
+  "id": 6520,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-51.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-52.webp": {
+  "id": 6521,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-52.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-53.webp": {
+  "id": 6522,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-53.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-54.webp": {
+  "id": 6523,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-54.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-55.webp": {
+  "id": 6524,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-55.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-56.webp": {
+  "id": 6525,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-56.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-57.webp": {
+  "id": 6526,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-57.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-58.webp": {
+  "id": 6527,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-58.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-59.webp": {
+  "id": 6528,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-59.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-60.webp": {
+  "id": 6529,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-60.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-61.webp": {
+  "id": 6530,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-61.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-62.webp": {
+  "id": 6531,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-62.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-63.webp": {
+  "id": 6532,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-63.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-64.webp": {
+  "id": 6533,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-64.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-65.webp": {
+  "id": 6534,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-65.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-66.webp": {
+  "id": 6535,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-66.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-67.webp": {
+  "id": 6536,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-67.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-68.webp": {
+  "id": 6537,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-68.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-69.webp": {
+  "id": 6538,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-69.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-70.webp": {
+  "id": 6539,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-70.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-71.webp": {
+  "id": 6540,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-71.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-72.webp": {
+  "id": 6541,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-72.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-73.webp": {
+  "id": 6542,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-73.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-74.webp": {
+  "id": 6543,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-74.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-75.webp": {
+  "id": 6544,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-75.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-76.webp": {
+  "id": 6545,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-76.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-77.webp": {
+  "id": 6546,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-77.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-78.webp": {
+  "id": 6547,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-78.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-79.webp": {
+  "id": 6548,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-79.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-80.webp": {
+  "id": 6549,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-80.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-81.webp": {
+  "id": 6550,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-81.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-82.webp": {
+  "id": 6551,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-82.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-83.webp": {
+  "id": 6552,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-83.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-84.webp": {
+  "id": 6553,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-84.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-85.webp": {
+  "id": 6554,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-85.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-86.webp": {
+  "id": 6555,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-86.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-87.webp": {
+  "id": 6556,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-87.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-88.webp": {
+  "id": 6557,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-88.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-89.webp": {
+  "id": 6558,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-89.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-90.webp": {
+  "id": 6559,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-90.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-91.webp": {
+  "id": 6560,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-91.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-92.webp": {
+  "id": 6561,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-92.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-93.webp": {
+  "id": 6562,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-93.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-94.webp": {
+  "id": 6563,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-94.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-95.webp": {
+  "id": 6564,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-95.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-96.webp": {
+  "id": 6565,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-96.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-131.webp": {
+  "id": 6566,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-131.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-132.webp": {
+  "id": 6567,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-132.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-133.webp": {
+  "id": 6568,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-133.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-134.webp": {
+  "id": 6569,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-134.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-135.webp": {
+  "id": 6570,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-135.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-136.webp": {
+  "id": 6571,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-136.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-137.webp": {
+  "id": 6572,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-137.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-101.webp": {
+  "id": 6573,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-101.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-102.webp": {
+  "id": 6574,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-102.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-103.webp": {
+  "id": 6575,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-103.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-104.webp": {
+  "id": 6576,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-104.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-105.webp": {
+  "id": 6577,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-105.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-106.webp": {
+  "id": 6578,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-106.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-107.webp": {
+  "id": 6579,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-107.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-108.webp": {
+  "id": 6580,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-108.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-109.webp": {
+  "id": 6581,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-109.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-110.webp": {
+  "id": 6582,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-110.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-111.webp": {
+  "id": 6583,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-111.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-112.webp": {
+  "id": 6584,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-112.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-113.webp": {
+  "id": 6585,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-113.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-114.webp": {
+  "id": 6586,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-114.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-115.webp": {
+  "id": 6587,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-115.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-116.webp": {
+  "id": 6588,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-116.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-117.webp": {
+  "id": 6589,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-117.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-118.webp": {
+  "id": 6590,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-118.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-119.webp": {
+  "id": 6591,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-119.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-120.webp": {
+  "id": 6592,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-120.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-121.webp": {
+  "id": 6593,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-121.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-122.webp": {
+  "id": 6594,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-122.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-123.webp": {
+  "id": 6595,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-123.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-124.webp": {
+  "id": 6596,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-124.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-125.webp": {
+  "id": 6597,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-125.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-126.webp": {
+  "id": 6598,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-126.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-127.webp": {
+  "id": 6599,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-127.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-128.webp": {
+  "id": 6600,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-128.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-129.webp": {
+  "id": 6601,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-129.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "../coaching/webp/2026_06_gallery-130.webp": {
+  "id": 6602,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-gallery-130.webp",
+  "alt": "Athlete coached by Cigala Cycling"
+ },
+ "img/rider.webp": {
+  "id": 6603,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-rider.webp",
+  "alt": "Cyclist in racing kit on bike | Cigala Cycling Coaching"
+ }
+}

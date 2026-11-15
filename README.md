@@ -4,7 +4,7 @@ This repository holds the redesign of the Cigala Cycling sites in the Cigala Cyc
 
 1. cigalacycling.com: built on staging, waiting to go live
 2. tours.cigalacycling.com: designs done, fresh SEO baseline taken 15 Nov; waiting for Matteo to create the Hostinger staging copy
-3. coaching.cigalacycling.com: SEO baseline, content extraction and approved SEO fixes done (15 Nov); staging build waits for Tours (see `coaching/SEO-DECISIONS.md`)
+3. coaching.cigalacycling.com: homepage and Individual Packages built on staging (15 Nov); the other pages are next (see `coaching/SEO-DECISIONS.md`)
 4. retail.cigalacycling.com: runs on Shopify, not started
 
 ## Ground rules (from Matteo)
@@ -208,4 +208,10 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Backup (15 Nov, before any change):** `stg-coaching/backup/` holds all 23 pages, 13 Elementor templates, 54 posts (53 published + 1 empty draft), menus and menu items, categories, tags and site settings. `stg-coaching/media.json` lists the 414 media items (ID, URL, alt). Restore from these files.
 - Active templates: header 170 "HEADER 1", footer 228 "footer1", popup 5090 "MENU LAPPY TABI MOBI" (mobile menu), single post 4028, kit 6. The others (5628, 5664, 6311, 4718, 6065, 6068, 6071, 6077) are unused drafts.
 - Page IDs: Home 2924, About 2109, About2 (triathlon) 3770, Individual 3338, Tri individual 3795, Group 3738, Group2 3845, Testing 3865, Nutrition 3995, Bike fitting 4256, Blog 4354, Book 1-on-1 3750, Club talk 4395, Vision 3272, Contact 461, Terms 564, Testimonials 2844, Talent scout 896, UK 6098, USA 6100, Canada 6102, Italia 6106, Dummy 6074.
-- **Build in progress (started 15 Nov, in parallel with Tours, Matteo's OK):** designs are previewed in the repo first and only pushed to staging after Matteo approves them. Then apply `coaching/SEO-DECISIONS.md`.
+- **Build in progress (started 15 Nov, in parallel with Tours, Matteo's OK):** designs are previewed in the repo first (`coachingpages/`), then pushed to staging.
+- **On staging (15 Nov):** homepage https://staging.coaching.cigalacycling.com/ (2924) and Individual Packages https://staging.coaching.cigalacycling.com/individual-packages/ (3338), plus the new header 170, footer 228 and kit 6 CSS (scoped to `.cc`, so the other pages keep their old look under the new header/footer).
+  - How: `python3 -I tools/coaching_media.py` (WebP images -> staging media, `stg-coaching/media-webp.json`), `python3 -I tools/build_coaching_wp.py` (payloads -> `stg-coaching/out/`), `python3 -I tools/push_coaching_wp.py lib-6 lib-170 lib-228 page-2924 page-3338 snippet-head` (staging only, clears the Elementor cache).
+  - Packages keeps the live Elementor contact form (to info@cigalacycling.com, styled in the brand, 16px fields) and the Shapo testimonials widget.
+  - Cookie banner: the shared one (`shared/consent/`), GA4 G-E1WWZCLBRB + Meta Pixel 1986332861692106 + OpenWidget, in footer 228 with a "Cookie settings" link. The old "Got it!" bar and old chat widget are gone. Head snippet = Elementor custom code (ID in `stg-coaching/snippet-head-id.txt`). Tested: nothing before a choice; Accept loads the Pixel; Reject loads nothing.
+  - **Matteo to do on staging:** paste `shared/consent/wpcode-header-line.html` as the first line of WPCode Header, above the Google tag (as on Tours).
+  - Checked at 390/820/1440: no sideways scroll, one H1, alt on every image.
