@@ -117,9 +117,9 @@ EV_MORE = ['**Campionato Italiano Gravel** (FCI)', '**Campionati Italiani Granfo
            '**Nova Eroica** (Buonconvento, Siena)', '**L’Eroica** (Gaiole in Chianti)', '**Granfondo Il Lombardia** (Como)',
            '**Granfondo Tre Valli Varesine** (Varese)', '**Sportful Dolomiti Race** (Feltre)', '**Granfondo Campagnolo Roma** (Roma)',
            '**Tuscany Trail** (Toscana) — bikepacking, circa 500 km', '**Italy Divide** (da Pompei al Lago di Garda) — ultra gravel e bikepacking',
-           '**Veneto Gravel** (Bassano del Grappa)', '**La Fausto Coppi** (Cuneo)', '**Granfondo Felice Gimondi** (Bergamo)']
-EV_T.update({'Tuscany Trail': 'Ultra', 'Italy Divide': 'Ultra', 'Veneto Gravel': 'Gravel', 'Fausto Coppi': 'Strada', 'Gimondi': 'Strada', 'Gravel': 'Gravel', 'Eroica': 'Gravel', 'Granfondo e Marathon': 'Tutte le discipline', 'Lombardia': 'Strada', 'Tre Valli': 'Strada', 'Sportful': 'Strada', 'Campagnolo': 'Strada'})
-WON = ('Strade Bianche', 'Campionato Italiano Gravel', 'Il Lombardia', 'Tre Valli Varesine')   # About page: Matteo's own wins
+           '**Veneto Gravel** (Bassano del Grappa)', '**Dolomiti Superbike** (Villabassa, Alta Pusteria)', '**Capoliveri Legend Cup** (Isola d’Elba)', '**La Fausto Coppi** (Cuneo)', '**Granfondo Felice Gimondi** (Bergamo)']
+EV_T.update({'Superbike': 'MTB', 'Capoliveri': 'MTB', 'Tuscany Trail': 'Ultra', 'Italy Divide': 'Ultra', 'Veneto Gravel': 'Gravel', 'Fausto Coppi': 'Strada', 'Gimondi': 'Strada', 'Gravel': 'Gravel', 'Eroica': 'Gravel', 'Granfondo e Marathon': 'Tutte le discipline', 'Lombardia': 'Strada', 'Tre Valli': 'Strada', 'Sportful': 'Strada', 'Campagnolo': 'Strada'})
+WON = ('Strade Bianche', 'Campionato Italiano Gravel', 'Il Lombardia', 'Tre Valli Varesine', 'Mondiali, Europei')   # Mondiali/Europei: European Champion Gran Fondo 2022   # About page: Matteo's own wins
 def ev_card(x):
     t = next((v for k, v in EV_T.items() if k in x), 'Strada'); c = TYPES[t]
     m = re.match(r'\*\*(.+?)\*\*\s*(.*)', x.replace('**\n\n**', '').strip())
@@ -129,7 +129,7 @@ def ev_card(x):
     if nm: name, rest = nm.group(1), f'({nm.group(2)}) {rest}'.strip()
     rest = rest.strip()
     won = '<span class="it-ev-won">★ Vinta da Matteo</span>' if any(w in name for w in WON) else ''
-    return (f'<li style="--tc:{c}"><span class="it-ev-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{EV_IC[t]}</svg></span><span class="it-ev-tag">{t}</span>'
+    return (f'<li data-t="{t}" style="--tc:{c}"><span class="it-ev-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{EV_IC[t]}</svg></span><span class="it-ev-tag">{t}</span>'
             f'<b>{E(name)}</b>{won}{f"<span class=it-ev-pl>{E(rest.strip("() ").replace(") —", " —"))}</span>" if rest else ""}</li>')
 # Matteo 15 Nov: the sample calendar in Italian too (same days and numbers as on the English pages)
 CAL_IT = [('>Nutrition<', '>Nutrizione<'),
@@ -239,7 +239,7 @@ MAIN = f'''<div class="hero hero-sm">
         <div class="eyebrow">Il tuo obiettivo</div>
         <h2>Gli Eventi per Cui Prepariamo i Nostri Atleti</h2><div class="bar"></div>
         <p>{E(ev_p[0])}</p>
-        <div class="it-ev-types">{''.join(f'<span style="--tc:{c}">{t}</span>' for t, c in TYPES.items())}</div>
+        <div class="it-ev-types" role="group" aria-label="Filtra per disciplina"><button type="button" class="on" data-f="" style="--tc:#d0d6e0">Tutti</button>{''.join(f'<button type="button" data-f="{t}" style="--tc:{c}">{t}</button>' for t, c in TYPES.items())}</div>
       </div>
     </div>
     <ul class="it-ev-grid">{''.join(ev_card(x) for x in ev_li + EV_MORE)}</ul>
@@ -319,6 +319,9 @@ MAIN = f'''<div class="hero hero-sm">
   </div>
 </section>'''
 
+EV_JS = """<script>(function(){var bs=document.querySelectorAll('.it-ev-types button');bs.forEach(function(b){b.addEventListener('click',function(){
+var f=b.dataset.f;bs.forEach(function(x){x.classList.toggle('on',x===b);});
+document.querySelectorAll('.it-ev-grid li').forEach(function(li){li.classList.toggle('off',!!f&&li.dataset.t!==f);});});});})();</script>"""
 IT_NL = """<script>(function(){function go(){var b=document.querySelector('.nl-band');if(!b)return;
 var m={'.nl-eyebrow':'Newsletter','.nl-t':'Resta aggiornato','.nl-d':'Consigli di allenamento, novità, articoli e offerte su coaching, viaggi in bici e il nostro shop.','.nl-sr':'Indirizzo email'};
 for(var k in m){var e=b.querySelector(k);if(e)e.textContent=m[k];}
@@ -327,7 +330,7 @@ var n=b.querySelector('.nl-note');if(n)n.innerHTML='Una sola newsletter Cigala C
 var msg=b.querySelector('.nl-msg');if(msg)new MutationObserver(function(){var t=msg.textContent,r={'Please enter a valid email address.':'Inserisci un indirizzo email valido.','Thanks, you’re subscribed! Watch your inbox for our next update.':'Grazie, sei iscritto! Controlla la tua casella per il prossimo aggiornamento.','Please try again.':'Riprova, per favore.'};
 for(var k in r){if(t.indexOf(k)>-1&&t!==r[k]){msg.textContent=r[k];}}}).observe(msg,{childList:true,characterData:true,subtree:true});}
 if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);})();</script>"""
-JS = REVIEWS_JS + G.NUMS_JS + IT_NL + """<script>(function(){document.querySelectorAll('.pkg-all').forEach(function(b){b.addEventListener('click',function(){
+JS = REVIEWS_JS + G.NUMS_JS + IT_NL + EV_JS + """<script>(function(){document.querySelectorAll('.pkg-all').forEach(function(b){b.addEventListener('click',function(){
 var o=!b.closest('.pkg').classList.contains('open');document.querySelectorAll('.pkg').forEach(function(p){p.classList.toggle('open',o);});
 document.querySelectorAll('.pkg-all').forEach(function(x){x.setAttribute('aria-expanded',o);x.querySelector('span').textContent=o?'Mostra meno':'Vedi tutte le caratteristiche';});});});
 document.querySelectorAll('[data-waitlist]').forEach(function(a){a.addEventListener('click',function(){var m=document.querySelector('#contact textarea');if(m&&!m.value)m.value='Vorrei entrare nella lista d\\u2019attesa del pacchetto '+a.dataset.waitlist+'.';});});})();</script>"""
@@ -338,7 +341,10 @@ ITCSS = '''<style>
 .it-ev-pic img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
 .it-ev-pic span { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 14px 12px; background: linear-gradient(transparent, rgba(8,9,10,.9)); font-size: 13px; color: var(--text); }
 .it-ev-types { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.it-ev-types span { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--tc); color: var(--text); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.it-ev-types button { font-family: var(--body); background: transparent; cursor: pointer; transition: background .2s, color .2s; }
+.it-ev-types button:hover, .it-ev-types button.on { background: var(--tc); color: #0f1011 !important; }
+.it-ev-grid li.off { display: none; }
+.it-ev-types button { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--tc); color: var(--text); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 .it-ev-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
 .it-ev-grid li { position: relative; display: grid; gap: 6px; align-content: start; padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: linear-gradient(160deg, color-mix(in srgb, var(--tc) 12%, transparent), transparent 60%), var(--panel); transition: transform .25s, border-color .25s, box-shadow .25s; }
 .it-ev-grid li:hover { transform: translateY(-4px); border-color: var(--tc); box-shadow: 0 16px 40px color-mix(in srgb, var(--tc) 22%, transparent); }
