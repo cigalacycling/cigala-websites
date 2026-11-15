@@ -105,6 +105,7 @@ Elementor snippet 697 holds the head code: it sends a consent update for returni
 - Check robots.txt is not blocking Google.
 - Re-crawl live and compare with `baseline.json`.
 - Clear the LiteSpeed cache, resubmit the sitemap, and check Analytics realtime and the Pixel.
+- About 2 weeks after launch, once the re-crawls match the baselines: delete the staging copies in hPanel first (cigalacycling.com and Tours, plus Coaching), then delete their DNS records (`staging`, `staging.tours`). Never remove a DNS record while its staging copy still exists.
 
 **Week of 23 Nov:**
 - Meta domain verification
