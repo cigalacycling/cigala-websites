@@ -45,6 +45,15 @@ html .cl .step .n { display: block; font-family: var(--head); font-size: 15px; c
 html .cl .step h3 { font-size: 22px; }
 html .cl .org { padding: 16px 18px; display: flex; gap: 12px; align-items: center; }
 html .cl .org h3 { font-size: 18px; }
+html .cl .oic { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
+html .cl .oic svg { width: 21px; height: 21px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+html .cl .locwrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-top: 18px; }
+@media (max-width: 900px) { html .cl .locwrap { grid-template-columns: minmax(0, 1fr); } }
+html .cl .lmapbox svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
+html .cl .locs.loclist { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; margin: 0; padding: 0; width: 100%; max-width: none; justify-self: stretch; list-style: none; }
+html .cl .locs.loclist li::before, html .cl .locs.loclist li::after { content: none !important; display: none !important; }
+html .cl .locs.loclist li { display: flex; gap: 10px; align-items: flex-start; justify-content: flex-start; text-align: left; line-height: 1.4; margin: 0; background: none; border: 0; padding: 0; border-radius: 0; font-size: 14px; color: var(--text-2); }
+html .cl .locs.loclist .n { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #e10600; color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; margin-top: 1px; }
 html .cl .locs { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 html .cl .locs li { font-size: 13.5px; color: var(--text); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 13px; }
 html .cl .faqs { display: grid; gap: 10px; max-width: 900px; }

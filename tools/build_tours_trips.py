@@ -20,6 +20,10 @@ IDS = json.load(open(ROOT + 'stg-tours/trip-ids.json'))
 TRIPS = {t['slug']: t for t in json.load(open(ROOT + 'tours/trips-2027.json'))['trips']}
 M = json.load(open(ROOT + 'stg-tours/media-webp.json'))
 TYPE = {'road': 'Road', 'gf': 'Gran Fondo', 'gravel': 'Gravel'}
+import importlib.util as _iu
+_sp = _iu.spec_from_file_location('trm', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tours_route_maps.py')); _trm = _iu.module_from_spec(_sp); _sp.loader.exec_module(_trm)
+ROUTE_NOTES = {k: v.get('note', '') for k, v in _trm.ROUTES.items()}
+SPOTS = {k: v for k, v in json.load(open(ROOT + 'tours/spots.json')).items() if not k.startswith('_')}
 MON = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 def raw(pid): return json.loads(json.load(open(ROOT + f'stg-tours/backup/page-{pid}.json'))['meta']['_elementor_data'] or '[]')
@@ -84,7 +88,7 @@ def related_html(sec, h1):
         ex = html.unescape(re.sub(r'<[^>]+>', '', p['excerpt']['raw'] or '')).strip()
         ph = f'<a class="ph" href="{u}">{img_tag(p["featured_media"], 900, alt=t)}</a>' if p.get('featured_media') else ''
         cards.append(f'<article class="tcard dtour">{ph}<div class="tx"><div class="by">By Tours Director Matteo Cigala</div><h3>{E(t)}</h3>'
-                     f'<div class="desc"><p>{E(ex)}</p></div><div class="bottom"><div class="ctas one"><a class="btn btn-ghost" href="{u}">Read the guide →</a></div></div></div></article>')
+                     f'<div class="desc"><p>{E(ex)}</p></div><div class="bottom"><div class="ctas one"><a class="btn btn-go" href="{u}">Read the guide →</a></div></div></div></article>')
     if not cards: return ''
     return (f'<section id="guides-tips"><div class="in"><div class="head"><div><h2 class="eyebrow ey2">{E(text_of(sec["h"]))}</h2>'
             f'<h2>{E(text_of(h2b))}</h2><div class="bar"></div><div class="lede">{lede}</div></div></div><div class="tgrid">{"".join(cards)}</div></div></section>')
@@ -149,7 +153,7 @@ def trip(slug):
                 for ln in lines(v):
                     t = text_of(ln)
                     a, sep, b = t.partition(':')
-                    if sep and 1 < len(a.strip()) <= 40: glance.append((a.strip().capitalize(), E(b.strip())))
+                    if sep and 1 < len(a.strip()) <= 40: glance.append((a.strip().capitalize(), E(b.strip().lstrip(':：-– ').strip())))
                     elif t: glance.append(('', ln))
     gl = {a.upper(): b for a, b in glance}
     get = lambda *keys: next((text_of(gl[k]) for k in gl for w in keys if w in k), '')
@@ -161,9 +165,11 @@ def trip(slug):
     li = ''.join(f'<li><span>{E(a)}</span><span>{E(b)}</span></li>' for a, b in [x for x in [
         ('Deposit', re.sub(r'(?i)^deposit\s*', '', deposit)) if deposit else None,
         ('Non-cycling companion', re.sub(r'(?i).*companion\s*(for)?\s*', '', companion)) if companion else None,
-        ('Group size', get('GROUP')) if get('GROUP') else None] if x])
+        ('Group size', re.split(r'\s*\(', get('GROUP'))[0]) if get('GROUP') else None] if x])   # short form here; the full text is in the Route facts
     extra_small = ''.join(f'<p class="note">{E(x)}</p>' for x in other_small)
-    stay_html = f'<p class="note">{E(stay)}</p>' if stay else ''
+    stay_html = (f'<p class="note">{E(stay)}</p>'.replace('contact us', f'<a href="{L}/contact/">contact us</a>')) if stay else ''
+    sp = SPOTS.get(slug)
+    spots_html = (f'<div class="spots"><span class="dot live" aria-hidden="true"></span>{E(f"{sp} spot{"s" if sp != 1 else ""} left" if isinstance(sp, int) else sp)}</div>') if sp else ''
     card = M.get('trip-' + slug)   # the trip's photo (tour cards); the live top image is a designed poster, shown next to the intro
     hero_img = (f'<img src="{card["url"]}" alt="{E(card["alt"])}">' if card else img_tag(hero_src, 2000, alt=hero_alt, lazy=False))
     hero = f'''<div class="hero thero">
@@ -179,6 +185,7 @@ def trip(slug):
       <span class="lab">Price</span>
       <div class="price">{E(pr)}<small>{E(pr_rest)}</small></div>
       {f'<span class="early">{E(early.group(1).strip())}</span>' if early else ''}
+      {spots_html}
       <ul>{li}</ul>
       <a class="btn btn-go btn-lg" href="{E(book)}" target="_blank" rel="noopener">Book now →</a>
       {stay_html}{extra_small}
@@ -210,24 +217,27 @@ def trip(slug):
         out.append(f'<section style="padding-top:28px"><div class="in"><div class="panel opbox">{H(op, "Official partner")}'
                    f'{img_tag(logo, 400, cls="oplogo") if logo else ""}</div></div></section>')
     route = one('route')
-    if route:
+    # our own route map (tools/tours_route_maps.py, Cigala style) for every trip; the live map image only as a fallback
+    mp = ROOT + f'tourspages/maps/{slug}.svg'
+    svg = open(mp).read().replace('aria-label="Route map"', f'aria-label="{E(text_of(h1).title())} bike tour route map by Cigala Cycling Tours"') if os.path.exists(mp) else ''
+    rimg = None
+    if route and not svg:
         rimg = next((v for k, v, s in route['items'] if k == 'img'), None)
-        if rimg is None:
-            for k, v, s in route['items']:
-                if k == 'e-image':
-                    try: rimg = s['image']['value']['src']['value']['id']['value']
-                    except (KeyError, TypeError): pass
-        facts = ''.join(f'<div><dt>{E(a)}</dt><dd>{b}</dd></div>' for a, b in glance if a)
-        g_h = H(g, '', 'Trip at a glance') if g else ''
-        g_tag = (g['tag'] if g else 'h3')
-        g_title = re.sub(r'<[^>]+>', '', g['h']).strip() if g else ''
-        dl = f'<dl class="panel facts"><{g_tag} class="facts-h">{E(g_title)}</{g_tag}>{facts}</dl>' if facts else ''
-        out.append(f'<section id="route"><div class="in">{H(route, "Where you ride")}<div class="route">'
-                   f'<div class="map">{img_tag(rimg, 1400, alt=f"{text_of(h1).title()} bike tour map by Cigala Cycling Tours") if rimg else ""}</div>{dl}</div></div></section>')
+        for k, v, s in route['items']:
+            if rimg is None and k == 'e-image':
+                try: rimg = s['image']['value']['src']['value']['id']['value']
+                except (KeyError, TypeError): pass
+    facts = ''.join(f'<div><dt>{E(a)}</dt><dd>{b}</dd></div>' for a, b in glance if a)
+    g_tag = (g['tag'] if g else 'h3')
+    g_title = re.sub(r'<[^>]+>', '', g['h']).strip() if g else ''
+    dl = f'<dl class="panel facts"><{g_tag} class="facts-h">{E(g_title)}</{g_tag}>{facts}</dl>' if facts else ''
+    note = ROUTE_NOTES.get(slug, '')
+    map_html = svg or (img_tag(rimg, 1400, alt=f"{text_of(h1).title()} bike tour map by Cigala Cycling Tours") if rimg else '')
+    if map_html or dl:
+        head = H(route, 'Where you ride') if route else '<div class="head"><div><div class="eyebrow">Where you ride</div><p class="band-title">Route</p><div class="bar"></div></div></div>'
+        out.append(f'<section id="route"><div class="in">{head}<div class="route"><div class="map">{map_html}'
+                   f'{f"<p class=mapnote>{E(note)}</p>" if note else ""}</div>{dl}</div></div></section>')
         nav.append(('route', 'Route'))
-    elif g:
-        facts = ''.join(f'<div><dt>{E(a)}</dt><dd>{b}</dd></div>' for a, b in glance if a)
-        out.append(f'<section id="route"><div class="in"><dl class="panel facts">{H(g, "Trip at a glance")}{facts}</dl></div></section>')
     days = S('day')
     if days:
         d2d = one('d2d')
@@ -279,7 +289,12 @@ def trip(slug):
         out.append(f'<section id="gallery"><div class="in">{H(gsec, "Real riders, real roads")}<div class="gallery">{figs}</div></div></section>')
     hs = one('hotels')
     if hs:
-        names = [(k, v) for k, v, s in hs['items'] if k in ('h3', 'h2')]
+        names = [(k, v) for k, v, s in hs['items'] if k == 'h3']
+        notes = ''.join(f'<h2 class="hnote">{E(text_of(v))}</h2>' for k, v, s in hs['items'] if k == 'h2')
+        mt = re.match(r'^\s*(ACCOM+ODATION|WHERE YOU WILL STAY)\s+(\S.*)$', text_of(hs['h']), re.I)
+        if mt:   # one live heading holds both: split it into the section title and the hotel name
+            names.insert(0, (hs['tag'] if hs['tag'] in ('h2', 'h3') else 'h3', mt.group(2)))
+            hs = dict(hs, h=mt.group(1))
         txt = ''.join(clean(v) for k, v, s in hs['items'] if k == 'text')
         pics = [x['id'] for k, v, s in hs['items'] if k == 'gallery' for x in s.get('gallery', [])] + [v for k, v, s in hs['items'] if k == 'img']
         cards = []
@@ -292,7 +307,7 @@ def trip(slug):
             cards.append(f'<article class="panel hotel">{ph}<div class="tx">{st}<{tg}>{E(nm)}</{tg}></div></article>')
         rest = pics[len(cards):len(cards) + 5]
         strip_html = ('<div class="strip">' + ''.join(img_tag(p, 600, alt=f'{text_of(h1).title()} hotel - Cigala Cycling Tours') for p in rest) + '</div>') if rest else ''
-        out.append(f'<section id="hotels"><div class="in">{H(hs, "Where you stay")}<div class="prose dprose">{txt}</div>'
+        out.append(f'<section id="hotels"><div class="in">{H(hs, "Where you stay")}<div class="prose dprose">{txt}</div>{notes}'
                    f'<div class="hotels">{"".join(cards)}</div>{strip_html}</div></section>')
         nav.append(('hotels', 'Hotels'))
     bk = one('bike')
@@ -358,7 +373,7 @@ def trip(slug):
     dtag = next((k for k, v, s in (fin['items'] if fin else []) if k in ('h3', 'h2')), None)
     fdates = f'<{dtag} class="fin-d">{E(fin_dates)}</{dtag}>' if dtag else f'<div class="fin-d">{E(fin_dates)}</div>'
     out.append(f'<section><div class="in"><div class="panel final"><div class="eyebrow">Ready to ride?</div>{ftitle}{fdates}'
-               f'<div class="ctas"><a class="btn btn-go btn-lg" href="{E(book)}" target="_blank" rel="noopener">Book now →</a>'
+               f'<div class="ctas"><a class="btn btn-go" href="{E(book)}" target="_blank" rel="noopener">Book now →</a>'
                f'<a class="btn btn-ghost" href="{L}/contact/">Ask a question</a></div></div></div></section>')
     tabs = ''.join(f'<a href="#{a}">{E(b)}</a>' for a, b in nav)
     out.insert(1, f'<nav class="tabs" aria-label="On this page"><div class="in">{tabs}<a class="btn btn-go" href="{E(book)}" target="_blank" rel="noopener">Book now</a></div></nav>')
@@ -371,10 +386,21 @@ TRIP_CSS = '''
 html .cl .thero .in { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 32px; align-items: end; }
 @media (max-width: 900px) { html .cl .thero .in { grid-template-columns: minmax(0, 1fr); } }
 html .cl .tag.gdot::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--gravel); margin-right: 7px; vertical-align: 1px; }
-html .cl .book .price small { display: block; }
-html .cl .thero .book { min-width: 0; }
+html .cl .book .price small { display: block; margin-top: 8px; }
+html .cl .book .spots { display: flex; align-items: center; gap: 2px; margin: 12px 0 4px; font-size: 13.5px; font-weight: 700; color: #fff; }
+html .cl .book p.note a { color: var(--green-text); text-decoration: underline; text-underline-offset: 3px; }
+html .cl .route .map { background: none !important; border: 0 !important; padding: 0 !important; aspect-ratio: auto !important; }
+html .cl .dtour .desc { display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+html .cl .route .map svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
+html .cl .route .map .mapnote { margin: 10px 0 0; font-size: 13px; color: var(--text-3); }
+html .cl .route .map img { object-fit: contain !important; height: auto !important; aspect-ratio: auto !important; }
+html .cl #overview .cardimg img { aspect-ratio: auto !important; height: auto !important; object-fit: contain !important; }
+html .cl .hnote { font-family: var(--body); font-size: 15px; font-weight: 600; letter-spacing: .02em; text-transform: none; color: var(--green-text); margin: 4px 0 16px; }
+html .cl .thero .book { min-width: 0; grid-template-columns: minmax(0, 1fr); }
 html .cl .thero .book > * { max-width: 100%; }
-html .cl .thero .book li { white-space: normal; gap: 14px; }
+html .cl .thero .book ul { min-width: 0; width: 100%; }
+html .cl .thero .book li { display: grid !important; grid-template-columns: auto minmax(0, 1fr); gap: 14px; white-space: normal; min-width: 0; }
+html .cl .thero .book li span { white-space: normal !important; min-width: 0; }
 html .cl .thero .book li span:last-child { text-align: right; overflow-wrap: anywhere; }
 html .cl .thero .book p.note { display: block; margin: 8px 0 0; }
 html .cl .sh { }
@@ -399,6 +425,9 @@ html .cl .dtour .by { font-size: 11px; font-weight: 600; letter-spacing: .12em; 
 html .cl .dtour h3 { font-size: 22px; line-height: 1.14; }
 html .cl .band h3.lede { font-family: var(--body); font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 17px; line-height: 1.5; color: var(--text-2); }
 '''
+
+# the shared status dot (shared/dot/dot.css), scoped to the spots line (the trip tags also use a .dot class)
+TRIP_CSS += re.sub(r'(?m)^\.dot', 'html .cl .spots .dot', re.sub(r'/\*.*?\*/', '', open(ROOT + 'shared/dot/dot.css').read(), flags=re.S)).replace('{ .dot.live', '{ html .cl .spots .dot.live')
 
 if __name__ == '__main__':
     prev_shell = open(ROOT + 'tourspages/trips.html').read()

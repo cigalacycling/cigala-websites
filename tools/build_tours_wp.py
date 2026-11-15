@@ -182,10 +182,16 @@ if TOURS_NL_URL:
     nlband = open(ROOT + 'wp/nl-band.html').read()
     nlpop = open(ROOT + 'wp/nl-popup.html').read()
     nlpop = re.sub(r"var URL='https://[^']+';", "var URL='" + TOURS_NL_URL + "';", nlpop); assert TOURS_NL_URL in nlpop
+    # Tours wording (Matteo 15 Nov: the Tours sign-up talks about tours); the note keeps 'one newsletter for all our websites'
+    TOURS_NL = [(r'<p class="nl-eyebrow">[^<]*</p>', '<p class="nl-eyebrow">Tour news</p>'),
+                (r'<p class="nl-t"( id="nl-pop-t")?>[^<]*</p>', lambda m: f'<p class="nl-t"{m.group(1) or ""}>Ride with us in 2027</p>'),
+                (r'<p class="nl-d">[^<]*</p>', '<p class="nl-d">New tour dates, early-bird offers, route guides and news from our bike tours across Europe.</p>')]
+    for a, b in TOURS_NL:
+        nlband, n1 = re.subn(a, b, nlband); nlpop, n2 = re.subn(a, b, nlpop); assert n1 and n2, a
     ftr_widgets[0] = html_widget('<div class="cc">' + nlband + ftr + '</div>' + PARALLAX)
     ftr_widgets.append(html_widget(nlpop))
     # Tours: the .cc text rule would turn the band title into Montserrat; and the pop-up must sit above the chat widget
-    css += '\n/* ---- newsletter (shared wp/nl-*) ---- */\nhtml .cc .nl-band .nl-t { font-family: Anton, Impact, "Arial Narrow", sans-serif; font-weight: 400; }\n#nl-pop { z-index: 2147483647 !important; }\n'
+    css += '\n/* ---- newsletter (shared wp/nl-*) ---- */\nhtml .cc .nl-band .nl-t { font-family: Anton, Impact, "Arial Narrow", sans-serif; font-weight: 400; }\nhtml .cc .nl-band + footer { margin-top: 32px !important; }\n#nl-pop { z-index: 2147483647 !important; }\n'
 json.dump({"meta": {"_elementor_data": json.dumps([wrap(ftr_widgets)])}}, open(OUT + 'lib-228.json', 'w'))
 
 # head snippet (Elementor custom code 9279): the shared one. The consent-default line goes first in WPCode Header (Matteo).

@@ -492,6 +492,15 @@ def testimonials():
 # ===================== Custom tours (1576, /trips/private-trips/) =====================
 H3_FIX = {'REASTURANTS': 'RESTAURANTS', 'OFF THE BIKE ACTIVITES': 'OFF THE BIKE ACTIVITIES'}   # typos on the live page
 ORG_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.2 4.2L19 7"/></svg>'
+ORG_ICONS = {   # What we organise: one line icon per item (Matteo 15 Nov)
+ 'ACCOMMODATION': '<path d="M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="2"/>',
+ 'TECHNICAL ASSISTANCE': '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3.5 17.5l3 3 5.8-5.8a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>',
+ 'GUIDING': '<path d="M5 21V4M5 4h12l-2.5 4L17 12H5"/>',
+ 'BIKE RENTAL': '<circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16l4-8h5l3 8M10 8l3.5 8M9 5h3"/>',
+ 'TRANSFERS': '<path d="M3 16V8a1 1 0 0 1 1-1h11l4 4h1a1 1 0 0 1 1 1v4H3z"/><circle cx="7.5" cy="16.5" r="1.8"/><circle cx="16.5" cy="16.5" r="1.8"/><path d="M15 7v4h4"/>',
+ 'RESTAURANTS': '<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M16 21V3c-2 1.5-3 4-3 7v3h3"/>',
+ 'OFF THE BIKE ACTIVITIES': '<path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+ 'CUSTOM KIT': '<path d="M8 4 4 6.5 5.5 10 7 9.5V20h10V9.5l1.5.5L20 6.5 16 4c-.7 1.6-2.2 2.5-4 2.5S8.7 5.6 8 4z"/>'}
 def custom():
     it = [x for x in items(elementor(1576)) if x[0] not in ('open', 'close', 'divider', 'spacer')]
     idx = lambda k_, w=None: next(i for i, (k, v, s) in enumerate(it) if k == k_ and (w is None or w in text_of(v).upper()))
@@ -510,13 +519,16 @@ def custom():
     photo = next(v for k, v, s in it[f_i:g_i] if k == 'img')
     btn = it[b_i + 1][1][0] if it[b_i + 1][0] == 'btn' else 'Customise your tour'
     ask_html = ''.join(f'<div class="panel step"><span class="n">{n:02d}</span><h3>{E(text_of(a))}</h3></div>' for n, a in enumerate(asks, 1))
-    org_html = ''.join(f'<div class="panel org"><span class="tick" aria-hidden="true"></span><h3>{E(o.title())}</h3></div>' for o in org)
+    org_html = ''.join(f'<div class="panel org"><span class="oic" aria-hidden="true"><svg viewBox="0 0 24 24">{ORG_ICONS.get(fix_text(o).strip().upper(), "<path d=\'m5 12.5 4.2 4.2L19 7\'/>")}</svg></span><h3>{E(o.title())}</h3></div>' for o in org)
     locs = re.findall(r'<li>(.*?)</li>', loc_txt[1], re.S)
-    loc_html = '<ul class="locs">' + ''.join(f'<li>{x.replace(chr(0x200b), "").strip()}</li>' for x in locs) + '</ul>'
+    locs = [x.replace(chr(0x200b), '').strip() for x in locs if 'Patagonia' not in x]   # Europe map (Matteo 15 Nov)
+    lmap = open(ROOT + 'tourspages/maps/custom-locations.svg').read()
+    loc_html = ('<div class="locwrap"><div class="lmapbox">' + lmap + '</div><ol class="locs loclist">' +
+                ''.join(f'<li><span class="n">{i}</span>{x}</li>' for i, x in enumerate(locs, 1)) + '</ol></div>')
     faq_html = ''.join(f'<details class="panel faq"><summary><h3>{E(q)}</h3></summary><div class="a">{a}</div></details>' for q, a in faq)
     tel = '+35340478107'
     main = f'''<div class="hero phero">
-  {img_tag(hero_bg, 2000, alt='Cigala Cycling custom bike tour group', lazy=False)}
+  {img_tag(1632, 2000, lazy=False)}
   <div class="in">
     <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / <a href="{L}/trips/" {EXT}>Bike tours</a> / Custom tours</div>
     <div class="pill-eyebrow">Private &amp; tailor-made</div>
@@ -586,7 +598,7 @@ TYPOS = [(r'\bMechnical\b', 'Mechanical'), (r'\bmechnical\b', 'mechanical'), (r'
          (r'\bNova Goricia\b', 'Nova Gorica'), (r'\bWashing maching\b', 'Washing machine'), (r'\bBarcellonette\b', 'Barcelonnette'),
          (r'\bGrossetto\b', 'Grosseto'), (r'\bpenisula\b', 'peninsula'), (r'\bcontryside\b', 'countryside'), (r'TÉLÉGRAPHIE', 'TÉLÉGRAPHE'),
          (r'\bCrostine\b', 'Crostini'), (r'\bREASTURANTS\b', 'RESTAURANTS'), (r'\bACTIVITES\b', 'ACTIVITIES'), (r'\bSWIZERLAND\b', 'SWITZERLAND'),
-         (r'\bBOOOK\b', 'BOOK')]
+         (r'\bBOOOK\b', 'BOOK'), (r'\bPEFORMANCE\b', 'PERFORMANCE'), (r'\bBaleares Islands\b', 'Balearic Islands'), (r'\bEUROPE NEWEST\b', "EUROPE'S NEWEST")]
 def fix_text(h):
     parts = re.split(r'(<[^>]+>)', h)
     out = []
@@ -649,6 +661,15 @@ html .cl .step .n { display: block; font-family: var(--head); font-size: 15px; c
 html .cl .step h3 { font-size: 22px; }
 html .cl .org { padding: 16px 18px; display: flex; gap: 12px; align-items: center; }
 html .cl .org h3 { font-size: 18px; }
+html .cl .oic { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
+html .cl .oic svg { width: 21px; height: 21px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+html .cl .locwrap { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: start; margin-top: 18px; }
+@media (max-width: 900px) { html .cl .locwrap { grid-template-columns: minmax(0, 1fr); } }
+html .cl .lmapbox svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
+html .cl .locs.loclist { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; margin: 0; padding: 0; width: 100%; max-width: none; justify-self: stretch; list-style: none; }
+html .cl .locs.loclist li::before, html .cl .locs.loclist li::after { content: none !important; display: none !important; }
+html .cl .locs.loclist li { display: flex; gap: 10px; align-items: flex-start; justify-content: flex-start; text-align: left; line-height: 1.4; margin: 0; background: none; border: 0; padding: 0; border-radius: 0; font-size: 14px; color: var(--text-2); }
+html .cl .locs.loclist .n { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #e10600; color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; margin-top: 1px; }
 html .cl .locs { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 html .cl .locs li { font-size: 13.5px; color: var(--text); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 13px; }
 html .cl .faqs { display: grid; gap: 10px; max-width: 900px; }

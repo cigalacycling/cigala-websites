@@ -218,6 +218,21 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - CORS checked for staging and live.
   - Tested with the request mocked, so no contact was added: the footer sign-up works, and the pop-up opens after the cookie choice at 390 and 1440.
   - Tours CSS keeps the band title in Anton and puts the pop-up above the chat widget.
+- **Matteo's review round, 15 Nov (all done on staging):**
+  - **Route maps in the Cigala style for all 15 trips:** `tools/tours_route_maps.py` writes `tourspages/maps/<slug>.svg`, which `build_tours_trips.py` inlines in the Route section.
+    - Each map has dark land, real lakes and rivers (Natural Earth), the green route through the overnight stops (red numbers), the hotel base (white) and climbs/places (gold triangles).
+    - Coordinates are approximate and typed in `ROUTES`: check them on review.
+  - **Trip pages:**
+    - The poster image next to the intro shows in full (not cropped).
+    - Hotels are in the Dolomites card style everywhere (the Algarve heading "ACCOMODATION VILAR DO GOLF****" is split into the section title and the hotel card).
+    - "Read the guide" buttons are green; the bottom "Book now" is normal size.
+    - The price box has more space under GBP/USD, a "contact us" link, and the short group size.
+  - **Spots left:** `tours/spots.json`, shown in the price box with the pulsing red dot from `shared/dot`. Algarve "More than 5", Chianti 3, Flanders "More than 5"; the other tours wait for Matteo's numbers.
+  - **Newsletter (Tours wording):** "Tour news / Ride with us in 2027 / New tour dates, early-bird offers, route guides and news from our bike tours across Europe." The gap to the footer is now 32px.
+  - **Custom tours:**
+    - New hero photo (the Colosseum is gone).
+    - Icons for "What we organise".
+    - Location ideas on a Europe map (`tourspages/maps/custom-locations.svg`), with numbered dots matching a numbered list. Patagonia is left out.
 - **Live errors fixed (Matteo 15 Nov: "any error you see, fix it"):**
   - The Gran Canaria H1 now reads "Cycling in Gran Canaria" (live: "Cycling in Mallorca").
   - In the Lake Como guide (post 8945), the second FAQ question is now "How hard is the Muro di Sormano?". Backup: `stg-tours/backup/post-8945-before-faq-fix.json`.
