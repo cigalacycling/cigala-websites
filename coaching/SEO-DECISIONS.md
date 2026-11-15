@@ -98,3 +98,5 @@ They're probably in the WPCode header (not in the Elementor templates). Not chan
   - posts: 36 good, 15 ok, 0 bad, 2 not analysed.
   
   These are Yoast's own checklist scores, saved when a page is edited in wp-admin. Pushing through the REST API doesn't recalculate them, so they're the scores the live site already had.
+
+- **hreflang fixed on Coaching staging (15 Nov):** Matteo replaced the block in WPCode Header. It's now 5 tags with correct `coaching.cigalacycling.com` URLs, and the stray `<head>`/`</head>` wrapper is gone (checked in the page source). The consent default line isn't in the WPCode Header yet.
