@@ -51,7 +51,7 @@ for i, u in enumerate(urls, 1):
     if not d['title']: add('no title', u)
     if not d['desc']: add('no meta description', u)
     if d['canon'] and d['canon'].split('?')[0].rstrip('/') != u.rstrip('/'): add('canonical differs', f"{u} -> {d['canon']}")
-    lost = set(t for t in b.get('schema_types', []) if t) - set(d['ld'])
+    lost = set(t for t in b.get('schema_types', []) if t) - set(d['ld']) - ({'Product'} if 'ProductGroup' in d['ld'] else set())
     if lost: add('structured data type missing: ' + ','.join(sorted(map(str, lost))), u)
     if any(a is None for a in d['imgs']): add('img without alt attribute', u)
     rows.append({'url': u, 'title': d['title'], 'desc': (d['desc'] or '')[:160], 'h1': d['h1'], 'ld': sorted(set(map(str, d['ld'])))})

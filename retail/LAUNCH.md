@@ -21,6 +21,7 @@ Nothing here has been done on the live store. Publishing is done together with M
 **Page content fixes (your OK needed; these change live pages, not the theme):**
 - [ ] **About us:** 2 photos have no alt text. Suggested alt: "Cigala Cycling team riding in the black team kit" for both. Check the photos and adjust.
 - [ ] **Bike to Work Scheme:** 1 image (the scheme logo) has no alt text. Suggested: "Bike to Work scheme logo".
+- [ ] **Bike Computers collection:** the image in the collection description has no alt text. Suggested: describe the photo (e.g. "Bike computer mounted on handlebars"). Check the photo first.
 - [ ] **Finance:** the page body contains a second H1 ("humm by flexifi. for little things…"). Make it an H2. The wording stays the same.
 
 ## Launch day (together)
