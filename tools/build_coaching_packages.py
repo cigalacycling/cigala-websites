@@ -73,15 +73,21 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     # everything the coached packages add, so the difference is clear on the card itself.
     # The live page marks each line <li class="included|excluded">: Basic's excluded lines come from there (EXCLUDED),
     # plus what Advanced/Premium add that isn't in Basic's live list at all.
-    no = (EXCLUDED + [ASSESS, 'Monthly catch up call', 'Race Strategy', 'Continuous Support & Motivation', 'Vekta membership']) if key == 'basic' else []
+    # Matteo 15 Nov (4th review): Basic's zones don't change weekly either -> 'Adaptive Training Zones changing weekly' is an X too
+    no = (EXCLUDED + ['Adaptive Training Zones changing weekly', ASSESS, 'Monthly catch up call', 'Race Strategy', 'Continuous Support & Motivation', 'Vekta membership']) if key == 'basic' else []
     top = [x for x in top if x not in no]
     # Matteo 15 Nov (3rd review): lead with what you GET. Every card shows its first 8 included lines; "Show all" opens
     # the rest and, on Basic only, the lines it does not include, at the very end under their own label.
-    inc = [x for x in top + rest if x not in no]; SHOW = 10   # Matteo 15 Nov: one or two more lines visible
-    items = ''.join(f'<li{" class=\"more\"" if i >= SHOW else ""}>{E(x)}</li>' for i, x in enumerate(inc))
+    inc = [x for x in top + rest if x not in no]; SHOW = 12   # Matteo 15 Nov: two more lines visible before "See all"
+    NUT = 'Nutritional Consult with our Sports Nutritionist'   # Matteo 15 Nov: higher up, right after the assessment
+    if NUT in inc: inc.remove(NUT); inc.insert(3 if key != 'basic' else 2, NUT)
+    AZ = 'Adaptive Training Zones changing weekly'   # now a coached-only line (not in Basic), so show it with the other differences
+    if key != 'basic' and AZ in inc: inc.remove(AZ); inc.insert(11, AZ)
+    LBL = {'Race Strategy': 'Race & Pacing Strategy'}   # Matteo 15 Nov: pacing on the same line
+    items = ''.join(f'<li{" class=\"more\"" if i >= SHOW else ""}>{E(LBL.get(x, x))}</li>' for i, x in enumerate(inc))
     if no:
         items += '<li class="more no-lab">Included in Advanced &amp; Premium</li>'
-        NO_LABEL = {'Daily Training Analysis': 'Training Analysis'}   # Matteo 15 Nov: Basic has no training analysis at all, not just no daily one
+        NO_LABEL = {'Daily Training Analysis': 'Training Analysis', 'Race Strategy': 'Race & Pacing Strategy'}   # Matteo 15 Nov: Basic has no training analysis at all, not just no daily one
         items += ''.join(f'<li class="more no">{E(NO_LABEL.get(x, x))}<span class="vh"> (not included in Basic)</span></li>' for x in no)
     total = len(inc)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
@@ -109,7 +115,8 @@ ROWS = [
     ('Daily session carbs recommendations', N, Y, Y),
     ('Nutritional consult with our Sports Nutritionist', N, Y, Y),
     ('Catch up call', N, 'Monthly or when needed', 'Weekly or when needed'),
-    ('Race strategy', N, Y, Y),
+    ('Race &amp; pacing strategy', N, Y, Y),
+    ('Adaptive training zones changing weekly', N, Y, Y),
     ('Continuous support &amp; motivation', N, Y, Y),
     ('Platform', 'Training Peaks Basic account', 'Vekta membership included (value €19.99/m)', 'Vekta membership included (value €19.99/m)'),
     ('Price', '€228 one-time for 12 weeks', '€149/mo, 6 months', '€249/mo for 3 months, €239/mo for 6'),
