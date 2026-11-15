@@ -32,11 +32,22 @@ html .cl .band-up.priv > img { object-position: center 75% !important; }
 html .cl .hero.phero.dhero .in { padding-block: 150px 60px !important; }   /* taller destination hero: more of the photo (Matteo) */
 html .cl .dsplit { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: start; }
 @media (max-width: 900px) { html .cl .dsplit { grid-template-columns: minmax(0, 1fr); } }
+html .cl .cmapbox { width: 100%; max-width: 340px; justify-self: end; }
 html .cl .cmapbox svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
 html .cl .dtour .tx { gap: 10px; }
 html .cl .dtour .ctas.one { margin-top: auto; padding-top: 6px; }
 html .cl .dband { margin-top: 48px; }
 html .cc .dtours { padding-top: 56px; }
+html .cc .dtours .tour { min-height: 380px; aspect-ratio: auto; }   /* same height as the homepage cards */
+html .cl .fchips, html .cc .fchips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+html .cl .fchip, html .cc .fchip { display: inline-flex; align-items: center; gap: 8px; font: 600 12.5px/1 var(--body); letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 9px 15px; cursor: pointer; }
+html .cl .fchip:hover, html .cc .fchip:hover { color: #fff; border-color: rgba(255,255,255,.3); }
+html .cl .fchip .fd, html .cc .fchip .fd { width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); }
+html .cl .fchip.on, html .cc .fchip.on { background: var(--green); border-color: var(--green); color: #fff; }
+html .cl .fchip.on .fd, html .cc .fchip.on .fd { background: #fff; animation: fchip-pulse 1.8s ease-in-out infinite; }
+@keyframes fchip-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,.7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(255,255,255,0); opacity: .6; } }
+@media (prefers-reduced-motion: reduce) { html .cl .fchip.on .fd, html .cc .fchip.on .fd { animation: none; } }
+html .cl [hidden], html .cc .tours > [hidden] { display: none !important; }
 html .cl .vgrid.few .vcard:nth-child(n+7) { display: none; }
 html .cl .vmore-wrap { justify-content: center; margin-top: 22px; }
 html .cl .info h2.wa a { color: var(--green-text); }
@@ -533,7 +544,7 @@ html .cl .tcard .tag::before { content: ""; flex: none; display: inline-block; w
 html .cl .tcard .tag.gravel::before { background: var(--gravel); }
 html .cl .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
 html .cl .tcard .entry { width: fit-content; margin: 0; }
-html .cl .tcard .ph .flag { position: absolute; top: 26px; right: 26px; width: auto !important; height: 23px !important; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; filter: none !important; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); }
+html .cl .tcard .ph .flag { position: absolute; top: 26px; right: 26px; width: auto !important; height: 23px !important; aspect-ratio: 1 / 1; object-fit: cover; object-position: center; border-radius: 50%; filter: none !important; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); }
 html .cl .tcard:hover .ph .flag { transform: none; }
 html .cl .tcard .ph .entry { position: absolute; left: 26px; bottom: 26px; background: rgba(8,9,10,.85); border-radius: 999px; padding: 4px 10px; }
 html .cl .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
@@ -780,7 +791,7 @@ html .cc .cc-social a { display: inline-grid; place-items: center; width: 40px; 
 html .cc .cc-social a:hover, html .cc .cc-social a:active { color: var(--green-text, #34c46a); background: rgba(255,255,255,.04); }
 html .cc .cc-social a:focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 2px; }
 html .cc .cc-social svg { width: 20px; height: 20px; fill: currentColor; display: block; }
-html .cc .tour > .flag { position: absolute; top: 14px; right: 14px; width: auto; height: 28px; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); z-index: 2; }
+html .cc .tour > img.flag { position: absolute !important; inset: 14px 14px auto auto !important; top: 14px !important; right: 14px !important; left: auto !important; bottom: auto !important; width: auto !important; height: 28px !important; filter: none !important; transform: none !important; aspect-ratio: 1 / 1; object-fit: cover; object-position: center; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); z-index: 2; }
 html .cc .who img { border: 2px solid var(--green); }
 html .cc .cc [hidden], html .cc [hidden] { display: none !important; }
 html .cc .eyebrow { color: var(--red-text, #ff3d33); margin-bottom: 10px; }

@@ -8527,5 +8527,19 @@
   "id": 10094,
   "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-be.webp",
   "alt": "Flag of Belgium"
+ },
+ "src-8604-2000": {
+  "id": 10144,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-bestof_mdd2026-052-agreitertmatteo-2000.webp",
+  "alt": "Maratona Dles Dolomites | Cyclists climbing uphill",
+  "from": [
+   4096,
+   2730
+  ],
+  "size": [
+   2000,
+   1333
+  ],
+  "orig": 8604
  }
 }

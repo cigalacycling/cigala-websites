@@ -194,7 +194,7 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .tcard .tag.gravel::before { background: var(--gravel); }
 .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
 .tcard .entry { width: fit-content; margin: 0; }
-.tcard .ph .flag { position: absolute; top: 26px; right: 26px; width: auto !important; height: 23px !important; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; filter: none !important; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); }
+.tcard .ph .flag { position: absolute; top: 26px; right: 26px; width: auto !important; height: 23px !important; aspect-ratio: 1 / 1; object-fit: cover; object-position: center; border-radius: 50%; filter: none !important; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); }
 .tcard:hover .ph .flag { transform: none; }
 .tcard .ph .entry { position: absolute; left: 26px; bottom: 26px; background: rgba(8,9,10,.85); border-radius: 999px; padding: 4px 10px; }   /* badge on the photo, lined up with the type tag above it */
 .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }

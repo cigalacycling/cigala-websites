@@ -245,7 +245,7 @@ def destinations():
     c_i, r_i, u_i, p_i, t_i = at('BY COUNTRY'), at('BY REGION'), at('ULTIMATE'), at('PRIVATE/CUSTOM'), at('TESTIMONIALS')
     intro = next(v for k, v, s in it[:c_i] if k == 'text')
     btns = [v for k, v, s in it[:c_i] if k == 'btn']
-    hero_bg = next(v for k, v, s in it if k == 'bg')
+    hero_bg = 8604   # Matteo 15 Nov: not the homepage photo here; riders on a Dolomites pass
     def card(n, u, bg, big):
         path = FIX_URL.get(link(u).replace(L, ''), link(u).replace(L, ''))
         n = FIX_NAME.get(n, n)
@@ -356,6 +356,18 @@ def home_cards():
     blob = ''.join(hs)
     return {re.search(r'/trips/([^"/]+)/?"', m.group(0)).group(1): m.group(0) for m in re.finditer(r'<a class="tour".*?</a>', blob, re.S)}
 HOME_CARDS = home_cards()
+KNAME = {'road': 'Road', 'gf': 'Gran Fondo', 'gravel': 'Gravel'}
+def chips(cards):
+    """Filter chips (All / Road / Gran Fondo / Gravel) when a section mixes tour types (Matteo 15 Nov). JS: FILTER_JS."""
+    ks = [k for k in ('road', 'gf', 'gravel') if f'data-k="{k}"' in cards]
+    if len(ks) < 2: return ''
+    b = '<button type="button" class="fchip on" data-f="all"><span class="fd"></span>All</button>'
+    b += ''.join(f'<button type="button" class="fchip" data-f="{k}"><span class="fd"></span>{KNAME[k]}</button>' for k in ks)
+    return f'<div class="fchips" role="group" aria-label="Filter by tour type">{b}</div>'
+FILTER_JS = """<script>(function(){document.querySelectorAll('.fchips').forEach(function(g){var grid=g.nextElementSibling;g.querySelectorAll('.fchip').forEach(function(b){b.addEventListener('click',function(){
+g.querySelectorAll('.fchip').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b);});var f=b.dataset.f;
+[].forEach.call(grid.children,function(c){c.hidden=!(f==='all'||c.dataset.k===f);});});});});})();</script>"""
+
 LIST_BAND = re.search(r'<div class="band">.*?</div>\s*</div>\s*(?=</div>\s*</section>)', json.loads(open(ROOT + 'stg-tours/out/list-trips.json').read())['main'], re.S).group(0)
 
 def destination(slug):
@@ -366,6 +378,14 @@ def destination(slug):
     name = re.sub(r'^(cycling in( the)?)\s+', '', text_of(h1), flags=re.I).strip()
     name = name.title() if name.isupper() or name.islower() or name == name.capitalize() else name
     hero_bg = next(v for k, v, s in it if k == 'bg')
+    used = {media(hero_bg)['id']}   # Matteo 15 Nov: never the same photo twice on one page
+    spare = [v for k, v, s in it if k == 'img' and (media(v).get('width') or 0) >= 900]
+    def pick(x):
+        mid = media(x)['id']
+        if mid not in used: used.add(mid); return x
+        for y in spare:
+            if media(y)['id'] not in used: used.add(media(y)['id']); return y
+        return x
     rest = it[h1i + 1:]
     sub = None
     if len(rest) > 1 and rest[0][0] == 'h2' and rest[1][0] in ('h2',) and not is_go(*rest[0][1:]):
@@ -421,7 +441,10 @@ def destination(slug):
     def render_block(kind, vals):
         if kind == 'p': return f'<div class="prose dprose">{"".join(vals)}</div>'
         if kind == 'gal':
-            seen = []; [seen.append(x) for x in vals if x not in seen]
+            seen = []
+            for x in vals:
+                if media(x)['id'] not in used: used.add(media(x)['id']); seen.append(x)
+            if not seen: return ''
             return f'<div class="gal3">{"".join(img_tag(x, 1200, alt=f"Cycling in {name} - Cigala Cycling Tours") for x in seen)}</div>'
         if kind == 'facts':
             return '<div class="facts4">' + ''.join(
@@ -441,11 +464,11 @@ def destination(slug):
                 hm = re.match(r'^/trips/([^/]+)/?$', u)
                 if hm and hm.group(1) in HOME_CARDS and hm.group(1) != 'private-trips':
                     out.append(('home', HOME_CARDS[hm.group(1)])); continue
-                out.append(('card', f'<article class="tcard dtour"><a class="ph" href="{u}">{img_tag(c["bg"], 900, alt=f"{title} - {name} cycling tour")}{tags}</a><div class="tx">'
+                out.append(('card', f'<article class="tcard dtour" data-k="{ {"Gravel": "gravel", "Gran Fondo": "gf", "Road & Gran Fondo": "gf"}.get(tag, "road") }"><a class="ph" href="{u}">{img_tag(pick(c["bg"]), 900, alt=f"{title} - {name} cycling tour")}{tags}</a><div class="tx">'
                            f'<h2>{E(title)}</h2><div class="desc">{desc}</div><div class="ctas one"><a class="btn btn-go" href="{u}">{E(go)}</a></div></div></article>'))
             if out and all(k == 'home' for k, _ in out):
                 return '<!--HOMECARDS-->' + ''.join(h for k, h in out)
-            return f'<div class="tgrid">{"".join(h if k == "card" else h for k, h in out)}</div>'
+            return chips(''.join(h for k, h in out)) + f'<div class="tgrid">{"".join(h for k, h in out)}</div>'
         if kind == 'btn':
             return '<div class="ctas">' + ''.join(f'<a class="btn btn-go" href="{link(u).replace(L, "")}">{E(t.capitalize())} →</a>' for t, u in vals) + '</div>'
         if kind == 'band':   # the same "Can't find the perfect one?" band as at the bottom of All tours (Matteo 15 Nov)
@@ -463,13 +486,13 @@ def destination(slug):
             cards = body.split('<!--HOMECARDS-->', 1)[1]
             h2t = re.sub(r'<[^>]+>', '', sec['h2']).replace('\u200b', '').strip() if sec['h2'] else 'Upcoming tours'
             html_s.append(f'<div class="cc cc-page"><section id="tours" class="dtours"><div class="in"><div class="head"><div><div class="eyebrow">2027 season</div>'
-                          f'<h2>{E(h2t)}</h2><div class="bar"></div>{lede.replace("<p>", "<p class=lede>")}</div></div><div class="tours">{cards}</div></div></section></div>')
+                          f'<h2>{E(h2t)}</h2><div class="bar"></div>{lede.replace("<p>", "<p class=lede>")}</div></div>{chips(cards)}<div class="tours">{cards}</div></div></section></div>')
             continue
-        if not cmap_done and '<div class="prose dprose">' in body and os.path.exists(ROOT + f'tourspages/maps/country-{slug}.svg'):
-            cmap = open(ROOT + f'tourspages/maps/country-{slug}.svg').read()
-            body = body.replace('<div class="prose dprose">', '<div class="dsplit"><div class="prose dprose">', 1)
-            k = body.index('</div>', body.index('<div class="prose dprose">')) + len('</div>')
-            body = body[:k] + f'<div class="cmapbox">{cmap}</div></div>' + body[k:]
+        if not cmap_done and body.startswith('<div class="prose dprose">') and os.path.exists(ROOT + f'tourspages/maps/country-{slug}.svg'):
+            cmap = open(ROOT + f'tourspages/maps/country-{slug}.svg').read()   # beside the heading and the first text (Matteo 15 Nov)
+            k = body.index('</div>') + len('</div>')
+            body = f'<div class="dsplit"><div>{head}{body[:k]}</div><div class="cmapbox">{cmap}</div></div>' + body[k:]
+            head = ''
             cmap_done = True
         html_s.append(f'<section{sid}{" style=\"padding-top:44px\"" if n == 0 else ""}>\n  <div class="in">\n    {head}\n    {body}\n  </div>\n</section>')
     has_tours = any('id="tours"' in x for x in html_s)
@@ -487,7 +510,7 @@ def destination(slug):
 ''' + '\n'.join(html_s) + '\n' + READMORE_JS
     return {'id': pid, 'slug': slug, 'main': main, 'css': PAGE_CSS, 'crumb': name}
 
-READMORE_JS = ''
+READMORE_JS = FILTER_JS
 
 
 # ===================== Testimonials (2844) =====================
@@ -699,12 +722,22 @@ html .cl .band-up.priv > img { object-position: center 75% !important; }
 html .cl .hero.phero.dhero .in { padding-block: 150px 60px !important; }   /* taller destination hero: more of the photo (Matteo) */
 html .cl .dsplit { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: start; }
 @media (max-width: 900px) { html .cl .dsplit { grid-template-columns: minmax(0, 1fr); } }
-html .cl .cmapbox { width: 100%; max-width: 400px; justify-self: end; }
+html .cl .cmapbox { width: 100%; max-width: 340px; justify-self: end; }
 html .cl .cmapbox svg { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
 html .cl .dtour .tx { gap: 10px; }
 html .cl .dtour .ctas.one { margin-top: auto; padding-top: 6px; }
 html .cl .dband { margin-top: 48px; }
 html .cc .dtours { padding-top: 56px; }
+html .cc .dtours .tour { min-height: 380px; aspect-ratio: auto; }   /* same height as the homepage cards */
+html .cl .fchips, html .cc .fchips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+html .cl .fchip, html .cc .fchip { display: inline-flex; align-items: center; gap: 8px; font: 600 12.5px/1 var(--body); letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 9px 15px; cursor: pointer; }
+html .cl .fchip:hover, html .cc .fchip:hover { color: #fff; border-color: rgba(255,255,255,.3); }
+html .cl .fchip .fd, html .cc .fchip .fd { width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); }
+html .cl .fchip.on, html .cc .fchip.on { background: var(--green); border-color: var(--green); color: #fff; }
+html .cl .fchip.on .fd, html .cc .fchip.on .fd { background: #fff; animation: fchip-pulse 1.8s ease-in-out infinite; }
+@keyframes fchip-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,.7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(255,255,255,0); opacity: .6; } }
+@media (prefers-reduced-motion: reduce) { html .cl .fchip.on .fd, html .cc .fchip.on .fd { animation: none; } }
+html .cl [hidden], html .cc .tours > [hidden] { display: none !important; }
 html .cl .vgrid.few .vcard:nth-child(n+7) { display: none; }
 html .cl .vmore-wrap { justify-content: center; margin-top: 22px; }
 html .cl .info h2.wa a { color: var(--green-text); }
