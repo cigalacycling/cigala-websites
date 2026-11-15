@@ -16,9 +16,15 @@ Y = {   # same as the previews (tools/build_coaching_tools.py)
               'Free Critical Power and W′ (W prime) calculator: enter two all-out efforts to get your CP, W′ and predicted best power from 2 to 20 minutes.', 'critical power calculator'),
     'climb-time-calculator': ('Cycling Climb Time Calculator (Stelvio, Alpe d’Huez, Ventoux) | Cigala Cycling Coaching',
               'How long will a climb take you? Free cycling climb time calculator for the Stelvio, Alpe d’Huez, Ventoux or any climb, from your power and weight.', 'climb time calculator'),
+    'sweat-rate-calculator': ('Sweat Rate Calculator for Cyclists | Cigala Cycling Coaching',
+              'Free sweat rate calculator: weigh yourself before and after a ride to find how much you sweat per hour and how much to drink on the bike.', 'sweat rate calculator'),
+    'swim-pace-calculator': ('CSS Swim Pace Calculator for Triathletes | Cigala Cycling Coaching',
+              'Free Critical Swim Speed (CSS) calculator: your CSS pace per 100 m from a 400 m and 200 m time trial, plus training paces for every swim session.', 'css swim calculator'),
 }
 items = []
 for slug, (t, m, k) in Y.items():
     items += [{'id': ids[slug], 'seo_title': t}, {'id': ids[slug], 'meta_description': m}, {'id': ids[slug], 'focus_keyphrase': k}]
-r = subprocess.run(['curl', '-sS', '-m', '60', '-X', 'POST', '-H', 'Content-Type: application/json', '--data-binary', json.dumps({'items': items}), B], capture_output=True, text=True)
-print(r.stdout[:800])
+for i in range(0, len(items), 18):   # Yoast takes at most 20 items per request
+    r = subprocess.run(['curl', '-sS', '-m', '60', '-X', 'POST', '-H', 'Content-Type: application/json', '--data-binary', json.dumps({'items': items[i:i + 18]}), B], capture_output=True, text=True)
+    res = json.loads(r.stdout).get('results', [])
+    print(f'batch {i // 18 + 1}:', len(res), 'items,', sum(not x['success'] for x in res), 'failed' if res else r.stdout[:300])

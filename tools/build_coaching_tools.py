@@ -27,12 +27,16 @@ IC = {  # line icons, same style as the packages page
     'carbs': '<path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/>',
     'cp': '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
     'climb': '<path d="M2 20h20L14 6l-4 6-2-3-6 11z"/><path d="M14 6l2 3"/>',
+    'sweat': '<path d="M12 2.7l5.7 5.6a8 8 0 1 1-11.4 0z"/>',
+    'swim': '<path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M2 13c2 0 2-1.5 4-1.5S8 13 10 13s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><circle cx="16" cy="5" r="2"/><path d="M6 9l4-3 3 3"/>',
 }
 TOOLS = [
     ('zones', '/tools/training-zones-calculator/', 'Training Zones Calculator', 'Your 7 power zones from FTP or a 20-minute test, plus heart-rate zones from your threshold heart rate.'),
     ('carbs', '/tools/carbs-per-hour-calculator/', 'Carbs per Hour Calculator', 'How many grams of carbs to take each hour, and what that means in gels and bottles, for your ride.'),
     ('cp', '/tools/critical-power-calculator/', 'Critical Power &amp; W′ Calculator', 'Your Critical Power and W′ from two all-out efforts, and the power you can hold from 2 to 20 minutes.'),
     ('climb', '/tools/climb-time-calculator/', 'Climb Time Calculator', 'How long a famous climb, or your own, will take at your power and weight, and the power you need for a target time.'),
+    ('sweat', '/tools/sweat-rate-calculator/', 'Sweat Rate Calculator', 'Weigh yourself before and after a ride to find how much you sweat, and how much to drink per hour.'),
+    ('swim', '/tools/swim-pace-calculator/', 'Swim Pace (CSS) Calculator', 'For triathletes: your Critical Swim Speed from a 400 m and a 200 m time trial, and your training paces.'),
 ]
 
 def hero(eyebrow, h1, lede):
@@ -595,9 +599,163 @@ CLJS = """<script>
 </script>"""
 
 # =====================================================================================================================
+# 5. Sweat rate
+SWMAIN = hero('Free tool', 'Sweat Rate Calculator', 'Weigh yourself before and after a ride to find out how much you sweat per hour, and how much you should drink on your next ride.') + f"""
+
+<section class="tl-sec">
+  <div class="in">
+    <div class="tl-box">
+      <form class="tl-in panel" id="tl-sweat" onsubmit="return false">
+        <h2>Your ride</h2>
+        <div class="tl-two">
+          <label class="tl-f"><span>Weight before (kg)</span><input type="number" id="tl-w0" inputmode="decimal" min="35" max="150" step="0.1" placeholder="e.g. 72.4"></label>
+          <label class="tl-f"><span>Weight after (kg)</span><input type="number" id="tl-w1" inputmode="decimal" min="35" max="150" step="0.1" placeholder="e.g. 71.3"></label>
+        </div>
+        <div class="tl-two">
+          <label class="tl-f"><span>Drank during (ml)</span><input type="number" id="tl-dr" inputmode="numeric" min="0" max="10000" step="50" placeholder="e.g. 1000"><small>A standard bottle is 500–750 ml</small></label>
+          <label class="tl-f"><span>Toilet stops (ml)</span><input type="number" id="tl-ur" inputmode="numeric" min="0" max="3000" step="50" value="0"><small>Rough guess, or 0</small></label>
+        </div>
+        <div class="tl-two">
+          <label class="tl-f"><span>Ride time: hours</span><select id="tl-sh">{''.join(f'<option value="{i}"{" selected" if i == 1 else ""}>{i}</option>' for i in range(0, 9))}</select></label>
+          <label class="tl-f"><span>Minutes</span><select id="tl-sm">{''.join(f'<option value="{i}">{i:02d}</option>' for i in range(0, 60, 5))}</select></label>
+        </div>
+        <p class="tl-note">Weigh yourself with no clothes (or the same dry clothes) just before and just after the ride, after towelling off. A ride of about an hour at your usual effort works best.</p>
+      </form>
+      <div class="tl-out panel" aria-live="polite">
+        <h2>Your sweat rate</h2>
+        {gate()}<div id="tl-sweat-out"></div>
+      </div>
+    </div>
+    {signup('sweat')}
+  </div>
+</section>
+
+<section>
+  <div class="in"><div class="tl-txt">
+    <div class="eyebrow">How it works</div>
+    <h2>WHY YOUR SWEAT RATE MATTERS</h2>
+    <div class="bar"></div>
+    <p>Everyone sweats differently: from under half a litre to more than two litres an hour. Generic advice like “one bottle per hour” can leave one rider short and another drinking far too much. Your own number takes the guesswork away.</p>
+    <h3>The calculation</h3>
+    <p>Fluid lost = weight before − weight after + what you drank − what you passed. One kilo of body weight lost is about one litre of sweat. Divide by the ride time to get your sweat rate per hour.</p>
+    <h3>How much to drink</h3>
+    <p>Aim to lose no more than about 2% of your body weight on a ride: beyond that, performance starts to drop. You don't need to replace every drop, and you should never finish a ride heavier than you started: that means you drank too much.</p>
+    <h3>Test in different conditions</h3>
+    <p>Your sweat rate rises in the heat and at higher intensity. Test on a cool day and a hot day, and at an easy and a hard effort, and you'll know what to drink for any ride. Hot rides also need more salt (sodium) in your bottles.</p>
+    {reads([('hydration-tips', 'Hydration tips'), ('why-is-hydration-vital-to-optimise-athletic-performance-2', 'Why hydration is vital for performance'), ('heat-training', 'Heat training'), ('homemade-sports-drinks', 'Homemade sports drinks')])}
+  </div></div>
+</section>
+
+{cta('Our Advanced and Premium riders get fuelling and hydration advice for every session, and a nutritional consult with our sports nutritionist.')}
+
+{more_tools('sweat')}"""
+
+SWJS = """<script>
+(function () {
+  var f = document.getElementById('tl-sweat'), out = document.getElementById('tl-sweat-out');
+  function v(id) { var x = parseFloat(document.getElementById(id).value); return isFinite(x) ? x : 0; }
+  function ml(x) { return (Math.round(x / 50) * 50).toLocaleString('en-IE') + ' ml'; }
+  function run() {
+    var w0 = v('tl-w0'), w1 = v('tl-w1'), dr = v('tl-dr'), ur = v('tl-ur'), h = (v('tl-sh') * 60 + v('tl-sm')) / 60;
+    if (w0 < 35 || w1 < 35) { out.innerHTML = '<p class="tl-empty">Enter your weight before and after the ride.</p>'; return; }
+    if (h < 0.25) { out.innerHTML = '<p class="tl-empty">Choose how long the ride was (at least 15 minutes).</p>'; return; }
+    var lost = (w0 - w1) * 1000 + dr - ur;   /* ml: 1 kg = about 1 litre */
+    if (Math.abs(w0 - w1) > 5 || lost < 0) { out.innerHTML = '<p class="tl-err">These numbers don’t add up. Check the weights and the amount you drank.</p>'; return; }
+    var rate = lost / h, pct = (w0 - w1) / w0 * 100, keep = Math.max(0, (lost - 0.02 * w0 * 1000) / h);
+    var o = '<div class="tl-big"><div><b>' + ml(rate) + '</b><span>Sweat per hour</span></div><div><b>' + pct.toFixed(1) + '%</b><span>Body weight lost</span></div></div>';
+    o += '<table class="tl-tbl"><tbody><tr><th scope="row">Total sweat on this ride</th><td>' + ml(lost) + '</td></tr>';
+    o += '<tr><th scope="row">To stay under 2% loss on a ride like this</th><td>at least ' + ml(keep) + ' per hour</td></tr>';
+    o += '<tr><th scope="row">Upper limit (don’t drink more than you sweat)</th><td>' + ml(rate) + ' per hour</td></tr></tbody></table>';
+    var msg = pct > 2 ? 'You lost more than 2% of your body weight: next time drink more, especially in the heat.' : (w1 > w0 ? 'You finished heavier than you started: you drank more than you needed.' : 'You stayed under 2%: well done, your drinking was about right for this ride.');
+    out.innerHTML = o + '<p class="tl-note">' + msg + ' One ride is a guide: your sweat rate changes with heat and intensity. Not medical advice.</p>';
+  }
+  f.addEventListener('input', run); f.addEventListener('change', run); run();
+})();
+</script>"""
+
+# =====================================================================================================================
+# 6. Swim pace (CSS)
+def mmss_in(idp, label, mm, ss):
+    return f"""<fieldset class="tl-f"><legend>{label}</legend><div class="tl-two">
+          <label><span class="vh">{label} minutes</span><input type="number" id="{idp}m" inputmode="numeric" min="1" max="30" placeholder="{mm}" aria-label="{label}: minutes"></label>
+          <label><span class="vh">{label} seconds</span><input type="number" id="{idp}s" inputmode="numeric" min="0" max="59" placeholder="{ss}" aria-label="{label}: seconds"></label>
+        </div><small>minutes · seconds</small></fieldset>"""
+CSSMAIN = hero('Free tool', 'Swim Pace (CSS) Calculator', 'For triathletes: find your Critical Swim Speed from a 400 m and a 200 m time trial, and the pace for every swim session.') + f"""
+
+<section class="tl-sec">
+  <div class="in">
+    <div class="tl-box">
+      <form class="tl-in panel" id="tl-css" onsubmit="return false">
+        <h2>Your time trials</h2>
+        {mmss_in('tl-a', '400 m time', '6', '40')}
+        {mmss_in('tl-b', '200 m time', '3', '10')}
+        <p class="tl-note">Warm up well, swim 400 m all-out but evenly paced, rest 5–10 minutes easy, then swim 200 m all-out. Use a pool and push off the wall to start (no dive).</p>
+      </form>
+      <div class="tl-out panel" aria-live="polite">
+        <h2>Your swim paces</h2>
+        {gate()}<div id="tl-css-out"></div>
+      </div>
+    </div>
+    {signup('swim')}
+  </div>
+</section>
+
+<section>
+  <div class="in"><div class="tl-txt">
+    <div class="eyebrow">How it works</div>
+    <h2>WHAT IS CRITICAL SWIM SPEED?</h2>
+    <div class="bar"></div>
+    <p>Critical Swim Speed (CSS) is the fastest pace you can hold for a long swim without tiring quickly: the swimming version of your threshold. It's the most useful number for training in the pool, because it turns every session into a clear target pace per 100 m.</p>
+    <h3>The calculation</h3>
+    <p>CSS = (400 − 200) ÷ (400 m time − 200 m time). Using the difference between two efforts cancels out the push-offs and your sprint speed, so it reflects your real aerobic swimming. We show it as a pace per 100 m.</p>
+    <h3>Using your paces</h3>
+    <ul>
+      <li><b>Easy:</b> warm-ups, drills and recovery.</li>
+      <li><b>Endurance:</b> longer sets that build your aerobic base.</li>
+      <li><b>Threshold (CSS):</b> sets like 8–10 × 100 m with short rests. The key session for faster triathlon swims.</li>
+      <li><b>Fast:</b> short, hard repeats with longer rests.</li>
+    </ul>
+    <p>Re-test every 4–6 weeks: as your CSS gets faster, so do all your paces.</p>
+  </div></div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="tl-cta panel">
+      <div><h3 class="h-sm">Triathlon coaching</h3><p>Swim, bike and run plans from Sprint to Ironman, with paces and zones set from your own testing.</p></div>
+      <div class="ctas"><a class="btn btn-go" href="{C}/tri-individual-packages/" {EXT}>See the triathlon packages →</a><a class="btn btn-ghost" href="{CAL}" {EXT}>Book a free consultation</a></div>
+    </div>
+  </div>
+</section>
+
+{more_tools('swim')}"""
+
+CSSJS = """<script>
+(function () {
+  var f = document.getElementById('tl-css'), out = document.getElementById('tl-css-out');
+  function v(id) { var x = parseFloat(document.getElementById(id).value); return isFinite(x) ? x : 0; }
+  function pace(s) { s = Math.round(s); return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }
+  function run() {
+    var a = v('tl-am') * 60 + v('tl-as'), b = v('tl-bm') * 60 + v('tl-bs');
+    if (!a || !b) { out.innerHTML = '<p class="tl-empty">Enter your 400 m and 200 m times.</p>'; return; }
+    if (a <= b * 2) { out.innerHTML = '<p class="tl-err">Your 400 m should be slower per 100 m than your 200 m. Check both times.</p>'; return; }
+    if (b < 100 || a > 1500) { out.innerHTML = '<p class="tl-err">Check your times: they look outside the usual range.</p>'; return; }
+    var css = (a - b) / 2;   /* seconds per 100 m */
+    var o = '<div class="tl-big"><div><b>' + pace(css) + '</b><span>CSS pace per 100 m</span></div><div><b>' + (100 / css).toFixed(2) + ' m/s</b><span>Critical Swim Speed</span></div></div>';
+    o += '<table class="tl-tbl"><caption>Training paces per 100 m</caption><thead><tr><th scope="col">Session</th><th scope="col">Pace</th></tr></thead><tbody>';
+    [['Easy', 10, 15], ['Endurance', 5, 8], ['Threshold (CSS)', -1, 2], ['Fast', -6, -3]].forEach(function (z) { o += '<tr><th scope="row">' + z[0] + '</th><td>' + pace(css + z[1]) + '–' + pace(css + z[2]) + '</td></tr>'; });
+    o += '</tbody></table><table class="tl-tbl"><caption>At CSS pace</caption><tbody>';
+    [[750, 'Sprint swim (750 m)'], [1500, 'Olympic swim (1,500 m)']].forEach(function (d) { o += '<tr><th scope="row">' + d[1] + '</th><td>' + pace(css * d[0] / 100) + '</td></tr>'; });
+    out.innerHTML = o + '</tbody></table><p class="tl-note">Pool times. Open water, wetsuits and drafting change race pace. A guide for training.</p>';
+  }
+  f.addEventListener('input', run); run();
+})();
+</script>"""
+
+# =====================================================================================================================
 # hub
 cards = ''.join(f'<a class="tl-card panel" href="{C}{u}" {EXT}><svg viewBox="0 0 24 24" aria-hidden="true">{IC[k]}</svg><h2 class="h-sm">{t}</h2><p>{d}</p><span class="arrow-link">Open the calculator →</span></a>' for k, u, t, d in TOOLS)
-HMAIN = hero('Free tools', 'Free Cycling Training Tools', 'Free calculators from Head Coach Matteo Cigala to help you train and race smarter: training zones, fuelling, Critical Power and climb times.') + f'''
+HMAIN = hero('Free tools', 'Free Cycling Training Tools', 'Free calculators from Head Coach Matteo Cigala to help you train and race smarter: training zones, fuelling, hydration, Critical Power, climb times and swim pace.') + f'''
 
 <section class="tl-sec">
   <div class="in">
@@ -618,3 +776,7 @@ page('tools-critical-power', '/tools/critical-power-calculator/', 'Critical Powe
      'Free Critical Power and W′ (W prime) calculator: enter two all-out efforts to get your CP, W′ and predicted best power from 2 to 20 minutes.', PMAIN, PJS)
 page('tools-climb-time', '/tools/climb-time-calculator/', 'Climb Time Calculator', 'Cycling Climb Time Calculator (Stelvio, Alpe d’Huez, Ventoux) | Cigala Cycling Coaching',
      'How long will a climb take you? Free cycling climb time calculator for the Stelvio, Alpe d’Huez, Ventoux or any climb, from your power and weight.', CLMAIN, CLJS)
+page('tools-sweat-rate', '/tools/sweat-rate-calculator/', 'Sweat Rate Calculator', 'Sweat Rate Calculator for Cyclists | Cigala Cycling Coaching',
+     'Free sweat rate calculator: weigh yourself before and after a ride to find how much you sweat per hour and how much to drink on the bike.', SWMAIN, SWJS)
+page('tools-swim-pace', '/tools/swim-pace-calculator/', 'Swim Pace (CSS) Calculator', 'CSS Swim Pace Calculator for Triathletes | Cigala Cycling Coaching',
+     'Free Critical Swim Speed (CSS) calculator: your CSS pace per 100 m from a 400 m and 200 m time trial, plus training paces for every swim session.', CSSMAIN, CSSJS)
