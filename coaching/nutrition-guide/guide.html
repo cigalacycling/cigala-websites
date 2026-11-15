@@ -11,7 +11,9 @@
   --text:#f7f8f8; --text-2:#d0d6e0; --text-3:#8a8f98;
   --green:#009a44; --green-text:#34c46a; --red:#E10600; --red-text:#ff3d33;
   /* Vivify Sports (partner) */
-  --vivify:#19444b; --vivify-2:#2f6f7a; --vivify-text:#7fc3cc;
+  --vivify:#19444b;
+  /* topic colours: one per nutrient, used through the whole guide */
+  --c-carb:#f28c38; --c-pro:#e8606a; --c-fat:#f2cf4a; --c-mic:#34c46a; --c-hyd:#4aa8e8; --topic:#d0d6e0; --vivify-2:#2f6f7a; --vivify-text:#7fc3cc;
 }
 @page{size:A4;margin:0}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -42,9 +44,11 @@ p{margin:0 0 10px}
 .sec{position:relative;padding:4px 0 0;margin-bottom:14px}
 .sec .eyebrow{margin-bottom:10px}
 .sec h2{font-size:42px;max-width:78%}
-.sec .bar{margin:14px 0 14px}
+.sec .bar{margin:14px 0 12px}
 .sec .sub{font-size:14px;color:var(--text-2);max-width:72%}
-.sec .big{position:absolute;right:-2mm;top:-8px;font-family:Anton,sans-serif;font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.16)}
+.sec .big{position:absolute;right:-2mm;top:-8px;font-family:Anton,sans-serif;font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--topic);opacity:.55}
+.topic{display:inline-flex;align-items:center;gap:7px;margin-left:10px;padding:0 10px 0 8px;line-height:17px;vertical-align:1px;border-radius:999px;border:1px solid var(--border-strong);color:var(--text);font-size:9.5px;letter-spacing:.16em}
+.topic i{width:8px;height:8px;border-radius:50%;background:var(--topic);display:inline-block}
 /* panels */
 .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
 .dots{list-style:none;display:grid;gap:7px 22px}
@@ -62,9 +66,9 @@ p{margin:0 0 10px}
 .tile .v{font-family:Anton,sans-serif;font-size:27px;color:var(--text);line-height:1.1}
 .tile .u{font-size:10.5px;color:var(--text-2);margin-top:2px}
 .tile .l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-top:7px;line-height:1.35}
-.m{display:flex;gap:3px;justify-content:center;margin-top:10px}.m i{width:14px;height:4px;border-radius:2px;background:rgba(255,255,255,.14)}.m i.on{background:var(--green)}
-.tile.wide{padding:16px;border-top:3px solid var(--green)}.tile.wide .v{font-size:40px;color:var(--green-text)}
-.tiles.plain .tile{border-top:3px solid var(--green)}
+.m{display:flex;gap:3px;justify-content:center;margin-top:10px}.m i{width:14px;height:4px;border-radius:2px;background:rgba(255,255,255,.14)}.m i.on{background:var(--topic)}
+.tile.wide{padding:16px;border-top:3px solid var(--topic)}.tile.wide .v{font-size:40px;color:var(--topic)}
+.tiles.plain .tile,.tiles.scale .tile{border-top:3px solid var(--topic)}
 /* tables */
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:11.5px}
 .tbl{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
@@ -123,8 +127,10 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 .legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
 /* contents */
 .toc{list-style:none;margin-top:4px}
-.toc li{display:grid;grid-template-columns:62px 1fr 40px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
-.toc .no{font-family:Anton,sans-serif;font-size:28px;color:transparent;-webkit-text-stroke:1px var(--green-text)}
+.toc li{display:grid;grid-template-columns:62px 1fr 40px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.toc .no{font-family:Anton,sans-serif;font-size:28px;color:transparent;-webkit-text-stroke:1px var(--topic)}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:8px;font-size:11px;color:var(--text)}
+.key span{display:flex;align-items:center;gap:7px}.key i{width:12px;height:12px;border-radius:50%;display:inline-block}
 .toc .tt{font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);line-height:1.1}
 .toc .ds{font-size:11px;color:var(--text-3);margin-top:2px}
 .toc .pg{text-align:right;font-weight:600;color:var(--text)}
@@ -172,9 +178,9 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 .tool .anton{font-size:17px;margin-bottom:4px}.tool .go{color:var(--green-text);font-weight:600;font-size:11.5px;margin-top:6px;display:block}
 /* foundations */
 .fd{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-.fd .card{grid-column:span 3;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.fd .card{grid-column:span 3;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--topic);border-radius:12px;padding:16px;text-align:center}
 .fd .card.s2{grid-column:span 2}
-.fd .ic{width:44px;height:44px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.fd .ic{width:44px;height:44px;border-radius:50%;background:var(--topic);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
 .fd .ic svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .fd .card .anton{font-size:18px;margin-bottom:6px}
 .fd .card p{font-size:11px;margin:0}
@@ -223,19 +229,22 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <div class="bar"></div>
   </div>
   <ol class="toc">
-    <li><span class="no">01</span><div><div class="tt">Carbohydrates</div><div class="ds">Fuel for training and recovery</div></div><span class="pg">3</span></li>
-    <li><span class="no">02</span><div><div class="tt">Protein</div><div class="ds">Repair, recovery and adaptation</div></div><span class="pg">6</span></li>
-    <li><span class="no">03</span><div><div class="tt">Fats</div><div class="ds">Energy, hormones and health</div></div><span class="pg">8</span></li>
-    <li><span class="no">04</span><div><div class="tt">Micronutrients</div><div class="ds">Vitamins and minerals</div></div><span class="pg">10</span></li>
+    <li style="--topic:var(--c-carb)"><span class="no">01</span><div><div class="tt">Carbohydrates</div><div class="ds">Fuel for training and recovery</div></div><span class="pg">3</span></li>
+    <li style="--topic:var(--c-pro)"><span class="no">02</span><div><div class="tt">Protein</div><div class="ds">Repair, recovery and adaptation</div></div><span class="pg">6</span></li>
+    <li style="--topic:var(--c-fat)"><span class="no">03</span><div><div class="tt">Fats</div><div class="ds">Energy, hormones and health</div></div><span class="pg">8</span></li>
+    <li style="--topic:var(--c-mic)"><span class="no">04</span><div><div class="tt">Micronutrients</div><div class="ds">Vitamins and minerals</div></div><span class="pg">10</span></li>
     <li><span class="no">05</span><div><div class="tt">Recommended food sources</div><div class="ds">What to put in your basket</div></div><span class="pg">11</span></li>
     <li><span class="no">06</span><div><div class="tt">Nutrition timing</div><div class="ds">Before, during and after training</div></div><span class="pg">12</span></li>
     <li><span class="no">07</span><div><div class="tt">Recovery &amp; race day</div><div class="ds">The 3:1 rule and a race day timeline</div></div><span class="pg">13</span></li>
-    <li><span class="no">08</span><div><div class="tt">Hydration</div><div class="ds">Fluids, electrolytes and your sweat rate</div></div><span class="pg">14</span></li>
+    <li style="--topic:var(--c-hyd)"><span class="no">08</span><div><div class="tt">Hydration</div><div class="ds">Fluids, electrolytes and your sweat rate</div></div><span class="pg">14</span></li>
     <li><span class="no">09</span><div><div class="tt">The Athlete’s Plate</div><div class="ds">Balance and energy for every training day</div></div><span class="pg">16</span></li>
     <li><span class="no">10</span><div><div class="tt">Personalised nutrition plan</div><div class="ds">Consultation, coaching and free tools</div></div><span class="pg">17</span></li>
     <li><span class="no">11</span><div><div class="tt">The foundations of sports nutrition</div><div class="ds">The whole guide on one page</div></div><span class="pg">19</span></li>
   </ol>
-  <div class="callout" style="margin-top:22px">
+  <div class="panel" style="margin-top:14px;padding:12px 18px"><div class="eyebrow" style="margin-bottom:2px">Colour key</div><p style="margin:0;font-size:11px">Each nutrient has its own colour, used all through the guide and on the plate.</p>
+    <div class="key"><span><i style="background:var(--c-carb)"></i>Carbohydrates</span><span><i style="background:var(--c-pro)"></i>Protein</span><span><i style="background:var(--c-fat)"></i>Fats</span><span><i style="background:var(--c-mic)"></i>Micronutrients · fruit &amp; veg</span><span><i style="background:var(--c-hyd)"></i>Hydration</span></div>
+    <p style="margin:8px 0 0;font-size:11px;color:var(--text-3)">In the food lists: <b style="color:var(--green-text)">●</b> choose often · <b style="color:var(--text-3)">●</b> in moderation or around training · <b style="color:var(--red-text)">●</b> avoid</p></div>
+  <div class="callout" style="margin-top:12px">
     <div class="anton" style="font-size:20px;margin-bottom:4px">Fuel • Recover • Adapt</div>
     <p>The right nutrition strategy is individual. Match your intake to your training load, goals and recovery needs.</p>
   </div>
@@ -243,11 +252,11 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 </section>
 
 <!-- 3 CARBS -->
-<section class="page">
+<section class="page" style="--topic:var(--c-carb)">
   <div class="run"><span>A practical guide to healthy habits, training and performance</span></div>
   <div class="sec">
     <span class="big">01</span>
-    <div class="eyebrow">Section 01</div>
+    <div class="eyebrow">Section 01<span class="topic"><i></i>Carbohydrates</span></div>
     <h2>Carbohydrates</h2>
     <div class="bar"></div>
     <p class="sub">The body’s preferred energy source during moderate- and high-intensity exercise</p>
@@ -281,7 +290,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 </section>
 
 <!-- 4 CARBS 2 -->
-<section class="page">
+<section class="page" style="--topic:var(--c-carb)">
   <div class="run"><span>01 · Carbohydrates</span></div>
   <h3 style="margin-top:0">High-fibre vs low-fibre carbohydrates</h3><div class="bar"></div>
   <div class="tbl"><table>
@@ -307,7 +316,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 </section>
 
 <!-- 5 CARBS 3 -->
-<section class="page">
+<section class="page" style="--topic:var(--c-carb)">
   <div class="run"><span>01 · Carbohydrates</span></div>
   <h3 style="margin-top:0">Carbohydrate portions</h3><div class="bar"></div>
   <div class="g2">
@@ -327,16 +336,16 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <div class="panel" style="border-left:3px solid var(--text-3)"><div class="anton" style="font-size:17px">High GI</div><p style="margin:4px 0 0">Generally produces a <b>faster</b> rise in blood glucose.</p></div>
   </div>
   <p style="margin-top:12px"><b>Neither category is inherently good or bad.</b> Low-GI foods suit everyday meals; higher-GI foods can be practical before, during or after exercise when rapid carbohydrate delivery helps. Fibre, portion size, preparation and the composition of the meal also influence the blood glucose response.</p>
-  <div class="mphoto" style="height:66mm;margin-top:16px"><img src="assets/nutrition-cta-pasta.jpg" alt="Nests of fresh green spinach and plain egg pasta"></div>
+  <div class="mphoto" style="height:66mm;margin-top:16px"><img src="assets/matteo-cigala-race-win.jpg" alt="Matteo Cigala celebrating a race win in the Cigala Cycling kit" style="object-position:50% 35%"></div>
   <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">5</span></div>
 </section>
 
 <!-- 5 PROTEIN -->
-<section class="page">
+<section class="page" style="--topic:var(--c-pro)">
   <div class="run"><span>A practical guide to healthy habits, training and performance</span></div>
   <div class="sec">
     <span class="big">02</span>
-    <div class="eyebrow">Section 02</div>
+    <div class="eyebrow">Section 02<span class="topic"><i></i>Protein</span></div>
     <h2>Protein</h2>
     <div class="bar"></div>
     <p class="sub">Essential for muscle repair, recovery and adaptation to exercise</p>
@@ -368,7 +377,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 </section>
 
 <!-- 6 PROTEIN 2 -->
-<section class="page">
+<section class="page" style="--topic:var(--c-pro)">
   <div class="run"><span>02 · Protein</span></div>
   <h3 style="margin-top:0">Protein portions</h3><div class="bar"></div>
   <p class="note" style="margin:0 0 10px">Each portion below supplies roughly the same amount of protein.</p>
@@ -395,11 +404,11 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 </section>
 
 <!-- 7 FATS -->
-<section class="page">
+<section class="page" style="--topic:var(--c-fat)">
   <div class="run"><span>A practical guide to healthy habits, training and performance</span></div>
   <div class="sec">
     <span class="big">03</span>
-    <div class="eyebrow">Section 03</div>
+    <div class="eyebrow">Section 03<span class="topic"><i></i>Fats</span></div>
     <h2>Fats</h2>
     <div class="bar"></div>
     <p class="sub">Essential for good health and athletic performance</p>
@@ -423,7 +432,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 </section>
 
 <!-- 8 FATS 2 -->
-<section class="page">
+<section class="page" style="--topic:var(--c-fat)">
   <div class="run"><span>03 · Fats</span></div>
   <h3 style="margin-top:0">Recommended intake – average athlete</h3><div class="bar"></div>
   <div class="tile wide"><div class="v">20 – 35 %</div><div class="u">of total daily energy intake</div><div class="l">Should come from fats</div></div>
@@ -450,11 +459,11 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 </section>
 
 <!-- 9 MICRO -->
-<section class="page">
+<section class="page" style="--topic:var(--c-mic)">
   <div class="run"><span>A practical guide to healthy habits, training and performance</span></div>
   <div class="sec">
     <span class="big">04</span>
-    <div class="eyebrow">Section 04</div>
+    <div class="eyebrow">Section 04<span class="topic"><i></i>Micronutrients</span></div>
     <h2>Micronutrients</h2>
     <div class="bar"></div>
     <p class="sub">Vitamins and minerals are essential for normal physiological function</p>
@@ -574,19 +583,19 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     </ul></div>
   </div>
   <h3>Race day timeline</h3><div class="bar"></div>
-  <div class="row"><div class="lab">3.5 hours before</div><div class="bd"><ul class="dots"><li>A good carbohydrate-based breakfast: porridge, pasta, rice.</li></ul></div></div>
-  <div class="row"><div class="lab">On the bike</div><div class="bd"><ul class="dots"><li>Around <b>60 g of carbs per hour</b>, more for longer races if your gut is trained for it.</li><li>For races of 100 km or more, aim to finish <b>three bottles</b>.</li></ul></div></div>
+  <div class="row"><div class="lab">Before the start</div><div class="bd"><ul class="dots"><li>A carbohydrate-rich meal <b>1.5–3 hours</b> before (porridge, pasta, rice), and an easily digestible snack 30–60 minutes before if needed.</li></ul></div></div>
+  <div class="row"><div class="lab">On the bike</div><div class="bd"><ul class="dots"><li>Carbohydrates per hour to match the race length: see “During training” in section 01 (30–60 g for 1–2.5 hours, 60–90 g for 2.5–4 hours).</li><li>For races of 100 km or more, aim to finish <b>three bottles</b>.</li></ul></div></div>
   <div class="row"><div class="lab">Finish line</div><div class="bd"><ul class="dots"><li>10–15 minutes of easy spinning, then a recovery drink and a snack straight away.</li><li>Shower, legs up and rest for an hour before dinner, so blood goes to recovery, not digestion.</li></ul></div></div>
   <div class="row"><div class="lab">Dinner &amp; night</div><div class="bd"><ul class="dots"><li>Plenty of carbohydrates to fill the tank for tomorrow, protein, fruit and vegetables.</li><li>In stage races, skip red meat at dinner: it is slow to digest. Sleep <b>7–8 hours</b>.</li></ul></div></div>
   <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">13</span></div>
 </section>
 
 <!-- 12 HYDRATION -->
-<section class="page">
+<section class="page" style="--topic:var(--c-hyd)">
   <div class="run"><span>A practical guide to healthy habits, training and performance</span></div>
   <div class="sec">
     <span class="big">08</span>
-    <div class="eyebrow">Section 08</div>
+    <div class="eyebrow">Section 08<span class="topic"><i></i>Hydration</span></div>
     <h2>Hydration</h2>
     <div class="bar"></div>
     <p class="sub">Water is essential for thermoregulation, nutrient transport and muscle contraction</p>
@@ -620,7 +629,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 </section>
 
 <!-- HYDRATION 2 -->
-<section class="page">
+<section class="page" style="--topic:var(--c-hyd)">
   <div class="run"><span>08 · Hydration</span></div>
   <h3 style="margin-top:0">Why it matters</h3><div class="bar"></div>
   <div class="tiles plain" style="grid-template-columns:repeat(3,1fr)">
@@ -662,7 +671,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <div class="plate"><div class="t">Moderate training day</div><svg viewBox="0 0 100 100" data-pie="38,37,25"></svg><div class="x">+ Fats (1 tablespoon)<br>+ Beverage<br>+ Flavour<br>+ Fruit (side serving)</div></div>
     <div class="plate"><div class="t">Hard training day</div><svg viewBox="0 0 100 100" data-pie="25,50,25"></svg><div class="x">+ Fats (2 tablespoons)<br>+ Beverage<br>+ Flavour<br>+ Fruit (side serving)</div></div>
   </div>
-  <div class="legend"><span><i style="background:var(--green)"></i>Fruit &amp; veg.</span><span><i style="background:var(--text-2)"></i>Grains</span><span><i style="background:#5d636b"></i>Lean protein</span></div>
+  <div class="legend"><span><i style="background:var(--c-mic)"></i>Fruit &amp; veg. (micronutrients)</span><span><i style="background:var(--c-carb)"></i>Grains (carbohydrates)</span><span><i style="background:var(--c-pro)"></i>Lean protein</span></div>
   <p class="note" style="margin-top:12px">Fill your plate according to the demands of your day: more fruit and vegetables when training is light, and more grains as training volume and intensity increase.</p>
   <h3>How much energy?</h3><div class="bar"></div>
   <div class="g2" style="align-items:stretch">
@@ -681,7 +690,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <h2>Personalised nutrition plan</h2>
     <div class="bar"></div>
   </div>
-  <div class="mphoto"><img src="assets/nutrition-marine.jpg" alt="Marine Lenehan riding her road bike on a country lane"><span class="pill"><i></i>Marine Lenehan · Sports Nutritionist</span></div>
+  <div class="mphoto"><img src="assets/marine-lenehan-european-champion.jpg" alt="Marine Lenehan biting her European champion gold medal" style="object-position:50% 22%"><span class="pill"><i></i>Marine Lenehan · Sports Nutritionist &amp; European Champion</span></div>
   <p class="lead">This guide provides general nutrition advice. For a more individualised approach, <b>Vivify Sports</b> offers personalised nutrition support tailored to your goals, lifestyle and training demands. Through an assessment of your dietary habits, nutritional intake and individual needs, we help you develop sustainable strategies to improve your health, performance and relationship with food.</p>
   <div class="consult" style="margin-top:14px">
     <div class="l">
@@ -689,13 +698,13 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
       <p style="color:var(--text);margin-bottom:6px">Your initial consultation includes:</p>
       <ul class="dots"><li>A private online nutrition assessment with Marine</li><li>Evaluation of your dietary habits and nutritional needs</li><li>A personalised action plan with practical recommendations</li></ul>
       <p class="note" style="margin-top:10px">Follow-up consultations and personalised nutrition coaching plans are also available.</p>
-      <a class="btn" href="https://coaching.cigalacycling.com/nutrition/">Book your consultation</a>
+      <a class="btn" href="https://www.vivifysports.com/nutritionalcoaching">Book your consultation</a>
     </div>
     <div class="r">
-      <div class="person"><div class="k">Vivify Sports</div><div class="nm">Marine Lenehan</div><div class="rl">Sports Nutritionist &amp; WorldTour Cyclist</div>
-        <a href="https://vivifysports.com">vivifysports.com</a><a href="mailto:marine@vivifysports.com">marine@vivifysports.com</a><div class="c">+353 87 224 7402</div></div>
+      <div class="person"><div class="k">Vivify Sports</div><div class="nm">Marine Lenehan</div><div class="rl">Sports Nutritionist &amp; World Tour Cyclist</div>
+        <a href="https://vivifysports.com">vivifysports.com</a><a href="mailto:marine@vivifysports.com">marine@vivifysports.com</a><div class="c">087 224 7402</div></div>
       <div class="person" style="margin-bottom:0"><div class="k" style="color:var(--red-text)">Cigala Cycling</div><div class="nm">Matteo Cigala</div><div class="rl">Founder &amp; Head Coach</div>
-        <a href="https://coaching.cigalacycling.com/">coaching.cigalacycling.com</a><a href="mailto:matteo@cigalacycling.com">matteo@cigalacycling.com</a><div class="c">+353 83 477 7697</div></div>
+        <a href="https://cigalacycling.com">cigalacycling.com</a><a href="mailto:matteo@cigalacycling.com">matteo@cigalacycling.com</a><div class="c">+353 83 477 7697</div></div>
     </div>
   </div>
   <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">17</span></div>
@@ -719,6 +728,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <tr><td>Daily carbohydrate recommendation for every session</td><td class="no">–</td><td class="ok">✓</td></tr>
     <tr><td>Nutritional consult with our sports nutritionist</td><td class="no">–</td><td class="ok">✓</td></tr>
   </table></div>
+  <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap"><a class="btn" style="margin-top:0" href="https://coaching.cigalacycling.com/individual-packages/">See the coaching packages</a><a class="btn" style="margin-top:0;background:transparent;border:1px solid var(--border-strong)" href="https://calendly.com/cigalacycling">Book a free call with Matteo</a></div>
   <h3>Free nutrition tools</h3><div class="bar"></div>
   <div class="g2">
     <a class="tool" href="https://coaching.cigalacycling.com/tools/carbs-per-hour-calculator/"><div class="anton">Carbs per hour</div>Your fuelling plan for a ride or race: grams of carbs per hour, in gels and bottles.<span class="go">Open the calculator →</span></a>
@@ -738,11 +748,11 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <p class="sub">A practical framework for health, performance &amp; recovery</p>
   </div>
   <div class="fd">
-    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21V8"/><path d="M12 12c-3 0-4.5-2-4.5-4.5C10.5 7.5 12 9.5 12 12z"/><path d="M12 12c3 0 4.5-2 4.5-4.5C13.5 7.5 12 9.5 12 12z"/><path d="M12 16.5c-3 0-4.5-2-4.5-4.5 3 0 4.5 2 4.5 4.5z"/><path d="M12 16.5c3 0 4.5-2 4.5-4.5-3 0-4.5 2-4.5 4.5z"/><path d="M12 8c-1-1.2-1-3 0-4.5 1 1.5 1 3.3 0 4.5z"/></svg></div><div class="anton">Carbohydrates</div><p>Your primary fuel source. Adjust intake to training duration and intensity.</p></div>
-    <div class="card v"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c3.5 0 6 5 6 9.5S15.3 21 12 21s-6-4-6-8.5S8.5 3 12 3z"/></svg></div><div class="anton">Protein</div><p>Supports muscle repair, recovery and adaptation. Include protein regularly across the day.</p></div>
-    <div class="card s2 v"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c4 3 6 7 6 11a6 6 0 0 1-12 0c0-4 2-8 6-11z"/><circle cx="12" cy="15" r="2.5"/></svg></div><div class="anton">Healthy fats</div><p>Provide energy and essential fatty acids for cell, hormonal and cardiovascular health.</p></div>
-    <div class="card s2"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l8-8"/></svg></div><div class="anton">Micronutrients</div><p>Vitamins and minerals support energy metabolism, oxygen transport, immunity and normal body function.</p></div>
-    <div class="card s2 v"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></div><div class="anton">Hydration</div><p>Replace fluids according to individual sweat losses. Consider electrolytes during prolonged or hot sessions.</p></div>
+    <div style="--topic:var(--c-carb)" class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21V8"/><path d="M12 12c-3 0-4.5-2-4.5-4.5C10.5 7.5 12 9.5 12 12z"/><path d="M12 12c3 0 4.5-2 4.5-4.5C13.5 7.5 12 9.5 12 12z"/><path d="M12 16.5c-3 0-4.5-2-4.5-4.5 3 0 4.5 2 4.5 4.5z"/><path d="M12 16.5c3 0 4.5-2 4.5-4.5-3 0-4.5 2-4.5 4.5z"/><path d="M12 8c-1-1.2-1-3 0-4.5 1 1.5 1 3.3 0 4.5z"/></svg></div><div class="anton">Carbohydrates</div><p>Your primary fuel source. Adjust intake to training duration and intensity.</p></div>
+    <div style="--topic:var(--c-pro)" class="card v"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c3.5 0 6 5 6 9.5S15.3 21 12 21s-6-4-6-8.5S8.5 3 12 3z"/></svg></div><div class="anton">Protein</div><p>Supports muscle repair, recovery and adaptation. Include protein regularly across the day.</p></div>
+    <div style="--topic:var(--c-fat)" class="card s2 v"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c4 3 6 7 6 11a6 6 0 0 1-12 0c0-4 2-8 6-11z"/><circle cx="12" cy="15" r="2.5"/></svg></div><div class="anton">Healthy fats</div><p>Provide energy and essential fatty acids for cell, hormonal and cardiovascular health.</p></div>
+    <div style="--topic:var(--c-mic)" class="card s2"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l8-8"/></svg></div><div class="anton">Micronutrients</div><p>Vitamins and minerals support energy metabolism, oxygen transport, immunity and normal body function.</p></div>
+    <div style="--topic:var(--c-hyd)" class="card s2 v"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></div><div class="anton">Hydration</div><p>Replace fluids according to individual sweat losses. Consider electrolytes during prolonged or hot sessions.</p></div>
   </div>
   <div class="hub"><span>FUEL • RECOVER • ADAPT</span></div>
   <div class="panel">
@@ -763,7 +773,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 // plate pies: data-pie = fruit&veg, grains, protein (percent), drawn clockwise from 12 o'clock
 document.querySelectorAll('.tiles.scale .tile').forEach(t=>{const l=+t.dataset.l,m=document.createElement('div');m.className='m';m.innerHTML=[1,2,3,4,5].map(i=>`<i class="${i<=l?'on':''}"></i>`).join('');t.appendChild(m)});
 document.querySelectorAll('svg[data-pie]').forEach(svg=>{
-  const v=svg.dataset.pie.split(',').map(Number), cols=['#009a44','#d0d6e0','#5d636b'], labs=['Fruit & veg.','Grains','Protein'], txt=['#fff','#08090a','#fff'];
+  const v=svg.dataset.pie.split(',').map(Number), cols=['#34c46a','#f28c38','#e8606a'], labs=['Fruit & veg.','Grains','Protein'], txt=['#08090a','#08090a','#08090a'];
   let a=0, out='';
   const pt=(ang,r)=>[50+r*Math.sin(ang*2*Math.PI/100),50-r*Math.cos(ang*2*Math.PI/100)];
   v.forEach((p,i)=>{
