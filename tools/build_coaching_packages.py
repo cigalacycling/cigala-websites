@@ -38,23 +38,52 @@ def btn(label, url, cls='btn-go', note=''):
 
 # New feature line, added by Matteo (15 Nov 2026): Advanced and Premium only, a normal line after the training plan.
 ASSESS = 'Initial Assessment Review of your training data'
+# Who each package is for: short lines taken from the live FAQ answer "What would the most suitable package for me?"
+FOR = {
+    'basic': 'For riders who can follow the training without the human aspect of a coach.',
+    'advanced': 'Access to Matteo as your coach, with feedback, phone calls and training analysis, plus Vekta.',
+    'premium': 'The closest coaching: daily contact, feedback and analysis, and a weekly catch up call.',
+}
 def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     top = list(own[key])
     if key in ('advanced', 'premium'): top.insert(1, ASSESS)
     rest = [f for f in F[key] if f not in own[key]]
-    items = ''.join(f'<li>{E(x)}</li>' for x in top) + ''.join(f'<li class="more">{E(x)}</li>' for x in rest)
+    items = ''.join(f'<li>{E(x)}</li>' for x in top)
+    if key == 'basic': items = items.replace('</li>', f'</li><li class="no">{E(ASSESS)} <span>(not included)</span></li>', 1)
+    items += ''.join(f'<li class="more">{E(x)}</li>' for x in rest)
     total = len(top) + len(rest)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
         {badge}
         <div class="pkg-term">{term}</div>
         <h2>{h2}</h2>
+        <p class="pkg-for">{FOR[key]}</p>
         <div class="pkg-price"><b>{price}</b><span>{per}</span></div>
         <p class="pkg-sub">{sub}</p>
-        <div class="pkg-buy">{buttons}</div>
+        <div class="pkg-buy">{buttons}<a class="pkg-call" href="{CAL}" {EXT}>Not sure? Book a free consultation →</a></div>
         <div class="pkg-lab">What you get</div>
         <ul class="ticks">{items}</ul>
         <button type="button" class="pkg-all" aria-expanded="false" data-n="{total}">Show all {total} features ↓</button>
       </article>'''
+
+# ---------- compare table: only the differences, wording from the live feature lines ----------
+Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria-label="Not included">✗</span>'
+ROWS = [
+    ('Training plan', 'Daily plan built for 12 weeks', 'Daily plan built on a weekly basis', 'Daily plan built on a weekly basis'),
+    ('Initial Assessment Review of your training data', N, Y, Y),
+    ('Contact', 'When needed via email', 'Weekly', 'Daily'),
+    ('Feedback', 'On sessions', 'Weekly', 'Daily'),
+    ('Schedule adjustment', Y, 'Weekly', 'Daily'),
+    ('Training analysis', 'Daily', 'Weekly', 'Daily'),
+    ('Catch up call', N, 'Monthly or when needed', 'Weekly or when needed'),
+    ('Race strategy', N, Y, Y),
+    ('Continuous support &amp; motivation', N, Y, Y),
+    ('Platform', 'Training Peaks Basic account', 'Vekta membership included (value €19.99/m)', 'Vekta membership included (value €19.99/m)'),
+    ('Price', '€228 one-time for 12 weeks', '€149/mo, 6 months', '€249/mo for 3 months, €239/mo for 6'),
+]
+compare = ('<div class="cmp-wrap"><h3 class="h-sm">Compare packages</h3><div class="bar"></div><div class="cmp-scroll"><table class="cmp">'
+           '<thead><tr><th scope="col"><span class="vh">Feature</span></th><th scope="col">Basic</th><th scope="col" class="hot">Advanced</th><th scope="col">Premium</th></tr></thead><tbody>'
+           + ''.join(f'<tr><th scope="row">{r[0]}</th><td data-l="Basic">{r[1]}</td><td class="hot" data-l="Advanced">{r[2]}</td><td data-l="Premium">{r[3]}</td></tr>' for r in ROWS)
+           + '</tbody></table></div><p class="cmp-note">Every package also includes the plan tailored to your availability, testing, nutrition support, the gym &amp; winter program, our community and more: open “Show all” on each card for the full list.</p></div>')
 
 cards = ''.join([
     card('basic', 'Basic', '12 Weeks', '€19', '/week', 'Charged with one-time payment of €228 for the 12 weeks.',
@@ -153,6 +182,7 @@ MAIN = f'''<div class="hero hero-sm">
     <div class="pkgs">
       {cards}
     </div>
+    {compare}
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="{C}/terms-conditions/" {EXT}>HERE</a></b></p>
 
 
@@ -283,6 +313,27 @@ PCSS = '''<style>
 .ticks li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-2); line-height: 1.45; }
 .ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%2334c46a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
 .pkg:not(.open) .ticks li.more { display: none; }
+.pkg-for { margin: 8px 0 0; font-size: 13.5px; color: var(--text-2); line-height: 1.5; min-height: 42px; }
+.pkg-call { font-size: 13px; font-weight: 600; color: var(--green-text); text-decoration: none; text-align: center; padding: 4px 0; }
+.pkg-call:hover { color: #fff; }
+.ticks li.no { color: var(--text-4, #62666d); }
+.ticks li.no span { font-size: 12.5px; }
+.ticks li.no::before { background: rgba(225,6,0,.12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5.2 5.2l5.6 5.6M10.8 5.2l-5.6 5.6' fill='none' stroke='%23ff3d33' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.cmp-wrap { margin-top: 44px; }
+.cmp-scroll { margin-top: 20px; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r); background: var(--panel-grad), var(--panel); }
+.cmp { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px; }
+.cmp th, .cmp td { padding: 13px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+.cmp tbody tr:last-child th, .cmp tbody tr:last-child td { border-bottom: 0; }
+.cmp thead th { font: 400 20px/1.1 var(--head); text-transform: uppercase; color: var(--text); }
+.cmp tbody th { font-weight: 600; color: var(--text); width: 28%; }
+.cmp td { color: var(--text-2); }
+.cmp .hot { background: rgba(0,154,68,.07); }
+.cmp thead .hot { color: var(--green-text); }
+.cmp .y { color: var(--green-text); font-weight: 700; font-size: 16px; }
+.cmp .n { color: var(--red-text, #ff3d33); font-weight: 700; font-size: 16px; }
+.cmp-note { margin: 12px 0 0; font-size: 13px; color: var(--text-3); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.cmp tbody th { position: sticky; left: 0; background: var(--panel-solid); }
 .pkg-all { margin-top: 14px; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 4px 0; cursor: pointer; }
 .pkg-all:hover { color: #fff; }
 .terms { margin: 22px 0 0; font-size: 13px; color: var(--text-3); text-align: center; }
@@ -345,6 +396,15 @@ PCSS = '''<style>
   .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .gallery:not(.all) .g:nth-child(n+13) { display: none; }
   .pkg h2 { font-size: 34px; }
+  .cmp-scroll { overflow: visible; }
+  .cmp, .cmp tbody, .cmp tr, .cmp th, .cmp td { display: block; min-width: 0; }
+  .cmp thead { display: none; }
+  .cmp tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--border); }
+  .cmp tbody tr:last-child { border-bottom: 0; }
+  .cmp tbody th { grid-column: 1 / -1; position: static; width: auto; background: none; border: 0; padding: 14px 14px 4px; }
+  .cmp td { border: 0; padding: 4px 10px 14px 14px; font-size: 13px; }
+  .cmp td::before { content: attr(data-l); display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 3px; }
+  .cmp td.hot::before { color: var(--green-text); }
 }
 </style>'''
 PJS = '''<script>
