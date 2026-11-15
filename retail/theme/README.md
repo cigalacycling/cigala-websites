@@ -117,3 +117,31 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - File alt text set for IMG_3999… and IMG_4003… (the About photos).
   - Home tile 5: Wetsuits is replaced by Sport Watches (`watches`, photo: Garmin Forerunner 55, its best seller).
   - Collection and search grids now keep side margins on phones (`full_width_on_mobile: false`). The first product was being cut off at the screen edge.
+
+## Round 10 (15 Nov 2026): policies, topo pages, About/Bike to Work fixes
+
+**Store content**
+
+- **Returns page** (`/pages/returns`):
+  - Removed the old "Cycling holidays refund/cancellation" section (tours T&Cs and waiver) and the pasted old-theme markup.
+  - Legal references corrected from UK/NZ law to Irish law: EU (Consumer Information, Cancellation and Other Rights) Regulations 2013 and the Consumer Rights Act 2022.
+  - Standard delivery is refunded when an order is cancelled within 14 days.
+  - Typos fixed.
+- **Terms page** (`/pages/terms-of-service`):
+  - Same legal fixes.
+  - "Governed by the laws of [home address]" now reads "the laws of Ireland".
+  - Black Friday promotion dates now say it runs until 30 Nov.
+  - Broken link icon removed; Privacy Policy link added.
+- **Shop policies (privacy, refund, terms):** the connector has no write access to policies. Paste-ready HTML is in `retail/policies-new/` (privacy.html, refund.html, tos.html), and Matteo pastes them in Settings → Policies.
+  - The privacy policy also removes the home address and adds: Who we are, One newsletter, the Google, Meta, Judge.me, PushOwl and STOQ/Ordersify sections, and the DPC.
+- **Backups:** originals are in `retail/policies-before/` (home address redacted).
+
+**Theme (both themes)**
+
+- Contour background behind every page template (About, Contact, Bike to Work, Finance, Returns, Terms, …).
+- The photo band has a new "Photo focus" setting:
+  - About: 50% 18%, so faces aren't cut off.
+  - Bike to Work "Talk to us": the lake ride photo replaces the smart bike.
+- Less space between the page hero and the first card section (20px).
+- Home tile "Power Meters" now uses the Favero Assioma PRO RS-2. The Assioma UNO/DUO are being discontinued.
+- Sale theme only: the bottom "Shop the deals" button is white.
