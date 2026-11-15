@@ -146,8 +146,8 @@ The new designs fix the last three. The Gran Canaria H1 still has to be fixed on
 - **Road tours:** approved. Add a new `/trips/road-trips/` page (a new URL, so nothing is lost).
 - **Homepage H1:** keep the live wording, "Bike Tours & Cycling Holidays Across Europe's Best Cycling Destinations", in the new design (approved).
 - **Homepage tour finder** (approved idea, inspired by italybiketours.com's hero search bar). A bar in the homepage hero with three dropdowns: **Tour type** (Road, Gran Fondo, Gravel), **Country** (Italy, France, Portugal, Belgium, Cyprus, Slovenia) and **Level** (Beginner, Intermediate, Expert), plus a **Find tours** button.
-  - If only one choice matches an existing category page, the button goes there: Italy goes to `/italian-trips/`, Gravel to `/trips/gravel-trips/`, Gran Fondo to `/trips/granfondo-trips/`, Road to `/trips/road-trips/`.
-  - Otherwise it goes to `/trips/?type=…&country=…&level=…`, which filters the cards in the browser. The full list stays in the HTML, and the canonical stays `/trips/`, so there's no duplicate content.
+  - **Built (preview `tourspages/home.html`, from `tools/build_tours_home.py`):** the finder filters the homepage tour grid in place, and **Find tours** scrolls down to the results. When only one choice is set and it has a category page (Italy, Gravel, Gran Fondo, Road), a "See the … tours page →" link appears, so the category pages keep getting internal links. Screenshots are in `tourspages/preview/`.
+  - Reviewer photos aren't in the repository yet, so the preview shows initials. Take the real photos from the live site during the WordPress build.
   - **Month** dropdown (Feb–Oct 2027): the dates are in `tours/trips-2027.json`, read from the card images on the live `/trips/` page. On live they only exist inside the images. On the new cards they'll also be real text, which Google can read.
   - At 390px the bar stacks vertically. Selects use 16px text so iPhones don't zoom in.
 
