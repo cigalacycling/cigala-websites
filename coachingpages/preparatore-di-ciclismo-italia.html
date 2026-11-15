@@ -659,7 +659,8 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 @media (max-width: 900px) { .ft-box { grid-template-columns: minmax(0, 1fr); padding: 22px; gap: 20px; } }
 @media (max-width: 560px) { .ft-cards { grid-template-columns: minmax(0, 1fr); } }
 </style><style>
-.cs-row, .rv-row { scrollbar-width: none !important; }   /* Matteo 15 Nov: arrows instead of a drag bar */
+.cs-row, .rv-row { scrollbar-width: none !important; }
+.rv-row, .cs-row { padding-top: 8px !important; margin-top: -8px; }   /* Matteo 15 Nov: the green top border showed cut on hover */   /* Matteo 15 Nov: arrows instead of a drag bar */
 .cs-row::-webkit-scrollbar, .rv-row::-webkit-scrollbar { display: none; }
 .cs-nav { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
 .cs-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
@@ -813,7 +814,7 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .cn-chips li strong, .cn-regions li strong, .cn-chips li b, .cn-regions li b { color: var(--text); }
 @media (max-width: 600px) { .cn-chips, .cn-regions { grid-template-columns: 1fr 1fr; gap: 6px; } .cn-chips li, .cn-regions li { padding: 8px 10px; font-size: 13px; } }
 .cn-gcards { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important; }
-.cn-gcards li a { display: block; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; }
+.cn-gcards li a { display: flex; width: 100%; justify-content: center; text-align: center; font-size: 14px; }
 @media (max-width: 600px) { .cn-ft .ft-cards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding-bottom: 6px; } .cn-ft .ft-card { flex: 0 0 78%; scroll-snap-align: start; } .cn-ft .ft-box { padding: 20px; gap: 18px; }
   .cn-apps { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px !important; } }
 @media (max-width: 600px) { .cn-evphoto { aspect-ratio: 16 / 10 !important; height: auto !important; min-height: 0 !important; } .cn-evphoto img { height: 100% !important; } }

@@ -325,7 +325,8 @@ def case_cards(link_base, lang='en'):
            '<button type="button" class="cs-btn" data-d="1" aria-label="Next case studies">→</button></div>')
     return f'<div class="cs-wrap"><div class="cs-row" tabindex="0" aria-label="Case studies, scroll sideways">{cards}</div>{nav}{js}</div>'
 CS_CSS = """<style>
-.cs-row, .rv-row { scrollbar-width: none !important; }   /* Matteo 15 Nov: arrows instead of a drag bar */
+.cs-row, .rv-row { scrollbar-width: none !important; }
+.rv-row, .cs-row { padding-top: 8px !important; margin-top: -8px; }   /* Matteo 15 Nov: the green top border showed cut on hover */   /* Matteo 15 Nov: arrows instead of a drag bar */
 .cs-row::-webkit-scrollbar, .rv-row::-webkit-scrollbar { display: none; }
 .cs-nav { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
 .cs-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }

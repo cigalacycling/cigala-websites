@@ -465,7 +465,8 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .faq h3 { display: inline; font: 600 15px/1.4 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); }
 @media (max-width: 900px) { .gn-photo { aspect-ratio: 16 / 10; } }
 </style><style>
-.cs-row, .rv-row { scrollbar-width: none !important; }   /* Matteo 15 Nov: arrows instead of a drag bar */
+.cs-row, .rv-row { scrollbar-width: none !important; }
+.rv-row, .cs-row { padding-top: 8px !important; margin-top: -8px; }   /* Matteo 15 Nov: the green top border showed cut on hover */   /* Matteo 15 Nov: arrows instead of a drag bar */
 .cs-row::-webkit-scrollbar, .rv-row::-webkit-scrollbar { display: none; }
 .cs-nav { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
 .cs-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }

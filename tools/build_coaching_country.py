@@ -27,7 +27,7 @@ TP_LEVELS = P.TPLOGO
 def rv(i):
     t, q, n, w, ph = REVIEWS[i]
     return (f'<figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“{E(q)}”</blockquote>'
-            f'<figcaption class="rv-txt"><div><b>{E(n.split()[0])}</b><span>{E(w)}</span></div></figcaption></figure>')   # Matteo 15 Nov: text only, no faces
+            f'<figcaption><img src="{img(ph, "athlete-" + re.sub(r"[^a-z]+", "-", n.lower()).strip("-"))}" alt="{E(live_alt(ph))}" loading="lazy" width="48" height="48"><div><b>{E(n.split()[0])}</b><span>{E(w)}</span></div></figcaption></figure>')   # Matteo 15 Nov: photos back
 def strip(ids):
     return (f'<div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Athlete reviews, scroll sideways">{"".join(rv(i) for i in ids)}</div>'
             '<div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Previous reviews">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Next reviews">→</button></div></div>')
@@ -55,7 +55,8 @@ C_ = {
      'My event is months away — can I still sign up now?': ['Yes, and earlier is better. The big UK sportives are in late spring and summer (the Fred Whitton and Etape Caledonia in May, the Dragon Ride in June), so starting in the winter gives you a base block, a build block and a taper. Pick the package that fits the time you have.'],
     },
     ev_more=['**Dirty Reiver** (Kielder Forest, Northumberland)', '**Grinduro** (Scotland)', '**Battle on the Beach** (Pembrey, Wales)',
-             '**Highland Trail 550** (Scottish Highlands) — self-supported bikepacking', '**National Hill Climb Championship** (British Cycling)'],
+             '**Highland Trail 550** (Scottish Highlands) — self-supported bikepacking', '**National Hill Climb Championship** (British Cycling)',
+             '**Etape du Dales** (Yorkshire Dales)', '**The Gralloch** (Gatehouse of Fleet, Scotland)', '**Land’s End to John o’ Groats** — the length of Britain'],
     map_labels=[('London', 10, 4, 'start'), ('Edinburgh', 10, -4, 'start'), ('Glasgow', -10, 4, 'end'), ('Cardiff', -10, 12, 'end'), ('Belfast', -10, 4, 'end'), ('Lake District', -10, 4, 'end'), ('Highlands', 10, -6, 'start')],
     extra_q=('Do you coach time trials and hill climbs?', ['Yes. Time trials and hill climbs are short, all-out efforts, and we train them that way: pacing work, efforts at and above Critical Power, and sessions in your race position. Advanced and Premium include race and pacing strategy for each event.'])),
 'usa': dict(
@@ -78,7 +79,8 @@ C_ = {
      'My event is months away — can I still sign up now?': ['Yes, and earlier is better: a summer target like RAGBRAI in late July or a fall century gives you time for a base block, a build block and a taper. Pick the package that fits the time you have.'],
     },
     ev_more=['**Unbound Gravel** (Emporia, Kansas)', '**Belgian Waffle Ride** (San Diego, California)', '**The Mid South** (Stillwater, Oklahoma)',
-             '**Leadville Trail 100 MTB** (Colorado)', '**Tour Divide** (Banff to the Mexican border) — self-supported bikepacking'],
+             '**Leadville Trail 100 MTB** (Colorado)', '**Tour Divide** (Banff to the Mexican border) — self-supported bikepacking',
+             '**SBT GRVL** (Steamboat Springs, Colorado)', '**Gravel Worlds** (Lincoln, Nebraska)'],
     map_labels=[('Seattle', 10, 4, 'start'), ('San Francisco', -10, 4, 'end'), ('Los Angeles', -10, 10, 'end'), ('Denver', 10, 4, 'start'), ('Dallas', 10, 4, 'start'), ('Austin', -10, 10, 'end'), ('Atlanta', -10, 4, 'end'), ('New York', 10, 4, 'start'), ('Florida', 10, 4, 'start')],
     extra_q=('Can you coach me for a long gravel race?', ['Yes. Gravel and MTB are part of what we coach. Long gravel races are won or lost on pacing and fuelling as much as fitness: Advanced and Premium include daily carb recommendations for each session and a race and pacing strategy for the event.'])),
 'canada': dict(
@@ -102,7 +104,7 @@ C_ = {
      'What age do I need to be?': ['We coach all ages, 14 and up — no upper limit. Riders under U23 receive a 20% student discount.'],
      'My event is months away — can I still sign up now?': ['Yes, and with a short outdoor season it pays to start early. For a September event like the RBC GranFondo Whistler, starting in the winter gives you an indoor base block, an outdoor build in spring and a taper. Pick the package that fits the time you have.'],
     },
-    ev_more=['**BC Bike Race** (British Columbia) — seven days of singletrack', '**Tour Divide** (from Banff, Alberta) — self-supported bikepacking'],
+    ev_more=['**BC Bike Race** (British Columbia) — seven days of singletrack', '**Tour Divide** (from Banff, Alberta) — self-supported bikepacking', '**Paris to Ancaster** (Ontario)'],
     map_labels=[('Vancouver', -10, 12, 'end'), ('Calgary', 10, 4, 'start'), ('Edmonton', 10, -4, 'start'), ('Toronto', -6, 16, 'end'), ('Ottawa', 4, -10, 'middle'), ('Montreal', 10, 4, 'start'), ('Halifax', 10, 8, 'start')],
     extra_q=None),
 }
@@ -280,7 +282,7 @@ def build_country(key):
     <ul class="cx-ev-grid">{''.join(ev_card(x, c) for x in ev_li + c['ev_more'])}</ul>
     {''.join(f'<p class="cx-ev-note">{G.inline(x)}</p>' for x in ev_p[1:])}
     <h3 class="h-sm cn-gh">Guides from our blog</h3>
-    <ul class="cn-guides cn-gcards">{''.join(f'<li><a class="arrow-link" href="{C}/blog/{u}/" {EXT}>{E(t)} →</a></li>' for u, t in c['guides'])}</ul>
+    <ul class="cn-guides cn-gcards">{''.join(f'<li><a class="btn btn-go" href="{C}/blog/{u}/" {EXT}>{E(t)} →</a></li>' for u, t in c['guides'])}</ul>
   </div>
 </section>
 
@@ -354,7 +356,7 @@ def build_country(key):
 NUT_Q = ('Can I work 1-to-1 with a nutritionist?', ['Yes. You can add nutrition coaching with our sports nutritionist, Marine Lenehan: a WorldTour Pro with LIDL-TREK, 2× Irish National Champion and Amateur Gravel World Champion 2024. She writes your daily macros, carbs per hour and nutrition notes into the same calendar as your training, reviews your food diary and plans your race fuelling and gut training. The price depends on what you need, and is agreed with Marine.'])
 # event cards (same style as the Italian page): discipline from the event name; filters; the live wording kept
 EVT = {'Road': '#34c46a', 'Gravel': '#f0bf00', 'MTB': '#ff3d33', 'Ultra': '#a78bfa', 'All disciplines': '#5f86c9'}
-EVK = [('Local club', 'All disciplines'), ('USA Cycling', 'All disciplines'), ('provincial', 'All disciplines'), ('Cycling BC', 'All disciplines'), ('Bikepacking', 'Ultra'), ('Highland Trail', 'Ultra'), ('Tour Divide', 'Ultra'), ('Gravel', 'Gravel'), ('Reiver', 'Gravel'), ('Grinduro', 'Gravel'), ('Waffle', 'Gravel'),
+EVK = [('John o’ Groats', 'Ultra'), ('Gralloch', 'Gravel'), ('GRVL', 'Gravel'), ('Ancaster', 'Gravel'), ('Local club', 'All disciplines'), ('USA Cycling', 'All disciplines'), ('provincial', 'All disciplines'), ('Cycling BC', 'All disciplines'), ('Bikepacking', 'Ultra'), ('Highland Trail', 'Ultra'), ('Tour Divide', 'Ultra'), ('Gravel', 'Gravel'), ('Reiver', 'Gravel'), ('Grinduro', 'Gravel'), ('Waffle', 'Gravel'),
        ('Mid South', 'Gravel'), ('MTB', 'MTB'), ('Battle on the Beach', 'MTB'), ('BC Bike Race', 'MTB'), ('Local club', 'All disciplines'), ('USA Cycling', 'All disciplines'),
        ('provincial', 'All disciplines'), ('Cycling BC', 'All disciplines')]
 EVI = {'Road': '<path d="M3 20 9 6l4 8 3-5 5 11z"/>', 'Gravel': '<circle cx="6" cy="17" r="2"/><circle cx="13" cy="15" r="1.5"/><circle cx="18" cy="18" r="2.5"/><path d="M2 21h20"/>',
@@ -376,6 +378,7 @@ def ev_card(x, c):
     place = rest
     if nm2: title, place = nm2.group(1), (nm2.group(2) + (' ' + rest if rest else '')).strip()
     place = re.sub(r'^\((.*?)\)\s*', r'\1 ', place).strip()
+    place = re.sub(r'^[—–-]\s*', '', place)
     return (f'<li data-t="{t}" style="--tc:{col}"><span class="cx-ev-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{EVI[t]}</svg></span><span class="cx-ev-tag">{t}</span>'
             f'<b>{title}</b>{f"<span class=cx-ev-pl>{place}</span>" if place else ""}</li>')
 import json as _json
@@ -460,7 +463,7 @@ CCSS = '''<style>
 .cn-chips li strong, .cn-regions li strong, .cn-chips li b, .cn-regions li b { color: var(--text); }
 @media (max-width: 600px) { .cn-chips, .cn-regions { grid-template-columns: 1fr 1fr; gap: 6px; } .cn-chips li, .cn-regions li { padding: 8px 10px; font-size: 13px; } }
 .cn-gcards { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important; }
-.cn-gcards li a { display: block; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; }
+.cn-gcards li a { display: flex; width: 100%; justify-content: center; text-align: center; font-size: 14px; }
 @media (max-width: 600px) { .cn-ft .ft-cards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding-bottom: 6px; } .cn-ft .ft-card { flex: 0 0 78%; scroll-snap-align: start; } .cn-ft .ft-box { padding: 20px; gap: 18px; }
   .cn-apps { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px !important; } }
 @media (max-width: 600px) { .cn-evphoto { aspect-ratio: 16 / 10 !important; height: auto !important; min-height: 0 !important; } .cn-evphoto img { height: 100% !important; } }

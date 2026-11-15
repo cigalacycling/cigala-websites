@@ -373,3 +373,4 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   Battle on the Beach, Highland Trail 550, National Hill Climb; USA Unbound, Belgian Waffle Ride, Mid South, Leadville 100,
   Tour Divide; Canada BC Bike Race, Tour Divide); country map (Natural Earth, public domain) with the listed cities next to
   the region list. H2s unchanged. Italia: "membership incluso" -> "iscrizione inclusa" (Matteo).
+- UK/USA/Canada: reviews with photos again (first name + real place); review/case rows have room for the hover border; blog guides as green buttons; events to full rows (UK +Etape du Dales, The Gralloch, LEJOG; USA +SBT GRVL, Gravel Worlds; Canada +Paris to Ancaster).
