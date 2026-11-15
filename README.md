@@ -162,8 +162,11 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Share image (15 Nov):** `brand-assets/share/cigala-cycling-tours-share.jpg` (1200x630), made from `share-image-template.html`; the filled-in template is `tours-share.html`. It uses the Cyprus homepage hero photo.
   - Uploaded to Tours staging as media **9364** with alt text, by `tools/tours_share_image.py`.
   - JPG on purpose, because some apps don't show WebP link previews.
-  - **To do (Matteo):** set it as the Rank Math default: Rank Math SEO -> Titles & Meta -> Global Meta -> OpenGraph Thumbnail -> choose `cigala-cycling-tours-share.jpg` -> Save Changes. Today the homepage shares the small square logo.
-  - Not set over REST: on Rank Math 1.0.280 I couldn't confirm that `updateSettings` merges settings rather than replacing all of Titles & Meta.
+  - **Done (15 Nov):** Matteo set it as the Rank Math default: Rank Math SEO -> Titles & Meta -> Global Meta -> OpenGraph Thumbnail.
+  - Home 5212, Contact 461, Destinations 10 and Terms 564 had a logo as their own share image (their featured image, or Destinations' own Rank Math social image). They now share the new image too:
+    - set with `/rankmath/v1/updateMeta`, sending only `rank_math_facebook_image` and `rank_math_facebook_image_id`;
+    - checked afterwards: title, description, OG title/description, robots and schema are unchanged.
+  - Every other page shares its own photo, which is kept on purpose (the trip and destination pages, the list pages, About, Guides, Testimonials).
 - **Signature:** under "Matteo Cigala, Tours Director" in Our story. Cut from the coaching blog image `Matteo-Cigala-6-years-old.png` as white ink on transparent (media 9282).
 - **Road tours page (new, 15 Nov):** https://staging.tours.cigalacycling.com/trips/road-trips/, page **9301**, child of Trips 8689.
   - Made with the trip-list design: `tools/build_tours_list.py` (preview `tourspages/road-trips.html`), pushed with `python3 -I tools/push_tours_list.py road-trips`.
