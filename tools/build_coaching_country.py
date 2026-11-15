@@ -463,7 +463,8 @@ CCSS = '''<style>
 .cn-chips li strong, .cn-regions li strong, .cn-chips li b, .cn-regions li b { color: var(--text); }
 @media (max-width: 600px) { .cn-chips, .cn-regions { grid-template-columns: 1fr 1fr; gap: 6px; } .cn-chips li, .cn-regions li { padding: 8px 10px; font-size: 13px; } }
 .cn-gcards { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important; }
-.cn-gcards li a { display: flex; width: 100%; justify-content: center; text-align: center; font-size: 14px; }
+.cn-gcards { display: flex !important; flex-wrap: wrap; gap: 8px !important; }
+.cn-gcards li a.btn { min-height: 0; padding: 8px 14px !important; font-size: 13px !important; border-radius: 999px; }   /* Matteo 15 Nov: smaller */
 @media (max-width: 600px) { .cn-ft .ft-cards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding-bottom: 6px; } .cn-ft .ft-card { flex: 0 0 78%; scroll-snap-align: start; } .cn-ft .ft-box { padding: 20px; gap: 18px; }
   .cn-apps { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px !important; } }
 @media (max-width: 600px) { .cn-evphoto { aspect-ratio: 16 / 10 !important; height: auto !important; min-height: 0 !important; } .cn-evphoto img { height: 100% !important; } }
