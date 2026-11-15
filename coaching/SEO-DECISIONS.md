@@ -262,3 +262,11 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   8 analysis boxes, the wins count up on scroll (numbers as on live: no official A&J site found to verify them), itinerary-style
   steps, one-calendar block with nutrition, 5 more FAQs (FAQPage JSON-LD). Still needed from Matteo: a larger A&J logo
   (live file is 205×105) and a photo of Alex & Johnny Carera we are allowed to use.
+- /cycling-coach-uk|usa|canada/ round 3: H2 "READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING" -> "READ OUR CASE
+  STUDIES" with a "Read our case studies" button (Matteo). "How it works" in the Tours itinerary style, with a 5th step
+  (nutrition) and the athlete calendar beside it; nutritionist FAQ added. USA hero: Vekta x Cigala Cycling app photo (new alt,
+  the live file had none); Canada hero: Matteo winning at Strade Bianche (live alt). Neither implies Ireland (Matteo).
+  Shorter on mobile: event and region lists as compact 2-column cards, free tools as a sideways row, smaller device logos,
+  shorter events photo. All live copy, lists and FAQ questions kept.
+  Not changed: the live quotes under invented names ("William - Wales, UK", "Peter - New York, UK"...) stay off the pages
+  (see section 10); real names and places stay. Matteo can send real clients from each country to add.

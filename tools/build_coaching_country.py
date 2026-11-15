@@ -56,7 +56,7 @@ C_ = {
     },
     extra_q=('Do you coach time trials and hill climbs?', ['Yes. Time trials and hill climbs are short, all-out efforts, and we train them that way: pacing work, efforts at and above Critical Power, and sessions in your race position. Advanced and Premium include race and pacing strategy for each event.'])),
 'usa': dict(
-    name='the USA', adj='US', cur='$', code='USD', hero=('V6A9680-scaled', 'country-usa-hero-wicklow'), pos='18% 40%', photo=('imgi_17_zCRmNmCA', 'country-usa-events-coaching'),
+    name='the USA', adj='US', cur='$', code='USD', hero=('Vekta-x-Cigala', 'country-usa-hero-vekta', 'Vekta x Cigala Cycling: a training session in the Vekta app on a phone and a laptop'), pos='60% 50%', photo=('imgi_17_zCRmNmCA', 'country-usa-events-coaching'),
     vekta='$21.99', guides=[('tips-for-gravel-racing', 'Tips for gravel racing'), ('getting-started-with-gravel', 'Getting started with gravel'), ('heat-training', 'Heat training: why it is a game changer')], reviews=[4, 1, 7, 10, 6, 0],
     facts=[('clock', 'Works across US time zones', 'Feedback is written in Vekta or TrainingPeaks, so you never need to be online at the same time.'),
            ('currency', 'Prices in US dollars', 'You pay in dollars, so no exchange fees on your side.'),
@@ -76,7 +76,7 @@ C_ = {
     },
     extra_q=('Can you coach me for a long gravel race?', ['Yes. Gravel and MTB are part of what we coach. Long gravel races are won or lost on pacing and fuelling as much as fitness: Advanced and Premium include daily carb recommendations for each session and a race and pacing strategy for the event.'])),
 'canada': dict(
-    name='Canada', adj='Canadian', cur='$', code='CAD', hero=('IMG_20211006_115329', 'country-canada-hero-finish'), pos='55% 78%', photo=('pzrIm4dp1o9W5oO', 'country-canada-events-podium'),
+    name='Canada', adj='Canadian', cur='$', code='CAD', hero=('gran_fondo_strade_bianche_2022_img_1', 'country-canada-hero-matteo-win'), pos='45% 30%', photo=('pzrIm4dp1o9W5oO', 'country-canada-events-podium'),
     vekta='$30.99', guides=[('gran-fondo-whistler-training-guide', 'How to train for Gran Fondo Whistler'), ('slower-in-winter-is-not-your-legs', 'Slower in winter? It’s not your legs'), ('effective-fuelling-techniques-for-winter-training', 'Fuelling for winter training')], reviews=[11, 4, 1, 3, 8, 2],
     facts=[('snow', 'A real winter plan', 'Indoor blocks on Zwift, MyWhoosh or ROUVY so you start spring fit, not from zero.'),
            ('currency', 'Prices in Canadian dollars', 'You pay in Canadian dollars, so no exchange fees on your side.'),
@@ -173,12 +173,13 @@ def build_country(key):
     assert '€' not in cards, re.findall(r'.{30}€.{20}', cards)
     cad_note = '<p class="cur-note">Prices in Canadian Dollar (CAD)</p>' if key == 'canada' else ''
 
-    def img_of(k, n):
-        u = next(u for u in G.WEBP if k in u); return img(u.split('/uploads/')[1], n), live_alt(k)
+    def img_of(k, n, alt=None):
+        u = next(u for u in G.WEBP if k in u); return img(u.split('/uploads/')[1], n), alt or live_alt(k)
     hsrc, halt = img_of(*c['hero']); psrc, palt = img_of(*c['photo'])
     facts = ''.join(f'<div class="note"><svg viewBox="0 0 24 24" aria-hidden="true">{IC[i]}</svg><p><b>{E(t)}</b><br>{E(d)}</p></div>' for i, t, d in c['facts'])
-    how = ''.join(f'<li><span class="hw-n">{i + 1}</span><div><h3 class="h-sm">{E(t)}</h3><p>{E(d)}</p></div></li>' for i, (t, d) in enumerate(c['how']))
-    faq = list(c['faq'].items()) + ([c['extra_q']] if c['extra_q'] else [])
+    steps = c['how'] + [('Nutrition, if you want it', 'Add 1-to-1 nutrition coaching with our sports nutritionist, Marine Lenehan (WorldTour Pro): daily macros, carbs per hour and notes in the same calendar as your training.')]
+    how = ''.join(f'<li class="cn-day"><div class="cn-num"><span><small>STEP</small>{i + 1}</span></div><div class="panel cn-box"><h3 class="h-sm">{E(t)}</h3><p>{E(d)}</p></div></li>' for i, (t, d) in enumerate(steps))
+    faq = list(c['faq'].items()) + ([c['extra_q']] if c['extra_q'] else []) + [NUT_Q]
     live_q = [l[5:].strip() for l in lines(T, 'H2: FREQUENTLY ASKED QUESTIONS', ('H1:',)) if l.startswith('TXT: ')]
     assert [q for q, _ in faq][:len(live_q)] == live_q, ([q for q, _ in faq], live_q)   # every live question kept, same wording
     faq_html = ''.join(f'<details{" open" if i == 0 else ""}><summary><h3>{E(q)}</h3></summary>' + ''.join(f'<p>{E(p)}</p>' for p in ps) + '</details>' for i, (q, ps) in enumerate(faq))
@@ -237,7 +238,13 @@ def build_country(key):
 <section>
   <div class="in">
     <div class="head"><div><div class="eyebrow">Getting started from {E(c["name"])}</div><h3 class="h-sec">HOW IT WORKS</h3><div class="bar"></div></div></div>
-    <ol class="cn-how">{how}</ol>
+    <div class="cn-howgrid">
+      <ol class="cn-days">{how}</ol>
+      <figure class="nu-cal pk-cal cn-cal">
+        <div class="cal-scroll" tabindex="0" aria-label="Example days from an athlete's calendar, with nutrition"><div class="cal-row">{P.NUT.cal_days(('21', '24', '26'))}</div></div>
+        <figcaption>Example days from an athlete’s calendar: your sessions and, with nutrition coaching, Marine’s notes and carbs per hour. <a href="{C}/nutrition/#upgrade" {EXT}>Read more about nutrition coaching →</a></figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -254,12 +261,12 @@ def build_country(key):
       <div class="eyebrow">Your target</div>
       <h2>{E(ev_h2)}</h2><div class="bar"></div>
       <p>{G.inline(ev_p[0])}</p>
-      {tick(ev_li)}
+      <ul class="cn-chips">{''.join(f'<li>{G.inline(x)}</li>' for x in ev_li)}</ul>
       {''.join(f'<p>{G.inline(x)}</p>' for x in ev_p[1:])}
       <h3 class="h-sm cn-gh">Guides from our blog</h3>
-      <ul class="cn-guides">{''.join(f'<li><a class="arrow-link" href="{C}/blog/{u}/" {EXT}>{E(t)} →</a></li>' for u, t in c['guides'])}</ul>
+      <ul class="cn-guides cn-gcards">{''.join(f'<li><a class="arrow-link" href="{C}/blog/{u}/" {EXT}>{E(t)} →</a></li>' for u, t in c['guides'])}</ul>
     </div>
-    <div class="photo gn-photo"><img src="{psrc}" alt="{E(palt)}" loading="lazy"></div>
+    <div class="photo gn-photo cn-evphoto"><img src="{psrc}" alt="{E(palt)}" loading="lazy"></div>
   </div>
 </section>
 
@@ -273,8 +280,8 @@ def build_country(key):
 <section>
   <div class="in">
     <div class="head">
-      <div><div class="eyebrow">Real results</div><h2>READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING</h2></div>
-      <div class="rv-links"><a class="btn btn-go" href="{C}/testimonials/" {EXT}>Read more testimonials</a></div>
+      <div><div class="eyebrow">Real results</div><h2>READ OUR CASE STUDIES</h2><div class="bar"></div></div>
+      <div class="rv-links"><a class="btn btn-go" href="{C}/case-studies/" {EXT}>Read our case studies</a></div>
     </div>
     {case_cards(C + '/case-studies/')}
   </div>
@@ -286,7 +293,7 @@ def build_country(key):
       <div class="eyebrow">Where we coach</div>
       <h2>{E(rg_h2)}</h2><div class="bar"></div>
       <p>{G.inline(rg_p[0])}</p>
-      {tick(rg_li)}
+      <ul class="cn-regions">{''.join(f'<li>{G.inline(x)}</li>' for x in rg_li)}</ul>
       <p>{E(c["region"])}</p>
       {''.join(f'<p>{G.inline(x)}</p>' for x in rg_p[1:])}
     </div>
@@ -297,7 +304,7 @@ def build_country(key):
   </div>
 </section>
 
-{tools_band()}
+<div class="cn-ft">{tools_band()}</div>
 
 <section>
   <div class="in">
@@ -324,11 +331,12 @@ def build_country(key):
     JS = REVIEWS_JS + P.PJS.replace("document.getElementById('g-more').addEventListener", "document.getElementById('g-more') && document.getElementById('g-more').addEventListener") \
         .replace("document.getElementById('g-more').dataset.label = document.getElementById('g-more').textContent;", '')
     build(name, path, MAIN, f'{path} rewritten for {c["name"]}: own copy, real testimonials, prices in {c["code"]}. H1, H2s and lists kept.',
-          h1=h1, h2_changes={'drop': ['2025 IN NUMBERS'], 'add': ['2026 IN NUMBERS']},   # Matteo 15 Nov: 2026, as on Packages
-          extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + CCSS, extra_js=JS)
+          h1=h1, h2_changes={'drop': ['2025 IN NUMBERS', 'READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING'], 'add': ['2026 IN NUMBERS', 'READ OUR CASE STUDIES']},   # Matteo 15 Nov: 2026; case studies
+          extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + P.CAL_CSS + CCSS, extra_js=JS)
     words = len(re.sub(r'<[^>]+>', ' ', MAIN).split())
     print(name, 'words', words, 'reviews', len(c['reviews']), 'faq', len(faq))
 
+NUT_Q = ('Can I work 1-to-1 with a nutritionist?', ['Yes. You can add nutrition coaching with our sports nutritionist, Marine Lenehan: a WorldTour Pro with LIDL-TREK, 2× Irish National Champion and Amateur Gravel World Champion 2024. She writes your daily macros, carbs per hour and nutrition notes into the same calendar as your training, reviews your food diary and plans your race fuelling and gut training. The price depends on what you need, and is agreed with Marine.'])
 CCSS = '''<style>
 .cn-facts { grid-template-columns: 1fr; align-content: center; }
 .cn-facts .note p { margin: 0; }
@@ -338,6 +346,29 @@ CCSS = '''<style>
 .cur-note { color: var(--text-3); font-size: 14px; margin: 0 0 14px; }
 .cn-tp { max-width: 760px; margin: 26px auto 0; }
 @media (max-width: 600px) { .cn-tp { grid-template-columns: 1fr; } }
+.cn-howgrid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: start; }
+.cn-cal { position: sticky; top: 110px; }
+@media (max-width: 1000px) { .cn-howgrid { grid-template-columns: 1fr; } .cn-cal { position: static; } }
+.cn-days { list-style: none; margin: 0; padding: 0; }
+.cn-day { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 20px; position: relative; padding-bottom: 20px; }
+.cn-day::before { content: ""; position: absolute; left: 31px; top: 64px; bottom: 0; width: 2px; background: var(--border-strong); }
+.cn-day:last-child { padding-bottom: 0; }
+.cn-day:last-child::before { display: none; }
+.cn-num { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--panel-solid, #16181a); border: 2px solid var(--green); font: 400 26px/1 var(--head); color: var(--text); text-align: center; }
+.cn-num small { display: block; font: 700 9px/1 var(--body); letter-spacing: .12em; color: var(--text-3); margin-bottom: 3px; }
+.cn-box { padding: 18px 22px; min-width: 0; }
+.cn-box h3 { margin: 0 0 6px; }
+.cn-box p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+@media (max-width: 600px) { .cn-day { grid-template-columns: 48px minmax(0, 1fr); gap: 14px; } .cn-num { width: 48px; height: 48px; font-size: 20px; } .cn-num small { font-size: 8px; } .cn-day::before { left: 23px; top: 48px; } .cn-box { padding: 16px; } }
+.cn-chips, .cn-regions { list-style: none; margin: 14px 0 16px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.cn-chips li, .cn-regions li { padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,.03); font-size: 14px; line-height: 1.4; color: var(--text-2); }
+.cn-chips li strong, .cn-regions li strong, .cn-chips li b, .cn-regions li b { color: var(--text); }
+@media (max-width: 600px) { .cn-chips, .cn-regions { grid-template-columns: 1fr 1fr; gap: 6px; } .cn-chips li, .cn-regions li { padding: 8px 10px; font-size: 13px; } }
+.cn-gcards { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important; }
+.cn-gcards li a { display: block; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; }
+@media (max-width: 600px) { .cn-ft .ft-cards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding-bottom: 6px; } .cn-ft .ft-card { flex: 0 0 78%; scroll-snap-align: start; } .cn-ft .ft-box { padding: 20px; gap: 18px; }
+  .cn-apps { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px !important; } }
+@media (max-width: 600px) { .cn-evphoto { aspect-ratio: 16 / 10 !important; height: auto !important; min-height: 0 !important; } .cn-evphoto img { height: 100% !important; } }
 .cn-how { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; counter-reset: none; }
 .cn-how li { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); }
 .cn-how .hw-n { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #08090a; font-weight: 800; }
