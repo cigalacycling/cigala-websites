@@ -155,7 +155,8 @@ scripts = json.load(open(S + 'stg/footer-scripts.json'))
 ow = [x for x in scripts if 'openwidget' in x.lower()][0]
 ck = [x for x in scripts if 'cookieOptions' in x][0]
 ck = ck.replace('cookieOptions.btnTxtColor = "#000000"', 'cookieOptions.btnTxtColor = "#ffffff"').replace('cookieOptions.btnColor = "#f1d600"', 'cookieOptions.btnColor = "#009a44"').replace('cookieOptions.popupColor = "#000000"', 'cookieOptions.popupColor = "#0f1011"')
-banner = open(S + 'wp/consent-banner.html').read()
+import sys; sys.path.insert(0, S + 'shared/consent'); from render import banner as render_banner
+banner = render_banner(ga_id='G-955J6LHQ2P')
 ftr = ftr.replace('<a href="/terms-conditions/">Terms &amp; Conditions</a>', '<a href="/terms-conditions/">Terms &amp; Conditions</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
 nlband = open(S + 'wp/nl-band.html').read()
 nlpop = open(S + 'wp/nl-popup.html').read()

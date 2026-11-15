@@ -44,7 +44,7 @@ The repository keeps the original working layout so the build scripts run unchan
 | `brand.css`, `part_header.html`, `part_footer.html`, `part_home_main.html`, `terms.txt`, `home/` | **cigalacycling.com** preview source. `home/img` holds the source photos; `home/topo-*` is the background |
 | `tools/build.py` | Builds the cigalacycling.com preview: `home/index.html` plus about, contact and terms |
 | `tools/build_wp.py` | Builds the Elementor payloads for **staging.cigalacycling.com** into `wp/out/` |
-| `wp/consent-banner.html` | Cookie banner. It gates Google Analytics G-955J6LHQ2P and Meta Pixel 1986332861692106. The chat button works before consent. |
+| `shared/consent/` | **Shared cookie banner for all sites** (template, renderer, head snippet, WPCode line, install guide). cigalacycling.com renders it with GA G-955J6LHQ2P and Pixel 1986332861692106. The chat button works before consent. |
 | `wp/nl-band.html`, `wp/nl-popup.html` | Newsletter signup in the footer and as a pop-up. It posts to the Brevo form, which saves to the "cigalacycling.com" list. |
 | `stg/backup/` | Original staging pages and templates, taken before the redesign (to restore from) |
 | `stg/media.json`, `stg/media-webp.json` | Staging media IDs and URLs. The WebP set is the one in use. |

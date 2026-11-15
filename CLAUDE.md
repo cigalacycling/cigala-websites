@@ -15,6 +15,7 @@ Rules that always apply:
 - Never ask for passwords in chat. Credentials are saved on the cloud environment for the staging host only.
 - Images: WebP at quality 90 from the largest original, with descriptive alt text. Keep any existing alt text.
 - Tracking must load only after cookie consent: Google Analytics, the Meta Pixel and any other tag. The chat stays usable before consent.
+- Every site uses the shared cookie banner in `shared/consent/`, rendered with that site's IDs. Follow its README. Don't restyle it or use a different cookie plugin.
 - Check every page at 390, 820 and 1440 px wide: no sideways scrolling, one H1 per page.
 - Form fields use 16px text, so iPhones don't zoom in.
 - Commit finished work to this repository so the next session can carry on.

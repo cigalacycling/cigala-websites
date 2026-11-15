@@ -21,7 +21,7 @@ body.cc-banner-open #cc-chat{bottom:calc(var(--cc-bh,80px) + 14px)}
 </style>
 <script>
 (function(){
-  var GA='G-955J6LHQ2P', PX='1986332861692106';
+  var GA='{{GA_ID}}', PX='{{PIXEL_ID}}';
   function loadPixel(){
     if(window.fbq)return;
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -34,7 +34,7 @@ body.cc-banner-open #cc-chat{bottom:calc(var(--cc-bh,80px) + 14px)}
     if(chatBtn)chatBtn.hidden=true;
     if(!window.__owLoaded){
       window.__owLoaded=true;
-      window.__ow=window.__ow||{};window.__ow.organizationId="43e5f685-37fc-4f78-9420-122fd2a3c5e3";window.__ow.integration_name="manual_settings";window.__ow.product_name="openwidget";
+      window.__ow=window.__ow||{};window.__ow.organizationId="{{OPENWIDGET_ORG}}";window.__ow.integration_name="manual_settings";window.__ow.product_name="openwidget";
       ;(function(n,t,c){function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[OpenWidget] You can't use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.openwidget.com/openwidget.js",t.head.appendChild(n)}};!n.__ow.asyncInit&&e.init(),n.OpenWidget=n.OpenWidget||e}(window,document,[].slice));
     }
     if(open&&window.OpenWidget){try{OpenWidget.call('maximize');}catch(e){}}

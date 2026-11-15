@@ -106,3 +106,8 @@ Use `red-text` for the small uppercase label above a heading (the "eyebrow"). Ne
 - **Headings:** one H1 per page.
 - **Every image:** has alt text.
 - **Layout:** every page works at phone, tablet and desktop widths, with no sideways scrolling.
+
+
+## Cookie banner
+
+All Cigala sites use one shared cookie banner (`shared/consent/` in the website repository): a dark bottom bar `#0f1011`, Montserrat 14px, an outlined Reject button and a green `#009a44` Accept button, plus the green "Chat with us" pill bottom right. Never restyle it per site. Only the tracking IDs change.
