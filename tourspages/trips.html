@@ -438,11 +438,12 @@ html .cl .tcard .tag::before { content: ""; flex: none; display: inline-block; w
 html .cl .tcard .tag.gravel::before { background: var(--gravel); }
 html .cl .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
 html .cl .tcard .entry { width: fit-content; margin: 0; }
+html .cl .tcard .ph .entry { position: absolute; left: 12px; bottom: 12px; background: rgba(8,9,10,.85); }
 html .cl .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
 html .cl .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -6px; }
 html .cl .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
 html .cl .tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
-html .cl .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+html .cl .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: 13px; padding: 5px 11px; }
 html .cl .tcard .meta { margin: 2px 0; }
 html .cl .phero .lede a { color: var(--green-text); font-weight: 600; text-decoration: none; }
 html .cl .phero .lede a:hover { color: #fff; }
@@ -814,9 +815,8 @@ html .cc .tour:hover img { transform: none; }
     <div class="head"><div><div class="eyebrow">All public tours</div><h2>2027 Calendar</h2><div class="bar"></div></div><nav class="browse" aria-label="Tour types"><a class="chip" href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener" aria-current="page">All</a><a class="chip" href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road</a><a class="chip" href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel</a><a class="chip" href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo</a><a class="chip" href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italy</a></nav></div>
     <div class="tgrid">
 <article class="tcard" data-k="gf">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/discover-the-algarve-granfondo/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-discover-the-algarve-granfondo.webp" alt="Algarve &amp; Gran Fondo Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/discover-the-algarve-granfondo/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-discover-the-algarve-granfondo.webp" alt="Algarve &amp; Gran Fondo Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span></a>
   <div class="tx">
-    <span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span>
     <h2>Discover the Algarve &amp; Gran Fondo</h2>
     <h3 class="where">Algarve, Portugal</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-02-17">17–22 Feb 2027</time></span><span class="chip">5 nights/ 6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
@@ -830,9 +830,8 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gf">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/chianti-gran-fondo-strade-bianche/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-chianti-gran-fondo-strade-bianche.webp" alt="Chianti &amp; Strade Bianche Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/chianti-gran-fondo-strade-bianche/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-chianti-gran-fondo-strade-bianche.webp" alt="Chianti &amp; Strade Bianche Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span></a>
   <div class="tx">
-    <span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span>
     <h2>Chianti &amp; Gran Fondo Strade Bianche</h2>
     <h3 class="where">Chianti, Tuscany, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-03-03">3–8 Mar 2027</time></span><span class="chip">5 nights / 6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
@@ -846,9 +845,8 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gf">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/tour-of-flanders-experience/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-tour-of-flanders-experience.webp" alt="Tour of Flanders Experience Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/tour-of-flanders-experience/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-tour-of-flanders-experience.webp" alt="Tour of Flanders Experience Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span></a>
   <div class="tx">
-    <span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span>
     <h2>Tour of Flanders Experience</h2>
     <h3 class="where">Flanders, Belgium</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-04-01">1–5 Apr 2027</time></span><span class="chip">4 nights / 5 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
@@ -864,7 +862,6 @@ html .cc .tour:hover img { transform: none; }
 <article class="tcard" data-k="gravel">
   <a class="ph" href="https://tours.cigalacycling.com/trips/cyprus-crossing-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-cyprus-crossing-gravel.webp" alt="Cyprus Crossing Gravel Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
   <div class="tx">
-    
     <h2>Cyprus Crossing | Gravel</h2>
     <h3 class="where">Paphos, Cyprus</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-04-22">22–29 Apr 2027</time></span><span class="chip">7 nights/8 days</span><span class="chip">Level: Expert</span></div>
@@ -880,7 +877,6 @@ html .cc .tour:hover img { transform: none; }
 <article class="tcard" data-k="gravel">
   <a class="ph" href="https://tours.cigalacycling.com/trips/tuscany-epic-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-tuscany-epic-gravel.webp" alt="Tuscany Gravel Epic" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
   <div class="tx">
-    
     <h2>Tuscany Epic | Gravel</h2>
     <h3 class="where">Castagneto Carducci, Tuscany, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-05-31">31 May – 6 Jun 2027</time></span><span class="chip">6 nights / 7 days</span><span class="chip">Level: Expert</span></div>
@@ -894,9 +890,8 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gf">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/maratona-dles-dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-maratona-dles-dolomites.webp" alt="Maratona Dles Dolomites Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/maratona-dles-dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-maratona-dles-dolomites.webp" alt="Maratona Dles Dolomites Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span></a>
   <div class="tx">
-    <span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span>
     <h2>Maratona dles Dolomites - Enel</h2>
     <h3 class="where">Alta Badia, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-06-30">30 Jun – 5 Jul 2027</time></span><span class="chip">5 nights/ 6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
@@ -912,7 +907,6 @@ html .cc .tour:hover img { transform: none; }
 <article class="tcard" data-k="road">
   <a class="ph" href="https://tours.cigalacycling.com/trips/dolomites/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-dolomites.webp" alt="Dolomites Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    
     <h2>Dolomites</h2>
     <h3 class="where">Dolomites, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-07-08">8–13 Jul 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Intermediate, Expert</span></div>
@@ -928,7 +922,6 @@ html .cc .tour:hover img { transform: none; }
 <article class="tcard" data-k="road">
   <a class="ph" href="https://tours.cigalacycling.com/trips/italian-alps/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-italian-alps.webp" alt="Italian Alps Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    
     <h2>Italian Alps</h2>
     <h3 class="where">Bormio, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-07-15">15–20 Jul 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Intermediate, Expert</span></div>
@@ -944,7 +937,6 @@ html .cc .tour:hover img { transform: none; }
 <article class="tcard" data-k="gravel">
   <a class="ph" href="https://tours.cigalacycling.com/trips/alpine-gravel-escape/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-alpine-gravel-escape.webp" alt="Alpine Gravel Tour Bormio Cigala" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
   <div class="tx">
-    
     <h2>Alpine Gravel Escape</h2>
     <h3 class="where">Bormio, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-07-15">15–20 Jul 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Expert</span></div>
@@ -960,7 +952,6 @@ html .cc .tour:hover img { transform: none; }
 <article class="tcard" data-k="road">
   <a class="ph" href="https://tours.cigalacycling.com/trips/french-alps/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-french-alps.webp" alt="French Alps Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    
     <h2>French Alps</h2>
     <h3 class="where">French Alps, France</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-07-28">28 Jul – 4 Aug 2027</time></span><span class="chip">7 nights/ 8 days</span><span class="chip">Level: Intermediate, Expert</span></div>
@@ -976,7 +967,6 @@ html .cc .tour:hover img { transform: none; }
 <article class="tcard" data-k="road">
   <a class="ph" href="https://tours.cigalacycling.com/trips/wonderful-slovenia/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-wonderful-slovenia.webp" alt="Wonderful Slovenia Bike Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    
     <h2>Wonderful Slovenia</h2>
     <h3 class="where">West Slovenia, Slovenia</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-08-31">31 Aug – 6 Sep 2027</time></span><span class="chip">6 nights/7 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
@@ -992,7 +982,6 @@ html .cc .tour:hover img { transform: none; }
 <article class="tcard" data-k="road">
   <a class="ph" href="https://tours.cigalacycling.com/trips/lake-garda-and-stelvio/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-garda-and-stelvio.webp" alt="Lake Garda Bike Tour | Cigala Cycling" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    
     <h2>Lake Garda &amp; Day Trip to Stelvio</h2>
     <h3 class="where">Lake Garda, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-09-07">7–12 Sep 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
@@ -1008,7 +997,6 @@ html .cc .tour:hover img { transform: none; }
 <article class="tcard" data-k="gravel">
   <a class="ph" href="https://tours.cigalacycling.com/trips/lake-garda-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-garda-gravel.webp" alt="Lake Garda Gravel bike tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span></a>
   <div class="tx">
-    
     <h2>Lake Garda Gravel</h2>
     <h3 class="where">Lake Garda, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-09-07">7–12 Sep 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Intermediate, Expert</span></div>
@@ -1024,7 +1012,6 @@ html .cc .tour:hover img { transform: none; }
 <article class="tcard" data-k="road">
   <a class="ph" href="https://tours.cigalacycling.com/trips/italys-coast-to-coast/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-italys-coast-to-coast.webp" alt="Italy&#x27;s Coast to Coast bike tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span></span></a>
   <div class="tx">
-    
     <h2>Italy's Coast to Coast</h2>
     <h3 class="where">Tuscany, Umbria, Marche, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-09-24">24 Sep – 1 Oct 2027</time></span><span class="chip">7 nights/8 days</span><span class="chip">Level: Intermediate, Expert</span></div>
@@ -1038,9 +1025,8 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </article>
 <article class="tcard" data-k="gf">
-  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-como-gran-fondo-il-lombardia/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-como-gran-fondo-il-lombardia.webp" alt="Lake Como &amp; Lombardia 2027" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span></a>
+  <a class="ph" href="https://tours.cigalacycling.com/trips/lake-como-gran-fondo-il-lombardia/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-como-gran-fondo-il-lombardia.webp" alt="Lake Como &amp; Lombardia 2027" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag">Road</span><span class="tag">Gran Fondo</span></span><span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span></a>
   <div class="tx">
-    <span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span>
     <h2>Lake Como, Gran Fondo Il Lombardia &amp; Pro Race</h2>
     <h3 class="where">Lake Como, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-10-06">6–11 Oct 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>

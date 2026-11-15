@@ -181,6 +181,11 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Each page has a row of links to the other tour pages (All, Road, Gravel, Gran Fondo, Italy).
   - **Tour cards, reworked 15 Nov (Matteo):** 3 per row on laptops, 2 on tablets, 1 on phones. Each card has the plain trip photo (live alt text) with the type labels; then badge, H2 name (live wording), location, date / nights / level, the full description (clamped to 4 lines with "Read more"; all text stays in the page), price, early bird, and More details + Book now. The baked-in card images are no longer used on these pages. The `.cl` wrapper is transparent so the topo background shows.
   - Checked at 390/820/1440: no sideways scroll, one H1, alt text on every image, no broken images.
+- **15 Nov, Matteo's review:**
+  - Homepage review cards show 5 gold stars again, like Coaching.
+  - On the tour list cards, the "Event entry guaranteed" / "Event day fully supported" badge now sits on the photo (bottom left), so every title in a row starts at the same height.
+  - The red date chip is bigger (13px).
+  - Checked on staging at 390/820/1440: no sideways scroll, one H1, titles aligned.
 - **Terms (564) and Privacy Policy (new, 9347, /privacy-policy/), 15 Nov:** built in the cigalacycling.com Terms style by `tools/build_tours_legal.py`, pushed with `push_tours_list.py terms` and `push_tours_list.py privacy-policy`.
   - The terms text is the live page word for word, with the same H1, and title, meta, robots, OG and schema are unchanged.
   - The privacy text is in `tours/privacy.txt`: Tours' own processors (WeTravel, tour partners, event organisers, Hostinger, Google, Meta, OpenWidget), with no tracking IDs. **Matteo to review it** (ideally his accountant or solicitor too).

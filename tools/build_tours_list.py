@@ -73,9 +73,8 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     badge = BADGES[t['badge']] if t.get('badge') else ''
     alt = LIVE_ALT.get(slug) or f'{t["name"]} bike tour'
     rows[slug] = (t['type'], f"""<article class="tcard" data-k="{t['type']}">
-  <a class="ph" href="{more}" {EXT}><img src="{img}" alt="{E(alt)}" loading="lazy" width="1200" height="900"><span class="tags">{tags}</span></a>
+  <a class="ph" href="{more}" {EXT}><img src="{img}" alt="{E(alt)}" loading="lazy" width="1200" height="900"><span class="tags">{tags}</span>{badge}</a>
   <div class="tx">
-    {badge}
     <h2>{name}</h2>
     <h3 class="where">{where}</h3>
     <div class="meta"><span class="chip date"><time datetime="{t['start']}">{dates(t)}</time></span><span class="chip">{nights}</span><span class="chip">Level: {level}</span></div>
@@ -193,11 +192,12 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .tcard .tag.gravel::before { background: var(--gravel); }
 .tcard .tx { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
 .tcard .entry { width: fit-content; margin: 0; }
+.tcard .ph .entry { position: absolute; left: 12px; bottom: 12px; background: rgba(8,9,10,.85); }   /* badge on the photo, so every title lines up */
 .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
 .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -6px; }
 .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
 .tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
-.tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: 13px; padding: 5px 11px; }
 .tcard .meta { margin: 2px 0; }
 .phero .lede a { color: var(--green-text); font-weight: 600; text-decoration: none; }
 .phero .lede a:hover { color: #fff; }

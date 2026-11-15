@@ -321,7 +321,7 @@ rep('<div class="lab">Official event partner</div><div class="logos"><span><img 
 # Tours is its own company (shared/BUSINESS.md, Matteo 15 Nov): footer legal row + reviews link to the Tours Google profile
 rep('<span>© 2026 Cigala Cycling Tours Ltd</span>\n    <span>VAT No: IE4385007EH · Company Registration No: 780307</span>',
     '<span>© 2026 Cigala Cycling Tours Ltd · Registered in Ireland No. 780307 · VAT IE4385007EH</span>')
-s = s.replace('<div class="stars" aria-label="5 out of 5">★★★★★</div>', '')   # no star ratings on our own reviews (same as Coaching)
+s = s.replace('<div class="stars" aria-label="5 out of 5">★★★★★</div>', '<div class="stars" role="img" aria-label="5 stars">★★★★★</div>')   # 5 stars on each review, like Coaching (Matteo 15 Nov)
 rep(f'<a class="arrow-link" href="{L}/testimonials/" {EXT}>All testimonials →</a>',
     f'<div class="rv-links"><a class="arrow-link" href="https://share.google/WNvIKe4CJP8CnL8ns" {EXT}>★ Read our reviews on Google →</a><a class="arrow-link" href="{L}/testimonials/" {EXT}>All testimonials →</a></div>')
 
