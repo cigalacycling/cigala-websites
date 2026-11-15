@@ -45,7 +45,7 @@ def classify(k, t):
     rules = [("WHAT'S NOT INCLUDED", 'notinc'), ("WHAT'S INCLUDED", 'inc'), ('AIRPORT TRANSFER', 'transfers'), ('AT GLANCE', 'glance'),
              ('DAY TO DAY', 'd2d'), ('GALLERY', 'gallery'), ('ACCOMODATION', 'hotels'), ('ACCOMMODATION', 'hotels'), ('WHERE YOU WILL STAY', 'hotels'),
              ('BIKE RENTAL', 'bike'), ('READ OUR TESTIMONIALS', 'reviews'), ('CUSTOMISE YOUR TOUR', 'custom'), ('YOUR TOUR GUIDES', 'guides'),
-             ('FREQUENTLY ASKED', 'faq'), ('PLAN YOUR TRIP', 'related'), ('OFFICIAL TOUR OPERATOR', 'operator'), ('FANCY A FEW DAYS', 'extra'), ('OPTIONAL DAY', 'extra')]
+             ('FREQUENTLY ASKED', 'faq'), ('PLAN YOUR TRIP', 'related'), ('OFFICIAL TOUR OPERATOR', 'operator'), ('FANCY A FEW DAYS', 'extra'), ('OPTIONAL DAY-TRIP', 'extra')]
     for w, kind in rules:
         if w in u: return kind
     if re.match(r'^ROUTE( MAP)?$', u): return 'route'
@@ -99,11 +99,11 @@ def trip(slug):
             t = text_of(v); kind = classify(k, t)
             if kind == 'book':
                 cur['items'].append(('book', s.get('link', {}).get('url', ''), s)); continue
-            if kind == 'custom-sub' or (kind is None and cur['kind'] in ('hotels', 'guides', 'final', 'custom') and k == 'h3') or (kind is None and cur['kind'] == 'related'):
+            if kind == 'custom-sub' or (kind is None and cur['kind'] in ('hotels', 'guides', 'final', 'custom') and k == 'h3') or (kind is None and cur['kind'] == 'related' and not any(x[0] == 'h2' for x in cur['items'])):
                 cur['items'].append((k, v, s)); continue
             if kind is None and cur['kind'] == 'top' and k == 'h2':
                 kind = 'intro'
-            elif kind is None and k == 'h2' and re.sub(r'\W', '', t.upper()).startswith(re.sub(r'\W', '', text_of(h1).upper())[:8]) and secs and secs[-1]['kind'] != 'top':
+            elif kind is None and k == 'h2' and re.sub(r'\W', '', t.upper()).startswith(re.sub(r'\W', '', text_of(h1).upper())[:6]) and secs and secs[-1]['kind'] != 'top':
                 kind = 'final'
             elif kind is None and k == 'h3' and cur['kind'] in ('glance', 'route', 'd2d', 'day', 'gallery', 'inc', 'notinc', 'transfers'):
                 kind = 'day'
