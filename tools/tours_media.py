@@ -1,0 +1,91 @@
+"""Make WebP (quality 90) copies of the Tours homepage images from the largest originals
+and upload them to Tours staging. Writes stg-tours/media-webp.json  {key: {id, url, alt}}.
+
+Sources are staging media IDs (originals already on the site) or local files.
+Re-running skips keys that are already uploaded.
+Needs the proxy-injected staging credential (no secrets here).
+"""
+import os, io, json, time, ssl, urllib.request, urllib.error, urllib.parse
+from PIL import Image
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
+B = 'https://staging.tours.cigalacycling.com/wp-json/wp/v2'
+OUTDIR = ROOT + 'webp-tours/'
+MAP = ROOT + 'stg-tours/media-webp.json'
+ctx = ssl.create_default_context(cafile='/root/.ccr/ca-bundle.crt')
+lib = {x['id']: x for x in json.load(open(ROOT + 'stg-tours/media-library.json'))}
+
+# key: (source, max width, alt)   source = staging media id, or a local path
+# alt None = keep the alt text the image already has on the site
+A = {
+    'hero': (4893, 2400, 'Cigala Cycling Tours riders celebrating on the coast in Cyprus'),
+    'custom': (4440, 1600, None),
+    'cta': (4594, 1600, None),
+    'story': (4900, 1600, None),
+    'matteo': ('survey/NfmCmGsjq4LL9bTAi38NXN/matteo-white.png', 900, 'Matteo Cigala in Cigala Cycling kit'),
+    'guide-flanders': (3209, 1000, None),
+    'guide-como': ('tourspages/img/guides-1.jpg', 1000, 'Cycling Lake Como: Ghisallo, Sormano and the Giro di Lombardia roads'),
+    'guide-pack': (6281, 1000, None),
+    'logo': (4282, 240, None),
+    'logo-mdd': (8587, 400, None),
+    'logo-lombardia': (858, 400, None),
+    'logo-strade': (857, 400, None),
+    'logo-algarve': (856, 400, None),
+    # trip cards: featured photo of each live trip page
+    'trip-discover-the-algarve-granfondo': (4955, 1200, None),
+    'trip-chianti-gran-fondo-strade-bianche': (5162, 1200, None),
+    'trip-tour-of-flanders-experience': (3215, 1200, None),
+    'trip-cyprus-crossing-gravel': (4889, 1200, None),
+    'trip-tuscany-epic-gravel': (4440, 1200, None),
+    'trip-maratona-dles-dolomites': (8609, 1200, None),
+    'trip-dolomites': (4867, 1200, None),
+    'trip-italian-alps': (4927, 1200, None),
+    'trip-alpine-gravel-escape': (6113, 1200, None),
+    'trip-french-alps': (4877, 1200, None),
+    'trip-wonderful-slovenia': (4959, 1200, None),
+    'trip-lake-garda-and-stelvio': (4911, 1200, None),
+    'trip-lake-garda-gravel': (6378, 1200, None),
+    'trip-italys-coast-to-coast': (4972, 1200, None),
+    'trip-lake-como-gran-fondo-il-lombardia': (7740, 1200, None),
+}
+
+def req(url, data=None, headers=None, method=None, tries=20):
+    url = urllib.parse.quote(url, safe=':/?=&%')  # filenames like ©MolingAlex
+    for i in range(tries):
+        try:
+            r = urllib.request.urlopen(urllib.request.Request(url, data=data, headers=headers or {'User-Agent': 'Mozilla/5.0'}, method=method), context=ctx, timeout=120)
+            return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code in (502, 503, 504): time.sleep(3); continue
+            raise RuntimeError(f'{e.code} {url}: {e.read()[:300]}')
+        except Exception:
+            time.sleep(3)  # proxy could not connect (DNS still spreading): nothing reached the server
+    raise RuntimeError('unreachable ' + url)
+
+def original(mid):
+    u = lib[mid]['source_url']
+    if '-scaled.' in u:  # WordPress keeps the full-size upload next to the -scaled copy
+        try: return req(u.replace('-scaled.', '.'))
+        except RuntimeError: pass
+    return req(u)
+
+os.makedirs(OUTDIR, exist_ok=True)
+done = json.load(open(MAP)) if os.path.exists(MAP) else {}
+for key, (src, maxw, alt) in A.items():
+    if key in done: continue
+    raw = original(src) if isinstance(src, int) else open(ROOT + src, 'rb').read()
+    im = Image.open(io.BytesIO(raw))
+    im = im.convert('RGBA') if im.mode in ('RGBA', 'LA', 'P') and 'transparency' in im.info or im.mode in ('RGBA', 'LA') else im.convert('RGB')
+    w0 = im.size
+    if im.width > maxw: im = im.resize((maxw, round(im.height * maxw / im.width)), Image.LANCZOS)
+    fn = f'cigala-tours-{key}.webp'
+    im.save(OUTDIR + fn, 'WEBP', quality=90)
+    if alt is None: alt = lib[src]['alt_text'] if isinstance(src, int) else ''
+    assert alt, key
+    body = open(OUTDIR + fn, 'rb').read()
+    r = json.loads(req(B + '/media', data=body, method='POST', headers={'Content-Type': 'image/webp', 'Content-Disposition': f'attachment; filename="{fn}"', 'User-Agent': 'Mozilla/5.0'}))
+    req(B + f'/media/{r["id"]}', data=json.dumps({'alt_text': alt}).encode(), method='POST', headers={'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0'})
+    done[key] = {'id': r['id'], 'url': r['source_url'], 'alt': alt, 'from': w0, 'size': im.size}
+    json.dump(done, open(MAP, 'w'), indent=1, ensure_ascii=False)
+    print(key, w0, '->', im.size, r['id'])
+print(len(done), 'images in', MAP)

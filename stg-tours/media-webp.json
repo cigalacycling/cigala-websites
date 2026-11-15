@@ -1,0 +1,366 @@
+{
+ "hero": {
+  "id": 9243,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-hero.webp",
+  "alt": "Cigala Cycling Tours riders celebrating on the coast in Cyprus",
+  "from": [
+   3367,
+   3237
+  ],
+  "size": [
+   2400,
+   2307
+  ]
+ },
+ "custom": {
+  "id": 9244,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-custom.webp",
+  "alt": "Cigala Cycling Tuscany Gravel tour on the route of the Tuscany Trail",
+  "from": [
+   3888,
+   5184
+  ],
+  "size": [
+   1600,
+   2133
+  ]
+ },
+ "cta": {
+  "id": 9245,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-cta.webp",
+  "alt": "Pyrenees Bike Tours",
+  "from": [
+   3298,
+   1855
+  ],
+  "size": [
+   1600,
+   900
+  ]
+ },
+ "story": {
+  "id": 9246,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-story.webp",
+  "alt": "Cycling in the Dolomites",
+  "from": [
+   3448,
+   4592
+  ],
+  "size": [
+   1600,
+   2131
+  ]
+ },
+ "matteo": {
+  "id": 9247,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-matteo.webp",
+  "alt": "Matteo Cigala in Cigala Cycling kit",
+  "from": [
+   900,
+   1071
+  ],
+  "size": [
+   900,
+   1071
+  ]
+ },
+ "guide-flanders": {
+  "id": 9248,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guide-flanders.webp",
+  "alt": "Cyclist in world champion kit - Cigala Cycling Tours",
+  "from": [
+   1280,
+   1600
+  ],
+  "size": [
+   1000,
+   1250
+  ]
+ },
+ "guide-como": {
+  "id": 9249,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guide-como.webp",
+  "alt": "Cycling Lake Como: Ghisallo, Sormano and the Giro di Lombardia roads",
+  "from": [
+   1600,
+   1200
+  ],
+  "size": [
+   1000,
+   750
+  ]
+ },
+ "guide-pack": {
+  "id": 9250,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guide-pack.webp",
+  "alt": "Matteo Cigala | Gravel Bike Tour",
+  "from": [
+   6144,
+   8192
+  ],
+  "size": [
+   1000,
+   1333
+  ]
+ },
+ "logo": {
+  "id": 9251,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-logo.webp",
+  "alt": "Cigala Cycling Tours Logo (Cigala Cycling) (Cycling Guides) (Dolomites) (Lake Garda) (Granfondo) (Tour of Flanders Experience) (Lake Como) (Gravel) (Algarve) (Coast to Coast) (Italian Alps) (Gravel) (Tuscany Epic Gravel) (Pyrenees) (Trips) (Gravel) (French Alps) (Tenerife) (Italian Alps Bike Tours) (Ireland) (Croatia) (Contact) (Tuscany) (Algarve Bike) (Cyprus) (Lake Como) (Lake Garda)",
+  "from": [
+   343,
+   343
+  ],
+  "size": [
+   240,
+   240
+  ]
+ },
+ "logo-mdd": {
+  "id": 9252,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-logo-mdd.webp",
+  "alt": "Logo Maratona Dles Dolomites",
+  "from": [
+   2362,
+   3915
+  ],
+  "size": [
+   400,
+   663
+  ]
+ },
+ "logo-lombardia": {
+  "id": 9253,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-logo-lombardia.webp",
+  "alt": "Green floral logo for Gran Fondo Il Lombardia cycling - Cigala Cycling Tours",
+  "from": [
+   340,
+   329
+  ],
+  "size": [
+   340,
+   329
+  ]
+ },
+ "logo-strade": {
+  "id": 9254,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-logo-strade.webp",
+  "alt": "Red shield logo for Strade Bianche Gran Fondo. - Cigala Cycling Tours",
+  "from": [
+   331,
+   340
+  ],
+  "size": [
+   331,
+   340
+  ]
+ },
+ "logo-algarve": {
+  "id": 9255,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-logo-algarve.webp",
+  "alt": "Yellow circle logo with Algarve Granfondo text. - Cigala Cycling Tours",
+  "from": [
+   340,
+   340
+  ],
+  "size": [
+   340,
+   340
+  ]
+ },
+ "trip-discover-the-algarve-granfondo": {
+  "id": 9256,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-discover-the-algarve-granfondo.webp",
+  "alt": "Cycling the Algarve: A Winter Sun Escape",
+  "from": [
+   5184,
+   3888
+  ],
+  "size": [
+   1200,
+   900
+  ]
+ },
+ "trip-chianti-gran-fondo-strade-bianche": {
+  "id": 9257,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-chianti-gran-fondo-strade-bianche.webp",
+  "alt": "Matteo Cigala Gran Fondo Strade Bianche",
+  "from": [
+   1440,
+   1440
+  ],
+  "size": [
+   1200,
+   1200
+  ]
+ },
+ "trip-tour-of-flanders-experience": {
+  "id": 9258,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-tour-of-flanders-experience.webp",
+  "alt": "Cyclists riding on cobbles - Cigala Cycling Tours",
+  "from": [
+   1086,
+   1448
+  ],
+  "size": [
+   1086,
+   1448
+  ]
+ },
+ "trip-cyprus-crossing-gravel": {
+  "id": 9259,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-cyprus-crossing-gravel.webp",
+  "alt": "Gravel Cycling Cyprus",
+  "from": [
+   3888,
+   5184
+  ],
+  "size": [
+   1200,
+   1600
+  ]
+ },
+ "trip-tuscany-epic-gravel": {
+  "id": 9260,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-tuscany-epic-gravel.webp",
+  "alt": "Cigala Cycling Tuscany Gravel tour on the route of the Tuscany Trail",
+  "from": [
+   3888,
+   5184
+  ],
+  "size": [
+   1200,
+   1600
+  ]
+ },
+ "trip-maratona-dles-dolomites": {
+  "id": 9261,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-maratona-dles-dolomites.webp",
+  "alt": "Maratona Dles Dolomites | Passo Pordoi",
+  "from": [
+   4096,
+   2732
+  ],
+  "size": [
+   1200,
+   800
+  ]
+ },
+ "trip-dolomites": {
+  "id": 9262,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-dolomites.webp",
+  "alt": "Bike Tours Dolomites",
+  "from": [
+   3888,
+   5184
+  ],
+  "size": [
+   1200,
+   1600
+  ]
+ },
+ "trip-italian-alps": {
+  "id": 9263,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-italian-alps.webp",
+  "alt": "Raid Alps Bike Tours",
+  "from": [
+   3448,
+   4592
+  ],
+  "size": [
+   1200,
+   1598
+  ]
+ },
+ "trip-alpine-gravel-escape": {
+  "id": 9264,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-alpine-gravel-escape.webp",
+  "alt": "Stelvio Gravel Tour | Cigala Cycling",
+  "from": [
+   6048,
+   8064
+  ],
+  "size": [
+   1200,
+   1600
+  ]
+ },
+ "trip-french-alps": {
+  "id": 9265,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-french-alps.webp",
+  "alt": "Col du Galibier Epic Climb in France",
+  "from": [
+   2758,
+   3448
+  ],
+  "size": [
+   1200,
+   1500
+  ]
+ },
+ "trip-wonderful-slovenia": {
+  "id": 9266,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-wonderful-slovenia.webp",
+  "alt": "Lake Bled Cycling Slovenia",
+  "from": [
+   1920,
+   1081
+  ],
+  "size": [
+   1200,
+   676
+  ]
+ },
+ "trip-lake-garda-and-stelvio": {
+  "id": 9267,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-lake-garda-and-stelvio.webp",
+  "alt": "Cigala Cycling Tours Lake Garda",
+  "from": [
+   4592,
+   3448
+  ],
+  "size": [
+   1200,
+   901
+  ]
+ },
+ "trip-lake-garda-gravel": {
+  "id": 9268,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-lake-garda-gravel.webp",
+  "alt": "Vineyards Cycling Lane",
+  "from": [
+   2250,
+   4000
+  ],
+  "size": [
+   1200,
+   2133
+  ]
+ },
+ "trip-italys-coast-to-coast": {
+  "id": 9269,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-italys-coast-to-coast.webp",
+  "alt": "Italy's Coast To Coast (Italy Coast)",
+  "from": [
+   3448,
+   4592
+  ],
+  "size": [
+   1200,
+   1598
+  ]
+ },
+ "trip-lake-como-gran-fondo-il-lombardia": {
+  "id": 9270,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-lake-como-gran-fondo-il-lombardia.webp",
+  "alt": "Madonna del Ghisallo Lake Como",
+  "from": [
+   1440,
+   1439
+  ],
+  "size": [
+   1200,
+   1199
+  ]
+ }
+}

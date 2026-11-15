@@ -70,6 +70,18 @@ s = s.replace('<b>Design preview</b><span>A concept of the tours homepage in the
 LIVE_H1 = "Bike Tours &amp; Cycling Holidays Across Europe's Best Cycling Destinations"
 s = s.replace("<h1>Bike tours across Europe's best cycling roads</h1>", f'<h1>{LIVE_H1}</h1>')
 
+# ---------- H2: live wording (SEO rule), design wording moves to the eyebrow ----------
+H2_FIX = [
+    ('<h2>Italy, France, Spain, Portugal, Slovenia, Croatia, Cyprus and more</h2>', '<h2>Bike Tours in Italy, France, Spain, Portugal, Slovenia, Croatia, Cyprus and more</h2>'),
+    ('Meet our Tours Director</div>', 'Ride with Matteo Cigala</div>'),
+    ('<h2>Ride with Matteo Cigala</h2>', '<h2>Meet Our Tours Director</h2>'),
+    ('Ten years of guests</div>', 'What our riders say</div>'),
+    ('<h2>What our riders say</h2>', '<h2>Read what our guests from the last 10 years have to say</h2>'),
+]
+for a, b in H2_FIX:
+    assert s.count(a) == 1, a
+    s = s.replace(a, b)
+
 # ---------- menu ----------
 MENU_TOURS = [
     ('All tours', '/trips/'),

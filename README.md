@@ -132,6 +132,27 @@ The new designs fix the last three. The Gran Canaria H1 still has to be fixed on
 - **Backup:** `stg-tours/backup/` holds all 53 pages, 15 Elementor templates (header 170, footer 228, kit 6, loop items, 404, single post) and 37 posts, taken before any change. Restore from these files.
 - Key page IDs: Home 5212, Trips 8689, Granfondo 2796, Gravel 2821, Italian 4402, Custom 1576, Destinations 10, Guides 5030, About 271, Contact 461, Terms 564, Testimonials 2844.
 
+## Tours staging: how to rebuild and push
+
+```
+python3 -I tools/build_tours_home.py      # preview tourspages/home.html (from survey/ design)
+python3 -I tools/tours_media.py           # WebP q90 images -> staging media (skips ones already uploaded)
+python3 -I tools/build_tours_wp.py        # Elementor payloads -> stg-tours/out/
+python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging only, then clears the Elementor cache
+```
+
+- **Kit 6** gets the brand CSS, scoped to `.cc`. Pages that haven't been rebuilt yet keep their old look; only header and footer are new everywhere.
+- **Header 170:** new nav with the Bike Tours dropdown.
+- **Footer 228:** new footer, plus the existing OpenWidget chat and cookie widgets, unchanged apart from the cookie colours.
+- **Status 15 Nov:** homepage (5212) is live on staging.
+  - Checked at 390/820/1440: no sideways scroll, one H1, alt text on every image, form fields at 16px.
+  - Title, meta, canonical, robots and schema match live.
+  - The 8 H2s use the live wording (Matteo approved making the label H2s normal text).
+- **Not done yet:**
+  - `/trips/road-trips/` doesn't exist yet, so the menu link 404s on staging.
+  - Tracking: Google Analytics G-QRF16ZZVDB loads before consent (live too) and must be consent-gated.
+  - The other pages haven't been rebuilt.
+
 ## Tours build plan: Matteo's notes, 15 Nov
 
 - **Homepage:** use the design in `survey/NfmCmGsjq4LL9bTAi38NXN/index.html`. It isn't among the 7 pages in `tourspages/`. Keep the live Yoast title and meta. The design's H1 ("Bike tours across Europe's best cycling roads") differs from the live H1, so it needs Matteo's OK; otherwise keep the live H1.
