@@ -224,7 +224,6 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - The stray "harmony." line in the Dolomites intro is gone.
   - Spelling is fixed through `fix_text()` in `build_tours_pages.py`, on visible text and alt text only, applied to every rebuilt page and trip. Examples: Mechanical, Dura-Ace, Accommodation, Coffee, Alentejo, Morocco, recipes, cuisine, Trentino, luggage, San Gimignano, Nova Gorica, Barcelonnette, Grosseto, peninsula, countryside, Col du Télégraphe, Crostini. The Terms text is untouched (kept word for word).
   - One meta description per page: the Hello theme's own description tag is off (`hello_elementor_settings_description_meta_tag` = true), so only Rank Math's remains.
-  - The other pages haven't been rebuilt.
 
 ## Tours build plan: Matteo's notes, 15 Nov
 
