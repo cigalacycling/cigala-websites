@@ -11,6 +11,8 @@ from coaching_common import *
 import build_coaching_generic as G
 
 items, _ = G.parse('testimonials')
+# Matteo 15 Nov: Bernd lives in Germany and the UK
+items = [(k, v.replace('Bernd Ondruch, Germany', 'Bernd Ondruch, Germany & UK') if isinstance(v, str) else v, *r) for k, v, *r in items]
 h1 = next(it[1] for it in items if it[0] == 'h1')
 H1 = 'READ OUR TESTIMONIALS'   # Matteo 15 Nov: no '- WHAT PEOPLE SAY ABOUT CIGALA CYCLING'
 h2i = next(i for i, it in enumerate(items) if it[0] == 'h2')

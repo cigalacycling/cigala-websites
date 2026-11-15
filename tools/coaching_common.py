@@ -252,7 +252,7 @@ CASES = [
     {'slug': 'bernd-ondruch',
      'timeline': [('3 years', 'Trying to qualify on his own, with no structured plan'), ('Week 1', 'Coaching with Matteo: varied, tailored workouts'),
                   ('4–6 weeks', 'Noticeable improvements, and consistent since'), ('After a crash', 'The plan adjusted, never beyond his limits'), ('12 months', 'Qualified for the UCI Gran Fondo World Championship')],
-     'source': 'From Bernd’s testimonial', 'photo_file': 'coaching/athletes/bernd-ondruch-2x.webp', 'name': 'Bernd Ondruch', 'where': 'Germany', 'photo': 'T134927.535',
+     'source': 'From Bernd’s testimonial', 'photo_file': 'coaching/athletes/bernd-ondruch-2x.webp', 'name': 'Bernd Ondruch', 'where': 'Germany & UK', 'photo': 'T134927.535',
      'headline': 'Qualified for the Gran Fondo Worlds', 'stat': 'Worlds qualified', 'tag': 'Gran Fondo',
      'before': 'Three years of trying to qualify on his own, riding consistently but with no structured plan.',
      'goal': 'Qualify for the UCI Gran Fondo World Championship.',
@@ -586,7 +586,7 @@ document.querySelectorAll('.dd').forEach(function (d) {
 # because these are testimonials, not rated reviews. The Google link goes to Matteo's Google Business Profile.
 REVIEWS = [   # strongest first; photo = the image above each testimonial on the live Testimonials page (Matteo 15 Nov: Marine first; 15 Nov: mix in the athletes from other countries)
     ('', 'He has not only made me fall in love with cycling, but has believed in me even when I didn’t. As I speak, I am current European Gran Fondo & gravel 19-34 champion, silver medalist at the Gran Fondo Worlds, from only starting cycling last February this year.', 'Marine Lenehan', 'Now a WorldTour Pro · Ireland', 'T135849.182'),
-    ('', 'With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.', 'Bernd Ondruch', 'Germany', 'T134927.535'),
+    ('', 'With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.', 'Bernd Ondruch', 'Germany & UK', 'T134927.535'),   # Matteo 15 Nov: lives in both
     ('', 'First time was a 9 month training plan to get me from couch (literally!) to Haute Route Pyrenees in 2017 to mark my 60th birthday. More recently, I have worked with Matteo to help me recover from heart disease and a cardiac procedure.', 'Derek Lawler', 'Kilkenny, Ireland', 'T140239.558'),
     ('', 'After 7 weeks of following his programme, which is mainly working in Z1/2 with bits of Z3, I’ve managed to get a PB FTP of 207W.', 'Lisa Dunne', 'Al Jassra Race Team, Qatar', 'T140416.718'),
     ('', 'I had entered a seven-day mountain stage race in the USA… During the event, I felt stronger each day of the race and ended up in the top 50 in a highly competitive field which included full time international professional racers.', 'Ceall O’Dunlaing', 'Stage race in the USA', 'T142535.380'),

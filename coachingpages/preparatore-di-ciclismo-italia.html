@@ -464,10 +464,339 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
 .faq h3 { display: inline; font: 600 15px/1.4 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); }
 @media (max-width: 900px) { .gn-photo { aspect-ratio: 16 / 10; } }
+</style><style>
+.hero-sm { min-height: min(560px, 74svh); }
+.hero-sm .in { padding-block: 110px 48px; }
+.hero-sm h1 { max-width: 16ch; font-size: clamp(38px, 6vw, 72px); }
+.hero-lake > img { object-position: 72% 78%; }   /* riders in the clear right-hand side, lake behind the heading */
+@media (max-width: 640px) { .hero-lake > img { object-position: 64% 70%; } }
+#packages { padding-top: 28px; }
+.notes-wrap { margin: 0 0 40px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.notes-lab { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+.notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 32px; }
+.note { display: flex; gap: 12px; align-items: flex-start; }
+.note svg { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-top: 1px; }
+.note p { margin: 0; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+.pkgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 16px; align-items: start; }
+.pkg { display: grid; grid-row: span 10; grid-template-rows: subgrid; row-gap: 0; align-content: start; }   /* term, name, for, price, sub, buy, label, list, button line up across the cards */
+.pkg { position: relative; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px 24px; min-width: 0; }
+.pkg { transition: transform .25s, box-shadow .25s; }
+.pkg:hover { transform: translateY(-6px); box-shadow: 0 26px 60px rgba(0,0,0,.5); }   /* Matteo 15 Nov: a little pop on hover */
+.pkg.hot:hover { box-shadow: 0 0 0 1px var(--green), 0 30px 70px rgba(0,154,68,.25); }
+.pkg.hot { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 24px 60px rgba(0,154,68,.18); }
+.pkg-badge { position: absolute; top: -13px; left: 24px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--green); border-radius: 999px; padding: 5px 12px; }
+.pkg-badge.sold { background: var(--panel-solid); border: 1px solid var(--red); color: var(--red-text, #ff3d33); }
+.pkg-term { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.pkg h2 { font-size: 40px; margin-top: 10px; }
+.pkg-price { display: flex; align-items: baseline; gap: 4px; margin-top: 14px; }
+.pkg-price b { font: 400 54px/1 var(--head); color: var(--text); }
+.pkg-price span { color: var(--text-3); font-weight: 600; }
+.pkg-sub { font-size: 13px; color: var(--text-3); margin: 8px 0 18px; }
+.pkg-buy { display: grid; gap: 8px; }
+.pay { width: 100%; text-align: center; }
+.pay-note { display: block; font-size: 12.5px; color: var(--text-3); text-align: center; }
+.pkg-lab { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--green-text); }   /* Matteo 15 Nov: stands out from the grey notes */
+.ticks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; align-content: start; }
+.ticks li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-2); line-height: 1.45; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%2334c46a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.pkg:not(.open) .ticks li.more { display: none; }
+.pkg-for { margin: 8px 0 0; font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
+.pkg-call { font-size: 13px; font-weight: 600; color: var(--green-text); text-decoration: none; text-align: center; padding: 4px 0; }
+.pkg-call:hover { color: #fff; }
+.ticks li.no { color: var(--text-4, #62666d); }
+.ticks li.no span { font-size: 12.5px; }
+.ticks li.no::before { background: rgba(225,6,0,.12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5.2 5.2l5.6 5.6M10.8 5.2l-5.6 5.6' fill='none' stroke='%23ff3d33' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.cmp-wrap { margin-top: 44px; }
+.cmp-scroll { margin-top: 20px; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r); background: var(--panel-grad), var(--panel); }
+.cmp { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px; }
+.cmp th, .cmp td { padding: 13px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+.cmp tbody tr:last-child th, .cmp tbody tr:last-child td { border-bottom: 0; }
+.cmp thead th { font: 400 20px/1.1 var(--head); text-transform: uppercase; color: var(--text); }
+.cmp tbody th { font-weight: 600; color: var(--text); width: 28%; }
+.cmp td { color: var(--text-2); }
+.cmp .hot { background: rgba(0,154,68,.07); }
+.cmp thead .hot { color: var(--green-text); }
+.cmp .y { color: var(--green-text); font-weight: 700; font-size: 16px; }
+.cmp .n { color: var(--red-text, #ff3d33); font-weight: 700; font-size: 16px; }
+.cmp-note { margin: 12px 0 0; font-size: 13px; color: var(--text-3); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.cmp tbody th { position: sticky; left: 0; background: var(--panel-solid); }
+.pkg-all { margin-top: 16px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font: 600 14px var(--body); color: var(--text); background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 10px; padding: 11px 14px; cursor: pointer; }
+.pkg-all svg { width: 18px; height: 18px; fill: none; stroke: var(--green-text); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
+.pkg-all:hover { border-color: var(--green); }
+.pkg.open .pkg-all svg { transform: rotate(180deg); }
+.terms { margin: 22px 0 0; font-size: 13px; color: var(--text-3); text-align: center; }
+.terms b { color: var(--text-2); font-weight: 600; }
+.panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
+.h-sm { font-size: clamp(24px, 2.6vw, 30px); }
+.ticks.cols { columns: 2; column-gap: 32px; display: block; margin: 0; }
+.ticks.cols li { break-inside: avoid; margin-bottom: 9px; }
+.addons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.addon { padding: 24px; }
+.addon p { margin: 10px 0 0; font-size: 14.5px; }
+.addon p a { color: var(--green-text); }
+.addon .arrow-link { display: inline-block; margin-top: 14px; }
+.quotes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.q { margin: 0; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.q img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); }
+.q blockquote { margin: 0; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+.nums { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.nums .n { margin: 0; font-family: var(--head); font-weight: 400; font-size: clamp(32px, 3.6vw, 46px); line-height: 1; color: var(--text); }
+.nums .l { margin: 8px 0 0; }
+.nums .stat:nth-child(-n+4) .n { color: var(--text); }
+/* Matteo 15 Nov: "What you get" in red (green got lost), a second button at the end of each card, Premium clearly sold out */
+.pkg .pkg-lab { color: #ff3d33; }
+/* Matteo 15 Nov (later): ticks back to green, the X stays red */
+.pkg-buy2 { margin-top: 12px; }
+.addon-aj { display: flex; align-items: center; gap: 14px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--border); }
+.addon-aj img { flex: none; width: 110px; height: auto; background: #fff; border-radius: 8px; padding: 8px; }
+.addon-aj span { font-size: 14px; color: var(--text-2); }
+.addon-aj b { color: var(--text); }
+.pkg-buy2 .pay2 { min-height: 0; padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
+.pkg.sold { border-color: rgba(255,61,51,.55); background: repeating-linear-gradient(135deg, rgba(255,61,51,.035) 0 14px, transparent 14px 28px), var(--panel-grad), var(--panel); }
+.pkg.sold .pkg-badge.sold { background: #e10600; border-color: #e10600; color: #fff; }
+.pkg.sold::after { content: "SOLD OUT"; position: absolute; top: 74px; right: 18px; transform: rotate(-9deg); padding: 6px 14px; border: 3px solid #ff3d33; border-radius: 8px; font: 400 26px/1 var(--head); letter-spacing: .06em; color: #ff3d33; opacity: .92; pointer-events: none; }
+.pkg.sold .pkg-price b { color: var(--text-2); }
+.pkg.sold .pay { background: transparent !important; border: 2px solid #ff3d33 !important; color: #fff !important; box-shadow: none !important; }
+.pkg.sold .pay:hover { background: rgba(255,61,51,.14) !important; }
+@media (max-width: 600px) { .pkg.sold::after { top: 64px; font-size: 22px; } }
+/* Matteo 15 Nov: 2026 in numbers with colour: medal colours for the places, a bar that fills as they count, a hover lift */
+.nums .stat { --c: #34c46a; position: relative; transition: background .25s, transform .25s; }
+.nums .stat:nth-child(1) { --c: #34c46a; } .nums .stat:nth-child(2) { --c: #d08a4b; } .nums .stat:nth-child(3) { --c: #c9d1db; }
+.nums .stat:nth-child(4) { --c: #f0bf00; } .nums .stat:nth-child(5) { --c: #34c46a; } .nums .stat:nth-child(6) { --c: #ff3d33; }
+.nums .stat .n { color: var(--c) !important; }
+.nums .stat::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 12px; height: 3px; border-radius: 3px; background: var(--c); transform: scaleX(0); transform-origin: left; transition: transform 1.6s cubic-bezier(.2,.7,.2,1); }
+.nums.on .stat::after { transform: scaleX(1); }
+.nums .stat:hover { background: color-mix(in srgb, var(--c) 12%, transparent); transform: translateY(-3px); }
+.nums .stat:hover .l { color: var(--text); }
+
+.vk p { margin: 14px 0 0; max-width: 62ch; }
+.vk p a { color: var(--green-text); }
+.vk-feats { list-style: none; margin: 18px 0 4px; padding: 0; display: grid; gap: 12px; }
+.vk-feats li { display: flex; gap: 14px; align-items: flex-start; }
+.vk-feats svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.vk-feats p { margin: 0 !important; font-size: 15px; line-height: 1.55; }
+.vk-feats b { color: var(--text); }
+.ticks li.no-lab { padding: 10px 0 0; margin-top: 4px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+.ticks li.no-lab::before { display: none; }
+.vk-side { display: grid; gap: 14px; }
+.vk-side .photo { aspect-ratio: 3 / 2; }
+.vk-side .photo img { filter: brightness(.85); }   /* Matteo 15 Nov: 15% darker */
+.vk-logos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.vk-logos > * { display: grid; place-items: center; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; min-height: 130px; }
+.vk-logos img { max-height: 92px; width: auto; max-width: 100%; }
+.h-long { font-size: clamp(24px, 3vw, 36px); max-width: 32ch; }
+.apps { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.apps a { background: #fff; border-radius: 10px; height: 84px; display: grid; place-items: center; padding: 10px; }
+.apps img { max-height: 54px; max-width: 100%; object-fit: contain; }
+.faq h3 { display: inline; font: 600 15px/1.4 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); }
+.faq details p a { color: var(--green-text); }
+.gallery { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.gallery .g { aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.gallery .g img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.gallery .g:hover img { transform: scale(1.05); }
+.gallery:not(.all) .g.more { display: none; }
+.rider { aspect-ratio: 1; }
+.form { display: grid; gap: 14px; padding: 22px; margin-top: 22px; }
+.form label { display: grid; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.form input, .form textarea { font: 400 16px/1.4 var(--body); color: var(--text); background: rgba(255,255,255,.04); border: 1px solid var(--border-strong); border-radius: 8px; padding: 12px 14px; width: 100%; }
+.form input:focus, .form textarea:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: transparent; }
+.form .btn { justify-self: start; }
+@media (max-width: 1080px) { .quotes { grid-template-columns: repeat(3, minmax(0, 1fr)); } .apps { grid-template-columns: repeat(4, minmax(0, 1fr)); } .nums { grid-template-columns: repeat(3, minmax(0, 1fr)); } .nums .stat:nth-child(4) { border-left: 0; } .nums .stat:nth-child(n+4) { border-top: 1px solid var(--border); } }
+@media (max-width: 900px) {
+  .pkgs, .notes { grid-template-columns: minmax(0, 1fr); }
+  .pkgs { gap: 26px; }
+  .gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .rider { aspect-ratio: 16 / 10; }
+}
+@media (max-width: 640px) {
+  .addons, .quotes { grid-template-columns: minmax(0, 1fr); }
+  .ticks.cols { columns: 1; }
+  .apps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nums .stat:nth-child(odd) { border-left: 0; } .nums .stat:nth-child(even) { border-left: 1px solid var(--border); } .nums .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+  .gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .gallery:not(.all) .g:nth-child(n+13) { display: none; }
+  .pkg h2 { font-size: 34px; }
+  .cmp-scroll { overflow: visible; }
+  .cmp, .cmp tbody, .cmp tr, .cmp th, .cmp td { display: block; min-width: 0; }
+  .cmp thead { display: none; }
+  .cmp tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--border); }
+  .cmp tbody tr:last-child { border-bottom: 0; }
+  .cmp tbody th { grid-column: 1 / -1; position: static; width: auto; background: none; border: 0; padding: 14px 14px 4px; }
+  .cmp td { border: 0; padding: 4px 10px 14px 14px; font-size: 13px; }
+  .cmp td::before { content: attr(data-l); display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 3px; }
+  .cmp td.hot::before { color: var(--green-text); }
+}
+.addon { position: relative; }
+.addon-ic { width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; display: block; margin-bottom: 14px; }
+.q .rv-stars { color: #f5b301; letter-spacing: 2px; font-size: 15px; line-height: 1; }
+.vk-lock { display: flex !important; align-items: center; justify-content: center; gap: 16px; }
+.vk-lock img:first-child { width: 72px; height: 72px; border-radius: 0; }
+.vk-lock .vk-x { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--text-2); stroke-width: 2.4; stroke-linecap: round; }
+.vk-lock img:last-child { width: auto; height: 34px; max-width: 46%; }
+.vk-logos img { margin: 0 auto; }
+@media (max-width: 640px) {
+  .vk-logos { grid-template-columns: minmax(0, 1fr); }
+  .vk-logos > * { min-height: 110px; }
+  .vk-lock { gap: 12px; padding: 16px 12px !important; }
+  .vk-lock img:first-child { width: 60px; height: 60px; }
+  .vk-lock img:last-child { height: 30px; max-width: none; }
+  .vk-logos > span img { max-height: 84px; }
+}
+</style><style>
+.ft-box { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 60%), var(--panel-grad), var(--panel); }
+.ft-head p { margin: 14px 0 0; color: var(--text-2); }
+.ft-head .arrow-link { display: inline-block; margin-top: 14px; }
+.ft-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }   /* 8 tools in 2 columns */
+.ft-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.03); text-decoration: none; transition: border-color .2s, transform .2s; }
+.ft-card:hover { border-color: rgba(0,154,68,.6); transform: translateX(3px); }
+.ft-card svg { flex: none; width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ft-card span { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.ft-card b { color: var(--text); font-size: 15px; }
+.ft-card small { color: var(--text-3); font-size: 13px; }
+.ft-card i { font-style: normal; color: var(--green-text); font-weight: 700; }
+@media (max-width: 900px) { .ft-box { grid-template-columns: minmax(0, 1fr); padding: 22px; gap: 20px; } }
+@media (max-width: 560px) { .ft-cards { grid-template-columns: minmax(0, 1fr); } }
+</style><style>
+.cs-row, .rv-row { scrollbar-width: none !important; }   /* Matteo 15 Nov: arrows instead of a drag bar */
+.cs-row::-webkit-scrollbar, .rv-row::-webkit-scrollbar { display: none; }
+.cs-nav { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+.cs-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
+.cs-btn:hover { border-color: var(--green); color: var(--green-text); }
+.cs-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 300px); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: thin; }
+.cs-card { scroll-snap-align: start; display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--panel-grad), var(--panel); text-decoration: none; transition: border-color .2s, transform .2s; }
+.cs-card:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
+.cs-img { aspect-ratio: 4 / 3; overflow: hidden; background: #111; }
+.cs-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.9); }
+.cs-data { display: grid; place-content: center; text-align: center; gap: 6px; background: radial-gradient(circle at 30% 20%, rgba(0,154,68,.45), rgba(0,154,68,0) 60%), #0b1a12; }
+.cs-data b { font: 400 40px/1 var(--head); color: #fff; }
+.cs-data small { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green-text); }
+.cs-tx { display: grid; gap: 6px; padding: 16px 18px 18px; }
+.cs-tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.cs-stat { font: 400 30px/1.05 var(--head); color: var(--text); text-transform: uppercase; }
+.cs-h { font-size: 15px; font-weight: 600; color: var(--text); }
+.cs-n { font-size: 13px; color: var(--text-3); }
+.cs-card .arrow-link { margin-top: 6px; }
+</style><style>.cal-scroll { order: 0; }
+.nu-cal figcaption { order: 1; }
+.cal-notes { order: 2; }
+.cal-sample { order: 3; margin: 0; color: var(--text-3); font-size: 13px; font-style: italic; }
+.cal-sup { margin: 6px 0 0; display: grid; gap: 2px; }
+.cal-sup dt { font-weight: 700; color: var(--text); margin-top: 8px; }
+.cal-sup dd { margin: 0; }
+.nu-cal figcaption { grid-column: 1 / -1; color: var(--text-3); font-size: 13px; }
+@media (max-width: 1000px) { .nu-cal { grid-template-columns: minmax(0, 1fr); } }
+.cal-scroll { border-radius: 14px; border: 1px solid var(--border); background: var(--panel-grad), var(--panel); }
+.cal-row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.cal-d { border-right: 1px solid var(--border); padding: 0 7px 10px; display: grid; align-content: start; gap: 7px; min-width: 0; }
+.cal-d:last-child { border-right: 0; }
+.cal-h { margin: 0 -7px; padding: 8px 10px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.04); }
+.cal-h b { font: 400 18px/1 var(--head); color: var(--text); }
+.cal-cnt { justify-self: stretch; text-align: center; font-size: 11px; color: var(--text-3); border: 1px solid var(--border); border-radius: 6px; padding: 3px 0; }
+.cal-n { background: rgba(0,154,68,.08); border: 1px solid rgba(0,154,68,.25); border-radius: 8px; padding: 7px 8px; display: grid; gap: 4px; }
+.cal-n b { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text); }
+.cal-n span { font-size: 11px; line-height: 1.4; color: var(--text-2); }
+.cal-w { border: 1.5px solid #2fae5f; border-radius: 8px; background: rgba(255,255,255,.03); display: grid; gap: 5px; overflow: hidden; }
+.cal-wt { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 5px; padding: 7px 8px 0; font-size: 11px; font-weight: 700; color: var(--text); }
+.cal-wt span { min-width: 0; }
+.cal-ic { width: 14px; height: 14px; fill: none; stroke: var(--green-text); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.cal-ic2 { width: 14px; height: 14px; fill: none; stroke: var(--text-3); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.cal-done { stroke: #2fae5f; }
+.cal-tag { margin-left: auto; flex: none; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 4px; border-radius: 3px; }
+.cal-wn { display: flex; justify-content: space-between; gap: 6px; padding: 0 8px 7px; font-size: 12px; color: var(--text); line-height: 1.35; }
+.cal-st { display: inline-flex; align-items: flex-start; gap: 4px; flex: none; }
+.cal-com { display: inline-flex; align-items: center; gap: 2px; font-size: 10px; color: var(--text-3); }
+.cal-com b { color: #f0bf00; font-weight: 700; }
+.cal-cph { justify-self: start; display: inline-flex; align-items: center; gap: 4px; margin: 0 8px 4px; padding: 2px 9px; border: 1px solid #2bb3b1; border-radius: 999px; color: #47cbc9; font-size: 11px; font-weight: 700; }
+.cal-cph svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 2.2; }
+.cal-trace { display: block; width: 100%; height: 22px; margin-top: -4px; }
+.cal-trace rect { fill: rgba(255,255,255,.18); }
+.cal-swipe { display: none; color: var(--green-text); font-style: normal; }
+@media (max-width: 1100px) {
+  .cal-scroll { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+  .cal-row { grid-template-columns: repeat(7, 165px); }
+  .cal-d { scroll-snap-align: start; }
+  .cal-swipe { display: inline; }
+}
+.cal-note { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; color: var(--text-2); font-size: 13px; line-height: 1.55; }
+.cal-nh { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.cal-nh span { font-weight: 700; color: var(--text); }
+.cal-nh b { background: rgba(0,154,68,.18); color: var(--green-text); border-radius: 6px; padding: 3px 9px; font-size: 12px; }
+.cal-nh em { font-style: normal; font-size: 12px; color: var(--text-3); }
+.cal-note p { margin: 0; }
+.cal-rt { font: 400 20px/1.15 var(--head) !important; text-transform: uppercase; color: var(--text); }
+.cal-rm { color: var(--text-3); font-size: 12px; margin-top: 2px !important; }
+.cal-rmac { color: var(--green-text); font-weight: 700; margin: 6px 0 4px !important; }
+.cal-rh { font-weight: 700; color: var(--text); margin-top: 10px !important; }
+.cal-note ul, .cal-note ol { margin: 4px 0 0; padding-left: 18px; }
+.nu-uic { width: 28px; height: 28px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 8px; }
+.nu-cal figcaption { margin-bottom: 8px; }
+
+.pk-cal { margin: 0; display: grid; gap: 10px; }
+.pk-cal .cal-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pk-notes { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; align-items: start; }
+.pk-notes::-webkit-scrollbar { display: none; }
+.pk-dots { display: inline-flex; gap: 8px; align-items: center; margin: 0 6px; }
+.pk-dot { width: 9px; height: 9px; padding: 0; border-radius: 50%; border: 0; background: var(--border-strong); cursor: pointer; transition: background .2s, width .2s; }
+.pk-dot.on { width: 22px; border-radius: 6px; background: var(--green); }
+.pk-notes > .cal-note { scroll-snap-align: start; margin: 0; }
+.pk-nav { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; }
+.pk-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
+.pk-btn:hover { border-color: var(--green); color: var(--green-text); }
+.pk-note .cal-rm { font-size: 13px; }
+.pk-cal figcaption { color: var(--text-2); font-size: 14px; line-height: 1.55; }
+.pk-cal figcaption a { color: var(--green-text); font-weight: 600; }
+@media (max-width: 1100px) { .pk-cal .cal-row { grid-template-columns: repeat(3, 165px); } }
+</style><style>
+.cn-facts { grid-template-columns: 1fr; align-content: center; }
+.cn-facts .note p { margin: 0; }
+.cn-lede { color: var(--text-2); margin: -6px 0 18px; }
+.cn-why .ticks { columns: 2 340px; column-gap: 32px; }
+.cn-why .ticks li { break-inside: avoid; }
+.cur-note { color: var(--text-3); font-size: 14px; margin: 0 0 14px; }
+.cn-tp { max-width: 760px; margin: 26px auto 0; }
+@media (max-width: 600px) { .cn-tp { grid-template-columns: 1fr; } }
+.cn-howgrid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: start; }
+.cn-cal { position: sticky; top: 110px; }
+@media (max-width: 1000px) { .cn-howgrid { grid-template-columns: 1fr; } .cn-cal { position: static; } }
+.cn-days { list-style: none; margin: 0; padding: 0; }
+.cn-day { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 20px; position: relative; padding-bottom: 20px; }
+.cn-day::before { content: ""; position: absolute; left: 31px; top: 64px; bottom: 0; width: 2px; background: var(--border-strong); }
+.cn-day:last-child { padding-bottom: 0; }
+.cn-day:last-child::before { display: none; }
+.cn-num { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--panel-solid, #16181a); border: 2px solid var(--green); font: 400 26px/1 var(--head); color: var(--text); text-align: center; }
+.cn-num small { display: block; font: 700 9px/1 var(--body); letter-spacing: .12em; color: var(--text-3); margin-bottom: 3px; }
+.cn-box { padding: 18px 22px; min-width: 0; }
+.cn-box h3 { margin: 0 0 6px; }
+.cn-box p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+@media (max-width: 600px) { .cn-day { grid-template-columns: 48px minmax(0, 1fr); gap: 14px; } .cn-num { width: 48px; height: 48px; font-size: 20px; } .cn-num small { font-size: 8px; } .cn-day::before { left: 23px; top: 48px; } .cn-box { padding: 16px; } }
+.cn-chips, .cn-regions { list-style: none; margin: 14px 0 16px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.cn-chips li, .cn-regions li { padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,.03); font-size: 14px; line-height: 1.4; color: var(--text-2); }
+.cn-chips li strong, .cn-regions li strong, .cn-chips li b, .cn-regions li b { color: var(--text); }
+@media (max-width: 600px) { .cn-chips, .cn-regions { grid-template-columns: 1fr 1fr; gap: 6px; } .cn-chips li, .cn-regions li { padding: 8px 10px; font-size: 13px; } }
+.cn-gcards { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important; }
+.cn-gcards li a { display: block; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; }
+@media (max-width: 600px) { .cn-ft .ft-cards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px; padding-bottom: 6px; } .cn-ft .ft-card { flex: 0 0 78%; scroll-snap-align: start; } .cn-ft .ft-box { padding: 20px; gap: 18px; }
+  .cn-apps { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px !important; } }
+@media (max-width: 600px) { .cn-evphoto { aspect-ratio: 16 / 10 !important; height: auto !important; min-height: 0 !important; } .cn-evphoto img { height: 100% !important; } }
+.cn-how { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; counter-reset: none; }
+.cn-how li { display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); }
+.cn-how .hw-n { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #08090a; font-weight: 800; }
+.cn-how h3 { margin: 4px 0 6px; }
+.cn-how p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.cn-gh { margin: 24px 0 8px; }
+.cn-guides { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.cn-apps { margin-top: 14px; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+</style><style>
+.it-pics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+.it-pic { aspect-ratio: 1 / 1; margin: 0; }
+.it-pic img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 700px) { .it-pics { grid-template-columns: repeat(3, minmax(0, 1fr)); } .it-pics .it-pic:nth-child(n+4) { display: none; } }
 </style>
 <div class="topo" aria-hidden="true"></div>
 <div class="page">
-<div class="ribbon"><div class="in"><b>Preview</b><span>New /preparatore-di-ciclismo-italia/ in the Cigala Cycling design: live H1, H2s, copy and images kept.</span></div></div>
+<div class="ribbon"><div class="in"><b>Preview</b><span>/preparatore-di-ciclismo-italia/ rebuilt like the UK/USA/Canada pages, in Italian: package cards and buy buttons, steps, calendar, case studies, real reviews, form.</span></div></div>
 <header class="nav">
   <div class="in">
     <a class="brand" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo-v2.webp" alt="Cigala Cycling Coaching Logo" width="58" height="58"></a>
@@ -497,82 +826,192 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
   </div>
 </header>
 <div class="hero hero-sm">
-  <img src="img/pg-hero-preparatore-di-ciclismo-italia.webp" alt="Cigala Cycling Coaching group riding in Wicklow, Ireland">
+  <img src="img/italia-hero-team.webp" alt="Cycling Cycling Coaching group riding in Wicklow, Ireland " style="object-position: 50% 45%">
   <div class="in">
+    <div class="eyebrow eb-pill"><span class="dot"></span>Preparazione ciclistica online</div>
     <h1>PREPARATORE DI CICLISMO ITALIA</h1>
-    <p class="lede">Preparati con il preparatore di ciclismo <a href="https://coaching.cigalacycling.com/about" target="_blank" rel="noopener">Matteo Cigala</a> — ovunque tu sia in Italia.</p>
-    <div class="ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">PRENOTA UNA CONSULENZA GRATUITA</a></div>
+    <p class="lede">Preparati con il preparatore di ciclismo <a href="https://coaching.cigalacycling.com/about/" target="_blank" rel="noopener">Matteo Cigala</a> — ovunque tu sia in Italia.</p>
+    <div class="ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Prenota una consulenza gratuita</a><a class="btn btn-ghost" href="#packages">Vedi i pacchetti ↓</a></div>
   </div>
 </div>
 
 <section>
-  <div class="in gn-txt gn-solo"><p>Con oltre 28 anni di esperienza nel ciclismo, più di 10 anni come preparatore di ciclisti in tutto il mondo e centinaia di vittorie, Matteo offre una preparazione ciclistica personalizzata per ciclisti su strada, gravel, MTB, granfondo e prove di endurance. Ogni tabella di allenamento è realizzata su misura in base ai tuoi obiettivi, al tempo che hai a disposizione e al tuo livello.</p><p>Che tu viva in Lombardia, Veneto, Toscana, Emilia-Romagna o in qualsiasi altra regione d’Italia, e che tu stia preparando la Maratona dles Dolomites, la Strade Bianche, una granfondo, una gara gravel, una gara MTB o semplicemente voglia migliorare le tue prestazioni, riceverai una preparazione ciclistica completamente personalizzata e una tabella di allenamento studiata per aiutarti a raggiungere il tuo massimo potenziale.</p></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>Perche&#x27; atleti in Italia scelgono Matteo Cigala</h2><div class="bar"></div><ul class="ticks"><li>Piani di allenamento personalizzati, giornalieri o settimanali, basati su Critical Power (CP) e modellazione W′ — oltre la semplice FTP</li><li>Allenamenti sviluppati su <b>Vekta</b>, piattaforma di allenamento di nuova generazione usata dai team WorldTour (membership incluso, valore €19,99/mese)</li><li>Training Peaks disponibile su richiesta, se già in uso</li><li>Zone di allenamento adattive, aggiornate costantemente in base alla tua forma</li><li>Supporto completo per granfondo, gare in linea, cronometro e obiettivi di performance generali</li><li>Sincronizzazione con Garmin, Wahoo, Zwift e altri dispositivi o applicazioni</li><li>Indicazioni giornaliere sui carboidrati per ogni allemento.</li><li>Guida nutrizionale e accesso a nutrizionista sportivo e mental coach</li><li>Comunicazione diretta in italiano con Matteo</li></ul></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>E&#x27; il nostro motto</h2><div class="bar"></div></div>
-</section>
-
-<section>
-  <div class="in split gn-split flip">
-    <div class="gn-txt"><h2>LEGGI LE NOSTRE RECENSIONI – SCOPRI COSA DICONO I CICLISTI DI CIGALA CYCLING</h2><p>&quot;L’attenzione ai dettagli di Matteo è eccezionale. Ogni aspetto del coaching è personalizzato su di te, e questo si riflette chiaramente nei risultati.&quot; <br> ★★★★★Vittorio - Lombardia, Italia</p><p>&quot;La parte più entusiasmante del lavorare con Matteo sono stati i miglioramenti evidenti che ho iniziato a riscontrare già dopo 4-6 settimane.<br>Da allora, questi progressi sono stati costanti e davvero notevoli.&quot; <br> ★★★★★Giorgio - Veneto, Italia</p><p>&quot;Matteo programma le sessioni in base al tempo che hai realmente a disposizione, puntando sulla qualità più che sulla quantità. Lavorando con Matteo, ho visto miglioramenti costanti anno dopo anno.&quot; <br> ★★★★★Marco - Emilia Romagna, Italia</p><p>&quot;Matteo è riuscito a valorizzare al massimo ogni ora che posso dedicare all’allenamento, trasformando ogni sessione in un’opportunità concreta di miglioramento.&quot; <br> ★★★★★Paolo - Liguria, Italia</p><p>&quot;Non è necessario essere un ciclista professionista per trarre beneficio dal coaching di Matteo. Posso consigliarlo vivamente a chiunque voglia migliorare la propria forma fisica e raggiungere i propri obiettivi nel ciclismo, indipendentemente dall’età o dal livello di esperienza.&quot; <br> ★★★★★Davide - Lazio, Italia</p></div>
-    <div class="photo gn-photo gn-png"><img src="img/pg-ciclista-mtb.webp" alt="Ciclista MTB | Cigala Cycling" loading="lazy"></div>
-  </div>
-  <div class="in"><div class="gn-gal"><div class="g"><img src="img/pg-cyclist-on-a-scott-road-bike.webp" alt="Cyclist on a Scott road bike | Cigala Cycling Coaching" loading="lazy"></div><div class="g"><img src="img/pg-what-is-w-prime-and-why-it-explains-how-.webp" alt="What is W&#x27; Prime and why it explains how you get dropped." loading="lazy"></div><div class="g"><img src="img/pg-usa-cyclist.webp" alt="USA Cyclist | Cigala Cycling" loading="lazy"></div><div class="g"><img src="img/pg-cyclist-climbing-stelvio.webp" alt="Cyclist climbing Stelvio | Cigala Cycling" loading="lazy"></div></div></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>PACCHETTI DI PREPARAZIONE</h2><div class="bar"></div><p>12 Settimane</p></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>Base</h2><div class="bar"></div><p>Addebitato con un pagamento unico di €228 per le 12 settimane.</p><p>€19/sett</p><ul class="ticks"><li>Piano di allenamento giornaliero personalizzato per 12 settimane</li><li>Piano su misura in base alla tua disponibilità di allenamento</li><li>Stretching ed Esercizi per il Core</li><li>Programma Palestra e Invernale + Supporto</li><li>Protocolli di Test (CP, FTP, FTHR o INSCYD)</li><li>Analisi dei Test</li><li>Zone di Allenamento Adattive aggiornate settimanalmente</li><li>Allenamento Periodizzato in base agli obiettivi</li><li>Revisione delle analisi del sangue da parte del nostro Nutrizionista Sportivo</li><li>Iscrizione scontata per i prodotti su retail.cigalacycling.com</li><li>Guida Nutrizionale</li><li>Articoli del blog con consigli</li><li>Sincronizza e segui gli allenamenti su Garmin/Wahoo/Zwift ecc.</li><li>Accesso a Nutrizionista e Mental Coach di livello mondiale</li><li>Accesso alla nostra Community online (valore €9/mese)</li><li>Test metabolico INSCYD scontato</li><li>Account Training Peaks Base</li><li>Contatto via email quando necessario</li><li>Feedback sulle sessioni</li><li>Adeguamento del Programma</li><li>Analisi Giornaliera dell&#x27;Allenamento</li><li>Indicazione Giornaliera sui Carboidrati per ogni allemento</li><li>Consulenza con il nostro Nutrizionista Sportivo</li></ul><p>Opzioni Pacchetto Base 12 Settimane<br> Base 12 Settimane: 228 EUR - pagamento unico</p><p>Mensile (Il Nostro Più Popolare)</p></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>Avanzato</h2><div class="bar"></div><p>Abbonamento di 6 mesi</p><p>€149/mese</p><ul class="ticks"><li>Piano di allenamento giornaliero personalizzato aggiornato settimanalmente</li><li>Piano su misura in base alla tua disponibilità di allenamento</li><li>Stretching ed Esercizi per il Core</li><li>Programma Palestra e Invernale + Supporto</li><li>Protocolli di Test (CP, FTP, FTHR o INSCYD)</li><li>Analisi dei Test</li><li>Zone di Allenamento Adattive aggiornate settimanalmente</li><li>Allenamento Periodizzato in base agli obiettivi</li><li>Revisione delle analisi del sangue da parte del nostro Nutrizionista Sportivo</li><li>Iscrizione scontata per i prodotti su retail.cigalacycling.com</li><li>Guida Nutrizionale</li><li>Articoli del blog con consigli</li><li>Sincronizza e segui gli allenamenti su Garmin/Wahoo/Zwift ecc.</li><li>Accesso a Nutrizionista e Mental Coach di livello mondiale</li><li>Accesso alla nostra Community online (valore €9/mese)</li><li>Test Metabolico INSCYD scontato</li><li>Iscrizione Vekta inclusa (valore €19.99/mese)</li><li>Strategia di Gara</li><li>Supporto e Motivazione Continui</li><li>Frequenza di Contatto settimanale</li><li>Feedback Settimanale</li><li>Adeguamento Settimanale del Programma</li><li>Analisi Settimanale dell&#x27;Allenamento</li><li>Indicazione Giornaliera sui Carboidrati per ogni allemanto</li><li>Chiamata di aggiornamento mensile o quando necessario</li><li>Consulenza con il nostro Nutrizionista Sportivo</li></ul><p>Opzioni Pacchetto Avanzato 6 Mesi<br> Avanzato 6 mesi: 149 EUR - mensile</p><p>Mensile</p></div>
-</section>
-
-<section>
-  <div class="in split gn-split flip">
-    <div class="gn-txt"><h2>Premium</h2><div class="bar"></div><p>Abbonamento di 3 mesi (€10 di sconto per 6 mesi)</p><p>€249/mese</p><ul class="ticks"><li>Piano di allenamento giornaliero personalizzato aggiornato settimanalmente</li><li>Piano su misura in base alla tua disponibilità di allenamento</li><li>Stretching ed Esercizi per il Core</li><li>Programma Palestra e Invernale + Supporto</li><li>Protocolli di Test (CP, FTP, FTHR o INSCYD)</li><li>Analisi dei Test</li><li>Zone di Allenamento Adattive aggiornate settimanalmente</li><li>Allenamento Periodizzato in base agli obiettivi</li><li>Revisione delle analisi del sangue da parte del nostro Nutrizionista Sportivo</li><li>Iscrizione scontata per i prodotti su retail.cigalacycling.com</li><li>Guida Nutrizionale</li><li>Articoli del blog con consigli</li><li>Sincronizza e segui gli allenamenti su Garmin/Wahoo/Zwift ecc.</li><li>Accesso a Nutrizionista e Mental Coach di livello mondiale</li><li>Accesso alla nostra Community online (valore €9/mese)</li><li>Test Metabolico INSCYD scontato</li><li>Iscrizione Vekta inclusa (valore €19.99/mese)</li><li>Strategia di Gara</li><li>Supporto e Motivazione Continui</li><li>Frequenza di Contatto giornaliera</li><li>Feedback Giornaliero</li><li>Adeguamento Giornaliero del Programma</li><li>Analisi Giornaliera dell&#x27;Allenamento</li><li>Indicazione Giornaliera sui Carboidrati per ogni allenamento</li><li>Chiamata di aggiornamento settimanale o quando necessario</li><li>Consulenza con il nostro Nutrizionista Sportivo</li></ul><p>Opzioni Pacchetto Premium 6 Mesi<br> Premium 6 mesi: 239 EUR - mensile</p><p>Opzioni Pacchetto Premium 3 Mesi<br> Premium 3 mesi: 249 EUR - mensile</p><p><b>Iscrivendoti a uno dei nostri pacchetti, accetti i nostri Termini e Condizioni.<br>Consulta i Termini e Condizioni <a href="http://www.cigalacycling.com/terms-conditions" target="_blank" rel="noopener">QUI</a></b></p></div>
-    <div class="photo gn-photo gn-png"><img src="img/pg-trainingpeaks-level-1-2-logos.webp" alt="TrainingPeaks Level 1 &amp; 2 logos | Cigala Cycling Coaching" loading="lazy"></div>
+  <div class="in split">
+    <div class="gn-txt">
+      <div class="eyebrow">Il tuo coach</div>
+      <p>Con oltre 28 anni di esperienza nel ciclismo, più di 10 anni come preparatore di ciclisti in tutto il mondo e centinaia di vittorie, Matteo offre una preparazione ciclistica personalizzata per ciclisti su strada, gravel, MTB, granfondo e prove di endurance. Ogni tabella di allenamento è realizzata su misura in base ai tuoi obiettivi, al tempo che hai a disposizione e al tuo livello.</p><p>Che tu viva in Lombardia, Veneto, Toscana, Emilia-Romagna o in qualsiasi altra regione d’Italia, e che tu stia preparando la Maratona dles Dolomites, la Strade Bianche, una granfondo, una gara gravel, una gara MTB o semplicemente voglia migliorare le tue prestazioni, riceverai una preparazione ciclistica completamente personalizzata e una tabella di allenamento studiata per aiutarti a raggiungere il tuo massimo potenziale.</p>
+    </div>
+    <div class="notes cn-facts"><div class="note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><p><b>Comunicazione in italiano</b><br>Parli direttamente con Matteo, nella tua lingua, per chiamate, feedback e domande.</p></div><div class="note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><p><b>Prezzi in euro</b><br>Paghi in euro: nessun costo di cambio.</p></div><div class="note"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg><p><b>Costruito sulle tue strade</b><br>Dolomiti, Appennini, gravel o pianura: il piano segue il tuo territorio e il tuo calendario gare.</p></div></div>
   </div>
 </section>
 
 <section>
   <div class="in">
-    <div class=head><div><h2>PRESENTE SU</h2><div class="bar"></div></div></div>
-    <div class="gn-gal"><div class="g gn-png"><img src="img/pg-red-bull-racing-logo.webp" alt="Red Bull Racing logo | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-stickybottle-com-cycling-logo.webp" alt="StickyBottle.com cycling logo | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-white-zwift-logo-on-orange-bg.webp" alt="White Zwift logo on orange bg | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-trainingpeaks-logo-with-icon.webp" alt="TrainingPeaks logo with icon | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-cycling-ireland-logo.webp" alt="Cycling Ireland logo | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-vekta-logo-with-yellow-icon.webp" alt="Vekta logo with yellow icon | Cigala Cycling Coaching" loading="lazy"></div></div>
+    <div class="head"><div><div class="eyebrow">Perché sceglierci</div><h2>Perche&#x27; atleti in Italia scelgono Matteo Cigala</h2><div class="bar"></div></div></div>
+    <div class="gn-txt cn-why"><ul class="ticks"><li>Piani di allenamento personalizzati, giornalieri o settimanali, basati su Critical Power (CP) e modellazione W′ — oltre la semplice FTP</li><li>Allenamenti sviluppati su <b>Vekta</b>, piattaforma di allenamento di nuova generazione usata dai team WorldTour (membership incluso, valore €19,99/mese)</li><li>Training Peaks disponibile su richiesta, se già in uso</li><li>Zone di allenamento adattive, aggiornate costantemente in base alla tua forma</li><li>Supporto completo per granfondo, gare in linea, cronometro e obiettivi di performance generali</li><li>Sincronizzazione con Garmin, Wahoo, Zwift e altri dispositivi o applicazioni</li><li>Indicazioni giornaliere sui carboidrati per ogni allemento.</li><li>Guida nutrizionale e accesso a nutrizionista sportivo e mental coach</li><li>Comunicazione diretta in italiano con Matteo</li></ul></div>
   </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>Gli Eventi per Cui Prepariamo i Nostri Atleti</h2><div class="bar"></div><p>Allenarsi in vista di una data precisa cambia completamente il modo in cui costruire un piano. Prepariamo atleti per granfondo, circuiti e gare in tutto il calendario italiano. Strada, MTB, Gravel tra cui:</p><ul class="ticks"><li><b>Gran Fondo Strade Bianche</b> (Siena)</li><li><b>Hero Südtirol Dolomites (Val Gardena)</b></li><li><b>Gran Fondo Nove Colli</b> (Cesenatico)</li><li><b>Maratona dles Dolomites</b> (Alta Badia/Corvara)</li><li><b>Stelvio Santini</b> (Bormio) — Stelvio, Mortirolo e altri passi iconici</li><li><b>Dolomiti Paganella Bike Marathon (Trentino)<br><br></b></li><li><b>The Hills of Gravel</b> (Treviso)</li><li><b>Colnago Cycling Festival</b> (Desenzano del Garda)</li><li>Mondiali, Europei Gran Fondo, Marathon, Ciclocross</li><li>Calendario FCI di granfondo, marathon e gare circuito regionali (CSI, ACSI etc)</li></ul><p>Punti a un obiettivo internazionale — una Traka, una Ötztaler Radmarathon, una Marmotte o un qualificante ai Campionati del Mondo Gran Fondo UCI? Costruiamo anche il piano dei nostri atleti italiani intorno a questi obiettivi.</p></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>2026 IN NUMERI</h2><div class="bar"></div><div class="stats nums"><div class="stat"><h3 class="n" data-count="1348">1348</h3><h4 class="l">Top 10</h4></div><div class="stat"><h3 class="n" data-count="149">149</h3><h4 class="l">Terzi posti</h4></div><div class="stat"><h3 class="n" data-count="129">129</h3><h4 class="l">Secondi Posti</h4></div><div class="stat"><h3 class="n" data-count="164">164</h3><h4 class="l">Primi Posti</h4></div><div class="stat"><h3 class="n" data-count="100%">100%</h3><h4 class="l">Miglioramenti performance</h4></div><div class="stat"><h3 class="n" data-count="&gt;90%">&gt;90%</h3><h4 class="l">Obbiettivi raggiunti dai nostri atleti</h4></div></div></div>
-</section>
-
-<section>
-  <div class="in split gn-split flip">
-    <div class="gn-txt"><h2>Seguiamo ciclisti in tutta Italia</h2><div class="bar"></div><p>Matteo segue da remoto atleti in tutta Italia, con chiamate e piani personalizzati, in tutte le regioni, tra cui:</p><ul class="ticks"><li><b>Lombardia</b> — Milano, Bergamo, Brescia, Como, Lecco, Lago di Garda</li><li><b>Veneto</b> — Dolomiti, Belluno, Treviso, Verona, Vincenza, Padova, Venezia</li><li><b>Toscana</b> — Siena, Chianti, Pisa, Firenze</li><li><b>Emilia-Romagna</b> — Cesenatico, Romagna, Parma</li><li><b>Trentino-Alto Adige</b> — Alta Badia, Trento, Bolzano</li><li><b>Piemonte</b> — Torino, Cuneo</li><li><b>Lazio </b>— Roma</li><li><b>Campania — </b>Napoli</li></ul><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p><p>[</p><p>](https://joinvekta.com/partnerships)</p></div>
-    <div class="photo gn-photo gn-png"><img src="img/pg-garmin-logo-with-blue-triangle.webp" alt="Garmin logo with blue triangle | Cigala Cycling Coaching" loading="lazy"></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Allenati con metodo, vai più forte</div><h2>E&#x27; il nostro motto</h2><div class="bar"></div></div>
+      <div class="rv-links"><a class="arrow-link" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener"><span class="gstar" aria-hidden="true">★</span> Le nostre recensioni su Google →</a></div></div>
+    <p class="cn-lede">Atleti reali, con il loro nome. Recensioni tradotte dall’inglese.</p>
+    <div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Recensioni degli atleti"><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stelle">★★★★★</div><blockquote>“Non solo mi ha fatto innamorare del ciclismo, ma ha creduto in me anche quando io non ci credevo. Oggi sono campionessa europea Gran Fondo e gravel 19-34 e medaglia d’argento ai Mondiali Gran Fondo, avendo iniziato a pedalare solo lo scorso febbraio.”</blockquote><figcaption><img src="img/athlete-marine-lenehan.webp" alt="Female cyclist biting gold medal | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>Marine Lenehan</b><span>Now a WorldTour Pro · Ireland</span></div></figcaption></figure><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stelle">★★★★★</div><blockquote>“Con la sua competenza, il suo supporto e un approccio personalizzato, ho raggiunto il mio obiettivo di qualificarmi per i Campionati del Mondo UCI Gran Fondo.”</blockquote><figcaption><img src="img/athlete-bernd-ondruch.webp" alt="Cycling Pro wearing Kask helmet | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>Bernd Ondruch</b><span>Germany &amp; UK</span></div></figcaption></figure><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stelle">★★★★★</div><blockquote>“Ogni settimana avevo un piano davvero su misura e, di conseguenza, mi sono presentato alla Mallorca 312 nella forma migliore di sempre.”</blockquote><figcaption><img src="img/athlete-ward-den-hollander.webp" alt="Cyclist on a road bike | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>Ward Den Hollander</b><span>Dublin, Ireland</span></div></figcaption></figure><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stelle">★★★★★</div><blockquote>“Matteo Cigala è stato un coach incredibile: mi ha aiutato a organizzare l’allenamento intorno alla famiglia e al lavoro. Grazie a lui non solo ho raggiunto i miei obiettivi, ma ho anche registrato i miei record di potenza di sempre.”</blockquote><figcaption><img src="img/athlete-john-dowley.webp" alt="Cyclist in blue racing gear | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>John Dowley</b><span>Carrick-on-Suir, Ireland</span></div></figcaption></figure><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stelle">★★★★★</div><blockquote>“Non ho tempo da dedicare a ore di chilometri inutili, e Matteo ha ottimizzato alla perfezione il mio allenamento sul tempo che ho a disposizione.”</blockquote><figcaption><img src="img/athlete-william-rymer.webp" alt="Two cyclists posing by lake | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>William Rymer</b><span>Roscrea, Tipperary, Ireland</span></div></figcaption></figure><figure class="rv"><div class="rv-stars" role="img" aria-label="5 stelle">★★★★★</div><blockquote>“Matteo ha portato la mia FTP da 220 W a 260 W in meno di 4 mesi e il mio sprint da circa 600 W a 920 W.”</blockquote><figcaption><img src="img/athlete-shane-courtney.webp" alt="Cyclist racing on road bike | Cigala Cycling Coaching" loading="lazy" width="48" height="48"><div><b>Shane Courtney</b><span>Tralee Manor West ibike</span></div></figcaption></figure></div><div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Recensioni precedenti">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Recensioni successive">→</button></div></div>
+    <div class="it-pics"><div class="photo it-pic"><img src="img/italia-download-5.webp" alt="Ciclista MTB | Cigala Cycling" loading="lazy"></div><div class="photo it-pic"><img src="img/italia-unnamed-2026-06-24t140307-879.webp" alt="Cyclist on a Scott road bike | Cigala Cycling Coaching" loading="lazy"></div><div class="photo it-pic"><img src="img/italia-img-6241-scaled.webp" alt="What is W&#x27; Prime and why it explains how you get dropped." loading="lazy"></div><div class="photo it-pic"><img src="img/italia-1640367-scaled.webp" alt="USA Cyclist | Cigala Cycling" loading="lazy"></div><div class="photo it-pic"><img src="img/italia-336532986-744351717353638-59685262714259.webp" alt="Cyclist climbing Stelvio | Cigala Cycling" loading="lazy"></div></div>
   </div>
-  <div class="in"><div class="gn-gal"><div class="g gn-png"><img src="img/pg-wahoo-fitness-brand-logo-text.webp" alt="Wahoo Fitness brand logo text" loading="lazy"></div><div class="g gn-png"><img src="img/pg-hammerhead-logo-with-keywords.webp" alt="Hammerhead logo with keywords | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-bryton-logo-black-and-white.webp" alt="Bryton logo black and white | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-rouvy-logo-on-gray-background.webp" alt="ROUVY logo on gray background | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-mywhoosh-cycling-logo.webp" alt="MyWhoosh cycling logo | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-zwift-logo-with-orange-z.webp" alt="Zwift logo with orange Z | Cigala Cycling Coaching" loading="lazy"></div><div class="g gn-png"><img src="img/pg-igpsport-black-and-red-logo.webp" alt="iGPSPORT black and red logo | Cigala Cycling Coaching" loading="lazy"></div></div></div>
+</section>
+
+<section id="packages">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Scegli il tuo pacchetto</div><h2>PACCHETTI DI PREPARAZIONE</h2><div class="bar"></div></div></div>
+    <div class="pkgs"><article class="pkg " id="pkg-base">
+        
+        <div class="pkg-term">12 Settimane</div>
+        <h2>Base</h2>
+        <p class="pkg-for">Per chi sa seguire l’allenamento in autonomia, senza il contatto diretto con un coach.</p>
+        <div class="pkg-price"><b>€19</b><span>/sett</span></div>
+        <p class="pkg-sub">Addebitato con un pagamento unico di €228 per le 12 settimane.</p>
+        <div class="pkg-buy"><a class="btn btn-go pay" href="https://cigala-cycling-retail.myshopify.com/cart/31567870165038:1?channel=buy_button" target="_blank" rel="noopener">Acquista Base 12 Settimane · €228</a><a class="pkg-call" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Non sei sicuro? Prenota una consulenza gratuita →</a></div>
+        <div class="pkg-lab">Cosa include</div>
+        <ul class="ticks"><li>Piano di allenamento giornaliero personalizzato per 12 settimane</li><li>Piano su misura in base alla tua disponibilità di allenamento</li><li>Stretching ed Esercizi per il Core</li><li>Programma Palestra e Invernale + Supporto</li><li>Protocolli di Test (CP, FTP, FTHR o INSCYD)</li><li>Analisi dei Test</li><li>Zone di Allenamento Adattive aggiornate settimanalmente</li><li>Allenamento Periodizzato in base agli obiettivi</li><li>Revisione delle analisi del sangue da parte del nostro Nutrizionista Sportivo</li><li>Iscrizione scontata per i prodotti su retail.cigalacycling.com</li><li>Guida Nutrizionale</li><li>Articoli del blog con consigli</li><li class="more">Sincronizza e segui gli allenamenti su Garmin/Wahoo/Zwift ecc.</li><li class="more">Accesso a Nutrizionista e Mental Coach di livello mondiale</li><li class="more">Accesso alla nostra Community online (valore €9/mese)</li><li class="more">Test metabolico INSCYD scontato</li><li class="more">Account Training Peaks Base</li><li class="more">Contatto via email quando necessario</li><li class="more no-lab">Incluso in Avanzato e Premium</li><li class="more no">Feedback sulle sessioni<span class="vh"> (non incluso nel Base)</span></li><li class="more no">Adeguamento del Programma<span class="vh"> (non incluso nel Base)</span></li><li class="more no">Analisi Giornaliera dell&#x27;Allenamento<span class="vh"> (non incluso nel Base)</span></li><li class="more no">Indicazione Giornaliera sui Carboidrati per ogni allemento<span class="vh"> (non incluso nel Base)</span></li><li class="more no">Consulenza con il nostro Nutrizionista Sportivo<span class="vh"> (non incluso nel Base)</span></li></ul>
+        <button type="button" class="pkg-all" aria-expanded="false"><span>Vedi tutte le caratteristiche</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
+        <div class="pkg-buy2"><a class="btn btn-go pay pay2" href="https://cigala-cycling-retail.myshopify.com/cart/31567870165038:1?channel=buy_button" target="_blank" rel="noopener">Acquista Base 12 Settimane · €228</a></div>
+      </article><article class="pkg hot" id="pkg-avanzato">
+        <span class="pkg-badge">Mensile (Il Nostro Più Popolare)</span>
+        <div class="pkg-term">Abbonamento di 6 mesi</div>
+        <h2>Avanzato</h2>
+        <p class="pkg-for">Matteo come tuo coach: feedback settimanale, una chiamata al mese, analisi approfondita dei dati e Vekta incluso.</p>
+        <div class="pkg-price"><b>€149</b><span>/mese</span></div>
+        <p class="pkg-sub"></p>
+        <div class="pkg-buy"><a class="btn btn-go pay" href="https://pay.gocardless.com/BRT01KZ21Y1AVEFPZXDQBYQ9DR2KQ" target="_blank" rel="noopener">Abbonati ad Avanzato · €149/mese</a><a class="pkg-call" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Non sei sicuro? Prenota una consulenza gratuita →</a></div>
+        <div class="pkg-lab">Cosa include</div>
+        <ul class="ticks"><li>Piano di allenamento giornaliero personalizzato aggiornato settimanalmente</li><li>Piano su misura in base alla tua disponibilità di allenamento</li><li>Stretching ed Esercizi per il Core</li><li>Programma Palestra e Invernale + Supporto</li><li>Protocolli di Test (CP, FTP, FTHR o INSCYD)</li><li>Analisi dei Test</li><li>Zone di Allenamento Adattive aggiornate settimanalmente</li><li>Allenamento Periodizzato in base agli obiettivi</li><li>Revisione delle analisi del sangue da parte del nostro Nutrizionista Sportivo</li><li>Iscrizione scontata per i prodotti su retail.cigalacycling.com</li><li>Guida Nutrizionale</li><li>Articoli del blog con consigli</li><li class="more">Sincronizza e segui gli allenamenti su Garmin/Wahoo/Zwift ecc.</li><li class="more">Accesso a Nutrizionista e Mental Coach di livello mondiale</li><li class="more">Accesso alla nostra Community online (valore €9/mese)</li><li class="more">Test Metabolico INSCYD scontato</li><li class="more">Iscrizione Vekta inclusa (valore €19.99/mese)</li><li class="more">Strategia di Gara</li><li class="more">Supporto e Motivazione Continui</li><li class="more">Frequenza di Contatto settimanale</li><li class="more">Feedback Settimanale</li><li class="more">Adeguamento Settimanale del Programma</li><li class="more">Analisi Settimanale dell&#x27;Allenamento</li><li class="more">Indicazione Giornaliera sui Carboidrati per ogni allemanto</li><li class="more">Chiamata di aggiornamento mensile o quando necessario</li><li class="more">Consulenza con il nostro Nutrizionista Sportivo</li></ul>
+        <button type="button" class="pkg-all" aria-expanded="false"><span>Vedi tutte le caratteristiche</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
+        <div class="pkg-buy2"><a class="btn btn-go pay pay2" href="https://pay.gocardless.com/BRT01KZ21Y1AVEFPZXDQBYQ9DR2KQ" target="_blank" rel="noopener">Abbonati ad Avanzato · €149/mese</a></div>
+      </article><article class="pkg sold" id="pkg-premium">
+        
+        <div class="pkg-term">Abbonamento di 3 mesi (€10 di sconto per 6 mesi)</div>
+        <h2>Premium</h2>
+        <p class="pkg-for">Il coaching più vicino: contatto, feedback e analisi ogni giorno, e una chiamata ogni settimana.</p>
+        <div class="pkg-price"><b>€249</b><span>/mese</span></div>
+        <p class="pkg-sub"></p>
+        <div class="pkg-buy"><a class="btn btn-go pay" href="#contact" data-waitlist="Premium">Iscriviti alla lista d’attesa</a><span class="pay-note">Premium 3 mesi €249/mese · 6 mesi €239/mese</span><a class="pkg-call" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Non sei sicuro? Prenota una consulenza gratuita →</a></div>
+        <div class="pkg-lab">Cosa include</div>
+        <ul class="ticks"><li>Piano di allenamento giornaliero personalizzato aggiornato settimanalmente</li><li>Piano su misura in base alla tua disponibilità di allenamento</li><li>Stretching ed Esercizi per il Core</li><li>Programma Palestra e Invernale + Supporto</li><li>Protocolli di Test (CP, FTP, FTHR o INSCYD)</li><li>Analisi dei Test</li><li>Zone di Allenamento Adattive aggiornate settimanalmente</li><li>Allenamento Periodizzato in base agli obiettivi</li><li>Revisione delle analisi del sangue da parte del nostro Nutrizionista Sportivo</li><li>Iscrizione scontata per i prodotti su retail.cigalacycling.com</li><li>Guida Nutrizionale</li><li>Articoli del blog con consigli</li><li class="more">Sincronizza e segui gli allenamenti su Garmin/Wahoo/Zwift ecc.</li><li class="more">Accesso a Nutrizionista e Mental Coach di livello mondiale</li><li class="more">Accesso alla nostra Community online (valore €9/mese)</li><li class="more">Test Metabolico INSCYD scontato</li><li class="more">Iscrizione Vekta inclusa (valore €19.99/mese)</li><li class="more">Strategia di Gara</li><li class="more">Supporto e Motivazione Continui</li><li class="more">Frequenza di Contatto giornaliera</li><li class="more">Feedback Giornaliero</li><li class="more">Adeguamento Giornaliero del Programma</li><li class="more">Analisi Giornaliera dell&#x27;Allenamento</li><li class="more">Indicazione Giornaliera sui Carboidrati per ogni allenamento</li><li class="more">Consulenza con il nostro Nutrizionista Sportivo</li></ul>
+        <button type="button" class="pkg-all" aria-expanded="false"><span>Vedi tutte le caratteristiche</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
+        <div class="pkg-buy2"><a class="btn btn-go pay pay2" href="#contact" data-waitlist="Premium">Iscriviti alla lista d’attesa</a></div>
+      </article></div>
+    <p class="terms"><b>Iscrivendoti a uno dei nostri pacchetti, accetti i nostri Termini e Condizioni. Consulta i Termini e Condizioni <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">QUI</a></b></p>
+    <div class="vk-logos cn-tp">
+      <a class="vk-lock" href="https://joinvekta.com/partnerships" target="_blank" rel="noopener" aria-label="Cigala Cycling x Vekta logo | Cigala Cycling Coaching"><img src="img/logo-v2.webp" alt="" loading="lazy" width="64" height="64"><svg class="vk-x" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg><img src="img/vekta-white-v2.webp" alt="Cigala Cycling x Vekta logo | Cigala Cycling Coaching" loading="lazy" width="531" height="139"></a>
+      <span><img src="img/trainingpeaks-levels-dark-v2.webp" alt="TrainingPeaks Level 1 &amp; 2 logos | Cigala Cycling Coaching" loading="lazy"></span>
+    </div>
+  </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>DOMANDE FREQUENTI</h2><div class="bar"></div><p>Quale pacchetto è più adatto a me?</p><p>Dipende dal tuo budget e da quanto feedback diretto desideri. Se sei in grado di seguire un piano in autonomia, il Basic è sufficiente. L’Advanced è il più popolare perché include accesso settimanale a Matteo oltre alla membership Vekta.</p><p>Come funziona il coaching a distanza?</p><p>Tutto l’allenamento è gestito online — piani, feedback, test e comunicazione avvengono tramite Vekta o Training Peaks, con chiamate programmate in base ai tuoi impegni.</p><p>Alleni solo chi partecipa a gare?</p><p>No. Seguiamo ciclisti con obiettivi diversi: perdita di peso, prima granfondo, forma fisica generale, triathlon o agonismo. L’unico requisito è pedalare e voler migliorare.</p><p>Devo passare a Vekta se uso già Training Peaks?</p><p>No, possiamo continuare a lavorare su Training Peaks se è la piattaforma con cui ti trovi meglio, oppure esplorare insieme le metriche avanzate di Vekta (Critical Power, W′) in affiancamento.</p><p>Quale età serve per essere seguiti?</p><p>Alleno atleti di tutte le età, dai 14 anni in su, senza limite massimo. Gli atleti under 23 hanno diritto al 20% di sconto studente.</p><p>Il mio evento è tra molti mesi, posso iscrivermi comunque ora?</p><p>Sì. Il piano Basic è pensato per essere seguito nelle 12 settimane precedenti l’evento, quindi puoi iscriverti in anticipo e sfruttare comunque tutti i vantaggi del programma.</p></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Come si inizia</div><h3 class="h-sec">COME FUNZIONA</h3><div class="bar"></div></div></div>
+    <div class="cn-howgrid">
+      <ol class="cn-days"><li class="cn-day"><div class="cn-num"><span><small>STEP</small>1</span></div><div class="panel cn-box"><h3 class="h-sm">Iscriviti o parlane prima</h3><p>Scegli il pacchetto e iscriviti subito, oppure prenota prima una consulenza gratuita con Matteo.</p></div></li><li class="cn-day"><div class="cn-num"><span><small>STEP</small>2</span></div><div class="panel cn-box"><h3 class="h-sm">Test e zone</h3><p>Ogni pacchetto parte con i test (CP, FTP, FTHR o INSCYD) per impostare le zone. Con Avanzato e Premium Matteo analizza anche a fondo i tuoi dati degli ultimi 6–12 mesi.</p></div></li><li class="cn-day"><div class="cn-num"><span><small>STEP</small>3</span></div><div class="panel cn-box"><h3 class="h-sm">Il tuo piano</h3><p>Le sessioni arrivano su Vekta o TrainingPeaks e si sincronizzano con Garmin, Wahoo, Hammerhead o Zwift.</p></div></li><li class="cn-day"><div class="cn-num"><span><small>STEP</small>4</span></div><div class="panel cn-box"><h3 class="h-sm">Feedback</h3><p>Con Avanzato e Premium Matteo rivede le tue sessioni (ogni settimana o ogni giorno) e adatta il piano a lavoro, famiglia e meteo.</p></div></li><li class="cn-day"><div class="cn-num"><span><small>STEP</small>5</span></div><div class="panel cn-box"><h3 class="h-sm">Nutrizione, se vuoi</h3><p>Aggiungi il coaching nutrizionale 1-to-1 con la nostra nutrizionista sportiva Marine Lenehan (WorldTour Pro): macro giornalieri, carboidrati per ora e note nello stesso calendario.</p></div></li></ol>
+      <figure class="nu-cal pk-cal cn-cal">
+        <div class="cal-scroll" tabindex="0" aria-label="Giorni di esempio dal calendario di un atleta, con la nutrizione"><div class="cal-row"><div class="cal-d"><div class="cal-h"><b>21</b></div><div class="cal-cnt">8/28</div><div class="cal-n"><b><svg class="cal-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg>Nutrition</b><span>Daily macronutrient intake: 300 g carbohydrates · 160 g protein · 75 g fat</span></div><div class="cal-w"><div class="cal-wt"><svg class="cal-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 11.5M5.5 17.5 9 9h7l-4 8.5"/></svg><span>1h31m · 54 km</span><span class="cal-tag" style="background:#0e8a95">TEM</span></div><div class="cal-wn"><span>4×6 min torque efforts alternating + bursts</span><span class="cal-st"><span class="cal-com"><svg class="cal-ic2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/></svg><b>1</b></span><svg class="cal-ic2 cal-done" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg></span></div><span class="cal-cph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6 6.6 6 11.3a6 6 0 0 1-12 0c0-4.7 6-11.3 6-11.3z"/></svg>40–50 g/h</span><svg class="cal-trace" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><rect x="0.00" y="7" width="7.73" height="3"/><rect x="8.33" y="7" width="7.73" height="3"/><rect x="16.67" y="3" width="7.73" height="7"/><rect x="25.00" y="3" width="7.73" height="7"/><rect x="33.33" y="7" width="7.73" height="3"/><rect x="41.67" y="3" width="7.73" height="7"/><rect x="50.00" y="3" width="7.73" height="7"/><rect x="58.33" y="7" width="7.73" height="3"/><rect x="66.67" y="3" width="7.73" height="7"/><rect x="75.00" y="3" width="7.73" height="7"/><rect x="83.33" y="7" width="7.73" height="3"/><rect x="91.67" y="8" width="7.73" height="2"/></svg></div></div><div class="cal-d"><div class="cal-h"><b>24</b></div><div class="cal-cnt">9/28</div><div class="cal-n"><b><svg class="cal-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg>Nutrition</b><span>Daily macronutrient intake: 560 g carbohydrates = 2,240 kcal (62.2%)</span></div><div class="cal-w"><div class="cal-wt"><svg class="cal-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 11.5M5.5 17.5 9 9h7l-4 8.5"/></svg><span>3h23m · 102 km</span><span class="cal-tag" style="background:#22a35a">THR</span></div><div class="cal-wn"><span>LDT + 3×10′ at SS, high cadence</span><span class="cal-st"><span class="cal-com"><svg class="cal-ic2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/></svg><b>13</b></span><svg class="cal-ic2 cal-done" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg></span></div><span class="cal-cph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6 6.6 6 11.3a6 6 0 0 1-12 0c0-4.7 6-11.3 6-11.3z"/></svg>60 g/h</span><svg class="cal-trace" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><rect x="0.00" y="6" width="6.54" height="4"/><rect x="7.14" y="6" width="6.54" height="4"/><rect x="14.29" y="6" width="6.54" height="4"/><rect x="21.43" y="4" width="6.54" height="6"/><rect x="28.57" y="4" width="6.54" height="6"/><rect x="35.71" y="6" width="6.54" height="4"/><rect x="42.86" y="4" width="6.54" height="6"/><rect x="50.00" y="4" width="6.54" height="6"/><rect x="57.14" y="6" width="6.54" height="4"/><rect x="64.29" y="4" width="6.54" height="6"/><rect x="71.43" y="4" width="6.54" height="6"/><rect x="78.57" y="6" width="6.54" height="4"/><rect x="85.71" y="6" width="6.54" height="4"/><rect x="92.86" y="7" width="6.54" height="3"/></svg></div></div><div class="cal-d"><div class="cal-h"><b>26</b></div><div class="cal-cnt">8/28</div><div class="cal-n"><b><svg class="cal-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg>Nutrition</b><span>Daily macronutrient intake: 560 g carbohydrates = 2,240 kcal (62.2%)</span></div><div class="cal-w"><div class="cal-wt"><svg class="cal-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 11.5M5.5 17.5 9 9h7l-4 8.5"/></svg><span>4h23m · 110 km</span><span class="cal-tag" style="background:#2f80ed">AER</span></div><div class="cal-wn"><span>LDT 4h aim at 2000 m elevation</span><span class="cal-st"><span class="cal-com"><svg class="cal-ic2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/></svg><b>3</b></span><svg class="cal-ic2 cal-done" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg></span></div><span class="cal-cph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6 6.6 6 11.3a6 6 0 0 1-12 0c0-4.7 6-11.3 6-11.3z"/></svg>60 g/h</span><svg class="cal-trace" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><rect x="0.00" y="6" width="6.54" height="4"/><rect x="7.14" y="5" width="6.54" height="5"/><rect x="14.29" y="6" width="6.54" height="4"/><rect x="21.43" y="4" width="6.54" height="6"/><rect x="28.57" y="6" width="6.54" height="4"/><rect x="35.71" y="5" width="6.54" height="5"/><rect x="42.86" y="4" width="6.54" height="6"/><rect x="50.00" y="6" width="6.54" height="4"/><rect x="57.14" y="5" width="6.54" height="5"/><rect x="64.29" y="6" width="6.54" height="4"/><rect x="71.43" y="4" width="6.54" height="6"/><rect x="78.57" y="5" width="6.54" height="5"/><rect x="85.71" y="6" width="6.54" height="4"/><rect x="92.86" y="7" width="6.54" height="3"/></svg></div></div></div></div>
+        <figcaption>Giorni di esempio dal calendario di un atleta: le tue sessioni e, con il coaching nutrizionale, le note di Marine e i carboidrati per ora. <a href="https://coaching.cigalacycling.com/nutrition/#upgrade" target="_blank" rel="noopener">Scopri il coaching nutrizionale →</a></figcaption>
+      </figure>
+    </div>
+  </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>Un coaching personalizzato in base ai tuoi obiettivi. Seguiamo ciclisti in tutta Italia e in tutto il mondo.</h2><div class="bar"></div><div class="ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Prenota una Consulenza Gratuita</a></div></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Stampa e partner</div><h2>PRESENTE SU</h2><div class="bar"></div></div></div>
+    <div class="seen-tiles"><span class="seen-tile" style="background:#fff"><img class="contain" src="img/logo-red-bull.webp" alt="Red Bull Racing logo | Cigala Cycling Coaching" loading="lazy"></span><span class="seen-tile" style="background:#fff"><img class="contain" src="img/logo-stickybottle.webp" alt="StickyBottle.com cycling logo | Cigala Cycling Coaching" loading="lazy"></span><span class="seen-tile" style="background:#f9661a"><img class="mark" src="img/logo-zwift-centred3.webp" alt="White Zwift logo on orange bg | Cigala Cycling Coaching" loading="lazy"></span><span class="seen-tile" style="background:#011031"><img class="mark" src="img/logo-trainingpeaks-centred3.webp" alt="TrainingPeaks logo with icon | Cigala Cycling Coaching" loading="lazy"></span><span class="seen-tile" style="background:#284733"><img class="mark" src="img/logo-cycling-ireland-centred3.webp" alt="Cycling Ireland logo | Cigala Cycling Coaching" loading="lazy"></span><span class="seen-tile" style="background:#fff"><img class="contain" src="img/logo-vekta.webp" alt="Vekta logo with yellow icon | Cigala Cycling Coaching" loading="lazy"></span></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="gn-txt">
+      <div class="eyebrow">Il tuo obiettivo</div>
+      <h2>Gli Eventi per Cui Prepariamo i Nostri Atleti</h2><div class="bar"></div>
+      <p>Allenarsi in vista di una data precisa cambia completamente il modo in cui costruire un piano. Prepariamo atleti per granfondo, circuiti e gare in tutto il calendario italiano. Strada, MTB, Gravel tra cui:</p>
+      <ul class="cn-chips"><li><b>Gran Fondo Strade Bianche</b> (Siena)</li><li><b>Hero Südtirol Dolomites (Val Gardena)</b></li><li><b>Gran Fondo Nove Colli</b> (Cesenatico)</li><li><b>Maratona dles Dolomites</b> (Alta Badia/Corvara)</li><li><b>Stelvio Santini</b> (Bormio) — Stelvio, Mortirolo e altri passi iconici</li><li>Dolomiti Paganella Bike Marathon (Trentino)</li><li><b>The Hills of Gravel</b> (Treviso)</li><li><b>Colnago Cycling Festival</b> (Desenzano del Garda)</li><li>Mondiali, Europei Gran Fondo, Marathon, Ciclocross</li><li>Calendario FCI di granfondo, marathon e gare circuito regionali (CSI, ACSI etc)</li></ul>
+      <p>Punti a un obiettivo internazionale — una Traka, una Ötztaler Radmarathon, una Marmotte o un qualificante ai Campionati del Mondo Gran Fondo UCI? Costruiamo anche il piano dei nostri atleti italiani intorno a questi obiettivi.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Risultati</div><h2>2026 IN NUMERI</h2><div class="bar"></div></div></div>
+    <div class="stats nums"><div class="stat"><h3 class="n" data-count="1348">1348</h3><h4 class="l">Top 10</h4></div><div class="stat"><h3 class="n" data-count="149">149</h3><h4 class="l">Terzi posti</h4></div><div class="stat"><h3 class="n" data-count="129">129</h3><h4 class="l">Secondi Posti</h4></div><div class="stat"><h3 class="n" data-count="164">164</h3><h4 class="l">Primi Posti</h4></div><div class="stat"><h3 class="n" data-count="100%">100%</h3><h4 class="l">Miglioramenti performance</h4></div><div class="stat"><h3 class="n" data-count="&gt;90%">&gt;90%</h3><h4 class="l">Obbiettivi raggiunti dai nostri atleti</h4></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head">
+      <div><div class="eyebrow">Risultati reali</div><h2>LEGGI I NOSTRI CASI STUDIO</h2><div class="bar"></div></div>
+      <div class="rv-links"><a class="btn btn-go" href="https://coaching.cigalacycling.com/case-studies/" target="_blank" rel="noopener">Leggi i nostri casi studio</a></div>
+    </div>
+    <div class="cs-wrap"><div class="cs-row" tabindex="0" aria-label="Case studies, scroll sideways"><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#marine-lenehan" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-marine-lenehan.webp" alt="Female cyclist biting gold medal | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 28%"></span><span class="cs-tx"><span class="cs-tag">Road · Gran Fondo &amp; gravel</span><b class="cs-stat">WorldTour Pro</b><span class="cs-h">From first ride to the WorldTour</span><span class="cs-n">Marine Lenehan · Ireland</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#tilen" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-tilen.webp" alt="Tilen Č. racing in a white team kit" loading="lazy" style="object-position:50% 25%"></span><span class="cs-tx"><span class="cs-tag">Road racing</span><b class="cs-stat">1,063 W sprint</b><span class="cs-h">From not sprinting out of the saddle to 1,063 W</span><span class="cs-n">Tilen Č. · Road racer · Slovenia</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#marco" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-marco.webp" alt="Marco B. racing on gravel in a green kit, race number 96" loading="lazy" style="object-position:50% 22%"></span><span class="cs-tx"><span class="cs-tag">Road &amp; gravel</span><b class="cs-stat">+124 W sprint</b><span class="cs-h">Every number went up</span><span class="cs-n">Marco B. · Road &amp; gravel racer · Portugal</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#eoin" target="_blank" rel="noopener"><span class="cs-img cs-data" aria-hidden="true"><b>+104 W sprint</b><small>Best 15-second power</small></span><span class="cs-tx"><span class="cs-tag">Road racing</span><b class="cs-stat">+104 W sprint</b><span class="cs-h">All-time bests and category wins</span><span class="cs-n">Eoin R. · IVCA racer · Ireland</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#vittorio" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-vittorio.webp" alt="Vittorio C. racing mountain bike in an orange helmet" loading="lazy" style="object-position:35% 32%"></span><span class="cs-tx"><span class="cs-tag">MTB &amp; cyclocross</span><b class="cs-stat">1,112 W record</b><span class="cs-h">Faster out of every corner</span><span class="cs-n">Vittorio C. · MTB &amp; cyclocross racer · Italy</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#david" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-david.webp" alt="David O. racing in his Gorey CC club kit" loading="lazy" style="object-position:45% 22%"></span><span class="cs-tx"><span class="cs-tag">Sportive</span><b class="cs-stat">+44 W CP</b><span class="cs-h">+44 watts of engine</span><span class="cs-n">David O. · Sportive rider · Ireland</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#shane-courtney" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-shane-courtney.webp" alt="Cyclist racing on road bike | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 50%"></span><span class="cs-tx"><span class="cs-tag">Road racing</span><b class="cs-stat">220 → 260 W FTP</b><span class="cs-h">+40 W FTP in under 4 months</span><span class="cs-n">Shane Courtney · Tralee Manor West ibike</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#bernd-ondruch" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-bernd-ondruch-2x.webp" alt="Cycling Pro wearing Kask helmet | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 40%"></span><span class="cs-tx"><span class="cs-tag">Gran Fondo</span><b class="cs-stat">Worlds qualified</b><span class="cs-h">Qualified for the Gran Fondo Worlds</span><span class="cs-n">Bernd Ondruch · Germany &amp; UK</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#rob-kavanagh" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-rob-kavanagh.webp" alt="Cyclist in black Team Sky kit | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 38%"></span><span class="cs-tx"><span class="cs-tag">Fitness &amp; weight loss</span><b class="cs-stat">−16 kg</b><span class="cs-h">Close to 16 kg lost in 6 months</span><span class="cs-n">Rob Kavanagh · Ireland</span><span class="arrow-link">Read the case study →</span></span></a><a class="cs-card" href="https://coaching.cigalacycling.com/case-studies/#derek-lawler" target="_blank" rel="noopener"><span class="cs-img"><img src="img/case-derek-lawler-2x.webp" alt="Cyclist with Bianchi bike | Cigala Cycling Coaching" loading="lazy" style="object-position:45% 48%"></span><span class="cs-tx"><span class="cs-tag">Sportive &amp; health</span><b class="cs-stat">Haute Route at 60</b><span class="cs-h">From the couch to the Haute Route at 60</span><span class="cs-n">Derek Lawler · Kilkenny, Ireland</span><span class="arrow-link">Read the case study →</span></span></a></div><div class="rv-nav cs-nav"><button type="button" class="cs-btn" data-d="-1" aria-label="Previous case studies">←</button><button type="button" class="cs-btn" data-d="1" aria-label="Next case studies">→</button></div><script>(function(){var stop=false;var wr=document.currentScript.parentElement,r=wr.querySelector('.cs-row');if(!r)return;var red=matchMedia('(prefers-reduced-motion: reduce)').matches;wr.querySelectorAll('.cs-btn').forEach(function(b){b.addEventListener('click',function(){stop=true;var w=(r.firstElementChild?r.firstElementChild.getBoundingClientRect().width+14:300)*(+b.dataset.d);if(w>0&&r.scrollLeft>=r.scrollWidth-r.clientWidth-4)r.scrollTo({left:0,behavior:'smooth'});else r.scrollBy({left:w,behavior:'smooth'});});});if(red)return;var hold=false,vis=false;r.addEventListener('mouseenter',function(){hold=true;});r.addEventListener('mouseleave',function(){hold=false;});r.addEventListener('focusin',function(){hold=true;});r.addEventListener('focusout',function(){hold=false;});r.addEventListener('touchstart',function(){stop=true;},{passive:true});if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting;}).observe(r);setInterval(function(){if(stop||hold||!vis||document.hidden)return;var c=r.firstElementChild,w=c?c.getBoundingClientRect().width+14:300;if(r.scrollLeft>=r.scrollWidth-r.clientWidth-4)r.scrollTo({left:0,behavior:'smooth'});else r.scrollBy({left:w,behavior:'smooth'});},4000);})();</script></div>
+  </div>
+</section>
+
+<section>
+  <div class="in split">
+    <div class="gn-txt">
+      <div class="eyebrow">Dove alleniamo</div>
+      <h2>Seguiamo ciclisti in tutta Italia</h2><div class="bar"></div>
+      <p>Matteo segue da remoto atleti in tutta Italia, con chiamate e piani personalizzati, in tutte le regioni, tra cui:</p>
+      <ul class="cn-regions"><li><b>Lombardia</b> — Milano, Bergamo, Brescia, Como, Lecco, Lago di Garda</li><li><b>Veneto</b> — Dolomiti, Belluno, Treviso, Verona, Vincenza, Padova, Venezia</li><li><b>Toscana</b> — Siena, Chianti, Pisa, Firenze</li><li><b>Emilia-Romagna</b> — Cesenatico, Romagna, Parma</li><li><b>Trentino-Alto Adige</b> — Alta Badia, Trento, Bolzano</li><li><b>Piemonte</b> — Torino, Cuneo</li><li><b>Lazio </b>— Roma</li><li><b>Campania — </b>Napoli</li></ul>
+    </div>
+    <div>
+      <div class="eyebrow">Compatibile con i tuoi dispositivi e app</div>
+      <div class="logos apps cn-apps"><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-garmin-logo-with-blue-tr.webp" alt="Garmin logo with blue triangle | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-wahoo-fitness-brand-logo.webp" alt="Wahoo Fitness brand logo text" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-hammerhead-logo-with-key.webp" alt="Hammerhead logo with keywords | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-bryton-logo-black-and-wh.webp" alt="Bryton logo black and white | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-rouvy-logo-on-gray-backg.webp" alt="ROUVY logo on gray background | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-mywhoosh-cycling-logo.webp" alt="MyWhoosh cycling logo | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-zwift-logo-with-orange-z.webp" alt="Zwift logo with orange Z | Cigala Cycling Coaching" loading="lazy"></a><a href="https://joinvekta.com/partnerships" target="_blank" rel="noopener"><img src="img/app-igpsport-black-and-red-l.webp" alt="iGPSPORT black and red logo | Cigala Cycling Coaching" loading="lazy"></a></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Buono a sapersi</div><h2>DOMANDE FREQUENTI</h2><div class="bar"></div></div></div>
+    <div class="faq"><details open><summary><h3>Quale pacchetto è più adatto a me?</h3></summary><p>Dipende dal tuo budget e da quanto feedback diretto desideri. Se sei in grado di seguire un piano in autonomia, il Basic è sufficiente. L’Advanced è il più popolare perché include accesso settimanale a Matteo oltre alla membership Vekta.</p></details><details><summary><h3>Come funziona il coaching a distanza?</h3></summary><p>Tutto l’allenamento è gestito online — piani, feedback, test e comunicazione avvengono tramite Vekta o Training Peaks, con chiamate programmate in base ai tuoi impegni.</p></details><details><summary><h3>Alleni solo chi partecipa a gare?</h3></summary><p>No. Seguiamo ciclisti con obiettivi diversi: perdita di peso, prima granfondo, forma fisica generale, triathlon o agonismo. L’unico requisito è pedalare e voler migliorare.</p></details><details><summary><h3>Devo passare a Vekta se uso già Training Peaks?</h3></summary><p>No, possiamo continuare a lavorare su Training Peaks se è la piattaforma con cui ti trovi meglio, oppure esplorare insieme le metriche avanzate di Vekta (Critical Power, W′) in affiancamento.</p></details><details><summary><h3>Quale età serve per essere seguiti?</h3></summary><p>Alleno atleti di tutte le età, dai 14 anni in su, senza limite massimo. Gli atleti under 23 hanno diritto al 20% di sconto studente.</p></details><details><summary><h3>Il mio evento è tra molti mesi, posso iscrivermi comunque ora?</h3></summary><p>Sì. Il piano Basic è pensato per essere seguito nelle 12 settimane precedenti l’evento, quindi puoi iscriverti in anticipo e sfruttare comunque tutti i vantaggi del programma.</p></details><details><summary><h3>Posso lavorare 1-to-1 con una nutrizionista?</h3></summary><p>Sì. Puoi aggiungere il coaching nutrizionale con la nostra nutrizionista sportiva, Marine Lenehan: WorldTour Pro con LIDL-TREK, 2 volte campionessa nazionale irlandese e campionessa del mondo amatori gravel 2024. Scrive i tuoi macro giornalieri, i carboidrati per ora e le note nutrizionali nello stesso calendario del tuo allenamento, rivede il tuo diario alimentare e pianifica l’alimentazione in gara e il gut training. Il prezzo dipende da ciò che ti serve ed è concordato con Marine.</p></details></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="band band-cta">
+      <img src="img/matteo-worlds-silver.webp" alt="Matteo Cigala, silver at the World Championship Gravel 19-34" loading="lazy" width="1280" height="1600">
+      <div class="tx">
+        <div class="eyebrow">Inizia a collaborare con Matteo</div>
+        <h2>Un coaching personalizzato in base ai tuoi obiettivi. Seguiamo ciclisti in tutta Italia e in tutto il mondo.</h2>
+        <div class="bar"></div>
+        <div class="ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Prenota una consulenza gratuita</a><a class="btn btn-ghost" href="#packages">Vedi i pacchetti</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" data-lang="it" data-subject="Messaggio dalla pagina Preparatore di Ciclismo Italia (Coaching website)" data-msg="Il tuo messaggio *">
+  <div class="in split">
+    <div class="photo rider"><img src="img/matteo-coaching.webp" alt="Matteo Cigala Coaching" loading="lazy" width="1440" height="1081"></div>
+    <div>
+      <div class="eyebrow">Contatti</div>
+      <h3 class="h-sec">VUOI FARE IL SALTO DI QUALITÀ?</h3>
+      <div class="bar"></div>
+      <p class="lede">Hai domande sulla preparazione? Scrivici e Matteo ti risponderà, in italiano.</p>
+      <form class="form panel" method="post" action="#" onsubmit="return false">
+        <label>Nome<input name="form_fields[name]" type="text" placeholder="Nome *" required autocomplete="name"></label>
+        <label>Email<input name="form_fields[email]" type="email" placeholder="Email *" required autocomplete="email"></label>
+        <label>Telefono<input name="form_fields[phone]" type="tel" placeholder="Telefono (con prefisso) *" required autocomplete="tel"></label>
+        <label>Messaggio<textarea name="form_fields[message]" placeholder="Il tuo messaggio *" rows="5" required></textarea></label>
+        <button class="btn btn-go" type="submit">Invia &gt;</button>
+      </form>
+    </div>
+  </div>
 </section>
 <footer>
   <div class="in fcols">
@@ -607,7 +1046,14 @@ document.querySelectorAll('.dd').forEach(function (d) {
   b.addEventListener('click', function () { var o = d.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
   d.addEventListener('focusout', function (e) { if (!d.contains(e.relatedTarget)) { d.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
 });
-</script><script>(function () {
+</script><script>(function(){var r=document.getElementById('rv-row');if(!r)return;var red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function go(d){var max=r.scrollWidth-r.clientWidth;if(d>0&&r.scrollLeft>=max-4){r.scrollTo({left:0,behavior:red?'auto':'smooth'});return;}r.scrollBy({left:d*r.clientWidth*0.85,behavior:red?'auto':'smooth'});}
+document.querySelectorAll('.rv-btn').forEach(function(b){b.addEventListener('click',function(){stop=true;go(+b.dataset.d);});});
+/* Matteo 15 Nov: the reviews move on slowly by themselves; they stop while you hover, touch or use the arrows */
+var stop=red,hold=false;['mouseenter','focusin','touchstart'].forEach(function(e){r.addEventListener(e,function(){hold=true;},{passive:true});});
+['mouseleave','focusout'].forEach(function(e){r.addEventListener(e,function(){hold=false;});});r.addEventListener('touchstart',function(){stop=true;},{passive:true});
+var vis=false;if('IntersectionObserver' in window)new IntersectionObserver(function(es){vis=es[0].isIntersecting;}).observe(r);
+setInterval(function(){if(!stop&&!hold&&vis&&!document.hidden)go(1);},5000);})();</script><script>(function () {
   document.querySelectorAll('.nums').forEach(function (g) {
     if (!('IntersectionObserver' in window)) { g.classList.add('on'); return; }
     new IntersectionObserver(function (es, ob) { if (es[0].isIntersecting) { g.classList.add('on'); ob.disconnect(); } }, { threshold: 0.4 }).observe(g);
@@ -620,5 +1066,8 @@ document.querySelectorAll('.dd').forEach(function (d) {
       (function step(t) { var k = Math.min(1, (t - t0) / 1600); el.textContent = m[1] + Math.round(to * (1 - Math.pow(1 - k, 3))) + m[3]; if (k < 1) requestAnimationFrame(step); })(t0);
     }, { threshold: 0.4 }).observe(el);
   });
-})();</script>
+})();</script><script>(function(){document.querySelectorAll('.pkg-all').forEach(function(b){b.addEventListener('click',function(){
+var o=!b.closest('.pkg').classList.contains('open');document.querySelectorAll('.pkg').forEach(function(p){p.classList.toggle('open',o);});
+document.querySelectorAll('.pkg-all').forEach(function(x){x.setAttribute('aria-expanded',o);x.querySelector('span').textContent=o?'Mostra meno':'Vedi tutte le caratteristiche';});});});
+document.querySelectorAll('[data-waitlist]').forEach(function(a){a.addEventListener('click',function(){var m=document.querySelector('#contact textarea');if(m&&!m.value)m.value='Vorrei entrare nella lista d\u2019attesa del pacchetto '+a.dataset.waitlist+'.';});});})();</script>
 </body></html>

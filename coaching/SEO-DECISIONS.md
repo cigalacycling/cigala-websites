@@ -343,3 +343,12 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   Derek Lawler, Kilkenny; Bernd, Germany) shown under different names, and the same quote appears under two or three
   names in different countries (Bryan's under "Daniel, Northern Ireland", "Mark, Texas" and "Mark, Alberta"). Not
   restored; real names kept; waiting for real clients from those countries.
+- /preparatore-di-ciclismo-italia/ rebuilt like UK/USA/Canada (tools/build_coaching_italia.py, Italian): URL, Yoast, first
+  H1, live H2s kept except 2025 -> 2026 IN NUMERI and the reviews H2 -> "LEGGI I NOSTRI CASI STUDIO" (as on the English
+  country pages); all live copy, the 6 FAQs, live images with live alts, live pay links (Shopify Base, GoCardless
+  Avanzato). Reviews: the live ones were real quotes under invented Italian names; now 6 real testimonials translated
+  from English, real names, labelled as translated. Contact form in Italian (placeholders, "Invia").
+- About: "200+ race wins" removed from the hero titles (it's in the facts row), facts row closer to the hero.
+  Bernd Ondruch: "Germany & UK" (Matteo: lives in both); UK page leads with his review.
+- Country reviews: the non-duplicated live quotes (William-Wales, Nat-California, Chris-Ontario) are rewordings of
+  Marine's testimonial under invented names: not used. Bernd is the one real UK-linked client.

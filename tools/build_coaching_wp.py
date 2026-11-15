@@ -355,6 +355,15 @@ def build_page(key):
             if hint:
                 for f in ff:
                     if f.get('field_type') == 'textarea': f['placeholder'] = html.unescape(hint.group(1))
+            if 'data-lang="it"' in b:   # the Italian page: Italian placeholders and button
+                IT = {'name': 'Nome *', 'email': 'Email *', 'phone': 'Telefono (con prefisso) *'}
+                for f in ff:
+                    k = f.get('custom_id') or f.get('field_type')
+                    if k in IT: f['placeholder'] = IT[k]
+                    elif f.get('field_type') == 'email': f['placeholder'] = 'Email *'
+                    elif f.get('field_type') == 'text' and f.get('custom_id') != 'phone': f['placeholder'] = 'Nome *'
+                st['button_text'] = 'Invia'
+                st['success_message'] = 'Grazie! Il tuo messaggio è stato inviato.'
             pre, post = b.split('<form', 1)
             post = post.split('</form>', 1)[1]
             lcls = 'cc-wrap'

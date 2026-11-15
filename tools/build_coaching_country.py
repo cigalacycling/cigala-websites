@@ -37,7 +37,7 @@ def strip(ids):
 C_ = {
 'uk': dict(
     name='the UK', adj='UK', cur='£', code='GBP', hero=('imgi_22_lABWBM7F', 'country-uk-hero-coaching'), pos='60% 35%', photo=('unnamed-6.png', 'country-uk-events-tre-valli'),
-    vekta='£17.99', guides=[('fred-whitton-challenge-training-guide', 'How to train for the Fred Whitton Challenge'), ('slower-in-winter-is-not-your-legs', 'Slower in winter? It’s not your legs'), ('effective-fuelling-techniques-for-winter-training', 'Fuelling for winter training')], reviews=[5, 1, 8, 2, 11, 3],
+    vekta='£17.99', guides=[('fred-whitton-challenge-training-guide', 'How to train for the Fred Whitton Challenge'), ('slower-in-winter-is-not-your-legs', 'Slower in winter? It’s not your legs'), ('effective-fuelling-techniques-for-winter-training', 'Fuelling for winter training')], reviews=[1, 5, 8, 2, 11, 3],
     facts=[('clock', 'Same time as Ireland', 'GMT/BST: calls and replies happen in your own day, not overnight.'),
            ('currency', 'Prices in pounds', 'You pay in pounds, so no exchange fees on your side.'),
            ('route', 'Built for UK roads', 'Short steep climbs, wind, wet winters and the TT and sportive calendar.')],

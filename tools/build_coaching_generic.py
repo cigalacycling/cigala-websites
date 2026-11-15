@@ -297,7 +297,7 @@ NUMS_JS = '''<script>(function () {
 })();</script>'''
 
 if __name__ == '__main__':
-    COUNTRY = ('cycling-coach-uk', 'cycling-coach-usa', 'cycling-coach-canada', 'nutrition', 'contact', 'book-1-on-1-session', 'bike-fitting', 'testing', 'about2', 'club-talk', 'talent-scout', 'coaching-vision', 'about')   # own builders: country, nutrition, services, about
+    COUNTRY = ('cycling-coach-uk', 'cycling-coach-usa', 'cycling-coach-canada', 'nutrition', 'contact', 'book-1-on-1-session', 'bike-fitting', 'testing', 'about2', 'club-talk', 'talent-scout', 'coaching-vision', 'about', 'preparatore-di-ciclismo-italia')   # own builders: country, nutrition, services, about, italia
     for name in (sys.argv[1:] or [p for p in PAGES if p not in COUNTRY]):
         assert name not in COUNTRY, 'built by its own script: ' + name
         build_page(name)

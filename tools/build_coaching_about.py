@@ -37,7 +37,7 @@ bul = lambda xs: [x.lstrip('\u200b•· ').strip() for x in xs]
 intro = paras(T.split('\n')[:12])           # Founder line, 3 titles, then the 4 intro paragraphs
 titles, bio = intro[1:4], intro[4:8]
 # Matteo 15 Nov: no years, road and gravel silver on their own lines, and the race wins
-TITLES = ['200+ race wins', 'European Road Champion Gran Fondo', 'Vice-World Champion UCI Gran Fondo', 'Vice-World Champion UCI Gravel', 'Italian Gravel Champion']
+TITLES = ['European Road Champion Gran Fondo', 'Vice-World Champion UCI Gran Fondo', 'Vice-World Champion UCI Gravel', 'Italian Gravel Champion']
 story1 = paras(after('H3: FROM ITALIAN TALENT'))
 story2 = paras(after('H3: THE IRISH CHAPTER'))
 story3_raw = after('H3: A NEW ERA')
@@ -121,7 +121,7 @@ MAIN = f'''<div class="ab-hero">
   </div>
 </div>
 
-<section>
+<section class="ab-facts-sec">
   <div class="in">
     <ul class="ab-facts">{''.join(f'<li>{ic(I[i])}<b>{a}</b><span>{b}</span></li>' for i, a, b in FACTS)}</ul>
     <div class="ab-bio">{''.join(f'<p>{E(p)}</p>' for p in bio)}</div>
@@ -344,6 +344,7 @@ CSS = '''<style>
 .ab-tiles a p { margin: 0 18px; font-size: 14px; color: var(--text-2); }
 .ab-tiles a em { margin: auto 18px 18px; padding-top: 12px; font-style: normal; font-size: 13.5px; font-weight: 600; color: var(--green-text); }
 .ab-after { margin-top: 16px !important; }
+.ab-facts-sec { margin-top: -36px; }   /* Matteo 15 Nov: the facts a little closer to the hero */
 .ab-flag { border-width: 3px; }
 .ab-it { background: linear-gradient(90deg, #009246 0 33.4%, #fff 33.4% 66.6%, #ce2b37 66.6%) !important; }
 .ab-ie { background: linear-gradient(90deg, #169b62 0 33.4%, #fff 33.4% 66.6%, #ff883e 66.6%) !important; }
