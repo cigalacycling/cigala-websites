@@ -270,7 +270,7 @@ MAIN = f'''<div class="hero hero-sm">
 <section>
   <div class="in">
     <div class="head"><div><div class="eyebrow">Press &amp; partners</div><h2>AS SEEN IN</h2><div class="bar"></div></div></div>
-    <div class="logos seen">{logos}</div>
+    {seen_logos()}
   </div>
 </section>
 

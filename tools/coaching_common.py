@@ -40,6 +40,20 @@ def conv(src, name, size=None):
     return f'img/{name}.webp'
 
 LOGO = img('ccCoachingLogo.png', 'logo')
+
+# ---------- white partner logos, no boxes (Matteo 15 Nov), made with tools/monologo.py ----------
+import monologo as _mono
+def mono_img(key, name, nobox=False, holes=False):
+    src = OUT + 'img/' + name + '-src.webp'
+    hits = [w for u, w in WEBP.items() if key in u]; assert len(hits) == 1, (key, hits)
+    shutil.copy(ROOT + 'coaching/webp/' + hits[0], src)
+    _mono.mono(src, OUT + f'img/mono-{name}.webp', nobox=nobox, holes=holes); os.remove(src)
+    return f'img/mono-{name}.webp'
+SEEN = [('imgi_4_wHe4MESD', 'red-bull', {}), ('imgi_6_6_MxiOhd', 'stickybottle', {'nobox': True, 'holes': True}), ('unnamed-87.png', 'zwift', {}),
+        ('unnamed-86.png', 'trainingpeaks', {}), ('unnamed-84.png', 'cycling-ireland', {}), ('unnamed-85.png', 'vekta', {'nobox': True})]
+def seen_logos():
+    return '<div class="mono-logos">' + ''.join(f'<img src="{mono_img(k, n, **o)}" alt="{E(live_alt(k))}" loading="lazy">' for k, n, o in SEEN) + '</div>'
+
 # ---------- menu ----------
 def a(u, t): return f'<a href="{u}" {EXT}>{t}</a>'
 CYC = [(C + '/coaching-vision/', 'Coaching Vision'), (C + '/individual-packages/', 'Individual Packages'),
@@ -68,7 +82,7 @@ HEADER = f'''<header class="nav">
       {a(R, 'Shop')}
       {a(C + '/contact/', 'Contact')}
     </nav>
-    <a class="btn btn-go" href="{C}/individual-packages/" {EXT}>Find Your Package</a>
+    <a class="btn btn-go" href="https://calendly.com/cigalacycling" {EXT}>Book Consultation</a>
     <details class="burger" id="menu-mobile">
       <summary>Menu</summary>
       <nav aria-label="Main (mobile)">
@@ -228,8 +242,33 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 @media (max-width: 640px) { .rv-row { grid-auto-columns: 86%; } .rv-nav { display: none; } }
 /* ---- shared social icon row (shared/social) ---- */
 ''' + SOCIAL_CSS + '''
+.mono-logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px 40px; padding: 8px 0; }
+.mono-logos img { height: 46px; width: auto; max-width: 170px; object-fit: contain; opacity: .72; transition: opacity .15s; }
+.mono-logos img:hover { opacity: 1; }
+@media (max-width: 640px) { .mono-logos { justify-content: center; gap: 24px 32px; } .mono-logos img { height: 36px; max-width: 130px; } }
+/* ---- Matteo 15 Nov homepage feedback ---- */
+.hero::after { background: linear-gradient(180deg, rgba(8,9,10,.62) 0%, rgba(8,9,10,.5) 40%, rgba(8,9,10,.95) 100%) !important; }   /* hero photo darker */
+.rv-stars { color: var(--star); letter-spacing: 3px; font-size: 15px; line-height: 1; }
+.matteo .photo.cutout { position: relative; background: none; border: 0; aspect-ratio: auto; overflow: visible; display: flex; justify-content: center; align-items: flex-end; isolation: isolate; }
+.matteo .photo.cutout::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }
+.matteo .photo.cutout img { width: 100%; max-width: 460px; max-height: none; height: auto; -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, #000 82%, transparent 100%); }
+.fam { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 480px; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); background: var(--panel-solid); isolation: isolate; text-decoration: none; }
+.card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .6s ease; }
+.card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 15%, rgba(8,9,10,.8) 50%, rgba(8,9,10,.98) 100%); }
+.card:hover > img { transform: scale(1.04); }
+.card:hover { border-color: rgba(0,154,68,.6); }
+.card .tx { padding: 26px; display: grid; gap: 10px; text-shadow: 0 1px 10px rgba(0,0,0,.65); }
+.card .k { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.card h2, .card h3 { font-size: clamp(28px, 3vw, 38px); margin: 0; }
+.card p { margin: 0; font-size: 14.5px; font-weight: 500; color: var(--text); }
+.card .btn { justify-self: start; margin-top: 8px; text-shadow: none; }
+.card .btn-h { margin: 0; }
+.card .host { font-size: 12px; color: var(--text-2); }
+@media (max-width: 900px) { .fam { grid-template-columns: minmax(0, 1fr); } .card { min-height: 420px; } }
+@media (prefers-reduced-motion: reduce) { .card > img { transition: none; } .card:hover > img { transform: none; } }
 /* ---- footer layout: as cigalacycling.com ---- */
-.fcols { grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)) !important; }
+.fcols { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.45fr) !important; }
 footer .tag-line { font-size: 22px; line-height: 1.15; margin: 14px 0 0; max-width: 24ch; }
 footer ul { font-size: 14px; }
 footer ul a { color: var(--text-2); }
@@ -279,7 +318,7 @@ REVIEWS = [
     ('16 kg lighter, fitter and happier', 'To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.', 'Rob Kavanagh', 'Ireland'),
 ]
 def reviews_strip():
-    cards = ''.join(f'<figure class="rv"><div class="rv-tag">{E(t)}</div><blockquote>“{E(q)}”</blockquote><figcaption><b>{E(n)}</b><span>{E(w)}</span></figcaption></figure>' for t, q, n, w in REVIEWS)
+    cards = ''.join(f'<figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“{E(q)}”</blockquote><figcaption><b>{E(n)}</b><span>{E(w)}</span></figcaption></figure>' for t, q, n, w in REVIEWS)
     return (f'<div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Athlete reviews, scroll sideways">{cards}</div>'
             '<div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Previous reviews">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Next reviews">→</button></div></div>')
 REVIEWS_JS = """<script>(function(){var r=document.getElementById('rv-row');if(!r)return;document.querySelectorAll('.rv-btn').forEach(function(b){b.addEventListener('click',function(){r.scrollBy({left:(+b.dataset.d)*r.clientWidth*0.85,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});});})();</script>"""
