@@ -159,7 +159,10 @@ GA = 'G-E1WWZCLBRB'            # live coaching site, checked 15 Nov (coaching/TR
 PIXEL = '1986332861692106'     # Matteo's Meta Pixel, confirmed for Coaching 15 Nov; loads only after Accept
 OW = '43e5f685-37fc-4f78-9420-122fd2a3c5e3'   # OpenWidget org on the live coaching site
 banner = render_banner(ga_id=GA, privacy_url='/privacy-policy/', pixel_id=PIXEL, openwidget_org=OW)
-json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>'), html_widget(banner)])])}}, open(OUT + 'lib-228.json', 'w'))
+# moving topo background (shared/parallax, Matteo: same on every site); only on redesigned pages (.cc-page), like Tours
+PARALLAX = open(ROOT + 'shared/parallax/parallax.html').read().strip().replace("(function(){", "(function(){if(!document.querySelector('.cc-page'))return;", 1)
+assert '.cc-page' in PARALLAX
+json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>'), html_widget(banner), html_widget(PARALLAX)])])}}, open(OUT + 'lib-228.json', 'w'))
 json.dump({"title": "Cigala consent mode default", "status": "publish",
            "meta": {"_elementor_location": "elementor_head", "_elementor_priority": 1, "_elementor_code": head_snippet()}}, open(OUT + 'snippet-head.json', 'w'))
 

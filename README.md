@@ -225,6 +225,8 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - **Tri Basic:** the live buy link is an expired Shopify checkout that redirects to the shop home, and the shop has no €237 Tri Basic product. The button says "Contact us to sign up" (prefills the form) until Matteo says which product to link.
   - **Tri copy contradictions, kept as live and waiting for Matteo:** "We have 2 coaching packages" (3 are shown); Advanced "5 months subscription" vs "Advanced 6 Months"; Basic "€79/mo" vs €237 one-off.
   - **Group & Club:** live copy and H1 kept, plus the clubs from the testimonials, Club Talks, reviews and an on-page enquiry form. Yoast focus keyphrase "group cycling coaching".
+- **Moving topo background (15 Nov):** `shared/parallax/parallax.html` in footer 228, only on redesigned pages (`.cc-page`), same as Tours. It's off with reduced motion.
+- **Share image (15 Nov):** `brand-assets/share/cigala-coaching-share.jpg` (1200x630, made from `share-image-template.html`; the filled-in template is `coaching-share.html`), uploaded to Coaching staging (`stg-coaching/share-image.txt`). Matteo sets it as Yoast's site image: Yoast SEO -> Settings -> General -> Site basics -> Site image.
 - **Redirects still to add (301 Redirects plugin, no REST API):** `/group-club-packages2/` -> `/group-club-packages/` and `/dummy-page/` -> `/`. Matteo adds them in wp-admin, or they're done at go-live.
 - **Terms & Privacy (15 Nov, Matteo's decision via the main chat):** `tools/build_coaching_legal.py`, in the cigalacycling.com Terms style (sidebar "On this page" + numbered sections).
   - Terms (564): live copy, H1 and H2s.
