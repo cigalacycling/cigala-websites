@@ -105,7 +105,7 @@ FOOTER = f'''<footer>
     </div>
   </div>
   <div class="legal"><div class="in">
-    <span>© 2026 Cigala Cycling Ltd · VAT IE 3699893CH · Company No. 675577</span>
+    <span>© 2026 Cigala Cycling Ltd · Registered in Ireland No. 675577 · VAT IE3699893CH</span>
     {a(C + '/terms-conditions/', 'Terms &amp; Conditions')}
     {a(C + '/privacy-policy/', 'Privacy Policy')}
     <details class="intl-dd"><summary>International coaching</summary>
