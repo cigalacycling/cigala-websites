@@ -176,7 +176,7 @@ PARALLAX = "<script>(function(){if(!document.querySelector('.cc-page,.cl-page')|
 # Newsletter (Matteo 15 Nov: same sign-up as cigalacycling.com and Coaching, one newsletter for all sites):
 # footer band wp/nl-band.html + pop-up wp/nl-popup.html, used as they are, posting to the Tours Brevo form.
 # Off until TOURS_NL_URL is set (the share link of Matteo's Brevo form on the "tours.cigalacycling.com" list, + ?isAjax=1).
-TOURS_NL_URL = ''
+TOURS_NL_URL = 'https://c20401b9.sibforms.com/serve/MUIFAIbkCsq9ZvLkP_z6BAzvk_HXMj0FmU12UW_FL7rdnXYZPfkTPvoo0NQrsMFXdArQaS1g48pseXMdwaQ9evslAasHA6tfJXRb5FU12EEHctxV3gGFqzOA2kp2dcG0jkObzljbSAaeZ65sepCFudotu-EGqXPHhDwZ3J3my8LJnugvlyZtlQWxLZHbS5Hk0voDhkyOt-XN1Or8?isAjax=1'   # Brevo form, list tours.cigalacycling.com (Matteo 15 Nov); CORS checked for staging and live
 ftr_widgets = [html_widget('<div class="cc">' + ftr + '</div>' + PARALLAX), html_widget(banner)]
 if TOURS_NL_URL:
     nlband = open(ROOT + 'wp/nl-band.html').read()
@@ -184,6 +184,8 @@ if TOURS_NL_URL:
     nlpop = re.sub(r"var URL='https://[^']+';", "var URL='" + TOURS_NL_URL + "';", nlpop); assert TOURS_NL_URL in nlpop
     ftr_widgets[0] = html_widget('<div class="cc">' + nlband + ftr + '</div>' + PARALLAX)
     ftr_widgets.append(html_widget(nlpop))
+    # Tours: the .cc text rule would turn the band title into Montserrat; and the pop-up must sit above the chat widget
+    css += '\n/* ---- newsletter (shared wp/nl-*) ---- */\nhtml .cc .nl-band .nl-t { font-family: Anton, Impact, "Arial Narrow", sans-serif; font-weight: 400; }\n#nl-pop { z-index: 2147483647 !important; }\n'
 json.dump({"meta": {"_elementor_data": json.dumps([wrap(ftr_widgets)])}}, open(OUT + 'lib-228.json', 'w'))
 
 # head snippet (Elementor custom code 9279): the shared one. The consent-default line goes first in WPCode Header (Matteo).

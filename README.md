@@ -214,7 +214,11 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
     - The Belgium card links to the Flanders tour (live /destinations/belgium/ is a 404).
     - Testimonials gains an H1 (live had none); the Guides cards use H3, so the page has one H1.
     - Body text that live had in H4 headings is now paragraphs, with the same words.
-  - **For Matteo to decide (live content, left as is):**
+  - **Newsletter (15 Nov):** footer band plus pop-up, the shared `wp/nl-band.html` and `wp/nl-popup.html`, posting to Matteo's Brevo form on the "tours.cigalacycling.com" list (`TOURS_NL_URL` in `build_tours_wp.py`).
+  - CORS checked for staging and live.
+  - Tested with the request mocked, so no contact was added: the footer sign-up works, and the pop-up opens after the cookie choice at 390 and 1440.
+  - Tours CSS keeps the band title in Anton and puts the pop-up above the chat widget.
+- **For Matteo to decide (live content, left as is):**
     - The Gran Canaria page H1 says "Cycling in Mallorca".
     - The Lake Como guide FAQ asks "How hard is Madonna del Ghisallo?" twice; the second answer is about the Muro di Sormano.
     - A stray "harmony." line in the Dolomites intro.
