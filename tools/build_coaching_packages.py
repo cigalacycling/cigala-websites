@@ -48,8 +48,12 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     top = list(own[key])
     if key in ('advanced', 'premium'): top.insert(1, ASSESS)
     rest = [f for f in F[key] if f not in own[key]]
+    # Matteo, 15 Nov 2026: Basic does NOT include training analysis (the live list said "Daily Training Analysis")
+    NOT_IN_BASIC = {'Daily Training Analysis'}
+    no = [ASSESS] + [x for x in top if x in NOT_IN_BASIC] if key == 'basic' else []
+    top = [x for x in top if x not in no]
     items = ''.join(f'<li>{E(x)}</li>' for x in top)
-    if key == 'basic': items = items.replace('</li>', f'</li><li class="no">{E(ASSESS)} <span>(not included)</span></li>', 1)
+    items += ''.join(f'<li class="no">{E(x)} <span>(not included)</span></li>' for x in no)  # shown, not counted
     items += ''.join(f'<li class="more">{E(x)}</li>' for x in rest)
     total = len(top) + len(rest)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
@@ -73,7 +77,7 @@ ROWS = [
     ('Contact', 'When needed via email', 'Weekly', 'Daily'),
     ('Feedback', 'On sessions', 'Weekly', 'Daily'),
     ('Schedule adjustment', Y, 'Weekly', 'Daily'),
-    ('Training analysis', 'Daily', 'Weekly', 'Daily'),
+    ('Training analysis', N, 'Weekly', 'Daily'),
     ('Catch up call', N, 'Monthly or when needed', 'Weekly or when needed'),
     ('Race strategy', N, Y, Y),
     ('Continuous support &amp; motivation', N, Y, Y),
