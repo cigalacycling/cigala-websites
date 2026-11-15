@@ -37,7 +37,7 @@ h3{font-size:19px;margin:18px 0 4px}
 h3+.bar{margin:10px 0 12px}
 p{margin:0 0 10px}
 .lead{font-size:13.5px;color:var(--text-2)}
-.note{font-size:10.5px;color:var(--text-3);margin-top:8px}
+.note{font-size:10.5px;color:var(--text-3);margin-top:6px}
 /* section header */
 .sec{position:relative;padding:4px 0 0;margin-bottom:14px}
 .sec .eyebrow{margin-bottom:10px}
@@ -51,19 +51,20 @@ p{margin:0 0 10px}
 .dots li{position:relative;padding-left:16px}
 .dots li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--green)}
 .c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:1fr 1fr 1fr}
-.callout{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:12px;padding:14px 18px;margin-top:16px}
+.callout{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:12px;padding:12px 18px;margin-top:12px}
 .callout .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green-text);margin-bottom:4px}
 .callout.viv{border-left-color:var(--vivify-2)}
 .callout.viv .k{color:var(--vivify-text)}
 .callout p{margin:0}
 /* stat tiles */
 .tiles{display:grid;gap:8px}
-.tile{border-radius:12px;padding:14px 8px 12px;text-align:center;border:1px solid var(--border);background:var(--panel-solid)}
+.tile{border-radius:12px;padding:11px 8px 10px;text-align:center;border:1px solid var(--border);background:var(--panel-solid)}
 .tile .v{font-family:Anton,sans-serif;font-size:27px;color:var(--text);line-height:1.1}
 .tile .u{font-size:10.5px;color:var(--text-2);margin-top:2px}
-.tile .l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-top:9px;line-height:1.35}
-.t1{background:#151719}.t2{background:var(--vivify)}.t3{background:var(--vivify-2)}.t4{background:#0b6b35}.t5{background:var(--green)}
-.tile.wide{padding:16px}.tile.wide .v{font-size:40px}
+.tile .l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-top:7px;line-height:1.35}
+.m{display:flex;gap:3px;justify-content:center;margin-top:10px}.m i{width:14px;height:4px;border-radius:2px;background:rgba(255,255,255,.14)}.m i.on{background:var(--green)}
+.tile.wide{padding:16px;border-top:3px solid var(--green)}.tile.wide .v{font-size:40px;color:var(--green-text)}
+.tiles.plain .tile{border-top:3px solid var(--green)}
 /* tables */
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:11.5px}
 .tbl{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
@@ -88,12 +89,11 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 .fat ul{list-style:none;padding:4px 12px 12px}
 .fat li{padding:2.5px 0 2.5px 13px;position:relative;line-height:1.35}
 .fat li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--text-3)}
-.fat.mono li::before{background:var(--green)}.fat.poly li::before{background:var(--vivify-text)}.fat.trans li::before{background:var(--red)}
+.fat.mono li::before{background:var(--green)}.fat.poly li::before{background:var(--green)}.fat.trans li::before{background:var(--red)}
 .fat.trans{border-color:rgba(225,6,0,.35)}
 /* micronutrients */
 .micro td{font-size:10.5px;line-height:1.45;padding:8px 10px}
-.micro td:first-child{font-weight:600;color:var(--text);width:24%;border-left:3px solid var(--vivify-2)}
-.micro tr:nth-child(odd) td:first-child{border-left-color:var(--green)}
+.micro td:first-child{font-weight:600;color:var(--text);width:24%;border-left:3px solid var(--green)}
 .micro td:last-child{width:33%}
 .micro b{font-weight:600}
 /* food sources */
@@ -123,7 +123,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 .legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
 /* contents */
 .toc{list-style:none;margin-top:4px}
-.toc li{display:grid;grid-template-columns:62px 1fr 40px;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
+.toc li{display:grid;grid-template-columns:62px 1fr 40px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
 .toc .no{font-family:Anton,sans-serif;font-size:28px;color:transparent;-webkit-text-stroke:1px var(--green-text)}
 .toc .tt{font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);line-height:1.1}
 .toc .ds{font-size:11px;color:var(--text-3);margin-top:2px}
@@ -160,12 +160,21 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 .mphoto img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
 .pill{position:absolute;left:14px;bottom:14px;background:rgba(15,16,17,.92);border:1px solid var(--border-strong);border-radius:999px;color:#fff;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 13px 7px 11px;display:flex;align-items:center;gap:8px}
 .pill i{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block}
+.coach{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:12px;padding:14px 18px;margin-top:14px}
+.coach img{width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:50% 20%;border:1px solid var(--border-strong)}
+.coach .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:3px}
+.coach p{margin:0}
+.ratio td{text-align:center;font-size:12.5px;padding:8px 10px}.ratio td:first-child{text-align:left}.ratio th{text-align:center}.ratio th:first-child{text-align:left}
+.ratio td b{color:var(--green-text)}
+.pk td{font-size:11.5px;padding:8px 12px}.pk td:not(:first-child),.pk th:not(:first-child){text-align:center;width:18%}
+.ok{color:var(--green-text);font-weight:700}.no{color:var(--text-3)}
+.tool{display:block;text-decoration:none;color:var(--text-2);background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.tool .anton{font-size:17px;margin-bottom:4px}.tool .go{color:var(--green-text);font-weight:600;font-size:11.5px;margin-top:6px;display:block}
 /* foundations */
 .fd{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
 .fd .card{grid-column:span 3;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
 .fd .card.s2{grid-column:span 2}
 .fd .ic{width:44px;height:44px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
-.fd .card.v .ic{background:var(--vivify-2)}
 .fd .ic svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .fd .card .anton{font-size:18px;margin-bottom:6px}
 .fd .card p{font-size:11px;margin:0}
@@ -173,7 +182,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 .hub span{font-family:Anton,sans-serif;font-size:24px;letter-spacing:.06em;color:#fff;background:var(--green);padding:9px 28px;border-radius:999px}
 .tl{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr;align-items:center;gap:8px;margin-top:6px}
 .tl .st{display:flex;gap:11px;align-items:center}
-.tl .st .ic{width:40px;height:40px;border-radius:50%;background:var(--vivify-2);flex:none;display:flex;align-items:center;justify-content:center}
+.tl .st .ic{width:40px;height:40px;border-radius:50%;background:var(--green);flex:none;display:flex;align-items:center;justify-content:center}
 .tl .st .ic svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .tl .anton{font-size:16px}
 .tl p{font-size:10.5px;margin:0;line-height:1.4}
@@ -220,10 +229,11 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <li><span class="no">04</span><div><div class="tt">Micronutrients</div><div class="ds">Vitamins and minerals</div></div><span class="pg">10</span></li>
     <li><span class="no">05</span><div><div class="tt">Recommended food sources</div><div class="ds">What to put in your basket</div></div><span class="pg">11</span></li>
     <li><span class="no">06</span><div><div class="tt">Nutrition timing</div><div class="ds">Before, during and after training</div></div><span class="pg">12</span></li>
-    <li><span class="no">07</span><div><div class="tt">Hydration</div><div class="ds">Fluids and electrolytes</div></div><span class="pg">13</span></li>
-    <li><span class="no">08</span><div><div class="tt">The Athlete’s Plate</div><div class="ds">Balance for every training day</div></div><span class="pg">14</span></li>
-    <li><span class="no">09</span><div><div class="tt">Personalised nutrition plan</div><div class="ds">Book a consultation with Marine</div></div><span class="pg">15</span></li>
-    <li><span class="no">10</span><div><div class="tt">The foundations of sports nutrition</div><div class="ds">The whole guide on one page</div></div><span class="pg">16</span></li>
+    <li><span class="no">07</span><div><div class="tt">Recovery &amp; race day</div><div class="ds">The 3:1 rule and a race day timeline</div></div><span class="pg">13</span></li>
+    <li><span class="no">08</span><div><div class="tt">Hydration</div><div class="ds">Fluids, electrolytes and your sweat rate</div></div><span class="pg">14</span></li>
+    <li><span class="no">09</span><div><div class="tt">The Athlete’s Plate</div><div class="ds">Balance and energy for every training day</div></div><span class="pg">16</span></li>
+    <li><span class="no">10</span><div><div class="tt">Personalised nutrition plan</div><div class="ds">Consultation, coaching and free tools</div></div><span class="pg">17</span></li>
+    <li><span class="no">11</span><div><div class="tt">The foundations of sports nutrition</div><div class="ds">The whole guide on one page</div></div><span class="pg">19</span></li>
   </ol>
   <div class="callout" style="margin-top:22px">
     <div class="anton" style="font-size:20px;margin-bottom:4px">Fuel • Recover • Adapt</div>
@@ -250,20 +260,20 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <li>Improve recovery between sessions</li>
   </ul></div>
   <h3>Daily intake – average athlete</h3><div class="bar"></div>
-  <div class="tiles" style="grid-template-columns:repeat(5,1fr)">
-    <div class="tile t1"><div class="v">3–4</div><div class="u">g/kg body weight</div><div class="l">Rest or easy days</div></div>
-    <div class="tile t2"><div class="v">3–5</div><div class="u">g/kg body weight</div><div class="l">Light training</div></div>
-    <div class="tile t3"><div class="v">5–7</div><div class="u">g/kg body weight</div><div class="l">Moderate training</div></div>
-    <div class="tile t4"><div class="v">6–10</div><div class="u">g/kg body weight</div><div class="l">High volume</div></div>
-    <div class="tile t5"><div class="v">8–12</div><div class="u">g/kg body weight</div><div class="l">Very high volume and intensity</div></div>
+  <div class="tiles scale" style="grid-template-columns:repeat(5,1fr)">
+    <div class="tile" data-l="1"><div class="v">3–4</div><div class="u">g/kg body weight</div><div class="l">Rest or easy days</div></div>
+    <div class="tile" data-l="2"><div class="v">3–5</div><div class="u">g/kg body weight</div><div class="l">Light training</div></div>
+    <div class="tile" data-l="3"><div class="v">5–7</div><div class="u">g/kg body weight</div><div class="l">Moderate training</div></div>
+    <div class="tile" data-l="4"><div class="v">6–10</div><div class="u">g/kg body weight</div><div class="l">High volume</div></div>
+    <div class="tile" data-l="5"><div class="v">8–12</div><div class="u">g/kg body weight</div><div class="l">Very high volume and intensity</div></div>
   </div>
   <p class="note">General guidelines. Individual requirements should be adjusted according to training demands, recovery needs and energy availability.</p>
   <h3>During training</h3><div class="bar"></div>
-  <div class="tiles" style="grid-template-columns:repeat(4,1fr)">
-    <div class="tile t1"><div class="v">None</div><div class="u">usually not required</div><div class="l">Under 60 minutes</div></div>
-    <div class="tile t2"><div class="v">30–60 g</div><div class="u">per hour</div><div class="l">1 – 2.5 hours</div></div>
-    <div class="tile t3"><div class="v">60–90 g</div><div class="u">per hour</div><div class="l">2.5 – 4 hours</div></div>
-    <div class="tile t5"><div class="v">90 g +</div><div class="u">per hour</div><div class="l">4 hours and more</div></div>
+  <div class="tiles scale" style="grid-template-columns:repeat(4,1fr)">
+    <div class="tile" data-l="1"><div class="v">None</div><div class="u">usually not required</div><div class="l">Under 60 minutes</div></div>
+    <div class="tile" data-l="3"><div class="v">30–60 g</div><div class="u">per hour</div><div class="l">1 – 2.5 hours</div></div>
+    <div class="tile" data-l="4"><div class="v">60–90 g</div><div class="u">per hour</div><div class="l">2.5 – 4 hours</div></div>
+    <div class="tile" data-l="5"><div class="v">90 g +</div><div class="u">per hour</div><div class="l">4 hours and more</div></div>
   </div>
   <p style="margin-top:12px">For prolonged endurance events, some athletes can benefit from intakes approaching 90 g/hour or more under specialist guidance. When consuming higher carbohydrate quantities, combining <b>glucose or maltodextrin with fructose</b> can improve carbohydrate absorption and utilisation.</p>
   <div class="callout"><div class="k">Gut training</div><p>The digestive system can adapt to higher carbohydrate intakes during exercise. Practise your race fuelling strategy during training rather than introducing it for the first time on race day. Individualised gut training is recommended.</p></div>
@@ -275,7 +285,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
   <div class="run"><span>01 · Carbohydrates</span></div>
   <h3 style="margin-top:0">High-fibre vs low-fibre carbohydrates</h3><div class="bar"></div>
   <div class="tbl"><table>
-    <tr><th style="width:50%"><span class="dot d-green"></span>High-fibre sources</th><th><span class="dot d-viv"></span>Low-fibre sources</th></tr>
+    <tr><th style="width:50%"><span class="dot d-green"></span>High-fibre sources</th><th><span class="dot d-grey"></span>Low-fibre sources</th></tr>
     <tr><td>Brown basmati rice</td><td>White rice</td></tr>
     <tr><td>Wholemeal pasta <small>(wheat, spelt or buckwheat)</small></td><td>White pasta</td></tr>
     <tr><td>Bulgur wheat</td><td>Melon</td></tr>
@@ -314,7 +324,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
   <p>The glycaemic index measures how quickly carbohydrate-containing foods raise blood glucose levels compared with a reference food.</p>
   <div class="g2">
     <div class="panel" style="border-left:3px solid var(--green)"><div class="anton" style="font-size:17px">Low GI</div><p style="margin:4px 0 0">Generally produces a <b>slower</b> rise in blood glucose.</p></div>
-    <div class="panel" style="border-left:3px solid var(--vivify-2)"><div class="anton" style="font-size:17px">High GI</div><p style="margin:4px 0 0">Generally produces a <b>faster</b> rise in blood glucose.</p></div>
+    <div class="panel" style="border-left:3px solid var(--text-3)"><div class="anton" style="font-size:17px">High GI</div><p style="margin:4px 0 0">Generally produces a <b>faster</b> rise in blood glucose.</p></div>
   </div>
   <p style="margin-top:12px"><b>Neither category is inherently good or bad.</b> Low-GI foods suit everyday meals; higher-GI foods can be practical before, during or after exercise when rapid carbohydrate delivery helps. Fibre, portion size, preparation and the composition of the meal also influence the blood glucose response.</p>
   <div class="mphoto" style="height:66mm;margin-top:16px"><img src="assets/nutrition-cta-pasta.jpg" alt="Nests of fresh green spinach and plain egg pasta"></div>
@@ -336,11 +346,11 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <div><h3>Protein is also involved in</h3><div class="bar"></div>
     <div class="panel"><ul class="dots"><li>Enzyme production</li><li>Hormone synthesis</li><li>Immune function</li><li>Tissue repair</li><li>Red blood cell production</li></ul></div></div>
     <div style="display:flex;flex-direction:column"><h3>Recommended intake – average athlete</h3><div class="bar"></div>
-    <div class="tile wide t5" style="flex:1;display:flex;flex-direction:column;justify-content:center"><div class="v">1.6 – 2.3</div><div class="u">g per kg body weight</div><div class="l">Per day</div></div></div>
+    <div class="tile wide" style="flex:1;display:flex;flex-direction:column;justify-content:center"><div class="v">1.6 – 2.3</div><div class="u">g per kg body weight</div><div class="l">Per day</div></div></div>
   </div>
   <h3>Where to find it</h3><div class="bar"></div>
   <div class="tbl"><table class="avoid">
-    <tr><th style="width:25%"><span class="dot d-green"></span>Animal based</th><th style="width:25%"><span class="dot d-red"></span>Animal based<small>To avoid</small></th><th style="width:25%"><span class="dot d-viv"></span>Plant based</th><th><span class="dot d-white"></span>Isolated forms</th></tr>
+    <tr><th style="width:25%"><span class="dot d-green"></span>Animal based</th><th style="width:25%"><span class="dot d-red"></span>Animal based<small>To avoid</small></th><th style="width:25%"><span class="dot d-green"></span>Plant based</th><th><span class="dot d-grey"></span>Isolated forms</th></tr>
     <tr><td>Chicken fillets</td><td>Processed red meats</td><td>Quinoa</td><td>Whey protein</td></tr>
     <tr><td>Turkey fillets</td><td>Sausages, hot dogs</td><td>Tofu</td><td>Casein protein</td></tr>
     <tr><td>Grass-fed red meats</td><td>Bacon</td><td>Seitan</td><td>Rice protein</td></tr>
@@ -372,7 +382,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
       <tr><td>2.5 hard-boiled eggs</td></tr><tr><td>130 g edamame beans</td></tr><tr><td>125 g quark</td></tr><tr><td>150 g skyr or Greek yoghurt</td></tr><tr><td>½ scoop whey powder</td></tr><tr><td>125 g low-fat cottage cheese</td></tr><tr><td>200 g hummus</td></tr><tr><td>430 ml milk</td></tr><tr><td>135 g ricotta</td></tr><tr><td>420 ml kefir</td></tr><tr><td>75 g canned mackerel / sardines</td></tr>
     </table></div>
   </div>
-  <div class="callout viv"><div class="k">Plant-based options</div><p>Plant proteins can absolutely support athletic performance. Including a variety of plant protein sources throughout the day helps provide all the essential amino acids. Soy, tofu, tempeh and seitan are particularly useful concentrated protein sources.</p></div>
+  <div class="callout"><div class="k">Plant-based options</div><p>Plant proteins can absolutely support athletic performance. Including a variety of plant protein sources throughout the day helps provide all the essential amino acids. Soy, tofu, tempeh and seitan are particularly useful concentrated protein sources.</p></div>
   <h3>Main points</h3><div class="bar"></div>
   <div class="panel"><ul class="dots">
     <li>Include protein at breakfast, lunch and dinner.</li>
@@ -399,10 +409,10 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <div class="fat mono"><div class="hd"><div class="anton"><i style="background:var(--green)"></i>Monounsaturated</div><div class="tag">Omega-9 · Heart health</div></div>
       <div class="ds">Helps reduce cholesterol and improve cardiovascular health.</div>
       <ul><li>Extra virgin olive oil</li><li>Olives</li><li>Avocado</li><li>Rapeseed (canola) oil</li><li>Pistachios</li><li>Peanuts</li><li>Macadamia nuts</li><li>Almonds</li><li>Hazelnuts</li></ul></div>
-    <div class="fat poly"><div class="hd"><div class="anton"><i style="background:var(--vivify-text)"></i>Polyunsaturated</div><div class="tag">Omega-3 &amp; 6 · Anti-inflammatory</div></div>
+    <div class="fat poly"><div class="hd"><div class="anton"><i style="background:var(--green)"></i>Polyunsaturated</div><div class="tag">Omega-3 &amp; 6 · Anti-inflammatory</div></div>
       <div class="ds">Improves nerve, immune and brain function; decreases inflammation and pain.</div>
       <ul><li>Oily fish</li><li>Walnuts</li><li>Flaxseeds</li><li>Chia seeds</li><li>Hemp seeds</li><li>Sunflower oil &amp; seeds</li><li>Sesame seeds</li><li>Pumpkin seeds</li><li>Peanut oil</li></ul></div>
-    <div class="fat sat"><div class="hd"><div class="anton"><i style="background:var(--text-2)"></i>Saturated</div><div class="tag">Energy · Moderate intake</div></div>
+    <div class="fat sat"><div class="hd"><div class="anton"><i style="background:var(--text-3)"></i>Saturated</div><div class="tag">Energy · Moderate intake</div></div>
       <div class="ds">Good health benefits if from a good source: organic, free-range, grass-fed.</div>
       <ul><li>Coconut oil</li><li>Full-fat milk</li><li>Pork</li><li>Dairy (butter, cheese, milk, cream)</li><li>Free-range eggs</li><li>Fatty red meats</li><li>100% fat Greek yoghurt</li><li>Dark chocolate</li><li>Brazil &amp; macadamia nuts</li></ul></div>
     <div class="fat trans"><div class="hd"><div class="anton"><i style="background:var(--red)"></i>Processed or trans</div><div class="tag" style="color:var(--red-text)">Harmful · Discourage</div></div>
@@ -416,7 +426,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 <section class="page">
   <div class="run"><span>03 · Fats</span></div>
   <h3 style="margin-top:0">Recommended intake – average athlete</h3><div class="bar"></div>
-  <div class="tile wide t3"><div class="v">20 – 35 %</div><div class="u">of total daily energy intake</div><div class="l">Should come from fats</div></div>
+  <div class="tile wide"><div class="v">20 – 35 %</div><div class="u">of total daily energy intake</div><div class="l">Should come from fats</div></div>
   <h3>Fat portions</h3><div class="bar"></div>
   <p class="note" style="margin:0 0 10px">Each portion below supplies roughly the same amount of fat.</p>
   <div class="g2">
@@ -519,14 +529,14 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <ul class="dots"><li>Porridge with banana, Greek yoghurt &amp; peanut butter</li><li>Eggs on toast with fruit</li><li>Greek yoghurt with oats, berries and nuts</li><li>Smoothie with milk, banana and protein powder</li></ul></div></div>
     <em style="display:block;margin-top:6px">Requirements depend on the time and intensity of the next training session.</em>
   </div></div>
-  <div class="row v"><div class="lab">Before training</div><div class="bd"><ul class="dots">
+  <div class="row"><div class="lab">Before training</div><div class="bd"><ul class="dots">
     <li>Eat a carbohydrate-rich meal <b>1.5–3 hours</b> before training to optimise glycogen availability.</li>
     <li>If needed, have an easily digestible carbohydrate snack <b>30–60 minutes</b> before exercise.</li></ul></div></div>
   <div class="row"><div class="lab">During training</div><div class="bd"><ul class="dots">
     <li>Adjust carbohydrate intake according to exercise duration and intensity.</li>
     <li>For prolonged sessions, consume carbohydrates to maintain blood glucose availability and delay fatigue.</li>
     <li>Maintain adequate fluid and electrolyte intake.</li></ul></div></div>
-  <div class="row v"><div class="lab">After training</div><div class="bd"><ul class="dots">
+  <div class="row"><div class="lab">After training</div><div class="bd"><ul class="dots">
     <li>Consume approximately <b>20–40 g of high-quality protein</b> to stimulate muscle protein synthesis.</li>
     <li>Include carbohydrates to replenish muscle glycogen.</li>
     <li>Prioritise prompt recovery nutrition after demanding sessions, particularly when recovery time is limited.</li></ul></div></div>
@@ -538,21 +548,54 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
   <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">12</span></div>
 </section>
 
-<!-- 12 HYDRATION -->
+<!-- RECOVERY & RACE DAY -->
 <section class="page">
   <div class="run"><span>A practical guide to healthy habits, training and performance</span></div>
   <div class="sec">
     <span class="big">07</span>
     <div class="eyebrow">Section 07</div>
+    <h2>Recovery &amp; race day</h2>
+    <div class="bar"></div>
+    <p class="sub">Practical rules from the Cigala Cycling coaching team</p>
+  </div>
+  <p>Recovery is when the body adapts to the stress of exercise and the real training effect takes place. Fluid, electrolytes, carbohydrates and protein are the foundation of recovery nutrition.</p>
+  <h3>The 3:1 recovery rule</h3><div class="bar"></div>
+  <div class="g2" style="align-items:stretch">
+    <div class="tbl ratio"><table>
+      <tr><th>Protein after training</th><th>Carbs to match</th></tr>
+      <tr><td>20 g protein</td><td><b>60 g</b> carbs</td></tr>
+      <tr><td>25 g protein</td><td><b>75 g</b> carbs</td></tr>
+      <tr><td>30 g protein</td><td><b>90 g</b> carbs</td></tr>
+    </table></div>
+    <div class="panel"><ul class="dots">
+      <li>Eat within <b>30 minutes</b> of finishing a hard session or race, even more so in stage races.</li>
+      <li>At least <b>20 g of protein</b> straight after training boosts muscle protein synthesis.</li>
+      <li>Carbs and protein together refill glycogen faster than either on its own.</li>
+    </ul></div>
+  </div>
+  <h3>Race day timeline</h3><div class="bar"></div>
+  <div class="row"><div class="lab">3.5 hours before</div><div class="bd"><ul class="dots"><li>A good carbohydrate-based breakfast: porridge, pasta, rice.</li></ul></div></div>
+  <div class="row"><div class="lab">On the bike</div><div class="bd"><ul class="dots"><li>Around <b>60 g of carbs per hour</b>, more for longer races if your gut is trained for it.</li><li>For races of 100 km or more, aim to finish <b>three bottles</b>.</li></ul></div></div>
+  <div class="row"><div class="lab">Finish line</div><div class="bd"><ul class="dots"><li>10–15 minutes of easy spinning, then a recovery drink and a snack straight away.</li><li>Shower, legs up and rest for an hour before dinner, so blood goes to recovery, not digestion.</li></ul></div></div>
+  <div class="row"><div class="lab">Dinner &amp; night</div><div class="bd"><ul class="dots"><li>Plenty of carbohydrates to fill the tank for tomorrow, protein, fruit and vegetables.</li><li>In stage races, skip red meat at dinner: it is slow to digest. Sleep <b>7–8 hours</b>.</li></ul></div></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">13</span></div>
+</section>
+
+<!-- 12 HYDRATION -->
+<section class="page">
+  <div class="run"><span>A practical guide to healthy habits, training and performance</span></div>
+  <div class="sec">
+    <span class="big">08</span>
+    <div class="eyebrow">Section 08</div>
     <h2>Hydration</h2>
     <div class="bar"></div>
     <p class="sub">Water is essential for thermoregulation, nutrient transport and muscle contraction</p>
   </div>
   <p>Even mild dehydration can increase cardiovascular strain and negatively affect exercise performance, particularly in hot conditions.</p>
-  <div class="tiles" style="grid-template-columns:repeat(3,1fr);margin-top:12px">
-    <div class="tile t2"><div class="v">5–7 ml</div><div class="u">per kg body weight</div><div class="l">2–4 hours before</div></div>
-    <div class="tile t3"><div class="v">400–800 ml</div><div class="u">per hour</div><div class="l">During training</div></div>
-    <div class="tile t5"><div class="v">125–150 %</div><div class="u">of fluid lost</div><div class="l">After training</div></div>
+  <div class="tiles plain" style="grid-template-columns:repeat(3,1fr);margin-top:12px">
+    <div class="tile" data-l="2"><div class="v">5–7 ml</div><div class="u">per kg body weight</div><div class="l">2–4 hours before</div></div>
+    <div class="tile" data-l="3"><div class="v">400–800 ml</div><div class="u">per hour</div><div class="l">During training</div></div>
+    <div class="tile" data-l="5"><div class="v">125–150 %</div><div class="u">of fluid lost</div><div class="l">After training</div></div>
   </div>
   <div class="g2" style="margin-top:14px;align-items:start">
     <div class="hc"><div class="hd">Daily hydration</div><ul class="dots">
@@ -572,16 +615,43 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
       <li>Include sodium to improve fluid retention.</li>
       <li>Rehydrate progressively, particularly when another training session is scheduled within 24 hours.</li></ul></div>
   </div>
-  <div class="callout viv"><div class="k">Remember</div><p>Hydration needs are individual. Sweat rate, sodium losses, exercise intensity and environmental conditions should guide your hydration strategy.</p></div>
-  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">13</span></div>
+  <div class="callout"><div class="k">Remember</div><p>Hydration needs are individual. Sweat rate, sodium losses, exercise intensity and environmental conditions should guide your hydration strategy.</p></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">14</span></div>
+</section>
+
+<!-- HYDRATION 2 -->
+<section class="page">
+  <div class="run"><span>08 · Hydration</span></div>
+  <h3 style="margin-top:0">Why it matters</h3><div class="bar"></div>
+  <div class="tiles plain" style="grid-template-columns:repeat(3,1fr)">
+    <div class="tile"><div class="v">2 % → 6 %</div><div class="u">losing 2% of body weight in fluid</div><div class="l">Up to 6% less performance</div></div>
+    <div class="tile"><div class="v">2 L</div><div class="u">of water a day, plus what you drink on the bike</div><div class="l">Daily baseline</div></div>
+    <div class="tile"><div class="v">2–3 g</div><div class="u">of salt per litre of water</div><div class="l">On hotter days</div></div>
+  </div>
+  <h3>Find your sweat rate</h3><div class="bar"></div>
+  <p>Weigh yourself before and after a ride, without clothes and after going to the toilet. Every kilogram lost is about one litre of sweat.</p>
+  <div class="tbl ratio"><table>
+    <tr><th>Example</th><th>Before</th><th>After</th><th>Fluid drunk</th><th>Sweat lost</th><th>Drink to recover</th></tr>
+    <tr><td>2-hour ride</td><td>70.0 kg</td><td>69.0 kg</td><td>0.5 L</td><td><b>1.5 L</b> (0.75 L/h)</td><td><b>1.25–1.5 L</b></td></tr>
+  </table></div>
+  <p class="note">Sweat lost = weight lost + fluid drunk. To recover, replace 125–150% of the weight lost. Sweat also carries potassium, magnesium, calcium and iron, so include them in your diet, especially in summer.</p>
+  <div class="g2" style="margin-top:12px">
+    <div class="panel"><div class="anton" style="font-size:17px;margin-bottom:6px">Smart habits</div><ul class="dots">
+      <li>Take “water breaks” instead of coffee breaks: fill a 2 L bottle every morning and finish it by evening.</li>
+      <li>Add a pinch of salt or an electrolyte drink with enough sodium on hot days.</li>
+      <li>Go easy on caffeine and alcohol around training: both make you lose fluid.</li></ul></div>
+    <a class="tool" href="https://coaching.cigalacycling.com/tools/sweat-rate-calculator/"><div class="eyebrow" style="margin-bottom:8px">Free tool</div><div class="anton">Sweat rate calculator</div>How much you sweat per hour, and how much to drink on the bike.<span class="go">Open the calculator →</span></a>
+  </div>
+  <div class="coach"><img src="assets/matteo.jpg" alt="Matteo Cigala, Head Coach"><div><div class="k">From the coach</div><p>Losing more than 10–12% of body weight in fluid is dangerous. Plan your bottles before the ride, not when you are already thirsty.</p></div></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">15</span></div>
 </section>
 
 <!-- 13 PLATE -->
 <section class="page">
   <div class="run"><span>A practical guide to healthy habits, training and performance</span></div>
   <div class="sec">
-    <span class="big">08</span>
-    <div class="eyebrow">Section 08</div>
+    <span class="big">09</span>
+    <div class="eyebrow">Section 09</div>
     <h2>The Athlete’s Plate</h2>
     <div class="bar"></div>
     <p class="sub">The bottom line: finding balance is the key</p>
@@ -592,18 +662,22 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <div class="plate"><div class="t">Moderate training day</div><svg viewBox="0 0 100 100" data-pie="38,37,25"></svg><div class="x">+ Fats (1 tablespoon)<br>+ Beverage<br>+ Flavour<br>+ Fruit (side serving)</div></div>
     <div class="plate"><div class="t">Hard training day</div><svg viewBox="0 0 100 100" data-pie="25,50,25"></svg><div class="x">+ Fats (2 tablespoons)<br>+ Beverage<br>+ Flavour<br>+ Fruit (side serving)</div></div>
   </div>
-  <div class="legend"><span><i style="background:var(--green)"></i>Fruit &amp; veg.</span><span><i style="background:var(--vivify-2)"></i>Grains</span><span><i style="background:var(--text-2)"></i>Lean protein</span></div>
+  <div class="legend"><span><i style="background:var(--green)"></i>Fruit &amp; veg.</span><span><i style="background:var(--text-2)"></i>Grains</span><span><i style="background:#5d636b"></i>Lean protein</span></div>
   <p class="note" style="margin-top:12px">Fill your plate according to the demands of your day: more fruit and vegetables when training is light, and more grains as training volume and intensity increase.</p>
-  <div class="mphoto" style="height:72mm;margin-top:14px"><img src="assets/nutrition-granola-bowl.jpg" alt="Bowl of yoghurt topped with granola, nuts and goji berries" style="object-position:50% 50%"></div>
-  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">14</span></div>
+  <h3>How much energy?</h3><div class="bar"></div>
+  <div class="g2" style="align-items:stretch">
+    <div class="tile wide" style="display:flex;flex-direction:column;justify-content:center"><div class="v">2,500 – 10,000</div><div class="u">kcal per day</div><div class="l">Depending on training load</div></div>
+    <div class="panel"><p>You can’t drive a van across the country with an empty tank. Your needs depend on your <b>training load, gender, fitness level and body composition</b>.</p><p style="margin:0">Put extra carbs before high-intensity sessions (Zone 4 or higher), long rides of 3+ hours and race days. Protein belongs in every meal.</p></div>
+  </div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">16</span></div>
 </section>
 
 <!-- 14 PERSONALISED -->
 <section class="page">
   <div class="run"><span>A practical guide to healthy habits, training and performance</span></div>
   <div class="sec">
-    <span class="big">09</span>
-    <div class="eyebrow">Section 09</div>
+    <span class="big">10</span>
+    <div class="eyebrow">Section 10</div>
     <h2>Personalised nutrition plan</h2>
     <div class="bar"></div>
   </div>
@@ -624,15 +698,41 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
         <a href="https://coaching.cigalacycling.com/">coaching.cigalacycling.com</a><a href="mailto:matteo@cigalacycling.com">matteo@cigalacycling.com</a><div class="c">+353 83 477 7697</div></div>
     </div>
   </div>
-  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">15</span></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">17</span></div>
+</section>
+
+<!-- NUTRITION IN COACHING -->
+<section class="page">
+  <div class="run"><span>10 · Personalised nutrition plan</span></div>
+  <h3 style="margin-top:0">What the consultation covers</h3><div class="bar"></div>
+  <p>By assessing your dietary patterns, relationship to food, macronutrient and micronutrient balance, Vivify Sports gives you tailored solutions to reach your goals, looking particularly at:</p>
+  <div class="panel"><ul class="dots c2">
+    <li>Macronutrient requirements</li><li>Vitamin &amp; mineral requirements</li><li>Supplement requirements</li><li>Sport-specific requirements</li><li>Lifestyle advice</li><li>Healthy recipes</li><li>Craving control guidelines</li></ul></div>
+  <p style="margin-top:12px">You receive a full, in-depth report and a <b>Vital Hygiene Program</b>, with personalised advice on food, movement and tools to manage stress. You can book several sessions to add feedback and monitoring over a longer period.</p>
+  <h3>Nutrition in your Cigala Cycling coaching</h3><div class="bar"></div>
+  <p>Nutrition is part of every Cigala Cycling coaching package: training and fuelling are planned together, so you have the energy for the sessions that matter.</p>
+  <div class="tbl pk"><table>
+    <tr><th>Included</th><th>All packages</th><th>Advanced &amp; Premium</th></tr>
+    <tr><td>This nutritional guide</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+    <tr><td>Blood panel review from our sports nutritionist</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+    <tr><td>Access to work 1-to-1 with our nutritionist &amp; mental coach</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+    <tr><td>Daily carbohydrate recommendation for every session</td><td class="no">–</td><td class="ok">✓</td></tr>
+    <tr><td>Nutritional consult with our sports nutritionist</td><td class="no">–</td><td class="ok">✓</td></tr>
+  </table></div>
+  <h3>Free nutrition tools</h3><div class="bar"></div>
+  <div class="g2">
+    <a class="tool" href="https://coaching.cigalacycling.com/tools/carbs-per-hour-calculator/"><div class="anton">Carbs per hour</div>Your fuelling plan for a ride or race: grams of carbs per hour, in gels and bottles.<span class="go">Open the calculator →</span></a>
+    <a class="tool" href="https://coaching.cigalacycling.com/tools/sweat-rate-calculator/"><div class="anton">Sweat rate</div>How much you sweat per hour, and how much to drink on the bike.<span class="go">Open the calculator →</span></a>
+  </div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">18</span></div>
 </section>
 
 <!-- 15 FOUNDATIONS -->
 <section class="page">
   <div class="run"><div class="logos"><img src="assets/cigala-cycling-logo-square-print.png" alt="Cigala Cycling logo"><span>×</span><img src="assets/vivify-sports-logo-white-print.png" alt="Vivify Sports logo"></div><span>At a glance</span></div>
   <div class="sec">
-    <span class="big">10</span>
-    <div class="eyebrow">Section 10</div>
+    <span class="big">11</span>
+    <div class="eyebrow">Section 11</div>
     <h2>The foundations of sports nutrition</h2>
     <div class="bar"></div>
     <p class="sub">A practical framework for health, performance &amp; recovery</p>
@@ -656,13 +756,14 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     </div>
   </div>
   <div class="quote"><div class="anton">The right nutrition strategy is individual.</div><p>Match your intake to your training load, goals and recovery needs.</p></div>
-  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">16</span></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Nutritional Guide</span><span class="n">19</span></div>
 </section>
 
 <script>
 // plate pies: data-pie = fruit&veg, grains, protein (percent), drawn clockwise from 12 o'clock
+document.querySelectorAll('.tiles.scale .tile').forEach(t=>{const l=+t.dataset.l,m=document.createElement('div');m.className='m';m.innerHTML=[1,2,3,4,5].map(i=>`<i class="${i<=l?'on':''}"></i>`).join('');t.appendChild(m)});
 document.querySelectorAll('svg[data-pie]').forEach(svg=>{
-  const v=svg.dataset.pie.split(',').map(Number), cols=['#009a44','#2f6f7a','#d0d6e0'], labs=['Fruit & veg.','Grains','Protein'], txt=['#fff','#fff','#08090a'];
+  const v=svg.dataset.pie.split(',').map(Number), cols=['#009a44','#d0d6e0','#5d636b'], labs=['Fruit & veg.','Grains','Protein'], txt=['#fff','#08090a','#fff'];
   let a=0, out='';
   const pt=(ang,r)=>[50+r*Math.sin(ang*2*Math.PI/100),50-r*Math.cos(ang*2*Math.PI/100)];
   v.forEach((p,i)=>{
