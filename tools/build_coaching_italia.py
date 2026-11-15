@@ -131,6 +131,19 @@ def ev_card(x):
     won = '<span class="it-ev-won">★ Vinta da Matteo</span>' if any(w in name for w in WON) else ''
     return (f'<li style="--tc:{c}"><span class="it-ev-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{EV_IC[t]}</svg></span><span class="it-ev-tag">{t}</span>'
             f'<b>{E(name)}</b>{won}{f"<span class=it-ev-pl>{E(rest.strip("() ").replace(") —", " —"))}</span>" if rest else ""}</li>')
+# Matteo 15 Nov: the sample calendar in Italian too (same days and numbers as on the English pages)
+CAL_IT = [('>Nutrition<', '>Nutrizione<'),
+          ('Daily macronutrient intake: 300 g carbohydrates · 160 g protein · 75 g fat', 'Apporto giornaliero di macronutrienti: 300 g carboidrati · 160 g proteine · 75 g grassi'),
+          ('Daily macronutrient intake: 560 g carbohydrates = 2,240 kcal (62.2%)', 'Apporto giornaliero di macronutrienti: 560 g carboidrati = 2.240 kcal (62,2%)'),
+          ('4×6 min torque efforts alternating + bursts', '4×6 min di forza resistente alternati a scatti'),
+          ('LDT + 3×10′ at SS, high cadence', 'LDT + 3×10′ in sweet spot, cadenza alta'),
+          ('LDT 4h aim at 2000 m elevation', 'LDT 4h con obiettivo 2000 m di dislivello')]
+def cal_it():
+    h = P.NUT.cal_days(('21', '24', '26'))
+    for a, b in CAL_IT:
+        assert a in h, a
+        h = h.replace(a, b)
+    return h
 FACTS = [('clock', 'Comunicazione in italiano', 'Parli direttamente con Matteo, nella tua lingua, per chiamate, feedback e domande.'),
          ('currency', 'Prezzi in euro', 'Paghi in euro: nessun costo di cambio.'),
          ('route', 'Costruito sulle tue strade', 'Dolomiti, Appennini, gravel o pianura: il piano segue il tuo territorio e il tuo calendario gare.')]
@@ -204,7 +217,7 @@ MAIN = f'''<div class="hero hero-sm">
     <div class="cn-howgrid">
       <ol class="cn-days">{how}</ol>
       <figure class="nu-cal pk-cal cn-cal">
-        <div class="cal-scroll" tabindex="0" aria-label="Giorni di esempio dal calendario di un atleta, con la nutrizione"><div class="cal-row">{P.NUT.cal_days(('21', '24', '26'))}</div></div>
+        <div class="cal-scroll" tabindex="0" aria-label="Giorni di esempio dal calendario di un atleta, con la nutrizione"><div class="cal-row">{cal_it()}</div></div>
         <figcaption>Giorni di esempio dal calendario di un atleta: le tue sessioni e, con il coaching nutrizionale, le note di Marine e i carboidrati per ora. <a href="{C}/nutrition/#upgrade" {EXT}>Scopri il coaching nutrizionale →</a></figcaption>
       </figure>
     </div>
