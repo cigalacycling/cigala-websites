@@ -152,13 +152,14 @@ FT_CSS = '''<style>
 CASES = [
     {'slug': 'marine-lenehan',
      'timeline': [('February', 'First rides: a complete newcomer to cycling'), ('With Matteo', 'A crash course in cycling and personalised, detailed sessions'),
-                  ('Within the year', 'European Gran Fondo & gravel champion (19–34)'), ('Worlds', 'Silver medal at the Gran Fondo World Championships')],
-     'source': 'From Marine’s testimonial', 'photo_file': 'coaching/athletes/marine-lenehan.webp', 'name': 'Marine Lenehan', 'where': 'Ireland', 'photo': 'T135849.182',
-     'headline': 'From first ride to European champion', 'stat': 'European champion', 'tag': 'Gran Fondo & gravel',
+                  ('Within the year', 'European Gran Fondo & gravel champion (19–34)'), ('Worlds', 'Silver medal at the Gran Fondo World Championships'),
+                  ('Now', 'Stepped up to the WorldTour: a professional rider')],   # Matteo 15 Nov 2026
+     'source': 'From Marine’s testimonial',   # WorldTour step: Matteo, 15 Nov 2026 'photo_file': 'coaching/athletes/marine-lenehan.webp', 'name': 'Marine Lenehan', 'where': 'Ireland', 'photo': 'T135849.182',
+     'headline': 'From first ride to the WorldTour', 'stat': 'WorldTour pro', 'stat_label': 'From first ride to pro', 'tag': 'Road · Gran Fondo & gravel',
      'before': 'A complete newcomer to cycling: she started riding in February.',
      'goal': 'Learn the sport and find out how far she could go.',
      'how': ['A crash course in cycling, built from scratch', 'Personalised sessions with attention to every detail', 'Every session different, so training stayed fun and dynamic'],
-     'result': 'European Gran Fondo & gravel champion (19–34) and silver medallist at the Gran Fondo World Championships, within a year of starting cycling.',
+     'result': 'European Gran Fondo & gravel champion (19–34) and silver medallist at the Gran Fondo World Championships, within a year of starting cycling. Since then she has made the biggest step of all: she now races in the WorldTour, the top level of professional cycling.',
      'quote': 'He has not only made me fall in love with cycling, but has believed in me even when I didn’t.'},
     # Tilen: Matteo's athlete case study post (15 Nov 2026, "Athlete Review" chat); numbers from his Vekta data.
     # No photo yet (Matteo will send it): the card and the case show his numbers instead.
@@ -563,7 +564,7 @@ document.querySelectorAll('.dd').forEach(function (d) {
 # Quotes are the athletes' own words from the live Testimonials page (coaching/text/testimonials.txt); no star ratings,
 # because these are testimonials, not rated reviews. The Google link goes to Matteo's Google Business Profile.
 REVIEWS = [   # strongest first; photo = the image above each testimonial on the live Testimonials page (Matteo 15 Nov: Marine first; 15 Nov: mix in the athletes from other countries)
-    ('', 'He has not only made me fall in love with cycling, but has believed in me even when I didn’t. As I speak, I am current European Gran Fondo & gravel 19-34 champion, silver medalist at the Gran Fondo Worlds, from only starting cycling last February this year.', 'Marine Lenehan', 'Ireland', 'T135849.182'),
+    ('', 'He has not only made me fall in love with cycling, but has believed in me even when I didn’t. As I speak, I am current European Gran Fondo & gravel 19-34 champion, silver medalist at the Gran Fondo Worlds, from only starting cycling last February this year.', 'Marine Lenehan', 'Now a WorldTour pro · Ireland', 'T135849.182'),
     ('', 'With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.', 'Bernd Ondruch', 'Germany', 'T134927.535'),
     ('', 'First time was a 9 month training plan to get me from couch (literally!) to Haute Route Pyrenees in 2017 to mark my 60th birthday. More recently, I have worked with Matteo to help me recover from heart disease and a cardiac procedure.', 'Derek Lawler', 'Kilkenny, Ireland', 'T140239.558'),
     ('', 'After 7 weeks of following his programme, which is mainly working in Z1/2 with bits of Z3, I’ve managed to get a PB FTP of 207W.', 'Lisa Dunne', 'Al Jassra Race Team, Qatar', 'T140416.718'),

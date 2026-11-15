@@ -461,10 +461,34 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 .panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
 .faq h3 { display: inline; font: 600 15px/1.4 var(--body); text-transform: none; letter-spacing: 0; color: var(--text); }
 @media (max-width: 900px) { .gn-photo { aspect-ratio: 16 / 10; } }
+</style><style>
+.nu-hero > img { object-position: 50% 45%; }
+.nu-marine { aspect-ratio: 4 / 5; max-width: 440px; justify-self: center; }
+.nu-marine img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.nu-lede { color: var(--text-2); max-width: 70ch; margin: 0 0 20px; line-height: 1.65; }
+.nu-cov { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.nu-cov li { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel-grad), var(--panel); font-weight: 600; color: var(--text); }
+.nu-cov svg { width: 26px; height: 26px; flex: none; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nu-pkg { list-style: none; margin: 0; padding: 8px 20px; align-self: center; }
+.nu-pkg li { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); color: var(--text); }
+.nu-pkg li:last-child { border-bottom: 0; }
+.nu-pkg small { flex: none; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-text); }
+.nu-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.nu-tool { display: grid; gap: 8px; padding: 22px; text-decoration: none; color: var(--text); transition: border-color .2s; }
+.nu-tool:hover { border-color: rgba(0,154,68,.6); }
+.nu-tool h3, .nu-tool p { margin: 0; }
+.nu-tool p { color: var(--text-2); font-size: 15px; }
+.nu-posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.nu-post { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--panel-grad), var(--panel); text-decoration: none; transition: border-color .2s, transform .2s; }
+.nu-post:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
+.nu-pimg { aspect-ratio: 16 / 10; overflow: hidden; background: #111; }
+.nu-pimg img { width: 100%; height: 100%; object-fit: cover; }
+.nu-ptx { display: grid; gap: 8px; padding: 16px 18px 18px; }
+.nu-ptx h3 { margin: 0; color: var(--text); }
 </style>
 <div class="topo" aria-hidden="true"></div>
 <div class="page">
-<div class="ribbon"><div class="in"><b>Preview</b><span>New /nutrition/ in the Cigala Cycling design: live H1, H2s, copy and images kept.</span></div></div>
+<div class="ribbon"><div class="in"><b>Preview</b><span>Nutrition rebuilt as a nutrition page: Vivify Sports booking, what is covered, nutrition posts, FAQ.</span></div></div>
 <header class="nav">
   <div class="in">
     <a class="brand" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo-v2.webp" alt="Cigala Cycling Coaching Logo" width="58" height="58"></a>
@@ -493,57 +517,88 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
     </details>
   </div>
 </header>
-<div class="hero hero-sm">
-  <img src="img/pg-hero-nutrition.webp" alt="Cigala Matteo Gran Fondo Strade Bianche">
+<div class="hero hero-sm nu-hero">
+  <img src="img/nutrition-hero-strawberries.webp" alt="Cycling&#x27;s nutrition">
   <div class="in">
+    <div class="eyebrow eb-pill"><span class="dot"></span>Sports nutrition with Vivify Sports</div>
     <h1>PERSONALIZED NUTRITIONAL PLAN FOR YOU TO IGNITE YOUR POTENTIAL</h1>
-    
-    
+    <p class="lede">Whether you are looking to clean up your diet, to boost your energy levels &amp; performance, to manage your weight, to boost your immune system, to improve your relationship to food or simply seeking general guidance on nutrition, VIVIFY SPORTS is here to help. The consultation is scheduled at a time that suits you, and can be done from the comfort of your own home.</p>
+    <div class="ctas"><a class="btn btn-go" href="https://www.vivifysports.com/nutritionalcoaching" target="_blank" rel="noopener">Book your consultation</a><a class="btn btn-ghost" href="#covered">What’s covered ↓</a></div>
   </div>
 </div>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>BOOK YOUR CONSULTATION BELOW</h2><div class="bar"></div><p>Whether you are looking to clean up your diet, to boost your energy levels &amp; performance, to manage your weight, to boost your immune system, to improve your relationship to food or simply seeking general guidance on nutrition, VIFIFY SPORTS is here to help..The consultation is scheduled at a time that suits you, and can be done from the comfort of your own home.You will receive a full in depth report summarizing my observations to help you understand and be responsible for your own health.I then give you a Vital Hygiene Program which will guide you to establish a healthy lifestyle adapted to your physiology. You will find personalized advice on food, physical exercises to promote movement or even tools to manage your stress and emotions.You also have the option of booking multiple sessions to ensure you can layer feedback and monitoring over a longer time period, to amplify results.</p><p><b>WHAT’S COVERED</b></p><p>By assessing your dietary patterns, relationship to food, macronutrient &amp; micronutrient balance, VIVIFY SPORTS will give you tailored solutions to reach your goals.</p><p>Particularly looking into:</p><p>➔ Macronutrients requirements</p><p>➔ Vitamins &amp; Minerals requirements</p><p>➔ Supplements requirements</p><p>➔ Sports specific requirements</p><p>➔ Lifestyle advice</p><p>➔ Healthy recipes</p><p>➔ Craving control guidelines</p><div class="ctas"><a class="btn btn-go" href="#" target="_blank" rel="noopener">LEARN MORE</a><a class="btn btn-ghost" href="https://www.vivifysports.com/nutritionalcoaching" target="_blank" rel="noopener">BOOK YOUR CONSULATION</a></div></div>
+  <div class="in split">
+    <div class="gn-txt">
+      <div class="eyebrow">Your consultation</div>
+      <h2>BOOK YOUR CONSULTATION BELOW</h2><div class="bar"></div>
+      <p>You will receive a full in depth report summarizing my observations to help you understand and be responsible for your own health.</p><p>I then give you a Vital Hygiene Program which will guide you to establish a healthy lifestyle adapted to your physiology. You will find personalized advice on food, physical exercises to promote movement or even tools to manage your stress and emotions.</p><p>You also have the option of booking multiple sessions to ensure you can layer feedback and monitoring over a longer time period, to amplify results.</p>
+      <div class="ctas"><a class="btn btn-go" href="https://www.vivifysports.com/nutritionalcoaching" target="_blank" rel="noopener">Book your consultation</a><a class="btn btn-ghost" href="https://www.vivifysports.com/nutritionalcoaching" target="_blank" rel="noopener">Learn more about Vivify Sports</a></div>
+    </div>
+    <div class="photo nu-marine"><img src="img/nutrition-marine.webp" alt="Marine Lenehan nutrition " loading="lazy" width="947" height="1263"></div>
+  </div>
 </section>
 
-<section>
-  <div class="in gn-txt gn-solo"><h2>READ VIVIFY SPORTS NUTRITIONAL BLOG POSTS</h2><div class="bar"></div></div>
-</section>
-
-<section>
-  <div class="in gn-txt gn-solo"><h2>By Founder &amp; Head Coach, Matteo Cigala</h2><div class="bar"></div><p>Every winter the same question comes up: should I be in the gym, or is that time better spent on the bike? The short answer is yes, strength work makes</p><p>[</p><p>](https://coaching.cigalacycling.com/blog/slower-in-winter-is-not-your-legs/)</p><div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/blog/strength-training-for-cyclists/" target="_blank" rel="noopener">Read More</a></div></div>
-</section>
-
-<section>
-  <div class="in split gn-split flip">
-    <div class="gn-txt"><h2>By Founder &amp; Head Coach, Matteo Cigala</h2><div class="bar"></div><p>Every November the same message lands in my inbox: &quot;Matteo, I&#x27;ve lost my fitness. Same loop, same effort, and I&#x27;m slower.&quot; In most cases nothing was lost. The air got</p><p>[</p><p>](https://coaching.cigalacycling.com/blog/critical-power-testing/)</p><div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/blog/slower-in-winter-is-not-your-legs/" target="_blank" rel="noopener">Read More</a></div></div>
-    <div class="photo gn-photo gn-png"><img src="img/pg-26-10-download-2026-10-20t183643-559-png.webp" alt="" loading="lazy"></div>
+<section id="covered">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Vivify Sports</div><h2>WHAT’S COVERED</h2><div class="bar"></div></div></div>
+    <p class="nu-lede">By assessing your dietary patterns, relationship to food, macronutrient &amp; micronutrient balance, VIVIFY SPORTS will give you tailored solutions to reach your goals. Particularly looking into:</p>
+    <ul class="nu-cov"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10H12z"/><path d="M14 2.2A10 10 0 0 1 21.8 10H14z"/></svg><span>Macronutrients requirements</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 20.5 3.5 13.5a5 5 0 0 1 7-7l7 7a5 5 0 0 1-7 7z"/><path d="m8.5 8.5 7 7"/></svg><span>Vitamins &amp; Minerals requirements</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="3"/><path d="M7 12h10"/></svg><span>Supplements requirements</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6h2l3 11.5M5.5 17.5 9 9h7l-4 8.5M9 9 8 6H6"/></svg><span>Sports specific requirements</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Lifestyle advice</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M8 7c0-2 1-3 2-4M12 7c0-2 1-3 2-4M16 7c0-2 1-3 2-4"/></svg><span>Healthy recipes</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg><span>Craving control guidelines</span></li></ul>
   </div>
 </section>
 
 <section>
-  <div class="in split gn-split">
-    <div class="gn-txt"><h2>By Founder &amp; Head Coach, Matteo Cigala</h2><div class="bar"></div><p>Critical Power (CP) testing is more than simply finding the highest average power you can produce.</p><p>[</p><p>](https://coaching.cigalacycling.com/blog/off-season-transition/)</p><div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/blog/critical-power-testing/" target="_blank" rel="noopener">Read More</a></div></div>
-    <div class="photo gn-photo"><img src="img/pg-cycling-resting-before-riding.webp" alt="Cycling Resting before riding" loading="lazy"></div>
+  <div class="in split">
+    <div class="gn-txt">
+      <div class="eyebrow">Coached by Cigala Cycling?</div>
+      <h2>NUTRITION IN YOUR COACHING</h2><div class="bar"></div>
+      <p>Nutrition is part of every Cigala Cycling coaching package: training and fuelling are planned together, so you have the energy for the sessions that matter.</p>
+      <div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/individual-packages/" target="_blank" rel="noopener">See the packages</a></div>
+    </div>
+    <ul class="nu-pkg panel"><li><span>Nutritional Guide</span><small>All packages</small></li><li><span>Blood panel review from our Sport Nutritionist</span><small>All packages</small></li><li><span>Access to work 1-to-1 with our World Class Nutritionist &amp; Mental Coach</span><small>All packages</small></li><li><span>Daily Session Carbs Recommendations</span><small>Advanced &amp; Premium</small></li><li><span>Nutritional Consult with our Sports Nutritionist</span><small>Advanced &amp; Premium</small></li></ul>
   </div>
 </section>
 
 <section>
-  <div class="in split gn-split flip">
-    <div class="gn-txt"><h2>By Founder &amp; Head Coach, Matteo Cigala</h2><div class="bar"></div><p>Train smarter. Recover with purpose. Build for the next season.</p><p>[</p><p>](https://coaching.cigalacycling.com/blog/ai-cycling-coaching-why-great-coaching-is-more-than-a-training-plan/)</p><div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/blog/off-season-transition/" target="_blank" rel="noopener">Read More</a></div></div>
-    <div class="photo gn-photo gn-png"><img src="img/pg-2026-08-vekta-x-cigala-cycling-png.webp" alt="" loading="lazy"></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Free calculators</div><h2>FREE NUTRITION TOOLS</h2><div class="bar"></div></div></div>
+    <div class="nu-tools">
+      <a class="panel nu-tool" href="https://coaching.cigalacycling.com/tools/carbs-per-hour-calculator/" target="_blank" rel="noopener"><h3 class="h-sm">Carbs per hour</h3><p>Your fuelling plan for a ride or race: grams of carbs per hour, in gels and bottles.</p><span class="arrow-link">Open the calculator →</span></a>
+      <a class="panel nu-tool" href="https://coaching.cigalacycling.com/tools/sweat-rate-calculator/" target="_blank" rel="noopener"><h3 class="h-sm">Sweat rate</h3><p>How much you sweat per hour, and how much to drink on the bike.</p><span class="arrow-link">Open the calculator →</span></a>
+    </div>
   </div>
 </section>
 
 <section>
-  <div class="in split gn-split">
-    <div class="gn-txt"><h2>By Founder &amp; Head Coach, Matteo Cigala</h2><div class="bar"></div><p>For the last decade I&#x27;ve coached everyone from first-time sportive riders to elite cyclists competing for World Championship medals.</p><p>[</p><p>](https://coaching.cigalacycling.com/blog/preparazione-gran-fondo-strade-bianche/)</p><div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/blog/ai-cycling-coaching-why-great-coaching-is-more-than-a-training-plan/" target="_blank" rel="noopener">Read More</a></div></div>
-    <div class="photo gn-photo"><img src="img/pg-27643164654735-2309285600669547947-n-jpg.webp" alt="" loading="lazy"></div>
+  <div class="in">
+    <div class="head">
+      <div><div class="eyebrow">From our blog</div><h2>READ VIVIFY SPORTS NUTRITIONAL BLOG POSTS</h2><div class="bar"></div></div>
+      <div class="rv-links"><a class="arrow-link" href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">All blog posts →</a></div>
+    </div>
+    <div class="nu-posts"><a class="nu-post" href="https://coaching.cigalacycling.com/blog/diet-of-a-cyclist/" target="_blank" rel="noopener"><span class="nu-pimg"><img src="img/nutrition-post-diet-of-a-cyclist.webp" alt="Diet of a cyclist, pasta, carbs." loading="lazy"></span><span class="nu-ptx"><h3 class="h-sm">Diet of a cyclist</h3><span class="arrow-link">Read the article →</span></span></a><a class="nu-post" href="https://coaching.cigalacycling.com/blog/effective-fuelling-techniques-for-winter-training/" target="_blank" rel="noopener"><span class="nu-pimg"><img src="img/nutrition-post-effective-fuelling-techniques-for-winter.webp" alt="Fueling techniques during winter for cyclists" loading="lazy"></span><span class="nu-ptx"><h3 class="h-sm">Fuelling for winter training</h3><span class="arrow-link">Read the article →</span></span></a><a class="nu-post" href="https://coaching.cigalacycling.com/blog/hydration-tips/" target="_blank" rel="noopener"><span class="nu-pimg"><img src="img/nutrition-post-hydration-tips.webp" alt="Water and hydrations tips" loading="lazy"></span><span class="nu-ptx"><h3 class="h-sm">Hydration Tips</h3><span class="arrow-link">Read the article →</span></span></a><a class="nu-post" href="https://coaching.cigalacycling.com/blog/why-is-hydration-vital-to-optimise-athletic-performance-2/" target="_blank" rel="noopener"><span class="nu-pimg"><img src="img/nutrition-post-why-is-hydration-vital-to-optimise-athle.webp" alt="Water is vital for cycling performance" loading="lazy"></span><span class="nu-ptx"><h3 class="h-sm">Why is hydration vital to optimise performance</h3><span class="arrow-link">Read the article →</span></span></a><a class="nu-post" href="https://coaching.cigalacycling.com/blog/the-secrets-of-weight-loss/" target="_blank" rel="noopener"><span class="nu-pimg"><img src="img/nutrition-post-the-secrets-of-weight-loss.webp" alt="Weight loss for cycling. The secret" loading="lazy"></span><span class="nu-ptx"><h3 class="h-sm">The secrets of weight loss</h3><span class="arrow-link">Read the article →</span></span></a><a class="nu-post" href="https://coaching.cigalacycling.com/blog/a-nutritionists-guide-on-surviving-christmas/" target="_blank" rel="noopener"><span class="nu-pimg"><img src="img/nutrition-post-a-nutritionists-guide-on-surviving-chris.webp" alt="Nutritionist guide for christmas" loading="lazy"></span><span class="nu-ptx"><h3 class="h-sm">Nutritionist’s guide on surviving Christmas</h3><span class="arrow-link">Read the article →</span></span></a></div>
   </div>
 </section>
 
 <section>
-  <div class="in gn-txt gn-solo"><h2>By Founder &amp; Head Coach, Matteo Cigala</h2><div class="bar"></div><p>La Gran Fondo Strade Bianche è una delle manifestazioni ciclistiche più iconiche d&#x27;Italia. Partendo e arrivando a Siena, il percorso attraversa le leggendarie strade bianche della Toscana, alternando asfalto e</p><div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/blog/preparazione-gran-fondo-strade-bianche/" target="_blank" rel="noopener">Read More</a><a class="btn btn-ghost" href="None" target="_blank" rel="noopener">Continue Reading ...</a></div></div>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Good to know</div><h2>FREQUENTLY ASKED QUESTIONS</h2><div class="bar"></div></div></div>
+    <div class="faq"><details open><summary><h3>Who is the nutrition consultation for?</h3></summary><p>Anyone who wants to clean up their diet, boost energy levels and performance, manage their weight, support their immune system, improve their relationship with food, or simply get general guidance on nutrition.</p></details><details><summary><h3>How does the consultation work?</h3></summary><p>You will receive a full in depth report summarizing my observations to help you understand and be responsible for your own health. You receive a full, in-depth report and a Vital Hygiene Program with personalised advice on food, movement and tools to manage stress. You can book several sessions to add feedback and monitoring over a longer period.</p></details><details><summary><h3>Is nutrition included in my coaching package?</h3></summary><p>Yes. Every package includes a nutritional guide, a blood panel review from our sports nutritionist and access to our nutritionist and mental coach. Advanced and Premium add a carbohydrate recommendation for every session and a nutritional consult with our sports nutritionist.</p></details><details><summary><h3>How many carbs per hour should I eat on the bike?</h3></summary><p>It depends on how long and how hard the ride is, and on how much your gut is trained to take. Our free carbs-per-hour calculator gives you a starting number in seconds, and in coaching every session comes with its own recommendation (Advanced and Premium).</p></details><details><summary><h3>How much should I drink when I ride?</h3></summary><p>Sweat losses vary a lot between riders and with the weather. Weigh yourself before and after a ride with our free sweat-rate calculator to find out how much you lose per hour, then plan your bottles around it.</p></details></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="band band-cta">
+      <img src="img/nutrition-cta-pasta.webp" alt="Diet of a cyclist, pasta, carbs." loading="lazy" width="1600" height="1059">
+      <div class="tx">
+        <div class="eyebrow">Vivify Sports</div>
+        <h3 class="h-sec">READY TO FUEL BETTER?</h3>
+        <div class="bar"></div>
+        <p class="lede">Book a consultation at a time that suits you, from the comfort of your own home.</p>
+        <div class="ctas"><a class="btn btn-go" href="https://www.vivifysports.com/nutritionalcoaching" target="_blank" rel="noopener">Book your consultation</a></div>
+      </div>
+    </div>
+  </div>
 </section>
 <footer>
   <div class="in fcols">
@@ -578,5 +633,5 @@ document.querySelectorAll('.dd').forEach(function (d) {
   b.addEventListener('click', function () { var o = d.classList.toggle('open'); b.setAttribute('aria-expanded', o); });
   d.addEventListener('focusout', function (e) { if (!d.contains(e.relatedTarget)) { d.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
 });
-</script>
+</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Who is the nutrition consultation for?", "acceptedAnswer": {"@type": "Answer", "text": "Anyone who wants to clean up their diet, boost energy levels and performance, manage their weight, support their immune system, improve their relationship with food, or simply get general guidance on nutrition."}}, {"@type": "Question", "name": "How does the consultation work?", "acceptedAnswer": {"@type": "Answer", "text": "You will receive a full in depth report summarizing my observations to help you understand and be responsible for your own health. You receive a full, in-depth report and a Vital Hygiene Program with personalised advice on food, movement and tools to manage stress. You can book several sessions to add feedback and monitoring over a longer period."}}, {"@type": "Question", "name": "Is nutrition included in my coaching package?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Every package includes a nutritional guide, a blood panel review from our sports nutritionist and access to our nutritionist and mental coach. Advanced and Premium add a carbohydrate recommendation for every session and a nutritional consult with our sports nutritionist."}}, {"@type": "Question", "name": "How many carbs per hour should I eat on the bike?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on how long and how hard the ride is, and on how much your gut is trained to take. Our free carbs-per-hour calculator gives you a starting number in seconds, and in coaching every session comes with its own recommendation (Advanced and Premium)."}}, {"@type": "Question", "name": "How much should I drink when I ride?", "acceptedAnswer": {"@type": "Answer", "text": "Sweat losses vary a lot between riders and with the weather. Weigh yourself before and after a ride with our free sweat-rate calculator to find out how much you lose per hour, then plan your bottles around it."}}]}</script>
 </body></html>
