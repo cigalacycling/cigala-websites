@@ -287,8 +287,10 @@ section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; bo
   .finder { margin-bottom: 30px; }
   section.matteo .in .photo img { width: 100%; max-width: 340px; }
 }
-#tour-grid .tour { aspect-ratio: auto; min-height: 430px; }   /* grow with long text + badge; rows stay equal height */
-#tour-grid .tour .tx { padding-top: 66px; }
+#tour-grid .tour { aspect-ratio: auto; min-height: 380px; }   /* grow with long text + badge; rows stay equal height */
+#tour-grid .tour .tx { padding-top: 58px; padding-bottom: 18px; }
+#tour-grid .tour p { margin: 6px 0 10px; }
+@media (min-width: 1100px) { #tour-grid .tour .facts { margin-bottom: 8px; } }
 
 @media (max-width: 1080px) { .menu { display: none; } .burger { display: block; } .nav .btn { display: none; } }
 @media (max-width: 900px) {
