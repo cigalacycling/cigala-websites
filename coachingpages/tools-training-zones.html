@@ -441,10 +441,13 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
 .tl-z { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: 1px; }
 .tl-note { font-size: 13.5px; color: var(--text-3); margin: 0; }
 .tl-note a, .tl-txt a { color: var(--green-text); }
-.tl-txt { max-width: 72ch; }
-.tl-txt h2 { font-size: clamp(24px, 2.8vw, 34px); margin-top: 8px; }
-.tl-txt p, .tl-txt li { color: var(--text-2); font-size: 16px; line-height: 1.65; }
-.tl-txt h3 { font-size: 22px; margin: 26px 0 0; }
+.tl-txt { max-width: 760px; }   /* left-aligned with the rest of the page, like the other sections */
+.tl-txt .bar { margin-bottom: 22px; }
+.tl-txt p { color: var(--text-2); font-size: 16px; line-height: 1.65; margin: 0 0 14px; }
+.tl-txt ul { margin: 0 0 14px; padding-left: 20px; }
+.tl-txt li { color: var(--text-2); font-size: 16px; line-height: 1.65; margin-bottom: 6px; }
+.tl-txt h3 { font-size: 22px; margin: 30px 0 10px !important; }
+.tl-txt ul.tl-reads { padding-left: 0; margin-top: 20px; }
 .tl-reads { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 8px; }
 .tl-reads a { color: var(--green-text); font-weight: 600; text-decoration: none; }
 .tl-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -544,7 +547,7 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
 </section>
 
 <section>
-  <div class="in tl-txt">
+  <div class="in"><div class="tl-txt">
     <div class="eyebrow">How it works</div>
     <h2>HOW TO USE YOUR TRAINING ZONES</h2>
     <div class="bar"></div>
@@ -562,7 +565,7 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
     <h3>Keep your zones up to date</h3>
     <p>Your zones change as you get fitter. Re-test every 6 to 8 weeks. Our coached riders get adaptive zones that change every week, and testing with Critical Power or INSCYD, which goes beyond FTP.</p>
     <ul class="tl-reads"><li><a href="https://coaching.cigalacycling.com/blog/what-is-ftp-cycling/" target="_blank" rel="noopener">What is FTP in cycling? →</a></li><li><a href="https://coaching.cigalacycling.com/blog/zone-2-training/" target="_blank" rel="noopener">The power of Zone 2 training →</a></li><li><a href="https://coaching.cigalacycling.com/blog/zone-2-isnt-easy/" target="_blank" rel="noopener">Zone 2 isn’t easy →</a></li></ul>
-  </div>
+  </div></div>
 </section>
 
 <section>

@@ -131,10 +131,13 @@ fieldset.tl-f { border: 0; padding: 0; margin: 0 0 16px; }
 .tl-z { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: 1px; }
 .tl-note { font-size: 13.5px; color: var(--text-3); margin: 0; }
 .tl-note a, .tl-txt a { color: var(--green-text); }
-.tl-txt { max-width: 72ch; }
-.tl-txt h2 { font-size: clamp(24px, 2.8vw, 34px); margin-top: 8px; }
-.tl-txt p, .tl-txt li { color: var(--text-2); font-size: 16px; line-height: 1.65; }
-.tl-txt h3 { font-size: 22px; margin: 26px 0 0; }
+.tl-txt { max-width: 760px; }   /* left-aligned with the rest of the page, like the other sections */
+.tl-txt .bar { margin-bottom: 22px; }
+.tl-txt p { color: var(--text-2); font-size: 16px; line-height: 1.65; margin: 0 0 14px; }
+.tl-txt ul { margin: 0 0 14px; padding-left: 20px; }
+.tl-txt li { color: var(--text-2); font-size: 16px; line-height: 1.65; margin-bottom: 6px; }
+.tl-txt h3 { font-size: 22px; margin: 30px 0 10px !important; }
+.tl-txt ul.tl-reads { padding-left: 0; margin-top: 20px; }
 .tl-reads { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 8px; }
 .tl-reads a { color: var(--green-text); font-weight: 600; text-decoration: none; }
 .tl-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -251,7 +254,7 @@ ZMAIN = hero('Free tool', 'Training Zones Calculator', 'Work out your cycling po
 </section>
 
 <section>
-  <div class="in tl-txt">
+  <div class="in"><div class="tl-txt">
     <div class="eyebrow">How it works</div>
     <h2>HOW TO USE YOUR TRAINING ZONES</h2>
     <div class="bar"></div>
@@ -269,7 +272,7 @@ ZMAIN = hero('Free tool', 'Training Zones Calculator', 'Work out your cycling po
     <h3>Keep your zones up to date</h3>
     <p>Your zones change as you get fitter. Re-test every 6 to 8 weeks. Our coached riders get adaptive zones that change every week, and testing with Critical Power or INSCYD, which goes beyond FTP.</p>
     {reads([('what-is-ftp-cycling', 'What is FTP in cycling?'), ('zone-2-training', 'The power of Zone 2 training'), ('zone-2-isnt-easy', 'Zone 2 isn’t easy')])}
-  </div>
+  </div></div>
 </section>
 
 {cta('These zones are a starting point. With coaching, your zones adapt every week to your training and your plan is built around your goals and your time.')}
@@ -340,7 +343,7 @@ CMAIN = hero('Free tool', 'Carbs per Hour Calculator', 'How many grams of carboh
 </section>
 
 <section>
-  <div class="in tl-txt">
+  <div class="in"><div class="tl-txt">
     <div class="eyebrow">How it works</div>
     <h2>HOW MUCH TO EAT ON THE BIKE</h2>
     <div class="bar"></div>
@@ -356,7 +359,7 @@ CMAIN = hero('Free tool', 'Carbs per Hour Calculator', 'How many grams of carboh
     <h3>Don't forget to drink</h3>
     <p>Most riders need around 500–750 ml of fluid per hour, more in the heat. Bottles with carbs and electrolytes help you cover both.</p>
     {reads([('effective-fuelling-techniques-for-winter-training', 'Fuelling for winter training'), ('homemade-sports-drinks', 'Homemade sports drinks'), ('hydration-tips', 'Hydration tips'), ('diet-of-a-cyclist', 'Diet of a cyclist')])}
-  </div>
+  </div></div>
 </section>
 
 {cta('Our Advanced and Premium riders get carbs recommendations for every session, and a nutritional consult with our sports nutritionist.')}
@@ -394,7 +397,7 @@ CJS = '''<script>
 
 # =====================================================================================================================
 # 3. Critical Power & W'
-PMAIN = hero('Free tool', 'Critical Power &amp; W′ Calculator', 'Enter two all-out efforts to get your Critical Power and W′ (W prime), and see the power you can hold for any effort from 2 to 20 minutes.') + f'''
+PMAIN = hero('Free tool', 'Critical Power &amp; W′ Calculator', 'Enter two or three all-out efforts to get your Critical Power and W′ (W prime), and see the power you can hold for any effort from 2 to 20 minutes.') + f'''
 
 <section class="tl-sec">
   <div class="in">
@@ -409,8 +412,12 @@ PMAIN = hero('Free tool', 'Critical Power &amp; W′ Calculator', 'Enter two all
           <label class="tl-f"><span>Effort 2 (minutes)</span><input type="number" id="tl-t2" inputmode="decimal" min="3" max="30" step="0.5" value="12"></label>
           <label class="tl-f"><span>Average power (W)</span><input type="number" id="tl-p2" inputmode="numeric" min="50" max="1000" placeholder="e.g. 290"></label>
         </div>
+        <div class="tl-two">
+          <label class="tl-f"><span>Effort 3 (optional, min)</span><input type="number" id="tl-t3" inputmode="decimal" min="2" max="30" step="0.5" placeholder="e.g. 7"></label>
+          <label class="tl-f"><span>Average power (W)</span><input type="number" id="tl-p3" inputmode="numeric" min="50" max="1200" placeholder="optional"></label>
+        </div>
         <label class="tl-f"><span>Weight (kg)</span><input type="number" id="tl-cpkg" inputmode="decimal" min="30" max="160" step="0.1" placeholder="optional"></label>
-        <p class="tl-note">Use two maximal efforts, fully paced, ideally on the same day with at least 30 minutes easy riding between them, or on two fresh days. 3 and 12 minutes work well.</p>
+        <p class="tl-note">Use maximal efforts, fully paced, ideally on the same day with at least 30 minutes easy riding between them, or on fresh days. 3 and 12 minutes work well; a third effort (for example 7 minutes) makes the result more reliable.</p>
       </form>
       <div class="tl-out panel" aria-live="polite">
         <h2>Your results</h2>
@@ -422,18 +429,18 @@ PMAIN = hero('Free tool', 'Critical Power &amp; W′ Calculator', 'Enter two all
 </section>
 
 <section>
-  <div class="in tl-txt">
+  <div class="in"><div class="tl-txt">
     <div class="eyebrow">How it works</div>
     <h2>WHAT CRITICAL POWER AND W′ TELL YOU</h2>
     <div class="bar"></div>
     <p><b>Critical Power (CP)</b> is the highest power you can sustain for a long time without your fatigue running away. It sits close to your FTP, but it comes from more than one effort, so it describes you better.</p>
     <p><b>W′ (W prime)</b> is your energy above Critical Power, in kilojoules: a battery you use every time you go over CP, in an attack, a climb or a sprint, and that recharges when you ride below it. Two riders with the same CP can race very differently because of their W′.</p>
     <h3>How the calculation works</h3>
-    <p>The work you do in each effort is power × time. Plotting work against time for your two efforts gives a straight line: its slope is your Critical Power and the point where it starts is your W′. From those two numbers we can predict your best power for any effort from about 2 to 20 minutes.</p>
+    <p>The work you do in each effort is power × time. Plotting work against time for your efforts gives a straight line: its slope is your Critical Power and the point where it starts is your W′. From those two numbers we can predict your best power for any effort from about 2 to 20 minutes.</p>
     <h3>Get reliable numbers</h3>
     <p>The result is only as good as your efforts: they must be truly all-out and well paced. Our coaching uses Critical Power and W′ with Vekta to set your training zones and track your fatigue.</p>
     {reads([('critical-power', 'What is Critical Power?'), ('w-prime', 'What is W Prime?'), ('critical-power-testing', 'Critical Power testing: how to get reliable data')])}
-  </div>
+  </div></div>
 </section>
 
 {cta('With coaching, your Critical Power and W′ are tracked in Vekta and every session is built on them.')}
@@ -446,12 +453,17 @@ PJS = '''<script>
   function v(id) { var x = parseFloat(document.getElementById(id).value); return isFinite(x) ? x : 0; }
   function mmss(s) { s = Math.round(s); return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }
   function run() {
-    var t1 = v('tl-t1') * 60, p1 = v('tl-p1'), t2 = v('tl-t2') * 60, p2 = v('tl-p2'), kg = v('tl-cpkg');
-    if (!p1 || !p2) { out.innerHTML = '<p class="tl-empty">Enter the average power of both efforts.</p>'; return; }
-    if (t1 >= t2) { out.innerHTML = '<p class="tl-err">Effort 1 should be the shorter effort.</p>'; return; }
-    if (t1 < 120 || t2 > 1800) { out.innerHTML = '<p class="tl-err">Use efforts between 2 and 30 minutes.</p>'; return; }
-    if (p1 <= p2) { out.innerHTML = '<p class="tl-err">The shorter effort should have the higher power. Check your numbers.</p>'; return; }
-    var cp = (p2 * t2 - p1 * t1) / (t2 - t1), w = (p1 - cp) * t1;
+    var kg = v('tl-cpkg'), E = [[v('tl-t1') * 60, v('tl-p1')], [v('tl-t2') * 60, v('tl-p2')], [v('tl-t3') * 60, v('tl-p3')]].filter(function (e) { return e[0] > 0 && e[1] > 0; });
+    if (E.length < 2) { out.innerHTML = '<p class="tl-empty">Enter the duration and average power of at least two efforts.</p>'; return; }
+    E.sort(function (a, b) { return a[0] - b[0]; });
+    for (var i = 0; i < E.length; i++) {
+      if (E[i][0] < 120 || E[i][0] > 1800) { out.innerHTML = '<p class="tl-err">Use efforts between 2 and 30 minutes.</p>'; return; }
+      if (i && (E[i][0] === E[i - 1][0] || E[i][1] >= E[i - 1][1])) { out.innerHTML = '<p class="tl-err">Each longer effort should have a lower power than the shorter ones, and the durations should be different. Check your numbers.</p>'; return; }
+    }
+    /* work = CP x time + W': a straight line through the efforts (least squares when there are 3) */
+    var n = E.length, sx = 0, sy = 0, sxx = 0, sxy = 0;
+    E.forEach(function (e) { var x = e[0], y = e[0] * e[1]; sx += x; sy += y; sxx += x * x; sxy += x * y; });
+    var cp = (n * sxy - sx * sy) / (n * sxx - sx * sx), w = (sy - cp * sx) / n;
     if (cp <= 0 || w <= 0) { out.innerHTML = '<p class="tl-err">These numbers don’t give a valid result. Check both efforts were all-out.</p>'; return; }
     var h = '<div class="tl-big"><div><b>' + Math.round(cp) + ' W</b><span>Critical Power</span></div><div><b>' + (w / 1000).toFixed(1) + ' kJ</b><span>W′</span></div>';
     if (kg >= 30 && kg <= 160) h += '<div><b>' + (cp / kg).toFixed(2) + '</b><span>CP W/kg</span></div>';
@@ -459,7 +471,7 @@ PJS = '''<script>
     [2, 3, 5, 8, 10, 12, 15, 20].forEach(function (m) { h += '<tr><th scope="row">' + m + ' min</th><td>' + Math.round(cp + w / (m * 60)) + ' W</td></tr>'; });
     h += '</tbody></table><table class="tl-tbl"><caption>How long your W′ lasts</caption><thead><tr><th scope="col">Riding at</th><th scope="col">Time</th></tr></thead><tbody>';
     [1.05, 1.1, 1.2, 1.3].forEach(function (k) { h += '<tr><th scope="row">' + Math.round(cp * k) + ' W (' + Math.round(k * 100) + '% of CP)</th><td>' + mmss(w / (cp * k - cp)) + '</td></tr>'; });
-    out.innerHTML = h + '</tbody></table><p class="tl-note">2-parameter Critical Power model. Most accurate for efforts between about 2 and 20 minutes.</p>';
+    out.innerHTML = h + '</tbody></table><p class="tl-note">2-parameter Critical Power model, from ' + n + ' efforts. Most accurate for efforts between about 2 and 20 minutes.</p>';
   }
   f.addEventListener('input', run); run();
 })();
