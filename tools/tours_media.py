@@ -75,6 +75,7 @@ A = {
     'logo-algarve-v2': ('tours/brand/events/algarve-granfondo-wordmark.png', 800, None),
     'logo-strade-v2': ('tours/brand/events/strade-bianche-gran-fondo.png', 400, None),
     'logo-lombardia-v2': ('tours/brand/events/il-lombardia-gran-fondo.png', 400, None),
+    'logo-strade-v3': ('tours/brand/events/strade-bianche-gran-fondo.png', 400, None),   # recentred
     # guest photos: square crops from the originals matching the live crops (made by hand, already WebP q90)
     'guest-steve': ('webp-tours/cigala-tours-guest-steve.webp', 240, 'Person smiling while riding a celeste-colored Bianchi road bicycle'),
     'guest-hank': ('webp-tours/cigala-tours-guest-hank.webp', 240, 'Cycling Alps Cigala Cycling'),
@@ -83,7 +84,7 @@ A = {
     'guest-fraser': ('webp-tours/cigala-tours-guest-fraser.webp', 240, None),
     'guest-mike': ('webp-tours/cigala-tours-guest-mike.webp', 240, None),
 }
-GUEST_ALT = {'logo-v2': 4282, 'logo-algarve-v2': 856, 'logo-strade-v2': 857, 'logo-lombardia-v2': 858, 'guest-william': 5949, 'guest-andreas': 5932, 'guest-fraser': 5934, 'guest-mike': 5933}
+GUEST_ALT = {'logo-v2': 4282, 'logo-algarve-v2': 856, 'logo-strade-v2': 857, 'logo-strade-v3': 857, 'logo-lombardia-v2': 858, 'guest-william': 5949, 'guest-andreas': 5932, 'guest-fraser': 5934, 'guest-mike': 5933}
 
 def req(url, data=None, headers=None, method=None, tries=20):
     url = urllib.parse.quote(url, safe=':/?=&%')  # filenames like ©MolingAlex

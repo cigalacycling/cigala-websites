@@ -752,5 +752,18 @@
    400,
    351
   ]
+ },
+ "logo-strade-v3": {
+  "id": 9333,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-logo-strade-v3.webp",
+  "alt": "Red shield logo for Strade Bianche Gran Fondo. - Cigala Cycling Tours",
+  "from": [
+   969,
+   969
+  ],
+  "size": [
+   400,
+   400
+  ]
  }
 }

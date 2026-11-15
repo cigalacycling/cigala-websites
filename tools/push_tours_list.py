@@ -19,7 +19,7 @@ def widget(h): return {"id": rid(), "elType": "widget", "widgetType": "html", "s
 def wrap(els): return {"id": rid(), "elType": "container", "settings": {"content_width": "full", "css_classes": "cc-wrap", "padding": {"unit": "px", "top": "0", "right": "0", "bottom": "0", "left": "0", "isLinked": True}, "flex_gap": {"unit": "px", "size": 0, "column": "0", "row": "0"}}, "elements": els, "isInner": False}
 
 IMG = {'img/home-hero.jpg': 'hero', 'img/dest-private-custom-tours.jpg': 'custom', 'img/logo-mdd.png': 'logo-mdd', 'img/logo-lombardia.png': 'logo-lombardia-v2',
-       'img/logo-strade.png': 'logo-strade-v2', 'img/logo-algarve.png': 'logo-algarve-v2'}
+       'img/logo-strade.png': 'logo-strade-v3', 'img/logo-algarve.png': 'logo-algarve'}
 def fix_img(m):
     tag = m.group(0); src = re.search(r'src="([^"]+)"', tag).group(1)
     key = IMG.get(src) or (src[len('img/cigala-tours-'):-5] if src.startswith('img/cigala-tours-') else None)
