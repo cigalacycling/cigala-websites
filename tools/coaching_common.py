@@ -153,14 +153,14 @@ CASES = [
     {'slug': 'marine-lenehan',
      'timeline': [('February', 'First rides: a complete newcomer to cycling'), ('With Matteo', 'A crash course in cycling and personalised, detailed sessions'),
                   ('Within the year', 'European Gran Fondo & gravel champion (19–34)'), ('Worlds', 'Silver medal at the Gran Fondo World Championships'),
-                  ('1 August 2025', 'Stagiaire with a WorldTour team'), ('1 January 2026', 'Turned professional: WorldTour Pro, only a few years after her first ride')],   # Matteo 15 Nov 2026
+                  ('1 August 2025', 'Stagiaire with LIDL-TREK, a WorldTour team'), ('1 January 2026', 'Turned professional: WorldTour Pro with LIDL-TREK, only a few years after her first ride')],   # team: her own site, vivifysports.com/about   # Matteo 15 Nov 2026
      # WorldTour step: Matteo, 15 Nov 2026
      'source': 'From Marine’s testimonial', 'photo_file': 'coaching/athletes/marine-lenehan.webp', 'name': 'Marine Lenehan', 'where': 'Ireland', 'photo': 'T135849.182',
      'headline': 'From first ride to the WorldTour', 'stat': 'WorldTour Pro', 'stat_label': 'Pro since 1 January 2026', 'tag': 'Road · Gran Fondo & gravel',
      'before': 'A complete newcomer to cycling: she started riding in February.',
      'goal': 'Learn the sport and find out how far she could go.',
      'how': ['A crash course in cycling, built from scratch', 'Personalised sessions with attention to every detail', 'Every session different, so training stayed fun and dynamic'],
-     'result': 'European Gran Fondo & gravel champion (19–34) and silver medallist at the Gran Fondo World Championships, within a year of starting cycling. Then the biggest step of all: a stagiaire with a WorldTour team from 1 August 2025, and on 1 January 2026 she turned professional in the WorldTour, the top level of the sport, only a few years after her first ride.',
+     'result': 'European Gran Fondo & gravel champion (19–34) and silver medallist at the Gran Fondo World Championships, within a year of starting cycling. Then the biggest step of all: a stagiaire with LIDL-TREK from 1 August 2025, and on 1 January 2026 she turned professional with the WorldTour team, the top level of the sport, only a few years after her first ride.',
      'quote': 'He has not only made me fall in love with cycling, but has believed in me even when I didn’t.'},
     # Tilen: Matteo's athlete case study post (15 Nov 2026, "Athlete Review" chat); numbers from his Vekta data.
     # No photo yet (Matteo will send it): the card and the case show his numbers instead.
