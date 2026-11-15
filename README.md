@@ -157,8 +157,13 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - **Matteo to do on staging:** remove the old Google tag from WPCode (Code Snippets → Header & Footer → Header). It loads gtag.js before consent and runs `config` before the denied default. Once it's gone, gtag.js only loads after Accept.
 - **Logo:** header and footer use the file Matteo sent on 15 Nov, `tours/brand/ccToursLogo-matteo-2026-11-15.png` (WebP media 9281), with square corners.
 - **Signature:** under "Matteo Cigala, Tours Director" in Our story. Cut from the coaching blog image `Matteo-Cigala-6-years-old.png` as white ink on transparent (media 9282).
-- **Not done yet:**
-  - `/trips/road-trips/` doesn't exist yet, so the menu link 404s on staging.
+- **Road tours page (new, 15 Nov):** https://staging.tours.cigalacycling.com/trips/road-trips/, page **9301**, child of Trips 8689.
+  - Made with the trip-list design: `tools/build_tours_list.py` (preview `tourspages/road-trips.html`), pushed with `python3 -I tools/push_tours_list.py road-trips`.
+  - Rank Math title "Guided Road Bike Tours Europe | Cigala Cycling Tours" and a matching description, set through `/rankmath/v1/updateMeta`. The page is in the page sitemap.
+  - Sections: 6 road tours, then the 5 Gran Fondo tours as "Road tours with a Gran Fondo". Dates appear as text on every card.
+  - The intro is new copy and still needs Matteo's OK.
+  - The list-page CSS is scoped to `.cl` and added to the kit by `build_tours_wp.py`.
+- **Next:** rebuild the other trip-list pages (All 8689, Gravel 2821, Gran Fondo 2796, Italian 4402) with the same builder, keeping their live titles, H1s and copy.
   - The other pages haven't been rebuilt.
 
 ## Tours build plan: Matteo's notes, 15 Nov

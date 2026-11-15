@@ -466,5 +466,213 @@
    924,
    251
   ]
+ },
+ "hero-road": {
+  "id": 9284,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-hero-road.webp",
+  "alt": "Cigala Cycling Tours Lake Garda",
+  "from": [
+   4592,
+   3448
+  ],
+  "size": [
+   2400,
+   1802
+  ]
+ },
+ "card-alpine-gravel-escape": {
+  "id": 9285,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-alpine-gravel-escape.webp",
+  "alt": "Alpine Gravel Escape cycling tour: 320 km, 9,300 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-chianti-gran-fondo-strade-bianche": {
+  "id": 9286,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-chianti-gran-fondo-strade-bianche.webp",
+  "alt": "Chianti Strade Bianche cycling tour: 350 km, 6,000 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-cyprus-crossing-gravel": {
+  "id": 9287,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-cyprus-crossing-gravel.webp",
+  "alt": "Cyprus Crossing cycling tour: 415 km, 8,700 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-discover-the-algarve-granfondo": {
+  "id": 9288,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-discover-the-algarve-granfondo.webp",
+  "alt": "Algarve & Gran Fondo cycling tour: 420 km, 5,800 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-dolomites": {
+  "id": 9289,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-dolomites.webp",
+  "alt": "Dolomites cycling tour: 290 km, 8,200 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-french-alps": {
+  "id": 9290,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-french-alps.webp",
+  "alt": "French Alps cycling tour: 485 km, 13,700 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-italian-alps": {
+  "id": 9291,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-italian-alps.webp",
+  "alt": "Italian Alps cycling tour: 380 km, 10,200 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-italys-coast-to-coast": {
+  "id": 9292,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-italys-coast-to-coast.webp",
+  "alt": "Italy'S Coast to Coast cycling tour: 470 km, 4,600 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-lake-como-il-lombardia": {
+  "id": 9293,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-lake-como-il-lombardia.webp",
+  "alt": "Lake Como & Il Lombardia cycling tour: 410 km, 5,300 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-lake-garda-gravel": {
+  "id": 9294,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-lake-garda-gravel.webp",
+  "alt": "Lake Garda Gravel cycling tour: 340 km, 3,500 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-lake-garda-stelvio": {
+  "id": 9295,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-lake-garda-stelvio.webp",
+  "alt": "Lake Garda & Stelvio cycling tour: 460 km, 4,000 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-maratona-dles-dolomites": {
+  "id": 9296,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-maratona-dles-dolomites.webp",
+  "alt": "Maratona Dles Dolomites cycling tour: 250–350 km, 5,000–7,000 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-tour-of-flanders-experience": {
+  "id": 9297,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-tour-of-flanders-experience.webp",
+  "alt": "Tour of Flanders Experience cycling tour: 120–300 km, 1,000–3,000 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-tuscany-epic-gravel": {
+  "id": 9298,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-tuscany-epic-gravel.webp",
+  "alt": "Tuscany Epic cycling tour: 490 km, 7,100 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
+ },
+ "card-wonderful-slovenia": {
+  "id": 9299,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-card-wonderful-slovenia.webp",
+  "alt": "Wonderful Slovenia cycling tour: 440 km, 6,600 m climbing",
+  "from": [
+   1100,
+   1375
+  ],
+  "size": [
+   1100,
+   1375
+  ]
  }
 }

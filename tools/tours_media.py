@@ -51,6 +51,23 @@ A = {
     'logo-v2': ('tours/brand/ccToursLogo-matteo-2026-11-15.png', 343, None),
     # signature, cut from the coaching blog image Matteo-Cigala-6-years-old.png, white ink on transparent
     'signature': ('webp-tours/cigala-tours-signature.webp', 924, "Matteo Cigala's signature"),
+    # trip-list pages
+    'hero-road': (4911, 2400, None),
+    'card-alpine-gravel-escape': ('webp-tours/cigala-tours-card-alpine-gravel-escape.webp', 1100, "Alpine Gravel Escape cycling tour: 320 km, 9,300 m climbing"),
+    'card-chianti-gran-fondo-strade-bianche': ('webp-tours/cigala-tours-card-chianti-gran-fondo-strade-bianche.webp', 1100, "Chianti Strade Bianche cycling tour: 350 km, 6,000 m climbing"),
+    'card-cyprus-crossing-gravel': ('webp-tours/cigala-tours-card-cyprus-crossing-gravel.webp', 1100, "Cyprus Crossing cycling tour: 415 km, 8,700 m climbing"),
+    'card-discover-the-algarve-granfondo': ('webp-tours/cigala-tours-card-discover-the-algarve-granfondo.webp', 1100, "Algarve & Gran Fondo cycling tour: 420 km, 5,800 m climbing"),
+    'card-dolomites': ('webp-tours/cigala-tours-card-dolomites.webp', 1100, "Dolomites cycling tour: 290 km, 8,200 m climbing"),
+    'card-french-alps': ('webp-tours/cigala-tours-card-french-alps.webp', 1100, "French Alps cycling tour: 485 km, 13,700 m climbing"),
+    'card-italian-alps': ('webp-tours/cigala-tours-card-italian-alps.webp', 1100, "Italian Alps cycling tour: 380 km, 10,200 m climbing"),
+    'card-italys-coast-to-coast': ('webp-tours/cigala-tours-card-italys-coast-to-coast.webp', 1100, "Italy'S Coast to Coast cycling tour: 470 km, 4,600 m climbing"),
+    'card-lake-como-il-lombardia': ('webp-tours/cigala-tours-card-lake-como-il-lombardia.webp', 1100, "Lake Como & Il Lombardia cycling tour: 410 km, 5,300 m climbing"),
+    'card-lake-garda-gravel': ('webp-tours/cigala-tours-card-lake-garda-gravel.webp', 1100, "Lake Garda Gravel cycling tour: 340 km, 3,500 m climbing"),
+    'card-lake-garda-stelvio': ('webp-tours/cigala-tours-card-lake-garda-stelvio.webp', 1100, "Lake Garda & Stelvio cycling tour: 460 km, 4,000 m climbing"),
+    'card-maratona-dles-dolomites': ('webp-tours/cigala-tours-card-maratona-dles-dolomites.webp', 1100, "Maratona Dles Dolomites cycling tour: 250\u2013350 km, 5,000\u20137,000 m climbing"),
+    'card-tour-of-flanders-experience': ('webp-tours/cigala-tours-card-tour-of-flanders-experience.webp', 1100, "Tour of Flanders Experience cycling tour: 120\u2013300 km, 1,000\u20133,000 m climbing"),
+    'card-tuscany-epic-gravel': ('webp-tours/cigala-tours-card-tuscany-epic-gravel.webp', 1100, "Tuscany Epic cycling tour: 490 km, 7,100 m climbing"),
+    'card-wonderful-slovenia': ('webp-tours/cigala-tours-card-wonderful-slovenia.webp', 1100, "Wonderful Slovenia cycling tour: 440 km, 6,600 m climbing"),
     # guest photos: square crops from the originals matching the live crops (made by hand, already WebP q90)
     'guest-steve': ('webp-tours/cigala-tours-guest-steve.webp', 240, 'Person smiling while riding a celeste-colored Bianchi road bicycle'),
     'guest-hank': ('webp-tours/cigala-tours-guest-hank.webp', 240, 'Cycling Alps Cigala Cycling'),

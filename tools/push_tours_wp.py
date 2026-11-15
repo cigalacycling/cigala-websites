@@ -24,11 +24,12 @@ def req(url, data=None, method='GET'):
             time.sleep(3)   # proxy could not connect yet (DNS still spreading)
     raise RuntimeError('unreachable ' + url)
 
-names = sys.argv[1:] or sorted(f[:-5] for f in os.listdir(ROOT + 'stg-tours/out') if f.endswith('.json'))
-for n in names:
-    kind, pid = n.split('-', 1)
-    path = {'lib': 'elementor_library', 'page': 'pages', 'snippet': 'elementor_snippet'}[kind]
-    code, body = req(f'{B}/wp/v2/{path}/{pid}', open(ROOT + f'stg-tours/out/{n}.json', 'rb').read(), 'POST')
-    print(n, code, '' if code == 200 else body[:300])
-code, body = req(f'{B}/elementor/v1/cache', method='DELETE')
-print('elementor cache', code)
+if __name__ == '__main__':
+    names = sys.argv[1:] or sorted(f[:-5] for f in os.listdir(ROOT + 'stg-tours/out') if f.endswith('.json') and f.startswith(('lib-', 'page-', 'snippet-')))
+    for n in names:
+        kind, pid = n.split('-', 1)
+        path = {'lib': 'elementor_library', 'page': 'pages', 'snippet': 'elementor_snippet'}[kind]
+        code, body = req(f'{B}/wp/v2/{path}/{pid}', open(ROOT + f'stg-tours/out/{n}.json', 'rb').read(), 'POST')
+        print(n, code, '' if code == 200 else body[:300])
+    code, body = req(f'{B}/elementor/v1/cache', method='DELETE')
+    print('elementor cache', code)

@@ -286,7 +286,7 @@ rep('<a class="btn btn-ghost" href="https://tours.cigalacycling.com/about/" targ
 # Matteo's titles: same list as cigalacycling.com
 s = re.sub(r'<ul class="creds">.*?</ul>', '<ul class="creds">\n        <li>European Road Champion Gran Fondo</li>\n        <li>UCI Gran Fondo Vice World Champion</li>\n        <li>UCI Gravel Vice World Champion</li>\n        <li>Italian Gravel Champion</li>\n        <li>200+ race wins</li>\n      </ul>', s, count=1, flags=re.S)
 # signature under the name in "Our story" (cut from the coaching blog; typed name stays for Google and screen readers)
-rep('<p class="sig">Matteo Cigala<span>Tours Director</span></p>', '<p class="sig">Matteo Cigala<span>Tours Director</span></p>\n      <img class="signature" src="img/cigala-tours-signature.webp" alt="Matteo Cigala\'s signature" width="924" height="251" loading="lazy">')
+rep('<p class="sig">Matteo Cigala<span>Tours Director</span></p>', '<img class="signature" src="img/cigala-tours-signature.webp" alt="Matteo Cigala\'s signature" width="924" height="251" loading="lazy">\n      <p class="sig">Matteo Cigala<span>Tours Director</span></p>')  # letter style: signature, then typed name
 # more FAQs (facts from the live terms, custom tours and Dolomites pages)
 FAQ = [
   ('What is included in the price?', 'Each tour page lists exactly what is included. As an example, the Dolomites tour includes hotel nights, buffet breakfasts, airport transfers with bike and luggage at set times, guided rides every day with our ex-pro guides, a support vehicle, snacks and water on the route, and GPX files sent in advance. Flights, dinners, bike rental and travel insurance are extra.'),
@@ -308,7 +308,8 @@ CSS2 = """
 .hero .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex: none; }
 .story .quote { margin-bottom: 18px; }
 .brand img { border-radius: 0; }   /* Matteo's logo file has its own square white border */
-.story img.signature { display: block; width: 210px; max-width: 60%; height: auto; margin: 4px 0 6px -6px; opacity: .92; }
+.story img.signature { display: block; width: 150px; max-width: 45%; height: auto; margin: 22px 0 0 -4px; opacity: .92; }
+.story img.signature + .sig { margin-top: 4px !important; }
 .story p { margin-bottom: 16px; }
 .band .tx .eyebrow + h2, .band .tx h2 + .bar { margin-top: 0; }
 .fi select:focus, .fi select:focus-visible { outline: none; }

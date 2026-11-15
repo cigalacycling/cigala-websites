@@ -171,6 +171,10 @@ json.dump({"meta": {"_elementor_data": json.dumps(els), "_elementor_edit_mode": 
 
 # ---------- kit: only add the scoped CSS, keep everything else ----------
 kit = copy.deepcopy(json.load(open(ROOT + 'stg-tours/backup/lib-6.json'))['meta']['_elementor_page_settings'])
+# trip-list pages (tools/build_tours_list.py) bring their own CSS, scoped to .cl
+import glob
+for f in sorted(glob.glob(ROOT + 'stg-tours/out/list-*.json')):
+    css += '\n/* ---- ' + os.path.basename(f) + ' ---- */\n' + json.load(open(f))['css']
 kit['custom_css'] = css
 json.dump({"meta": {"_elementor_page_settings": kit}}, open(OUT + 'lib-6.json', 'w'))
 print('built: home blocks', len(blocks), '| css', len(css), '| header', len(hdr), '| footer', len(ftr))
