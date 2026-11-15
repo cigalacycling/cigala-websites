@@ -88,7 +88,8 @@ MENU_TOURS = [   # order from Matteo (15 Nov): all, road, gravel, gran fondo, it
     ('Italian tours', '/italian-trips/'),
     ('Custom tours', '/trips/private-trips/'),
 ]
-dd = ''.join(f'<a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_TOURS)
+MENU_SUB = [m for m in MENU_TOURS if m[0] != 'Custom tours']   # Custom tours is its own menu item (Matteo, 15 Nov)
+dd = ''.join(f'<a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_SUB)
 s = s.replace(f'<a href="{L}/trips/" {EXT}>Bike tours</a>',
               f'<div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">Bike tours <span aria-hidden="true">▾</span></button><div class="dd-menu">{dd}</div></div>')
 s = s.replace(f'<a href="{L}/trips/gravel-trips/" {EXT}>Gravel tours</a>\n        <a href="{L}/trips/private-trips/" {EXT}>Custom tours</a>',
@@ -292,7 +293,7 @@ s = re.sub(r'<ul class="creds">.*?</ul>', '<ul class="creds">\n        <li>Europ
 rep('<p class="sig">Matteo Cigala<span>Tours Director</span></p>', '<img class="signature" src="img/cigala-tours-signature.webp" alt="Matteo Cigala\'s signature" width="924" height="251" loading="lazy">\n      <p class="sig">Matteo Cigala<span>Tours Director</span></p>')  # letter style: signature, then typed name
 # phone menu: same order as the desktop menu, with Bike tours as a sub-menu (Matteo, 15 Nov)
 m = re.search(r'(<nav aria-label="Main \(mobile\)">)(.*?)(\n      </nav>)', s, re.S)
-sub = ''.join(f'\n            <a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_TOURS)
+sub = ''.join(f'\n            <a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_SUB)
 mob_items = [('About us', L + '/about/'), ('Destinations', L + '/destinations/'), None,
              ('Custom tours', L + '/trips/private-trips/'), ('Cycling guides', L + '/guides/'),
              ('Coaching', 'https://coaching.cigalacycling.com/'), ('Shop', 'https://retail.cigalacycling.com/'),
@@ -369,7 +370,7 @@ section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; bo
 s = s.replace('@media (max-width: 1080px)', CSS2 + '\n@media (max-width: 1080px)', 1)
 
 # same tour order in the phone menu and the footer
-mob = '\n        '.join(f'<a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_TOURS)
+mob = '\n        '.join(f'<a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_SUB)
 s = re.sub(r'<a href="' + re.escape(L) + r'/trips/" ' + re.escape(EXT) + r'>All tours</a>(?:\s*<a href="[^"]+" ' + re.escape(EXT) + r'>(?:Gran Fondo|Italian|Gravel|Road|Custom) tours</a>)+', mob, s)  # desktop dropdown and phone menu
 foot = '\n        '.join(f'<li><a href="{L}{u}" {EXT}>{t}</a></li>' for t, u in MENU_TOURS)
 s, n = re.subn(r'<li><a href="' + re.escape(L) + r'/trips/" ' + re.escape(EXT) + r'>All tours</a></li>(?:\s*<li><a href="[^"]+" ' + re.escape(EXT) + r'>(?:Gran Fondo|Italian|Gravel|Road|Custom) tours</a></li>)+', foot, s, count=1)
