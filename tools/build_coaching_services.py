@@ -442,10 +442,10 @@ def about2():
 def clubtalk():
     T_ = open(ROOT + 'coaching/text/club-talk.txt').read()
     ps = re.findall(r'^P: (.*(?:\n(?![A-Z]+:|<).*)*)', T_, re.M)
-    ps = [p.strip() for p in ps]
+    ps = [p.strip().replace('coaching nights', 'coaching workshops') for p in ps]   # Matteo 15 Nov
     led = ps[1].replace('\n', ' ')
     FORMATS = [('users', 'Club information days', 'An introduction to training with structure for your members, with time for their questions.'),
-               ('mic', 'Coaching nights', 'Presentations on training, periodisation and nutrition, followed by Q&amp;A.'),
+               ('mic', 'Coaching workshops', 'Presentations on training, periodisation and nutrition, followed by Q&amp;A.'),
                ('bike', 'Group coaching sessions', 'On the bike with your club: skills, pacing and a structured session together.')]
     TOPICS = ['Training and periodisation', 'Nutrition and fuelling', 'Common mistakes to avoid', 'Power, heart rate and testing', 'Racing and pacing', 'Recovery']
     side = f'''{photo('imgi_14_NWZxZmK6', 'club-talk-presentation', cls='photo rider ck-zoom', pos='30% 40%')}
@@ -458,7 +458,7 @@ def clubtalk():
   <img src="{img('imgi_14_NWZxZmK6', 'club-talk-hero')}" alt="{E(live_alt('imgi_14_NWZxZmK6'))}" style="object-position:20% 30%;transform:scale(1.15);transform-origin:70% 20%">
   <div class="in">
     <div class="eyebrow eb-pill"><span class="dot"></span>Workshops across Ireland</div>
-    <h1>Club information days, coaching nights, Q&amp;A, group coaching sessions and more</h1>
+    <h1>Club information days, coaching workshops, Q&amp;A, group coaching sessions and more</h1>
     <p class="lede">Talks and coaching sessions for cycling and triathlon clubs, led by Founder &amp; Head Coach Matteo Cigala.</p>
     <div class="ctas"><a class="btn btn-go" href="#contact">Organise a club talk</a><a class="btn btn-ghost" href="#formats">What we offer ↓</a></div>
   </div>
@@ -499,19 +499,20 @@ def clubtalk():
 {enquiry('Organise a workshop', 'GET A QUOTE', 'We will be glad to hear from you to organise a workshop. Tell us about your club and what you would like to cover.',
          side, 'Club talk enquiry (Coaching website)', 'Club name, location, possible dates and topics *')}'''
     build('club-talk', '/club-talk/', MAIN, 'Club talks redesigned: Matteo presenting, formats, topics, quote form.',
-          h1='Club information days, coaching nights, Q&A, group coaching sessions and more', extra_css=G.GCSS + CSS)
+          h1='Club information days, coaching workshops, Q&A, group coaching sessions and more', extra_css=G.GCSS + CSS)
 
 # ------------------------------------------------------------------ talent programme
-# Eoin R.'s best power, May–Nov 2025 vs May–Nov 2026 (Vekta data; his case study in coaching_common.CASES).
-# Matteo 15 Nov: show high numbers and a clear progression at every point -> both seasons, all four points.
-PD = [(15, '15 s', 1041, 1145), (60, '1 min', 643, 697), (300, '5 min', 383, 414), (1500, 'Critical Power', 313, 332)]
+# David O.'s best power, Nov 2024–Nov 2025 vs Nov 2025–Nov 2026 (Vekta data; his case study in coaching_common.CASES).
+# Matteo 15 Nov: not Eoin; someone who improved a lot -> David: +128 W over 30 s, +44 W Critical Power.
+PD = [(30, '30 s', 505, 633), (120, '2 min', None, None), (300, '5 min', 288, 320), (1200, '20 min', 250, 276)]
+PD = [p for p in PD if p[2]]
 def pd_chart():
     import math
     W, H, L, Rr, Tt, B = 760, 360, 56, 40, 24, 44
-    t0, t1 = 15, 1500
+    t0, t1 = 30, 1200
     x = lambda t: L + (math.log(t) - math.log(t0)) / (math.log(t1) - math.log(t0)) * (W - L - Rr)
-    y = lambda w: Tt + (1250 - w) / (1250 - 200) * (H - Tt - B)
-    grid = ''.join(f'<line x1="{L}" x2="{W - Rr}" y1="{y(w):.1f}" y2="{y(w):.1f}" class="pd-grid"/><text x="{L - 8}" y="{y(w) + 4:.1f}" class="pd-ax" text-anchor="end">{w}</text>' for w in (300, 500, 700, 900, 1100))
+    y = lambda w: Tt + (700 - w) / (700 - 200) * (H - Tt - B)
+    grid = ''.join(f'<line x1="{L}" x2="{W - Rr}" y1="{y(w):.1f}" y2="{y(w):.1f}" class="pd-grid"/><text x="{L - 8}" y="{y(w) + 4:.1f}" class="pd-ax" text-anchor="end">{w}</text>' for w in (200, 300, 400, 500, 600, 700))
     xt = ''.join(f'<text x="{x(t):.1f}" y="{H - B + 20}" class="pd-ax" text-anchor="{"end" if t == t1 else "middle"}">{lab}</text>' for t, lab, _, _ in PD)
     def line(i, cls):
         pts = ' '.join(f'{x(t):.1f},{y(v[i]):.1f}' for t, _, *v in PD)
@@ -519,20 +520,20 @@ def pd_chart():
     gains = ''.join(f'<text x="{x(t) + (10 if t < t1 else -10):.1f}" y="{y(b) - 10:.1f}" class="pd-lab pd-up" text-anchor="{"start" if t < t1 else "end"}">+{b - a} W</text>' for t, _, a, b in PD)
     hits = ''.join(f'<rect x="{x(t) - 22:.1f}" y="{Tt}" width="44" height="{H - Tt - B}" class="pd-hit" data-x="{x(t):.1f}" data-t="{lab}" data-b="{b}" data-a="{a}"/>' for t, lab, a, b in PD)
     svg = (f'<svg class="pd-svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pd-t">'
-           f'<title id="pd-t">Eoin’s best power one season apart: higher at every point, from 1,041 to 1,145 W for 15 seconds and from 313 to 332 W Critical Power</title>'
+           f'<title id="pd-t">David’s best power one season apart: higher at every point, from 505 to 633 W for 30 seconds and from 250 to 276 W for 20 minutes</title>'
            f'{grid}{xt}<line x1="{L}" x2="{W - Rr}" y1="{H - B}" y2="{H - B}" class="pd-base"/>'
            f'<line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{line(0, "pd-a")}{line(1, "pd-b")}{gains}{hits}</svg>')
     rows = ''.join(f'<tr><td>{lab}</td><td>{a} W</td><td>{b} W</td><td>+{b - a} W</td></tr>' for _, lab, a, b in PD)
     return f'''<figure class="pd panel">
-      <div class="pd-top"><div><b class="pd-title">Power-duration profile</b><span>Best power, watts · Eoin R., IVCA racer, Ireland</span></div>
-        <div class="pd-leg"><span><i class="pd-sw pd-sw-b"></i>2026 season with Matteo</span><span><i class="pd-sw pd-sw-a"></i>2025 season</span></div></div>
+      <div class="pd-top"><div><b class="pd-title">Power-duration profile</b><span>Best power, watts · David O., sportive rider, Ireland</span></div>
+        <div class="pd-leg"><span class="pd-cp">Critical Power <b>244 → 288 W</b> <em>+18%</em></span><span><i class="pd-sw pd-sw-b"></i>This year with Matteo</span><span><i class="pd-sw pd-sw-a"></i>A year earlier</span></div></div>
       <div class="pd-wrap">{svg}<div class="pd-tip" hidden></div></div>
-      <figcaption>Higher at every point: +104 W in the 15-second sprint, +54 W over a minute, +31 W over 5 minutes and his highest Critical Power on record, 332 W. <a href="{C}/case-studies/#eoin" {EXT}>Read Eoin’s case study →</a></figcaption>
-      <details class="pd-tbl"><summary>See the numbers</summary><table><thead><tr><th>Duration</th><th>2025</th><th>2026</th><th>Change</th></tr></thead><tbody>{rows}</tbody></table></details>
+      <figcaption>Higher at every point: +128 W over 30 seconds (a quarter more kick), +32 W over 5 minutes, +26 W over 20 minutes, and a Critical Power up 44 W, from 244 to 288 W. <a href="{C}/case-studies/#david" {EXT}>Read David’s case study →</a></figcaption>
+      <details class="pd-tbl"><summary>See the numbers</summary><table><thead><tr><th>Duration</th><th>A year earlier</th><th>This year</th><th>Change</th></tr></thead><tbody>{rows}</tbody></table></details>
     </figure>'''
 PD_JS = """<script>(function(){document.querySelectorAll('.pd-wrap').forEach(function(w){var tip=w.querySelector('.pd-tip'),cr=w.querySelector('.pd-cross'),svg=w.querySelector('svg');
 w.querySelectorAll('.pd-hit').forEach(function(h){function on(){var x=+h.dataset.x;cr.setAttribute('x1',x);cr.setAttribute('x2',x);cr.style.opacity=1;
-var a=h.dataset.a,b=h.dataset.b;tip.innerHTML='<b>'+h.dataset.t+'</b><span><i class=\\"pd-sw pd-sw-b\\"></i>2026: '+b+' W</span>'+(a?'<span><i class=\\"pd-sw pd-sw-a\\"></i>2025: '+a+' W</span><em>+'+(b-a)+' W</em>':'');
+var a=h.dataset.a,b=h.dataset.b;tip.innerHTML='<b>'+h.dataset.t+'</b><span><i class=\\"pd-sw pd-sw-b\\"></i>This year: '+b+' W</span>'+(a?'<span><i class=\\"pd-sw pd-sw-a\\"></i>A year earlier: '+a+' W</span><em>+'+(b-a)+' W</em>':'');
 var r=svg.getBoundingClientRect(),px=x/760*r.width;tip.hidden=false;tip.style.left=Math.min(Math.max(px-70,0),r.width-150)+'px';}
 function off(){tip.hidden=true;cr.style.opacity=0;}h.addEventListener('mouseenter',on);h.addEventListener('mouseleave',off);h.addEventListener('click',on);});});})();</script>"""
 
@@ -585,7 +586,9 @@ def talent():
               ('Jasper Philipsen', 'Milan–San Remo 2024'), ('Elisa Balsamo', 'World Champion 2021'), ('Vittoria Guazzini', 'Olympic Games 2024'),
               ('Paula Blasi', 'La Vuelta Femenina 2026'), ('Vincenzo Nibali', 'Giro d’Italia 2013, 2016 · Tour de France 2014'),
               ('Chris Froome', 'Tour de France 2013'), ('Fabio Aru', 'Vuelta a España 2015'), ('Thor Hushovd', 'World Champion 2010'),
-              ('Damiano Cunego', 'Giro d’Italia 2004'), ('Gilberto Simoni', 'Giro d’Italia 2001, 2003'), ('Danilo Di Luca', 'Giro d’Italia 2007')]
+              ('Damiano Cunego', 'Giro d’Italia 2004'), ('Gilberto Simoni', 'Giro d’Italia 2001, 2003'), ('Danilo Di Luca', 'Giro d’Italia 2007'), ('Romāns Vainšteins', 'World Champion 2000'),
+              ('Federica Pellegrini', 'Olympic Games, Athens 2004 (swimming)'), ('Ivano Brugnetti', 'Olympic Games, Athens 2004 (race walking)'),
+              ('Cristian Zorzi', 'Olympic Winter Games, Torino 2006 (cross-country skiing)')]
     STEPS = [('Apply', 'Contact us at info@cigalacycling.com or with the form below to state your interest in the programme. Tell us your age, club, results so far and goals.'),
              ('Interview', 'If we have availability, a video call or face to face interview might be requested, so we get to know you and your goals.'),
              ('Sign up', 'We send you the link to sign up to the Advanced Package at the talent price: €119.20 a month, 20% off €149.'),
@@ -613,15 +616,15 @@ def talent():
     <div class="gn-txt">
       <div class="eyebrow">Our aim</div>
       <h2>We are a Talent Scout</h2><div class="bar"></div>
-      <p class="tl-big">{E(scout)}</p>
+      <p>{E(scout)}</p>
       <p>{E(what)}</p>
       <p>Matteo Cigala is a talent scout for <b>A&amp;J AllSports</b>, the agency of some of the best riders in the WorldTour, such as <b>Tadej Pogačar</b>, <b>Isaac Del Toro</b>, <b>Biniam Girmay</b> and <b>Jasper Philipsen</b>. On the programme you get world-class coaching from him, and when you are ready, the agency and the teams hear about you.</p>
     </div>
     <a class="photo gn-png tl-aj" href="https://aejallsports.ch/" {EXT}><img src="{conv('coaching/matteo-uploads/aj-allsports-logo.png', 'talent-aj-allsports-logo')}" alt="{E(live_alt('T161857.829'))}" loading="lazy"></a>
   </div>
   <div class="in tl-rwrap">
-      <p class="tl-rl">Riders managed by A&amp;J, past and present <span>(hover or tap a name)</span></p>
-      <ul class="tl-riders" aria-label="Riders managed by A&amp;J AllSports">{''.join(f'<li tabindex="0" data-win="{E(w)}">{n}<span class="vh">: {E(w)}</span></li>' for n, w in RIDERS)}</ul>
+      <p class="tl-rl">Athletes managed by A&amp;J, past and present <span>(hover or tap a name)</span></p>
+      <ul class="tl-riders" aria-label="Athletes managed by A&amp;J AllSports">{''.join(f'<li tabindex="0" data-win="{E(w)}">{n}<span class="vh">: {E(w)}</span></li>' for n, w in RIDERS)}</ul>
   </div>
 </section>
 
@@ -750,6 +753,8 @@ a.tl-aj { text-decoration: none; }
 .tl-riders li:hover::after, .tl-riders li:focus::after { opacity: 1; transform: translate(-50%, 0); }
 .tl-riders li:first-child::after { left: 0; transform: translate(0, 4px); } .tl-riders li:first-child:hover::after, .tl-riders li:first-child:focus::after { transform: none; }
 .pd-up { fill: #34c46a; }
+.pd-cp { padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(0,154,68,.5); background: rgba(0,154,68,.1); color: var(--text) !important; }
+.pd-cp b { color: var(--text); } .pd-cp em { font-style: normal; color: var(--green-text); font-weight: 700; }
 .pd-sw-dot { width: 9px; height: 9px; border: 0 !important; border-radius: 50%; background: #5f86c9; }
 .tl-days { list-style: none; margin: 0; padding: 0; max-width: 860px; }
 .tl-day { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 20px; position: relative; padding-bottom: 22px; }

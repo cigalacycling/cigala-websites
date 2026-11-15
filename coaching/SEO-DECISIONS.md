@@ -320,3 +320,8 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   reviews. About: "Vice-World Champion UCI Gran Fondo" (no "(road)"), EU flag for the new-era chapter, icons back on the
   results and science lists (a different icon per line), bottom tiles with photos (the Tre Cime tour photo is back with
   its live alt; the cycling tile uses the Wicklow climb photo, retail the smart-trainer photo).
+- Talent: chart now David O. (real Vekta data: 30 s 505 → 633 W, 5 min 288 → 320 W, 20 min 250 → 276 W, CP 244 → 288 W);
+  Matteo: not Eoin. Text under "We are a Talent Scout" all one size; 4 more A&J athletes (Vainšteins, Pellegrini,
+  Brugnetti, Zorzi: from the A&J history page), label "Athletes managed by A&J".
+- /club-talk/ H1 "Club information days, coaching nights, Q&A, group coaching sessions and more" -> "... coaching workshops,
+  ..." and "coaching nights" -> "coaching workshops" in the copy (Matteo). URL and Yoast title/description unchanged.
