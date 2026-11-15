@@ -107,11 +107,19 @@ pics = ''.join(f'<div class="photo it-pic"><img src="{up(u)}" alt="{E(a)}" loadi
 assert len(LIVE_PICS) == 5, LIVE_PICS
 
 # Matteo 15 Nov: the events as cards (name, place, discipline), more exciting than a list; live wording kept
-TYPES = {'Strada': '#34c46a', 'Gravel': '#f0bf00', 'MTB': '#ff3d33', 'Tutte le discipline': '#5f86c9'}
+TYPES = {'Strada': '#34c46a', 'Gravel': '#f0bf00', 'MTB': '#ff3d33', 'Ultra': '#a78bfa', 'Tutte le discipline': '#5f86c9'}
 EV_T = {'Strade Bianche': 'Strada', 'Hero': 'MTB', 'Nove Colli': 'Strada', 'Maratona': 'Strada', 'Stelvio': 'Strada', 'Paganella': 'MTB',
         'Hills of Gravel': 'Gravel', 'Colnago': 'Strada', 'Mondiali': 'Tutte le discipline', 'Calendario FCI': 'Tutte le discipline'}
 EV_IC = {'Strada': '<path d="M3 20 9 6l4 8 3-5 5 11z"/>', 'Gravel': '<circle cx="6" cy="17" r="2"/><circle cx="13" cy="15" r="1.5"/><circle cx="18" cy="18" r="2.5"/><path d="M2 21h20"/>',
+         'Ultra': '<path d="M3 17c3-6 6 2 9-4s6-2 9-6"/><circle cx="3" cy="17" r="1.5"/><circle cx="21" cy="7" r="1.5"/>',
          'MTB': '<path d="m3 20 6-9 3 4 3-6 6 11z"/><path d="M14 6l1-3 2 1"/>', 'Tutte le discipline': '<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>'}
+EV_MORE = ['**Campionato Italiano Gravel** (FCI)', '**Campionati Italiani Granfondo e Marathon** (FCI)', '**Serenissima Gravel** (Veneto) — UCI Gravel World Series',
+           '**Nova Eroica** (Buonconvento, Siena)', '**L’Eroica** (Gaiole in Chianti)', '**Granfondo Il Lombardia** (Como)',
+           '**Granfondo Tre Valli Varesine** (Varese)', '**Sportful Dolomiti Race** (Feltre)', '**Granfondo Campagnolo Roma** (Roma)',
+           '**Tuscany Trail** (Toscana) — bikepacking, circa 500 km', '**Italy Divide** (da Pompei al Lago di Garda) — ultra gravel e bikepacking',
+           '**Veneto Gravel** (Bassano del Grappa)', '**La Fausto Coppi** (Cuneo)', '**Granfondo Felice Gimondi** (Bergamo)']
+EV_T.update({'Tuscany Trail': 'Ultra', 'Italy Divide': 'Ultra', 'Veneto Gravel': 'Gravel', 'Fausto Coppi': 'Strada', 'Gimondi': 'Strada', 'Gravel': 'Gravel', 'Eroica': 'Gravel', 'Granfondo e Marathon': 'Tutte le discipline', 'Lombardia': 'Strada', 'Tre Valli': 'Strada', 'Sportful': 'Strada', 'Campagnolo': 'Strada'})
+WON = ('Strade Bianche', 'Campionato Italiano Gravel', 'Il Lombardia', 'Tre Valli Varesine')   # About page: Matteo's own wins
 def ev_card(x):
     t = next((v for k, v in EV_T.items() if k in x), 'Strada'); c = TYPES[t]
     m = re.match(r'\*\*(.+?)\*\*\s*(.*)', x.replace('**\n\n**', '').strip())
@@ -120,8 +128,9 @@ def ev_card(x):
     nm = re.match(r'(.+?)\s*\(([^)]+)\)$', name)
     if nm: name, rest = nm.group(1), f'({nm.group(2)}) {rest}'.strip()
     rest = rest.strip()
+    won = '<span class="it-ev-won">★ Vinta da Matteo</span>' if any(w in name for w in WON) else ''
     return (f'<li style="--tc:{c}"><span class="it-ev-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{EV_IC[t]}</svg></span><span class="it-ev-tag">{t}</span>'
-            f'<b>{E(name)}</b>{f"<span class=it-ev-pl>{E(rest.strip("() ").replace(") —", " —"))}</span>" if rest else ""}</li>')
+            f'<b>{E(name)}</b>{won}{f"<span class=it-ev-pl>{E(rest.strip("() ").replace(") —", " —"))}</span>" if rest else ""}</li>')
 FACTS = [('clock', 'Comunicazione in italiano', 'Parli direttamente con Matteo, nella tua lingua, per chiamate, feedback e domande.'),
          ('currency', 'Prezzi in euro', 'Paghi in euro: nessun costo di cambio.'),
          ('route', 'Costruito sulle tue strade', 'Dolomiti, Appennini, gravel o pianura: il piano segue il tuo territorio e il tuo calendario gare.')]
@@ -168,9 +177,10 @@ MAIN = f'''<div class="hero hero-sm">
 
 <section>
   <div class="in">
-    <div class="head"><div><div class="eyebrow">Cosa dicono i nostri atleti</div><h2>{E("E' il nostro motto")}</h2><div class="bar"></div></div>
+    <div class="it-motto"><p class="it-motto-t">ALLENATI CON METODO, VAI PIÙ FORTE</p><h2 class="it-motto-h">{E("E' il nostro motto")}</h2></div>
+    <div class="head"><div><div class="eyebrow">Cosa dicono i nostri atleti</div><h2>LEGGI LE NOSTRE RECENSIONI</h2><div class="bar"></div></div>
       <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Le nostre recensioni su Google →</a></div></div>
-    <p class="cn-lede">Recensioni reali di atleti seguiti da Matteo.</p>
+    <p class="cn-lede">Scopri cosa dicono i ciclisti di Cigala Cycling: recensioni reali di atleti seguiti da Matteo.</p>
     {strip}
     <div class="it-pics">{pics}</div>
   </div>
@@ -219,7 +229,7 @@ MAIN = f'''<div class="hero hero-sm">
         <div class="it-ev-types">{''.join(f'<span style="--tc:{c}">{t}</span>' for t, c in TYPES.items())}</div>
       </div>
     </div>
-    <ul class="it-ev-grid">{''.join(ev_card(x) for x in ev_li)}</ul>
+    <ul class="it-ev-grid">{''.join(ev_card(x) for x in ev_li + EV_MORE)}</ul>
     {''.join(f'<p class="it-ev-note">{E(x)}</p>' for x in ev_p[1:])}
   </div>
 </section>
@@ -323,6 +333,10 @@ ITCSS = '''<style>
 .it-ev-tag { position: absolute; top: 16px; right: 16px; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--tc); }
 .it-ev-grid b { font: 400 20px/1.15 var(--head); text-transform: uppercase; color: var(--text); }
 .it-ev-pl { font-size: 13.5px; color: var(--text-2); line-height: 1.45; }
+.it-ev-won { justify-self: start; padding: 3px 9px; border-radius: 999px; background: rgba(240,191,0,.14); color: #f0bf00; font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+.it-motto { text-align: center; margin: 0 auto 48px; padding: 34px 20px; border-radius: 18px; border: 1px solid var(--border); background: radial-gradient(600px 200px at 50% 0%, rgba(0,154,68,.22), transparent 70%), var(--panel); }
+.it-motto-t { margin: 0; font: 400 clamp(30px, 5vw, 60px)/1 var(--head); color: var(--text); letter-spacing: .01em; }
+.it-motto-h { margin: 12px 0 0 !important; font: 600 14px/1.3 var(--body) !important; letter-spacing: .16em !important; text-transform: uppercase; color: var(--green-text) !important; }
 .it-ev-note { margin: 18px 0 0; color: var(--text-2); max-width: 80ch; }
 /* Italian on this page: the shared parts (sold-out stamp, newsletter band) */
 .pkg.sold::after { content: "ESAURITO" !important; }
@@ -335,6 +349,6 @@ ITCSS = '''<style>
 if __name__ == '__main__':
     build(NAME, PATH, MAIN, f'{PATH} rebuilt like the UK/USA/Canada pages, in Italian: package cards and buy buttons, steps, calendar, case studies, real reviews, form.',
           h1='PREPARATORE DI CICLISMO ITALIA',
-          h2_changes={'drop': ['2025 IN NUMERI', 'LEGGI LE NOSTRE RECENSIONI – SCOPRI COSA DICONO I CICLISTI DI CIGALA CYCLING'], 'add': ['2026 IN NUMERI', 'LEGGI I NOSTRI CASI STUDIO']},
+          h2_changes={'drop': ['2025 IN NUMERI', 'LEGGI LE NOSTRE RECENSIONI – SCOPRI COSA DICONO I CICLISTI DI CIGALA CYCLING'], 'add': ['2026 IN NUMERI', 'LEGGI I NOSTRI CASI STUDIO', 'LEGGI LE NOSTRE RECENSIONI']},
           extra_css=G.GCSS + P.PCSS + FT_CSS + CS_CSS + P.CAL_CSS + CN.CCSS + ITCSS, extra_js=JS)
     print('faq', len(faq), '| why', len(why), '| events', len(ev_li), '| regions', len(rg_li), '| features', {k: len(v) for k, v in FEAT.items()})
