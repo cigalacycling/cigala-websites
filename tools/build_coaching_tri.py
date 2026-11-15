@@ -39,9 +39,14 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     top = [x for x in own[key] if not (key == 'basic' and x in NOT_IN_BASIC)]
     no = [x for x in own[key] if key == 'basic' and x in NOT_IN_BASIC]
     rest = [f for f in F[key] if f not in own[key]]
-    items = ''.join(f'<li>{E(x)}</li>' for x in top) + ''.join(f'<li class="no">{E({"Daily Training Analysis": "Training Analysis"}.get(x, x))} <span>(not included)</span></li>' for x in no) \
-        + ''.join(f'<li class="more">{E(x)}</li>' for x in rest)
-    total = len(top) + len(rest)
+    # same as the cycling cards (Matteo 15 Nov): what you get first, 12 lines visible, Basic's missing lines last
+    LBL = {'Race Strategy': 'Race & Pacing Strategy', 'Access to World Class Nutritionist & Mental Coach': 'Access to work 1-to-1 with our World Class Nutritionist & Mental Coach'}
+    inc = top + rest
+    items = ''.join(f'<li{" class=\"more\"" if i >= 12 else ""}>{E(LBL.get(x, x))}</li>' for i, x in enumerate(inc))
+    if no:
+        items += '<li class="more no-lab">Included in Advanced &amp; Premium</li>' + ''.join(
+            f'<li class="more no">{E({"Daily Training Analysis": "Training Analysis"}.get(x, x))}<span class="vh"> (not included in Basic)</span></li>' for x in no)
+    total = len(inc)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
         {badge}
         <div class="pkg-term">{term}</div>
@@ -52,7 +57,7 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         <div class="pkg-buy">{buttons}<a class="pkg-call" href="{P.CAL}" {EXT}>Not sure? Book a free consultation →</a></div>
         <div class="pkg-lab">What you get</div>
         <ul class="ticks">{items}</ul>
-        <button type="button" class="pkg-all" aria-expanded="false" data-n="{total}">Show all {total} features ↓</button>
+        <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
       </article>'''
 
 cards = ''.join([
@@ -201,10 +206,10 @@ TCSS = P.PCSS + '''<style>
 </style>'''
 TJS = '''<script>
 document.querySelectorAll('.pkg-all').forEach(function (b) {
-  b.addEventListener('click', function () {
-    var o = b.closest('.pkg').classList.toggle('open');
-    b.setAttribute('aria-expanded', o);
-    b.textContent = o ? 'Show fewer ↑' : 'Show all ' + b.dataset.n + ' features ↓';
+  b.addEventListener('click', function () {   // one click opens every package, like the cycling page
+    var o = !b.closest('.pkg').classList.contains('open');
+    document.querySelectorAll('.pkg').forEach(function (p) { p.classList.toggle('open', o); });
+    document.querySelectorAll('.pkg-all').forEach(function (x) { x.setAttribute('aria-expanded', o); x.querySelector('span').textContent = o ? 'Show fewer features' : 'See all features'; });
   });
 });
 document.querySelectorAll('[data-waitlist]').forEach(function (b) {
