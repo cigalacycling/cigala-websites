@@ -17,4 +17,4 @@ Hosts requested on a fresh load of the homepage: `www.googletagmanager.com`, `ap
 - Render the banner with `shared/consent/render.py`, using `ga_id='G-E1WWZCLBRB'`. Follow `shared/consent/README.md`.
 - Remove the Elementor cookie-consent bar from footer template 228.
 - Matteo pastes `wpcode-header-line.html` as the first line of the coaching staging site's WPCode Header box, above the GA tag.
-- Meta Pixel: only add it once Matteo confirms.
+- Meta Pixel: confirmed. Render the banner with the default `pixel_id` (1986332861692106). It loads only after Accept.
