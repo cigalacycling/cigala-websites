@@ -165,7 +165,11 @@ PIXEL = '1986332861692106'   # Matteo's single Meta Pixel, confirmed for Tours o
 banner = render_banner(ga_id=GA, privacy_url='/privacy-policy/', pixel_id=PIXEL, openwidget_org='43e5f685-37fc-4f78-9420-122fd2a3c5e3')   # Tours' own privacy page
 ftr = ftr.replace('<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>', '<a href="/terms-conditions/">Refund/cancellation policy &amp; terms</a>\n    <a href="/privacy-policy/">Privacy Policy</a>\n    <a href="#" data-cc-settings>Cookie settings</a>')
 assert 'data-cc-settings' in ftr
-json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>'), html_widget(banner)])])}}, open(OUT + 'lib-228.json', 'w'))
+ftr = ftr.replace('>Refund/cancellation policy &amp; terms</a>', '>Refund/Cancellation Policy &amp; Terms</a>')   # capitals (Matteo)
+# topo background parallax: the lines drift slower than the page, so you see them move (off for reduced motion)
+PARALLAX = "<script>(function(){if(!document.querySelector('.cc-page,.cl-page')||matchMedia('(prefers-reduced-motion: reduce)').matches)return;var b=document.body,q=0;function u(){q=0;b.style.setProperty('background-position','0 0, center '+(window.scrollY*0.4).toFixed(1)+'px','important');}addEventListener('scroll',function(){if(!q){q=1;requestAnimationFrame(u);}},{passive:true});u();})();</script>"
+
+json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget('<div class="cc">' + ftr + '</div>' + PARALLAX), html_widget(banner)])])}}, open(OUT + 'lib-228.json', 'w'))
 
 # head snippet (Elementor custom code 9279): the shared one. The consent-default line goes first in WPCode Header (Matteo).
 head_code = head_snippet()

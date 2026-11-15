@@ -444,6 +444,8 @@ html .cl .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
 html .cl .tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
 html .cl .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 html .cl .tcard .meta { margin: 2px 0; }
+html .cl .phero .lede a { color: var(--green-text); font-weight: 600; text-decoration: none; }
+html .cl .phero .lede a:hover { color: #fff; }
 html .cl .tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
 html .cl .tcard .desc.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 html .cl .tcard .more-txt { align-self: flex-start; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 0; cursor: pointer; margin-top: -4px; }
@@ -451,6 +453,7 @@ html .cl .tcard .bottom { margin-top: auto; padding-top: 16px; border-top: 1px s
 html .cl .tcard .price { font-family: var(--head); font-size: 26px; line-height: 1.1; color: var(--text); }
 html .cl .tcard .price small { display: block; padding: 0; margin: 0 0 8px !important; font-family: var(--body); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
 html .cl .tcard .early { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; }
+html .cl .tcard .early.none { visibility: hidden; }
 html .cl .tcard .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
 html .cl .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
 html .cl .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
@@ -654,7 +657,7 @@ html .cc .reset { font: 600 13px var(--body); color: var(--text-2); background: 
 html .cc .reset:hover { color: #fff; }
 html .cc .none { color: var(--text-2); margin: 0 0 18px; }
 html .cc .none a { color: var(--green-text); }
-html .cc .tour .entry { display: flex; width: fit-content; background: rgba(8,9,10,.72); backdrop-filter: blur(4px); }
+html .cc .tour .entry { display: flex; width: fit-content; max-width: 100%; white-space: nowrap; font-size: 10.5px; letter-spacing: .05em; background: rgba(8,9,10,.72); backdrop-filter: blur(4px); }
 html .cc .tour .when { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--red); border-radius: 6px; padding: 4px 9px; margin-bottom: 10px; }
 html .cc .tour .facts { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: -4px 0 12px; font-size: 12.5px; font-weight: 600; color: var(--text-3); }
 html .cc .tour[hidden] { display: none; }
@@ -806,7 +809,7 @@ html .cc .tour:hover img { transform: none; }
     <p class="lede" style="margin-top:10px">Can’t find the perfect one? Build your own tour. Find out more <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">HERE</a></p>
   </div>
 </div>
-<section id="calendar" style="padding-top:44px">
+<section id="calendar" style="padding-top:24px">
   <div class="in">
     <div class="head"><div><div class="eyebrow">Road tours</div><h2>2027 Calendar</h2><div class="bar"></div></div><nav class="browse" aria-label="Tour types"><a class="chip" href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All</a><a class="chip" href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener" aria-current="page">Road</a><a class="chip" href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel</a><a class="chip" href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo</a><a class="chip" href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italy</a></nav></div>
     <div class="tgrid">
@@ -926,7 +929,7 @@ html .cc .tour:hover img { transform: none; }
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
       <div class="price"><small>Price</small>€1099 | £949 | $1249*</div>
-      
+      <span class="early none" aria-hidden="true">&nbsp;</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/discover-the-algarve-granfondo/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=7345498529&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
@@ -936,13 +939,13 @@ html .cc .tour:hover img { transform: none; }
   <div class="tx">
     <span class="entry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.9V19h4v2H7v-2h4v-3.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4V3zm0 4H5v1a3 3 0 0 0 2 2.8V7zm10 0v3.8A3 3 0 0 0 19 8V7h-2z"/></svg>Event entry guaranteed</span>
     <h2>Chianti &amp; Gran Fondo Strade Bianche</h2>
-    <h3 class="where">Chianti, Tuscany, Italy.</h3>
+    <h3 class="where">Chianti, Tuscany, Italy</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-03-03">3–8 Mar 2027</time></span><span class="chip">5 nights / 6 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
     <div class="desc clamp"><p>Everybody in cycling knows the iconic Strade Bianche. We’ve designed a unique cycling holiday based in the heart of Chianti, where you’ll ride Tuscany’s famous white roads, take part in the Gran Fondo on Sunday, and watch the pros on Saturday. With guaranteed entry, grid start options, and VIP race access, this is the ultimate Strade Bianche experience.</p></div>
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
       <div class="price"><small>From</small>€1349 | £1149 | $1549*</div>
-      
+      <span class="early none" aria-hidden="true">&nbsp;</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/chianti-gran-fondo-strade-bianche/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=8896226693&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
@@ -952,7 +955,7 @@ html .cc .tour:hover img { transform: none; }
   <div class="tx">
     <span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span>
     <h2>Tour of Flanders Experience</h2>
-    <h3 class="where">Flanders, Belgium.</h3>
+    <h3 class="where">Flanders, Belgium</h3>
     <div class="meta"><span class="chip date"><time datetime="2027-04-01">1–5 Apr 2027</time></span><span class="chip">4 nights / 5 days</span><span class="chip">Level: Beginner, Intermediate, Expert</span></div>
     <div class="desc clamp"><p>Ride it. Watch it. Live it.</p><p>Take on the cobbles of the Tour of Flanders weekend in the ultimate cycling experience.</p><p>Ride the legendary climbs in the We Ride Flanders sportive, then watch the world’s best battle it out on the same roads the very next day with premium race access.From brutal cobbles to electric crowds, this is Flanders at its best.</p></div>
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>

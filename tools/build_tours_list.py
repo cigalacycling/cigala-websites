@@ -55,7 +55,7 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     t = trips[slug]
     g = lambda rx: re.search(rx, a, re.S).group(1)
     name = g(r'<h2>(.*?)</h2>').replace('Maratona dles Dolomites – Enel', 'Maratona dles Dolomites - Enel')   # live H2 wording
-    where = g(r'<h3 class="where">(.*?)</h3>')
+    where = g(r'<h3 class="where">(.*?)</h3>').rstrip('.').strip()   # no full stop after the country
     chips = re.findall(r'<span class="chip[^"]*">(.*?)</span>', g(r'<div class="meta">(.*?)</div>'))
     nights = [c for c in chips if 'night' in c.lower()][0]
     level = [c for c in chips if c.startswith('Level')][0].replace('Level: ', '')
@@ -83,7 +83,7 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
       <div class="price"><small>{price_label}</small>{price}</div>
-      {f'<span class="early">{early.group(1)}</span>' if early else ''}
+      {f'<span class="early">{early.group(1)}</span>' if early else '<span class="early none" aria-hidden="true">&nbsp;</span>'}
       <div class="ctas"><a class="btn btn-ghost" href="{more}" {EXT}>More details</a><a class="btn btn-go" href="{book}" {EXT}>Book now →</a></div>
     </div>
   </div>
@@ -153,7 +153,7 @@ def page_main(slug):
              f'    <div class="lede">{"".join(f"<p>{E(p)}</p>" for p in intro)}</div>\n    {hero_custom}\n  </div>\n</div>']
     if slug == 'road-trips':
         gf_html = '\n'.join(rows[s][1] for s in GF)
-        parts.append(f'<section id="calendar" style="padding-top:44px">\n  <div class="in">\n    {head}\n'
+        parts.append(f'<section id="calendar" style="padding-top:24px">\n  <div class="in">\n    {head}\n'
                      f'    <div class="tgrid">\n{tours_html}\n    </div>\n  </div>\n</section>')
         parts.append(f'<section style="padding-top:56px">\n  <div class="in">\n'
                      f'    <div class="head"><div><div class="eyebrow">Ride the event</div><h2>Road tours with a Gran Fondo</h2><div class="bar"></div>\n'
@@ -161,7 +161,7 @@ def page_main(slug):
                      f'      <a class="arrow-link" href="{L}/trips/granfondo-trips/" {EXT}>All Gran Fondo tours →</a></div>\n'
                      f'    <div class="tgrid">\n{gf_html}\n    </div>\n    {footnote}\n  </div>\n</section>')
     else:
-        parts.append(f'<section id="calendar" style="padding-top:44px">\n  <div class="in">\n    {head}\n'
+        parts.append(f'<section id="calendar" style="padding-top:24px">\n  <div class="in">\n    {head}\n'
                      f'    <div class="tgrid">\n{tours_html}\n    </div>\n    {footnote}\n  </div>\n</section>')
     parts += [band, partners, READMORE]
     return '\n'.join(parts)
@@ -199,6 +199,8 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
 .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 .tcard .meta { margin: 2px 0; }
+.phero .lede a { color: var(--green-text); font-weight: 600; text-decoration: none; }
+.phero .lede a:hover { color: #fff; }
 .tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
 .tcard .desc.clamp { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .tcard .more-txt { align-self: flex-start; font: 600 13px var(--body); color: var(--green-text); background: none; border: 0; padding: 0; cursor: pointer; margin-top: -4px; }
@@ -206,6 +208,7 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .tcard .price { font-family: var(--head); font-size: 26px; line-height: 1.1; color: var(--text); }
 .tcard .price small { display: block; padding: 0; margin: 0 0 8px !important; font-family: var(--body); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
 .tcard .early { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; }
+.tcard .early.none { visibility: hidden; }   /* keeps prices level across a row */
 .tcard .early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
 .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
 .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
