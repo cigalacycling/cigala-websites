@@ -5,7 +5,7 @@ This repository holds the redesign of the Cigala Cycling sites in the Cigala Cyc
 1. cigalacycling.com: built on staging, waiting to go live
 2. tours.cigalacycling.com: designs done, WordPress build next
 3. coaching.cigalacycling.com: not started
-4. retail.cigalacycling.com: runs on Shopify, not started
+4. retail.cigalacycling.com: runs on Shopify. SEO/product audit done (`retail/REPORT.md`), nothing changed on the store yet
 
 ## Ground rules (from Matteo)
 
@@ -112,3 +112,10 @@ Elementor snippet 697 holds the head code: it sends a consent update for returni
 - Algarve page: one sentence is repeated.
 
 The new designs fix the last three. The Gran Canaria H1 still has to be fixed on the live page.
+
+## retail.cigalacycling.com (Shopify)
+
+- `retail/REPORT.md`: audit of 15 Nov 2026 with findings and suggested order. Urgent: no page has a `<title>` or meta description, because the uninstalled Booster SEO app used to output them.
+- `retail/products-admin.json`, `retail/sitemaps.json`, `retail/baseline-live-pages.json`: the "before" SEO record. Compare against these after any change.
+- `tools/crawl_shopify.py`: sitemap-driven crawler. Shopify answers 429 to it on `/products/` pages, so product data comes from the Admin API (Shopify connector).
+- The live theme is "NEW District" (`gid://shopify/OnlineStoreTheme/83515113518`). Work on a duplicate, never the live theme, and publish together with Matteo.

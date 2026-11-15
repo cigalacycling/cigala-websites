@@ -28,7 +28,7 @@ def get(u, tries=8):
             return r.status, r.read().decode("utf-8", "replace"), None
         except urllib.error.HTTPError as e:
             if e.code == 429 and n < tries - 1:
-                time.sleep(float(e.headers.get("Retry-After") or 0) or 2 ** n); continue
+                time.sleep(min(60, float(e.headers.get("Retry-After") or 0) or 5 * 2 ** n)); continue
             return e.code, "", e.headers.get("Location")
         except Exception:
             if n < tries - 1: time.sleep(2 ** n); continue
@@ -119,7 +119,7 @@ with open(part, "a") as f:
         r = crawl(u); done[u] = r
         f.write(json.dumps(r, ensure_ascii=False) + "\n"); f.flush()
         if i % 50 == 0: print(i, u, r["status"], flush=True)
-        time.sleep(0.4)
+        time.sleep(2.5)
 pages = [done[u] for u in todo]
 json.dump(pages, open(f"{outdir}/baseline.json", "w"), indent=1, ensure_ascii=False)
 os.remove(part)
