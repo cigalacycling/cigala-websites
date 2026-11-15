@@ -118,6 +118,11 @@ def wk_card(kind, d, km, t, tag, com, tr):
             f'<div class="cal-wn"><span>{E(t)}</span><span class="cal-st">{cm}{svgi("ok", "cal-ic2 cal-done")}</span></div>'
             + (f'<span class="cal-cph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6 6.6 6 11.3a6 6 0 0 1-12 0c0-4.7 6-11.3 6-11.3z"/></svg>{CPH[t]}</span>' if t in CPH else '')
             + f'{trace(tr) if tr else ""}</div>')
+def cal_days(days=None):
+    """the calendar's day columns (all, or only the given dates): used here and on the packages pages"""
+    return ''.join(f'<div class="cal-d"><div class="cal-h"><b>{d}</b></div><div class="cal-cnt">{c}</div>'
+                   + ''.join(f'<div class="cal-n"><b>{svgi("leaf")}Nutrition</b><span>{E(n)}</span></div>' for n in ns)
+                   + ''.join(wk_card(*w) for w in ws) + '</div>' for d, c, ns, ws in WEEK if days is None or d in days)
 cal = ''.join(f'<div class="cal-d"><div class="cal-h"><b>{d}</b></div><div class="cal-cnt">{c}</div>'
               + ''.join(f'<div class="cal-n"><b>{svgi("leaf")}Nutrition</b><span>{E(n)}</span></div>' for n in ns)
               + ''.join(wk_card(*w) for w in ws) + '</div>' for d, c, ns, ws in WEEK)

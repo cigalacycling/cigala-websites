@@ -98,6 +98,10 @@ for l in TXT[TXT.index('H2: FREQUENTLY ASKED QUESTIONS') + 1:TXT.index('H2: #Tra
     elif cur and l.startswith('P: '): cur[1].append(l[3:])
     elif cur and l.strip(): cur[1][-1] += '\n' + l
 faq_html = ''.join(f'<details{" open" if i == 0 else ""}><summary><h2>{E(q)}</h2></summary>' + ''.join(f'<p>{P.md(p).replace(chr(10), "<br>")}</p>' for p in ps) + '</details>' for i, (q, ps) in enumerate(faq))
+# Matteo 15 Nov: working 1-to-1 with the nutritionist (an H3: the live FAQ questions are H2s and stay as they are)
+faq_html += ('<details><summary><h3>Can I work 1-to-1 with a sports nutritionist?</h3></summary><p>Yes. Every package includes access to our sports nutritionist, '
+             'Marine Lenehan (MSc, WorldTour professional cyclist). You can also add nutrition coaching with her: daily macros and carbs per hour in the same calendar as '
+             f'your swim, bike and run sessions, food diary reviews and a race fuelling plan. <a href="{C}/nutrition/#upgrade" {EXT}>Read more about nutrition coaching</a></p></details>')
 assert len(faq) == 5, faq
 
 LOGOS = [('imgi_4_wHe4MESD', 'logo-red-bull'), ('imgi_6_6_MxiOhd', 'logo-stickybottle'), ('unnamed-87.png', 'logo-zwift'),

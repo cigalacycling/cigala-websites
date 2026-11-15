@@ -9,6 +9,17 @@ Each card has its complete feature list: the lines that make the package differe
 import os, sys, re, html as H
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from coaching_common import *
+import io, contextlib
+with contextlib.redirect_stdout(io.StringIO()):
+    import build_coaching_nutrition as NUT   # the athlete calendar (Matteo 15 Nov: show it here, instead of the team photo)
+_c = NUT.CSS
+CAL_CSS = '<style>' + _c[_c.index('.cal-scroll {'):_c.index('.nu-upg-cta {')] + '''
+.pk-cal { margin: 0; display: grid; gap: 10px; }
+.pk-cal .cal-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pk-cal figcaption { color: var(--text-2); font-size: 14px; line-height: 1.55; }
+.pk-cal figcaption a { color: var(--green-text); font-weight: 600; }
+@media (max-width: 1100px) { .pk-cal .cal-row { grid-template-columns: repeat(3, 165px); } }
+</style>'''
 
 PATH = '/individual-packages/'
 SRC = open(ROOT + 'coaching/html/individual-packages.html').read()
@@ -178,6 +189,9 @@ for l in faq_lines:
     if l.startswith('H3: '): cur = [l[4:], []]; faq.append(cur)
     elif cur and l.startswith('P: '): cur[1].append(l[3:])
     elif cur and l and not l.startswith(('TXT', '<')): cur[1][-1] += '\n' + l
+# Matteo 15 Nov: a question on working 1-to-1 with the nutritionist
+faq.append(('Can I work 1-to-1 with a sports nutritionist?', ['Yes. Every package includes access to our sports nutritionist, Marine Lenehan (MSc, WorldTour professional cyclist), and Advanced and Premium include a nutritional consult and daily carb recommendations for your sessions.',
+            'You can also add nutrition coaching with Marine: your daily macros and carbs per hour in the same calendar as your training, food diary reviews, and a fuelling plan for your races. [Read more about nutrition coaching](' + C + '/nutrition/#upgrade)']))
 faq_html = ''.join(f'<details{" open" if i == 0 else ""}><summary><h3>{E(q)}</h3></summary>' + ''.join(f'<p>{md(p).replace(chr(10), "<br>")}</p>' for p in ps) + '</details>' for i, (q, ps) in enumerate(faq))
 
 # ---------- numbers ----------
@@ -291,7 +305,10 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
       <div class="ctas"><a class="btn btn-go" href="{VEKTA}" {EXT}>Find more about Vekta →</a></div>
     </div>
     <div class="vk-side">
-      <div class="photo"><img src="{TEAM}" alt="{E(live_alt('imgi_43_K2-r3g1h'))}" loading="lazy" width="1600" height="1082"></div>
+      <figure class="nu-cal pk-cal">
+        <div class="cal-scroll" tabindex="0" aria-label="Example days from an athlete's calendar, with nutrition"><div class="cal-row">{NUT.cal_days(('21', '24', '26'))}</div></div>
+        <figcaption>Working 1-to-1 with our sports nutritionist, Marine Lenehan? Her nutrition notes, daily macros and carbs per hour sit in the same calendar as your sessions. <a href="{C}/nutrition/#upgrade" {EXT}>Read more about nutrition coaching →</a></figcaption>
+      </figure>
       <div class="vk-logos">
         <a class="vk-lock" href="https://joinvekta.com/partnerships" {EXT} aria-label="{E(live_alt('SDFASDFASDF'))}"><img src="{LOGO}" alt="" loading="lazy" width="64" height="64"><svg class="vk-x" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg><img src="{VKLOGO}" alt="{E(live_alt('SDFASDFASDF'))}" loading="lazy" width="531" height="139"></a>
         <span><img src="{TPLOGO}" alt="{E(live_alt('PfNJBaCPkS_eSn5J'))}" loading="lazy"></span>
@@ -302,7 +319,7 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
 
 <section>
   <div class="in">
-    <div class="head"><div><div class="eyebrow">Works with</div><h2 class="h-long">FOLLOW YOUR STRUCTURED TRAINING SESSIONS ON YOUR FAVOURITE DEVICES &amp; APPS (BELOW SOME APPS - THE LIST IS MUCH LONGER)</h2><div class="bar"></div></div></div>
+    <div class="head"><div><div class="eyebrow">Works with</div><h2>SYNC WITH YOUR FAVOURITE DEVICES &amp; APPS</h2><div class="bar"></div></div></div>
     <div class="logos apps">{devices}</div>
   </div>
 </section>
@@ -540,5 +557,7 @@ document.getElementById('g-more').dataset.label = document.getElementById('g-mor
 
 build('individual-packages', PATH, MAIN,
       'New Individual Packages page. Same packages, prices, payment links and copy as live; the page now has its approved H1.',
-      h1='Individual Cycling Coaching Packages', extra_css=PCSS + FT_CSS + CS_CSS, extra_js=PJS)
+      h1='Individual Cycling Coaching Packages', extra_css=PCSS + FT_CSS + CS_CSS + CAL_CSS, extra_js=PJS,
+      # Matteo 15 Nov: the devices heading was too long
+      h2_changes={'drop': ['FOLLOW YOUR STRUCTURED TRAINING SESSIONS ON YOUR FAVOURITE DEVICES & APPS (BELOW SOME APPS - THE LIST IS MUCH LONGER)'], 'add': ['SYNC WITH YOUR FAVOURITE DEVICES & APPS']})
 print('features:', {k: len(v) for k, v in F.items()}, 'shared:', len(common), 'gallery:', len(gal), 'faq:', len(faq), 'apps:', len(DEV))
