@@ -194,6 +194,12 @@ def build_page(key):
             form = live_widget(3338, 'form')
             form['settings']['_css_classes'] = 'cc-form'
             form['settings']['email_subject'] = 'New message from the Coaching website'
+            # shared/BUSINESS.md "Form emails" (Matteo 15 Nov): Coaching forms go to matteo@, sent from noreply@cigalacycling.com
+            st = form['settings']
+            for k in ('email_to', 'email_to_2'): st[k] = 'matteo@cigalacycling.com'
+            for k in ('email_from', 'email_from_2'): st[k] = 'noreply@cigalacycling.com'
+            for k in ('email_from_name', 'email_from_name_2'): st[k] = 'Cigala Cycling Coaching'
+            st['email_subject_2'] = 'New message from the Coaching website'
             # Matteo 15 Nov: add a phone number and make every field compulsory. Phone is a text field: Elementor's
             # tel field rejects spaces, and people type "+353 87 ...". [all-fields] in the email includes it.
             form['settings']['mark_required'] = 'yes'   # show the * so people can see every field is compulsory
