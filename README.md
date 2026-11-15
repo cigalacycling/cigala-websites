@@ -157,3 +157,9 @@ The new designs fix the last three. The Gran Canaria H1 still has to be fixed on
   - **Month** dropdown (Feb–Oct 2027): the dates are in `tours/trips-2027.json`, read from the card images on the live `/trips/` page. On live they only exist inside the images. On the new cards they'll also be real text, which Google can read.
   - At 390px the bar stacks vertically. Selects use 16px text so iPhones don't zoom in.
 
+
+## Coaching staging: status 15 Nov
+
+- **Staging:** https://staging.coaching.cigalacycling.com (Hostinger copy). WordPress home and siteurl point to the staging address, and robots.txt has `Disallow: /`.
+- **Login:** an application password ("Claude", user `infocigalacycling-com`, administrator) is saved as a network secret for this staging host only. Checked 15 Nov: `wp-json/wp/v2/users/me` answers as Matteo Cigala (administrator).
+- **Not built yet.** Nothing has been changed on coaching staging. The build starts after Tours, when Matteo says so. Back up the staging pages and templates first (as `stg/backup/` did for cigalacycling.com), then apply `coaching/SEO-DECISIONS.md`.
