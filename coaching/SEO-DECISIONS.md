@@ -305,3 +305,9 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   above the text. Nutrition tool icons match the free tools. Bike fit: booking eyebrow, smaller contact headings, side
   panels top-aligned. "Club talk" is called "Workshops" in the menu, buttons and eyebrows; URL /club-talk/, H1 and Yoast
   title unchanged (no SEO change). Topics as icon tiles.
+- Blog: 12 posts per load (full rows of 3, or 2 on tablet) and a new hero (Matteo riding, live alt of imgi_20; the
+  autograph photo IMG_5144 is no longer on /blog/). Testimonials hero photo full width on phones. Canada hero: the team in
+  Cigala kit (not the Strade Bianche win). Marine's notes slider with arrows and dots (no scrollbar), also under the
+  calendar on UK/USA/Canada. Individual Packages: Free Training Tools moved under the Vekta section. Triathlon cards:
+  second buy button like cycling. Forms: a real test submission on staging /contact/ returned "Your submission was
+  successful"; every page's form is the live Elementor form with 16px fields.

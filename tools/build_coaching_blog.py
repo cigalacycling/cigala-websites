@@ -12,7 +12,7 @@ import build_coaching_generic as G
 live = LIVE[C + '/blog/']
 author_h2 = sorted({h for h in live['h2'] if h.startswith('By ')})
 MAIN = f'''<div class="hero hero-sm blog-hero">
-  <img src="{img('IMG_5144', 'blog-hero')}" alt="{E(live_alt('IMG_5144.jpg'))}">
+  <img src="{img('imgi_20_Fqav', 'blog-hero-matteo-riding')}" alt="{E(live_alt('imgi_20_Fqav'))}" style="object-position:50% 30%">
   <div class="in">
     <div class="eyebrow eb-pill"><span class="dot"></span>Blog</div>
     <h1>STAY UP TO DATE WITH OUR LATEST BLOG POSTS</h1>

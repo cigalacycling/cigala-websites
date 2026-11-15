@@ -82,7 +82,7 @@ CSS = G.GCSS + '''<style>
 .tm-hero-pic { margin: 0; justify-self: end; max-width: 400px; width: 100%; }
 .tm-hero-pic img { width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--border); display: block; }
 .tm-hero-pic figcaption { margin-top: 8px; color: var(--text-3); font-size: 13px; text-align: right; }
-@media (max-width: 820px) { .tm-hero-in { grid-template-columns: minmax(0, 1fr); } .tm-hero-pic { justify-self: start; max-width: 320px; } .tm-hero { padding-top: 96px !important; } }
+@media (max-width: 820px) { .tm-hero-in { grid-template-columns: minmax(0, 1fr); } .tm-hero-pic { justify-self: stretch; max-width: none; } .tm-hero-pic img { aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 25%; } .tm-hero-pic figcaption { text-align: left; } .tm-hero { padding-top: 96px !important; } }
 .tm-cols { columns: 3 300px; column-gap: 16px; }
 .tm { break-inside: avoid; margin: 0 0 16px; padding: 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); display: grid; gap: 12px; }
 .tm-photo { border-radius: 10px; overflow: hidden; }   /* Matteo 15 Nov: photos not centred -> shown whole, no crop */

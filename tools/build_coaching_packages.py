@@ -16,9 +16,13 @@ _c = NUT.CSS
 CAL_CSS = '<style>' + _c[_c.index('.cal-scroll {'):_c.index('.nu-upg-cta {')] + '''
 .pk-cal { margin: 0; display: grid; gap: 10px; }
 .pk-cal .cal-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.pk-notes { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; align-items: start; }
+.pk-notes { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; align-items: start; }
+.pk-notes::-webkit-scrollbar { display: none; }
+.pk-dots { display: inline-flex; gap: 8px; align-items: center; margin: 0 6px; }
+.pk-dot { width: 9px; height: 9px; padding: 0; border-radius: 50%; border: 0; background: var(--border-strong); cursor: pointer; transition: background .2s, width .2s; }
+.pk-dot.on { width: 22px; border-radius: 6px; background: var(--green); }
 .pk-notes > .cal-note { scroll-snap-align: start; margin: 0; }
-.pk-nav { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
+.pk-nav { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; }
 .pk-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
 .pk-btn:hover { border-color: var(--green); color: var(--green-text); }
 .pk-note .cal-rm { font-size: 13px; }
@@ -69,6 +73,12 @@ def notes_strip(items):
 
 PAY = dict(re.findall(r'<option value="(https://[^"]+)"[^>]*>\s*([^<]+?)\s*<', SRC))
 pay = {label: url for url, label in PAY.items()}
+def notes_slider():   # Matteo 15 Nov: Marine's three sample notes, arrows and dots instead of a scrollbar
+    dots = ''.join(f'<button type="button" class="pk-dot{" on" if i == 0 else ""}" data-i="{i}" aria-label="Note {i + 1}"></button>' for i in range(3))
+    return (f'<div class="pk-notes-wrap"><div class="pk-notes" tabindex="0" aria-label="Sample notes from Marine">{NUT.notes}</div>'
+            f'<div class="pk-nav"><button type="button" class="pk-btn" data-d="-1" aria-label="Previous note">←</button><span class="pk-dots">{dots}</span>'
+            f'<button type="button" class="pk-btn" data-d="1" aria-label="Next note">→</button></div></div>')
+
 def btn(label, url, cls='btn-go', note=''):
     return f'<a class="btn {cls} pay" href="{E(url)}" {EXT}>{label}</a>' + (f'<span class="pay-note">{note}</span>' if note else '')
 
@@ -275,7 +285,6 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
   </div>
 </section>
 
-{tools_band()}
 
 <section>
   <div class="in">
@@ -316,8 +325,7 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
     <div class="vk-side">
       <figure class="nu-cal pk-cal">
         <div class="cal-scroll" tabindex="0" aria-label="Example days from an athlete's calendar, with nutrition"><div class="cal-row">{NUT.cal_days(('21', '24', '26'))}</div></div>
-        <div class="pk-notes-wrap"><div class="pk-notes" id="pk-notes" tabindex="0" aria-label="Sample notes from Marine, scroll sideways">{NUT.notes}</div>
-          <div class="pk-nav"><button type="button" class="pk-btn" data-d="-1" data-t="pk-notes" aria-label="Previous note">←</button><button type="button" class="pk-btn" data-d="1" data-t="pk-notes" aria-label="Next note">→</button></div></div>
+        {notes_slider()}
         <figcaption>Working 1-to-1 with our sports nutritionist, Marine Lenehan? Her nutrition notes, daily macros and carbs per hour sit in the same calendar as your sessions. <a href="{C}/nutrition/#upgrade" {EXT}>Read more about nutrition coaching →</a></figcaption>
       </figure>
       <div class="vk-logos">
@@ -327,6 +335,8 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
     </div>
   </div>
 </section>
+
+{tools_band()}
 
 <section>
   <div class="in">
@@ -582,7 +592,14 @@ document.querySelectorAll('.pkg-all').forEach(function (b) {   // one click open
     if (!('IntersectionObserver' in window)) { g.classList.add('on'); return; }
     new IntersectionObserver(function (es, ob) { if (es[0].isIntersecting) { g.classList.add('on'); ob.disconnect(); } }, { threshold: 0.4 }).observe(g);
   });
-  document.querySelectorAll('.pk-btn').forEach(function (b) { b.addEventListener('click', function () { var r = document.getElementById(b.dataset.t); r.scrollBy({ left: (+b.dataset.d) * r.clientWidth, behavior: 'smooth' }); }); });
+  document.querySelectorAll('.pk-notes-wrap').forEach(function (w) {
+    var r = w.querySelector('.pk-notes'), dots = w.querySelectorAll('.pk-dot');
+    function cur() { return Math.round(r.scrollLeft / r.clientWidth); }
+    function go(i) { i = (i + dots.length) % dots.length; r.scrollTo({ left: i * r.clientWidth, behavior: 'smooth' }); }
+    w.querySelectorAll('.pk-btn').forEach(function (b) { b.addEventListener('click', function () { go(cur() + (+b.dataset.d)); }); });
+    dots.forEach(function (d) { d.addEventListener('click', function () { go(+d.dataset.i); }); });
+    r.addEventListener('scroll', function () { var i = cur(); dots.forEach(function (d, k) { d.classList.toggle('on', k === i); }); }, { passive: true });
+  });
   var els = document.querySelectorAll('[data-count]');
   if (!els.length || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   els.forEach(function (el) {

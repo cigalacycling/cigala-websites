@@ -76,7 +76,7 @@ C_ = {
     },
     extra_q=('Can you coach me for a long gravel race?', ['Yes. Gravel and MTB are part of what we coach. Long gravel races are won or lost on pacing and fuelling as much as fitness: Advanced and Premium include daily carb recommendations for each session and a race and pacing strategy for the event.'])),
 'canada': dict(
-    name='Canada', adj='Canadian', cur='$', code='CAD', hero=('gran_fondo_strade_bianche_2022_img_1', 'country-canada-hero-matteo-win'), pos='45% 30%', photo=('pzrIm4dp1o9W5oO', 'country-canada-events-podium'),
+    name='Canada', adj='Canadian', cur='$', code='CAD', hero=('imgi_19_DIi7do4I', 'country-canada-hero-team', 'Cigala Cycling riders in the team kit, together before a group ride'), pos='55% 35%', photo=('pzrIm4dp1o9W5oO', 'country-canada-events-podium'),
     vekta='$30.99', guides=[('gran-fondo-whistler-training-guide', 'How to train for Gran Fondo Whistler'), ('slower-in-winter-is-not-your-legs', 'Slower in winter? It’s not your legs'), ('effective-fuelling-techniques-for-winter-training', 'Fuelling for winter training')], reviews=[11, 4, 1, 3, 8, 2],
     facts=[('snow', 'A real winter plan', 'Indoor blocks on Zwift, MyWhoosh or ROUVY so you start spring fit, not from zero.'),
            ('currency', 'Prices in Canadian dollars', 'You pay in Canadian dollars, so no exchange fees on your side.'),
@@ -242,6 +242,7 @@ def build_country(key):
       <ol class="cn-days">{how}</ol>
       <figure class="nu-cal pk-cal cn-cal">
         <div class="cal-scroll" tabindex="0" aria-label="Example days from an athlete's calendar, with nutrition"><div class="cal-row">{P.NUT.cal_days(('21', '24', '26'))}</div></div>
+        {P.notes_slider()}
         <figcaption>Example days from an athlete’s calendar: your sessions and, with nutrition coaching, Marine’s notes and carbs per hour. <a href="{C}/nutrition/#upgrade" {EXT}>Read more about nutrition coaching →</a></figcaption>
       </figure>
     </div>

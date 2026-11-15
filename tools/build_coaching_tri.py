@@ -60,7 +60,8 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         <div class="pkg-lab">What you get</div>
         <ul class="ticks">{items}</ul>
         <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
-      </article>'''
+        <div class="pkg-buy2">{re.search(r'<a [^>]*>.*?</a>', buttons).group(0).replace(' pay"', ' pay pay2"')}</div>
+      </article>'''   # same as the cycling cards
 
 cards = ''.join([
     card('basic', 'Basic Package', '12 Weeks', '€19', '/week', 'Charged with one-time payment of €228 for the 12 weeks.',
