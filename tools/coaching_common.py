@@ -218,7 +218,7 @@ CASES = [
      'bests': ['W′: 7.4 → 9 kJ (+21%), Nov 2025 vs Nov 2026', 'Record power: 1,112 W, April 2026'],
      'source': 'Vekta data, last 12 months against the 12 months before (Nov 2024 – Nov 2026)'},
     {'slug': 'david', 'name': 'David O.', 'where': 'Sportive rider · Ireland', 'photo': None, 'photo_file': 'coaching/athletes/david.webp',
-     'photo_alt': 'David O. riding in a light blue club kit',
+     'photo_alt': 'David O. racing in his Gorey CC club kit',
      'headline': '+44 watts of engine', 'stat': '+44 W CP', 'tag': 'Sportive',
      'before': 'David rides Ireland’s big sportives: the Tour de Conamara, the Tour de Kilkenny and the Tour of Wicklow, days of 140–160 km.',
      'goal': 'A bigger engine for long days in the saddle.',
