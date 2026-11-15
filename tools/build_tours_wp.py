@@ -33,7 +33,8 @@ IMG = {
 def fix_img(m):
     tag = m.group(0)
     src = re.search(r'src="([^"]+)"', tag).group(1)
-    key = IMG.get(src) or (src[4:-5] if src.startswith('img/trip-') and src.endswith('.webp') else None)
+    key = IMG.get(src) or (src[4:-5] if src.startswith('img/trip-') and src.endswith('.webp') else None) \
+        or (src[len('img/cigala-tours-'):-5] if src.startswith('img/cigala-tours-guest-') else None)
     if not key: raise SystemExit('no staging image for ' + src)
     tag = tag.replace(f'src="{src}"', f'src="{M[key]["url"]}"')
     alt = re.search(r'alt="([^"]*)"', tag).group(1)

@@ -47,7 +47,15 @@ A = {
     'trip-lake-garda-gravel': (6378, 1200, None),
     'trip-italys-coast-to-coast': (4972, 1200, None),
     'trip-lake-como-gran-fondo-il-lombardia': (7740, 1200, None),
+    # guest photos: square crops from the originals matching the live crops (made by hand, already WebP q90)
+    'guest-steve': ('webp-tours/cigala-tours-guest-steve.webp', 240, 'Person smiling while riding a celeste-colored Bianchi road bicycle'),
+    'guest-hank': ('webp-tours/cigala-tours-guest-hank.webp', 240, 'Cycling Alps Cigala Cycling'),
+    'guest-william': ('webp-tours/cigala-tours-guest-william.webp', 240, None),
+    'guest-andreas': ('webp-tours/cigala-tours-guest-andreas.webp', 240, None),
+    'guest-fraser': ('webp-tours/cigala-tours-guest-fraser.webp', 240, None),
+    'guest-mike': ('webp-tours/cigala-tours-guest-mike.webp', 240, None),
 }
+GUEST_ALT = {'guest-william': 5949, 'guest-andreas': 5932, 'guest-fraser': 5934, 'guest-mike': 5933}
 
 def req(url, data=None, headers=None, method=None, tries=20):
     url = urllib.parse.quote(url, safe=':/?=&%')  # filenames like ©MolingAlex
@@ -74,6 +82,13 @@ done = json.load(open(MAP)) if os.path.exists(MAP) else {}
 for key, (src, maxw, alt) in A.items():
     if key in done: continue
     raw = original(src) if isinstance(src, int) else open(ROOT + src, 'rb').read()
+    if isinstance(src, str) and src.endswith('.webp'):   # already final: upload as is, no second encode
+        fn = os.path.basename(src); im = Image.open(io.BytesIO(raw)); w0 = im.size
+        alt = alt or lib[GUEST_ALT[key]]['alt_text']
+        r = json.loads(req(B + '/media', data=raw, method='POST', headers={'Content-Type': 'image/webp', 'Content-Disposition': f'attachment; filename="{fn}"', 'User-Agent': 'Mozilla/5.0'}))
+        req(B + f'/media/{r["id"]}', data=json.dumps({'alt_text': alt}).encode(), method='POST', headers={'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0'})
+        done[key] = {'id': r['id'], 'url': r['source_url'], 'alt': alt, 'from': w0, 'size': w0}
+        json.dump(done, open(MAP, 'w'), indent=1, ensure_ascii=False); print(key, r['id']); continue
     im = Image.open(io.BytesIO(raw))
     im = im.convert('RGBA') if im.mode in ('RGBA', 'LA', 'P') and 'transparency' in im.info or im.mode in ('RGBA', 'LA') else im.convert('RGB')
     w0 = im.size

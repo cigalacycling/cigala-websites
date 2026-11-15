@@ -362,5 +362,83 @@
    1200,
    1199
   ]
+ },
+ "guest-steve": {
+  "id": 9272,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-steve.webp",
+  "alt": "Person smiling while riding a celeste-colored Bianchi road bicycle",
+  "from": [
+   240,
+   240
+  ],
+  "size": [
+   240,
+   240
+  ]
+ },
+ "guest-hank": {
+  "id": 9273,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-hank.webp",
+  "alt": "Cycling Alps Cigala Cycling",
+  "from": [
+   240,
+   240
+  ],
+  "size": [
+   240,
+   240
+  ]
+ },
+ "guest-william": {
+  "id": 9274,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-william.webp",
+  "alt": "Person wearing a white Cigala Cycling jersey paired with grey Van Rysel bib shorts and a white helmet",
+  "from": [
+   240,
+   240
+  ],
+  "size": [
+   240,
+   240
+  ]
+ },
+ "guest-andreas": {
+  "id": 9275,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-andreas.webp",
+  "alt": "Isaac del Toro wearing a special pink jersey during the 2025 Giro d'Italia",
+  "from": [
+   240,
+   240
+  ],
+  "size": [
+   240,
+   240
+  ]
+ },
+ "guest-fraser": {
+  "id": 9276,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-fraser.webp",
+  "alt": "Cyclist wearing a Cigala Cycling branded white technical jersey with Italian flag",
+  "from": [
+   240,
+   240
+  ],
+  "size": [
+   240,
+   240
+  ]
+ },
+ "guest-mike": {
+  "id": 9277,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-guest-mike.webp",
+  "alt": "Person wearing a POC Essential Road Light Jersey in azurite multi blue",
+  "from": [
+   240,
+   240
+  ],
+  "size": [
+   240,
+   240
+  ]
  }
 }

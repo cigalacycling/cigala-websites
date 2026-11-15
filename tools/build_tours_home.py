@@ -54,11 +54,8 @@ IMG = {
 for k, v in IMG.items():
     s = s.replace(f'src="{k}"', f'src="{v}"')
 
-# reviewer photos are not in the repo yet: show initials instead
-def av(m):
-    name = m.group(2)
-    return f'<div class="who"><span class="av" aria-hidden="true">{E(name[:1])}</span><div>{name}'
-s = re.sub(r'<div class="who"><img src="img/t_[^"]+"[^>]*>(<div>)([^<]+)', av, s)
+# guest photos: the live homepage crops, rebuilt from the originals (webp-tours/cigala-tours-guest-*.webp)
+s = re.sub(r'src="img/t_([a-z]+)\.(?:jpg|png)"', r'src="img/cigala-tours-guest-\1.webp"', s)
 
 # ---------- small fixes ----------
 s = s.replace(L + '/trips/destinations/', L + '/destinations/')   # wrong link in the design
@@ -268,6 +265,66 @@ JS = '''<script>
 })();
 </script>''' % (json.dumps({k: list(v) for k, v in CAT.items()}), L)
 s = re.sub(r'<script>\s*\(function \(\) \{\s*var chips.*?</script>', lambda m: JS, s, count=1, flags=re.S)
+
+
+# ---------- Matteo's feedback, 15 Nov 2026 ----------
+def rep(a, b, n=1):
+    global s
+    assert s.count(a) == n, (s.count(a), a[:80])
+    s = s.replace(a, b)
+
+# hero: shorter text. The long live paragraph moves down under "Bike Tours in Italy, France..." (kept on the page)
+m = re.search(r'\s*<p class="lede">From Italy’s lakes.*?</p>', s, re.S)
+long_lede = m.group(0).strip().replace('<p class="lede">', '<p class="lede">', 1)
+s = s[:m.start()] + '\n    <p class="lede">Fully supported cycling tours across Europe’s best roads, guided by former pro riders.</p>' + s[m.end():]
+rep('<p class="lede">Our 2027 public tours, from February to October.', long_lede + '\n        <p class="lede">Our 2027 public tours, from February to October.')
+# stats
+rep('<div class="stat"><div class="n">500+</div><div class="l">Cyclists guided</div></div>', '<div class="stat"><div class="n">700+</div><div class="l">Cyclists guided</div></div>')
+# green buttons
+rep('<a class="btn btn-ghost" href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">Read our story →</a>', '<a class="btn btn-go" href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">Read our story →</a>')
+rep('<a class="btn btn-ghost" href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">Meet Matteo &amp; the team →</a>', '<a class="btn btn-go" href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">Meet Matteo &amp; the team →</a>')
+# Matteo's titles: same list as cigalacycling.com
+s = re.sub(r'<ul class="creds">.*?</ul>', '<ul class="creds">\n        <li>European Road Champion Gran Fondo</li>\n        <li>UCI Gran Fondo Vice World Champion</li>\n        <li>UCI Gravel Vice World Champion</li>\n        <li>Italian Gravel Champion</li>\n        <li>200+ race wins</li>\n      </ul>', s, count=1, flags=re.S)
+# more FAQs (facts from the live terms, custom tours and Dolomites pages)
+FAQ = [
+  ('What is included in the price?', 'Each tour page lists exactly what is included. As an example, the Dolomites tour includes hotel nights, buffet breakfasts, airport transfers with bike and luggage at set times, guided rides every day with our ex-pro guides, a support vehicle, snacks and water on the route, and GPX files sent in advance. Flights, dinners, bike rental and travel insurance are extra.'),
+  ('How big are the groups?', 'We keep groups small so everyone gets proper support. The Dolomites tour, for example, takes a maximum of 12 riders. You will find the group size on each tour page.'),
+  ('How do I book, and when is the balance due?', 'A deposit secures your place when you book. Deposits are non-refundable. The outstanding balance is due 31 days before the trip.'),
+  ('What happens if I need to cancel?', 'Email us at tours@cigalacycling.com. If you cancel between booking and 31 days before departure, your full balance (not including the deposit) is carried forward as a credit for a future trip within two years. Cancellations fewer than 31 days before the trip cannot be refunded, which is why travel insurance is mandatory on all our tours.'),
+  ('Can you organise a private or custom tour?', 'Yes. We are a boutique tour operator and specialise in bespoke tours for any group size, from a couple of riders to a whole club. We organise accommodation, guiding, support, bike rental, transfers and restaurants, and we can also put together a self-guided trip.'),
+]
+extra = ''.join(f'\n      <details id="faq-{i}"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for i, (q, a) in enumerate(FAQ, 5))
+rep('<details id="faq-4">', '<details id="faq-4">')
+i = s.index('</details>', s.index('<details id="faq-4">')) + len('</details>')
+s = s[:i] + extra + s[i:]
+
+CSS2 = """
+/* ---- Matteo's feedback, 15 Nov 2026 ---- */
+.cc [hidden], [hidden] { display: none !important; }
+.eyebrow { color: var(--red-text, #ff3d33); margin-bottom: 10px; }
+.hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--text); text-shadow: none; background: rgba(8,9,10,.78); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 14px; margin-bottom: 16px; }
+.hero .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex: none; }
+.story .quote { margin-bottom: 18px; }
+.story p { margin-bottom: 16px; }
+.band .tx .eyebrow + h2, .band .tx h2 + .bar { margin-top: 0; }
+.fi select:focus, .fi select:focus-visible { outline: none; }
+.fi:focus-within { box-shadow: inset 0 0 0 2px var(--green); border-radius: 10px; }
+.tour .facts span { white-space: nowrap; }
+.tour .facts span:not(:last-child)::after { content: "·"; margin-left: 12px; color: var(--red); font-weight: 700; }
+.matteo .photo { background: none; aspect-ratio: auto; position: relative; display: flex; justify-content: center; align-items: flex-end; isolation: isolate; }
+.matteo .photo::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }
+.matteo .photo img { width: 100%; max-width: 480px; height: auto; -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, #000 82%, transparent 100%); }
+section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; border: 0; border-radius: 0; background: none; }
+@media (max-width: 900px) {
+  .finder { margin-bottom: 30px; }
+  section.matteo .in .photo img { width: 100%; max-width: 340px; }
+}
+@media (max-width: 640px) {
+  .tour { aspect-ratio: auto; min-height: 440px; }
+  .tour .tx { padding-top: 70px; }
+}
+"""
+s = s.replace('@media (max-width: 1080px)', CSS2 + '\n@media (max-width: 1080px)', 1)
 
 s = s.replace('<title>Cigala Tours Homepage</title>', '<title>Cigala Cycling Tours | Europe Bike Tour Operator</title>')
 open(OUT + 'home.html', 'w').write(s)
