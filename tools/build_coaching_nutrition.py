@@ -242,8 +242,8 @@ MAIN = f'''<div class="hero hero-sm nu-hero">
   <div class="in">
     <div class="head"><div><div class="eyebrow">Free calculators</div><h2>FREE NUTRITION TOOLS</h2><div class="bar"></div></div></div>
     <div class="nu-tools">
-      <a class="panel nu-tool" href="{C}/tools/carbs-per-hour-calculator/" {EXT}><svg class="nu-uic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6 6.6 6 11.3a6 6 0 0 1-12 0c0-4.7 6-11.3 6-11.3z"/><path d="M9 14h6"/></svg><h3 class="h-sm">Carbs per hour</h3><p>Your fuelling plan for a ride or race: grams of carbs per hour, in gels and bottles.</p><span class="arrow-link">Open the calculator →</span></a>
-      <a class="panel nu-tool" href="{C}/tools/sweat-rate-calculator/" {EXT}><svg class="nu-uic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2h8l-1 4H9z"/><path d="M9 6c-2 2-3 4-3 7a6 6 0 0 0 12 0c0-3-1-5-3-7"/><path d="M9 14c1 1 5 1 6 0"/></svg><h3 class="h-sm">Sweat rate</h3><p>How much you sweat per hour, and how much to drink on the bike.</p><span class="arrow-link">Open the calculator →</span></a>
+      <a class="panel nu-tool" href="{C}/tools/carbs-per-hour-calculator/" {EXT}><svg class="nu-uic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M5 7l2.5 2.5M19 7l-2.5 2.5"/><rect x="7" y="9" width="10" height="13" rx="3"/><path d="M7 14h10"/></svg><h3 class="h-sm">Carbs per hour</h3><p>Your fuelling plan for a ride or race: grams of carbs per hour, in gels and bottles.</p><span class="arrow-link">Open the calculator →</span></a>
+      <a class="panel nu-tool" href="{C}/tools/sweat-rate-calculator/" {EXT}><svg class="nu-uic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6 6.6 6 11.3a6 6 0 0 1-12 0c0-4.7 6-11.3 6-11.3z"/><path d="M9 14h6"/></svg><h3 class="h-sm">Sweat rate</h3><p>How much you sweat per hour, and how much to drink on the bike.</p><span class="arrow-link">Open the calculator →</span></a>
     </div>
   </div>
 </section>

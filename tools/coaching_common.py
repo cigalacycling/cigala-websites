@@ -72,7 +72,7 @@ CYC = [(C + '/coaching-vision/', 'Coaching Vision'), (C + '/individual-packages/
 TRI = [(C + '/about2/', 'About Triathlon Coaching'), (C + '/tri-individual-packages/', 'Individual Packages'),
        (C + '/group-club-packages/', 'Group &amp; Club Packages'), (SKOOL, 'Community')]
 SERV = [(C + '/testing/', 'INSCYD Testing'), (C + '/nutrition/', 'Nutrition'), (C + '/bike-fitting/', 'Bike Fit'),
-        (C + '/talent-scout/', 'Talent Programme'), (C + '/club-talk/', 'Club Talk'), (C + '/tools/', 'Free Training Tools')]   # a top-level item wrapped the menu at 1440
+        (C + '/talent-scout/', 'Talent Programme'), (C + '/club-talk/', 'Workshops'), (C + '/tools/', 'Free Training Tools')]   # a top-level item wrapped the menu at 1440
 RES = [(C + '/testimonials/', 'Testimonials'), (C + '/case-studies/', 'Case Studies')]   # Matteo 15 Nov: one menu for both
 def dd(label, items):
     return (f'<div class="dd"><button type="button" class="dd-btn" aria-expanded="false" aria-haspopup="true">{label} <span aria-hidden="true">▾</span></button>'

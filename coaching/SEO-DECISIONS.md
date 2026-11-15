@@ -300,3 +300,8 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Triathlon packages: H2 "FOLLOW YOUR PLAN ON" section removed (Matteo; the TrainingPeaks and Zwift logos, with their live
   alts, stay under As seen in); contact photo is an open-water swim instead of the hero photo again. Package cards lift on
   hover; review strips move on every 5 s (pause on hover/touch/arrows, off with reduced motion); case studies stay static.
+- Talent: chart now Eoin R. (both seasons at 15 s, 1 min, 5 min and Critical Power, Vekta data); A&J riders past and
+  present as a full row with each one's top win on hover (A&J history page); wins boxes highlight on hover; step titles
+  above the text. Nutrition tool icons match the free tools. Bike fit: booking eyebrow, smaller contact headings, side
+  panels top-aligned. "Club talk" is called "Workshops" in the menu, buttons and eyebrows; URL /club-talk/, H1 and Yoast
+  title unchanged (no SEO change). Topics as icon tiles.

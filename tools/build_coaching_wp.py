@@ -129,8 +129,10 @@ html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 va
 .cc-shapo { margin-top: 18px; }
 .cc-contact.e-con { --gap: 0px; }
 .cc-contact .cc-form { width: 100% !important; max-width: 100% !important; --container-widget-width: 100% !important; margin: 22px 0 0 !important; box-sizing: border-box; }
-.e-con.cc-wrap.cc-contact { padding: 72px 16px 0 !important; max-width: 1232px !important; margin: 0 auto !important; gap: 48px !important; }
+.e-con.cc-wrap.cc-contact { padding: 96px 16px 0 !important; max-width: 1232px !important; margin: 0 auto !important; gap: 48px !important; }
 .cc-contact .cc-page > div > .eyebrow { margin-top: 0; }
+/* Matteo 15 Nov: the contact headings were too big; side panels start at the top, level with the heading */
+.cc-contact .cc .h-sec { font-size: clamp(28px, 3.2vw, 42px); }
 /* Matteo 15 Nov: the photo next to the form was much smaller than the form: as tall as the form now */
 .cc-contact-ph .photo.rider { aspect-ratio: 4 / 5; }
 .cc-contact-ph .photo.rider img { width: 100%; height: 100%; object-fit: cover; }
@@ -364,7 +366,7 @@ def build_page(key):
             left = wrap([html_widget('<div class="cc cc-page">' + photo + '</div>')], lcls, True, width={"unit": "%", "size": 42}, width_mobile={"unit": "%", "size": 100})
             right = wrap([html_widget('<div class="cc cc-page"><div>' + text + '</div></div>'), form], 'cc-wrap', True, width={"unit": "%", "size": 58}, width_mobile={"unit": "%", "size": 100})
             row = wrap([left, right], 'cc-wrap cc-contact', True, flex_direction='row', flex_direction_mobile='column',
-                       flex_gap={"unit": "px", "size": 48, "column": "48", "row": "24"}, flex_align_items='center',
+                       flex_gap={"unit": "px", "size": 48, "column": "48", "row": "24"}, flex_align_items='center' if 'cc-contact-ph' in lcls else 'flex-start',
                        boxed_width={"unit": "px", "size": 1200}, content_width='boxed',
                        padding={"unit": "px", "top": "72", "right": "16", "bottom": "0", "left": "16", "isLinked": False}, _element_id='contact')
             els.append(wrap([row]))

@@ -27,7 +27,7 @@ MAIN = f'''<div class="hero hero-sm">
     <p class="lede">This option is perfect for a group of friends or a team who have similar goals and fitness level.</p>
     <div class="ctas">
       <a class="btn btn-go" href="#contact" data-waitlist="group">Ask for group prices</a>
-      <a class="btn btn-ghost" href="{C}/club-talk/" {EXT}>Club talks &amp; coaching nights</a>
+      <a class="btn btn-ghost" href="{C}/club-talk/" {EXT}>Workshops &amp; coaching nights</a>
     </div>
   </div>
 </div>
@@ -62,9 +62,9 @@ MAIN = f'''<div class="hero hero-sm">
     <a class="band club-band" href="{C}/club-talk/" {EXT}>
       <img src="{img('imgi_19_DIi7do4I', 'club-band-group')}" alt="Cigala Cycling riders together before a group coaching session" loading="lazy" width="1600" height="1067">
       <div class="tx">
-        <div class="eyebrow eb-pill"><span class="dot"></span>Club talks</div>
+        <div class="eyebrow eb-pill"><span class="dot"></span>Workshops</div>
         <h3 class="h-sec">CLUB INFORMATION DAYS, COACHING NIGHTS, Q&amp;A AND GROUP SESSIONS</h3>
-        <span class="btn btn-go">See club talks</span>
+        <span class="btn btn-go">See workshops</span>
       </div>
     </a>
   </div>

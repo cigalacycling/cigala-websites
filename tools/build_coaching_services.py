@@ -43,6 +43,8 @@ I = {
     'list': '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
     'user': '<circle cx="12" cy="7" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/>',
     'heart': '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/>',
+    'leaf': '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.2-6.1C9.6 14.4 12 13 13 12"/>',
+    'alert': '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
     'target': '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
 }
 
@@ -120,7 +122,7 @@ def contact():
              ('heart', 'Nutrition coaching', 'Performance nutrition with Marine Lenehan.', C + '/nutrition/', 'See nutrition'),
              ('lab', 'INSCYD testing', 'Your full metabolic profile, no lab needed.', C + '/testing/', 'See testing')]
     quick = '<div class="ct-quick">' + ''.join(f'<a class="panel ct-q" href="{u}" {EXT}>{ic(I[i])}<h3 class="h-sm">{t}</h3><p>{d}</p><span class="arrow-link">{b} →</span></a>' for i, t, d, u, b in QUICK) + '</div>'
-    MAIN = f'''{hero('CONTACT US', 'Get in touch', 'Questions about coaching, testing, bike fitting or club talks? Call, email or send us a message and Matteo will get back to you.',
+    MAIN = f'''{hero('CONTACT US', 'Get in touch', 'Questions about coaching, testing, bike fitting or workshops? Call, email or send us a message and Matteo will get back to you.',
                     img('IMG_3999AWDWWWU', 'contact-hero-lake'), 'Cigala Cycling Coaching group riding in Wicklow, Ireland',
                     [('Call +353 404 78107', 'tel:+35340478107'), ('WhatsApp us', WA)], '50% 60%', 'ct-hero')}
 
@@ -258,7 +260,7 @@ def bikefit():
   </div>
 </section>
 
-{enquiry('Make your reservation', 'MAKE YOUR RESERVATION', 'Book an appointment by entering your details below: tell us how many bikes and the days that suit you, and we confirm your slot.',
+{enquiry('Bike fit booking', 'MAKE YOUR RESERVATION', 'Book an appointment by entering your details below: tell us how many bikes and the days that suit you, and we confirm your slot.',
          side, 'Bike fit reservation (Coaching website)', 'Number of bikes, road or TT, preferred days *')}
 
 {tools_band()}'''
@@ -455,7 +457,7 @@ def clubtalk():
     MAIN = f'''<div class="hero hero-sm ck-hero">
   <img src="{img('imgi_14_NWZxZmK6', 'club-talk-hero')}" alt="{E(live_alt('imgi_14_NWZxZmK6'))}" style="object-position:20% 30%;transform:scale(1.15);transform-origin:70% 20%">
   <div class="in">
-    <div class="eyebrow eb-pill"><span class="dot"></span>Club talks across Ireland</div>
+    <div class="eyebrow eb-pill"><span class="dot"></span>Workshops across Ireland</div>
     <h1>Club information days, coaching nights, Q&amp;A, group coaching sessions and more</h1>
     <p class="lede">Talks and coaching sessions for cycling and triathlon clubs, led by Founder &amp; Head Coach Matteo Cigala.</p>
     <div class="ctas"><a class="btn btn-go" href="#contact">Organise a club talk</a><a class="btn btn-ghost" href="#formats">What we offer ↓</a></div>
@@ -488,50 +490,49 @@ def clubtalk():
     <div class="gn-txt">
       <div class="eyebrow">Topics</div>
       <h3 class="h-sec">WHAT WE TALK ABOUT</h3><div class="bar"></div>
-      <ul class="ticks">{''.join(f'<li>{t}</li>' for t in TOPICS)}</ul>
+      <ul class="ck-topics">{''.join(f'<li>{ic(I[i])}<span>{t}</span></li>' for t, i in zip(TOPICS, ('cal', 'leaf', 'alert', 'power', 'bike', 'heart')))}</ul>
       <p>Every talk is adapted to your club: road, gravel, track or triathlon, beginners or racers.</p>
     </div>
   </div>
 </section>
 
-{enquiry('Organise a club talk', 'GET A QUOTE', 'We will be glad to hear from you to organise a club talk. Tell us about your club and what you would like to cover.',
+{enquiry('Organise a workshop', 'GET A QUOTE', 'We will be glad to hear from you to organise a workshop. Tell us about your club and what you would like to cover.',
          side, 'Club talk enquiry (Coaching website)', 'Club name, location, possible dates and topics *')}'''
     build('club-talk', '/club-talk/', MAIN, 'Club talks redesigned: Matteo presenting, formats, topics, quote form.',
           h1='Club information days, coaching nights, Q&A, group coaching sessions and more', extra_css=G.GCSS + CSS)
 
 # ------------------------------------------------------------------ talent programme
-# Tilen Č.'s best power this year, from his Vekta data (case study in coaching_common.CASES); year-earlier bests where we have them
-PD = [(15, 1063, 851), (120, 556, None), (480, 429, None), (1200, 382, None), (7200, 316, 296), (10800, 298, None)]
+# Eoin R.'s best power, May–Nov 2025 vs May–Nov 2026 (Vekta data; his case study in coaching_common.CASES).
+# Matteo 15 Nov: show high numbers and a clear progression at every point -> both seasons, all four points.
+PD = [(15, '15 s', 1041, 1145), (60, '1 min', 643, 697), (300, '5 min', 383, 414), (1500, 'Critical Power', 313, 332)]
 def pd_chart():
     import math
-    W, H, L, Rr, Tt, B = 760, 360, 56, 36, 20, 44
-    t0, t1 = 15, 10800
+    W, H, L, Rr, Tt, B = 760, 360, 56, 40, 24, 44
+    t0, t1 = 15, 1500
     x = lambda t: L + (math.log(t) - math.log(t0)) / (math.log(t1) - math.log(t0)) * (W - L - Rr)
-    y = lambda w: Tt + (1150 - w) / (1150 - 200) * (H - Tt - B)
-    lab = {15: '15 s', 120: '2 min', 480: '8 min', 1200: '20 min', 7200: '2 h', 10800: '3 h'}
+    y = lambda w: Tt + (1250 - w) / (1250 - 200) * (H - Tt - B)
     grid = ''.join(f'<line x1="{L}" x2="{W - Rr}" y1="{y(w):.1f}" y2="{y(w):.1f}" class="pd-grid"/><text x="{L - 8}" y="{y(w) + 4:.1f}" class="pd-ax" text-anchor="end">{w}</text>' for w in (300, 500, 700, 900, 1100))
-    xt = ''.join(f'<text x="{x(t):.1f}" y="{H - B + 20}" class="pd-ax" text-anchor="middle">{lab[t]}</text>' for t, _, _ in PD)
-    pts = ' '.join(f'{x(t):.1f},{y(b):.1f}' for t, b, _ in PD)
-    line = f'<polyline points="{pts}" class="pd-b"/>' + ''.join(f'<circle cx="{x(t):.1f}" cy="{y(b):.1f}" r="4.5" class="pd-b-dot"/>' for t, b, _ in PD)
-    old = ''.join(f'<line x1="{x(t):.1f}" x2="{x(t):.1f}" y1="{y(a) - 6:.1f}" y2="{y(b) + 6:.1f}" class="pd-gain"/><circle cx="{x(t):.1f}" cy="{y(a):.1f}" r="4.5" class="pd-a-dot"/>'
-                  + (f'<text x="{x(t) + 12:.1f}" y="{y(a) + 4:.1f}" class="pd-lab">+{b - a} W</text>' if t < 1000 else f'<text x="{x(t):.1f}" y="{y(a) + 22:.1f}" class="pd-lab" text-anchor="middle">+{b - a} W</text>') for t, b, a in PD if a)
-    labels = ''
-    hits = ''.join(f'<rect x="{x(t) - 22:.1f}" y="{Tt}" width="44" height="{H - Tt - B}" class="pd-hit" data-x="{x(t):.1f}" data-t="{lab[t]}" data-b="{b}" data-a="{a or ''}"/>' for t, b, a in PD)
+    xt = ''.join(f'<text x="{x(t):.1f}" y="{H - B + 20}" class="pd-ax" text-anchor="{"end" if t == t1 else "middle"}">{lab}</text>' for t, lab, _, _ in PD)
+    def line(i, cls):
+        pts = ' '.join(f'{x(t):.1f},{y(v[i]):.1f}' for t, _, *v in PD)
+        return f'<polyline points="{pts}" class="{cls}"/>' + ''.join(f'<circle cx="{x(t):.1f}" cy="{y(v[i]):.1f}" r="4.5" class="{cls}-dot"/>' for t, _, *v in PD)
+    gains = ''.join(f'<text x="{x(t) + (10 if t < t1 else -10):.1f}" y="{y(b) - 10:.1f}" class="pd-lab pd-up" text-anchor="{"start" if t < t1 else "end"}">+{b - a} W</text>' for t, _, a, b in PD)
+    hits = ''.join(f'<rect x="{x(t) - 22:.1f}" y="{Tt}" width="44" height="{H - Tt - B}" class="pd-hit" data-x="{x(t):.1f}" data-t="{lab}" data-b="{b}" data-a="{a}"/>' for t, lab, a, b in PD)
     svg = (f'<svg class="pd-svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pd-t">'
-           f'<title id="pd-t">Tilen’s best power from 15 seconds to 3 hours this year: 1,063 W for 15 seconds, 382 W for 20 minutes, 298 W for 3 hours</title>'
+           f'<title id="pd-t">Eoin’s best power one season apart: higher at every point, from 1,041 to 1,145 W for 15 seconds and from 313 to 332 W Critical Power</title>'
            f'{grid}{xt}<line x1="{L}" x2="{W - Rr}" y1="{H - B}" y2="{H - B}" class="pd-base"/>'
-           f'<line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{line}{old}{labels}{hits}</svg>')
-    rows = ''.join(f'<tr><td>{lab[t]}</td><td>{b} W</td><td>{f"{a} W" if a else "–"}</td><td>{f"{b - a:+d} W" if a else "–"}</td></tr>' for t, b, a in PD)
+           f'<line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{line(0, "pd-a")}{line(1, "pd-b")}{gains}{hits}</svg>')
+    rows = ''.join(f'<tr><td>{lab}</td><td>{a} W</td><td>{b} W</td><td>+{b - a} W</td></tr>' for _, lab, a, b in PD)
     return f'''<figure class="pd panel">
-      <div class="pd-top"><div><b class="pd-title">Power-duration profile</b><span>Best power, watts · Tilen Č., road racer, Slovenia</span></div>
-        <div class="pd-leg"><span><i class="pd-sw pd-sw-b"></i>This year with Matteo</span><span><i class="pd-sw pd-sw-a pd-sw-dot"></i>A year earlier</span></div></div>
+      <div class="pd-top"><div><b class="pd-title">Power-duration profile</b><span>Best power, watts · Eoin R., IVCA racer, Ireland</span></div>
+        <div class="pd-leg"><span><i class="pd-sw pd-sw-b"></i>2026 season with Matteo</span><span><i class="pd-sw pd-sw-a"></i>2025 season</span></div></div>
       <div class="pd-wrap">{svg}<div class="pd-tip" hidden></div></div>
-      <figcaption>A year ago Tilen couldn’t sprint standing up. Now: 1,063 W for 15 seconds (+212 W), 382 W for 20 minutes and a Critical Power of 375 W. <a href="{C}/case-studies/#tilen" {EXT}>Read Tilen’s case study →</a></figcaption>
-      <details class="pd-tbl"><summary>See the numbers</summary><table><thead><tr><th>Duration</th><th>This year</th><th>A year earlier</th><th>Change</th></tr></thead><tbody>{rows}</tbody></table></details>
+      <figcaption>Higher at every point: +104 W in the 15-second sprint, +54 W over a minute, +31 W over 5 minutes and his highest Critical Power on record, 332 W. <a href="{C}/case-studies/#eoin" {EXT}>Read Eoin’s case study →</a></figcaption>
+      <details class="pd-tbl"><summary>See the numbers</summary><table><thead><tr><th>Duration</th><th>2025</th><th>2026</th><th>Change</th></tr></thead><tbody>{rows}</tbody></table></details>
     </figure>'''
 PD_JS = """<script>(function(){document.querySelectorAll('.pd-wrap').forEach(function(w){var tip=w.querySelector('.pd-tip'),cr=w.querySelector('.pd-cross'),svg=w.querySelector('svg');
 w.querySelectorAll('.pd-hit').forEach(function(h){function on(){var x=+h.dataset.x;cr.setAttribute('x1',x);cr.setAttribute('x2',x);cr.style.opacity=1;
-var a=h.dataset.a,b=h.dataset.b;tip.innerHTML='<b>'+h.dataset.t+'</b><span><i class=\\"pd-sw pd-sw-b\\"></i>This year: '+b+' W</span>'+(a?'<span><i class=\\"pd-sw pd-sw-a pd-sw-dot\\"></i>A year earlier: '+a+' W</span><em>+'+(b-a)+' W</em>':'');
+var a=h.dataset.a,b=h.dataset.b;tip.innerHTML='<b>'+h.dataset.t+'</b><span><i class=\\"pd-sw pd-sw-b\\"></i>2026: '+b+' W</span>'+(a?'<span><i class=\\"pd-sw pd-sw-a\\"></i>2025: '+a+' W</span><em>+'+(b-a)+' W</em>':'');
 var r=svg.getBoundingClientRect(),px=x/760*r.width;tip.hidden=false;tip.style.left=Math.min(Math.max(px-70,0),r.width-150)+'px';}
 function off(){tip.hidden=true;cr.style.opacity=0;}h.addEventListener('mouseenter',on);h.addEventListener('mouseleave',off);h.addEventListener('click',on);});});})();</script>"""
 
@@ -578,6 +579,13 @@ def talent():
     with contextlib.redirect_stdout(io.StringIO()):
         import build_coaching_nutrition as NUT
         import build_coaching_packages as PK
+    # wins from aejallsports.ch/history (Del Toro, Girmay, Philipsen: well-known results; A&J lists them as its riders in the press)
+    RIDERS = [('Tadej Pogačar', 'Tour de France 2020, 2021, 2024, 2025 · World Champion 2024, 2025 · Giro d’Italia 2024'),
+              ('Isaac Del Toro', 'Tour de l’Avenir 2023'), ('Biniam Girmay', 'Green jersey, Tour de France 2024'),
+              ('Jasper Philipsen', 'Milan–San Remo 2024'), ('Elisa Balsamo', 'World Champion 2021'), ('Vittoria Guazzini', 'Olympic Games 2024'),
+              ('Paula Blasi', 'La Vuelta Femenina 2026'), ('Vincenzo Nibali', 'Giro d’Italia 2013, 2016 · Tour de France 2014'),
+              ('Chris Froome', 'Tour de France 2013'), ('Fabio Aru', 'Vuelta a España 2015'), ('Thor Hushovd', 'World Champion 2010'),
+              ('Damiano Cunego', 'Giro d’Italia 2004'), ('Gilberto Simoni', 'Giro d’Italia 2001, 2003'), ('Danilo Di Luca', 'Giro d’Italia 2007')]
     STEPS = [('Apply', 'Contact us at info@cigalacycling.com or with the form below to state your interest in the programme. Tell us your age, club, results so far and goals.'),
              ('Interview', 'If we have availability, a video call or face to face interview might be requested, so we get to know you and your goals.'),
              ('Sign up', 'We send you the link to sign up to the Advanced Package at the talent price: €119.20 a month, 20% off €149.'),
@@ -608,9 +616,12 @@ def talent():
       <p class="tl-big">{E(scout)}</p>
       <p>{E(what)}</p>
       <p>Matteo Cigala is a talent scout for <b>A&amp;J AllSports</b>, the agency of some of the best riders in the WorldTour, such as <b>Tadej Pogačar</b>, <b>Isaac Del Toro</b>, <b>Biniam Girmay</b> and <b>Jasper Philipsen</b>. On the programme you get world-class coaching from him, and when you are ready, the agency and the teams hear about you.</p>
-      <ul class="tl-riders" aria-label="Riders represented by A&amp;J AllSports">{''.join(f'<li>{n}</li>' for n in ('Tadej Pogačar', 'Isaac Del Toro', 'Biniam Girmay', 'Jasper Philipsen'))}</ul>
     </div>
     <a class="photo gn-png tl-aj" href="https://aejallsports.ch/" {EXT}><img src="{conv('coaching/matteo-uploads/aj-allsports-logo.png', 'talent-aj-allsports-logo')}" alt="{E(live_alt('T161857.829'))}" loading="lazy"></a>
+  </div>
+  <div class="in tl-rwrap">
+      <p class="tl-rl">Riders managed by A&amp;J, past and present <span>(hover or tap a name)</span></p>
+      <ul class="tl-riders" aria-label="Riders managed by A&amp;J AllSports">{''.join(f'<li tabindex="0" data-win="{E(w)}">{n}<span class="vh">: {E(w)}</span></li>' for n, w in RIDERS)}</ul>
   </div>
 </section>
 
@@ -718,6 +729,9 @@ TL_CSS = """<style>
 .pd-tbl th, .pd-tbl td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
 .pd-tbl th { color: var(--text); }
 .tl-wins { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.tl-wins li { transition: transform .25s, border-color .25s, background .25s; }
+.tl-wins li:hover { transform: translateY(-4px); border-color: var(--green); background: linear-gradient(160deg, rgba(0,154,68,.22), transparent 70%), var(--panel); }
+.tl-wins li:hover b { color: #f0bf00; }
 .tl-wins li { padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel-grad), var(--panel); display: grid; gap: 2px; }
 .tl-wins b { font: 400 30px/1 var(--head); color: var(--green-text); font-variant-numeric: tabular-nums; }
 .tl-wins b span { color: inherit !important; font: inherit !important; }
@@ -727,8 +741,15 @@ TL_CSS = """<style>
 .tl-carera img { object-fit: cover; }
 a.tl-aj { text-decoration: none; }
 .tl-riders { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.tl-riders li { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border-strong); font-size: 13px; font-weight: 600; color: var(--text); }
-.pd-gain { stroke: #2fae5f; stroke-width: 1.5; stroke-dasharray: 2 3; }
+.tl-rwrap { margin-top: 26px; }
+.tl-rl { margin: 0 !important; font-size: 12px !important; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green-text) !important; }
+.tl-rl span { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--text-3); }
+.tl-riders li { position: relative; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border-strong); font-size: 13px; font-weight: 600; color: var(--text); cursor: default; transition: background .2s, border-color .2s, color .2s; outline: none; }
+.tl-riders li:hover, .tl-riders li:focus { background: var(--green); border-color: var(--green); color: #fff; }
+.tl-riders li::after { content: attr(data-win); position: absolute; left: 50%; bottom: calc(100% + 10px); transform: translate(-50%, 4px); width: max-content; max-width: 260px; padding: 9px 12px; border-radius: 10px; background: rgba(8,9,10,.96); border: 1px solid var(--green); color: var(--text); font-size: 12.5px; font-weight: 500; line-height: 1.4; text-align: center; white-space: normal; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 5; }
+.tl-riders li:hover::after, .tl-riders li:focus::after { opacity: 1; transform: translate(-50%, 0); }
+.tl-riders li:first-child::after { left: 0; transform: translate(0, 4px); } .tl-riders li:first-child:hover::after, .tl-riders li:first-child:focus::after { transform: none; }
+.pd-up { fill: #34c46a; }
 .pd-sw-dot { width: 9px; height: 9px; border: 0 !important; border-radius: 50%; background: #5f86c9; }
 .tl-days { list-style: none; margin: 0; padding: 0; max-width: 860px; }
 .tl-day { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 20px; position: relative; padding-bottom: 22px; }
@@ -737,7 +758,7 @@ a.tl-aj { text-decoration: none; }
 .tl-day:last-child::before { display: none; }
 .tl-num { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--panel-solid, #16181a); border: 2px solid var(--green); font: 400 26px/1 var(--head); color: var(--text); text-align: center; }
 .tl-num small { display: block; font: 700 9px/1 var(--body); letter-spacing: .12em; color: var(--text-3); margin-bottom: 3px; }
-.tl-box { padding: 18px 22px; min-width: 0; }
+.tl-box { padding: 18px 22px; min-width: 0; display: block !important; }   /* the title above the text, as in the Tours itinerary */
 .tl-box h3 { margin: 0 0 6px; }
 .tl-box p { margin: 0; }
 .tl-cal { align-items: center; }
@@ -850,6 +871,9 @@ VI_CSS = """<style>
 </style>"""
 
 CSS = '''<style>
+.ck-topics { list-style: none; margin: 14px 0 16px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.ck-topics li { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel-grad), var(--panel); font-weight: 600; color: var(--text); font-size: 15px; }
+.ck-topics .sv-ic { flex: none; width: 36px; height: 36px; padding: 8px; border-radius: 10px; background: var(--green-wash); stroke: var(--green-text); }
 #formats h2 a { color: var(--text) !important; font: inherit; text-decoration: none; }
 #formats h2 a:hover { color: var(--green-text) !important; }
 .ck-zoom img { transform: scale(1.18); transform-origin: 75% 25%; }   /* hides the photographer's credit in the corner */
