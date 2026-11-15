@@ -139,7 +139,7 @@ MAIN = f'''<div class="hero hero-sm">
   <div class="in">
     <div class="head">
       <div><div class="eyebrow">Our athletes</div><h3 class="h-sec">WHAT OUR ATHLETES SAY</h3><div class="bar"></div></div>
-      <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}>★ Read our reviews on Google →</a><a class="arrow-link" href="{C}/testimonials/" {EXT}>All testimonials →</a></div>
+      <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Read our reviews on Google →</a><a class="arrow-link" href="{C}/testimonials/" {EXT}>All testimonials →</a></div>
     </div>
     {reviews_strip()}
   </div>

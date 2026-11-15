@@ -47,7 +47,7 @@ MAIN = f'''<div class="hero hero-sm">
     <div class="eyebrow eb-pill"><span class="dot"></span>Our athletes</div>
     {G.heading_html('h1', h1)}
     <p class="lede">From first-time sportive riders to national champions: in their own words.</p>
-    <div class="ctas"><a class="btn btn-go" href="{C}/case-studies/" {EXT}>See the case studies →</a><a class="btn btn-ghost" href="{GOOGLE_REVIEWS}" {EXT}>★ Our Google reviews</a></div>
+    <div class="ctas"><a class="btn btn-go" href="{C}/case-studies/" {EXT}>See the case studies →</a><a class="btn btn-ghost" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Our Google reviews</a></div>
   </div>
 </div>
 

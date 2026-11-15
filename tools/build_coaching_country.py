@@ -215,7 +215,7 @@ def build_country(key):
 <section>
   <div class="in">
     <div class="head"><div><div class="eyebrow">#TrainSmarterRideFaster</div><h2>It's our vision</h2><div class="bar"></div></div>
-      <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}>★ Read our reviews on Google →</a><a class="arrow-link" href="{C}/case-studies/" {EXT}>Case studies →</a></div></div>
+      <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Read our reviews on Google →</a><a class="arrow-link" href="{C}/case-studies/" {EXT}>Case studies →</a></div></div>
     <p class="cn-lede">Real athletes, in their own words, with their own names and home towns.</p>
     {strip(c['reviews'])}
   </div>

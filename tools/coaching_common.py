@@ -335,7 +335,7 @@ FOOTER = f'''<footer>
       <ul>
         <li><a href="mailto:info@cigalacycling.com">info@cigalacycling.com</a></li>
         <li><a href="tel:+35340478107">+353 404 78107</a></li>
-        <li>{a(GOOGLE_REVIEWS, '★ Google reviews')}</li>
+        <li>{a(GOOGLE_REVIEWS, '<span class="gstar" aria-hidden="true">★</span> Google reviews')}</li>
       </ul>
       {social_row()}
     </div>
@@ -357,6 +357,7 @@ BASE = BASE.replace('url(topo-background.svg) center / cover no-repeat', 'url(im
 BASE = BASE.replace('rgba(8,9,10,.3), rgba(8,9,10,.3)', 'rgba(8,9,10,.6), rgba(8,9,10,.6)')  # BRAND.md: 60% dim
 shutil.copy(ROOT + 'bk/up/topo-background-tile.svg', OUT + 'img/topo-background-tile.svg')
 CSS = '''<style>
+.gstar { color: #f0bf00; }   /* gold star before Google reviews (Matteo, all sites) */
 /* ---- coaching homepage additions ---- */
 .eyebrow { color: var(--red-text, #ff3d33); }
 .hero .eyebrow-h { font: 600 12px/1.4 var(--body); letter-spacing: .14em; text-transform: none; color: #fff; display: inline-flex; align-items: center; gap: 8px;
