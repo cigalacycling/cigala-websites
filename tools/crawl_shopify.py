@@ -73,15 +73,21 @@ class P(HTMLParser):
                     ty = n.get("@type"); s.d["schema_types"] += ty if isinstance(ty, list) else [ty]
             except Exception: s.d["schema_types"].append("INVALID_JSON")
 
-# 1. sitemaps
-_, idx, _ = get(f"https://{host}/sitemap.xml")
-maps = [e.text for e in ET.fromstring(idx).iter(NS + "loc")]
-sitemaps = {}
-for m in maps:
+# 1. sitemaps (reused from a previous run if present)
+import os
+if os.path.exists(f"{outdir}/sitemaps.json"):
+    sitemaps = json.load(open(f"{outdir}/sitemaps.json")); maps = list(sitemaps)
+else:
+    sitemaps = None
+if sitemaps is None:
+  _, idx, _ = get(f"https://{host}/sitemap.xml")
+  maps = [e.text for e in ET.fromstring(idx).iter(NS + "loc")]
+  sitemaps = {}
+  for m in maps:
     code, body, _ = get(m)
     try: sitemaps[m] = [e.find(NS + "loc").text for e in ET.fromstring(body).iter(NS + "url")]
     except Exception: sitemaps[m] = {"status": code, "error": "unparseable"}
-json.dump(sitemaps, open(f"{outdir}/sitemaps.json", "w"), indent=1)
+  json.dump(sitemaps, open(f"{outdir}/sitemaps.json", "w"), indent=1)
 
 def locale(u):
     seg = urllib.parse.urlsplit(u).path.split("/")[1:2]
@@ -98,7 +104,23 @@ def crawl(u):
     if body and code == 200:
         p = P(); p.feed(body); rec.update(p.d)
     return rec
-with cf.ThreadPoolExecutor(3) as ex:
-    pages = list(ex.map(crawl, todo))
+# progress is appended to a .jsonl file so an interrupted run resumes where it stopped
+import time
+part = f"{outdir}/baseline.partial.jsonl"
+done = {}
+if os.path.exists(part):
+    for line in open(part):
+        r = json.loads(line)
+        if r["status"] == 200 or r["status"] in (301, 302, 404, 410): done[r["url"]] = r
+left = [u for u in todo if u not in done]
+print(len(done), "already done,", len(left), "to fetch", flush=True)
+with open(part, "a") as f:
+    for i, u in enumerate(left):
+        r = crawl(u); done[u] = r
+        f.write(json.dumps(r, ensure_ascii=False) + "\n"); f.flush()
+        if i % 50 == 0: print(i, u, r["status"], flush=True)
+        time.sleep(0.4)
+pages = [done[u] for u in todo]
 json.dump(pages, open(f"{outdir}/baseline.json", "w"), indent=1, ensure_ascii=False)
+os.remove(part)
 print(len(maps), "sitemaps,", len(urls), "sitemap URLs,", len(pages), "pages crawled")
