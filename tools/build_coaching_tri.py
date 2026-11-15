@@ -149,12 +149,7 @@ MAIN = f'''<div class="hero hero-sm">
   </div>
 </section>
 
-<section>
-  <div class="in">
-    <div class="head"><div><div class="eyebrow">Training platform</div><h2>FOLLOW YOUR PLAN ON</h2><div class="bar"></div></div></div>
-    <div class="logos apps apps-2">{apps}</div>
-  </div>
-</section>
+<!-- Matteo 15 Nov: 'Follow your plan on' section removed (TrainingPeaks and Zwift logos stay under As seen in) -->
 
 <section>
   <div class="in">
@@ -186,7 +181,7 @@ MAIN = f'''<div class="hero hero-sm">
 
 <section id="contact">
   <div class="in split">
-    <div class="photo rider"><img src="{HERO}" alt="Triathlete standing by a lake at sunrise" loading="lazy" width="1600" height="1200"></div>
+    <div class="photo rider"><img src="{img('photo-1533049426476', 'triathlon-open-water-swim')}" alt="Triathletes swimming in open water during a race" loading="lazy" width="1600" height="1068"></div>
     <div>
       <div class="eyebrow">Check availability</div>
       <h3 class="h-sec">READY TO TAKE YOUR TRIATHLON TO THE NEXT LEVEL?</h3>
@@ -228,4 +223,4 @@ document.querySelectorAll('[data-waitlist]').forEach(function (b) {
 
 build('tri-individual-packages', PATH, MAIN,
       'New Triathlon Individual Packages page. Same packages, prices, copy and FAQ as live; the page now has its approved H1.',
-      h1='TRIATHLON INDIVIDUAL PACKAGES', extra_css=TCSS, extra_js=TJS)
+      h1='TRIATHLON INDIVIDUAL PACKAGES', extra_css=TCSS, extra_js=TJS, h2_changes={'drop': ['FOLLOW YOUR PLAN ON']})   # Matteo 15 Nov

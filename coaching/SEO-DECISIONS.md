@@ -297,3 +297,6 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Contact headings (H3, not H2): "GET IN TOUCH TODAY" -> "READY TO TAKE YOUR CYCLING TO THE NEXT LEVEL?" (triathlon /
   group / contact page variants). Vision: hero eyebrow "Our vision", the quote section eyebrow "Train Smarter. Ride Faster."
   above the live H2 "It's our vision". Marine's three sample notes in a slider under the Vekta calendar.
+- Triathlon packages: H2 "FOLLOW YOUR PLAN ON" section removed (Matteo; the TrainingPeaks and Zwift logos, with their live
+  alts, stay under As seen in); contact photo is an open-water swim instead of the hero photo again. Package cards lift on
+  hover; review strips move on every 5 s (pause on hover/touch/arrows, off with reduced motion); case studies stay static.

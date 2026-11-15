@@ -585,7 +585,14 @@ def reviews_strip():
                     for t, q, n, w, ph in REVIEWS)
     return (f'<div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Athlete reviews, scroll sideways">{cards}</div>'
             '<div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Previous reviews">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Next reviews">→</button></div></div>')
-REVIEWS_JS = """<script>(function(){var r=document.getElementById('rv-row');if(!r)return;document.querySelectorAll('.rv-btn').forEach(function(b){b.addEventListener('click',function(){r.scrollBy({left:(+b.dataset.d)*r.clientWidth*0.85,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});});})();</script>"""
+REVIEWS_JS = """<script>(function(){var r=document.getElementById('rv-row');if(!r)return;var red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function go(d){var max=r.scrollWidth-r.clientWidth;if(d>0&&r.scrollLeft>=max-4){r.scrollTo({left:0,behavior:red?'auto':'smooth'});return;}r.scrollBy({left:d*r.clientWidth*0.85,behavior:red?'auto':'smooth'});}
+document.querySelectorAll('.rv-btn').forEach(function(b){b.addEventListener('click',function(){stop=true;go(+b.dataset.d);});});
+/* Matteo 15 Nov: the reviews move on slowly by themselves; they stop while you hover, touch or use the arrows */
+var stop=red,hold=false;['mouseenter','focusin','touchstart'].forEach(function(e){r.addEventListener(e,function(){hold=true;},{passive:true});});
+['mouseleave','focusout'].forEach(function(e){r.addEventListener(e,function(){hold=false;});});r.addEventListener('touchstart',function(){stop=true;},{passive:true});
+var vis=false;if('IntersectionObserver' in window)new IntersectionObserver(function(es){vis=es[0].isIntersecting;}).observe(r);
+setInterval(function(){if(!stop&&!hold&&vis&&!document.hidden)go(1);},5000);})();</script>"""
 
 LIVE = {r['url']: r for r in json.load(open(ROOT + 'coaching/baseline.json'))}
 ALTS = {}

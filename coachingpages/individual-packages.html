@@ -444,6 +444,9 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .pkgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 16px; align-items: start; }
 .pkg { display: grid; grid-row: span 10; grid-template-rows: subgrid; row-gap: 0; align-content: start; }   /* term, name, for, price, sub, buy, label, list, button line up across the cards */
 .pkg { position: relative; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 28px 24px 24px; min-width: 0; }
+.pkg { transition: transform .25s, box-shadow .25s; }
+.pkg:hover { transform: translateY(-6px); box-shadow: 0 26px 60px rgba(0,0,0,.5); }   /* Matteo 15 Nov: a little pop on hover */
+.pkg.hot:hover { box-shadow: 0 0 0 1px var(--green), 0 30px 70px rgba(0,154,68,.25); }
 .pkg.hot { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 24px 60px rgba(0,154,68,.18); }
 .pkg-badge { position: absolute; top: -13px; left: 24px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--green); border-radius: 999px; padding: 5px 12px; }
 .pkg-badge.sold { background: var(--panel-solid); border: 1px solid var(--red); color: var(--red-text, #ff3d33); }
