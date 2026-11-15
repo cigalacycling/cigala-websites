@@ -59,8 +59,8 @@ def _seen_src(k, n, fit):
     # 'cover' cropped them differently at each width) -> trimmed to the mark itself and centred on the logo's own colour.
     if fit != 'cover': return img(k, n)
     short = n.replace('logo-', '')
-    shutil.copy(ROOT + f'coaching/webp/seen-{short}-centred.webp', f'{OUT}img/{n}-centred2.webp')
-    return f'img/{n}-centred2.webp'
+    shutil.copy(ROOT + f'coaching/webp/seen-{short}-centred.webp', f'{OUT}img/{n}-centred3.webp')
+    return f'img/{n}-centred3.webp'
 def seen_logos():
     return '<div class="seen-tiles">' + ''.join(
         f'<span class="seen-tile" style="background:{bg}"><img class="{"mark" if fit == "cover" else fit}" src="{_seen_src(k, n, fit)}" alt="{E(live_alt(k))}" loading="lazy"></span>' for k, n, bg, fit in SEEN) + '</div>'
