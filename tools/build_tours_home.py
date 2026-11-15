@@ -316,6 +316,13 @@ for n, svg in WHY_ICONS.items():
 # partners: no longer an official partner of the Algarve Granfondo (Matteo, 15 Nov) -> 'Event day support' with Algarve + Flanders
 rep('<div class="lab">Official event partner</div><div class="logos"><span><img src="img/logo-algarve.png" alt="Algarve Granfondo" loading="lazy"></span></div>',
     '<div class="lab">Event day support</div><div class="logos"><span><img src="img/logo-algarve.png" alt="Algarve Granfondo" loading="lazy"></span><span class="fill"><img src="img/logo-wrf.png" alt="We Ride Flanders logo" loading="lazy"></span></div>')
+# Tours is its own company (shared/BUSINESS.md, Matteo 15 Nov): footer legal row + reviews link to the Tours Google profile
+rep('<span>© 2026 Cigala Cycling Tours Ltd</span>\n    <span>VAT No: IE4385007EH · Company Registration No: 780307</span>',
+    '<span>© 2026 Cigala Cycling Tours Ltd · Registered in Ireland No. 780307 · VAT IE4385007EH</span>')
+s = s.replace('<div class="stars" aria-label="5 out of 5">★★★★★</div>', '')   # no star ratings on our own reviews (same as Coaching)
+rep(f'<a class="arrow-link" href="{L}/testimonials/" {EXT}>All testimonials →</a>',
+    f'<div class="rv-links"><a class="arrow-link" href="https://share.google/WNvIKe4CJP8CnL8ns" {EXT}>★ Read our reviews on Google →</a><a class="arrow-link" href="{L}/testimonials/" {EXT}>All testimonials →</a></div>')
+
 # more FAQs (facts from the live terms, custom tours and Dolomites pages)
 FAQ = [
   ('What is included in the price?', 'Each tour page lists exactly what is included. As an example, the Dolomites tour includes hotel nights, buffet breakfasts, airport transfers with bike and luggage at set times, guided rides every day with our ex-pro guides, a support vehicle, snacks and water on the route, and GPX files sent in advance. Flights, dinners, bike rental and travel insurance are extra.'),
@@ -349,6 +356,7 @@ CSS2 = """
 .burger details.sub .sub-links a { border-bottom: 0; padding: 9px 0; font-size: 12.5px; color: var(--text-2); }
 .burger details.sub .sub-links a[aria-current="page"] { padding-left: 12px; color: var(--text); }
 .burger details.sub > summary:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.rv-links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
 .why .ico { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: var(--green-wash); border: 1px solid rgba(0,154,68,.35); }
 .why .ico svg { width: 24px; height: 24px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .why h3 { margin-top: 16px; }
