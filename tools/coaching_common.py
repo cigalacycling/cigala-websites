@@ -39,7 +39,7 @@ def conv(src, name, size=None):
         im.save(dst, 'WEBP', quality=90, method=6)
     return f'img/{name}.webp'
 
-LOGO = img('ccCoachingLogo.png', 'logo')
+LOGO = conv('coaching/brand/ccCoachingLogo-matteo-2026-11-15.png', 'logo-v2')   # logo file Matteo sent on 15 Nov
 
 # ---------- white partner logos, no boxes (Matteo 15 Nov), made with tools/monologo.py ----------
 import monologo as _mono
@@ -49,10 +49,14 @@ def mono_img(key, name, nobox=False, holes=False):
     shutil.copy(ROOT + 'coaching/webp/' + hits[0], src)
     _mono.mono(src, OUT + f'img/mono-{name}.webp', nobox=nobox, holes=holes); os.remove(src)
     return f'img/mono-{name}.webp'
-SEEN = [('imgi_4_wHe4MESD', 'red-bull', {}), ('imgi_6_6_MxiOhd', 'stickybottle', {'nobox': True, 'holes': True}), ('unnamed-87.png', 'zwift', {}),
-        ('unnamed-86.png', 'trainingpeaks', {}), ('unnamed-84.png', 'cycling-ireland', {}), ('unnamed-85.png', 'vekta', {'nobox': True})]
+# Matteo 15 Nov: no "square inside a square". Every logo gets the same rounded tile in its own colours:
+# the badge logos (Zwift, TrainingPeaks, Cycling Ireland) fill their tile; the others sit on white.
+SEEN = [('imgi_4_wHe4MESD', 'logo-red-bull', '#fff', 'contain'), ('imgi_6_6_MxiOhd', 'logo-stickybottle', '#fff', 'contain'),
+        ('unnamed-87.png', 'logo-zwift', '#f9661a', 'cover'), ('unnamed-86.png', 'logo-trainingpeaks', '#011031', 'cover'),
+        ('unnamed-84.png', 'logo-cycling-ireland', '#284733', 'cover'), ('unnamed-85.png', 'logo-vekta', '#fff', 'contain')]
 def seen_logos():
-    return '<div class="mono-logos">' + ''.join(f'<img src="{mono_img(k, n, **o)}" alt="{E(live_alt(k))}" loading="lazy">' for k, n, o in SEEN) + '</div>'
+    return '<div class="seen-tiles">' + ''.join(
+        f'<span class="seen-tile" style="background:{bg}"><img class="{fit}" src="{img(k, n)}" alt="{E(live_alt(k))}" loading="lazy"></span>' for k, n, bg, fit in SEEN) + '</div>'
 
 # ---------- menu ----------
 def a(u, t): return f'<a href="{u}" {EXT}>{t}</a>'
@@ -150,7 +154,7 @@ CSS = '''<style>
 .h-sec { font-size: clamp(30px, 4.6vw, 52px); }
 .head h2 { max-width: 24ch; }
 .paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.path { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 420px; border-radius: var(--r); overflow: hidden; text-decoration: none; border: 1px solid var(--border); isolation: isolate; }
+.path { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 340px; border-radius: var(--r); overflow: hidden; text-decoration: none; border: 1px solid var(--border); isolation: isolate; }
 .path img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .5s ease; }
 .path::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 30%, rgba(8,9,10,.75) 62%, rgba(8,9,10,.96) 100%); }
 .path:hover img { transform: scale(1.04); }
@@ -176,7 +180,7 @@ CSS = '''<style>
 .eb-pill span { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
 .btn-h { margin: 0; font: inherit; text-transform: none; letter-spacing: normal; }
 .band .tx { min-height: 360px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
-.decade img { width: 100%; height: auto; max-width: 1000px; margin: 0 auto; border-radius: var(--r); border: 1px solid var(--border); }
+.decade img { width: 100%; height: auto; max-width: 760px; margin: 0 auto; border-radius: var(--r); border: 1px solid var(--border); }
 .seen { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin: 0; }
 .seen span { width: auto; height: 96px; }
 .seen img { max-height: 64px; max-width: 100%; object-fit: contain; }
@@ -242,6 +246,12 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 @media (max-width: 640px) { .rv-row { grid-auto-columns: 86%; } .rv-nav { display: none; } }
 /* ---- shared social icon row (shared/social) ---- */
 ''' + SOCIAL_CSS + '''
+.seen-tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.seen-tile { height: 96px; border-radius: 12px; overflow: hidden; display: grid; place-items: center; border: 1px solid var(--border); }
+.seen-tile img.cover { width: 100%; height: 100%; object-fit: cover; }
+.seen-tile img.contain { max-width: 78%; max-height: 72px; width: auto; height: auto; object-fit: contain; }
+@media (max-width: 900px) { .seen-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .seen-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } .seen-tile { height: 84px; } }
 .mono-logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px 40px; padding: 8px 0; }
 .mono-logos img { height: 46px; width: auto; max-width: 170px; object-fit: contain; opacity: .72; transition: opacity .15s; }
 .mono-logos img:hover { opacity: 1; }
@@ -253,13 +263,14 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
 .matteo .photo.cutout::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }
 .matteo .photo.cutout img { width: 100%; max-width: 460px; max-height: none; height: auto; -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, #000 82%, transparent 100%); }
 .fam { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 480px; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); background: var(--panel-solid); isolation: isolate; text-decoration: none; }
+.card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 380px; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); background: var(--panel-solid); isolation: isolate; text-decoration: none; }
 .card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .6s ease; }
 .card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,0) 15%, rgba(8,9,10,.8) 50%, rgba(8,9,10,.98) 100%); }
 .card:hover > img { transform: scale(1.04); }
 .card:hover { border-color: rgba(0,154,68,.6); }
 .card .tx { padding: 26px; display: grid; gap: 10px; text-shadow: 0 1px 10px rgba(0,0,0,.65); }
-.card .k { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+.card .k { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #fff; text-shadow: none; background: rgba(8,9,10,.75); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; }
+.card .k::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }   /* BRAND.md: eyebrow on a photo = dark pill + red dot */
 .card h2, .card h3 { font-size: clamp(28px, 3vw, 38px); margin: 0; }
 .card p { margin: 0; font-size: 14.5px; font-weight: 500; color: var(--text); }
 .card .btn { justify-self: start; margin-top: 8px; text-shadow: none; }
@@ -307,15 +318,17 @@ document.querySelectorAll('.dd').forEach(function (d) {
 # ---------- athlete reviews (Matteo 15 Nov: own review cards instead of the Shapo widget; reviews chosen by Claude) ----------
 # Quotes are the athletes' own words from the live Testimonials page (coaching/text/testimonials.txt); no star ratings,
 # because these are testimonials, not rated reviews. The Google link goes to Matteo's Google Business Profile.
-REVIEWS = [
+REVIEWS = [   # strongest first (Matteo 15 Nov: "put the better one first")
+    ('Back after heart disease', 'First time was a 9 month training plan to get me from couch (literally!) to Haute Route Pyrenees in 2017 to mark my 60th birthday. More recently, I have worked with Matteo to help me recover from heart disease and a cardiac procedure.', 'Derek Lawler', 'Kilkenny, Ireland'),
     ('Gran Fondo Worlds qualifier', 'With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.', 'Bernd Ondruch', 'Germany'),
-    ('From couch to Haute Route, and back after heart disease', 'First time was a 9 month training plan to get me from couch (literally!) to Haute Route Pyrenees in 2017 to mark my 60th birthday. More recently, I have worked with Matteo to help me recover from heart disease and a cardiac procedure.', 'Derek Lawler', 'Kilkenny, Ireland'),
-    ('Mallorca 312 in the best shape ever', 'I truly had a tailor-made plan every single week, and as a result, I showed up to the Mallorca 312 in the best shape I’ve ever been in.', 'Ward Den Hollander', 'Dublin, Ireland'),
+    ('Mallorca 312', 'I truly had a tailor-made plan every single week, and as a result, I showed up to the Mallorca 312 in the best shape I’ve ever been in.', 'Ward Den Hollander', 'Dublin, Ireland'),
+    ('+40 W FTP', 'Matteo managed to raise my FTP from 220w to 260w in less than 4 months & my sprint from 600w ish to 920w.', 'Shane Courtney', 'Tralee Manor West ibike'),
+    ('Power PBs', 'Matteo Cigala has been an incredible cycling coach, helping me navigate training around my family and work commitments. Thanks to his guidance, I not only reached my targets but also hit all-time personal best power numbers.', 'John Dowley', 'Carrick-on-Suir, Ireland'),
+    ('Busy professional', 'I don’t have the free time to dedicate to hours of junk miles, and Matteo has perfectly optimised my training to adapt to what time I do have.', 'William Rymer', 'Roscrea, Tipperary, Ireland'),
     ('PB FTP in 7 weeks', 'After 7 weeks of following his programme, which is mainly working in Z1/2 with bits of Z3, I’ve managed to get a PB FTP of 207W.', 'Lisa Dunne', 'Al Jassra Race Team, Qatar'),
-    ('+40 W FTP, +300 W sprint', 'Matteo managed to raise my FTP from 220w to 260w in less than 4 months & my sprint from 600w ish to 920w.', 'Shane Courtney', 'Tralee Manor West ibike'),
-    ('All-time power PBs, around family and work', 'Matteo Cigala has been an incredible cycling coach, helping me navigate training around my family and work commitments. Thanks to his guidance, I not only reached my targets but also hit all-time personal best power numbers.', 'John Dowley', 'Carrick-on-Suir, Ireland'),
-    ('From A3 to A1 and the Rás', 'I commenced the cycling season in February as an A2 and by March I had gained my first points finishing 2nd in the Lucan GP. Finally last week I achieved one of my goals for the season: I won the Connor Coombes GP.', 'Gerard Dunne', 'Navan Road Club'),
-    ('16 kg lighter, fitter and happier', 'To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.', 'Rob Kavanagh', 'Ireland'),
+    ('A3 to A1', 'I commenced the cycling season in February as an A2 and by March I had gained my first points finishing 2nd in the Lucan GP. Finally last week I achieved one of my goals for the season: I won the Connor Coombes GP.', 'Gerard Dunne', 'Navan Road Club'),
+    ('16 kg lighter', 'To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.', 'Rob Kavanagh', 'Ireland'),
+    ('Fresher, fewer hours', 'The big revelation for me has been how fresh I feel following a full winter training and spring racing schedule tailored by Matteo… Much less fatigued than ever before with less hours of training!', 'Damian Gannon', 'Swords Cycling Club'),
 ]
 def reviews_strip():
     cards = ''.join(f'<figure class="rv"><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div><blockquote>“{E(q)}”</blockquote><figcaption><b>{E(n)}</b><span>{E(w)}</span></figcaption></figure>' for t, q, n, w in REVIEWS)
