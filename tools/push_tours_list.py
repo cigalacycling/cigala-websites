@@ -23,6 +23,7 @@ IMG = {'img/home-hero.jpg': 'hero', 'img/dest-private-custom-tours.jpg': 'custom
 def fix_img(m):
     tag = m.group(0); src = re.search(r'src="([^"]+)"', tag).group(1)
     if src.startswith('https://staging.tours.cigalacycling.com/wp-content/uploads/'): return tag   # already a staging WebP (tools/tours_img.py)
+    if src.startswith('https://i.ytimg.com/vi/'): return tag   # YouTube video stills on the Testimonials page (the player loads on click)
     key = IMG.get(src) or (src[len('img/cigala-tours-'):-5] if src.startswith('img/cigala-tours-') else None)
     if not key or key not in M: raise SystemExit('no staging image for ' + src)
     tag = tag.replace(f'src="{src}"', f'src="{M[key]["url"]}"')
@@ -59,6 +60,8 @@ def block_el(b):
     rest = re.search(r'<!--FORM-->(.*)</div>\s*</section>\s*$', b, re.S).group(1)
     c = wrap([live_form(d['id']), widget('<div class="cl cl-page">' + rest.strip() + '</div>')])
     c['settings']['css_classes'] = 'cc-wrap cl-contact'
+    sid = re.match(r'<section id="([\w-]+)"', b)
+    if sid: c['settings']['_element_id'] = sid.group(1)   # keeps in-page links like #enquire working
     return c
 
 els = [block_el(b) for b in blocks]

@@ -15,7 +15,7 @@ LIVE, STG = 'https://tours.cigalacycling.com', 'https://staging.tours.cigalacycl
 base = {p['url'][len(LIVE):]: p for p in json.load(open(ROOT + 'tours/baseline-2026-11-15.json'))}
 lst = lambda v: ast.literal_eval(v) if isinstance(v, str) and v.startswith('[') else (v or [])
 T = lambda x: re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', x or ''))).strip()
-norm = lambda x: re.sub(r'[\s’\']+', ' ', T(x).upper().replace('“', '"').replace('”', '"')).strip()
+norm = lambda x: re.sub(r'[\s’\'\u200b]+', ' ', T(x).upper().replace('“', '"').replace('”', '"')).strip()
 
 def page(path):
     code, r = req(STG + path + ('&' if '?' in path else '?') + 'seo=1')

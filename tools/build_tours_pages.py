@@ -302,6 +302,277 @@ def destinations():
 {PARTNERS_H2}'''
     return {'id': 10, 'slug': 'destinations', 'main': main, 'css': PAGE_CSS, 'crumb': 'Destinations'}
 
+
+# ===================== Destination pages (26, children of /destinations/) =====================
+# One layout for all of them (design: tourspages/destination-lake-garda.html), filled in page order from each
+# page's own Elementor data: hero (photo, H1, subtitle H2), then one section per live H2 with its text,
+# photo gallery, facts (H3 + text) and tour cards (photo + tag + H2 + text + "View/Enquire tour" link).
+# Body text that live sits in H4 headings becomes paragraphs (same words; H4 were not real headings).
+DEST_IDS = json.load(open(ROOT + 'stg-tours/destination-ids.json'))
+from tours_img import media
+FACT_ICON = {
+ 'LOCATION': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/></svg>',
+ 'CLIMATE': '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>',
+ 'CUISINE': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8l-.5 6a3.5 3.5 0 0 1-7 0L8 3zM12 12.5V20M8.5 20.5h7"/></svg>',
+ 'TERRAIN': '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 19.5 9 8l4 6.5 2.5-3.5 6 8.5z"/></svg>'}
+FACT_ICON_DEFAULT = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4.5M12 15.5v.5"/></svg>'
+
+def para_html(v):
+    """Live H4/text-editor content -> paragraphs with the same words (links and line breaks kept)."""
+    v = clean(v)
+    if v.startswith('<p') or v.startswith('<ul') or v.startswith('<ol'): return v
+    v = re.sub(r'\s*<br\s*/?>\s*', '<br>', v.strip())
+    parts = [x.strip() for x in re.split(r'\n\s*\n|\n', v) if x.strip()]
+    return ''.join(f'<p>{x}</p>' for x in parts)
+
+def is_go(v, s):   # the "View Tour →", "Enquire Tour →", "View Destination→" headings that only carry a link
+    return '→' in v and isinstance(s.get('link'), dict) and s['link'].get('url') and len(text_of(v)) < 30
+
+def destination(slug):
+    pid = DEST_IDS[slug]
+    it = [x for x in items(elementor(pid)) if x[0] not in ('open', 'close', 'divider', 'spacer')]
+    h1i = next(i for i, x in enumerate(it) if x[0] == 'h1')
+    h1 = it[h1i][1]
+    name = re.sub(r'^(cycling in( the)?)\s+', '', text_of(h1), flags=re.I).strip()
+    name = name.title() if name.isupper() or name.islower() or name == name.capitalize() else name
+    hero_bg = next(v for k, v, s in it if k == 'bg')
+    rest = it[h1i + 1:]
+    sub = None
+    if len(rest) > 1 and rest[0][0] == 'h2' and rest[1][0] in ('h2',) and not is_go(*rest[0][1:]):
+        sub = rest[0][1]; rest = rest[1:]
+    sections, cur = [], {'h2': None, 'blocks': []}
+    def add(kind, val):
+        b = cur['blocks']
+        if b and b[-1][0] == kind and kind in ('p', 'gal', 'facts', 'cards'): b[-1][1].append(val)
+        else: b.append((kind, [val]))
+    i = 0
+    while i < len(rest):
+        k, v, s = rest[i]
+        if k == 'bg':
+            j = i + 1   # a card: background photo, then (tag button), H2 title, text, and a "→" H2 link, before the next photo
+            while j < len(rest) and rest[j][0] != 'bg' and not (rest[j][0] == 'h2' and is_go(rest[j][1], rest[j][2])): j += 1
+            if j < len(rest) and rest[j][0] == 'h2' and is_go(rest[j][1], rest[j][2]):
+                seg = rest[i + 1:j]
+                tag = next((bv[0] for bk, bv, bs in seg if bk == 'btn' and not bv[1]), '')
+                title = next((hv for hk, hv, hs in seg if hk == 'h2'), '')
+                desc = ''.join(para_html(tv) for tk, tv, ts in seg if tk in ('text', 'h4', 'h3'))
+                imgs = [iv for ik, iv, _ in seg if ik == 'img']
+                add('cards', {'bg': v, 'tag': tag, 'title': title, 'desc': desc, 'go': text_of(rest[j][1]).replace('\u200b', ''), 'url': rest[j][2]['link']['url']})
+                i = j + 1; continue
+            i += 1; continue
+        if k == 'h2' and is_go(v, s): i += 1; continue
+        if k == 'h2':
+            if cur['h2'] or cur['blocks']: sections.append(cur)
+            cur = {'h2': v, 'blocks': []}; i += 1; continue
+        if k == 'h3' and i + 1 < len(rest) and rest[i + 1][0] in ('h4', 'text'):
+            add('facts', (text_of(v), para_html(rest[i + 1][1]))); i += 2; continue
+        if k in ('h4', 'h5', 'h6', 'text', 'h3'):
+            if 'perfect one' in text_of(v).lower():
+                btn = next((x for x in rest[i + 1:i + 3] if x[0] == 'btn'), None)
+                add('band', (para_html(v), btn[1] if btn else ('Learn more', L + '/trips/private-trips/')))
+                i += 2 if btn else 1; continue
+            add('p', para_html(v)); i += 1; continue
+        if k == 'img':
+            m = media(v)
+            if (m.get('width') or 0) >= 300: add('gal', v)
+            i += 1; continue
+        if k == 'btn' and v[1]:
+            add('btn', v); i += 1; continue
+        i += 1
+    sections.append(cur)
+
+    def eyebrow(h):
+        t = text_of(h).upper()
+        if 'FACT' in t: return 'Good to know'
+        if 'UPCOMING' in t: return '2027 season'
+        if 'CUSTOM' in t: return 'Custom tours'
+        if 'REGION' in t or 'DESTINATION' in t: return 'Where to ride'
+        return name
+    def render_block(kind, vals):
+        if kind == 'p': return f'<div class="prose dprose">{"".join(vals)}</div>'
+        if kind == 'gal':
+            seen = []; [seen.append(x) for x in vals if x not in seen]
+            return f'<div class="gal3">{"".join(img_tag(x, 1200, alt=f"Cycling in {name} - Cigala Cycling Tours") for x in seen)}</div>'
+        if kind == 'facts':
+            return '<div class="facts4">' + ''.join(
+                f'<div class="panel fact"><div class="ic">{FACT_ICON.get(t.upper().strip(), FACT_ICON_DEFAULT)}</div><div><h3>{E(t.title())}</h3>{p}</div></div>'
+                for t, p in vals) + '</div>'
+        if kind == 'cards':
+            out = []
+            for c in vals:
+                u = link(c['url']).replace(L, '')
+                u = FIX_URL.get(u, u)
+                tag = c['tag'].title() if c['tag'] else ''
+                title = re.sub(r'<[^>]+>', '', c['title']).replace('\u200b', '').strip()
+                tags = f'<span class="tags"><span class="tag{" gravel" if tag == "Gravel" else ""}">{E(tag)}</span></span>' if tag else ''
+                title = re.sub(r'<[^>]+>', '', c['title']).replace('\u200b', '').strip()
+                go = c['go'].replace('→', '').strip().capitalize() + ' →'
+                out.append(f'<article class="tcard dtour"><a class="ph" href="{u}">{img_tag(c["bg"], 900, alt=f"{title} - {name} cycling tour")}{tags}</a><div class="tx">'
+                           f'<h2>{E(title)}</h2><div class="desc">{c["desc"]}</div><div class="bottom"><div class="ctas one"><a class="btn btn-ghost" href="{u}">{E(go)}</a></div></div></div></article>')
+            return f'<div class="tgrid">{"".join(out)}</div>'
+        if kind == 'btn':
+            return '<div class="ctas">' + ''.join(f'<a class="btn btn-go" href="{link(u).replace(L, "")}">{E(t.capitalize())} →</a>' for t, u in vals) + '</div>'
+        if kind == 'band':
+            txt, (bt, bu) = vals[0]
+            return (f'<div class="band">{img_tag(4440, 1600)}<div class="tx"><div class="eyebrow">Custom tours</div>'
+                    f'<div class="lede">{txt}</div><div class="ctas"><a class="btn btn-go" href="{link(bu).replace(L, "")}">{E(bt.capitalize())} →</a></div></div></div>')
+        return ''
+    html_s = []
+    for n, sec in enumerate(sections):
+        body = ''.join(render_block(k, v) for k, v in sec['blocks'])
+        if not body and not sec['h2']: continue
+        head = head_block(eyebrow(sec['h2']), re.sub(r'<[^>]+>', '', sec['h2']).replace('\u200b', '').strip()) if sec['h2'] else ''
+        sid = ' id="tours"' if sec['h2'] and 'UPCOMING' in text_of(sec['h2']).upper() else ''
+        html_s.append(f'<section{sid}{" style=\"padding-top:44px\"" if n == 0 else ""}>\n  <div class="in">\n    {head}\n    {body}\n  </div>\n</section>')
+    has_tours = any(' id="tours"' in x for x in html_s)
+    sub_html = f'<h2 class="pill-eyebrow hero-sub">{E(re.sub(r"<[^>]+>", "", sub).strip())}</h2>' if sub else '<div class="pill-eyebrow">Destination</div>'
+    main = f'''<div class="hero phero">
+  {img_tag(hero_bg, 2000, alt=f'Cycling in {name} - Cigala Cycling Tours', lazy=False)}
+  <div class="in">
+    <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / <a href="{L}/destinations/" {EXT}>Destinations</a> / {E(name)}</div>
+    {sub_html}
+    <h1>{E(h1)}</h1>
+    <div class="bar"></div>
+    <div class="ctas">{f'<a class="btn btn-go" href="#tours">Upcoming tours →</a>' if has_tours else f'<a class="btn btn-go" href="{L}/trips/">Upcoming tours →</a>'}<a class="btn btn-ghost" href="{L}/trips/private-trips/">Custom tours</a></div>
+  </div>
+</div>
+''' + '\n'.join(html_s) + '\n' + READMORE_JS
+    return {'id': pid, 'slug': slug, 'main': main, 'css': PAGE_CSS, 'crumb': name}
+
+READMORE_JS = ''
+
+
+# ===================== Testimonials (2844) =====================
+# Live: the testimonials H2 + an old reviews widget, then 23 YouTube videos, each with H2 name + H2 country.
+# New: an H1 (live has none), our review cards under the live H2, then the videos as click-to-play cards:
+# a still picture and a play button; the YouTube player (youtube-nocookie) loads only when clicked.
+YT_JS = """<script>(function(){document.querySelectorAll('.cl .yt').forEach(function(b){b.addEventListener('click',function(){
+var f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+b.dataset.id+'?autoplay=1&rel=0';
+f.title=b.getAttribute('aria-label');f.allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';f.allowFullscreen=true;
+b.replaceWith(f);});});})();</script>"""
+def testimonials():
+    it = [x for x in items(elementor(2844)) if x[0] not in ('open', 'close', 'divider', 'spacer')]
+    h2_top = next(v for k, v, s in it if k == 'h2')
+    vids, i = [], 0
+    while i < len(it):
+        k, v, s = it[i]
+        m = re.search(r'youtube\.com/embed/([\w-]+)', s.get('html', '') or '') if k == 'html' else None
+        if m:
+            hs = [x[1] for x in it[i + 1:i + 3] if x[0] == 'h2']
+            vids.append((m.group(1), text_of(hs[0]) if hs else '', text_of(hs[1]) if len(hs) > 1 else ''))
+        i += 1
+    cards = ''.join(
+        f'<figure class="panel vcard"><button type="button" class="yt" data-id="{vid}" aria-label="Play {E(n)}\'s video review">'
+        f'<img src="https://i.ytimg.com/vi/{vid}/hqdefault.jpg" alt="{E(n)} from {E(c)} talks about riding with Cigala Cycling Tours" loading="lazy">'
+        f'<span class="play" aria-hidden="true"></span></button><figcaption><h2>{E(n)}</h2><span>{E(c)}</span></figcaption></figure>'
+        for vid, n, c in vids)
+    main = f'''<div class="hero plain-hero">
+  <div class="in">
+    <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / Testimonials</div>
+    <div class="eyebrow">What our riders say</div>
+    <h1>Testimonials</h1>
+    <div class="bar"></div>
+  </div>
+</div>
+{reviews_block(h2_top)}
+<section>
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">On video</div><p class="band-title">Hear it from our guests</p><div class="bar"></div></div></div>
+    <div class="vgrid">{cards}</div>
+  </div>
+</section>
+{PARTNERS_H2}
+{YT_JS}'''
+    return {'id': 2844, 'slug': 'testimonials', 'main': main, 'css': PAGE_CSS, 'crumb': 'Testimonials', 'videos': len(vids)}
+
+
+# ===================== Custom tours (1576, /trips/private-trips/) =====================
+H3_FIX = {'REASTURANTS': 'RESTAURANTS', 'OFF THE BIKE ACTIVITES': 'OFF THE BIKE ACTIVITIES'}   # typos on the live page
+ORG_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.2 4.2L19 7"/></svg>'
+def custom():
+    it = [x for x in items(elementor(1576)) if x[0] not in ('open', 'close', 'divider', 'spacer')]
+    idx = lambda k_, w=None: next(i for i, (k, v, s) in enumerate(it) if k == k_ and (w is None or w in text_of(v).upper()))
+    h1 = it[idx('h1')][1]
+    intro = next(v for k, v, s in it if k == 'text')
+    b_i, o_i, l_i, f_i, g_i = idx('h2', 'BUILD YOUR'), idx('h2', 'ORGANISE'), idx('h2', 'LOCATIONS'), idx('h2', 'FAQ'), idx('h3', 'GET IN TOUCH')
+    asks = [v for k, v, s in it[:b_i] if k == 'h3']
+    org = [H3_FIX.get(v.strip(), v.strip()) for k, v, s in it[o_i:l_i] if k == 'h3']
+    loc_txt = [v for k, v, s in it[l_i:f_i] if k == 'text']
+    faq, i = [], f_i + 1
+    while i < g_i:
+        if it[i][0] == 'h3' and it[i + 1][0] == 'text': faq.append((it[i][1], it[i + 1][1])); i += 2
+        else: i += 1
+    contact_txt = [v for k, v, s in it[g_i:] if k == 'text']
+    hero_bg = it[0][1]; build_bg = [v for k, v, s in it[:b_i] if k == 'bg'][-1]
+    photo = next(v for k, v, s in it[f_i:g_i] if k == 'img')
+    btn = it[b_i + 1][1][0] if it[b_i + 1][0] == 'btn' else 'Customise your tour'
+    ask_html = ''.join(f'<div class="panel step"><span class="n">{n:02d}</span><h3>{E(text_of(a))}</h3></div>' for n, a in enumerate(asks, 1))
+    org_html = ''.join(f'<div class="panel org"><span class="tick" aria-hidden="true"></span><h3>{E(o.title())}</h3></div>' for o in org)
+    locs = re.findall(r'<li>(.*?)</li>', loc_txt[1], re.S)
+    loc_html = '<ul class="locs">' + ''.join(f'<li>{x.replace(chr(0x200b), "").strip()}</li>' for x in locs) + '</ul>'
+    faq_html = ''.join(f'<details class="panel faq"><summary><h3>{E(q)}</h3></summary><div class="a">{a}</div></details>' for q, a in faq)
+    tel = '+35340478107'
+    main = f'''<div class="hero phero">
+  {img_tag(hero_bg, 2000, alt='Cigala Cycling custom bike tour group', lazy=False)}
+  <div class="in">
+    <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / <a href="{L}/trips/" {EXT}>Bike tours</a> / Custom tours</div>
+    <div class="pill-eyebrow">Private &amp; tailor-made</div>
+    <h1>{E(h1)}</h1>
+    <div class="bar"></div>
+    <div class="lede">{intro}</div>
+    <div class="ctas"><a class="btn btn-go" href="#enquire">{E(btn.capitalize())} →</a></div>
+  </div>
+</div>
+<section style="padding-top:40px">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Tell us</div><p class="band-title">Four questions to start</p><div class="bar"></div></div></div>
+    <div class="steps4">{ask_html}</div>
+  </div>
+</section>
+<section>
+  <div class="in">
+    <div class="band">
+      {img_tag(build_bg, 1600, alt='Riders on a Cigala Cycling custom tour')}
+      <div class="tx">
+        <div class="eyebrow">Your dates, your group</div>
+        <h2>{E(it[b_i][1])}</h2>
+        <div class="bar"></div>
+        <div class="ctas"><a class="btn btn-go" href="#enquire">{E(btn.capitalize())} →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="in">
+    {head_block('Fully organised', it[o_i][1])}
+    <div class="org4">{org_html}</div>
+  </div>
+</section>
+<section>
+  <div class="in">
+    {head_block('Where to', it[l_i][1])}
+    <div class="prose dprose">{loc_txt[0]}</div>
+    {loc_html}
+  </div>
+</section>
+<section>
+  <div class="in">
+    {head_block('Good to know', it[f_i][1])}
+    <div class="faqs">{faq_html}</div>
+  </div>
+</section>
+<section id="enquire">
+  <div class="in contact-grid">
+<!--FORM-->
+    <div class="panel cpanel info">
+      {img_tag(photo, 1100, cls='cphoto')}
+      <h3 class="gt">{E(it[g_i][1])}</h3>
+      {''.join(contact_txt).replace('+353 40478107', f'<a href="tel:{tel}">+353 40478107</a>')}
+    </div>
+  </div>
+</section>'''
+    return {'id': 1576, 'slug': 'private-trips', 'main': main, 'css': PAGE_CSS, 'crumb': 'Custom tours', 'form': True}
+
 # small additions on top of the design CSS, scoped to .cl by the kit build
 PAGE_CSS = '''
 html .cl .band .lede p { margin: 0; }
@@ -319,10 +590,55 @@ html .cl .info .cc-social { margin-top: 2px; }
 html .cl .dcard h2 { font-size: clamp(22px, 2.2vw, 28px); }
 html .cl .region h2 { font-size: 18px; }
 html .cl .band .lede p { margin: 0; }
+html .cl h2.hero-sub { font-family: var(--body); font-size: 12px; line-height: 1.4; font-weight: 600; letter-spacing: .14em; color: var(--text); margin: 0 0 18px; }
+html .cl .dprose { max-width: 78ch; }
+html .cl .dprose p { margin: 0 0 14px; color: var(--text-2); }
+html .cl .dprose + .gal3, html .cl .gal3 + .dprose, html .cl .facts4 + .dprose, html .cl .dprose + .facts4, html .cl .dprose + .tgrid, html .cl .tgrid + .dprose, html .cl .gal3 + .facts4 { margin-top: 22px; }
+html .cl .fact p { margin: 6px 0 0; }
+html .cl .dtour .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
+html .cl .dtour .ctas.one { grid-template-columns: minmax(0, 1fr); }
+html .cl .band .lede p { margin: 0; }
+html .cl .vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1000px) { html .cl .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { html .cl .vgrid { grid-template-columns: minmax(0, 1fr); } }
+html .cl .vcard { margin: 0; padding: 0; overflow: hidden; }
+html .cl .vcard .yt, html .cl .vcard iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; padding: 0; margin: 0; background: #000; position: relative; cursor: pointer; }
+html .cl .vcard .yt img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(.82); transition: filter .2s; }
+html .cl .vcard .yt:hover img { filter: brightness(1); }
+html .cl .vcard .play { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: #009a44; box-shadow: 0 6px 24px rgba(0,0,0,.4); }
+html .cl .vcard .play::after { content: ""; position: absolute; left: 26px; top: 20px; border-style: solid; border-width: 12px 0 12px 19px; border-color: transparent transparent transparent #fff; }
+html .cl .vcard figcaption { padding: 14px 18px 16px; display: flex; align-items: baseline; gap: 10px; }
+html .cl .vcard figcaption h2 { font-size: 22px; }
+html .cl .vcard figcaption span { font-size: 13px; color: var(--text-3); }
+html .cl .steps4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+html .cl .org4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1000px) { html .cl .steps4, html .cl .org4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { html .cl .steps4, html .cl .org4 { grid-template-columns: minmax(0, 1fr); } }
+html .cl .step { padding: 20px 22px; }
+html .cl .step .n { display: block; font-family: var(--head); font-size: 15px; color: #ff3d33; letter-spacing: .06em; margin-bottom: 8px; }
+html .cl .step h3 { font-size: 22px; }
+html .cl .org { padding: 16px 18px; display: flex; gap: 12px; align-items: center; }
+html .cl .org h3 { font-size: 18px; }
+html .cl .locs { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+html .cl .locs li { font-size: 13.5px; color: var(--text); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 13px; }
+html .cl .faqs { display: grid; gap: 10px; max-width: 900px; }
+html .cl .faq { padding: 0; }
+html .cl .faq summary { list-style: none; cursor: pointer; padding: 16px 52px 16px 20px; position: relative; }
+html .cl .faq summary::-webkit-details-marker { display: none; }
+html .cl .faq summary::after { content: "+"; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font: 600 22px var(--body); color: var(--green-text); }
+html .cl .faq[open] summary::after { content: "–"; }
+html .cl .faq summary h3 { font-family: var(--body); font-size: 16px; font-weight: 600; text-transform: none; letter-spacing: 0; line-height: 1.4; }
+html .cl .faq .a { padding: 0 20px 16px; color: var(--text-2); }
+html .cl .faq .a p { margin: 0; }
+html .cl .info .cphoto { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; display: block; }
+html .cl .info h3.gt { font-family: var(--head); font-size: clamp(26px, 3vw, 34px); color: var(--text); letter-spacing: .01em; margin: 6px 0 0; }
+html .cl .info p { margin: 0; color: var(--text-2); }
+html .cl .info p a { color: var(--text); font-weight: 600; text-decoration: none; }
 html .cl h2.lab { font-family: var(--body); font-size: 11px; line-height: 1.4; letter-spacing: .09em; font-weight: 600; color: var(--text-3); text-transform: uppercase; margin: 0 0 12px; }
 '''
 
-PAGES = {'about': about, 'contact': contact, 'destinations': destinations}
+PAGES = {'about': about, 'contact': contact, 'destinations': destinations, 'testimonials': testimonials, 'private-trips': custom}
+for _slug in DEST_IDS: PAGES['dest-' + _slug] = (lambda s_: (lambda: destination(s_)))(_slug)
 
 from css_scope import scope_css
 from social import SOCIAL_CSS
