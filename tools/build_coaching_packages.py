@@ -36,8 +36,10 @@ pay = {label: url for url, label in PAY.items()}
 def btn(label, url, cls='btn-go', note=''):
     return f'<a class="btn {cls} pay" href="{E(url)}" {EXT}>{label}</a>' + (f'<span class="pay-note">{note}</span>' if note else '')
 
+# New feature line, added by Matteo (15 Nov 2026): Advanced and Premium only, shown first and highlighted.
+ASSESS = 'Initial Assessment Review of your training data'
 def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
-    items = ''.join(f'<li>{E(x)}</li>' for x in own[key])
+    items = (f'<li class="key">{E(ASSESS)}</li>' if key in ('advanced', 'premium') else '') + ''.join(f'<li>{E(x)}</li>' for x in own[key])
     return f'''<article class="pkg {cls}" id="pkg-{key}">
         {badge}
         <div class="pkg-term">{term}</div>
@@ -278,6 +280,8 @@ PCSS = '''<style>
 .ticks { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
 .ticks li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-2); line-height: 1.45; }
 .ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.2 2.2 4.8-4.8' fill='none' stroke='%2334c46a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+.ticks li.key { color: var(--text); font-weight: 600; background: var(--green-wash); border: 1px solid rgba(0,154,68,.45); border-radius: 8px; padding: 8px 10px 8px 34px; }
+.ticks li.key::before { left: 10px; top: 11px; }
 .pkg-plus { margin: 14px 0 0; font-size: 13px; color: var(--text-3); }
 .pkg-plus a { color: var(--green-text); }
 .terms { margin: 22px 0 0; font-size: 13px; color: var(--text-3); text-align: center; }
