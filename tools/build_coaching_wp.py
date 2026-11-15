@@ -164,20 +164,35 @@ html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 va
 .cc-blog .elementor-button { background: none !important; color: #34c46a !important; padding: 0 !important; font: 600 14px Montserrat, system-ui, sans-serif !important; text-transform: none !important; border: 0 !important; box-shadow: none !important; }
 .cc-blog .elementor-button:hover { color: #fff !important; }
 .cc-blog .e-load-more-anchor + div .elementor-button, .cc-blog .elementor-button-wrapper .e-load-more-spinner + .elementor-button-text { color: #fff !important; }
+/* Matteo 15 Nov (2nd): the hero shows the autograph; cards end at the image (title and button over the photo);
+   Read more and Continue reading solid green */
+html .cc .blog-hero { min-height: min(680px, 82svh); }
+html .cc .blog-hero > img { object-position: 50% 58%; }
+.cc-blog .e-loop-item { position: relative; }
+.cc-blog .e-loop-item > .e-con { position: relative; display: block !important; }
+.cc-blog .e-loop-item img { aspect-ratio: 4 / 3 !important; display: block; }
+.cc-blog .e-loop-item > .e-con > .e-con:last-child { position: absolute !important; left: 0; right: 0; bottom: 0; padding: 60px 18px 18px !important;
+  background: linear-gradient(180deg, rgba(8,9,10,0), rgba(8,9,10,.82) 45%, rgba(8,9,10,.95)) !important; }
+.cc-blog .e-loop-item .elementor-widget-theme-post-excerpt { display: none !important; }
+.cc-blog .e-loop-item > .e-con > .e-con:last-child { top: auto !important; height: auto !important; min-height: 0 !important; flex-grow: 0 !important; justify-content: flex-end !important; gap: 6px !important; }
+.cc-blog .e-loop-item > .e-con > .e-con:first-child { height: auto !important; min-height: 0 !important; }
+.cc-blog .e-loop-item > .e-con, .cc-blog .e-loop-item > .e-con > .e-con:first-child .elementor-widget, .cc-blog .e-loop-item .elementor-widget-theme-post-featured-image a { min-height: 0 !important; height: auto !important; display: block; }
+.cc-blog .e-loop-item .elementor-widget-theme-post-featured-image img { height: auto !important; max-height: none !important; }
+.cc-blog .e-loop-item .elementor-widget-heading:not(.elementor-widget-theme-post-title) .elementor-heading-title { color: #d0d6e0 !important; }
+.cc-blog .e-loop-item .elementor-widget-button { margin-top: 6px !important; padding-top: 0 !important; }
+.cc-blog .elementor-widget-theme-post-title .elementor-heading-title, .cc-blog .elementor-widget-theme-post-title a { font-size: 22px !important; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
+.cc-blog .e-loop-item .elementor-button, .cc-blog .e-loop__load-more .elementor-button, .cc-blog .e-load-more-anchor ~ * .elementor-button { background: #009a44 !important; color: #fff !important; border: 0 !important; border-radius: 8px !important; padding: 9px 16px !important; }
+.cc-blog .e-loop-item .elementor-button:hover, .cc-blog .e-loop__load-more .elementor-button:hover { background: #00b350 !important; color: #fff !important; }
+.cc-blog .e-loop__load-more .elementor-button { padding: 13px 26px !important; font: 600 15px Montserrat, system-ui, sans-serif !important; }
 /* Matteo 15 Nov: cards were too big with a lot of empty space; "Read more" as a button with an arrow */
 .cc-blog .elementor-loop-container { max-width: 1200px; margin: 0 auto !important; gap: 18px !important; }
-.cc-blog .e-loop-item img { aspect-ratio: 16 / 9 !important; height: auto !important; }
-.cc-blog .e-loop-item > .e-con > .e-con:last-child, .cc-blog .e-loop-item .e-con + .e-con { padding: 16px 18px 18px !important; gap: 8px !important; justify-content: flex-start !important; min-height: 0 !important; }
 .cc-blog .e-loop-item .elementor-widget { margin: 0 !important; width: 100% !important; max-width: 100% !important; --container-widget-width: 100% !important; }
 .cc-blog .e-loop-item, .cc-blog .e-loop-item > .e-con { height: 100%; }
-.cc-blog .elementor-widget-theme-post-title .elementor-heading-title, .cc-blog .elementor-widget-theme-post-title a { font-size: 21px !important; }
 .cc-blog .elementor-widget-heading:not(.elementor-widget-theme-post-title) .elementor-heading-title { font-size: 11px !important; }
 .cc-blog .e-loop-item .elementor-widget-divider { display: none !important; }
 .cc-blog .elementor-widget-theme-post-excerpt, .cc-blog .elementor-widget-theme-post-excerpt p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin: 0 !important; font-size: 14px !important; }
 .cc-blog .e-loop-item .elementor-widget-button { margin-top: auto !important; padding-top: 6px; }
-.cc-blog .e-loop-item .elementor-button { border: 1px solid rgba(0,154,68,.7) !important; border-radius: 999px !important; padding: 8px 16px !important; color: #34c46a !important; font: 600 13px/1.2 Montserrat, system-ui, sans-serif !important; letter-spacing: .02em !important; transition: background .2s, color .2s; }
 .cc-blog .e-loop-item .elementor-button .elementor-button-text::after { content: " →"; }
-.cc-blog .e-loop-item .elementor-button:hover { background: #009a44 !important; color: #fff !important; }
 .single-post .elementor-4028, .single-post .elementor-4028 .e-con:not(a) { background: transparent !important; background-image: none !important; }
 .single-post .elementor-4028 { max-width: 860px; margin: 0 auto; padding: 40px 16px 0; }
 .single-post .elementor-4028 .elementor-widget-theme-post-excerpt, .single-post .elementor-4028 .elementor-widget-theme-post-excerpt p { font: 500 19px/1.6 Montserrat, system-ui, sans-serif !important; color: #f7f8f8 !important; }
