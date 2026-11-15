@@ -1,0 +1,648 @@
+<title>Cigala Trip Page</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+/* Trip page template for tours.cigalacycling.com, same kit as the approved Tours homepage.
+   Layout: nav, photo hero with booking panel, sticky section tabs, glance stats, overview + card,
+   route map, day-by-day timeline, included / not included, gallery, hotels, bike rental, guides, reviews, CTA, footer. */
+:root {
+  color-scheme: dark;
+  --bg: #08090a; --panel: rgba(15,16,17,.92); --panel-solid: #0f1011;
+  --panel-grad: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+  --border: rgba(255,255,255,.08); --border-strong: rgba(255,255,255,.14); --wash: rgba(255,255,255,.04);
+  --text: #f7f8f8; --text-2: #d0d6e0; --text-3: #8a8f98; --text-4: #62666d;
+  --green: #009a44; --green-hi: #00b350; --green-text: #34c46a; --green-wash: rgba(0,154,68,.14);
+  --red: #E10600; --red-text: #ff3d33; --gravel: #b9895a; --star: #f0bf00;
+  --head: "Anton", Impact, "Arial Narrow", sans-serif;
+  --body: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 12px;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--text-2); font-family: var(--body); }
+body { position: relative; margin: 0; font-size: 15px; line-height: 1.6; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: rgba(8,9,10,.92); }
+.topo { position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(rgba(8,9,10,.6),rgba(8,9,10,.6)), #08090a url(topo-background-tile.svg) top center / auto 3000px repeat-y; }
+.page { position: relative; z-index: 1; }
+a { color: var(--text); text-decoration-color: rgba(255,255,255,.3); text-underline-offset: 3px; }
+a:hover { color: #fff; text-decoration-color: var(--green); }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+img { display: block; max-width: 100%; }
+b, strong { color: var(--text); font-weight: 600; }
+.in { max-width: 1200px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+section { padding-block: 64px 0; scroll-margin-top: 130px; }
+h1, h2, h3 { font-family: var(--head); font-weight: 400; text-transform: uppercase; color: var(--text); letter-spacing: .01em; line-height: 1.04; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(52px, 9vw, 112px); }
+h2 { font-size: clamp(30px, 4.4vw, 48px); }
+h3 { font-size: 22px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--red-text); margin-bottom: 10px; }
+.bar { width: 40px; height: 3px; border-radius: 2px; background: var(--green); margin-top: 14px; }
+.lede { max-width: 62ch; margin: 14px 0 0; font-size: 16px; }
+.head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 32px; margin-bottom: 26px; }
+.head > div { min-width: 0; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--body); font-weight: 600; font-size: 14px; letter-spacing: .02em; text-decoration: none; border-radius: 8px; padding: 12px 22px; border: 1px solid transparent; transition: background .15s, border-color .15s; }
+.btn-go { background: var(--green); color: #fff; }
+.btn-go:hover { background: var(--green-hi); color: #fff; }
+.btn-ghost { background: rgba(8,9,10,.35); color: var(--text); border-color: var(--border-strong); }
+.btn-ghost:hover { border-color: var(--green); color: #fff; }
+.btn-lg { padding: 15px 26px; font-size: 15px; width: 100%; }
+.ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.panel { background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
+
+.ribbon { position: relative; z-index: 2; background: var(--green-wash); border-bottom: 1px solid rgba(0,154,68,.35); font-size: 12.5px; }
+.ribbon .in { display: flex; flex-wrap: wrap; gap: 4px 12px; padding-block: 8px; }
+.ribbon b { color: var(--green-text); letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; }
+
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(8,9,10,.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+.nav .in { position: relative; display: flex; align-items: center; gap: 18px; padding-block: 10px; }
+.brand img { width: 58px; height: 58px; }
+.menu { display: flex; gap: 2px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+.menu a { font-size: 12.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-2); text-decoration: none; padding: 8px 10px; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
+.menu a:hover { color: var(--green-text); box-shadow: inset 0 -2px 0 var(--green); }
+.menu a[aria-current="page"] { color: var(--text); box-shadow: inset 0 -2px 0 var(--red); }
+.nav .btn { padding: 9px 16px; font-size: 13px; flex: none; }
+.burger { display: none; margin-left: auto; }
+.burger summary { list-style: none; cursor: pointer; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text); border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 14px; }
+.burger summary::-webkit-details-marker { display: none; }
+.burger nav { position: absolute; left: 0; right: 0; top: 100%; background: var(--panel-solid); border-bottom: 1px solid var(--border); display: grid; padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)); }
+.burger nav a { padding: 11px 0; border-bottom: 1px solid var(--border); text-decoration: none; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: .05em; }
+.burger nav a:hover { color: var(--green-text); }
+
+/* hero */
+.hero { position: relative; overflow: hidden; isolation: isolate; }
+.hero > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; z-index: -2; }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8,9,10,.88) 0%, rgba(8,9,10,.55) 50%, rgba(8,9,10,.35) 100%), linear-gradient(180deg, rgba(8,9,10,0) 60%, rgba(8,9,10,.95) 100%); }
+.hero .in { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 40px; align-items: end; padding-block: 96px 56px; }
+.crumbs { font-size: 12.5px; color: var(--text-3); margin-bottom: 18px; }
+.crumbs a { color: var(--text-3); text-decoration: none; } .crumbs a:hover { color: #fff; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.tag { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text); background: rgba(8,9,10,.7); border: 1px solid var(--border-strong); border-radius: 999px; padding: 4px 11px; }
+.tag.dot::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-right: 7px; vertical-align: 1px; }
+.hero .dates { font-family: var(--head); text-transform: uppercase; font-size: clamp(22px, 2.6vw, 30px); color: var(--text); margin-top: 10px; }
+.hero .lede { color: var(--text); }
+.book { padding: 24px; display: grid; gap: 14px; background: rgba(15,16,17,.94); border: 1px solid var(--border-strong); border-radius: 14px; }
+.book .lab { font-size: 11.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
+.price { font-family: var(--head); font-size: 40px; line-height: 1; color: var(--text); }
+.price small { font-family: var(--body); font-size: 14px; font-weight: 600; color: var(--text-2); margin-left: 6px; }
+.early { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text); background: rgba(225,6,0,.12); border: 1px solid rgba(225,6,0,.45); border-radius: 6px; padding: 5px 10px; justify-self: start; }
+.early::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+.book ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+.book ul li { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--border); padding-top: 8px; }
+.book ul li span:last-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+.book .note { font-size: 13px; color: var(--text-3); margin: 0; }
+
+/* section tabs */
+.tabs { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 79px); z-index: 15; background: rgba(8,9,10,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+.tabs .in { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding-block: 0; }
+.tabs .in::-webkit-scrollbar { display: none; }
+.tabs a { flex: none; font-size: 12.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-2); text-decoration: none; padding: 14px 12px; box-shadow: inset 0 0 0 var(--green); }
+.tabs a:hover { color: var(--green-text); box-shadow: inset 0 -2px 0 var(--green); }
+.tabs .btn { margin-left: auto; align-self: center; padding: 8px 16px; font-size: 13px; }
+
+/* glance */
+.glance { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.glance > div { padding: 20px; border-left: 1px solid var(--border); border-top: 1px solid var(--border); min-width: 0; }
+.glance > div:nth-child(4n+1) { border-left: 0; }
+.glance > div:nth-child(-n+4) { border-top: 0; }
+.glance .n { font-family: var(--head); font-size: clamp(28px, 3.4vw, 40px); line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+.glance .n small { font-family: var(--body); font-size: 14px; font-weight: 600; color: var(--text-3); margin-left: 4px; }
+.glance .n.sm { font-family: var(--body); font-size: 16px; font-weight: 600; line-height: 1.35; }
+.glance .l { font-size: 11.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); margin-top: 8px; }
+
+/* overview */
+.split { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 5vw, 64px); align-items: start; }
+.split p { margin: 0 0 14px; max-width: 64ch; }
+.quote { font-family: var(--head); text-transform: uppercase; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.12; color: var(--text); margin: 18px 0 18px !important; }
+.climbs { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 18px; padding: 0; list-style: none; }
+.climbs li { font-size: 12.5px; font-weight: 600; color: var(--text); border: 1px solid var(--border-strong); background: var(--wash); border-radius: 999px; padding: 5px 12px; }
+.climbs li::before { content: "▲"; color: var(--red-text); font-size: 9px; margin-right: 7px; vertical-align: 1px; }
+.cardimg { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); aspect-ratio: 4 / 5; max-width: 440px; width: 100%; justify-self: end; }
+.cardimg img { width: 100%; height: 100%; object-fit: cover; }
+
+/* route */
+.route { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px; align-items: stretch; }
+.map { background: #f4f1ea; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); }
+.map img { width: 100%; height: auto; }
+.facts { padding: 22px; display: grid; gap: 0; align-content: start; }
+.facts div { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 12px; padding: 11px 0; border-top: 1px solid var(--border); font-size: 14px; }
+.facts div:first-child { border-top: 0; }
+.facts dt { color: var(--text-3); font-size: 11.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; padding-top: 2px; }
+.facts dd { margin: 0; color: var(--text); font-weight: 600; }
+.gpx { font-size: 13px; color: var(--text-3); margin: 14px 0 0; }
+
+/* days */
+.days { display: grid; gap: 0; position: relative; }
+.day { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 20px; position: relative; padding-bottom: 26px; }
+.day::before { content: ""; position: absolute; left: 31px; top: 56px; bottom: 0; width: 2px; background: var(--border-strong); }
+.day:last-child::before { display: none; }
+.num { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--panel-solid); border: 2px solid var(--green); font-family: var(--head); font-size: 26px; color: var(--text); line-height: 1; text-align: center; }
+.num small { display: block; font-family: var(--body); font-size: 9px; font-weight: 700; letter-spacing: .12em; color: var(--text-3); margin-bottom: 2px; }
+.day .box { padding: 20px 22px; min-width: 0; }
+.day .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 12px; }
+.chip { font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--text); background: var(--wash); border: 1px solid var(--border-strong); border-radius: 6px; padding: 3px 9px; font-variant-numeric: tabular-nums; }
+.chip.km::before { content: "↔ "; color: var(--text-3); }
+.chip.up::before { content: "▲ "; color: var(--red-text); font-size: 10px; }
+.chip.rest { color: var(--text-3); }
+.day p { margin: 0 0 10px; max-width: 72ch; }
+.day p:last-child { margin-bottom: 0; }
+
+/* included */
+.inc { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px; align-items: start; }
+.inc .panel { padding: 22px 24px; }
+.inc h3 { font-size: 20px; margin-bottom: 14px; }
+.inc ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.inc li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; font-size: 14.5px; }
+.inc li::before { content: ""; width: 20px; height: 20px; border-radius: 50%; margin-top: 2px; background: var(--green-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%2334c46a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 20px no-repeat; border: 1px solid rgba(0,154,68,.4); }
+.inc .no li::before { background: rgba(255,255,255,.04) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M7 7l6 6M13 7l-6 6' fill='none' stroke='%238a8f98' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / 20px no-repeat; border-color: var(--border-strong); }
+.side { display: grid; gap: 16px; }
+.transfers { display: grid; gap: 10px; }
+.transfers div { border-top: 1px solid var(--border); padding-top: 10px; font-size: 14px; }
+.transfers div:first-of-type { border-top: 0; padding-top: 0; }
+.transfers b { font-family: var(--head); font-weight: 400; font-size: 18px; letter-spacing: .02em; display: block; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 210px; grid-auto-flow: dense; gap: 10px; }
+.gallery figure { margin: 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+.gallery img { width: 100%; height: 100%; object-fit: cover; }
+.g-big { grid-column: span 2; grid-row: span 2; }
+
+/* hotels */
+.hotels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.hotel { overflow: hidden; display: flex; flex-direction: column; }
+.hotel .ph { aspect-ratio: 16 / 9; max-width: 100%; overflow: hidden; }
+.hotel .ph img { width: 100%; height: 100%; object-fit: cover; }
+.hotel .tx { padding: 18px 20px 20px; display: grid; gap: 6px; }
+.stars { color: var(--star); letter-spacing: 2px; font-size: 14px; }
+.hotel .where { font-size: 13px; color: var(--text-3); }
+.hotel a.site { font-size: 13px; font-weight: 600; color: var(--green-text); text-decoration: none; }
+.strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.strip img { width: 100%; aspect-ratio: 4 / 3; max-width: 100%; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
+.hnote { font-size: 13.5px; color: var(--text-3); margin: 12px 0 0; }
+
+/* bike */
+.bike { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); overflow: hidden; }
+.bike .ph { background: #fff; display: grid; place-items: center; padding: 24px; }
+.bike .ph img { max-height: 320px; width: auto; }
+.bike .tx { padding: 28px; }
+.bike dl { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 8px 14px; margin: 18px 0 0; font-size: 14px; }
+.bike dt { color: var(--text-3); font-size: 11.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; padding-top: 2px; }
+.bike dd { margin: 0; color: var(--text); }
+.bike .from { font-weight: 600; color: var(--text); margin-top: 16px; }
+
+/* guides */
+.guides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.guide { display: grid; grid-template-columns: 160px minmax(0, 1fr); overflow: hidden; }
+.guide .ph img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; min-height: 220px; }
+.guide .tx { padding: 20px; }
+.guide .role { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text); margin: 6px 0 10px; }
+.guide p { margin: 0; font-size: 14px; }
+
+/* stats + reviews */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.stat { padding: 22px 20px; border-left: 1px solid var(--border); }
+.stat:first-child { border-left: 0; }
+.stat .n { font-family: var(--head); font-size: clamp(34px, 4vw, 48px); line-height: 1; color: var(--text); }
+.stat .n i { font-style: normal; color: var(--star); }
+.stat .l { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-top: 8px; }
+.reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.review { padding: 22px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.review .s { color: var(--star); letter-spacing: 3px; }
+.review p { margin: 0; font-size: 14px; }
+.who { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); font-weight: 600; color: var(--text); font-size: 14px; }
+.who span { display: block; font-weight: 500; color: var(--text-3); font-size: 12.5px; }
+
+/* bands */
+.band { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); isolation: isolate; }
+.band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8,9,10,.92) 0%, rgba(8,9,10,.7) 45%, rgba(8,9,10,.15) 100%); }
+.band .tx { padding: clamp(32px, 6vw, 60px); max-width: 640px; }
+.final { text-align: center; padding: clamp(36px, 6vw, 64px) 24px; }
+.final .dates { font-family: var(--head); text-transform: uppercase; font-size: 26px; color: var(--text); margin-top: 8px; }
+.final .ctas { justify-content: center; }
+
+/* footer */
+footer { margin-top: 80px; border-top: 1px solid var(--border); background: rgba(8,9,10,.85); }
+footer .in { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); gap: 28px; padding-block: 44px 28px; }
+footer .brand img { width: 76px; height: 76px; }
+footer .tag-line { font-family: var(--head); text-transform: uppercase; color: var(--text); font-size: 22px; line-height: 1.15; margin: 14px 0 0; }
+footer h4 { margin: 0 0 12px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+footer ul a { text-decoration: none; color: var(--text-2); }
+footer ul a:hover { color: var(--green-text); }
+.legal { border-top: 1px solid var(--border); }
+.legal .in { display: flex; flex-wrap: wrap; gap: 6px 20px; padding-block: 16px; font-size: 12px; color: var(--text-4); }
+
+/* mobile book bar */
+.mbar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; background: rgba(15,16,17,.97); border-top: 1px solid var(--border-strong); padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); align-items: center; gap: 12px; }
+.mbar .p { font-family: var(--head); font-size: 22px; color: var(--text); line-height: 1; }
+.mbar .p small { display: block; font-family: var(--body); font-size: 11px; font-weight: 600; color: var(--text-3); letter-spacing: .06em; text-transform: uppercase; margin-top: 3px; }
+.mbar .btn { margin-left: auto; }
+
+@media (max-width: 1080px) { .menu { display: none; } .burger { display: block; } .nav .btn { display: none; } }
+@media (max-width: 980px) {
+  .hero .in { grid-template-columns: minmax(0, 1fr); padding-block: 72px 32px; }
+  .book { max-width: 520px; }
+  .split, .route, .inc { grid-template-columns: minmax(0, 1fr); }
+  .cardimg { justify-self: center; max-width: 480px; }
+  .glance { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .glance > div:nth-child(n) { border-left: 1px solid var(--border); border-top: 1px solid var(--border); }
+  .glance > div:nth-child(2n+1) { border-left: 0; }
+  .glance > div:nth-child(-n+2) { border-top: 0; }
+  .gallery { grid-auto-rows: 170px; }
+  .hotels, .guides { grid-template-columns: minmax(0, 1fr); }
+  .bike { grid-template-columns: minmax(0, 1fr); }
+  .reviews { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  footer .in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  footer .in > div:first-child { grid-column: 1 / -1; }
+  .tabs { top: calc(env(safe-area-inset-top, 0px) + 79px); }
+  .tabs .btn { display: none; }
+}
+@media (max-width: 640px) {
+  section { padding-block: 52px 0; }
+  .day { grid-template-columns: 48px minmax(0, 1fr); gap: 14px; }
+  .num { width: 48px; height: 48px; font-size: 20px; }
+  .num small { font-size: 7.5px; }
+  .day::before { left: 23px; top: 44px; }
+  .day .box { padding: 16px 16px; }
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 140px; }
+  .cardimg { max-width: 100%; }
+  .strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .strip img:nth-child(n+4) { display: none; }
+  .guide { grid-template-columns: 110px minmax(0, 1fr); }
+  .stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .stat:nth-child(3) { border-left: 0; }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+  .reviews { grid-template-columns: minmax(0, 1fr); }
+  .facts div, .bike dl { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .band::after { background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,.93)); }
+  footer .in { grid-template-columns: minmax(0, 1fr); }
+  .mbar { display: flex; }
+  body { padding-bottom: 76px; }
+}
+</style>
+
+<div class="topo" aria-hidden="true"></div>
+<div class="page">
+
+<div class="ribbon"><div class="in"><b>Design preview</b><span>The new trip page for every tour, shown with Dolomites. Text, prices and photos come from the live page; Book now goes to the real WeTravel checkout.</span></div></div>
+
+<header class="nav">
+  <div class="in">
+    <a class="brand" href="https://tours.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo.png" alt="Cigala Cycling Tours home" width="58" height="58"></a>
+    <nav class="menu" aria-label="Main">
+      <a href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">About</a>
+      <a href="https://tours.cigalacycling.com/destinations/" target="_blank" rel="noopener">Destinations</a>
+      <a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener" aria-current="page">Bike tours</a>
+      <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a>
+      <a href="https://tours.cigalacycling.com/guides/" target="_blank" rel="noopener">Guides</a>
+      <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching</a>
+      <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a>
+      <a href="https://tours.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Reviews</a>
+      <a href="https://tours.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
+    </nav>
+    <a class="btn btn-go" href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">Find a tour</a>
+    <details class="burger" id="menu-mobile">
+      <summary>Menu</summary>
+      <nav aria-label="Main (mobile)">
+        <a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener" aria-current="page">All tours</a>
+        <a href="https://tours.cigalacycling.com/destinations/" target="_blank" rel="noopener">Destinations</a>
+        <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom tours</a>
+        <a href="https://tours.cigalacycling.com/guides/" target="_blank" rel="noopener">Cycling guides</a>
+        <a href="https://tours.cigalacycling.com/about/" target="_blank" rel="noopener">About us</a>
+        <a href="https://tours.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a>
+        <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching</a>
+        <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a>
+        <a href="https://tours.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<div class="hero">
+  <img src="img/unnamed-98.jpg" alt="The Gardena Pass road winding below the Sella group in the Dolomites">
+  <div class="in">
+    <div>
+      <div class="crumbs"><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Home</a> / <a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">Bike tours</a> / Dolomites</div>
+      <div class="tags"><span class="tag dot">Road</span><span class="tag">Italy</span><span class="tag">Intermediate &amp; Expert</span></div>
+      <h1>Dolomites</h1>
+      <div class="dates">8–13 July 2027</div>
+      <p class="lede">Five days on the most spectacular climbs in the Dolomites: Giau, the Sella Ronda, Falzarego, Fedaia and Tre Cime di Lavaredo.</p>
+    </div>
+    <aside class="book" aria-label="Price and booking">
+      <span class="lab">From</span>
+      <div class="price">€1,499<small>£1,349 · $1,749*</small></div>
+      <span class="early">Early bird price until 28/02</span>
+      <ul>
+        <li><span>Deposit</span><span>€299</span></li>
+        <li><span>Non-cycling companion</span><span>€799</span></li>
+        <li><span>Group size</span><span>12 max</span></li>
+      </ul>
+      <a class="btn btn-go btn-lg" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=9944206554&amp;source=direct_link" target="_blank" rel="noopener">Book now →</a>
+      <p class="note">To stay for a shorter or longer amount of time, please <a href="https://tours.cigalacycling.com/contact/" target="_blank" rel="noopener">contact us</a>.</p>
+    </aside>
+  </div>
+</div>
+
+<nav class="tabs" aria-label="On this page">
+  <div class="in">
+    <a href="#overview">Overview</a>
+    <a href="#route">Route</a>
+    <a href="#itinerary">Day by day</a>
+    <a href="#included">What's included</a>
+    <a href="#hotels">Hotels</a>
+    <a href="#bike-rental">Bike rental</a>
+    <a href="#guides">Guides</a>
+    <a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=9944206554&amp;source=direct_link" target="_blank" rel="noopener">Book now</a>
+  </div>
+</nav>
+
+<div class="in" style="padding-top:28px">
+  <div class="panel glance" aria-label="Trip at a glance">
+    <div><div class="n">323<small>km</small></div><div class="l">Total distance</div></div>
+    <div><div class="n">8,800<small>m</small></div><div class="l">Total climbing</div></div>
+    <div><div class="n">5</div><div class="l">Days riding</div></div>
+    <div><div class="n">12</div><div class="l">Max group size</div></div>
+    <div><div class="n sm">Intermediate / Advanced</div><div class="l">Level</div></div>
+    <div><div class="n sm">Venice Marco Polo Airport (VCE)</div><div class="l">Start &amp; finish</div></div>
+    <div><div class="n sm">5 nights, 2 hotels</div><div class="l">Canazei &amp; La Villa</div></div>
+    <div><div class="n sm">San Pellegrino &amp; Fedaia</div><div class="l">Longest day</div></div>
+  </div>
+</div>
+
+<section id="overview">
+  <div class="in split">
+    <div>
+      <div class="eyebrow">The trip</div>
+      <h2>A cyclist's dream</h2>
+      <div class="bar"></div>
+      <p class="quote">On this trip, you’ll ride through the Dolomites — one of the most spectacular landscapes on Earth.</p>
+      <p>Towering limestone peaks, alpine meadows, and dramatic passes create a truly unique setting.</p>
+      <p>A UNESCO World Heritage Site and a bucket-list destination for cyclists, every turn feels like a postcard — where beauty meets challenge.</p>
+      <p>You’ll ride some of Italy’s most iconic climbs, each with its own character and story: Passo Giau, the Sella Ronda (Gardena, Sella, Pordoi, Campolongo), Falzarego and Valparola, Fedaia beneath the Marmolada glacier, and the legendary Tre Cime di Lavaredo.</p>
+      <ul class="climbs" aria-label="Climbs on this tour">
+        <li>Passo Giau</li><li>Passo Pordoi</li><li>Passo Sella</li><li>Passo Gardena</li><li>Campolongo</li><li>Falzarego</li><li>Valparola</li><li>Fedaia</li><li>San Pellegrino</li><li>Tre Cime di Lavaredo</li>
+      </ul>
+      <p>This is more than a cycling tour — it’s a journey through the heart of the Dolomites, where every climb brings you closer to nature, culture, and your limits.</p>
+    </div>
+    <div class="cardimg"><img src="img/card-dolomites.jpg" alt="Dolomites cycling tour: 323 km, 8,800 m climbing" loading="lazy"></div>
+  </div>
+</section>
+
+<section id="route">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Where you ride</div><h2>Route</h2><div class="bar"></div></div></div>
+    <div class="route">
+      <div class="map"><img src="img/route-map.jpg" alt="Dolomites Bike Tour Map by Cigala Cycling Tours" loading="lazy"></div>
+      <dl class="panel facts">
+        <div><dt>Start &amp; finish</dt><dd>Venice Marco Polo Airport (VCE)</dd></div>
+        <div><dt>Days riding</dt><dd>5 days</dd></div>
+        <div><dt>Total distance</dt><dd>323 km</dd></div>
+        <div><dt>Total climbing</dt><dd>8,800 m</dd></div>
+        <div><dt>Group size</dt><dd>12 max</dd></div>
+        <div><dt>Level</dt><dd>Intermediate / Advanced</dd></div>
+        <div><dt>Longest day</dt><dd>San Pellegrino &amp; Fedaia</dd></div>
+      </dl>
+    </div>
+    <p class="gpx">GPX files will be sent before the trip.</p>
+  </div>
+</section>
+
+<section id="itinerary">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Itinerary</div><h2>Day to day breakdown</h2><div class="bar"></div></div></div>
+    <ol class="days" style="list-style:none;margin:0;padding:0">
+      <li class="day"><div class="num"><span><small>DAY</small>1</span></div><div class="panel box">
+        <h3>Arrival day and transfer to La Villa</h3>
+        <div class="meta"><span class="chip rest">Transfer day</span></div>
+        <p>After arrival, enjoy the drive to La Villa and spend the afternoon in the beautiful town. Adjust and test your bike before settling in for a beautiful meal overlooking the dolomites.</p>
+      </div></li>
+      <li class="day"><div class="num"><span><small>DAY</small>2</span></div><div class="panel box">
+        <h3>Sella Ronda with a twist</h3>
+        <div class="meta"><span class="chip km">80 km</span><span class="chip up">2,400 m</span></div>
+        <p>On today’s menu: one of the most iconic and breathtaking routes in the Dolomites — the Sella Ronda, with a twist. We add an extra challenge to the classic loop by starting with the Passo Valparola, setting the tone for an unforgettable day in the mountains. From there, we dive into the legendary circuit, tackling a sequence of world-renowned climbs: Passo Pordoi, with its smooth switchbacks and sweeping views; Passo Sella, dramatic and majestic beneath the jagged peaks; and Passo Gardena, offering a perfect blend of beauty and flow. This loop is not just a ride — it’s a showcase of the very best the Dolomites have to offer: iconic climbs, surreal alpine landscapes, and a sense of wonder around every corner. A true highlight of the week.</p>
+      </div></li>
+      <li class="day"><div class="num"><span><small>DAY</small>3</span></div><div class="panel box">
+        <h3>Giau day</h3>
+        <div class="meta"><span class="chip km">80 km</span><span class="chip up">2,400 m</span></div>
+        <p>Today’s epic loop takes you first over the iconic Passo Campolongo, a classic Dolomites climb with stunning views and smooth gradients.</p>
+        <p>Next, you tackle the Passo Giau, one of the most spectacular and challenging climbs in the Dolomites, famous for its steep sections and jaw-dropping panoramas. After conquering Giau, you descend toward Passo Falzarego, a climb rich in history and surrounded by dramatic rock formations. The route continues over Passo Valparola, offering sweeping alpine vistas before descending back to La Villa. This loop combines some of the Dolomites’ most iconic passes, delivering a day full of challenge, beauty, and unforgettable riding.</p>
+      </div></li>
+      <li class="day"><div class="num"><span><small>DAY</small>4</span></div><div class="panel box">
+        <h3>Tre Cime di Lavaredo &amp; transfer to Canazei</h3>
+        <div class="meta"><span class="chip km">50 km</span><span class="chip up">1,700 m</span></div>
+        <p>After checking out of the hotel, we transfer by van to the beautiful town of Cortina d’Ampezzo, where today’s ride begins. We start by climbing the scenic Passo Tre Croci, a steady ascent that warms up the legs while offering stunning views of the surrounding peaks. At the summit, we enjoy a few kilometers of flat riding along the crystal-clear waters of Lake Misurina, a truly magical spot nestled beneath towering mountains. From here, the iconic climb to Tre Cime di Lavaredo begins — one of the most breathtaking and unforgettable ascents you will ever experience, with dramatic rock formations and panoramic vistas at every turn. After conquering Tre Cime, we descend back to Cortina, where the bikes are loaded into the van for a short transfer to Canazei, your home for the next two nights. Check into your new hotel, relax, and get ready for more epic riding in the days ahead.</p>
+      </div></li>
+      <li class="day"><div class="num"><span><small>DAY</small>5</span></div><div class="panel box">
+        <h3>San Pellegrino &amp; Fedaia</h3>
+        <div class="meta"><span class="chip km">88 km</span><span class="chip up">2,200 m</span></div>
+        <p>Today we explore a new valley (Val Di Fassa), opening up a fresh set of iconic climbs. We’ll ride the challenging Passo San Pellegrino, a favorite among cyclists for its smooth gradients and beautiful alpine scenery. Next, we tackle Passo Fedaia, where the views reach another level — at the summit, you’ll be greeted by the stunning Marmolada glacier and the shimmering lake below, a truly breathtaking sight.</p>
+        <p>From there, enjoy a thrilling descent down into Canazei, marking the final ride of the trip with spectacular landscapes and a well-earned sense of accomplishment.</p>
+      </div></li>
+      <li class="day"><div class="num"><span><small>DAY</small>6</span></div><div class="panel box">
+        <h3>Leaving day</h3>
+        <div class="meta"><span class="chip km">25 km</span><span class="chip up">100 m</span></div>
+        <p>After breakfast, a quick coffee ride in the valley. After that we check out from the hotel, grab some lunch and we head to the airport for your return flight. See you next time! 🙂</p>
+      </div></li>
+    </ol>
+  </div>
+</section>
+
+<section id="included">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">The details</div><h2>What's included</h2><div class="bar"></div></div></div>
+    <div class="inc">
+      <div class="panel">
+        <ul>
+          <li><span>5 Nights in stunning Alpine hotels (2 nights in Canazei at <a href="https://www.andreas.it/en/home-en/" target="_blank" rel="noopener">Hotel Andreas</a> 4-star and 3 nights in La Villa Alta Badia at <a href="https://www.hotelrezia.com/en/" target="_blank" rel="noopener">Hotel Rezia</a> 3-star superior)</span></li>
+          <li><span>5 spectacular days of cycling</span></li>
+          <li><span>5 buffet breakfasts at the hotel</span></li>
+          <li><span>Airport transfers including bike and luggage transfers at the below details. Private transfers can be also organised at a supplement.</span></li>
+          <li><span>Ground transportation to evening restaurants</span></li>
+          <li><span>Every day guided cycling routes by our ex pro, experienced and friendly guides.</span></li>
+          <li><span>Daily PRO experience with supported vehicle</span></li>
+          <li><span>Snack &amp; water on route</span></li>
+          <li><span>GPX Files sent in advance</span></li>
+          <li><span>Pro tips by our ex pro staff</span></li>
+        </ul>
+      </div>
+      <div class="side">
+        <div class="panel no" style="padding:22px 24px">
+          <h3>What's not included</h3>
+          <ul>
+            <li><span>Flights</span></li>
+            <li><span>Dinners – organised with a few great restaurants in the area</span></li>
+            <li><span>Single room limited availability at €60/night</span></li>
+            <li><span>Bike rental from €260 depending on bike specs</span></li>
+            <li><span>Travel insurance</span></li>
+          </ul>
+        </div>
+        <div class="panel" style="padding:22px 24px">
+          <h3>Airport transfers</h3>
+          <div class="transfers">
+            <div><b>08/07</b>15:15pm from VCE Airport (Venice Marco Polo)</div>
+            <div><b>13/07</b>13:00pm from hotel to VCE Airport (Venice Marco Polo)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Real riders, real roads</div><h2>Previous trips gallery</h2><div class="bar"></div></div></div>
+    <div class="gallery">
+      <figure class="g-big"><img src="img/unnamed-97.jpg" alt="Cyclists on Passo Gardena" loading="lazy"></figure>
+      <figure><img src="img/unnamed-99.jpg" alt="Rider climbing below Monte Averau on Passo Giau" loading="lazy"></figure>
+      <figure><img src="img/unnamed-2026-06-22T120911.883-1.jpg" alt="Cigala rider climbing between Dolomites rock towers" loading="lazy"></figure>
+      <figure><img src="img/unnamed-2026-06-22T120829.339.jpg" alt="Rider on a hairpin through alpine forest" loading="lazy"></figure>
+      <figure><img src="img/unnamed-100.jpg" alt="Rider on a mountain road below the Sella group" loading="lazy"></figure>
+      <figure><img src="img/unnamed-2026-06-22T120842.052.jpg" alt="Road winding up Passo Gardena" loading="lazy"></figure>
+      <figure><img src="img/unnamed-2026-06-22T120857.739.jpg" alt="Rider below Sassongher in Alta Badia" loading="lazy"></figure>
+      <figure><img src="img/unnamed-2026-06-22T120755.067.jpg" alt="Road towards the Sassolungo group" loading="lazy"></figure>
+      <figure><img src="img/unnamed-26-1.jpg" alt="Rider descending a Dolomites pass" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
+
+<section id="hotels">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Where you stay</div><h2>Accommodation</h2><div class="bar"></div><p class="lede">We have selected the best locations and hotels with bike facilities to ensure that our customers have the best experience possible</p></div></div>
+    <div class="hotels">
+      <article class="panel hotel">
+        <div class="ph"><img src="img/unnamed-2026-06-22T121018.812-1.jpg" alt="Alpine hotel at dusk in the Dolomites" loading="lazy"></div>
+        <div class="tx"><div class="stars" aria-label="4 stars">★★★★</div><h3>Hotel Andreas</h3><div class="where">Canazei · 2 nights</div><a class="site" href="https://www.andreas.it/en/home-en/" target="_blank" rel="noopener">Hotel website →</a></div>
+      </article>
+      <article class="panel hotel">
+        <div class="ph"><img src="img/unnamed-30-1.jpg" alt="Hotel lounge with mountain views" loading="lazy"></div>
+        <div class="tx"><div class="stars" aria-label="3 stars superior">★★★<span style="font-size:11px;letter-spacing:0;vertical-align:2px;margin-left:4px">S</span></div><h3>Hotel Rezia</h3><div class="where">La Villa, Alta Badia · 3 nights</div><a class="site" href="https://www.hotelrezia.com/en/" target="_blank" rel="noopener">Hotel website →</a></div>
+      </article>
+    </div>
+    <div class="strip">
+      <img src="img/unnamed-27-1.jpg" alt="Hotel bedroom" loading="lazy">
+      <img src="img/unnamed-2026-06-22T121456.462-1.jpg" alt="Breakfast buffet" loading="lazy">
+      <img src="img/unnamed-28-1.jpg" alt="Hotel lounge" loading="lazy">
+      <img src="img/unnamed-29-1.jpg" alt="Hotel sauna" loading="lazy">
+      <img src="img/unnamed-31.jpg" alt="Hotel relaxation room" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section id="bike-rental">
+  <div class="in">
+    <div class="panel bike">
+      <div class="ph"><img src="img/download-2.jpg" alt="Bianchi Specialissima" loading="lazy"></div>
+      <div class="tx">
+        <div class="eyebrow">Travel light</div>
+        <h2>Bike rental</h2>
+        <div class="bar"></div>
+        <p class="lede">There are many options available, depending on your measures and budget we work with you to find the best bike for you. From standard mechanical groupset and alloy wheels to electric shifting and carbon wheels</p>
+        <dl>
+          <dt>Frameset</dt><dd>Guerciotti, Bianchi, Wilier, De Rosa, Alan, Ktm</dd>
+          <dt>Gruppo</dt><dd>Sram Rival/Force AXS, Shimano 105, Ultegra, Dura-Ace Di2 and mechanical</dd>
+          <dt>Wheelset</dt><dd>Alloy, Carbon</dd>
+          <dt>Saddle</dt><dd>Selle Itala</dd>
+          <dt>Pedals</dt><dd>Bring your own</dd>
+        </dl>
+        <p class="from">Bike rental from €260 depending on bike specs</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="guides">
+  <div class="in">
+    <div class="head"><div><div class="eyebrow">Who rides with you</div><h2>Your tour guides</h2><div class="bar"></div><p class="lede">Professionals, with many years of experience.</p></div></div>
+    <div class="guides">
+      <article class="panel guide">
+        <div class="ph"><img src="img/unnamed-2026-06-22T205115.683.jpg" alt="Matteo Cigala, founder of Cigala Cycling Tours" loading="lazy"></div>
+        <div class="tx"><h3>Matteo Cigala</h3><div class="role">Founder &amp; Head Coach</div><p>Since founding Cigala Cycling Tours in 2015, Matteo has been leading over 10 tours per year. A former pro and current amateur racer, Matteo is the 2022 European Champion Gran Fondo.</p></div>
+      </article>
+      <article class="panel guide">
+        <div class="ph"><img src="img/unnamed-2026-06-22T205133.674.jpg" alt="Amedeo Tabini, tour guide leader, riding in a black Cigala jersey" loading="lazy"></div>
+        <div class="tx"><h3>Amedeo Tabini</h3><div class="role">Tour Guide Leader</div><p>A former pro cyclist, Amedeo has been a cycling tour guide for a decade. He is one of the most experienced guides you will ever find, with almost 1,000 days on tours. Finally, Amedeo is a qualified massage therapist.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="in">
+    <div class="panel stats">
+      <div class="stat"><div class="n">20+</div><div class="l">European destinations</div></div>
+      <div class="stat"><div class="n">700+</div><div class="l">Cyclists guided</div></div>
+      <div class="stat"><div class="n">5<i>★</i></div><div class="l">Average rider rating</div></div>
+      <div class="stat"><div class="n">10</div><div class="l">Years in business</div></div>
+    </div>
+    <div class="head" style="margin-top:56px"><div><div class="eyebrow">What riders say</div><h2>Read our testimonials</h2><div class="bar"></div></div><a class="btn btn-ghost" href="https://tours.cigalacycling.com/testimonials/" target="_blank" rel="noopener">All testimonials →</a></div>
+    <div class="reviews">
+      <article class="panel review"><div class="s" aria-label="5 out of 5">★★★★★</div><p>Had a wonderful tour with Cigala in the French Alps in June 2025. I just showed up ready to pedal and they took care of the rest: excellent rental bikes, phenomenal routes with stunning views, gracious accommodations and delicious food with local charm.</p><div class="who">Hank<span>USA · French Alps</span></div></article>
+      <article class="panel review"><div class="s" aria-label="5 out of 5">★★★★★</div><p>Very well organised from the very first contact. Marine or Matteo rode with us each day and captured the best moments with hundreds of photos. A special thanks to Alessio, the driver of the support vehicle and bike mechanic.</p><div class="who">Andreas<span>Mexico · Italian mountains</span></div></article>
+      <article class="panel review"><div class="s" aria-label="5 out of 5">★★★★★</div><p>The riding was spectacular, the scenery was out of this world, the food was amazing and everything ran so smoothly that all we had to do was enjoy ourselves.</p><div class="who">William<span>Ireland · Italy</span></div></article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="band">
+      <img src="img/team-white.jpg" alt="" loading="lazy" style="object-position:65% 40%">
+      <div class="tx">
+        <div class="eyebrow">Custom tours</div>
+        <h2>Do you want to customise your tour?</h2>
+        <div class="bar"></div>
+        <p class="lede">Build your tour with us. Choose your dates, location, distances and much more.</p>
+        <div class="ctas"><a class="btn btn-go" href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">More information →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
+    <div class="panel final">
+      <div class="eyebrow">Ready to ride?</div>
+      <h2>Dolomites</h2>
+      <div class="dates">8–13 July 2027</div>
+      <div class="ctas"><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=9944206554&amp;source=direct_link" target="_blank" rel="noopener">Book now →</a><a class="btn btn-ghost" href="https://tours.cigalacycling.com/contact/" target="_blank" rel="noopener">Ask a question</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="in">
+    <div>
+      <a class="brand" href="https://tours.cigalacycling.com/" target="_blank" rel="noopener"><img src="img/logo.png" alt="Cigala Cycling Tours" width="76" height="76"></a>
+      <p class="tag-line">Memorable adventures. New friends.<br>Shared passion. Lifetime experience.</p>
+    </div>
+    <div>
+      <h4>Tours</h4>
+      <ul>
+        <li><a href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italian Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener">Gravel Tours</a></li>
+        <li><a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Custom Tours</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li>tours@cigalacycling.com</li>
+        <li>+353 404 78107</li>
+        <li><a href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">WhatsApp</a> · <a href="https://www.instagram.com/cigalacycling/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/CigalaCycling/" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="https://www.youtube.com/@cigalacycling" target="_blank" rel="noopener">YouTube</a> · <a href="https://www.tiktok.com/@cigalacycling" target="_blank" rel="noopener">TikTok</a> · <a href="https://x.com/CigalaCycling" target="_blank" rel="noopener">X</a> · <a href="https://www.threads.com/@cigalacycling" target="_blank" rel="noopener">Threads</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="legal"><div class="in">
+    <span>© 2026 Cigala Cycling Tours Ltd</span>
+    <span>VAT No: IE4385007EH · Company Registration No: 780307</span>
+    <a href="https://tours.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">Refund/cancellation policy &amp; terms</a>
+  </div></div>
+</footer>
+
+<div class="mbar"><div class="p">€1,499<small>8–13 July 2027</small></div><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=9944206554&amp;source=direct_link" target="_blank" rel="noopener">Book now</a></div>
+</div>

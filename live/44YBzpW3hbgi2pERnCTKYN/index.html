@@ -1,0 +1,334 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Italy's Coast to Coast</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+/* Cigala Cycling Tours kit: Anton headlines, Montserrat body, near-black contour background, round logo,
+   green = go/action, red = attention only. Single dark look by design.
+   Layout: photo-led hero, trip-at-a-glance tiles, then one row per day (photo + schedule card). */
+:root {
+  color-scheme: dark;
+  --cc-bg: #08090a; --cc-panel: rgba(15, 16, 17, .92); --cc-panel-solid: #0f1011;
+  --cc-panel-grad: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012));
+  --cc-border: rgba(255,255,255,.08); --cc-border-strong: rgba(255,255,255,.14); --cc-wash: rgba(255,255,255,.04);
+  --cc-text: #f7f8f8; --cc-text-2: #d0d6e0; --cc-text-3: #8a8f98; --cc-text-4: #62666d;
+  --cc-green: #018a44; --cc-green-text: #018a44; --cc-green-wash: rgba(1, 138, 68,.14);
+  --cc-red: #ca212a;
+  --cc-font-head: "Anton", Impact, "Arial Narrow", sans-serif;
+  --cc-font-body: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --cc-radius: 12px;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--cc-bg); color: var(--cc-text-2); font-family: var(--cc-font-body); }
+.cc-topo { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(rgba(8,9,10,.25), rgba(8,9,10,.25)), #08090a url(topo-background.png) center / cover no-repeat; }
+body { margin: 0; font-size: 15px; line-height: 1.6; }
+::selection { background: rgba(1, 138, 68,.45); color: #fff; }
+a { color: var(--cc-text); text-decoration-color: rgba(255,255,255,.3); text-underline-offset: 3px; }
+a:hover { color: #fff; text-decoration-color: var(--cc-green); }
+:focus-visible { outline: 2px solid var(--cc-green); outline-offset: 2px; }
+b, strong { color: var(--cc-text); font-weight: 600; }
+img { display: block; max-width: 100%; }
+
+.wrap { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding-block: 0 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+h1, h2, h3 { font-family: var(--cc-font-head); font-weight: 400; text-transform: uppercase; letter-spacing: .01em; color: var(--cc-text); line-height: 1.05; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(44px, 9vw, 96px); }
+h2 { font-size: clamp(28px, 4.5vw, 40px); }
+h3 { font-size: 26px; }
+.cc-bar { width: 40px; height: 3px; border-radius: 2px; background: var(--cc-green); margin-top: 14px; }
+.lab { text-transform: uppercase; font-size: 11px; letter-spacing: .09em; color: var(--cc-text-3); font-weight: 600; }
+
+/* nav */
+.cc-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding: 14px 0; border-bottom: 1px solid var(--cc-border); }
+.cc-nav img { width: 40px; height: 40px; border-radius: 50%; flex: none; }
+.cc-brand { font-weight: 600; font-size: 15px; color: var(--cc-text); }
+.cc-sub { font-size: 12.5px; color: var(--cc-text-3); }
+.cc-right { margin-left: auto; font-size: 13px; }
+.jump { display: flex; gap: 6px; flex-wrap: wrap; padding: 12px 0 0; }
+.jump a { font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; text-decoration: none; color: var(--cc-text-2);
+  border: 1px solid var(--cc-border-strong); background: var(--cc-wash); border-radius: 999px; padding: 4px 12px; }
+.jump a:hover { border-color: var(--cc-green); color: #fff; }
+
+/* hero */
+.hero { position: relative; margin-top: 18px; border-radius: 16px; overflow: hidden; border: 1px solid var(--cc-border); min-height: 440px; display: flex; align-items: flex-end; }
+.hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,9,10,0) 25%, rgba(8,9,10,.88) 100%); }
+.hero-copy { position: relative; z-index: 1; padding: 28px clamp(18px, 4vw, 40px); }
+.route { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 14px; font-weight: 600; color: var(--cc-text); font-size: 14px; }
+.route .sea { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--cc-text-3); font-weight: 600; }
+.route .arrow { color: var(--cc-green-text); }
+.dates { display: inline-block; margin-top: 12px; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--cc-text); background: var(--cc-green); border-radius: 999px; padding: 4px 14px; }
+
+/* intro */
+.intro { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; margin-top: 44px; align-items: start; }
+.intro p { margin: 0 0 14px; max-width: 62ch; }
+.gpx { display: inline-flex; align-items: center; gap: 10px; margin-top: 6px; padding: 10px 18px; border-radius: 8px; background: var(--cc-green); color: #fff; font-weight: 600; text-decoration: none; }
+.gpx:hover { background: #00b350; color: #fff; }
+
+/* glance */
+.card { background: var(--cc-panel-grad), var(--cc-panel); border: 1px solid var(--cc-border); border-radius: var(--cc-radius); }
+.glance { padding: 20px; }
+.glance h2 { font-size: 26px; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; margin: 18px 0 0; }
+.facts dt { margin: 0; }
+.facts dd { margin: 4px 0 0; color: var(--cc-text); font-weight: 600; }
+.big { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--cc-border); }
+.big .v { font-family: var(--cc-font-head); font-size: 40px; line-height: 1; color: var(--cc-text); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.big .v small { font-family: var(--cc-font-body); font-size: 14px; color: var(--cc-text-3); font-weight: 600; margin-left: 4px; }
+
+/* days */
+.days { margin-top: 56px; }
+.days > header { margin-bottom: 22px; }
+.day { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; margin-top: 18px; overflow: hidden; scroll-margin-top: 16px; }
+.day:nth-of-type(even) .day-photo { order: 2; }
+.day-photo { position: relative; min-height: 300px; background: var(--cc-panel-solid); }
+.day-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.day-num { position: absolute; left: 14px; top: 14px; font-family: var(--cc-font-head); font-size: 15px; letter-spacing: .06em; text-transform: uppercase; color: var(--cc-text);
+  background: rgba(8,9,10,.78); border: 1px solid var(--cc-border-strong); border-radius: 999px; padding: 3px 12px; }
+.day-body { padding: 24px clamp(18px, 3vw, 30px); min-width: 0; }
+.day-date { color: var(--cc-green-text); font-weight: 600; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+.day-body h3 { margin-top: 6px; }
+.sched { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 0; }
+.sched li { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; padding: 11px 0; border-top: 1px solid var(--cc-border); }
+.sched li:first-child { border-top: 0; padding-top: 0; }
+.sched .t { font-variant-numeric: tabular-nums; color: var(--cc-text); font-weight: 600; white-space: nowrap; }
+.sched .what { min-width: 0; }
+.sched .what .lab { display: block; margin-bottom: 1px; }
+.btn-route { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 13.5px; text-decoration: none; color: var(--cc-text);
+  border: 1px solid var(--cc-green); background: var(--cc-green-wash); border-radius: 8px; padding: 6px 12px; }
+.btn-route:hover { background: rgba(1, 138, 68,.28); }
+.stay { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+.stay > div { background: var(--cc-wash); border: 1px solid var(--cc-border); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+.stay a { font-weight: 600; }
+.stay .meta { color: var(--cc-text-3); font-size: 13px; }
+.bye { margin: 18px 0 0; color: var(--cc-text); font-weight: 600; }
+
+/* about */
+.about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin-top: 56px; overflow: hidden; }
+.about .ph { min-height: 320px; position: relative; }
+.about .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.about .tx { padding: 30px clamp(18px, 3vw, 34px); display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+.about .tx img { width: 76px; height: 76px; border-radius: 50%; }
+.about .tag { font-family: var(--cc-font-head); text-transform: uppercase; font-size: 22px; line-height: 1.2; color: var(--cc-text); letter-spacing: .01em; margin: 0; }
+footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--cc-border); font-size: 12.5px; color: var(--cc-text-3); display: flex; flex-wrap: wrap; gap: 6px 16px; }
+
+@media (max-width: 820px) {
+  .intro, .day, .about { grid-template-columns: minmax(0, 1fr); }
+  .day:nth-of-type(even) .day-photo { order: 0; }
+  .day-photo { min-height: 240px; }
+  .about .ph { min-height: 240px; }
+  .hero { min-height: 380px; }
+}
+@media (max-width: 480px) {
+  .stay { grid-template-columns: 1fr; }
+  .sched li { grid-template-columns: 78px minmax(0, 1fr); }
+  .cc-right { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<div class="cc-topo" aria-hidden="true"></div>
+<div class="wrap">
+  <header class="cc-nav">
+    <img src="photos/logo.jpg" alt="Cigala Cycling Tours" width="40" height="40">
+    <div><div class="cc-brand">Cigala Cycling Tours</div><div class="cc-sub">Europe Bike Tour Operator</div></div>
+    <span class="cc-right"><a href="https://tours.cigalacycling.com" target="_blank" rel="noopener">tours.cigalacycling.com</a></span>
+  </header>
+  <nav class="jump" aria-label="Jump to">
+    <a href="#glance">At a glance</a>
+    <a href="#day-1">Day 1</a><a href="#day-2">Day 2</a><a href="#day-3">Day 3</a><a href="#day-4">Day 4</a>
+    <a href="#day-5">Day 5</a><a href="#day-6">Day 6</a><a href="#day-7">Day 7</a><a href="#day-8">Day 8</a>
+    <a href="#about">About us</a>
+  </nav>
+
+  <section class="hero">
+    <img src="photos/hero.jpg" alt="Group of riders on a Tuscan road">
+    <div class="hero-copy">
+      <div class="lab">Itinerary</div>
+      <h1>Italy's Coast to Coast</h1>
+      <div class="route">
+        <span class="sea">Tyrrhenian</span> Marina di Pietrasanta
+        <span class="arrow">→</span> Pisa <span class="arrow">→</span> Siena <span class="arrow">→</span> Assisi
+        <span class="arrow">→</span> San Benedetto del Tronto <span class="sea">Adriatic</span>
+      </div>
+      <span class="dates">25/09 – 02/10</span>
+    </div>
+  </section>
+
+  <div class="intro">
+    <div>
+      <h2>Sea to sea</h2>
+      <div class="cc-bar"></div>
+      <p style="margin-top:18px">Ride across Italy from the <b>Tyrrhenian Sea to the Adriatic</b>, starting in <b>Marina di Pietrasanta</b> and finishing in <b>San Benedetto del Tronto</b>.</p>
+      <p>The route takes you through some of central Italy’s most beautiful landscapes and historic destinations, including <b>Pisa, Siena and Assisi</b>. Ride through the rolling hills of Tuscany, cross the Apennines and discover picturesque villages, quiet country roads and spectacular mountain scenery.</p>
+      <p>From the Tuscan coast to the heart of Umbria and finally to the Adriatic, this is a true <b>Italian cycling adventure combining challenging riding, culture, history and incredible food</b>.</p>
+      <a class="gpx" href="https://drive.google.com/drive/folders/1YDTrtxk8I3xrAUuv6y7bNXkxDLd5gU-G?usp=sharing" target="_blank" rel="noopener">Download all GPX routes →</a>
+    </div>
+
+    <aside class="card glance" id="glance">
+      <h2>Trip at a glance</h2>
+      <div class="cc-bar"></div>
+      <dl class="facts">
+        <div><dt class="lab">Destination</dt><dd>Tuscany, Umbria, Marche</dd></div>
+        <div><dt class="lab">Duration</dt><dd>7 nights / 8 days</dd></div>
+        <div><dt class="lab">Cycling</dt><dd>6 days</dd></div>
+        <div><dt class="lab">Difficulty</dt><dd>Moderate to challenging</dd></div>
+        <div><dt class="lab">Accommodation</dt><dd>3★ &amp; 4★</dd></div>
+        <div><dt class="lab">Country</dt><dd>Italy</dd></div>
+      </dl>
+      <div class="big">
+        <div><div class="lab">Distance</div><div class="v">510<small>km</small></div></div>
+        <div><div class="lab">Elevation</div><div class="v">+5,420<small>m</small></div></div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="days">
+    <header><h2>Day by day</h2><div class="cc-bar"></div></header>
+
+    <article class="card day" id="day-1">
+      <div class="day-photo"><img src="photos/d1.jpg" alt="Leaning Tower of Pisa" loading="lazy"><span class="day-num">Day 1</span></div>
+      <div class="day-body">
+        <div class="day-date">Friday 25/09</div>
+        <h3>Arrival</h3>
+        <ul class="sched">
+          <li><span class="t">2:15 pm</span><span class="what"><span class="lab">Airport transfer</span>From Pisa Airport</span></li>
+        </ul>
+        <div class="stay">
+          <div><div class="lab">Hotel</div><a href="https://albergosavoy.com/" target="_blank" rel="noopener">Savoy Hotel</a></div>
+          <div><div class="lab">Restaurant</div><a href="https://share.google/lk3O2jwAMKbkdS9Xd" target="_blank" rel="noopener">Il ristorante sul Mare</a><div class="meta">8:00 pm</div></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card day" id="day-2">
+      <div class="day-photo"><img src="photos/d2.jpg" alt="Tuscan countryside from above" loading="lazy"><span class="day-num">Day 2</span></div>
+      <div class="day-body">
+        <div class="day-date">Saturday 26/09</div>
+        <h3>Ride day 1</h3>
+        <ul class="sched">
+          <li><span class="t">7:30 am</span><span class="what"><span class="lab">Breakfast</span>From 7:30 am</span></li>
+          <li><span class="t">9:30 am</span><span class="what"><span class="lab">Ride leaves</span><a class="btn-route" href="https://www.komoot.com/tour/3263341805?share_token=a9k5pAapZ3pwlXXLPQmd9nryBsAK0EgS6RirqsiBKPuxwXDApD" target="_blank" rel="noopener">View route on Komoot →</a></span></li>
+        </ul>
+        <div class="stay">
+          <div><div class="lab">Hotel</div><a href="https://www.experiencestuscany.com/" target="_blank" rel="noopener">Agriturismo Diacceroni</a></div>
+          <div><div class="lab">Restaurant</div><a href="https://www.experiencestuscany.com/" target="_blank" rel="noopener">Diacceroni – La Cantina</a><div class="meta">7:30 pm</div></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card day" id="day-3">
+      <div class="day-photo"><img src="photos/d3.jpg" alt="Piazza del Campo, Siena" loading="lazy"><span class="day-num">Day 3</span></div>
+      <div class="day-body">
+        <div class="day-date">Sunday 27/09</div>
+        <h3>Ride day 2</h3>
+        <ul class="sched">
+          <li><span class="t">8:00 am</span><span class="what"><span class="lab">Breakfast</span>From 8:00 am</span></li>
+          <li><span class="t">9:30 am</span><span class="what"><span class="lab">Ride leaves</span><a class="btn-route" href="https://www.komoot.com/tour/3263472053?share_token=ak71LsylTzIUJ0sDxW1t0XCCqnXwYA40ziyWcUehWVky8u1r4c" target="_blank" rel="noopener">View route on Komoot →</a></span></li>
+        </ul>
+        <div class="stay">
+          <div><div class="lab">Hotel</div><a href="https://www.precisehotels.com/en/Montaperti-Siena" target="_blank" rel="noopener">Precise House</a></div>
+          <div><div class="lab">Restaurant</div><a href="https://www.lalocandadelloste.it/en/" target="_blank" rel="noopener">Locanda dell'Oste</a><div class="meta">7:30 pm</div></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card day" id="day-4">
+      <div class="day-photo"><img src="photos/d4.jpg" alt="Riders on a Tuscan gravel road" loading="lazy"><span class="day-num">Day 4</span></div>
+      <div class="day-body">
+        <div class="day-date">Monday 28/09</div>
+        <h3>Ride day 3</h3>
+        <ul class="sched">
+          <li><span class="t">7:00 am</span><span class="what"><span class="lab">Breakfast</span>From 7:00 am</span></li>
+          <li><span class="t">9:30 am</span><span class="what"><span class="lab">Ride leaves</span><a class="btn-route" href="https://www.komoot.com/tour/3263521254?share_token=aJyVCPgnIV46sCJj01xtIb9FVxLJ2wUsxvOMKDTsyRGE40vIYf" target="_blank" rel="noopener">View route on Komoot →</a></span></li>
+        </ul>
+        <div class="stay">
+          <div><div class="lab">Hotel</div><a href="https://www.albergoilmarzocco.it/" target="_blank" rel="noopener">Il Marzocco</a></div>
+          <div><div class="lab">Restaurant</div><a href="https://share.google/Z2orTIcBkB16zPKgU" target="_blank" rel="noopener">Ristorante ai 4 Venti</a><div class="meta">7:30 pm</div></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card day" id="day-5">
+      <div class="day-photo"><img src="photos/d5.jpg" alt="Two riders on a road through the hills" loading="lazy"><span class="day-num">Day 5</span></div>
+      <div class="day-body">
+        <div class="day-date">Tuesday 29/09</div>
+        <h3>Ride day 4</h3>
+        <ul class="sched">
+          <li><span class="t">8:00 am</span><span class="what"><span class="lab">Breakfast</span>From 8:00 am</span></li>
+          <li><span class="t">9:30 am</span><span class="what"><span class="lab">Ride leaves</span><a class="btn-route" href="https://www.komoot.com/tour/3264029675?share_token=aFgYGUAcaEBCzZjp3hu60j1U3Hz71y0RFJmPR9mGQZnVZZRX2R" target="_blank" rel="noopener">View route on Komoot →</a></span></li>
+        </ul>
+        <div class="stay">
+          <div><div class="lab">Hotel</div><a href="https://www.hotelgiottoassisi.it/en/" target="_blank" rel="noopener">Giotto Hotel &amp; Spa</a></div>
+          <div><div class="lab">Restaurant</div><a href="https://www.instagram.com/leterrazzediproperzio/?hl=en" target="_blank" rel="noopener">Le terrazze di Properzio</a><div class="meta">7:15 pm</div></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card day" id="day-6">
+      <div class="day-photo"><img src="photos/d6.jpg" alt="Basilica of San Francesco, Assisi, at sunset" loading="lazy"><span class="day-num">Day 6</span></div>
+      <div class="day-body">
+        <div class="day-date">Wednesday 30/09</div>
+        <h3>Ride day 5</h3>
+        <ul class="sched">
+          <li><span class="t">7:00 am</span><span class="what"><span class="lab">Breakfast</span>From 7:00 am</span></li>
+          <li><span class="t">9:30 am</span><span class="what"><span class="lab">Ride leaves</span><a class="btn-route" href="https://www.komoot.com/tour/3264032975?share_token=aqNgqKnRTufDXba67ZTlIct9q12aG8DVzxCF6pZKSKguXt49bq" target="_blank" rel="noopener">View route on Komoot →</a></span></li>
+        </ul>
+        <div class="stay">
+          <div><div class="lab">Hotel</div><a href="https://www.borgolanciano.it/" target="_blank" rel="noopener">Borgo Lanciano Resort &amp; Spa</a></div>
+          <div><div class="lab">Restaurant</div><a href="https://www.borgolanciano.it/" target="_blank" rel="noopener">I Due Angeli</a><div class="meta">7:30 pm</div></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card day" id="day-7">
+      <div class="day-photo"><img src="photos/d7.jpg" alt="Riders taking a photo of the view" loading="lazy"><span class="day-num">Day 7</span></div>
+      <div class="day-body">
+        <div class="day-date">Thursday 01/10</div>
+        <h3>Ride day 6 · To the Adriatic</h3>
+        <ul class="sched">
+          <li><span class="t">7:00 am</span><span class="what"><span class="lab">Breakfast</span>From 7:00 am</span></li>
+          <li><span class="t">9:30 am</span><span class="what"><span class="lab">Ride leaves</span><a class="btn-route" href="https://www.komoot.com/tour/3264036136?share_token=adc6vh5FRQ5CQPcW770eRRTbLvUUiYsXyXiFmZ8Lk30Cdgur5U" target="_blank" rel="noopener">View route on Komoot →</a></span></li>
+        </ul>
+        <div class="stay">
+          <div><div class="lab">Hotel</div><a href="https://www.hotel-relax.it/" target="_blank" rel="noopener">Hotel Relax</a></div>
+          <div><div class="lab">Restaurant</div><a href="https://www.ristorantechaletilgrillo.com/" target="_blank" rel="noopener">Il Grillio</a><div class="meta">7:30 pm</div></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card day" id="day-8">
+      <div class="day-photo"><img src="photos/d8.jpg" alt="Adriatic coast at dusk" loading="lazy"><span class="day-num">Day 8</span></div>
+      <div class="day-body">
+        <div class="day-date">Friday 02/10</div>
+        <h3>Departure</h3>
+        <ul class="sched">
+          <li><span class="t">10:00 am</span><span class="what"><span class="lab">Transfer</span>To Bologna Airport (BLQ)</span></li>
+        </ul>
+        <p class="bye">Safe travels and see you on the next adventure.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="card about" id="about">
+    <div class="ph"><img src="photos/about.jpg" alt="Cigala Cycling Tours group celebrating by the sea" loading="lazy"></div>
+    <div class="tx">
+      <img src="photos/logo.jpg" alt="" width="76" height="76">
+      <div class="lab">About us</div>
+      <h2>Cigala Cycling Tours</h2>
+      <p class="tag">Memorable adventures. New friends. Shared passion. Lifetime experience.</p>
+      <p style="margin:0">Europe Bike Tour Operator · <a href="https://tours.cigalacycling.com" target="_blank" rel="noopener">tours.cigalacycling.com</a></p>
+    </div>
+  </section>
+
+  <footer>
+    <span>© Cigala Cycling Tours</span>
+    <span>All times are local Italian time.</span>
+  </footer>
+</div>
+
+</body></html>

@@ -1,0 +1,28 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Pesenti Rental Sync</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one plain note column. */
+:root { --bg: #f4f6f7; --fg: #1a232c; --muted: #5d6874; --line: #d8dee3; --accent: #b3122b; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #12171c; --fg: #e4e9ed; --muted: #9ca7b2; --line: #2c353e; --accent: #ff6b7d; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #12171c; --fg: #e4e9ed; --muted: #9ca7b2; --line: #2c353e; --accent: #ff6b7d; color-scheme: dark; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px; }
+main { max-width: 64ch; margin: 0 auto; display: grid; gap: 12px; }
+h1 { font-size: 26px; margin: 0; text-wrap: balance; }
+p, li { color: var(--muted); margin: 0; }
+code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; color: var(--fg); }
+ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+a { color: var(--accent); }
+</style>
+<main>
+  <h1>Pesenti rental sync</h1>
+  <p>Internal files for the scheduled check that keeps the Cicli Pesenti bike-rental page up to date. Keep this artifact private.</p>
+  <ul>
+    <li><code>sync.py</code>: reads bookings from WeTravel, finds bike rentals on tours in Italy, France, Slovenia, Croatia and Switzerland, and writes the page and the Italian email.</li>
+    <li><code>page_template.txt</code>: the layout of the shared page.</li>
+  </ul>
+  <p>Shared page: <a href="https://claude.ai/artifact/BoVj2jK7LmAARWnUutxfjW">Noleggi bici Cigala</a></p>
+</main>
+
+</body></html>
