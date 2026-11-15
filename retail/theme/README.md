@@ -39,3 +39,10 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - The footer logo now has a 1x/2x/3x srcset.
   - Product pages: new `blocks/cigala-trust.liquid` (fast delivery, finance, expert support, duties & taxes included) under the buy buttons. All texts are editable.
 - Privacy policy update: drafted in `retail/PRIVACY-DRAFT.md`, not applied.
+- Round 3 (15 Nov):
+  - The trust strip now uses the old site's four points: Secure checkout, Quick shipping, 30 days returns, Quick support. No phone number or delivery times.
+  - New `blocks/cigala-finance.liquid` under the buy buttons. It has the humm by flexifi widget (same merchant id as the old theme, now over https) and a `<klarna-placement>`. `snippets/cigala-klarna-globals.liquid` sets `window.KlarnaThemeGlobals` like the old theme.
+  - These could not be seen from the cloud browser, because it blocks the widget hosts. Check them in a normal browser.
+  - App embeds copied from the old theme: Labeler, Judge.me, PushOwl, Selecty, STOQ; Inbox stays off.
+  - Prices are bigger (cards 15px, product page 24px).
+  - YouTube iframes, images and tables in descriptions are now responsive. A 560px video was causing sideways scroll on phones.
