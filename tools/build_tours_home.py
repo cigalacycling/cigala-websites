@@ -346,6 +346,8 @@ i = s.index('</details>', s.index('<details id="faq-4">')) + len('</details>')
 s = s[:i] + extra + s[i:]
 
 CSS2 = """
+.who img { border: 2px solid var(--green); }   /* green ring on guest photos, like Coaching */
+.tour .when { font-size: 13px; padding: 5px 11px; }   /* same date size as the tour pages */
 /* ---- Matteo's feedback, 15 Nov 2026 ---- */
 .cc [hidden], [hidden] { display: none !important; }
 .eyebrow { color: var(--red-text, #ff3d33); margin-bottom: 10px; }
