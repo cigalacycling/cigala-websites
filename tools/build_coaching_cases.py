@@ -8,10 +8,26 @@ from coaching_common import *
 CAL = 'https://calendly.com/cigalacycling'
 HERO = img('IMG_4003AWDWWWU', 'tools-hero')   # Matteo coaching a group (the square athlete photos crop too tight in a banner)
 
+def bars(c):
+    if not c.get('bars'): return ''
+    out = ''
+    for label, sub, before, after, unit, delta in c['bars']:
+        out += (f'<div class="cs-bar"><div class="cs-bar-h"><b>{E(label)}</b><span class="cs-delta">{E(delta)}</span></div><p>{E(sub)}</p>'
+                f'<div class="cs-b"><span>Year before</span><i style="width:{before / after * 100:.0f}%"></i><em>{before:,}{unit}</em></div>'
+                f'<div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>{after:,}{unit}</em></div></div>')
+    bests = ''.join(f'<li>{E(x)}</li>' for x in c.get('bests', []))
+    return (f'<div class="cs-charts">{out}</div>' + (f'<div class="cs-bests"><h3>All-time bests</h3><ul class="ticks">{bests}</ul></div>' if bests else '')
+            + f'<p class="cs-src">Source: {E(c["source"])}</p>')
+
+def photo(c, i):
+    if c['photo']:
+        return f'<div class="cs-photo"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="{"eager" if i == 0 else "lazy"}"></div>'
+    return f'<div class="cs-photo cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c["bars"][1][0])}</small></div>'
+
 def case(c, i):
     how = ''.join(f'<li>{E(x)}</li>' for x in c['how'])
     return f'''<article class="cs-case panel" id="{c['slug']}">
-      <div class="cs-photo"><img src="{img(c['photo'], 'athlete-' + c['slug'])}" alt="{E(live_alt(c['photo']))}" loading="{'eager' if i == 0 else 'lazy'}"></div>
+      {photo(c, i)}
       <div class="cs-body">
         <span class="cs-tag">{E(c['tag'])}</span>
         <h2 class="cs-title">{E(c['headline'])}</h2>
@@ -22,6 +38,7 @@ def case(c, i):
           <div><h3>How we coached</h3><ul class="ticks">{how}</ul></div>
           <div class="cs-res"><h3>Result</h3><p>{E(c['result'])}</p></div>
         </div>
+        {bars(c)}
         <blockquote>“{E(c['quote'])}”<cite>{E(c['name'])}</cite></blockquote>
       </div>
     </article>'''
@@ -65,6 +82,7 @@ CSS = CS_CSS + '''<style>
 .cs-case { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); overflow: hidden; border-radius: 16px; scroll-margin-top: 100px; }
 .cs-photo { min-height: 100%; background: #111; }
 .cs-photo img { width: 100%; height: 100%; object-fit: cover; min-height: 320px; }
+.cs-photo.cs-data { display: grid; place-content: center; text-align: center; gap: 8px; min-height: 320px; }
 .cs-body { padding: 28px; display: grid; gap: 8px; align-content: start; }
 .cs-title { font-size: clamp(28px, 3.2vw, 40px); margin: 0; }
 .cs-who { margin: 0; color: var(--text-3); font-size: 14px; }
@@ -73,6 +91,24 @@ CSS = CS_CSS + '''<style>
 .cs-grid p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.6; }
 .cs-grid .ticks { margin: 0; }
 .cs-res p { color: var(--text); font-weight: 600; }
+.cs-charts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.cs-bar { padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.02); }
+.cs-bar-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.cs-bar-h b { font-size: 13px; color: var(--text); }
+.cs-delta { font: 400 22px/1 var(--head); color: var(--green-text); white-space: nowrap; }
+.cs-bar p { margin: 4px 0 10px; font-size: 12.5px; color: var(--text-3); }
+.cs-b { display: grid; grid-template-columns: 74px 1fr auto; align-items: center; gap: 8px; font-size: 12px; color: var(--text-3); margin-top: 6px; }
+.cs-b i { display: block; height: 10px; border-radius: 5px; background: rgba(255,255,255,.18); }
+.cs-b.now i { background: var(--green); }
+.cs-b em { font-style: normal; font-weight: 700; color: var(--text-2); min-width: 54px; text-align: right; }
+.cs-b.now em { color: var(--text); }
+.cs-bests { margin-top: 16px; }
+.cs-bests h3 { font: 700 11px/1.4 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--green-text); margin: 0 0 8px; }
+.cs-bests .ticks { grid-template-columns: 1fr 1fr; }
+.cs-src { margin: 10px 0 0; font-size: 12px; color: var(--text-3); }
+.cs-photo.cs-data b { font-size: clamp(36px, 3.6vw, 48px); padding: 0 16px; }
+@media (max-width: 1100px) { .cs-charts { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 640px) { .cs-bests .ticks { grid-template-columns: minmax(0, 1fr); } }
 .cs-body blockquote { margin: 16px 0 0; padding: 14px 18px; border-left: 3px solid var(--green); background: rgba(255,255,255,.03); border-radius: 0 10px 10px 0; color: var(--text-2); font-style: italic; }
 .cs-body cite { display: block; margin-top: 8px; font-style: normal; font-size: 13px; color: var(--text-3); }
 @media (max-width: 900px) { .cs-case { grid-template-columns: minmax(0, 1fr); } .cs-photo img { min-height: 0; aspect-ratio: 16 / 10; } .cs-grid { grid-template-columns: minmax(0, 1fr); } .cs-body { padding: 20px; } }

@@ -433,6 +433,9 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .cs-card:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
 .cs-img { aspect-ratio: 4 / 3; overflow: hidden; background: #111; }
 .cs-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.9); }
+.cs-data { display: grid; place-content: center; text-align: center; gap: 6px; background: radial-gradient(circle at 30% 20%, rgba(0,154,68,.45), rgba(0,154,68,0) 60%), #0b1a12; }
+.cs-data b { font: 400 40px/1 var(--head); color: #fff; }
+.cs-data small { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green-text); }
 .cs-tx { display: grid; gap: 6px; padding: 16px 18px 18px; }
 .cs-tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
 .cs-stat { font: 400 30px/1.05 var(--head); color: var(--text); text-transform: uppercase; }
@@ -448,6 +451,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .cs-case { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); overflow: hidden; border-radius: 16px; scroll-margin-top: 100px; }
 .cs-photo { min-height: 100%; background: #111; }
 .cs-photo img { width: 100%; height: 100%; object-fit: cover; min-height: 320px; }
+.cs-photo.cs-data { display: grid; place-content: center; text-align: center; gap: 8px; min-height: 320px; }
 .cs-body { padding: 28px; display: grid; gap: 8px; align-content: start; }
 .cs-title { font-size: clamp(28px, 3.2vw, 40px); margin: 0; }
 .cs-who { margin: 0; color: var(--text-3); font-size: 14px; }
@@ -456,6 +460,24 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .cs-grid p { margin: 0; color: var(--text-2); font-size: 15px; line-height: 1.6; }
 .cs-grid .ticks { margin: 0; }
 .cs-res p { color: var(--text); font-weight: 600; }
+.cs-charts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.cs-bar { padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,.02); }
+.cs-bar-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.cs-bar-h b { font-size: 13px; color: var(--text); }
+.cs-delta { font: 400 22px/1 var(--head); color: var(--green-text); white-space: nowrap; }
+.cs-bar p { margin: 4px 0 10px; font-size: 12.5px; color: var(--text-3); }
+.cs-b { display: grid; grid-template-columns: 74px 1fr auto; align-items: center; gap: 8px; font-size: 12px; color: var(--text-3); margin-top: 6px; }
+.cs-b i { display: block; height: 10px; border-radius: 5px; background: rgba(255,255,255,.18); }
+.cs-b.now i { background: var(--green); }
+.cs-b em { font-style: normal; font-weight: 700; color: var(--text-2); min-width: 54px; text-align: right; }
+.cs-b.now em { color: var(--text); }
+.cs-bests { margin-top: 16px; }
+.cs-bests h3 { font: 700 11px/1.4 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--green-text); margin: 0 0 8px; }
+.cs-bests .ticks { grid-template-columns: 1fr 1fr; }
+.cs-src { margin: 10px 0 0; font-size: 12px; color: var(--text-3); }
+.cs-photo.cs-data b { font-size: clamp(36px, 3.6vw, 48px); padding: 0 16px; }
+@media (max-width: 1100px) { .cs-charts { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 640px) { .cs-bests .ticks { grid-template-columns: minmax(0, 1fr); } }
 .cs-body blockquote { margin: 16px 0 0; padding: 14px 18px; border-left: 3px solid var(--green); background: rgba(255,255,255,.03); border-radius: 0 10px 10px 0; color: var(--text-2); font-style: italic; }
 .cs-body cite { display: block; margin-top: 8px; font-style: normal; font-size: 13px; color: var(--text-3); }
 @media (max-width: 900px) { .cs-case { grid-template-columns: minmax(0, 1fr); } .cs-photo img { min-height: 0; aspect-ratio: 16 / 10; } .cs-grid { grid-template-columns: minmax(0, 1fr); } .cs-body { padding: 20px; } }
@@ -514,7 +536,23 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
           <div><h3>How we coached</h3><ul class="ticks"><li>A crash course in cycling, built from scratch</li><li>Personalised sessions with attention to every detail</li><li>Every session different, so training stayed fun and dynamic</li></ul></div>
           <div class="cs-res"><h3>Result</h3><p>European Gran Fondo &amp; gravel champion (19–34) and silver medallist at the Gran Fondo World Championships, within a year of starting cycling.</p></div>
         </div>
+        
         <blockquote>“He has not only made me fall in love with cycling, but has believed in me even when I didn’t.”<cite>Marine Lenehan</cite></blockquote>
+      </div>
+    </article><article class="cs-case panel" id="tilen">
+      <div class="cs-photo cs-data" aria-hidden="true"><b>1,063 W sprint</b><small>Best 15-second power</small></div>
+      <div class="cs-body">
+        <span class="cs-tag">Road racing</span>
+        <h2 class="cs-title">From not sprinting out of the saddle to 1,063 W</h2>
+        <p class="cs-who">Tilen Č. · Road racer · Slovenia</p>
+        <div class="cs-grid">
+          <div><h3>Starting point</h3><p>One year ago Tilen couldn’t sprint standing up.</p></div>
+          <div><h3>Goal</h3><p>Race at the front, from local races to the national championships.</p></div>
+          <div><h3>How we coached</h3><ul class="ticks"><li>Consistency: steady training, no huge weeks (the biggest was 16 hours)</li><li>A plan built around his life, adjusted week by week</li><li>Talking to his coach: RPE and a comment after his rides, so the plan could adapt</li></ul></div>
+          <div class="cs-res"><h3>Result</h3><p>4th overall at Portorož and first over the main climb; 9th in the amateur road race at the national championships. All-time bests from the sprint to three hours, and a Critical Power of 375 W.</p></div>
+        </div>
+        <div class="cs-charts"><div class="cs-bar"><div class="cs-bar-h"><b>Riding time</b><span class="cs-delta">+17%</span></div><p>More hours, no huge weeks</p><div class="cs-b"><span>Year before</span><i style="width:86%"></i><em>558 h</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>651 h</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 15-second power</b><span class="cs-delta">+212 W</span></div><p>From seated to standing</p><div class="cs-b"><span>Year before</span><i style="width:80%"></i><em>851 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>1,063 W</em></div></div><div class="cs-bar"><div class="cs-bar-h"><b>Best 2-hour power</b><span class="cs-delta">+20 W</span></div><p>Stronger for longer, set at L’Étape Slovenia</p><div class="cs-b"><span>Year before</span><i style="width:94%"></i><em>296 W</em></div><div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>316 W</em></div></div></div><div class="cs-bests"><h3>All-time bests</h3><ul class="ticks"><li>8 min: 429 W (5.5 W/kg)</li><li>20 min: 382 W (4.9 W/kg)</li><li>2 min: 556 W (7.1 W/kg), at the Nationals</li><li>3 h: 298 W (3.8 W/kg), at Corsa per Haiti</li></ul></div><p class="cs-src">Source: Vekta data, year before vs this year (Nov 2024 – Nov 2026)</p>
+        <blockquote>“Significant technical progress and gains in strength.”<cite>Tilen Č.</cite></blockquote>
       </div>
     </article><article class="cs-case panel" id="shane-courtney">
       <div class="cs-photo"><img src="img/athlete-shane-courtney.webp" alt="Cyclist racing on road bike | Cigala Cycling Coaching" loading="lazy"></div>
@@ -528,6 +566,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
           <div><h3>How we coached</h3><ul class="ticks"><li>Contact by phone or WhatsApp every couple of days, and weekly feedback</li><li>No junk miles: every interval has a clear purpose</li><li>Recovery, nutrition, strength and two flexibility sessions a week</li></ul></div>
           <div class="cs-res"><h3>Result</h3><p>FTP up from 220 W to 260 W in under 4 months, sprint from about 600 W to 920 W. Upgraded to A3 with points to spare, and county hill-climb champion.</p></div>
         </div>
+        
         <blockquote>“Matteo managed to raise my FTP from 220w to 260w in less than 4 months &amp; my sprint from 600w ish to 920w.”<cite>Shane Courtney</cite></blockquote>
       </div>
     </article><article class="cs-case panel" id="bernd-ondruch">
@@ -542,6 +581,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
           <div><h3>How we coached</h3><ul class="ticks"><li>A coaching style adapted to him, with accountability but no pressure</li><li>Varied workouts targeting different parts of his riding</li><li>The plan adjusted after a crash, never pushing beyond his limits</li></ul></div>
           <div class="cs-res"><h3>Result</h3><p>Clear improvements after 4–6 weeks, and he qualified for the UCI Gran Fondo World Championship after 12 months of coaching.</p></div>
         </div>
+        
         <blockquote>“With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.”<cite>Bernd Ondruch</cite></blockquote>
       </div>
     </article><article class="cs-case panel" id="rob-kavanagh">
@@ -556,6 +596,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
           <div><h3>How we coached</h3><ul class="ticks"><li>A structured training plan from the first phone call</li><li>Sessions planned for him, so he knew exactly what to do</li></ul></div>
           <div class="cs-res"><h3>Result</h3><p>Close to 16 kg lost in 6 months, and healthier, fitter and happier.</p></div>
         </div>
+        
         <blockquote>“To date I’ve lost close to 16 kg thanks to Matteos coaching and support, most importantly I look forward to every session that is planned out for me.”<cite>Rob Kavanagh</cite></blockquote>
       </div>
     </article><article class="cs-case panel" id="derek-lawler">
@@ -570,6 +611,7 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
           <div><h3>How we coached</h3><ul class="ticks"><li>A 9-month plan building up to the event</li><li>Years later, a steady, gradual plan to recover fitness after heart disease and a cardiac procedure</li></ul></div>
           <div class="cs-res"><h3>Result</h3><p>Completed the Haute Route Pyrenees in 2017, “the experience of a lifetime”, and later got back to regular cycling after his cardiac procedure.</p></div>
         </div>
+        
         <blockquote>“As a non-elite or serious cyclist, I can highly recommend Matteo to anyone interested in getting fit and ready for any cycling goal, no matter what level you’re at or what age you are!”<cite>Derek Lawler</cite></blockquote>
       </div>
     </article>

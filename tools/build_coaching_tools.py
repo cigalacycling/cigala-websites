@@ -19,8 +19,8 @@ NL_URL = COACH_NL_URL   # Brevo form URL (tools/coaching_common.py) for the Coac
 GATE = True
 CAL = 'https://calendly.com/cigalacycling'
 B = C + '/blog/'
-HERO = img('IMG_4003AWDWWWU', 'tools-hero')   # Matteo coaching a group of riders (live photo)
-HERO_ALT = live_alt('IMG_4003AWDWWWU')
+HERO = img('imgi_40_0eNt09UI', 'retail')   # Matteo 15 Nov: new photo: indoor training with data, fits the tools
+HERO_ALT = 'Cyclist training on an indoor smart trainer in a garage'
 
 IC = {  # line icons, same style as the packages page
     'zones': '<path d="M3 3v18h18"/><path d="M7 15v3M11 11v7M15 8v10M19 5v13"/>',
@@ -45,7 +45,7 @@ TOOLS = [
 
 def hero(eyebrow, h1, lede):
     return f'''<div class="hero hero-sm tl-hero">
-  <img src="{HERO}" alt="{E(HERO_ALT)}" width="2560" height="1707">
+  <img src="{HERO}" alt="{E(HERO_ALT)}" width="1600" height="872">
   <div class="in">
     <div class="eyebrow eb-pill"><span class="dot"></span>{eyebrow}</div>
     <h1>{h1}</h1>
@@ -106,7 +106,8 @@ def reads(links):
 
 # ---------- shared CSS + JS ----------
 TCSS = '''<style>
-.tl-hero > img { object-position: 50% 40%; }
+.tl-hero { min-height: min(480px, 66svh) !important; }   /* a little lower than the other heroes */
+.tl-hero > img { object-position: 50% 45%; }
 .tl-box { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; align-items: start; }
 .tl-in, .tl-out { padding: 24px; }
 .tl-in h2, .tl-out h2 { font-size: clamp(22px, 2.4vw, 28px); margin: 0 0 16px; }

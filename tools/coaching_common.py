@@ -155,6 +155,20 @@ CASES = [
      'how': ['A crash course in cycling, built from scratch', 'Personalised sessions with attention to every detail', 'Every session different, so training stayed fun and dynamic'],
      'result': 'European Gran Fondo & gravel champion (19–34) and silver medallist at the Gran Fondo World Championships, within a year of starting cycling.',
      'quote': 'He has not only made me fall in love with cycling, but has believed in me even when I didn’t.'},
+    # Tilen: Matteo's athlete case study post (15 Nov 2026, "Athlete Review" chat); numbers from his Vekta data.
+    # No photo yet (Matteo will send it): the card and the case show his numbers instead.
+    {'slug': 'tilen', 'name': 'Tilen Č.', 'where': 'Road racer · Slovenia', 'photo': None,
+     'headline': 'From not sprinting out of the saddle to 1,063 W', 'stat': '1,063 W sprint', 'tag': 'Road racing',
+     'before': 'One year ago Tilen couldn’t sprint standing up.',
+     'goal': 'Race at the front, from local races to the national championships.',
+     'how': ['Consistency: steady training, no huge weeks (the biggest was 16 hours)', 'A plan built around his life, adjusted week by week', 'Talking to his coach: RPE and a comment after his rides, so the plan could adapt'],
+     'result': '4th overall at Portorož and first over the main climb; 9th in the amateur road race at the national championships. All-time bests from the sprint to three hours, and a Critical Power of 375 W.',
+     'quote': 'Significant technical progress and gains in strength.',
+     'bars': [('Riding time', 'More hours, no huge weeks', 558, 651, ' h', '+17%'),
+              ('Best 15-second power', 'From seated to standing', 851, 1063, ' W', '+212 W'),
+              ('Best 2-hour power', 'Stronger for longer, set at L’Étape Slovenia', 296, 316, ' W', '+20 W')],
+     'bests': ['8 min: 429 W (5.5 W/kg)', '20 min: 382 W (4.9 W/kg)', '2 min: 556 W (7.1 W/kg), at the Nationals', '3 h: 298 W (3.8 W/kg), at Corsa per Haiti'],
+     'source': 'Vekta data, year before vs this year (Nov 2024 – Nov 2026)'},
     {'slug': 'shane-courtney', 'name': 'Shane Courtney', 'where': 'Tralee Manor West ibike', 'photo': 'T142905.118',
      'headline': '+40 W FTP in under 4 months', 'stat': '220 → 260 W FTP', 'tag': 'Road racing',
      'before': 'Training 14–16 hours a week over the winter on a generic plan, and getting nowhere. Racing in A4.',
@@ -186,7 +200,10 @@ CASES = [
 ]
 def case_cards(link_base):
     """Scrolling case study cards; link_base is the case studies page URL."""
-    cards = ''.join(f'<a class="cs-card" href="{link_base}#{c["slug"]}" {EXT}><span class="cs-img"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="lazy"></span>'
+    def pic(c):
+        if not c['photo']: return f'<span class="cs-img cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c["bars"][1][0]) if c.get("bars") else ""}</small></span>'
+        return f'<span class="cs-img"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="lazy"></span>'
+    cards = ''.join(f'<a class="cs-card" href="{link_base}#{c["slug"]}" {EXT}>{pic(c)}'
                     f'<span class="cs-tx"><span class="cs-tag">{E(c["tag"])}</span><b class="cs-stat">{E(c["stat"])}</b><span class="cs-h">{E(c["headline"])}</span>'
                     f'<span class="cs-n">{E(c["name"])} · {E(c["where"])}</span><span class="arrow-link">Read the case study →</span></span></a>' for c in CASES)
     return f'<div class="cs-row" tabindex="0" aria-label="Case studies, scroll sideways">{cards}</div>'
@@ -196,6 +213,9 @@ CS_CSS = """<style>
 .cs-card:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
 .cs-img { aspect-ratio: 4 / 3; overflow: hidden; background: #111; }
 .cs-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.9); }
+.cs-data { display: grid; place-content: center; text-align: center; gap: 6px; background: radial-gradient(circle at 30% 20%, rgba(0,154,68,.45), rgba(0,154,68,0) 60%), #0b1a12; }
+.cs-data b { font: 400 40px/1 var(--head); color: #fff; }
+.cs-data small { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green-text); }
 .cs-tx { display: grid; gap: 6px; padding: 16px 18px 18px; }
 .cs-tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
 .cs-stat { font: 400 30px/1.05 var(--head); color: var(--text); text-transform: uppercase; }
