@@ -196,6 +196,17 @@ footer .in.social { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 24
   .fcols { grid-template-columns: minmax(0, 1fr) !important; }
   .band-cta::after { background: linear-gradient(180deg, rgba(8,9,10,.6), rgba(8,9,10,.94)); }
 }
+/* ---- menu: same as cigalacycling.com (brand.css): hover = green word + 2px green line, current page = red line ---- */
+.nav .in { position: relative; }
+.menu a, .dd-btn { border-radius: 0; box-shadow: inset 0 0 0 var(--green); transition: color .15s, box-shadow .15s; }
+.menu a:hover, .menu a:active, .dd-btn:hover, .dd:focus-within .dd-btn, .dd.open .dd-btn { color: var(--green-text); background: none; box-shadow: inset 0 -2px 0 var(--green); }
+.menu a[aria-current="page"], .dd-btn.is-current { color: var(--text); box-shadow: inset 0 -2px 0 var(--red); }
+.dd-menu a { border-radius: 0; color: var(--text-2); transition: color .15s, box-shadow .15s; }
+.dd-menu a:hover, .dd-menu a:active { color: var(--green-text); background: none; box-shadow: inset 2px 0 0 var(--green); }
+.dd-menu a[aria-current="page"] { color: var(--text); box-shadow: inset 2px 0 0 var(--red); }
+.burger nav a { transition: color .15s; }
+.burger nav a:hover, .burger nav a:active { color: var(--green-text); }
+.burger nav a[aria-current="page"] { color: var(--text); box-shadow: inset 3px 0 0 var(--red); padding-left: 12px; }
 @media (prefers-reduced-motion: reduce) { .path img, .dest img { transition: none; } .path:hover img, .dest:hover img { transform: none; } }
 </style>'''
 
