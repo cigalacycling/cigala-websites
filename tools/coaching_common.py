@@ -169,6 +169,23 @@ CASES = [
               ('Best 2-hour power', 'Stronger for longer, set at L’Étape Slovenia', 296, 316, ' W', '+20 W')],
      'bests': ['8 min: 429 W (5.5 W/kg)', '20 min: 382 W (4.9 W/kg)', '2 min: 556 W (7.1 W/kg), at the Nationals', '3 h: 298 W (3.8 W/kg), at Corsa per Haiti'],
      'source': 'Vekta data, year before vs this year (Nov 2024 – Nov 2026)'},
+    # Marco: Matteo's case study post (Canva "Marco Case Study - Carousel", 15 Nov 2026), numbers from his Vekta data.
+    # The post tracker says "Needs Marco's OK": staging only until Marco agrees.
+    {'slug': 'marco', 'name': 'Marco B.', 'where': 'Road & gravel racer · Portugal', 'photo': None, 'photo_file': 'coaching/athletes/marco.webp',
+     'photo_alt': 'Marco B. racing on gravel in a green kit, race number 96',
+     'headline': 'Every number went up', 'stat': '+124 W sprint', 'tag': 'Road & gravel',
+     'before': 'Marco races on the road and on gravel from Portugal, including the European Gravel Championships in Belgium and Portugal’s gravel nationals.',
+     'goal': 'Raise his power from the sprint to the hour for his road and gravel races.',
+     'how': [],
+     'result': 'From late July to late October, every one of his power bests went up: past 4 W/kg for five minutes, and W′, his energy for attacks, up 28%.',
+     'quote': None,
+     'labels': ('Previous 3 months', 'Last 3 months'),
+     'bars': [('Best 30-second power', 'The punch: almost a quarter more', 505, 628, ' W', '+24%'),
+              ('Best 15-second power', 'The sprint: faster to the line', 728, 852, ' W', '+124 W'),
+              ('Best 5-minute power', 'The climbs: from 3.8 to 4.1 W/kg', 271, 292, ' W', '+21 W')],
+     'bests_title': 'Up across the board',
+     'bests': ['3 minutes: 292 → 325 W', '10 minutes: 242 → 263 W', '20 minutes: 222 → 236 W', '60 minutes: 204 → 211 W', 'W′: 11.4 → 14.6 kJ (+28%)'],
+     'source': 'Vekta data, last 3 months (late July – late October 2026) against the 3 months before'},
     {'slug': 'shane-courtney', 'name': 'Shane Courtney', 'where': 'Tralee Manor West ibike', 'photo': 'T142905.118',
      'headline': '+40 W FTP in under 4 months', 'stat': '220 → 260 W FTP', 'tag': 'Road racing',
      'before': 'Training 14–16 hours a week over the winter on a generic plan, and getting nowhere. Racing in A4.',
@@ -201,6 +218,7 @@ CASES = [
 def case_cards(link_base):
     """Scrolling case study cards; link_base is the case studies page URL."""
     def pic(c):
+        if c.get('photo_file'): return f'<span class="cs-img"><img src="{conv(c["photo_file"], "athlete-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"></span>'
         if not c['photo']: return f'<span class="cs-img cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c["bars"][1][0]) if c.get("bars") else ""}</small></span>'
         return f'<span class="cs-img"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="lazy"></span>'
     cards = ''.join(f'<a class="cs-card" href="{link_base}#{c["slug"]}" {EXT}>{pic(c)}'

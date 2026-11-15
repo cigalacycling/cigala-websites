@@ -12,14 +12,17 @@ def bars(c):
     if not c.get('bars'): return ''
     out = ''
     for label, sub, before, after, unit, delta in c['bars']:
+        l0, l1 = c.get('labels', ('Year before', 'This year'))
         out += (f'<div class="cs-bar"><div class="cs-bar-h"><b>{E(label)}</b><span class="cs-delta">{E(delta)}</span></div><p>{E(sub)}</p>'
-                f'<div class="cs-b"><span>Year before</span><i style="width:{before / after * 100:.0f}%"></i><em>{before:,}{unit}</em></div>'
-                f'<div class="cs-b now"><span>This year</span><i style="width:100%"></i><em>{after:,}{unit}</em></div></div>')
+                f'<div class="cs-b"><span>{E(l0)}</span><i style="width:{before / after * 100:.0f}%"></i><em>{before:,}{unit}</em></div>'
+                f'<div class="cs-b now"><span>{E(l1)}</span><i style="width:100%"></i><em>{after:,}{unit}</em></div></div>')
     bests = ''.join(f'<li>{E(x)}</li>' for x in c.get('bests', []))
-    return (f'<div class="cs-charts">{out}</div>' + (f'<div class="cs-bests"><h3>All-time bests</h3><ul class="ticks">{bests}</ul></div>' if bests else '')
+    return (f'<div class="cs-charts">{out}</div>' + (f'<div class="cs-bests"><h3>{E(c.get("bests_title", "All-time bests"))}</h3><ul class="ticks">{bests}</ul></div>' if bests else '')
             + f'<p class="cs-src">Source: {E(c["source"])}</p>')
 
 def photo(c, i):
+    if c.get('photo_file'):
+        return f'<div class="cs-photo"><img src="{conv(c["photo_file"], "athlete-" + c["slug"])}" alt="{E(c["photo_alt"])}" loading="lazy"></div>'
     if c['photo']:
         return f'<div class="cs-photo"><img src="{img(c["photo"], "athlete-" + c["slug"])}" alt="{E(live_alt(c["photo"]))}" loading="{"eager" if i == 0 else "lazy"}"></div>'
     return f'<div class="cs-photo cs-data" aria-hidden="true"><b>{E(c["stat"])}</b><small>{E(c["bars"][1][0])}</small></div>'
@@ -35,11 +38,11 @@ def case(c, i):
         <div class="cs-grid">
           <div><h3>Starting point</h3><p>{E(c['before'])}</p></div>
           <div><h3>Goal</h3><p>{E(c['goal'])}</p></div>
-          <div><h3>How we coached</h3><ul class="ticks">{how}</ul></div>
+          {f'<div><h3>How we coached</h3><ul class="ticks">{how}</ul></div>' if how else ''}
           <div class="cs-res"><h3>Result</h3><p>{E(c['result'])}</p></div>
         </div>
         {bars(c)}
-        <blockquote>“{E(c['quote'])}”<cite>{E(c['name'])}</cite></blockquote>
+        {f'<blockquote>“{E(c["quote"])}”<cite>{E(c["name"])}</cite></blockquote>' if c.get('quote') else ''}
       </div>
     </article>'''
 
@@ -97,7 +100,7 @@ CSS = CS_CSS + '''<style>
 .cs-bar-h b { font-size: 13px; color: var(--text); }
 .cs-delta { font: 400 22px/1 var(--head); color: var(--green-text); white-space: nowrap; }
 .cs-bar p { margin: 4px 0 10px; font-size: 12.5px; color: var(--text-3); }
-.cs-b { display: grid; grid-template-columns: 74px 1fr auto; align-items: center; gap: 8px; font-size: 12px; color: var(--text-3); margin-top: 6px; }
+.cs-b { display: grid; grid-template-columns: 112px 1fr auto; align-items: center; gap: 8px; font-size: 12px; color: var(--text-3); margin-top: 6px; }
 .cs-b i { display: block; height: 10px; border-radius: 5px; background: rgba(255,255,255,.18); }
 .cs-b.now i { background: var(--green); }
 .cs-b em { font-style: normal; font-weight: 700; color: var(--text-2); min-width: 54px; text-align: right; }
