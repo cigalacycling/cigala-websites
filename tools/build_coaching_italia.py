@@ -158,6 +158,11 @@ def italy_map():
             f'<filter id="it-glow" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter></defs>'
             f'<path d="{m["d"]}" fill="#009a44" opacity=".35" filter="url(#it-glow)"/><path d="{m["d"]}" class="it-land" fill="url(#it-g)"/>'
             f'{dots}{labels}</svg>')
+WHY_IC = ['<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/>', '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>', '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+          '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>', '<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
+          '<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/>', '<path d="M12 2.7s6 6.6 6 11.3a6 6 0 0 1-12 0c0-4.7 6-11.3 6-11.3z"/>',
+          '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.2-6.1C9.6 14.4 12 13 13 12"/>',
+          '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/>']
 FACTS = [('clock', 'Comunicazione in italiano', 'Parli direttamente con Matteo, nella tua lingua, per chiamate, feedback e domande.'),
          ('currency', 'Prezzi in euro', 'Paghi in euro: nessun costo di cambio.'),
          ('route', 'Costruito sulle tue strade', 'Dolomiti, Appennini, gravel o pianura: il piano segue il tuo territorio e il tuo calendario gare.')]
@@ -186,19 +191,22 @@ MAIN = f'''<div class="hero hero-sm">
 </div>
 
 <section>
-  <div class="in split">
+  <div class="in it-intro">
+    <div class="it-me"><img src="{conv('coaching/brand/matteo-cigala-author-signature.webp', 'italia-matteo-firma')}" alt="Matteo Cigala, preparatore di ciclismo, con la maglia bianca Cigala Cycling e la sua firma" loading="lazy" width="720" height="943"></div>
     <div class="gn-txt">
       <div class="eyebrow">Il tuo coach</div>
-      {''.join(f'<p>{E(x)}</p>' for x in intro[1:])}
+      <ul class="it-nums">{''.join(f'<li><b>{a}</b><span>{b}</span></li>' for a, b in (('28+', 'anni nel ciclismo'), ('10+', 'anni da preparatore'), ('200+', 'vittorie')))}</ul>
+      <p class="it-lead">{E(intro[1])}</p>
+      {''.join(f'<p>{E(x)}</p>' for x in intro[2:])}
     </div>
-    <div class="notes cn-facts">{facts}</div>
   </div>
+  <div class="in"><div class="it-facts">{facts}</div></div>
 </section>
 
 <section>
   <div class="in">
     <div class="head"><div><div class="eyebrow">Perché sceglierci</div><h2>{E("Perche' atleti in Italia scelgono Matteo Cigala")}</h2><div class="bar"></div></div></div>
-    <div class="gn-txt cn-why"><ul class="ticks">{''.join(f'<li>{md(x)}</li>' for x in why)}</ul></div>
+    <ul class="it-why">{''.join(f'<li><svg viewBox="0 0 24 24" aria-hidden="true">{WHY_IC[i % len(WHY_IC)]}</svg><span>{md(x)}</span></li>' for i, x in enumerate(why))}</ul>
   </div>
 </section>
 
@@ -367,6 +375,23 @@ ITCSS = '''<style>
 .it-ev-tag { position: absolute; top: 16px; right: 16px; font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--tc); }
 .it-ev-grid b { font: 400 20px/1.15 var(--head); text-transform: uppercase; color: var(--text); }
 .it-ev-pl { font-size: 13.5px; color: var(--text-2); line-height: 1.45; }
+.it-intro { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 40px; align-items: center; }
+@media (max-width: 900px) { .it-intro { grid-template-columns: 1fr; } .it-me { max-width: 280px; margin: 0 auto; } }
+.it-me img { width: 100%; height: auto; display: block; filter: drop-shadow(0 24px 50px rgba(0,0,0,.5)); }
+.it-nums { list-style: none; margin: 10px 0 18px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 26px; }
+.it-nums li { display: grid; }
+.it-nums b { font: 400 clamp(34px, 4vw, 48px)/1 var(--head); color: var(--green-text); }
+.it-nums span { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.it-lead { font-size: 18px !important; color: var(--text) !important; line-height: 1.55; }
+.it-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+.it-facts .note { padding: 16px 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); }
+@media (max-width: 800px) { .it-facts { grid-template-columns: 1fr; } }
+.it-why { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 900px) { .it-why { grid-template-columns: repeat(2, minmax(0, 1fr)); } } @media (max-width: 560px) { .it-why { grid-template-columns: 1fr; } }
+.it-why li { display: grid; gap: 10px; align-content: start; padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--panel-grad), var(--panel); font-size: 15px; line-height: 1.5; color: var(--text-2); transition: transform .25s, border-color .25s; }
+.it-why li:hover { transform: translateY(-3px); border-color: var(--green); }
+.it-why b { color: var(--text); }
+.it-why svg { width: 40px; height: 40px; padding: 9px; border-radius: 10px; background: var(--green-wash); fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .it-map-wrap { display: grid; place-items: center; }
 .it-map { width: 100%; max-width: 440px; height: auto; overflow: visible; }
 .it-land { stroke: #34c46a; stroke-width: 1.6; stroke-linejoin: round; }

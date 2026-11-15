@@ -359,3 +359,4 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Italia: the sample calendar in Italian (Nutrizione, macronutrienti, session names), same days and numbers.
 - Italia events: discipline filters (Tutti/Strada/Gravel/MTB/Ultra/Tutte le discipline; all cards stay in the HTML), 2 more MTB (Dolomiti Superbike, Capoliveri Legend Cup), 'Vinta da Matteo' on Mondiali/Europei (European Champion Gran Fondo 2022). 26 events.
 - Italia: map of Italy in the brand style (Natural Earth outline, public domain) with a pulsing dot for each listed city, next to the region list (list kept as text for SEO); device logos moved under it.
+- Italia intro: Matteo's cut-out with signature, 28+/10+/200+ numbers, the two live paragraphs (first larger), facts as a row; 'Perché sceglierci' list as icon cards. All live copy kept.
