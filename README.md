@@ -229,4 +229,6 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 ## Tours schema (WPCode Header), 15 Nov
 - Matteo replaced the Organization + 6 Review block with `tours/wpcode-schema-without-reviews.html`: Organization with legalName and vatID, no self-serving reviews. Checked on / and /trips/: Organization, WebSite and Service; all JSON valid; no Review left; consent default still comes before gtag.js.
 - Optional, still to decide with Matteo: the Service catalogue lists 12 of 15 tours (no Maratona, Coast to Coast, Lake Como, Road page), and 3 URLs lack the trailing slash (dolomites, lake-garda-and-stelvio, lake-garda-gravel). Those URLs redirect, so they work.
+- **Schema moved out of WPCode (15 Nov):** Organization, WebSite and Service (every tour, from `tours/trips-2027.json`) now come from Elementor custom code **snippet 9352** (head), made by `python3 -I tools/tours_schema.py`. Re-run it when tours are added, removed or renamed.
+  - The WPCode Header box should contain only `tours/wpcode-header.html`: the consent default line plus the Google tag.
 
