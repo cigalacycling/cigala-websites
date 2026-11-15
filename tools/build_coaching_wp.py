@@ -185,7 +185,7 @@ html .cc .blog-hero > img { object-position: 50% 58%; }
 .cc-blog .e-loop-item .elementor-button .elementor-button-text::before { content: "Read more →"; font: 600 14px/1.2 Montserrat, system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
 /* Marine Lenehan's articles (tag "By Marine Lenehan", tools/coaching_vivify_posts.py): her name on the card instead of Matteo's */
 .cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title { font-size: 0 !important; }
-.cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title::after { content: "By Sports Nutritionist, Marine Lenehan"; display: block; font: 600 11px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .08em !important; text-transform: uppercase; color: #d0d6e0; }
+.cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title::after { content: "By Sports Nutritionist, Marine Lenehan"; display: block; font: 600 11px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .08em !important; text-transform: uppercase; color: #ff3d33 !important; }
 .single-post .elementor-4028 .cc-marine-sig { margin-top: 32px !important; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.12); color: #d0d6e0 !important; }
 .single-post .elementor-4028 .cc-marine-src { font-size: 14px !important; color: #8a8f98 !important; }
 .single-post .elementor-4028 .wp-block-table table { width: 100%; border-collapse: collapse; font: 400 15px/1.5 Montserrat, system-ui, sans-serif; color: #d0d6e0; }

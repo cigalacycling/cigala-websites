@@ -502,39 +502,53 @@ def clubtalk():
           h1='Club information days, coaching workshops, Q&A, group coaching sessions and more', extra_css=G.GCSS + CSS)
 
 # ------------------------------------------------------------------ talent programme
-# Matteo 15 Nov: a benchmark instead of one athlete: typical W/kg at each level (approximate values after Allen &
-# Coggan's power profile, men; the WorldTour row is the profile's "world class" row). No athlete is named or invented.
-PD_D = ['5 s', '1 min', '5 min', 'Threshold']
+# Matteo 15 Nov: a benchmark instead of one athlete, in the style of Vekta's power curve (smooth curves on a time axis):
+# typical W/kg at each level the programme aims for (approximate values after Allen & Coggan's power profile, men;
+# WorldTour = the profile's "world class" row). No athlete is named or invented. No club level (not who the programme is for).
+PD_T = [(5, '5 s'), (60, '1 min'), (300, '5 min'), (3600, '60 min')]
 PD_L = [('WorldTour', '#34c46a', [24.0, 11.5, 7.6, 6.4]), ('Continental pro', '#f0bf00', [21.5, 10.5, 6.8, 5.7]),
-        ('Elite amateur / U23', '#5f86c9', [19.0, 9.3, 6.0, 5.0]), ('Club racer', '#8a8f98', [15.5, 7.8, 4.6, 3.9])]
+        ('U23 / elite amateur', '#5f86c9', [19.0, 9.3, 6.0, 5.0])]
 def pd_chart():
     import math
-    W, H, L, Rr, Tt, B = 760, 380, 56, 150, 24, 44
-    x = lambda i: L + i * (W - L - Rr) / (len(PD_D) - 1)
-    lo, hi = math.log(3), math.log(26)
+    W, H, L, Rr, Tt, B = 760, 380, 52, 24, 20, 44
+    t0, t1 = math.log(4), math.log(4200)
+    x = lambda t: L + (math.log(t) - t0) / (t1 - t0) * (W - L - Rr)
+    lo, hi = math.log(4.2), math.log(27)
     y = lambda v: Tt + (hi - math.log(v)) / (hi - lo) * (H - Tt - B)
-    grid = ''.join(f'<line x1="{L}" x2="{W - Rr}" y1="{y(v):.1f}" y2="{y(v):.1f}" class="pd-grid"/><text x="{L - 8}" y="{y(v) + 4:.1f}" class="pd-ax" text-anchor="end">{v}</text>' for v in (4, 6, 8, 12, 16, 24))
-    xt = ''.join(f'<text x="{x(i):.1f}" y="{H - B + 20}" class="pd-ax" text-anchor="middle">{d}</text>' for i, d in enumerate(PD_D))
-    lines = ''
-    for n, c, v in PD_L:
-        pts = ' '.join(f'{x(i):.1f},{y(w):.1f}' for i, w in enumerate(v))
-        lines += f'<polyline points="{pts}" fill="none" stroke="{c}" stroke-width="{3 if n == "WorldTour" else 2.2}"/>'
-        lines += ''.join(f'<circle cx="{x(i):.1f}" cy="{y(w):.1f}" r="4" fill="{c}" stroke="#0f1011" stroke-width="2"/>' for i, w in enumerate(v))
-        lines += f'<text x="{x(len(PD_D) - 1) + 12:.1f}" y="{y(v[-1]) + 4:.1f}" class="pd-lab" style="fill:{c}">{n}</text>'
-    hits = ''.join(f'<rect x="{x(i) - 26:.1f}" y="{Tt}" width="52" height="{H - Tt - B}" class="pd-hit" data-x="{x(i):.1f}" data-t="{d}" data-v="'
-                   + '|'.join(f'{n}:{v[i]}:{c}' for n, c, v in PD_L) + '"/>' for i, d in enumerate(PD_D))
+    def smooth(pts):   # Catmull-Rom through the points, as cubic Béziers
+        d = f'M{pts[0][0]:.1f},{pts[0][1]:.1f}'
+        for i in range(len(pts) - 1):
+            p0 = pts[i - 1] if i else pts[i]; p1, p2 = pts[i], pts[i + 1]; p3 = pts[i + 2] if i + 2 < len(pts) else p2
+            c1 = (p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6); c2 = (p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6)
+            d += f' C{c1[0]:.1f},{c1[1]:.1f} {c2[0]:.1f},{c2[1]:.1f} {p2[0]:.1f},{p2[1]:.1f}'
+        return d
+    grid = ''.join(f'<line x1="{L}" x2="{W - Rr}" y1="{y(v):.1f}" y2="{y(v):.1f}" class="pd-grid"/><text x="{L - 8}" y="{y(v) + 4:.1f}" class="pd-ax" text-anchor="end">{v}</text>' for v in (5, 7, 10, 14, 20))
+    vgrid = ''.join(f'<line x1="{x(t):.1f}" x2="{x(t):.1f}" y1="{Tt}" y2="{H - B}" class="pd-grid"/>' for t in (5, 15, 30, 60, 120, 300, 600, 1200, 3600))
+    xt = ''.join(f'<text x="{x(t):.1f}" y="{H - B + 20}" class="pd-ax" text-anchor="middle">{lab}</text>' for t, lab in [(5, '5 s'), (15, '15 s'), (60, '1 min'), (300, '5 min'), (1200, '20 min'), (3600, '60 min')])
+    defs = '<defs><linearGradient id="pd-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34c46a" stop-opacity=".35"/><stop offset="1" stop-color="#34c46a" stop-opacity="0"/></linearGradient>'
+    defs += '<filter id="pd-glow" x="-5%" y="-20%" width="110%" height="140%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
+    body = ''
+    for k, (n, c, v) in enumerate(reversed(PD_L)):
+        pts = [(x(t), y(w)) for (t, _), w in zip(PD_T, v)]
+        d = smooth(pts)
+        if n == 'WorldTour':
+            body += f'<path d="{d} L{pts[-1][0]:.1f},{H - B} L{pts[0][0]:.1f},{H - B} Z" fill="url(#pd-g)"/>'
+        body += f'<path d="{d}" fill="none" stroke="{c}" stroke-width="{3 if n == "WorldTour" else 2.2}" stroke-linecap="round"{" filter=\"url(#pd-glow)\"" if n == "WorldTour" else ""}/>'
+        body += ''.join(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="4" fill="{c}" stroke="#0f1011" stroke-width="2"/>' for px, py in pts)
+    hits = ''.join(f'<rect x="{x(t) - 26:.1f}" y="{Tt}" width="52" height="{H - Tt - B}" class="pd-hit" data-x="{x(t):.1f}" data-t="{lab}" data-v="'
+                   + '|'.join(f'{n}:{v[i]}:{c}' for n, c, v in PD_L) + '"/>' for i, (t, lab) in enumerate(PD_T))
     svg = (f'<svg class="pd-svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pd-t">'
-           f'<title id="pd-t">Typical power in watts per kilo at each level, from club racer to WorldTour, for 5 seconds, 1 minute, 5 minutes and threshold</title>'
-           f'{grid}{xt}<line x1="{L}" x2="{W - Rr}" y1="{H - B}" y2="{H - B}" class="pd-base"/><line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{lines}{hits}</svg>')
+           f'<title id="pd-t">Typical best power in watts per kilo for U23 riders, Continental pros and WorldTour riders, from 5 seconds to 60 minutes</title>'
+           f'{defs}{vgrid}{grid}{xt}<line x1="{L}" x2="{W - Rr}" y1="{H - B}" y2="{H - B}" class="pd-base"/><line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{body}{hits}</svg>')
     rows = ''.join(f'<tr><td>{n}</td>' + ''.join(f'<td>{w}</td>' for w in v) + '</tr>' for n, c, v in PD_L)
     leg = ''.join(f'<span><i class="pd-sw" style="border-top-color:{c}"></i>{n}</span>' for n, c, v in PD_L)
-    heads = ''.join(f'<th>{d}</th>' for d in PD_D)
+    heads = ''.join(f'<th>{lab}</th>' for t, lab in PD_T)
     return ('<figure class="pd panel">'
-            '<div class="pd-top"><div><b class="pd-title">What the teams look for</b><span>Typical best power, watts per kilo, by level</span></div>'
+            '<div class="pd-top"><div><b class="pd-title">Power curve: what the teams look for</b><span>Typical best power, watts per kilo</span></div>'
             f'<div class="pd-leg">{leg}</div></div>'
             f'<div class="pd-wrap">{svg}<div class="pd-tip" hidden></div></div>'
-            '<figcaption>Every step up is a jump in watts per kilo, from the sprint to threshold. On the programme Matteo measures where you are on this chart '
-            'and how fast you are closing the gap to the next level. Approximate values for men, after Allen &amp; Coggan’s power profile; women’s values are around 10–15% lower.</figcaption>'
+            '<figcaption>Each step towards the pros is a jump in watts per kilo, from the sprint to an hour. On the programme Matteo measures your own curve, '
+            'shows you where it sits against these levels and how fast you are closing the gap. Approximate values for men, after Allen &amp; Coggan’s power profile; women’s values are around 10–15% lower.</figcaption>'
             f'<details class="pd-tbl"><summary>See the numbers (W/kg)</summary><table><thead><tr><th>Level</th>{heads}</tr></thead><tbody>{rows}</tbody></table></details>'
             '</figure>')
 PD_JS = """<script>(function(){document.querySelectorAll('.pd-wrap').forEach(function(w){var tip=w.querySelector('.pd-tip'),cr=w.querySelector('.pd-cross'),svg=w.querySelector('svg');
@@ -720,6 +734,8 @@ TL_CSS = """<style>
 .pd-top > div:first-child { display: grid; gap: 2px; }
 .pd-title { font: 400 24px/1.1 var(--head); text-transform: uppercase; color: var(--text); }
 .pd-top span { color: var(--text-3); font-size: 13px; }
+.pd-leg { flex-wrap: wrap; }
+.pd { min-width: 0; }
 .pd-leg { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--text-2); }
 .pd-leg span { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2) !important; }
 .pd-sw { display: inline-block; width: 18px; height: 0; border-top: 2px solid #2fae5f; }
@@ -774,6 +790,8 @@ a.tl-aj { text-decoration: none; }
 .tl-riders li:hover, .tl-riders li:focus { background: var(--green); border-color: var(--green); color: #fff; }
 .tl-riders li::after { content: attr(data-win); position: absolute; left: 50%; bottom: calc(100% + 10px); transform: translate(-50%, 4px); width: max-content; max-width: 260px; padding: 9px 12px; border-radius: 10px; background: rgba(8,9,10,.96); border: 1px solid var(--green); color: var(--text); font-size: 12.5px; font-weight: 500; line-height: 1.4; text-align: center; white-space: normal; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 5; }
 .tl-riders li:hover::after, .tl-riders li:focus::after { opacity: 1; transform: translate(-50%, 0); }
+.tl-riders li:not(:hover):not(:focus)::after { display: none; }   /* hidden tips must not widen the page on phones */
+@media (max-width: 700px) { .tl-riders li::after { left: 0; transform: none !important; max-width: 200px; } .tl-riders li:nth-child(3n)::after { left: auto; right: 0; } }
 .tl-riders li:first-child::after { left: 0; transform: translate(0, 4px); } .tl-riders li:first-child:hover::after, .tl-riders li:first-child:focus::after { transform: none; }
 .pd-up { fill: #34c46a; }
 .pd-cp { padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(0,154,68,.5); background: rgba(0,154,68,.1); color: var(--text) !important; }

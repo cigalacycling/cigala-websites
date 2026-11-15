@@ -334,3 +334,12 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   racer, elite amateur/U23, Continental pro and WorldTour; approximate values after Allen & Coggan's power profile (men),
   labelled as such. No athlete named or invented. A&J wins light up in their own colour on hover (yellow Tour, pink Giro,
   red Vuelta, rainbow Worlds, polka dots, etc.). FAQ "Who are A&J AllSports?" showed "&amp;": fixed.
+- Blog cards: the 7 Vivify articles had no "author_name" ACF value, so their cards lacked Marine's label; copied the value
+  from her older posts (tools/coaching_vivify_author_field.py, temporary snippet removed). Author label in red.
+  Case-study rows: left/right arrows like the reviews; no drag bars on either. Testimonials: Marine's photo smaller.
+  Talent chart restyled like Vekta's power curve (smooth curves on a time axis), U23 / Continental / WorldTour only.
+- Country testimonials: Matteo asked again (15 Nov) to restore the live names (William-Wales, Greg-Colorado, Mark-Texas,
+  Chris-Ontario...). Checked the live pages: the quotes are real testimonials by other clients (e.g. Bryan Nolan, Limerick;
+  Derek Lawler, Kilkenny; Bernd, Germany) shown under different names, and the same quote appears under two or three
+  names in different countries (Bryan's under "Daniel, Northern Ireland", "Mark, Texas" and "Mark, Alberta"). Not
+  restored; real names kept; waiting for real clients from those countries.

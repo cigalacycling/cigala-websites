@@ -294,14 +294,24 @@ def case_cards(link_base):
                     f'<span class="cs-tx"><span class="cs-tag">{E(c["tag"])}</span><b class="cs-stat">{E(c["stat"])}</b><span class="cs-h">{E(c["headline"])}</span>'
                     f'<span class="cs-n">{E(c["name"])} · {E(c["where"])}</span><span class="arrow-link">Read the case study →</span></span></a>' for c in CASES)
     # Matteo 15 Nov: the case studies move on slowly by themselves, like the reviews (pause on hover/touch, off for reduced motion)
-    js = ("<script>(function(){var r=document.currentScript.previousElementSibling;if(!r||matchMedia('(prefers-reduced-motion: reduce)').matches)return;"
-          "var hold=false,stop=false,vis=false;r.addEventListener('mouseenter',function(){hold=true;});r.addEventListener('mouseleave',function(){hold=false;});"
+    js = ("<script>(function(){var stop=false;var wr=document.currentScript.parentElement,r=wr.querySelector('.cs-row');if(!r)return;var red=matchMedia('(prefers-reduced-motion: reduce)').matches;"
+          "wr.querySelectorAll('.cs-btn').forEach(function(b){b.addEventListener('click',function(){stop=true;"
+          "var w=(r.firstElementChild?r.firstElementChild.getBoundingClientRect().width+14:300)*(+b.dataset.d);"
+          "if(w>0&&r.scrollLeft>=r.scrollWidth-r.clientWidth-4)r.scrollTo({left:0,behavior:'smooth'});else r.scrollBy({left:w,behavior:'smooth'});});});if(red)return;"
+          "var hold=false,vis=false;r.addEventListener('mouseenter',function(){hold=true;});r.addEventListener('mouseleave',function(){hold=false;});"
           "r.addEventListener('focusin',function(){hold=true;});r.addEventListener('focusout',function(){hold=false;});r.addEventListener('touchstart',function(){stop=true;},{passive:true});"
           "if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting;}).observe(r);"
           "setInterval(function(){if(stop||hold||!vis||document.hidden)return;var c=r.firstElementChild,w=c?c.getBoundingClientRect().width+14:300;"
           "if(r.scrollLeft>=r.scrollWidth-r.clientWidth-4)r.scrollTo({left:0,behavior:'smooth'});else r.scrollBy({left:w,behavior:'smooth'});},4000);})();</script>")
-    return f'<div class="cs-row" tabindex="0" aria-label="Case studies, scroll sideways">{cards}</div>{js}'
+    nav = ('<div class="rv-nav cs-nav"><button type="button" class="cs-btn" data-d="-1" aria-label="Previous case studies">←</button>'
+           '<button type="button" class="cs-btn" data-d="1" aria-label="Next case studies">→</button></div>')
+    return f'<div class="cs-wrap"><div class="cs-row" tabindex="0" aria-label="Case studies, scroll sideways">{cards}</div>{nav}{js}</div>'
 CS_CSS = """<style>
+.cs-row, .rv-row { scrollbar-width: none !important; }   /* Matteo 15 Nov: arrows instead of a drag bar */
+.cs-row::-webkit-scrollbar, .rv-row::-webkit-scrollbar { display: none; }
+.cs-nav { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+.cs-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
+.cs-btn:hover { border-color: var(--green); color: var(--green-text); }
 .cs-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(260px, 300px); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; scrollbar-width: thin; }
 .cs-card { scroll-snap-align: start; display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--panel-grad), var(--panel); text-decoration: none; transition: border-color .2s, transform .2s; }
 .cs-card:hover { border-color: rgba(0,154,68,.6); transform: translateY(-2px); }
