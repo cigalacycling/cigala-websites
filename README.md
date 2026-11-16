@@ -502,3 +502,18 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Locked once signed (Matteo 16 Nov):** athletes can read their signed form and PDF but not change it. Things that change go in their own boxes: "My availability" (built) and a planned "My goals & events" box (goals + a list of events with date and priority, prefilled from the form, emails Matteo on change, read by the PC tools for periodization).
 - **To build:** answers stored privately on the athlete page, signed PDF to cc-private and emailed to athlete and Matteo, coach page shows who has completed it, PC tools read goals over the same API, optional reminder email after a few days.
 
+## cigalacycling.com SEO audit (16 Nov 2026, `tools/main_audit.py`)
+
+5 published pages, no posts.
+
+**All pass:**
+- one H1 per page, `lang="en-US"`, valid JSON-LD
+- every image has alt text, no `http://` links
+- no broken internal links or images, no duplicate titles or descriptions
+- no year in any title or description
+
+**Findings:**
+- **Privacy Policy (724):** no meta description. The title is the Yoast default "Privacy Policy - Cigala Cycling", not the "Cigala Cycling | ..." pattern the other pages use. Yoast fields can't be set over REST, so Matteo sets them in wp-admin.
+- **Contact:** the share image is the page's first photo, a WebP, and some apps (WhatsApp) don't show WebP previews. Matteo sets the share image in the page's Yoast Social tab.
+- **Homepage title:** 66 characters, so Google may cut the last word. Kept as live: it's the live title and still reads fine if truncated.
+- **retail.cigalacycling.com:** returned 429 (Shopify rate limit) to the checker. Not a broken link.
