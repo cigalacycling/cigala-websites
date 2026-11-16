@@ -8674,14 +8674,14 @@
   "orig": 6145
  },
  "poster-tuscany-epic-gravel": {
-  "id": 10334,
-  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-poster-tuscany-epic-gravel.webp",
-  "alt": "Tuscany Epic Gravel Tour Cigala Cycling",
+  "id": 10891,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-poster-tuscany-epic-gravel-1.webp",
+  "alt": "Group of riders on a gravel road",
   "size": [
    1200,
-   1500
+   1600
   ],
-  "orig": 9013
+  "orig": 7767
  },
  "poster-chianti-gran-fondo-strade-bianche": {
   "id": 10335,
@@ -9831,14 +9831,14 @@
   "orig": 6145
  },
  "posterbase-tuscany-epic-gravel": {
-  "id": 10657,
-  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-posterbase-tuscany-epic-gravel.webp",
-  "alt": "Tuscany Epic Gravel Tour Cigala Cycling",
+  "id": 10890,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-posterbase-tuscany-epic-gravel-1.webp",
+  "alt": "Group of riders on a gravel road",
   "size": [
    1200,
-   1500
+   1600
   ],
-  "orig": 9013
+  "orig": 7767
  },
  "posterbase-chianti-gran-fondo-strade-bianche": {
   "id": 10658,
@@ -10168,5 +10168,61 @@
    697
   ],
   "orig": 2044
+ },
+ "src-6280-900": {
+  "id": 10892,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-IMG_5348-900.webp",
+  "alt": "Guerciotti Bike in Slovenia Gravel",
+  "from": [
+   3024,
+   4032
+  ],
+  "size": [
+   900,
+   1200
+  ],
+  "orig": 6280
+ },
+ "src-4482-2000": {
+  "id": 10893,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-ze-2000.webp",
+  "alt": "Lake Como Cigala Cycling Tours",
+  "from": [
+   2883,
+   2884
+  ],
+  "size": [
+   2000,
+   2001
+  ],
+  "orig": 4482
+ },
+ "src-4865-2000": {
+  "id": 10894,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-IMG_2761-2000-scaled.webp",
+  "alt": "Dolomites Cycling Tour",
+  "from": [
+   3888,
+   5184
+  ],
+  "size": [
+   2000,
+   2667
+  ],
+  "orig": 4865
+ },
+ "src-3719-2000": {
+  "id": 10918,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-dji_fly_20240710_145652_179_1720616244308_photo_optimized-2000.webp",
+  "alt": "Alps & Dolomites Cigala Cycling Tours",
+  "from": [
+   4000,
+   2250
+  ],
+  "size": [
+   2000,
+   1125
+  ],
+  "orig": 3719
  }
 }

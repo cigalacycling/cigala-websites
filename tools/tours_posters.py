@@ -28,7 +28,7 @@ def svg_png(svg_path, px):
     subprocess.run(['node', '-e', js], check=True)
     return Image.open(tmp).convert('RGBA')
 
-POSTER_SRC = {'italian-alps': 6145}   # a photo of its own (Matteo 16 Nov: the live poster repeated the hero photo): rider on the Gavia
+POSTER_SRC = {'italian-alps': 6145, 'tuscany-epic-gravel': 7767}   # Tuscany Epic: riders on a Tuscan gravel road, not the hero photo again (Matteo 16 Nov)   # a photo of its own (Matteo 16 Nov: the live poster repeated the hero photo): rider on the Gavia
 def poster(slug, base=False):   # base=True: the tile without the map (the trip page draws an animated map on it)
     done = json.load(open(MAP))
     if slug in POSTER_SRC: orig = POSTER_SRC[slug]

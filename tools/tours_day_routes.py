@@ -85,7 +85,7 @@ G = {   # (lat, lon), approximate: town centres, pass summits
  'Colma di Sormano': (45.893, 9.231), 'Nesso': (45.913, 9.159), 'Bellagio': (45.987, 9.262), 'Ghisallo': (45.923, 9.268), 'Asso': (45.861, 9.270),
  'Varenna': (46.010, 9.284), 'Lecco': (45.853, 9.390), 'Cernobbio': (45.842, 9.073), 'Menaggio': (46.021, 9.238), 'Gravedona': (46.145, 9.307),
  'Colico': (46.134, 9.371), 'Onno': (45.926, 9.348), 'Bergamo': (45.698, 9.677), 'Almenno San Salvatore': (45.750, 9.590),
- "Sant'Omobono Terme": (45.806, 9.536), 'Costa Valle Imagna': (45.832, 9.497), 'Brembilla': (45.818, 9.596), 'Zogno': (45.794, 9.664), 'Selvino': (45.781, 9.751), 'Albino': (45.762, 9.796), 'Colle Gallo': (45.734, 9.836), 'Trescore Balneario': (45.695, 9.844), 'Nembro': (45.744, 9.759),
+ "Sant'Omobono Terme": (45.806, 9.536), 'Costa Valle Imagna': (45.832, 9.497), 'Brembilla': (45.818, 9.596), 'Zogno': (45.794, 9.664), 'Selvino': (45.781, 9.751), 'Albino': (45.762, 9.796), 'Colle Gallo': (45.734, 9.836), 'Torre de Busi': (45.774, 9.481), 'Valcava': (45.811, 9.479), 'Bedulita': (45.790, 9.551), 'Sedrina': (45.782, 9.622), 'Miragolo San Salvatore': (45.815, 9.717), 'Salmezza': (45.806, 9.739), 'Bergamo Alta': (45.704, 9.662), 'Trescore Balneario': (45.695, 9.844), 'Nembro': (45.744, 9.759),
 }
 
 R, GR = 'fastbike', 'gravel'
@@ -105,16 +105,16 @@ DAYS = {
     4: ['Cortina', 'Tre Croci', 'Misurina', 'Rifugio Auronzo', 'Misurina', 'Tre Croci', 'Cortina'],
     5: ['Canazei', 'Moena', 'San Pellegrino', 'Falcade', 'Cencenighe', 'Caprile', 'Malga Ciapela', 'Fedaia', 'Canazei'],
     6: ['Canazei', 'Pozza di Fassa', 'Canazei']},
-    ['La Villa', 'Canazei', 'Cortina'], ['Pordoi', 'Sella', 'Gardena', 'Giau', 'Falzarego', 'Tre Croci', 'Rifugio Auronzo', 'San Pellegrino', 'Fedaia']),
+    ['La Villa', 'Canazei', 'Cortina'], ['Rifugio Auronzo', 'Campolongo', 'Pordoi', 'Sella', 'Gardena', 'Giau', 'Falzarego', 'Tre Croci', 'San Pellegrino', 'Fedaia']),   # Tre Cime and Campolongo named (Matteo 16 Nov)
  'french-alps': (R, {
     2: ['Saint-Jean-de-Maurienne', 'Pontamafrey', 'Montvernier', 'La Chambre', 'Col de la Madeleine', 'La Chambre', 'Saint-Jean-de-Maurienne'],
     3: ['Saint-Jean-de-Maurienne', 'Saint-Etienne-de-Cuines', 'Col du Glandon', 'Croix de Fer', "Saint-Sorlin-d'Arves", 'Saint-Jean-de-Maurienne'],
     4: ['Saint-Jean-de-Maurienne', 'Saint-Michel-de-Maurienne', 'Col du Telegraphe', 'Valloire', 'Col du Galibier', 'Col du Lautaret', 'Monetier-les-Bains'],
-    5: ["Bourg-d'Oisans", "Alpe d'Huez", "Bourg-d'Oisans"],
+    5: ["Bourg-d'Oisans", "Alpe d'Huez"],   # the climb, drawn one way (up and down collapsed into a stub)
     6: ['Monetier-les-Bains', 'Briancon', "Col d'Izoard", 'Guillestre', 'Col de Vars', 'Barcelonnette'],
-    7: ['Barcelonnette', 'Jausiers', 'Cime de la Bonette', 'Jausiers', 'Barcelonnette']},
+    7: ['Barcelonnette', 'Jausiers', 'Cime de la Bonette']},   # up the Bonette, drawn one way
     ['Saint-Jean-de-Maurienne', 'Monetier-les-Bains', 'Barcelonnette'],
-    ['Col de la Madeleine', 'Col du Glandon', 'Col du Galibier', "Alpe d'Huez", "Col d'Izoard", 'Col de Vars', 'Cime de la Bonette']),
+    ['Montvernier', 'Col de la Madeleine', 'Col du Glandon', 'Croix de Fer', 'Col du Telegraphe', 'Col du Galibier', "Alpe d'Huez", "Col d'Izoard", 'Col de Vars', 'Cime de la Bonette']),   # every climb (Matteo 16 Nov)
  'wonderful-slovenia': (R, {
     2: ['Nova Gorica', 'Ajdovscina', 'Postojna'],
     3: ['Postojna', 'Logatec', 'Ziri', 'Skofja Loka'],
@@ -192,8 +192,8 @@ DAYS = {
     2: ['Como', 'Erba', 'Canzo', 'Sormano', 'Colma di Sormano', 'Nesso', 'Bellagio', 'Ghisallo', 'Asso', 'Erba', 'Como'],
     3: [['Como', 'Erba', 'Asso', 'Ghisallo', 'Bellagio'], ['Varenna', 'Lecco', 'Erba', 'Como']],   # ferry Bellagio - Varenna
     4: ['Como', 'Erba', 'Lecco'],
-    5: ['Bergamo', 'Almenno San Salvatore', "Sant'Omobono Terme", 'Brembilla', 'Zogno', 'Selvino', 'Albino', 'Colle Gallo', 'Trescore Balneario', 'Bergamo']},   # one loop, no dead end (Matteo 16 Nov); official course 109.5 km, start and finish in Bergamo   # the Gran Fondo now starts and ends in Bergamo (Matteo 16 Nov); approximate course until the GPX
-    ['Como'], ['Civiglio', 'Colma di Sormano', 'Ghisallo', 'Bellagio', 'Varenna', 'Lecco', 'Bergamo', 'Selvino', 'Colle Gallo']),
+    5: ['Bergamo', 'Almenno San Salvatore', 'Torre de Busi', 'Valcava', 'Costa Valle Imagna', 'Bedulita', 'Sedrina', 'Zogno', 'Miragolo San Salvatore', 'Salmezza', 'Selvino', 'Nembro', 'Bergamo Alta']},   # the 2026 course (organiser): Valcava, Miragolo San Salvatore, Salmezza, Selvino, finish up to Bergamo Alta; no Colle Gallo (Matteo 16 Nov)   # one loop, no dead end (Matteo 16 Nov); official course 109.5 km, start and finish in Bergamo   # the Gran Fondo now starts and ends in Bergamo (Matteo 16 Nov); approximate course until the GPX
+    ['Como'], ['Civiglio', 'Colma di Sormano', 'Ghisallo', 'Bellagio', 'Varenna', 'Lecco', 'Valcava', 'Miragolo San Salvatore', 'Selvino', 'Bergamo Alta']),
  'italys-coast-to-coast': (R, {
     2: ['Viareggio', 'Pisa', 'Peccioli'],
     3: ['Peccioli', 'San Gimignano', 'Monteriggioni', 'Siena'],
@@ -205,7 +205,7 @@ DAYS = {
 }
 COUNTRY_LABELS = {'italian-alps': [('SWITZERLAND', 46.33, 10.06), ('ITALY', 46.40, 10.42)]}   # Matteo 16 Nov: show where the Stelvio loop crosses into Switzerland
 INSET = {'lake-garda-and-stelvio': {'3': 'Day trip by van: Passo dello Stelvio'}}   # days far from the rest: a small map in the corner (Matteo 16 Nov)
-LABEL = {'Monetier-les-Bains': 'Monêtier-les-Bains', 'Col du Telegraphe': 'Col du Télégraphe', 'Briancon': 'Briançon', 'Ajdovscina': 'Ajdovščina', 'Ziri': 'Žiri',
+LABEL = {'Montvernier': 'Lacets de Montvernier', 'Croix de Fer': 'Col de la Croix de Fer', 'Valcava': 'Valico di Valcava', 'Salmezza': 'Passo Salmezza', 'Selvino': 'Selvino', 'Torre de Busi': "Torre de' Busi", 'Monetier-les-Bains': 'Monêtier-les-Bains', 'Col du Telegraphe': 'Col du Télégraphe', 'Briancon': 'Briançon', 'Ajdovscina': 'Ajdovščina', 'Ziri': 'Žiri',
          'Skofja Loka': 'Škofja Loka', 'Zelezniki': 'Železniki', 'Vrsic': 'Vršič Pass', 'Bled': 'Lake Bled', 'Salo': 'Salò', 'Loule': 'Loulé', 'Querenca': 'Querença',
          'Alto do Malhao': 'Alto do Malhão', 'Sao Bras de Alportel': 'São Brás de Alportel', 'Olhao': 'Olhão', 'Foia': 'Fóia', 'Portimao': 'Portimão', 'Stelvio': 'Passo dello Stelvio', 'Gavia': 'Passo Gavia',
          'Mortirolo': 'Passo del Mortirolo', 'Foscagno': 'Passo Foscagno', 'Pordoi': 'Passo Pordoi', 'Sella': 'Passo Sella', 'Gardena': 'Passo Gardena',
@@ -391,18 +391,24 @@ def draw(slug, countries, lakes, rivers, named=None):
     used = [b for b, _, _ in badges]
     def text(x, y, t, big, side):
         fs = 14 if big else 12
-        dx, anc = (12, 'start') if side == 'r' else (-12, 'end')
+        u = 8 if any(c[0] <= x <= c[2] and c[1] <= y <= c[3] for c in boxes[:len(badges)]) else 0   # beside a day badge
+        dx, anc = {'r': (12 + u, 'start'), 'l': (-12 - u, 'end'), 't': (0, 'middle'), 'b': (0, 'middle')}[side]
+        y = y - 18 - u * .75 if side == 't' else y + 16 + u * .75 if side == 'b' else y
         st = f'font-family="Montserrat, Arial, sans-serif" font-size="{fs}" font-weight="{700 if big else 600}" text-anchor="{anc}"'
         return (f'<text x="{x + dx:.1f}" y="{y + 4.5:.1f}" {st} fill="none" stroke="#0a0c0e" stroke-width="4" stroke-linejoin="round">{E(t)}</text>'
                 f'<text x="{x + dx:.1f}" y="{y + 4.5:.1f}" {st} fill="{"#f7f8f8" if big else "#c9a36a"}">{E(t)}</text>')
     boxes = [(x - 14, y - 14, x + 14, y + 14) for (x, y), _, _ in badges]
     def free(x, y, t, big, side):
         w = (8.6 if big else 7.3) * len(t) + 4
-        bx = (x + 12, y - 9, x + 12 + w, y + 9) if side == 'r' else (x - 12 - w, y - 9, x - 12, y + 9)
-        ok = bx[0] > 2 and bx[2] < W - 2 and not any(bx[0] < c[2] and c[0] < bx[2] and bx[1] < c[3] and c[1] < bx[3] for c in boxes)
+        bx = {'r': (x + 12, y - 9, x + 12 + w, y + 9), 'l': (x - 12 - w, y - 9, x - 12, y + 9),
+              't': (x - w / 2, y - 27, x + w / 2, y - 9), 'b': (x - w / 2, y + 7, x + w / 2, y + 25)}[side]
+        under = [c for c in boxes if c[0] <= x <= c[2] and c[1] <= y <= c[3]]   # a day badge on the climb itself: the name goes beside the badge
+        if under and side in ('r', 'l'): bx = (bx[0] + 8, bx[1], bx[2] + 8, bx[3]) if side == 'r' else (bx[0] - 8, bx[1], bx[2] - 8, bx[3])
+        if under and side in ('t', 'b'): bx = (bx[0], bx[1] - 6, bx[2], bx[3] - 6) if side == 't' else (bx[0], bx[1] + 6, bx[2], bx[3] + 6)
+        ok = bx[0] > 2 and bx[2] < W - 2 and not any(bx[0] < c[2] and c[0] < bx[2] and bx[1] < c[3] and c[1] < bx[3] for c in boxes if c not in under)
         return ok, bx
     def place(x, y, t, big, pref, must):
-        for side in (pref, 'l' if pref == 'r' else 'r'):
+        for side in (pref, 'l' if pref == 'r' else 'r', 't', 'b'):   # beside, then above or below (Matteo 16 Nov: every climb named)
             ok, bx = free(x, y, t, big, side)
             if ok: boxes.append(bx); return side
         if must:

@@ -44,7 +44,9 @@ OP_NOTE = {'maratona-dles-dolomites': 'As an Official Tour Operator, we offer th
 GUIDES_DROP = {'italys-coast-to-coast': {'AMEDEO'}, 'maratona-dles-dolomites': {'AMEDEO'}}   # Matteo 16 Nov
 GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Bone'}, 'wonderful-slovenia': {'AMEDEO': 'Bone'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'JP'}}   # French Alps and Slovenia: Alessio 'Bone' in Amedeo's place (Matteo 16 Nov)
 HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
-EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 2225,   # gravel photo on the road tour, Stelvio photo on the gravel tour
+FACT_PHOTO = {'lake-garda-and-stelvio': 4856, 'wonderful-slovenia': 6280}   # the photo in Trip at a glance (Matteo 16 Nov: Garda's was soft, Slovenia's was a map)
+EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 6143,   # Alpine Gravel: two riders on the Stelvio road, not the hairpins already on the poster (Matteo 16 Nov)
+                 # gravel photo on the road tour, Stelvio photo on the gravel tour
                'lake-garda-and-stelvio': {'GRAVEL': 7766, 'STELVIO': 2225}, 'lake-garda-gravel': 434}   # by a word of the section title when a page has several   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
 # Maratona: two hotels in one text block live -> a card each, with their own photos and stars (Matteo 16 Nov)
 LEVEL_FROM_DATA = {'italys-coast-to-coast'}   # Matteo 16 Nov: Coast to Coast is open to beginners too (tours/trips-2027.json)
@@ -95,9 +97,10 @@ DYN = set(IDS)   # the dynamic trip page on every tour (Matteo 16 Nov, after the
 HOTEL_PIC_ORDER_IDS = {'discover-the-algarve-granfondo': [2572, 2563, 2565, 2564, 2566, 2561, 2567, 2562, 2573]}   # Vilar do Golf: the resort and pool first, not the gym
 TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, cover photo (our own: no YouTube request until the visitor taps play) - Matteo 16 Nov
 HERO_TALL = {'tuscany-epic-gravel'}   # about 2 cm taller (Matteo 16 Nov)
-HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 8620, 'italian-alps': 2225, 'french-alps': 719, 'alpine-gravel-escape': 6100,
-              'italys-coast-to-coast': 4465, 'lake-como-gran-fondo-il-lombardia': 8767}   # sharp 2560px originals (Matteo 16 Nov: the old ones looked soft)   # Dolomites / Italian Alps: photos with riders (Matteo 16 Nov)   # media id: rider in Cigala kit above an Algarve beach
-HERO_DPOS = {'tuscany-epic-gravel': 'center 54%', 'tour-of-flanders-experience': '50% 65%', 'french-alps': 'center 70%', 'alpine-gravel-escape': 'center 84%', 'dolomites': 'center 55%', 'italian-alps': 'center 60%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
+HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 3719,   # Dolomites: wide drone photo of the towers and the pass road, not a Maratona photo (Matteo 16 Nov)
+              'italian-alps': 2225, 'french-alps': 719, 'alpine-gravel-escape': 6100,
+              'italys-coast-to-coast': 4465, 'lake-como-gran-fondo-il-lombardia': 4482}   # Lake Como: a rider descending above the lake (Matteo 16 Nov)   # sharp 2560px originals (Matteo 16 Nov: the old ones looked soft)   # Dolomites / Italian Alps: photos with riders (Matteo 16 Nov)   # media id: rider in Cigala kit above an Algarve beach
+HERO_DPOS = {'tuscany-epic-gravel': 'center 54%', 'tour-of-flanders-experience': '50% 65%', 'french-alps': 'center 70%', 'alpine-gravel-escape': 'center 84%', 'dolomites': 'center 45%', 'lake-como-gran-fondo-il-lombardia': 'center 55%', 'italian-alps': 'center 60%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
 HOTEL_FALLBACK = {'tour-of-flanders-experience': ('h3', 'Hotel T ****')}   # 4 stars (Matteo 16 Nov)   # live has no hotel heading: the main card (stars: add '****' once Matteo confirms)
 HERO_MPOS = {'tour-of-flanders-experience': '50% 70%', 'french-alps': '45% 70%', 'alpine-gravel-escape': '30% 62%', 'dolomites': '45% 60%', 'italian-alps': '30% 60%', 'discover-the-algarve-granfondo': '80% 45%', 'chianti-gran-fondo-strade-bianche': '52% 30%'}   # focus point of the hero photo on phones
 AVAIL = {'low': ('Last few spots', ''), 'mid': ('Filling up fast', ' amber'), 'high': ('Spots available', ' green')}   # wording + dot colour, same on every tour (Matteo 16 Nov)
@@ -107,6 +110,7 @@ _sv = lambda d: f'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" st
 ICON = {   # line icons for the glance strip and Trip at a glance (Matteo 16 Nov)
     'route': _sv('<circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="6" r="2.2"/><path d="M7 18h8.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H17"/>'),
     'climb': _sv('<path d="M2 20l6.5-10 4 6 3-4.5L22 20z"/><path d="M15.5 11.5l1.8-2.7"/>'),
+    'moon': _sv('<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'),
     'cal': _sv('<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
     'level': _sv('<path d="M5 19v-4M12 19v-8M19 19V5"/>'),
     'pin': _sv('<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/>'),
@@ -314,6 +318,9 @@ def trip(slug):
     if slug in HERO_PHOTO:   # a hero photo of its own (Matteo 16 Nov: the Algarve card photo was also used further down)
         hero_img = img_tag(HERO_PHOTO[slug], 2000, alt=hero_alt, lazy=False)
     hero_img = hero_img.replace('<img ', f'<img style="--mpos:{HERO_MPOS.get(slug, "50% 30%")};--dpos:{HERO_DPOS.get(slug, "center 40%")}" ', 1)   # phones: where the rider is in the photo
+    import datetime as _dt
+    _nn = (_dt.date.fromisoformat(tr['end']) - _dt.date.fromisoformat(tr['start'])).days   # days and nights from the 2027 dates (Matteo 16 Nov: not said anywhere at the top)
+    dn_html = f'<div class="dn"><span>{ICON["cal"]}{_nn + 1} days</span><span>{ICON["moon"]}{_nn} nights</span></div>'
     hero = f'''<div class="hero thero{" tall" if slug in HERO_TALL else ""}">
   {hero_img}
   <div class="in">
@@ -322,6 +329,7 @@ def trip(slug):
       <div class="tags">{tags_html}</div>
       <h1>{E(h1)}</h1>
       <div class="dates">{E(dates_live)}</div>
+      {dn_html}
       {'<a class="btn btn-ghost hvid" href="#video"><span class="pl" aria-hidden="true"></span>Watch the video</a>' if slug in TRIP_VIDEO else ''}
     </div>
     <aside class="book bk2" aria-label="Price and booking">
@@ -416,6 +424,7 @@ def trip(slug):
     g_title = re.sub(r'<[^>]+>', '', g['h']).strip() if g else ''
     gp = [x['id'] for gs in S('gallery') for k, v, s_ in gs['items'] if k == 'gallery' for x in s_.get('gallery', [])] + [v for gs in S('gallery') for k, v, s_ in gs['items'] if k == 'img']
     gp = GALLERY_PHOTOS.get(slug) or list(dict.fromkeys(gp))
+    if slug in FACT_PHOTO: gp = [FACT_PHOTO[slug]]
     fph = (f'<figure class="fphoto">{img_tag(gp[9] if len(gp) > 9 else gp[5] if 5 < len(gp) < 9 else gp[-1], 900, alt=f"Riders on the {text_of(h1).title()} bike tour - Cigala Cycling Tours")}</figure>' if gp else '')   # fills the box beside a long map (Matteo 16 Nov)
     dl = f'<dl class="panel facts"><{g_tag} class="facts-h">{E(g_title)}</{g_tag}>{facts}{fph}</dl>' if facts else ''
     note = ROUTE_NOTES.get(slug, '')
@@ -700,6 +709,9 @@ b.addEventListener('click',function(){set(cur===b.dataset.d?null:b.dataset.d);})
     # one Book now on screen at a time (Matteo 16 Nov): the bar's button shows once the price box has scrolled away
     out.append("""<script>(function(){var b=document.querySelector('.cl .thero .book'),t=document.querySelector('.cl .tabs');if(!b||!t||!('IntersectionObserver' in window))return;t.classList.add('nobook');
 new IntersectionObserver(function(es){t.classList.toggle('nobook',es[0].isIntersecting);}).observe(b);})();</script>""")
+    out.append("""<script>(function(){var f=document.querySelector('.cl .facts .fphoto');if(!f)return;   /* the photo only when it has room (Matteo 16 Nov) */
+function c(){f.hidden=false;f.style.display='';if(window.innerWidth>900&&f.getBoundingClientRect().height<260)f.style.display='none';}
+addEventListener('load',c);addEventListener('resize',c);c();})();</script>""")
     # laptops: the section menu stays under the header for the whole page (sticky alone let go at the end of its block); phones: not sticky (Matteo 16 Nov)
     out.append("""<script>(function(){var t=document.querySelector('.cl .tabs');if(!t)return;var ph=document.createElement('div');t.parentNode.insertBefore(ph,t);
 function f(){var pin=window.innerWidth>900&&ph.getBoundingClientRect().top<=79;if(pin!==t.classList.contains('pinned')){t.classList.toggle('pinned',pin);ph.style.height=pin?t.offsetHeight+'px':'';}}
@@ -794,7 +806,7 @@ html .cl .lm i.on { background: var(--green-text, #2bd47a); }
 html .cl .facts .facts-h { font-family: var(--head); font-weight: 400; font-size: 28px; line-height: 1.05; letter-spacing: .01em; color: var(--green-text, #2bd47a); margin: 0 0 10px; }
 html .cl .facts div { grid-template-columns: 32px 128px minmax(0, 1fr); align-items: center; gap: 12px; }   /* icon centred on its title (Matteo 16 Nov) */
 html .cl .facts div.ftrans { align-items: start; }
-@media (min-width: 901px) { html .cl dl.facts { display: flex !important; flex-direction: column; } html .cl .facts .fphoto { flex: 1 1 0; min-height: 160px; margin: 18px 0 0; border-radius: 12px; overflow: hidden; } html .cl .facts .fphoto img { width: 100%; height: 100%; object-fit: cover; display: block; } }
+@media (min-width: 901px) { html .cl dl.facts { display: flex !important; flex-direction: column; } html .cl .facts .fphoto { flex: 1 1 0; min-height: 0; margin: 18px 0 0; border-radius: 12px; overflow: hidden; } html .cl .facts .fphoto img { width: 100%; height: 100%; object-fit: cover; display: block; } }
 @media (max-width: 900px) { html .cl .facts .fphoto { display: none; } }
 html .cl .evopts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 4px; }
 html .cl .evopts > span:first-child { font-size: 13px; color: var(--text-3); margin-right: 2px; }
@@ -920,7 +932,8 @@ html .cl .dleg button { width: 100%; display: flex; align-items: center; gap: 10
 html .cl .dleg button:hover, html .cl .dleg button.on { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.06); color: #fff; }
 html .cl .dleg .sw { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: #0a0c0e; font: 800 12px/1 var(--body); }
 html .cl .dleg .dt { flex: 1; min-width: 0; white-space: normal; overflow-wrap: break-word; text-transform: uppercase; font-size: 11.5px; letter-spacing: .05em; }
-html .cl .dleg button { white-space: normal; }
+html .cl .dleg button { white-space: normal; height: 100%; }   /* every box fills its row: no gap under a short one (Matteo 16 Nov) */
+html .cl .dleg li { display: flex; }
 html .cl .dleg .dk { flex: none; color: var(--text-3); font-weight: 600; font-size: 12px; }
 html .cl .dmap .dr, html .cl .dmap .db { transition: opacity .2s; }
 html .cl .dmap.hl .dr:not(.on), html .cl .dmap.hl .db:not(.on) { opacity: .12; }
@@ -946,6 +959,16 @@ html .cl .ptile { background: rgba(255,255,255,.03); border: 1px solid var(--bor
 html .cl .ptile span { font-size: 11.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
 html .cl .ptile b { font-family: var(--head); font-weight: 400; font-size: 28px; color: #fff; }
 html .cl .ptile small { font-size: 12.5px; color: var(--text-3); }
+html .cl .ptile { transition: border-color .25s, background .25s, transform .25s; }
+html .cl .ptile b { transition: color .25s; }
+html .cl .prow .ptile:hover { transform: translateY(-2px); }   /* the grids in medal colours on hover (Matteo 16 Nov) */
+html .cl .prow .ptile:nth-child(1):hover { border-color: #d4af37; background: rgba(212,175,55,.12); } html .cl .prow .ptile:nth-child(1):hover b, html .cl .prow .ptile:nth-child(1):hover span { color: #e6c55a; }
+html .cl .prow .ptile:nth-child(2):hover { border-color: #c4cad0; background: rgba(196,202,208,.12); } html .cl .prow .ptile:nth-child(2):hover b, html .cl .prow .ptile:nth-child(2):hover span { color: #dfe4e8; }
+html .cl .prow .ptile:nth-child(3):hover { border-color: #cd7f32; background: rgba(205,127,50,.13); } html .cl .prow .ptile:nth-child(3):hover b, html .cl .prow .ptile:nth-child(3):hover span { color: #e0965a; }
+html .cl .prow .ptile:nth-child(4):hover { border-color: #2bd47a; background: rgba(0,154,68,.13); } html .cl .prow .ptile:nth-child(4):hover b, html .cl .prow .ptile:nth-child(4):hover span { color: #2bd47a; }
+html .cl .thero .dn { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; font-size: 15px; font-weight: 600; color: var(--text, #f7f8f8); letter-spacing: .02em; }
+html .cl .thero .dn span { display: inline-flex; align-items: center; gap: 7px; }
+html .cl .thero .dn svg { width: 17px; height: 17px; color: var(--green-text, #2bd47a); }
 @media (max-width: 800px) { html .cl .inc2 { grid-template-columns: minmax(0, 1fr); } }
 html .cl .inc .sidet { font-family: var(--head); font-weight: 400; font-size: 20px; line-height: 1.1; text-transform: uppercase; letter-spacing: .01em; color: var(--text); margin: 0 0 14px; }
 html .cl .inc .entryp li::before { width: 7px; height: 7px; margin: 8px 0 0 7px; background: var(--green-text, #2bd47a); }   /* prices, not included items: a plain dot */

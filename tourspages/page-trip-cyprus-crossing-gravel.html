@@ -247,7 +247,7 @@ html .cl .lm i.on { background: var(--green-text, #2bd47a); }
 html .cl .facts .facts-h { font-family: var(--head); font-weight: 400; font-size: 28px; line-height: 1.05; letter-spacing: .01em; color: var(--green-text, #2bd47a); margin: 0 0 10px; }
 html .cl .facts div { grid-template-columns: 32px 128px minmax(0, 1fr); align-items: center; gap: 12px; }   /* icon centred on its title (Matteo 16 Nov) */
 html .cl .facts div.ftrans { align-items: start; }
-@media (min-width: 901px) { html .cl dl.facts { display: flex !important; flex-direction: column; } html .cl .facts .fphoto { flex: 1 1 0; min-height: 160px; margin: 18px 0 0; border-radius: 12px; overflow: hidden; } html .cl .facts .fphoto img { width: 100%; height: 100%; object-fit: cover; display: block; } }
+@media (min-width: 901px) { html .cl dl.facts { display: flex !important; flex-direction: column; } html .cl .facts .fphoto { flex: 1 1 0; min-height: 0; margin: 18px 0 0; border-radius: 12px; overflow: hidden; } html .cl .facts .fphoto img { width: 100%; height: 100%; object-fit: cover; display: block; } }
 @media (max-width: 900px) { html .cl .facts .fphoto { display: none; } }
 html .cl .evopts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 4px; }
 html .cl .evopts > span:first-child { font-size: 13px; color: var(--text-3); margin-right: 2px; }
@@ -373,7 +373,8 @@ html .cl .dleg button { width: 100%; display: flex; align-items: center; gap: 10
 html .cl .dleg button:hover, html .cl .dleg button.on { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.06); color: #fff; }
 html .cl .dleg .sw { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: #0a0c0e; font: 800 12px/1 var(--body); }
 html .cl .dleg .dt { flex: 1; min-width: 0; white-space: normal; overflow-wrap: break-word; text-transform: uppercase; font-size: 11.5px; letter-spacing: .05em; }
-html .cl .dleg button { white-space: normal; }
+html .cl .dleg button { white-space: normal; height: 100%; }   /* every box fills its row: no gap under a short one (Matteo 16 Nov) */
+html .cl .dleg li { display: flex; }
 html .cl .dleg .dk { flex: none; color: var(--text-3); font-weight: 600; font-size: 12px; }
 html .cl .dmap .dr, html .cl .dmap .db { transition: opacity .2s; }
 html .cl .dmap.hl .dr:not(.on), html .cl .dmap.hl .db:not(.on) { opacity: .12; }
@@ -399,6 +400,16 @@ html .cl .ptile { background: rgba(255,255,255,.03); border: 1px solid var(--bor
 html .cl .ptile span { font-size: 11.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
 html .cl .ptile b { font-family: var(--head); font-weight: 400; font-size: 28px; color: #fff; }
 html .cl .ptile small { font-size: 12.5px; color: var(--text-3); }
+html .cl .ptile { transition: border-color .25s, background .25s, transform .25s; }
+html .cl .ptile b { transition: color .25s; }
+html .cl .prow .ptile:hover { transform: translateY(-2px); }   /* the grids in medal colours on hover (Matteo 16 Nov) */
+html .cl .prow .ptile:nth-child(1):hover { border-color: #d4af37; background: rgba(212,175,55,.12); } html .cl .prow .ptile:nth-child(1):hover b, html .cl .prow .ptile:nth-child(1):hover span { color: #e6c55a; }
+html .cl .prow .ptile:nth-child(2):hover { border-color: #c4cad0; background: rgba(196,202,208,.12); } html .cl .prow .ptile:nth-child(2):hover b, html .cl .prow .ptile:nth-child(2):hover span { color: #dfe4e8; }
+html .cl .prow .ptile:nth-child(3):hover { border-color: #cd7f32; background: rgba(205,127,50,.13); } html .cl .prow .ptile:nth-child(3):hover b, html .cl .prow .ptile:nth-child(3):hover span { color: #e0965a; }
+html .cl .prow .ptile:nth-child(4):hover { border-color: #2bd47a; background: rgba(0,154,68,.13); } html .cl .prow .ptile:nth-child(4):hover b, html .cl .prow .ptile:nth-child(4):hover span { color: #2bd47a; }
+html .cl .thero .dn { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; font-size: 15px; font-weight: 600; color: var(--text, #f7f8f8); letter-spacing: .02em; }
+html .cl .thero .dn span { display: inline-flex; align-items: center; gap: 7px; }
+html .cl .thero .dn svg { width: 17px; height: 17px; color: var(--green-text, #2bd47a); }
 @media (max-width: 800px) { html .cl .inc2 { grid-template-columns: minmax(0, 1fr); } }
 html .cl .inc .sidet { font-family: var(--head); font-weight: 400; font-size: 20px; line-height: 1.1; text-transform: uppercase; letter-spacing: .01em; color: var(--text); margin: 0 0 14px; }
 html .cl .inc .entryp li::before { width: 7px; height: 7px; margin: 8px 0 0 7px; background: var(--green-text, #2bd47a); }   /* prices, not included items: a plain dot */
@@ -1270,6 +1281,7 @@ html .cc .tour:hover img { transform: none; }
       <div class="tags"><span class="tag gdot">Gravel</span><span class="tag">Cyprus</span><span class="tag tlvl"><span class="lm" aria-hidden="true"><i class=on></i><i class=on></i><i class=on></i></span>Expert</span></div>
       <h1>CYPRUS CROSSING GRAVEL</h1>
       <div class="dates">22-29 April 2027</div>
+      <div class="dn"><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>8 days</span><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>7 nights</span></div>
       <a class="btn btn-ghost hvid" href="#video"><span class="pl" aria-hidden="true"></span>Watch the video</a>
     </div>
     <aside class="book bk2" aria-label="Price and booking">
@@ -1341,6 +1353,9 @@ if(matchMedia('(hover: none)').matches){addEventListener('scroll',function(){var
 if(maxY>h*.5&&ys.length&&ys[0][1]-y>500)open();},{passive:true});}})();</script>
 <script>(function(){var b=document.querySelector('.cl .thero .book'),t=document.querySelector('.cl .tabs');if(!b||!t||!('IntersectionObserver' in window))return;t.classList.add('nobook');
 new IntersectionObserver(function(es){t.classList.toggle('nobook',es[0].isIntersecting);}).observe(b);})();</script>
+<script>(function(){var f=document.querySelector('.cl .facts .fphoto');if(!f)return;   /* the photo only when it has room (Matteo 16 Nov) */
+function c(){f.hidden=false;f.style.display='';if(window.innerWidth>900&&f.getBoundingClientRect().height<260)f.style.display='none';}
+addEventListener('load',c);addEventListener('resize',c);c();})();</script>
 <script>(function(){var t=document.querySelector('.cl .tabs');if(!t)return;var ph=document.createElement('div');t.parentNode.insertBefore(ph,t);
 function f(){var pin=window.innerWidth>900&&ph.getBoundingClientRect().top<=79;if(pin!==t.classList.contains('pinned')){t.classList.toggle('pinned',pin);ph.style.height=pin?t.offsetHeight+'px':'';}}
 addEventListener('scroll',f,{passive:true});addEventListener('resize',f);f();})();</script>
