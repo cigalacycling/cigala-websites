@@ -69,7 +69,7 @@ pages = []
 pages.append(f'''<section class="page cover">
   <div class="in">
     <div class="logos">
-      <img class="cc" src="{A}cigala-cycling-logo-square-print.png" alt="Cigala Cycling logo">
+      <img class="cc" src="{A}cigala-cycling-coaching-logo.png" alt="Cigala Cycling Coaching logo">
       <span class="x">×</span>
       <img class="vv" src="{A}vivify-sports-logo-white-print.png" alt="Vivify Sports logo">
     </div>

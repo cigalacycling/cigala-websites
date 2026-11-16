@@ -82,7 +82,7 @@ def gym_doc(doc, title, sub, warm_k, warm, exercises, important, email, per_page
         body = ''
         if pi == 0:
             body += f'''  <div class="head"><div><div class="eyebrow">Cigala Cycling Coaching</div><h1>{title}{f"<span>{sub}</span>" if sub else ""}</h1><div class="bar"></div></div>
-    <img src="{A}cigala-cycling-logo-square-print.png" alt="Cigala Cycling logo"></div>
+    <img src="{A}cigala-cycling-coaching-logo.png" alt="Cigala Cycling Coaching logo"></div>
   {keybar(['str','bike'])}  <div class="wu"><div class="im"><img src="img/{doc}-warmup.jpg" alt="Warm-up"></div><div><div class="k">{warm_k}</div><div class="ds">{"<br>".join(warm)}</div></div></div>
   <div class="div">Start of the circuit</div>
 '''
@@ -251,7 +251,7 @@ for pi, c in enumerate(per):
     b = ''
     if pi == 0:
         b += f'''  <div class="head"><div><div class="eyebrow">Cigala Cycling Coaching</div><h1>Stretches &amp; core</h1><div class="bar"></div></div>
-    <img src="{A}cigala-cycling-logo-square-print.png" alt="Cigala Cycling logo"></div>
+    <img src="{A}cigala-cycling-coaching-logo.png" alt="Cigala Cycling Coaching logo"></div>
   {keybar(['mob','str'])}  <div class="div">Stretches</div>
 '''
     for no, r in rows[i:i + c]:
