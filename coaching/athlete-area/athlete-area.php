@@ -211,11 +211,15 @@ function cc_ath_inner() {
         $list = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'meta_key' => 'cc_user']);
         $o .= '<div class="ath-coach"><p><b>Coach view.</b> You see what every athlete sees. Choose an athlete to see their own reports, or add one in WordPress: Users &gt; Add New (role Subscriber).</p><p class="ath-list">';
         foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . esc_html($p->post_title) . '</a>';
-        $o .= $list ? '</p></div>' : '<span>No athletes yet.</span></p></div>';
+        $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . apply_filters('cc_ath_coach_links', '') . '</div>';
+        // coach-only pages (e.g. ?board=availability, from availability.php); empty unless a module adds one
+        $board = isset($_GET['board']) ? sanitize_key($_GET['board']) : '';
+        if ($board !== '' && ($b = apply_filters('cc_ath_board', '', $board)) !== '') return $o . $b . '</div>' . cc_ath_js();
     }
     $hub = ($shared = cc_ath_shared_page()) ? cc_ath_sections(cc_ath_dress(cc_ath_content($shared))) : ['', []];
     $nav = [['reports', 'Your reports']];
     foreach ($hub[1] as $s) $nav[] = $s;
+    $nav = apply_filters('cc_ath_nav', $nav, $view, $coach);   // modules add their own sections (availability.php)
     $o .= '<nav class="ath-jump" aria-label="Sections">';
     foreach ($nav as $n) $o .= '<a href="#' . esc_attr($n[0]) . '">' . esc_html($n[1]) . '</a>';
     $o .= '</nav>';
@@ -223,6 +227,7 @@ function cc_ath_inner() {
         . ($mineHtml !== '' ? '<div class="ath-body">' . $mineHtml . '</div>'
            : '<div class="ath-empty">' . cc_ath_icon('doc') . '<p>Your first assessment, reviews and progress reports will appear here. I will let you know when there is something new.</p></div>')
         . '</section>';
+    $o .= apply_filters('cc_ath_after_reports', '', $view, $coach);
     $o .= $hub[0];
     return $o . '</div>' . cc_ath_js();
 }

@@ -1,5 +1,5 @@
 """Athlete area on Coaching STAGING (Matteo, 16 Nov 2026): one login per athlete, removed when they finish.
-  python3 -I tools/coaching_athlete_area.py [--hub]   (--hub rewrites the shared hub page; only before Matteo edits it himself)
+  python3 -I tools/coaching_athlete_area.py [--hub] [--availability]   (--availability adds coaching/athlete-area/availability.php; --hub rewrites the shared hub page; only before Matteo edits it himself)
 Switches Code Snippets on, pushes coaching/athlete-area/athlete-area.php as a snippet (ID kept in stg-coaching/athlete-snippet-id.txt),
 creates the /athletes/ page and the "Shared hub (all athletes)" page once. Re-running updates the snippet only.
 The proxy adds the staging application password; there are no secrets here.
@@ -93,6 +93,9 @@ if __name__ == '__main__':
     print('code snippets', req(f'{B}/wp/v2/plugins/code-snippets/code-snippets?_fields=plugin,status', {'status': 'active'}, 'POST'))
     code = open(ROOT + 'coaching/athlete-area/athlete-area.php').read()
     assert code.startswith('<?php\n'); code = code[len('<?php\n'):]
+    if '--availability' in sys.argv:   # the availability card (README "Athlete area: availability"); only once Matteo says go
+        extra = open(ROOT + 'coaching/athlete-area/availability.php').read()
+        assert extra.startswith('<?php\n'); code += '\n' + extra[len('<?php\n'):].replace("if (!defined('ABSPATH')) return;", '', 1)
     body = {'name': 'Cigala athlete area (one login per athlete)', 'desc': 'Built by tools/coaching_athlete_area.py from coaching/athlete-area/athlete-area.php in the cigala-websites repo. Do not edit here.',
             'code': code, 'scope': 'global', 'active': True, 'priority': 10}
     if os.path.exists(SNIP):

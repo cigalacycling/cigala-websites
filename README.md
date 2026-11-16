@@ -419,3 +419,10 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Notifications:** email is fine for Matteo; a phone push app is not needed for now.
 - **Read access:** the PC availability session (mdv workspace) can read it through the same secure API as the report delivery.
 - Each athlete sees only their own. 16px fields.
+- **Built locally 16 Nov (not on any site yet; waiting for Matteo's go after the Coaching launch):**
+  - Code: `coaching/athlete-area/availability.php`. Hooks into `athlete-area.php` through four filters (`cc_ath_nav`, `cc_ath_after_reports`, `cc_ath_coach_links`, `cc_ath_board`), which do nothing without it. Pushed only with `python3 -I tools/coaching_athlete_area.py --availability` (staging first).
+  - Data: post meta `cc_avail` (JSON) on the athlete's page. Voice recordings go to `uploads/cc-private`, attached to that page, so the existing file check serves them only to the athlete and Matteo. Coach board: `/athletes/?board=availability`. Read API for the PC tools: `GET /wp-json/cc/v1/availability[?email=]` (application password).
+  - Email to `info@cigalacycling.com` (or `CC_AVAIL_NOTIFY` in wp-config) on every save, with Reply-To set to the athlete.
+  - Vekta: notes worked out per day (each day of a dated change, max 31; a new usual week as one note on the next Monday). Nothing is sent until the call is confirmed against the API the PC tools use and Matteo puts `CC_VEKTA_API_URL`/`CC_VEKTA_API_KEY` in wp-config.php himself.
+  - Tests: `php tools/test_availability.php`. Mock-up: `php tools/mock_availability.php > coaching/athlete-area/mockup/parts.json && python3 -I tools/build_availability_mockup.py` (checked at 390/820/1440, 16px fields, mic and save simulated).
+  - Open: Vekta key location and calendar item type; whether the privacy policy draft should mention voice notes.
