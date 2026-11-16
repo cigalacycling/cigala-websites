@@ -57,7 +57,7 @@ The Coaching website (`coaching.cigalacycling.com`, athlete area `/athletes/`) h
   - for events, the event date.
 - **Removing:** when a change or event is removed or edited, remove or update the note written for it. Keep a record of what was written for which athlete and date.
 - **Question for this session:** which Vekta calendar item type fits each case? For example: away = unavailable day; gym only, indoor only, less or more time = note; race = event. Tell Matteo or the availability chat.
-- **Running it:** if the Vekta connection is a claude.ai connector, this can be a scheduled task (e.g. hourly) that runs with the PC off. Otherwise it runs whenever the PC session runs.
+- **Running it (Matteo 16 Nov):** a scheduled task twice a day, at about 06:00 and 18:00 Irish time. If the Vekta connection is a claude.ai connector, the task runs with the PC off; otherwise it runs whenever the PC session runs.
 - Matteo already gets an email the moment an athlete saves, so a delay in Vekta is fine.
 
 ## Rules (Matteo)
