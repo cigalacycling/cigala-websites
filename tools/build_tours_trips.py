@@ -25,6 +25,7 @@ _sp = _iu.spec_from_file_location('trm', os.path.join(os.path.dirname(os.path.ab
 ROUTE_NOTES = {k: v.get('note', '') for k, v in _trm.ROUTES.items()}
 _SPJ = json.load(open(ROOT + 'tours/spots.json'))
 SPOTS = {k: v for k, v in _SPJ.items() if not k.startswith('_')}
+TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, cover photo (our own: no YouTube request until the visitor taps play) - Matteo 16 Nov
 HERO_PHOTO = {'discover-the-algarve-granfondo': 710}   # media id: rider in Cigala kit above an Algarve beach
 HERO_DPOS = {'tour-of-flanders-experience': '50% 65%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
 HOTEL_FALLBACK = {'tour-of-flanders-experience': ('h3', 'Hotel T')}   # live has no hotel heading: the main card (stars: add '****' once Matteo confirms)
@@ -223,6 +224,7 @@ def trip(slug):
       <div class="tags">{tags_html}</div>
       <h1>{E(h1)}</h1>
       <div class="dates">{E(dates_live)}</div>
+      {'<a class="btn btn-ghost hvid" href="#video"><span class="pl" aria-hidden="true"></span>Watch the video</a>' if slug in TRIP_VIDEO else ''}
     </div>
     <aside class="book bk2" aria-label="Price and booking">
       <div class="bk-top">
@@ -264,6 +266,13 @@ def trip(slug):
                 f'<div class="cardimg">{img_tag(hero_src, 1200, alt=hero_alt)}</div>') if hero_src and card else ''
         out.append(f'<section id="overview"><div class="in split"><div>{H(intro, "The trip")}<div class="prose">{paras}</div></div>{cimg}</div></section>')
         nav.append(('overview', 'Overview'))
+    if slug in TRIP_VIDEO:   # the trip on film, right after the intro (Matteo 16 Nov); YouTube loads only when the visitor taps play (YT_JS, youtube-nocookie)
+        vid, cover = TRIP_VIDEO[slug]
+        out.append(f'<section id="video" style="padding-top:28px"><div class="in"><div class="head"><div><div class="eyebrow">Watch the trip</div>'
+                   f'<p class="band-title">{E(re.sub(r"\s*\|\s*Gravel$", "", tr["name"]))} on film</p><div class="bar"></div></div></div>'
+                   f'<div class="panel vcard tvid"><button type="button" class="yt" data-id="{vid}" aria-label="Play the {E(re.sub(r"\s*\|\s*Gravel$", "", tr["name"]))} video">'
+                   f'{img_tag(cover, 1600, alt=f"{tr["name"]} gravel cycling tour video - Cigala Cycling Tours")}<span class="play" aria-hidden="true"></span></button></div></div></section>')
+        nav.append(('video', 'Video'))
     op = one('operator')
     if op:
         logo = next((v for k, v, s in op['items'] if k == 'img'), None)
@@ -608,6 +617,12 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
+html .cl .tvid { max-width: 1000px; }
+html .cl .tvid .play { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
+html .cl .tvid .play::after { left: 34px; top: 26px; border-width: 16px 0 16px 25px; }
+html .cl .hvid { margin-top: 18px; display: inline-flex; align-items: center; gap: 10px; }
+html .cl .hvid .pl { width: 22px; height: 22px; border-radius: 50%; background: #009a44; position: relative; flex: none; }
+html .cl .hvid .pl::after { content: ""; position: absolute; left: 8px; top: 6px; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent #fff; }
 @media (min-width: 901px) { html .cl .hero.thero > img { object-position: var(--dpos, center 40%); } }
 /* phones: the hero photo as a clear band at the top, the title and the price box under it (Matteo 16 Nov: the rider and the jersey logo were hidden) */
 @media (max-width: 900px) {

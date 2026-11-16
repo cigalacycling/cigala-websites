@@ -230,6 +230,12 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
+html .cl .tvid { max-width: 1000px; }
+html .cl .tvid .play { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
+html .cl .tvid .play::after { left: 34px; top: 26px; border-width: 16px 0 16px 25px; }
+html .cl .hvid { margin-top: 18px; display: inline-flex; align-items: center; gap: 10px; }
+html .cl .hvid .pl { width: 22px; height: 22px; border-radius: 50%; background: #009a44; position: relative; flex: none; }
+html .cl .hvid .pl::after { content: ""; position: absolute; left: 8px; top: 6px; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent #fff; }
 @media (min-width: 901px) { html .cl .hero.thero > img { object-position: var(--dpos, center 40%); } }
 /* phones: the hero photo as a clear band at the top, the title and the price box under it (Matteo 16 Nov: the rider and the jersey logo were hidden) */
 @media (max-width: 900px) {
@@ -1122,6 +1128,7 @@ html .cc .tour:hover img { transform: none; }
       <div class="tags"><span class="tag dot">Gran Fondo</span><span class="tag">Italy</span><span class="tag tlvl"><span class="lm" aria-hidden="true"><i class=on></i><i></i><i></i></span>Beginner · Intermediate · Expert</span></div>
       <h1>Lake Como &amp; Gran Fondo Il Lombardia</h1>
       <div class="dates">6-11 October 2027</div>
+      
     </div>
     <aside class="book bk2" aria-label="Price and booking">
       <div class="bk-top">
