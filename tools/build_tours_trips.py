@@ -34,7 +34,7 @@ TEAM = {'JP': ('Guide', 2658, 'Giampietro, JP to everyone, is retired and lives 
         'Amedeo': ('Tour Guide Leader', 2214, 'A former pro cyclist, Amedeo has been a cycling tour guide and massage therapist for a decade, with almost 1,000 days on tours: one of the most experienced guides you will find.'),
         'Piero': ('Guide & Gravel Expert', 3455, 'Piero is a passionate cyclist and architect, whose eye for detail carries into his riding. He started out in downhill mountain biking before finding his true love: gravel.')}   # bios as on the live tour pages
 GUIDES_SET = {'lake-garda-and-stelvio': ['Piero', 'Amedeo', 'JP'], 'lake-garda-gravel': ['Piero', 'Amedeo', 'JP']}   # the whole guide line-up for a tour (Matteo 16 Nov)
-GALLERY_PHOTOS = {'discover-the-algarve-granfondo': [2527, 2528, 2526, 2525, 2524, 2530, 2522, 2531, 2529],   # podium with the pros in the gallery (Matteo 16 Nov); no repeat of the day photos
+GALLERY_PHOTOS = {'discover-the-algarve-granfondo': [2527, 2528, 2526, 2525, 2524, 2530, 2522, 2531, 4602],   # podium with the pros in the gallery (Matteo 16 Nov); no repeat of the day photos
                   'chianti-gran-fondo-strade-bianche': [11034, 3160, 3156, 3157, 3158, 3161, 3162, 3163, 3164],   # first photo: Matteo's vineyard descent (the old one was low quality, 16 Nov)
                   'lake-garda-and-stelvio': [2211, 2212, 2209, 434, 780, 650, 898, 2235, 2233]}   # Garda & Stelvio: the live gallery photos are 450-800px wide (soft); sharper Garda photos (Matteo 16 Nov)
 GUIDES_ADD = {'maratona-dles-dolomites': ['JP', 'Bone'], 'dolomites': ['Bone'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio', 'Marco']}   # Coast to Coast: Marco = the younger support & mechanic, not Marco "DS" (Matteo 16 Nov)
@@ -48,7 +48,7 @@ lib_alt = lambda i: re.sub(r'\s*-\s*Cigala Cycling Tours$', '', _LIB[i].get('alt
 EVENT_LOGO = {'chianti-gran-fondo-strade-bianche': 9333, 'lake-como-gran-fondo-il-lombardia': 9326, 'discover-the-algarve-granfondo': 9255, 'tour-of-flanders-experience': 9340}   # the event's own logo on the right of its box (Matteo 16 Nov: the box looked like it was missing it)
 DAY_MEDIA = {'cyprus-crossing-gravel': {1: ('5wzpNhqEBR0', 3322), 2: ('6dCFozS_3aU', 6725), 3: ('MtAVyHtkKY8', 6752), 4: ('-RcfggqFlVQ', 7264), 5: ('ieLjUSSES6I', 3325),
                                        6: ('CRHb2_UW908', 3326), 7: ('ejhAFqD612A', 7261)},   # Matteo 16 Nov; the last-day photo to come
-             'discover-the-algarve-granfondo': {1: ('3hmbEQFiTHY', 4515), 2: ('Ew-QIRa8C_8', 2523), 3: ('img', 2499), 4: ('DPPZt7TXcg4', 4955),
+             'discover-the-algarve-granfondo': {1: ('3hmbEQFiTHY', 4515), 2: ('Ew-QIRa8C_8', 2529), 3: ('img', 2499), 4: ('DPPZt7TXcg4', 4955),
                                               5: ('img', 2518), 6: ('img', 4514)},   # Matteo 16 Nov, round 2: all from the old Algarve page, upright frames; the podium with the pros moved to the gallery
              'chianti-gran-fondo-strade-bianche': {1: ('4tBZpWAVnrc', 4446), 2: ('4dBK7nxR2nI', 11033), 3: ('jYGwgkZ9CDM', 4872), 4: ('vKw83m2nUh0', 4871),
                                                   5: ('img', 3196), 6: ('0Kw39ByYQGg', 3164)}}   # covers match the day (Matteo 16 Nov): Chianti hills, white road, cypress avenue, Siena crowd (pro race), Siena   # Matteo 16 Nov: a Short per day, day 5 = his photo winning with the bike up   # a YouTube Short in a day's box (Matteo 16 Nov): (video, our own cover photo); loads on tap
