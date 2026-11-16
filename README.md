@@ -376,3 +376,14 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Schema moved out of WPCode (15 Nov):** Organization, WebSite and Service (every tour, from `tours/trips-2027.json`) now come from Elementor custom code **snippet 9352** (head), made by `python3 -I tools/tours_schema.py`. Re-run it when tours are added, removed or renamed.
   - The WPCode Header box should contain only `tours/wpcode-header.html`: the consent default line plus the Google tag.
 
+
+## Coaching athlete area (16 Nov 2026, staging)
+- One login per coached athlete at `/athletes/` (footer link "Athlete login"). noindex, not in the sitemap, never cached.
+- Code: `coaching/athlete-area/athlete-area.php`, pushed as Code Snippets snippet 8 by `python3 -I tools/coaching_athlete_area.py`. **Code Snippets must stay active** (it was off before; snippets 5–7 stay off).
+- Matteo's steps:
+  - **New athlete:** Users > Add New, role Subscriber. Their page is created automatically under "Athletes".
+  - **Reports:** upload the PDF inside the athlete's page. It goes to `uploads/cc-private/`, which can't be opened directly (403), and opens only for that athlete or Matteo.
+  - **Shared hub:** "Shared hub (all athletes)", page 7365.
+  - **Athlete finishes:** delete the user. The login stops at once and the page stays as "Former athlete: …".
+- Tested 16 Nov on staging: login and wrong password, 1-year login cookie, file open/refused/direct-download blocked, a deleted athlete can't log in, wp-admin redirects athletes. 390/820/1440 widths, 16px fields, one H1. Test users removed.
+- After go-live: open /athletes/ logged out on live and check that LiteSpeed doesn't cache it, and that `/wp-content/uploads/cc-private/` answers 403.

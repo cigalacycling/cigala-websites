@@ -431,6 +431,13 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 @media (prefers-reduced-motion: reduce) { .path img, .dest img { transition: none; } .path:hover img, .dest:hover img { transform: none; } }
 </style>
 <style>
+.sigph { position: relative; display: block; }
+.sigph img { display: block; width: 100%; height: auto; }
+.sigph img.signature { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.sigph .sig-anchor { position: absolute; left: 10%; right: 10%; top: 82%; bottom: 0; }
+html.sig-ok .sigph img.signature { clip-path: inset(0 100% 0 0); }
+html.sig-ok .sigph img.signature.go { animation: sig-write 2.2s cubic-bezier(.55,.1,.35,1) forwards; }
+@keyframes sig-write { to { clip-path: inset(0 0 0 0); } }
 .ft-box { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 60%), var(--panel-grad), var(--panel); }
 .ft-head p { margin: 14px 0 0; color: var(--text-2); }
 .ft-head .arrow-link { display: inline-block; margin-top: 14px; }
@@ -661,6 +668,7 @@ No matter where you are in the world, we coach remotely in different countries, 
     <span>© 2026 Cigala Cycling Ltd · Registered in Ireland No. 675577 · VAT IE3699893CH</span>
     <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">Terms &amp; Conditions</a>
     <a href="https://coaching.cigalacycling.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a>
+    <a href="https://coaching.cigalacycling.com/athletes/" target="_blank" rel="noopener">Athlete login</a>
     <details class="intl-dd"><summary>International coaching</summary>
       <ul class="intl"><li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-uk/" target="_blank" rel="noopener">Cycling Coach UK</a></h2></li><li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-usa/" target="_blank" rel="noopener">Cycling Coach USA</a></h2></li><li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-canada/" target="_blank" rel="noopener">Cycling Coach Canada</a></h2></li><li><h2><a href="https://coaching.cigalacycling.com/preparatore-di-ciclismo-italia/" target="_blank" rel="noopener">Preparatore di Ciclismo Italia</a></h2></li></ul>
     </details>

@@ -386,6 +386,7 @@ FOOTER = f'''<footer>
     <span>© 2026 Cigala Cycling Ltd · Registered in Ireland No. 675577 · VAT IE3699893CH</span>
     {a(C + '/terms-conditions/', 'Terms &amp; Conditions')}
     {a(C + '/privacy-policy/', 'Privacy Policy')}
+    {a(C + '/athletes/', 'Athlete login')}
     <details class="intl-dd"><summary>International coaching</summary>
       <ul class="intl">{''.join(f'<li><h2><a href="{C}{u}" {EXT}>{t}</a></h2></li>' for u, t in INTL)}</ul>
     </details>

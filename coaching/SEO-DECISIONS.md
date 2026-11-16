@@ -396,3 +396,7 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   - Limits: once per visit, only after the cookie choice, never while the newsletter pop-up is open or within an hour of it, at least 8 s on the page, 3-day snooze after closing.
   - The text is set by script and has no headings, so the crawl results don't change.
 - CSS scoper: selectors starting with `html.` (classes set on `<html>`) now become `html.x .cc …`.
+
+## 16 Nov: athlete area
+- New private page `/athletes/`: noindex, nofollow (meta tag and X-Robots-Tag header), left out of the Yoast sitemap, not cached. It adds no public content, so the existing pages, titles and headings are unchanged.
+- The footer gains an "Athlete login" link in the bottom row.
