@@ -4,6 +4,7 @@ Read `README.md` first: it has the folder map, build/push steps, page IDs and cu
 
 Rules that always apply:
 - Work only on Hostinger staging sites, never on the live sites. Going live is done together with Matteo.
+  - **Exception, cigalacycling.com only (Matteo, 16 Nov 2026, after go-live):** test every change on staging first, then apply the same change to the live cigalacycling.com through the REST API, so staging and live stay identical. Back up what you change first (`live/backup/`). Don't publish staging over live from Hostinger any more. Titles, descriptions, headings and body copy still need Matteo's OK. Tours and Coaching stay staging-only unless Matteo says otherwise.
 - Never lose SEO, only improve it. Crawl the live site with `tools/crawl.py` before changing anything, and compare against that crawl after. Keep these unchanged:
   - URLs
   - Yoast titles and meta descriptions
