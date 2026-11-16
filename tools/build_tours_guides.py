@@ -171,12 +171,12 @@ GUIDES_CSS = '''
 /* Guides page */
 .e-con.cl-guides-grid { max-width: 1232px !important; margin: 0 auto !important; padding: 44px 16px 0 !important; }   /* the same gap under the hero as every page (Matteo 16 Nov) */
 .cl-ggrid .elementor-loop-container { gap: 16px !important; }
-.cl-gfilter { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; width: 100%; margin: 0 0 22px; }
+.cl-gfilter { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; width: 100%; margin: 0; padding-bottom: 26px; }
 .cl-gfilter .gchip { font: 600 13px/1 Montserrat, system-ui, sans-serif; color: #d0d6e0; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.14); border-radius: 999px; padding: 10px 16px; letter-spacing: .02em; cursor: pointer; transition: border-color .2s, background .2s; }
 .cl-gfilter .gchip:hover { border-color: rgba(0,154,68,.6); color: #fff; background: rgba(255,255,255,.04); }
 .cl-gfilter .gchip[aria-pressed="true"] { background: #009a44; border-color: #009a44; color: #fff; }
 .cl-ggrid .e-loop-item[hidden] { display: none !important; }
-@media (max-width: 600px) { .cl-gfilter { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px 18px; padding: 0 16px; scrollbar-width: none; } .cl-gfilter .gchip { flex: none; } }
+@media (max-width: 600px) { .e-con.cl-guides-grid { padding-top: 24px !important; } .cl-gfilter { justify-content: flex-start; flex-wrap: wrap; gap: 8px 6px; margin: 0; padding: 0 0 20px; } .cl-gfilter .gchip { padding: 9px 13px; } }   /* phones: chips wrap, line up with the cards, closer to the hero (Matteo 16 Nov, as Coaching) */
 .cl-ggrid .e-loop__load-more .elementor-button { font: 600 14px Montserrat, system-ui, sans-serif !important; color: #fff !important; background: #009a44 !important; border: 0 !important; border-radius: 8px !important; padding: 12px 22px !important; text-transform: none !important; }
 .cl-ggrid .e-load-more-spinner { display: none !important; }   /* Elementor shows it only while loading; its own CSS is not loaded here */
 .cl-ggrid .e-loop__load-more .elementor-button:hover { background: #00b350 !important; color: #fff !important; }
