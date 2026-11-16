@@ -134,7 +134,7 @@ pages.append(f'''<section class="page">
       <li><b>Brick and indoor sessions:</b> an electrolyte drink and a gel or chews to practise race fuelling.</li>
       <li><b>Recovery:</b> whey protein 25–30 g after every hard session, and collagen 20 g with vitamin C.</li></ul></div>
   </div>
-  <div class="mphoto" style="height:70mm;margin-top:16px"><img src="{A}matteo-cigala-race-win.jpg" alt="Matteo Cigala celebrating a race win in the Cigala Cycling kit" style="object-position:50% 35%"></div>
+  <div class="mphoto" style="height:70mm;margin-top:16px"><img src="{A}cigala-cycling-team-ride.jpg" alt="Four Cigala Cycling riders climbing together in team kit" style="object-position:50% 55%"></div>
 ''' + FOOT + '</section>')
 
 # 4 daily
@@ -209,7 +209,6 @@ pages.append(f'''<section class="page">
   <p>If you would like more tailored advice on food supplements, VIVIFY SPORTS can provide you with a complete nutritional assessment. Supplements are here to support your training. If taken wrong they can actually be detrimental and decrease performance.</p>
   <div class="consult" style="margin-top:16px">
     <div class="l" style="display:flex;gap:16px;align-items:center">
-      <img src="{A}marine-lenehan-lidl-trek-gravel.jpg" alt="Marine Lenehan riding a gravel road in her Lidl-Trek kit" style="width:92px;height:116px;object-fit:cover;object-position:52% 46%;border-radius:10px;border:1px solid var(--border-strong);flex:none">
       <div><div class="k">Book a discovery call with Marine</div>
       <div class="person" style="margin:0"><div class="nm">Marine Lenehan</div><div class="rl">Sports Nutritionist &amp; World Tour Cyclist</div></div>
       <a class="btn" style="margin-top:8px" href="https://www.vivifysports.com/nutritionalcoaching">Book a discovery call</a></div>
