@@ -196,7 +196,7 @@ html .cc .blog-hero > img { object-position: 50% 58%; }
 .cc-bfilter .gflag { padding: 6px 10px; display: inline-flex; align-items: center; }
 .flag-it { display: inline-block; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(90deg, #009246 0 33.3%, #fff 33.3% 66.6%, #ce2b37 66.6%); box-shadow: 0 0 0 1px rgba(255,255,255,.35); }
 .cc-blog .e-loop-item[hidden] { display: none !important; }
-@media (max-width: 600px) { .cc-bfilter { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px 18px; padding: 0 16px; scrollbar-width: none; } .cc-bfilter .gchip { flex: none; } }
+@media (max-width: 600px) { .cc-bfilter { gap: 8px 6px; margin: 0 0 18px; } .cc-bfilter .gchip { padding: 9px 13px; } }  /* phones: chips wrap onto two lines so the flag is always visible (Matteo 16 Nov) */
 /* cards: Tours size and look (16px side margin on phones, title 21px, border over the photo, small Italian flag on Italian posts) */
 @media (max-width: 640px) { .e-con.cc-wrap.cc-blog-wrap { padding-left: 16px !important; padding-right: 16px !important; } .cc-blog .elementor-loop-container { padding: 0 !important; } }
 .cc-blog .elementor-widget-theme-post-title .elementor-heading-title, .cc-blog .elementor-widget-theme-post-title a { font-size: 21px !important; }
@@ -205,6 +205,8 @@ html .cc .blog-hero > img { object-position: 50% 58%; }
 .cc-blog .e-loop-item:hover::after { border-color: rgba(0,154,68,.6); }
 .cc-blog .e-loop-item img { transition: transform .5s ease; }
 .cc-blog .e-loop-item:hover img { transform: scale(1.04); }
+.e-loop-item .elementor-element.elementor-element-57d5189 { padding: 0 !important; margin: 0 !important; }  /* loop item 4718 image: no mobile padding, photo fills the card edge to edge */
+.e-loop-item .elementor-element-57d5189 img { width: 100%; }
 .cc-blog .e-loop-item.category-italiano::before { content: ""; position: absolute; top: 14px; right: 14px; z-index: 4; width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(90deg, #009246 0 33.3%, #fff 33.3% 66.6%, #ce2b37 66.6%); box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); }
 /* post page: the byline above the title as a red eyebrow, the text in a boxed panel (template 4028, tools/coaching_post_template.py) */
 body.single-post .elementor-4028 .elementor-widget-heading.elementor-element.cc-post-author .elementor-heading-title { font: 600 12px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .14em !important; text-transform: uppercase !important; color: #ff3d33 !important; margin: 0 0 12px !important; }
