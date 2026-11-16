@@ -320,7 +320,8 @@ def trip(slug):
     hero_img = hero_img.replace('<img ', f'<img style="--mpos:{HERO_MPOS.get(slug, "50% 30%")};--dpos:{HERO_DPOS.get(slug, "center 40%")}" ', 1)   # phones: where the rider is in the photo
     import datetime as _dt
     _nn = (_dt.date.fromisoformat(tr['end']) - _dt.date.fromisoformat(tr['start'])).days   # days and nights from the 2027 dates (Matteo 16 Nov: not said anywhere at the top)
-    dn_html = f'<div class="dn"><span>{ICON["cal"]}{_nn + 1} days</span><span>{ICON["moon"]}{_nn} nights</span></div>'
+    dn_html = (f'<div class="dn"><span>{ICON["cal"]}{_nn + 1} days</span><span>{ICON["moon"]}{_nn} nights</span>'
+               f'<span>{ICON["route"]}{E(tr["distance"])}</span><span>{ICON["climb"]}{E(tr["climbing"])}</span></div>')   # + distance and climbing (Matteo 16 Nov)
     hero = f'''<div class="hero thero{" tall" if slug in HERO_TALL else ""}">
   {hero_img}
   <div class="in">
@@ -968,6 +969,7 @@ html .cl .prow .ptile:nth-child(3):hover { border-color: #cd7f32; background: rg
 html .cl .prow .ptile:nth-child(4):hover { border-color: #2bd47a; background: rgba(0,154,68,.13); } html .cl .prow .ptile:nth-child(4):hover b, html .cl .prow .ptile:nth-child(4):hover span { color: #2bd47a; }
 html .cl .thero .dn { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; font-size: 15px; font-weight: 600; color: var(--text, #f7f8f8); letter-spacing: .02em; }
 html .cl .thero .dn span { display: inline-flex; align-items: center; gap: 7px; }
+@media (max-width: 600px) { html .cl .thero .dn { display: grid; grid-template-columns: auto auto; justify-content: start; column-gap: 26px; } }   /* phones: two neat rows */
 html .cl .thero .dn svg { width: 17px; height: 17px; color: var(--green-text, #2bd47a); }
 @media (max-width: 800px) { html .cl .inc2 { grid-template-columns: minmax(0, 1fr); } }
 html .cl .inc .sidet { font-family: var(--head); font-weight: 400; font-size: 20px; line-height: 1.1; text-transform: uppercase; letter-spacing: .01em; color: var(--text); margin: 0 0 14px; }

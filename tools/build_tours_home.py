@@ -151,7 +151,7 @@ for t in trips:
         f'<img class="flag" src="img/flag-{FLAG[t["country"]]}.webp" alt="Flag of {t["country"]}" width="40" height="30">'
         f'<div class="tx">{BADGE.get(t.get("badge"), "")}<span class="whenrow"><time class="when" datetime="{t["start"]}">{dates(t)}</time>{avail(t["slug"])}</span>'
         f'<h3>{E(name)}</h3><p>{E(BLURB[t["slug"]])}</p>'
-        f'<span class="facts"><span>{t["country"]}</span><span>{t["distance"]}</span><span>{t["climbing"]} climbing</span></span>'
+        f'<span class="dist"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="6" r="2.2"/><path d="M7 18h8.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H17"/></svg>{t["distance"]}<span class="sep" aria-hidden="true"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20l6.5-10 4 6 3-4.5L22 20z"/></svg>{t["climbing"]}</span>'   # the same chip as the tour lists (Matteo 16 Nov)
         f'<span class="go">View tour →</span></div></a>')
 
 # ---------- finder ----------
@@ -412,6 +412,9 @@ CSS2 = """
 .fi select:focus, .fi select:focus-visible { outline: none; }
 .fi:focus-within { box-shadow: inset 0 0 0 2px var(--green); border-radius: 10px; }
 .tour .facts span { white-space: nowrap; }
+.tour .dist { align-self: flex-start; display: flex; width: max-content; max-width: 100%; align-items: center; gap: 6px; margin: -2px 0 12px; padding: 5px 10px 4px; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; background: rgba(8,9,10,.45); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #d0d6e0; white-space: nowrap; }
+.tour .dist svg { width: 13px; height: 13px; fill: none; stroke: #2bd47a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.tour .dist .sep { width: 1px; height: 11px; background: rgba(255,255,255,.2); margin: 0 3px; }
 .tour .facts span:not(:last-child)::after { content: "·"; margin-left: 12px; color: var(--red); font-weight: 700; }
 .matteo .photo { background: none; aspect-ratio: auto; position: relative; display: flex; justify-content: center; align-items: flex-end; isolation: isolate; }
 .matteo .photo::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }

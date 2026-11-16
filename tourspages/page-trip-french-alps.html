@@ -409,6 +409,7 @@ html .cl .prow .ptile:nth-child(3):hover { border-color: #cd7f32; background: rg
 html .cl .prow .ptile:nth-child(4):hover { border-color: #2bd47a; background: rgba(0,154,68,.13); } html .cl .prow .ptile:nth-child(4):hover b, html .cl .prow .ptile:nth-child(4):hover span { color: #2bd47a; }
 html .cl .thero .dn { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; font-size: 15px; font-weight: 600; color: var(--text, #f7f8f8); letter-spacing: .02em; }
 html .cl .thero .dn span { display: inline-flex; align-items: center; gap: 7px; }
+@media (max-width: 600px) { html .cl .thero .dn { display: grid; grid-template-columns: auto auto; justify-content: start; column-gap: 26px; } }   /* phones: two neat rows */
 html .cl .thero .dn svg { width: 17px; height: 17px; color: var(--green-text, #2bd47a); }
 @media (max-width: 800px) { html .cl .inc2 { grid-template-columns: minmax(0, 1fr); } }
 html .cl .inc .sidet { font-family: var(--head); font-weight: 400; font-size: 20px; line-height: 1.1; text-transform: uppercase; letter-spacing: .01em; color: var(--text); margin: 0 0 14px; }
@@ -872,6 +873,9 @@ html .cl .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
 html .cl .tcard .meta .chip { display: inline-flex; align-items: center; line-height: 1.2; font-size: 11px; padding: 6px 10px 5px; cursor: default; }
 html .cl .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: 13px; padding: 5px 11px; }
 html .cl .tcard .meta { margin: 2px 0; }
+html .cl .tcard .meta .chip.dist { gap: 6px; }
+html .cl .tcard .meta .chip.dist svg { width: 13px; height: 13px; fill: none; stroke: var(--green-text, #2bd47a); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+html .cl .tcard .meta .chip.dist .sep { width: 1px; height: 11px; background: rgba(255,255,255,.2); margin: 0 3px; }
 html .cl .phero .lede a { color: var(--green-text); font-weight: 600; text-decoration: none; }
 html .cl .phero .lede a:hover { color: #fff; }
 html .cl .tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
@@ -1281,7 +1285,7 @@ html .cc .tour:hover img { transform: none; }
       <div class="tags"><span class="tag dot">Road</span><span class="tag">France</span><span class="tag tlvl"><span class="lm" aria-hidden="true"><i class=on></i><i class=on></i><i></i></span>Intermediate · Expert</span></div>
       <h1>FRENCH ALPS</h1>
       <div class="dates">28 July - 4 August 2027</div>
-      <div class="dn"><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>8 days</span><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>7 nights</span></div>
+      <div class="dn"><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>8 days</span><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>7 nights</span><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="6" r="2.2"/><path d="M7 18h8.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H17"/></svg>485 km</span><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20l6.5-10 4 6 3-4.5L22 20z"/><path d="M15.5 11.5l1.8-2.7"/></svg>13,700 m</span></div>
       
     </div>
     <aside class="book bk2" aria-label="Price and booking">
