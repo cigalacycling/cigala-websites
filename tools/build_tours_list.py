@@ -217,7 +217,7 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .tcard h2 { font-size: clamp(24px, 2.2vw, 30px); }
 .tcard h3.where { font-size: 14px; font-weight: 600; color: var(--text-2); margin-top: -6px; }
 .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
-.tcard .meta .chip { font-size: 11px; padding: 5px 10px; cursor: default; }
+.tcard .meta .chip { display: inline-flex; align-items: center; line-height: 1.2; font-size: 11px; padding: 6px 10px 5px; cursor: default; }   /* text centred in the chip (Matteo 16 Nov) */
 .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: 13px; padding: 5px 11px; }
 .tcard .meta { margin: 2px 0; }
 .phero .lede a { color: var(--green-text); font-weight: 600; text-decoration: none; }

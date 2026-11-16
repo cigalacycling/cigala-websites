@@ -39,7 +39,7 @@ A = {
     'trip-tuscany-epic-gravel': (4440, 1200, None),
     'trip-maratona-dles-dolomites': (8609, 1200, None),
     'trip-dolomites': (4867, 1200, None),
-    'trip-italian-alps': (4927, 1200, None),
+    'trip-italian-alps': (2225, 1200, None),   # the Stelvio hairpins (Matteo 16 Nov: the old photo was not the Italian Alps)
     'trip-alpine-gravel-escape': (6113, 1200, None),
     'trip-french-alps': (4877, 1200, None),
     'trip-wonderful-slovenia': (4959, 1200, None),

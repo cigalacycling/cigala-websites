@@ -25,14 +25,20 @@ _sp = _iu.spec_from_file_location('trm', os.path.join(os.path.dirname(os.path.ab
 ROUTE_NOTES = {k: v.get('note', '') for k, v in _trm.ROUTES.items()}
 _SPJ = json.load(open(ROOT + 'tours/spots.json'))
 SPOTS = {k: v for k, v in _SPJ.items() if not k.startswith('_')}
-GUIDE_NICK = {}   # first name -> nickname, e.g. {'Amedeo': 'Ame'}: Matteo to send
+GUIDE_NICK = {'Giampietro': 'Giampi'}   # first name -> nickname (About page: Giampietro 'Giampi')
+# guides from the About page team (photo, role; no bio there): added to a tour, or replacing a guide (Matteo 16 Nov)
+TEAM = {'Giampi': ('Guide', 2658), 'Antonio': ('Guide', 4665)}
+GUIDES_ADD = {'maratona-dles-dolomites': ['Giampi'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio']}
+GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Antonio'}}   # French Alps: Alessio once Matteo sends his photo
+HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
+EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 2225}   # gravel photo on the road tour, Stelvio photo on the gravel tour   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
 # Maratona: two hotels in one text block live -> a card each, with their own photos and stars (Matteo 16 Nov)
 HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629, 8631]), ('Hotel Soleil', 4, False, 8709, [8707, 8708])]}
 TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, cover photo (our own: no YouTube request until the visitor taps play) - Matteo 16 Nov
-HERO_PHOTO = {'discover-the-algarve-granfondo': 710}   # media id: rider in Cigala kit above an Algarve beach
-HERO_DPOS = {'tour-of-flanders-experience': '50% 65%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
+HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 8620, 'italian-alps': 2225, 'french-alps': 719, 'alpine-gravel-escape': 6100}   # Dolomites / Italian Alps: photos with riders (Matteo 16 Nov)   # media id: rider in Cigala kit above an Algarve beach
+HERO_DPOS = {'tour-of-flanders-experience': '50% 65%', 'french-alps': 'center 70%', 'alpine-gravel-escape': 'center 84%', 'dolomites': 'center 55%', 'italian-alps': 'center 60%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
 HOTEL_FALLBACK = {'tour-of-flanders-experience': ('h3', 'Hotel T')}   # live has no hotel heading: the main card (stars: add '****' once Matteo confirms)
-HERO_MPOS = {'tour-of-flanders-experience': '50% 70%', 'discover-the-algarve-granfondo': '80% 45%', 'chianti-gran-fondo-strade-bianche': '52% 30%'}   # focus point of the hero photo on phones
+HERO_MPOS = {'tour-of-flanders-experience': '50% 70%', 'french-alps': '45% 70%', 'alpine-gravel-escape': '30% 62%', 'dolomites': '45% 60%', 'italian-alps': '30% 60%', 'discover-the-algarve-granfondo': '80% 45%', 'chianti-gran-fondo-strade-bianche': '52% 30%'}   # focus point of the hero photo on phones
 AVAIL = {'low': ('Last few spots', ''), 'mid': ('Filling up fast', ' amber'), 'high': ('Spots available', ' green')}   # wording + dot colour, same on every tour (Matteo 16 Nov)
 MON = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
@@ -52,6 +58,11 @@ ICON = {   # line icons for the glance strip and Trip at a glance (Matteo 16 Nov
 def trim_tag(src, alt):   # the rental bike, cropped to the bike (Matteo 16 Nov: it sat small in a lot of white)
     im = webp(src, 1000, alt, trim=True)
     return f'<img src="{im["url"]}" alt="{E(im["alt"])}" loading="lazy">'
+
+def team_card(name):
+    role, photo = TEAM[name]
+    return (f'<article class="panel guide"><div class="ph">{img_tag(photo, 600, alt=f"{name}, {role.lower()} at Cigala Cycling Tours")}</div>'
+            f'<div class="tx"><h3>{E(name.upper())}</h3><div class="role">{E(role)}</div></div></article>')
 
 def raw(pid): return json.loads(json.load(open(ROOT + f'stg-tours/backup/page-{pid}.json'))['meta']['_elementor_data'] or '[]')
 
@@ -304,7 +315,7 @@ def trip(slug):
             if w in u: return ICON[ic]
         return ICON['dot']
     facts = ''.join(f'<div><span class="fi" aria-hidden="true">{ficon(a)}</span><dt>{E(a)}</dt><dd>{b}</dd></div>' for a, b in glance if a)
-    if g_trans:
+    if g_trans and not one('inc'):   # shown as the transfer band under What's included instead
         facts += '<div class="ftrans"><span class="fi" aria-hidden="true">' + ICON['plane'] + '</span><dt>Airport transfers</dt><dd>' + ''.join(
             f'<span class="tl"><b>{E(a)}</b> {E(b)}</span>' if a else f'<span class="tl">{E(b)}</span>' for a, b in g_trans) + '</dd></div>'
     g_tag = (g['tag'] if g else 'h3')
@@ -345,12 +356,12 @@ def trip(slug):
     for ex in S('extra') + S('other'):
         body = ''.join(clean(v) for k, v, s in ex['items'] if k == 'text') + ''.join(f'<p>{clean(v)}</p>' for k, v, s in ex['items'] if k in ('h4', 'h5', 'h6'))
         btns = ''.join(f'<a class="btn btn-go" href="{E(u)}">{E(t.capitalize())} →</a>' for k, (t, u), s in [(k, v, s) for k, v, s in ex['items'] if k == 'btn'] if u)
-        imgs = [v for k, v, s in ex['items'] if k == 'img']
+        imgs = [v for k, v, s in ex['items'] if k == 'img'] or ([EXTRA_PHOTO[slug]] if slug in EXTRA_PHOTO and ex['kind'] == 'extra' else [])
         vid = next((re.search(r'(?:v=|youtu\.be/)([\w-]{11})', s.get('youtube_url', '')) for k, v, s in ex['items'] if k == 'video'), None)
         media_html = (f'<div class="vcard panel" style="margin-top:16px"><button type="button" class="yt" data-id="{vid.group(1)}" aria-label="Play the video">'
                       f'<img src="https://i.ytimg.com/vi/{vid.group(1)}/hqdefault.jpg" alt="{E(text_of(ex["h"]))} video" loading="lazy"><span class="play" aria-hidden="true"></span></button></div>') if vid else ''
         if len(imgs) == 1 and not vid:   # one photo (the Maratona jersey): photo on one side, text on the other (Matteo 16 Nov: too much black)
-            out.append(f'<section><div class="in"><div class="panel xbox xsplit"><div class="xph">{img_tag(imgs[0], 1200, alt=f"{text_of(h1).title()} - Cigala Cycling Tours")}</div>'
+            out.append(f'<section><div class="in"><div class="panel xbox xsplit{" xcover" if slug in EXTRA_PHOTO else ""}"><div class="xph">{img_tag(imgs[0], 1200, alt=f"{text_of(h1).title()} - Cigala Cycling Tours")}</div>'
                        f'<div class="xtx">{H(ex, "Make it yours" if ex["kind"] == "extra" else "Good to know")}<div class="prose">{body}</div>{f"<div class=ctas>{btns}</div>" if btns else ""}</div></div></div></section>')
             continue
         if imgs: media_html += '<div class="gal3" style="margin-top:16px">' + ''.join(img_tag(x, 1200, alt=f'{text_of(h1).title()} - Cigala Cycling Tours') for x in imgs[:3]) + '</div>'
@@ -366,9 +377,20 @@ def trip(slug):
             no_li = ''.join(f'<li><span>{x}</span></li>' for k, v, s in notinc['items'] if k == 'text' for x in lines(clean(v)))
             no_html = f'<div class="panel no"><{notinc["tag"]} class="inh">{E(text_of(notinc["h"]))}</{notinc["tag"]}><ul>{no_li}</ul></div>'
         bands = ''
-        if trans:
+        if trans or g_trans:
             rows, notes_ = [], []
-            for k, v, s in trans['items']:
+            pend, gr = '', []   # transfers listed in Trip at a glance (French Alps, Flanders, Slovenia...): label, date, then details lines
+            for a_, b_ in ([] if trans else g_trans):
+                if a_ and not b_: pend = a_; continue
+                m = re.match(r"^\s*(\d{1,2}/\d{1,2}(?:/\d{2,4})?)\s*(.*)$", b_)
+                if m: gr.append([m.group(1), a_ or pend, [m.group(2)] if m.group(2) else []]); pend = ''
+                elif gr: gr[-1][2].append(b_.strip())
+                else: notes_.append(E(b_))
+            for d_, lab_, parts in gr:
+                main_ = re.sub(r'(?i)\bnoon\s+', '', parts[0]) if parts else ''
+                main_ = re.sub(r'^(\d{1,2}:\d{2}\s*(?:am|pm)?\s*)from\b', r'\1From', main_)
+                rows.append([d_, (f'{lab_} · ' if lab_ else '') + main_ + (f' ({", ".join(parts[1:])})' if len(parts) > 1 else '')])
+            for k, v, s in (trans['items'] if trans else []):
                 if k != 'text': continue
                 for x in lines(clean(v)):
                     t = text_of(x).strip()
@@ -388,8 +410,8 @@ def trip(slug):
                 chips_ = ''.join(f'<span class="tt">{x}</span>' for x in tm)
                 cards += (f'<div class="tcard2"><span class="ic" aria-hidden="true">{ICON["plane"]}</span><div><b>{E(d)}</b><span>{E(txt)}</span>'
                           + (f'<span class="tts">{"Pick-up times" if len(tm) > 1 else "Pick-up"}: {chips_}</span>' if tm else '') + '</div></div>')
-            tt_ = trans["tag"]
-            bands += (f'<div class="panel tband"><{tt_} class="inh">{E(text_of(trans["h"]).rstrip(":"))}</{tt_}><div class="trow">{cards}</div>'
+            tt_ = trans["tag"] if trans else 'p'
+            bands += (f'<div class="panel tband"><{tt_} class="inh">{E(text_of(trans["h"]).rstrip(":")) if trans else "Airport transfers"}</{tt_}><div class="trow">{cards}</div>'
                       + ''.join(f'<p class="tnote">{x}</p>' for x in notes_) + '</div>')
         ent = one('entry')
         if ent:   # Gran Fondo entry prices (Strade Bianche): the grid prices as tiles, then the notes
@@ -419,6 +441,8 @@ def trip(slug):
         txt = ''.join(clean(v) for k, v, s in hs['items'] if k == 'text')
         pics = [x['id'] for k, v, s in hs['items'] if k == 'gallery' for x in s.get('gallery', [])] + [v for k, v, s in hs['items'] if k == 'img']
         if not names and slug in HOTEL_FALLBACK: names = [HOTEL_FALLBACK[slug]]
+        if slug in HOTEL_PIC_ORDER:
+            o_ = HOTEL_PIC_ORDER[slug]; pics = [pics[i] for i in o_] + pics[len(o_):]
         hotels_ = []
         for n, (tg, v) in enumerate(names):
             t = text_of(v); stars = len(re.findall(r'\*', t)); sup = bool(re.search(r'\*\s*S\b', t))
@@ -484,11 +508,15 @@ def trip(slug):
         for p in ppl:
             if 'name' not in p: continue
             nm = text_of(p['name'][1]); role = text_of(p['texts'][0]) if p['texts'] else ''
+            sw = GUIDES_SWAP.get(slug, {}).get(nm.split()[0].upper()) if nm else None
+            if sw:   # another guide on this tour: their card from the team (no bio)
+                cards.append(team_card(sw)); continue
             if 'CIGALA' not in nm.upper():   # Matteo 16 Nov: guides by first name (or nickname), for their privacy; Matteo Cigala in full
                 first = nm.split()[0]; nm = GUIDE_NICK.get(first.title(), first)
             bio = ''.join(clean(x) for x in p['texts'][1:])
             ph = f'<div class="ph">{img_tag(p["img"], 600, alt=f"{nm.title()}, {role} at Cigala Cycling Tours")}</div>' if p['img'] else ''
             cards.append(f'<article class="panel guide">{ph}<div class="tx"><h3>{E(nm)}</h3><div class="role">{E(role)}</div>{bio}</div></article>')
+        cards += [team_card(n) for n in GUIDES_ADD.get(slug, [])]
         stats = []
         for st_ in S('stat'):
             lab = next((text_of(v) for k, v, s in st_['items'] if k == 'text'), '')
@@ -658,10 +686,24 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
+html .cl .bk2 .bk-top { gap: 8px; }
+html .cl .bk2 .bk-top .price { margin-bottom: 4px; }
+html .cl .bk2 .bk-top .price small { padding-left: 0; margin-left: 0; }
+html .cl .thero .bk2 .early, html .cl .thero .bk2 .spots { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 5px 10px; border-radius: 6px; font-size: 12.5px; font-weight: 600; line-height: 1.3; color: var(--text); border: 1px solid; }   /* early bird and availability: the same pill, the same left edge (Matteo 16 Nov) */
+html .cl .thero .bk2 .early { background: rgba(225,6,0,.12); border-color: rgba(225,6,0,.45); }
+html .cl .thero .bk2 .early::before { margin: 0; }
+html .cl .bk2 .spots .dot { margin-right: 0; }
+html .cl .bk2 .spots.av-low { background: rgba(225,6,0,.12); border-color: rgba(225,6,0,.45); }
+html .cl .bk2 .spots.av-mid { background: rgba(240,191,0,.1); border-color: rgba(240,191,0,.45); }
+html .cl .bk2 .spots.av-high { background: rgba(0,154,68,.12); border-color: rgba(43,212,122,.4); }
+html .cl #included .yes .inh { color: var(--green-text, #2bd47a); }   /* Included in green, Not included stays white (Matteo 16 Nov) */
+html .cl .thero ~ section { padding-top: 48px; }   /* a little less space between sections on the trip pages (Matteo 16 Nov) */
+html .cl .thero ~ section#route, html .cl .thero ~ section#itinerary { padding-top: 40px; }
 html .cl .xsplit { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 0; padding: 0; overflow: hidden; align-items: stretch; }
 html .cl .xsplit .xph { background: #e9edf0; display: grid; place-items: center; padding: 18px; }
 html .cl .xsplit .xph img { width: 100%; height: auto; max-height: 420px; object-fit: contain; }
 html .cl .xsplit .xtx { padding: clamp(22px, 3vw, 36px); align-self: center; }
+html .cl .xsplit.xcover .xph { padding: 0; background: none; } html .cl .xsplit.xcover .xph img { height: 100%; max-height: none; min-height: 300px; object-fit: cover; }   /* a photo fills its half; the grey ground is for product shots (the jersey) */
 html .cl .xbox .prose a { color: var(--green-text, #2bd47a); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 800px) { html .cl .xsplit { grid-template-columns: minmax(0, 1fr); } }
 html .cl .bike .ph { padding: 12px 18px; }

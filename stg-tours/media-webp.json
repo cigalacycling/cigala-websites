@@ -259,19 +259,6 @@
    1600
   ]
  },
- "trip-italian-alps": {
-  "id": 9263,
-  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-italian-alps.webp",
-  "alt": "Raid Alps Bike Tours",
-  "from": [
-   3448,
-   4592
-  ],
-  "size": [
-   1200,
-   1598
-  ]
- },
  "trip-alpine-gravel-escape": {
   "id": 9264,
   "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-alpine-gravel-escape.webp",
@@ -9521,5 +9508,74 @@
    668
   ],
   "orig": 4476
+ },
+ "src-2225-2000": {
+  "id": 10573,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-2026-06-22T204833.276-2000.webp",
+  "alt": "Stelvio Pass",
+  "from": [
+   1600,
+   1202
+  ],
+  "size": [
+   1600,
+   1202
+  ],
+  "orig": 2225
+ },
+ "src-6102-1200": {
+  "id": 10574,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-dji_fly_20260717_121146_549_1784283156599_photo_optimized-1200.webp",
+  "alt": "Alpine Gravel Experience | Cigala Cycling",
+  "from": [
+   4000,
+   2250
+  ],
+  "size": [
+   1200,
+   675
+  ],
+  "orig": 6102
+ },
+ "src-8620-2000": {
+  "id": 10575,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-bestof_mdd2026-116-faeddaalex-2000.webp",
+  "alt": "Maratona Dles Dolomites 2026 | Passo Giau",
+  "from": [
+   4096,
+   2730
+  ],
+  "size": [
+   2000,
+   1333
+  ],
+  "orig": 8620
+ },
+ "trip-italian-alps": {
+  "id": 10576,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-italian-alps-1.webp",
+  "alt": "Stelvio Pass",
+  "from": [
+   1600,
+   1202
+  ],
+  "size": [
+   1200,
+   902
+  ]
+ },
+ "src-6100-2000": {
+  "id": 10577,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-IMG_3356-2000-scaled.webp",
+  "alt": "Cancano Gravel Tour | Cigala Cycling",
+  "from": [
+   3024,
+   4032
+  ],
+  "size": [
+   2000,
+   2667
+  ],
+  "orig": 6100
  }
 }
