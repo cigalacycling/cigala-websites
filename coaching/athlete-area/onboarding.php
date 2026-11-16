@@ -33,7 +33,8 @@ function cc_f_steps() {
           ['email', 'email', 'Email', 'req' => 1, 'ac' => 'email'],
           ['address', 'text', 'Address', 'opt' => 'adult', 'req' => 'u18', 'ac' => 'street-address', 'only' => 'full'], ['postcode', 'text', 'Postcode / Eircode', 'opt' => 'adult', 'req' => 'u18', 'half' => 1, 'ac' => 'postal-code', 'only' => 'full'],
           ['team', 'text', 'Cycling club, group or team', 'ph' => 'or N/A', 'half' => 1],
-          ['sport', 'radio', 'Category', 'opts' => ['cycling' => 'Cycling', 'triathlon' => 'Triathlon', 'running' => 'Running'], 'only' => 'full'],
+          ['sport', 'checks', 'Sport', 'opts' => ['cycling' => 'Cycling', 'triathlon' => 'Triathlon', 'running' => 'Running', 'swimming' => 'Swimming', 'other' => 'Other'], 'only' => 'full'],
+          ['sport_other', 'text', 'Which other sport?', 'if' => 'has:sport=other', 'only' => 'full'],
         ]],
         ['p', 'Emergency contact', 'Someone I can call in an emergency.', 'fields' => [
           ['ec_first', 'text', 'First name', 'req' => 1, 'half' => 1], ['ec_last', 'text', 'Surname', 'req' => 1, 'half' => 1],
@@ -43,20 +44,21 @@ function cc_f_steps() {
       ['numbers', 'Your numbers', 'both', [
         ['p', 'Your numbers', 'Only what you know. Leave anything else empty: we will test it together.', 'fields' => [
           ['height', 'number', 'Height (cm)', 'half' => 1], ['weight', 'number', 'Weight (kg)', 'half' => 1], ['weight_goal', 'number', 'Ideal race weight (kg)', 'opt' => 1],
-          ['ftp', 'number', 'Threshold power, FTP or CP (W)', 'half' => 1], ['ftp_date', 'date', 'Date of that test', 'half' => 1],
-          ['thr', 'number', 'Threshold heart rate (bpm)', 'half' => 1], ['thr_date', 'date', 'Date of that test', 'half' => 1],
-          ['pace', 'text', 'Running threshold pace (min/km)', 'ph' => 'e.g. 4:30', 'half' => 1, 'if' => 'run'], ['pace_date', 'date', 'Date of that test', 'half' => 1, 'if' => 'run'],
+          ['ftp', 'number', 'Threshold power, FTP or CP (W)', 'opt' => 1, 'half' => 1], ['ftp_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1],
+          ['thr', 'number', 'Threshold heart rate (bpm)', 'opt' => 1, 'half' => 1], ['thr_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1],
+          ['pace', 'text', 'Running threshold pace (min/km)', 'opt' => 1, 'ph' => 'e.g. 4:30', 'half' => 1, 'if' => 'run'], ['pace_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1, 'if' => 'run'],
           ['kit', 'checks', 'Do you have a heart rate monitor, a power meter, a cadence sensor, a turbo trainer, a gym membership? Tap what you have.',
              'opts' => ['hr' => 'Heart rate monitor', 'power' => 'Power meter', 'cadence' => 'Cadence sensor', 'turbo' => 'Turbo trainer', 'gym' => 'Gym membership']],
-          ['turbo_model', 'text', 'Which turbo trainer?', 'opt' => 1, 'ph' => 'e.g. Wahoo Kickr'],
+          ['setup_notes', 'textarea', 'Any notes about your setup?', 'opt' => 1, 'ph' => 'e.g. which turbo trainer, power meter on which bike, a gym at home'],
         ]]]],
       ['week', 'Your week', 'both', [
         ['p', 'Your usual week', 'Day of the week and hours available. This fills in “My availability” in your hub, so you only do it once.', 'fields' => [
+          ['weekhint', 'group', 'If any time of day suits you, leave morning, lunch and evening off. Two slots on the same day? Tap both.'],
           ['week', 'week', ''],
           ['rest', 'checks', 'Day or days you would prefer to have as REST', 'opts' => 'days'],
-          ['hours_now', 'textarea', 'How many hours a week, and a day, do you normally train?', 'only' => 'full'],
-          ['week_could', 'textarea', 'What could your training week look like?', 'only' => 'full'],
-          ['recent', 'textarea', 'Can you give me an example week of your training in the past months, up to now?', 'ph' => 'e.g. 1h turbo Tue and Thu, club spin Sunday 100 km'],
+          ['hours_week', 'text', 'How many hours a week do you normally train?', 'ph' => 'e.g. 6h', 'half' => 1],
+          ['hours_day', 'text', 'How many hours a day do you normally train?', 'ph' => 'e.g. 1h, 1h 30', 'half' => 1],
+          ['recent', 'textarea', 'Any notes about your normal training week?', 'opt' => 1, 'ph' => 'e.g. 1h turbo Tue and Thu, club spin Sunday 100 km'],
           ['with', 'checks', 'Do you train alone or with someone?', 'opts' => ['alone' => 'Alone', 'club' => 'Club spins', 'friends' => 'With friends', 'indoor' => 'Indoor (Zwift etc.)'], 'only' => 'full'],
           ['winter', 'checks', 'What other sports could you do in the winter?', 'opts' => ['gym' => 'Gym', 'running' => 'Running', 'swimming' => 'Swimming', 'hiking' => 'Hiking', 'mtb' => 'MTB', 'cx' => 'Cyclocross'], 'only' => 'full'],
           ['with_more', 'text', 'Anything else about training with others or winter sports?', 'opt' => 1, 'only' => 'full'],
@@ -64,8 +66,7 @@ function cc_f_steps() {
       ['goals', 'Your goals', 'both', [
         ['p', 'Your goals', null, 'fields' => [
           ['goal_short', 'textarea', 'Short-term goal (1 year)'], ['goal_long', 'textarea', 'Long-term goal (more than 1 year)'],
-          ['races', 'textarea', 'If you are racing, what is your racing calendar for the next months? Please include league and club races too.'],
-          ['race_a', 'text', 'Which of those races would you like to do particularly well?'],
+          ['events', 'events', 'If you race or do any events, list them here with their priority: A = your main goal, B = important, C = for training or fun. League and club races too.'],
         ]],
         ['p', 'You as a rider', null, 'only' => 'full', 'fields' => [
           ['since', 'text', 'When did you start cycling / triathlon?'],
@@ -142,6 +143,7 @@ function cc_f_clean($in, $kind) {
         $v = $in[$k] ?? null;
         switch ($f[1]) {
             case 'week': $out[$k] = cc_av_clean(['week' => is_array($v) ? $v : []], current_time('Y-m-d'))['week']; break;
+            case 'events': $out[$k] = function_exists('cc_g_clean') ? cc_g_clean(['events' => is_array($v) ? $v : []])['events'] : []; break;
             case 'checks': $opts = $f['opts'] === 'days' ? $days : array_map('strval', array_keys($f['opts'])); $out[$k] = array_values(array_intersect($opts, array_map('strval', (array) $v))); break;
             case 'radio': case 'select': $out[$k] = isset($f['opts'][(string) $v]) ? (string) $v : ''; break;
             case 'yn': $out[$k] = in_array($v, ['yes', 'no'], true) ? $v : ''; break;
@@ -257,6 +259,10 @@ function cc_f_field($f, $v, $kind) {
                 foreach (CC_AV_WHEN as $wk => $wl) $g .= '<button type="button" class="av-w" data-day="' . $dk . '" data-w="' . $wk . '" aria-pressed="' . (in_array($wk, $d['w'] ?? [], true) ? 'true' : 'false') . '"' . ($d['h'] === '0' ? ' disabled' : '') . '>' . esc_html(cc_f($wl)) . '</button>';
                 $g .= '</div></div>'; }
             return $wrap($g . '</div>', ' full');
+        case 'events':
+            $ev = is_array($v) ? array_values($v) : [];
+            return $wrap('<fieldset><legend>' . $label . '</legend><div class="rf-evs" data-words="' . esc_attr(wp_json_encode(['ev' => cc_f('Event'), 'date' => cc_f('Date'), 'prio' => cc_f('Priority'), 'rm' => cc_f('Remove')])) . '">'
+                . '<script type="application/json" class="rf-ev-data">' . wp_json_encode($ev) . '</script></div><button type="button" class="btn btn-ghost rf-ev-add">' . esc_html(cc_f('+ Add an event')) . '</button></fieldset>', ' full');
         case 'sig': return $wrap('<div class="rf-sig"><canvas aria-label="' . esc_attr(cc_f('Signature pad: sign with your finger')) . '"></canvas><span class="rf-sig-ph">' . esc_html(cc_f('Sign here')) . '</span>'
             . '<button type="button" class="btn btn-ghost rf-clr">' . esc_html(cc_f('Clear')) . '</button></div><p class="rf-date">' . esc_html(cc_f('Date')) . ': <b>' . esc_html(date_i18n('j F Y')) . '</b></p>', ' full');
     }
@@ -334,7 +340,7 @@ function cc_f_mail($uid, $pid, $a, $meta, $pdf) {
 function cc_f_line($a) {   // one line for Matteo: sport, age, numbers, goal
     $p = [];
     if (!empty($a['dob'])) $p[] = cc_f_age($a['dob']) . ' years';
-    if (!empty($a['sport'])) $p[] = $a['sport'];
+    if (!empty($a['sport'])) $p[] = implode('/', (array) $a['sport']) . (!empty($a['sport_other']) ? ' (' . $a['sport_other'] . ')' : '');
     if ($a['ftp'] ?? '') $p[] = 'FTP/CP ' . $a['ftp'] . ' W'; if ($a['weight'] ?? '') $p[] = $a['weight'] . ' kg';
     if ($a['goal_short'] ?? '') $p[] = 'Goal: ' . wp_trim_words($a['goal_short'], 20);
     return implode(' · ', $p);
@@ -461,6 +467,7 @@ function cc_f_answers_html($a, $kind) {   // Matteo's view of the answers, group
 function cc_f_val($f, $v) {   // an answer in words (also used by the PDF)
     switch ($f[1]) {
         case 'week': $l = []; foreach (CC_AV_DAYS as $k => $n) $l[] = $n . ': ' . cc_av_day_text($v[$k] ?? ['h' => '', 'w' => []]); return implode("\n", $l);
+        case 'events': return implode("\n", array_map(function ($e) { return function_exists('cc_g_event_text') ? cc_g_event_text($e) : $e['name']; }, (array) $v));
         case 'checks': $o = $f['opts'] === 'days' ? CC_AV_DAYS : $f['opts']; return implode(', ', array_map(function ($x) use ($o) { return $o[$x] ?? $x; }, (array) $v));
         case 'radio': case 'select': return (string) ($f['opts'][$v] ?? $v);
         case 'yn': return $v === 'yes' ? 'Yes' : ($v === 'no' ? 'No' : '');
@@ -558,15 +565,17 @@ function cc_f_js() {
 <script>(function(){
 var R=document.getElementById('rf');if(!R)return;var F=R.querySelector('form'),W=JSON.parse(document.getElementById('rf-words').textContent),pv=R.dataset.preview==='1',kind=R.dataset.kind;
 var steps=[].slice.call(R.querySelectorAll('.rf-step')),dots=[].slice.call(R.querySelectorAll('.rf-steps li')),i=0,timer=null,drawn=false;
-function data(){var d={week:{}};R.querySelectorAll('input,select,textarea').forEach(function(e){if(!e.name)return;
+function data(){var d={week:{},events:[]};R.querySelectorAll('input,select,textarea').forEach(function(e){if(!e.name||e.closest('.rf-ev'))return;
   if(e.type==='checkbox'){if(e.closest('.rf-tick')){d[e.name]=e.checked?1:0;}else{d[e.name]=d[e.name]||[];if(e.checked)d[e.name].push(e.value);}}
   else if(e.type==='radio'){if(e.checked)d[e.name]=e.value;else if(!(e.name in d))d[e.name]='';}else d[e.name]=e.value;});
+ R.querySelectorAll('.rf-ev').forEach(function(x){var n=x.querySelector('.rf-ev-n').value,dt=x.querySelector('.rf-ev-d').value;if(n||dt)d.events.push({name:n,date:dt,prio:(x.querySelector('.gl-pb[aria-pressed=true]')||{dataset:{p:'B'}}).dataset.p,type:'race'});});
  R.querySelectorAll('.rf-week .av-day').forEach(function(x){var k=x.dataset.k;d.week[k]={h:x.querySelector('select').value,w:[].slice.call(x.querySelectorAll('.av-w[aria-pressed=true]')).map(function(b){return b.dataset.w;})};});return d;}
 function age(){var v=(R.querySelector('[name=dob]')||{}).value;if(!v)return null;var b=new Date(v),n=new Date();return n.getFullYear()-b.getFullYear()-((n.getMonth()<b.getMonth()||(n.getMonth()===b.getMonth()&&n.getDate()<b.getDate()))?1:0);}
 function cond(){var d=data(),a=age(),u18=a!==null&&a<18;var A=R.querySelector('.rf-age');if(A)A.textContent=a!==null?W.age+': '+a:'';
  R.querySelectorAll('.rf-opt').forEach(function(o){o.hidden=u18;});
  R.querySelectorAll('[data-if]').forEach(function(e){var c=e.dataset.if,s=true;
-  if(c==='u18')s=u18;else if(c==='run')s=d.sport&&d.sport!=='cycling';else if(c==='notmale')s=d.gender!=='m';
+  if(c==='u18')s=u18;else if(c==='run')s=[].concat(d.sport||[]).some(function(x){return x==='running'||x==='triathlon';});else if(c==='notmale')s=d.gender!=='m';
+  else if(c.indexOf('has:')===0){var kv=c.slice(4).split('=');s=[].concat(d[kv[0]]||[]).indexOf(kv[1])>-1;}
   else if(c.indexOf('yes:')===0)s=c.slice(4).split(',').some(function(k){return d[k]==='yes';});e.hidden=!s;});}
 function show(n){steps[i].classList.remove('on');i=n;steps[i].classList.add('on');dots.forEach(function(x,k){x.className=k<i?'done':(k===i?'now':'');});
  R.querySelector('.rf-sn').textContent=i+1;R.querySelector('.rf-st').textContent=steps[i].dataset.t;R.querySelector('.rf-back').style.visibility=i?'visible':'hidden';
@@ -578,6 +587,14 @@ function autosave(){if(pv)return;clearTimeout(timer);timer=setTimeout(function()
 F.addEventListener('input',function(){cond();autosave();});F.addEventListener('change',function(e){
  if(e.target.dataset.day){var r=e.target.value==='0';e.target.closest('.av-day').querySelectorAll('.av-w').forEach(function(b){b.disabled=r;if(r)b.setAttribute('aria-pressed','false');});}cond();autosave();});
 F.addEventListener('click',function(e){var b=e.target.closest('.av-w');if(!b)return;b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true');autosave();});
+/* events: name, date, priority A/B/C (they go to "My goals & events") */
+var EV=R.querySelector('.rf-evs');if(EV){var EW=JSON.parse(EV.dataset.words),esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+ var row=function(e){var r=document.createElement('div');r.className='rf-ev';r.innerHTML='<div class="gl-r"><label>'+esc(EW.ev)+'<input type="text" class="rf-ev-n" maxlength="120" value="'+esc(e.name)+'"></label><label>'+esc(EW.date)+'<input type="date" class="rf-ev-d" value="'+esc(e.date)+'"></label></div>'
+  +'<div class="rf-ev-b"><span class="rf-ev-pl">'+esc(EW.prio)+'</span><div class="gl-p">'+['A','B','C'].map(function(p){return '<button type="button" class="gl-pb" data-p="'+p+'" aria-pressed="'+((e.prio||'B')===p)+'">'+p+'</button>';}).join('')+'</div><button type="button" class="av-del rf-ev-x">'+esc(EW.rm)+'</button></div>';EV.appendChild(r);};
+ JSON.parse(EV.querySelector('.rf-ev-data').textContent).forEach(row);
+ R.querySelector('.rf-ev-add').onclick=function(){row({});EV.lastChild.querySelector('.rf-ev-n').focus();};
+ EV.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.classList.contains('gl-pb')){b.parentNode.querySelectorAll('.gl-pb').forEach(function(y){y.setAttribute('aria-pressed',y===b);});autosave();}
+  if(b.classList.contains('rf-ev-x')){b.closest('.rf-ev').remove();autosave();}});}
 // signature
 var c=R.querySelector('.rf-sig canvas'),x=c&&c.getContext('2d'),down=false,last=null;
 function pad(){if(!c)return;var r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;if(!r.width)return;c.width=r.width*d;c.height=r.height*d;x.setTransform(d,0,0,d,0,0);
@@ -628,6 +645,11 @@ html .cc .rf-tick { display: flex !important; gap: 12px; align-items: flex-start
 html .cc .rf-tick input { flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: #009a44; }
 html .cc .rf-group { margin: 6px 0 0; font-weight: 600; color: var(--text); font-size: 14px; } html .cc .rf-group-t p { margin: 8px 0 0; font-size: 14px; }
 html .cc .rf-week { display: grid; gap: 8px; }
+html .cc .rf-evs { display: grid; gap: 10px; margin: 4px 0 10px; } html .cc .rf-ev { display: grid; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.03); }
+html .cc .rf-ev label { font-size: 12.5px !important; color: var(--text-3) !important; display: grid !important; gap: 5px; margin: 0 !important; min-width: 0; }
+html .cc .rf .rf-ev input { min-width: 0; width: 100%; } html .cc .rf-ev .gl-r { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+html .cc .rf-ev-b { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; } html .cc .rf-ev-pl { font-size: 12.5px; font-weight: 600; color: var(--text-3); } html .cc .rf-ev-b .gl-p { flex: 1; max-width: 220px; }
+html .cc .ath form .rf-ev-add { width: auto; justify-self: start; margin: 0; }
 html .cc .rf-sig { position: relative; border-radius: 12px; border: 1px dashed rgba(255,255,255,.3); overflow: hidden; } html .cc .rf-sig canvas { display: block; width: 100%; height: 160px; touch-action: none; cursor: crosshair; background: #fff; }
 html .cc .rf-sig-ph { position: absolute; inset: auto 0 12px; text-align: center; font-size: 12.5px; color: #8a8f98; pointer-events: none; } html .cc .ath form .rf-clr { position: absolute; top: 8px; right: 8px; width: auto; margin: 0; padding: 6px 12px !important; font-size: 12.5px !important; background: rgba(8,9,10,.75); color: #fff; }
 html .cc .rf-step[data-k=sign] .rf-panel { margin-bottom: 70px; }   /* room for the chat bubble */

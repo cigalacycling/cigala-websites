@@ -226,7 +226,18 @@ function cc_f_dict($l) {
 "Tell me about you": "Raccontami di te",
 "Update your details": "Aggiorna i tuoi dati",
 "Welcome to Cigala Cycling Coaching": "Benvenuto in Cigala Cycling Coaching",
-"Athlete hub": "Area atleta"
+"Athlete hub": "Area atleta",
+"Sport": "Sport",
+"Which other sport?": "Quale altro sport?",
+"Any notes about your setup?": "Note sulla tua attrezzatura?",
+"e.g. which turbo trainer, power meter on which bike, a gym at home": "es. che rulli usi, su quale bici hai il misuratore di potenza, palestra in casa",
+"If any time of day suits you, leave morning, lunch and evening off. Two slots on the same day? Tap both.": "Se per te va bene qualsiasi momento, lascia vuoti mattina, pranzo e sera. Due momenti nello stesso giorno? Toccali entrambi.",
+"How many hours a week do you normally train?": "Quante ore a settimana ti alleni di solito?",
+"e.g. 6h": "es. 6 h",
+"How many hours a day do you normally train?": "Quante ore al giorno ti alleni di solito?",
+"e.g. 1h, 1h 30": "es. 1 h, 1 h 30",
+"Any notes about your normal training week?": "Note sulla tua settimana di allenamento tipo?",
+"If you race or do any events, list them here with their priority: A = your main goal, B = important, C = for training or fun. League and club races too.": "Se fai gare o eventi, elencali qui con la priorità: A = obiettivo principale, B = importante, C = per allenamento o divertimento. Anche le gare di lega e del club."
 },
 "pt": {
 "About you": "Sobre ti",
@@ -447,7 +458,18 @@ function cc_f_dict($l) {
 "Tell me about you": "Fala-me de ti",
 "Update your details": "Atualiza os teus dados",
 "Welcome to Cigala Cycling Coaching": "Bem-vindo à Cigala Cycling Coaching",
-"Athlete hub": "Área do atleta"
+"Athlete hub": "Área do atleta",
+"Sport": "Desporto",
+"Which other sport?": "Que outro desporto?",
+"Any notes about your setup?": "Alguma nota sobre o teu equipamento?",
+"e.g. which turbo trainer, power meter on which bike, a gym at home": "ex.: que rolo usas, em que bicicleta tens o medidor de potência, ginásio em casa",
+"If any time of day suits you, leave morning, lunch and evening off. Two slots on the same day? Tap both.": "Se qualquer hora do dia te serve, deixa manhã, almoço e noite por marcar. Dois momentos no mesmo dia? Toca nos dois.",
+"How many hours a week do you normally train?": "Quantas horas por semana costumas treinar?",
+"e.g. 6h": "ex.: 6h",
+"How many hours a day do you normally train?": "Quantas horas por dia costumas treinar?",
+"e.g. 1h, 1h 30": "ex.: 1h, 1h30",
+"Any notes about your normal training week?": "Alguma nota sobre a tua semana normal de treino?",
+"If you race or do any events, list them here with their priority: A = your main goal, B = important, C = for training or fun. League and club races too.": "Se fazes provas ou eventos, lista-os aqui com a prioridade: A = o teu objetivo principal, B = importante, C = para treinar ou por diversão. Também as provas de liga e do clube."
 },
 "sl": {
 "About you": "O tebi",
@@ -668,7 +690,18 @@ function cc_f_dict($l) {
 "Tell me about you": "Povej mi o sebi",
 "Update your details": "Posodobi svoje podatke",
 "Welcome to Cigala Cycling Coaching": "Dobrodošel v Cigala Cycling Coaching",
-"Athlete hub": "Prostor za športnike"
+"Athlete hub": "Prostor za športnike",
+"Sport": "Šport",
+"Which other sport?": "Kateri drug šport?",
+"Any notes about your setup?": "Kakšne opombe o tvoji opremi?",
+"e.g. which turbo trainer, power meter on which bike, a gym at home": "npr. kateri trenažer, merilnik moči na katerem kolesu, fitnes doma",
+"If any time of day suits you, leave morning, lunch and evening off. Two slots on the same day? Tap both.": "Če ti ustreza katerikoli del dneva, pusti jutro, opoldne in večer neoznačene. Dva termina v istem dnevu? Tapni oba.",
+"How many hours a week do you normally train?": "Koliko ur na teden običajno treniraš?",
+"e.g. 6h": "npr. 6 h",
+"How many hours a day do you normally train?": "Koliko ur na dan običajno treniraš?",
+"e.g. 1h, 1h 30": "npr. 1 h, 1 h 30",
+"Any notes about your normal training week?": "Kakšne opombe o tvojem običajnem tednu treninga?",
+"If you race or do any events, list them here with their priority: A = your main goal, B = important, C = for training or fun. League and club races too.": "Če tekmuješ ali se udeležuješ dogodkov, jih naštej tukaj s prioriteto: A = tvoj glavni cilj, B = pomembno, C = za trening ali zabavo. Tudi ligaške in klubske tekme."
 }
 }
 JSON, true);

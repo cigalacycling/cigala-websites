@@ -36,7 +36,8 @@ function cc_g_diff($old, $new) {
 // the form's goals start the box (only when it is still empty)
 function cc_g_from_form($pid, $a) {
     if (cc_g_get($pid)) return;
-    $g = ['short' => $a['goal_short'] ?? '', 'long' => $a['goal_long'] ?? '', 'events' => [], 'from_form' => trim(($a['races'] ?? '') . (($a['race_a'] ?? '') !== '' ? "\nMain one: " . $a['race_a'] : '')), 'updated' => time()];
+    $g = ['short' => $a['goal_short'] ?? '', 'long' => $a['goal_long'] ?? '', 'events' => cc_g_clean(['events' => $a['events'] ?? []])['events'],
+          'from_form' => trim(($a['races'] ?? '') . (($a['race_a'] ?? '') !== '' ? "\nMain one: " . $a['race_a'] : '')), 'updated' => time()];   // races/race_a: old paper forms
     update_post_meta($pid, 'cc_goals', wp_slash(wp_json_encode($g)));
 }
 
