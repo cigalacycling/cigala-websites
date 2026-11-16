@@ -81,11 +81,15 @@ add_action('user_register', 'cc_ath_lang_save', 5);
 add_action('edit_user_profile_update', 'cc_ath_lang_save');
 add_action('personal_options_update', 'cc_ath_lang_save');
 $GLOBALS['cc_ath_lang'] = 'en';
+// Matteo 16 Nov: athletes reset their own password (passwords.php); without that module the old "message me" texts stay
+function cc_ath_selfpw() { return function_exists('cc_pw_mail'); }
+function cc_ath_forgot_url() { return add_query_arg('cc_forgot', 1, home_url('/' . CC_ATH_SLUG . '/')); }
 function cc_t($s) {
     static $IT = [
         'Coached athletes' => 'Atleti seguiti', 'Athlete login' => 'Accesso atleti',
         'Your training guides, links and your own reports, all in one place.' => 'Le tue guide di allenamento, i link e i tuoi report personali, tutto in un unico posto.',
         'That username or password is not right. Try again, or message me and I will reset it.' => 'Nome utente o password non corretti. Riprova, oppure scrivimi e te la reimposto.',
+        'That email or password is not right. Try again, or tap “Forgot your password?” below to choose a new one.' => 'Email o password non corretti. Riprova, oppure tocca “Password dimenticata?” qui sotto per sceglierne una nuova.',
         'Username or email' => 'Nome utente o email', 'Password' => 'Password', 'Keep me logged in' => 'Resta collegato', 'Log in' => 'Accedi',
         'Athlete area' => 'Area atleta', ' · coach view' => ' · vista coach', 'Welcome' => 'Ciao', 'Log out' => 'Esci',
         'Everything for your coaching in one place. Train smarter. Ride faster.' => 'Tutto il tuo coaching in un unico posto. Train smarter. Ride faster.',
@@ -246,19 +250,21 @@ function cc_ath_inner() {
         $GLOBALS['cc_ath_lang'] = (($_GET['lang'] ?? '') === 'it' || (($_GET['lang'] ?? '') !== 'en' && strpos($al, 'it') === 0)) ? 'it' : 'en';
         $it = $GLOBALS['cc_ath_lang'] === 'it';
         if (isset($_GET['cc_set'])) return $o . cc_ath_setpw_html() . '</div>';   // link from the welcome email
+        if (isset($_GET['cc_forgot']) && ($fp = apply_filters('cc_ath_forgot_page', '')) !== '') return $o . $fp . '</div>';   // passwords.php
         $next = isset($_GET['next']) ? add_query_arg('cc_file', (int) $_GET['next'], $url) : $url;
         $o .= '<div class="ath-login"><p class="eyebrow">' . cc_t('Coached athletes') . '</p><h1>' . cc_t('Athlete login') . '</h1>'
             . '<p class="ath-lede">' . cc_t('Your training guides, links and your own reports, all in one place.') . '</p>';
-        if (isset($_GET['login'])) $o .= '<p class="ath-err" role="alert">' . cc_t('That username or password is not right. Try again, or message me and I will reset it.') . '</p>';
+        if (isset($_GET['login'])) $o .= '<p class="ath-err" role="alert">' . cc_t(cc_ath_selfpw() ? 'That email or password is not right. Try again, or tap “Forgot your password?” below to choose a new one.' : 'That username or password is not right. Try again, or message me and I will reset it.') . '</p>';
         $o .= '<form method="post" action="' . esc_url(site_url('wp-login.php', 'login_post')) . '">'
             . '<label for="ath-u">' . cc_t('Username or email') . '</label><input id="ath-u" name="log" type="text" autocomplete="username" autocapitalize="none" required>'
             . '<label for="ath-p">' . cc_t('Password') . '</label><input id="ath-p" name="pwd" type="password" autocomplete="current-password" required>'
             . '<label class="ath-rem"><input name="rememberme" type="checkbox" value="forever" checked> ' . cc_t('Keep me logged in') . '</label>'
             . '<input type="hidden" name="redirect_to" value="' . esc_url($next) . '">'
             . '<button type="submit" class="btn btn-go">' . cc_t('Log in') . '</button></form>'
-            . ($it ? '<p class="ath-help">Password dimenticata? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">Scrivimi su WhatsApp</a> o <a href="mailto:matteo@cigalacycling.com">mandami un’email</a> e te ne invio una nuova.</p>'
+            . apply_filters('cc_ath_forgot_link', '')   // passwords.php: "Forgot your password?" with a reset link by email
+            . ($it ? (cc_ath_selfpw() ? '' : '<p class="ath-help">Password dimenticata? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">Scrivimi su WhatsApp</a> o <a href="mailto:matteo@cigalacycling.com">mandami un’email</a> e te ne invio una nuova.</p>')
                    . '<p class="ath-help">Non sei ancora seguito? <a href="' . esc_url(home_url('/preparatore-di-ciclismo-italia/')) . '">Scopri il coaching</a>.</p>'
-                   : '<p class="ath-help">Forgot your password? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a> or <a href="mailto:matteo@cigalacycling.com">email me</a> and I will send you a new one.</p>'
+                   : (cc_ath_selfpw() ? '' : '<p class="ath-help">Forgot your password? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a> or <a href="mailto:matteo@cigalacycling.com">email me</a> and I will send you a new one.</p>')
                    . '<p class="ath-help">Not coached yet? <a href="' . esc_url(home_url('/individual-packages/')) . '">See the coaching packages</a>.</p>')
             . '</div>';
         return $o . '</div>';
@@ -288,7 +294,7 @@ function cc_ath_inner() {
         . '<h1><span class="ath-greet" data-l="' . $lang . '">' . cc_t('Welcome') . '</span>, ' . esc_html($first) . '</h1>'
         . '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>'
         . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . cc_t($nrep === 1 ? 'report in your folder' : 'reports in your folder') . '</span></div>' : '')
-        . '<a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a></div>'
+        . '<a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a>' . apply_filters('cc_ath_hero_links', '', $coach) . '</div>'
         . '<div class="ath-hero-me">' . cc_ath_sig_photo() . '</div></header>';
     if ($coach) {
         $list = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'meta_key' => 'cc_user']);
@@ -476,12 +482,15 @@ function cc_ath_setpw_html() {
                 : '<p class="ath-help">Any trouble? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a> or <a href="mailto:matteo@cigalacycling.com">email me</a>.</p>';
     $eb = '<p class="eyebrow">' . cc_t('Coached athletes') . '</p>';
     if (!$u) return '<div class="ath-login">' . $eb . '<h1>' . ($it ? 'Link scaduto' : 'This link has expired') . '</h1><p class="ath-lede">'
-        . ($it ? 'Il link per scegliere la password vale 7 giorni e si usa una volta sola. Scrivimi e te ne mando uno nuovo.' : 'The link to choose your password works once and lasts 7 days. Message me and I will send you a new one.')
-        . '</p><p><a class="btn btn-go" href="https://wa.me/353834777697" target="_blank" rel="noopener">' . ($it ? 'Scrivimi su WhatsApp' : 'WhatsApp me') . '</a></p>'
+        . (cc_ath_selfpw() ? ($it ? 'Il link per scegliere la password vale 7 giorni e si usa una volta sola. Chiedine uno nuovo qui: arriva subito via email.' : 'The link to choose your password works once and lasts 7 days. Ask for a new one here: it comes straight to your email.')
+                           : ($it ? 'Il link per scegliere la password vale 7 giorni e si usa una volta sola. Scrivimi e te ne mando uno nuovo.' : 'The link to choose your password works once and lasts 7 days. Message me and I will send you a new one.'))
+        . '</p><p>' . (cc_ath_selfpw() ? '<a class="btn btn-go" href="' . esc_url(cc_ath_forgot_url()) . '">' . ($it ? 'Mandami un nuovo link' : 'Send me a new link') . '</a>'
+                                      : '<a class="btn btn-go" href="https://wa.me/353834777697" target="_blank" rel="noopener">' . ($it ? 'Scrivimi su WhatsApp' : 'WhatsApp me') . '</a>') . '</p>'
         . '<p class="ath-help">' . ($it ? 'Hai già una password?' : 'Already have a password?') . ' <a href="' . esc_url(home_url('/' . CC_ATH_SLUG . '/')) . '">' . cc_t('Log in') . '</a></p></div>';
     $first = $u->first_name ?: $u->display_name;
     $err = ['short' => $it ? 'Usa almeno 8 caratteri.' : 'Use at least 8 characters.', 'match' => $it ? 'Le due password non coincidono.' : 'The two passwords are not the same.',
-            'expired' => $it ? 'Il link è scaduto. Scrivimi e te ne mando uno nuovo.' : 'The link has expired. Message me and I will send you a new one.'][$_GET['err'] ?? ''] ?? '';
+            'expired' => cc_ath_selfpw() ? ($it ? 'Il link è scaduto. Tocca “Password dimenticata?” nella pagina di accesso per riceverne uno nuovo.' : 'The link has expired. Tap “Forgot your password?” on the login page to get a new one.')
+                                         : ($it ? 'Il link è scaduto. Scrivimi e te ne mando uno nuovo.' : 'The link has expired. Message me and I will send you a new one.')][$_GET['err'] ?? ''] ?? '';
     return '<div class="ath-login">' . $eb . '<h1>' . ($it ? 'Scegli la tua password' : 'Choose your password') . '</h1>'
         . '<p class="ath-lede">' . sprintf($it ? 'Ciao %s, scegli una password per la tua area atleta. Per entrare userai la tua email, <strong>%s</strong>, e questa password.' : 'Hi %s, choose a password for your athlete hub. You will log in with your email, <strong>%s</strong>, and this password.', esc_html($first), esc_html($u->user_email)) . '</p>'
         . ($err ? '<p class="ath-err" role="alert">' . esc_html($err) . '</p>' : '')
@@ -499,11 +508,11 @@ function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
     $logo = esc_url(get_option('cc_mail_logo', '')); $head = esc_url(get_option($it ? 'cc_mail_header_it' : 'cc_mail_header_en', '')); 
     $T = $it ? ['subj' => 'La tua area atleta Cigala Coaching è pronta', 'hi' => "Ciao $first,",
                 'p1' => 'la tua area atleta personale è pronta. Qui trovi i tuoi report, le guide di allenamento, gli strumenti gratuiti senza registrazione e un contatto diretto con me, tutto in un unico posto.',
-                'btn' => 'Scegli la tua password', 'p2' => 'Per entrare usi la tua email, <strong>' . esc_html($u->user_email) . '</strong>. Il pulsante vale 7 giorni: se è scaduto, scrivimi e te ne mando uno nuovo.',
+                'btn' => 'Scegli la tua password', 'p2' => 'Per entrare usi la tua email, <strong>' . esc_html($u->user_email) . '</strong>. Il pulsante vale 7 giorni: ' . (cc_ath_selfpw() ? 'se è scaduto, tocca “Password dimenticata?” nella pagina di accesso e te ne arriva subito uno nuovo.' : 'se è scaduto, scrivimi e te ne mando uno nuovo.'),
                 'p3' => 'Una volta dentro, salva la pagina tra i preferiti del telefono: così è sempre a un tocco.', 'bye' => 'A presto in bici,', 'eb' => 'Area atleta']
              : ['subj' => 'Your Cigala Coaching athlete hub is ready', 'hi' => "Hi $first,",
                 'p1' => 'Your personal athlete hub is ready. It is where you will find your reports from me, the training guides, the free tools without any sign-up and a direct line to me, all in one place.',
-                'btn' => 'Choose your password', 'p2' => 'You log in with your email, <strong>' . esc_html($u->user_email) . '</strong>. The button works for 7 days: if it has expired, just message me and I will send you a new one.',
+                'btn' => 'Choose your password', 'p2' => 'You log in with your email, <strong>' . esc_html($u->user_email) . '</strong>. The button works for 7 days: ' . (cc_ath_selfpw() ? 'if it has expired, tap “Forgot your password?” on the login page and a new one comes straight away.' : 'if it has expired, just message me and I will send you a new one.'),
                 'p3' => 'Once you are in, bookmark the page on your phone so it is always one tap away.', 'bye' => 'See you on the road,', 'eb' => 'Athlete hub'];
     $f = "font-family:Montserrat,Helvetica,Arial,sans-serif";
     $h = '<!doctype html><html><body style="margin:0;padding:0;background:#07080a"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#07080a"><tr><td align="center" style="padding:30px 12px;background-color:#07080a">'
