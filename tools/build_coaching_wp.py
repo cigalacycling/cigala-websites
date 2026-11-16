@@ -379,16 +379,17 @@ var K='cc_exit',t0=Date.now(),last=null,maxY=0,ys=[];
 function g(k){try{return localStorage.getItem(k);}catch(e){return null;}}
 function ok(){if(!g('cc_consent'))return false;try{if(sessionStorage.getItem(K))return false;}catch(e){}
 var c=+(g(K)||0);if(c&&Date.now()-c<3*864e5)return false;var n=document.getElementById('nl-pop');if(n&&!n.hidden&&getComputedStyle(n).display!=='none')return false;
-try{var nl=JSON.parse(g('cc_nl')||'{}');if(nl.c&&Date.now()-nl.c<36e5)return false;}catch(e){}return Date.now()-t0>8000;}
+try{var nl=JSON.parse(g('cc_nl')||'{}');if(nl.c&&Date.now()-nl.c<36e5)return false;}catch(e){}var h=document.documentElement.scrollHeight-innerHeight;return Date.now()-t0>20000&&maxY>h*.25;}
 function open(){if(!ok())return;try{sessionStorage.setItem(K,'1');}catch(e){}last=document.activeElement;p.hidden=false;q('.xpop-box').focus({preventScroll:true});document.addEventListener('keydown',key);}
 function close(){p.hidden=true;document.removeEventListener('keydown',key);try{localStorage.setItem(K,String(Date.now()));}catch(e){}if(last&&last.focus)last.focus({preventScroll:true});}
 function key(e){if(e.key==='Escape')close();}
 p.querySelectorAll('[data-x]').forEach(function(b){b.addEventListener('click',close);});
 p.querySelectorAll('.xpop-ctas a').forEach(function(a){a.addEventListener('click',function(){setTimeout(close,50);});});
+addEventListener('scroll',function(){maxY=Math.max(maxY,scrollY);},{passive:true});   /* Matteo 16 Nov, all sites: open only after 20 s AND a quarter of the page read */
 document.addEventListener('mouseout',function(e){if(!e.relatedTarget&&e.clientY<=0)open();});
-if(matchMedia('(hover: none)').matches){addEventListener('scroll',function(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;maxY=Math.max(maxY,y);ys.push([Date.now(),y]);while(ys.length&&Date.now()-ys[0][0]>700)ys.shift();
+if(matchMedia('(hover: none)').matches){addEventListener('scroll',function(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;ys.push([Date.now(),y]);while(ys.length&&Date.now()-ys[0][0]>700)ys.shift();
 if(maxY>h*.5&&ys.length&&ys[0][1]-y>500)open();},{passive:true});}
-window.ccExitOpen=function(){t0=0;open();};})();</script>""")
+window.ccExitOpen=function(){t0=0;maxY=1e9;open();};})();</script>""")
 css += '''
 /* ---- exit pop-up (same design as Tours) ---- */
 html .cc .xpop { position: fixed; inset: 0; z-index: 2147483646; display: grid; place-items: center; padding: 16px; }

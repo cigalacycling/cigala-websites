@@ -518,3 +518,11 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Not output on the homepage, noindex pages (athletes), archives or 404s.
 - Additive only: nothing visible, and the existing schema is unchanged.
 - Live: NOT yet. The site is live since 16 Nov, so this needs the same snippet added on live (Matteo's go; I have no live access).
+
+## 16 Nov 2026: exit pop-up timing (Matteo via Tours, all sites)
+- The pop-up opens only after 20 s on the page AND once a quarter of the page has been scrolled. It was 8 s before.
+- The triggers are unchanged:
+  - laptop: the mouse leaves the top of the window;
+  - phone: a fast scroll up after reading half the page.
+- The other rules are unchanged: once per visit, 3 days after closing, never before consent or over the newsletter pop-up.
+- STAGING (lib-228). Tested: hidden at 9 s with 40% read; hidden at 21 s with 10% read; opens at 21 s with 30% read. Live: waiting on Matteo.
