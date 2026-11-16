@@ -130,8 +130,8 @@ function cc_ath_can_see($pid) {
     if (!$pid || get_post_type($pid) !== 'cc_athlete' || !is_user_logged_in()) return false;
     if (cc_ath_is_coach()) return true;
     $me = get_current_user_id();
-    if (get_post_meta($pid, 'cc_shared', true)) return (bool) cc_ath_page_of($me);
-    return (int) get_post_meta($pid, 'cc_user', true) === $me;
+    $ok = get_post_meta($pid, 'cc_shared', true) ? (bool) cc_ath_page_of($me) : (int) get_post_meta($pid, 'cc_user', true) === $me;
+    return (bool) apply_filters('cc_ath_can_see', $ok, $pid, $me);   // onboarding.php: closed until the rider form is done
 }
 
 // a new Subscriber gets their own page; a deleted one loses the link (the page is kept for Matteo)
@@ -269,6 +269,8 @@ function cc_ath_inner() {
         return $o . '<h1>' . cc_t('Athlete area') . '</h1><p>' . cc_t('This area is for athletes I coach. If you are one of them, message me and I will set up your login.') . '</p>'
              . '<p><a class="btn btn-ghost" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a></p></div>';
     }
+    // onboarding.php: until the rider form is done, an athlete sees only the form (empty without that module)
+    if (!$coach && ($gate = apply_filters('cc_ath_gate', '', $me, $mine)) !== '') return $o . $gate . '</div>';
     $view = $mine;
     if ($coach && isset($_GET['view']) && get_post_type((int) $_GET['view']) === 'cc_athlete') $view = (int) $_GET['view'];
     // the coach sees each athlete's page in that athlete's language; ?lang=it|en previews either hub
