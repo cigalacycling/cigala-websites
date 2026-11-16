@@ -26,6 +26,19 @@ ROUTE_NOTES = {k: v.get('note', '') for k, v in _trm.ROUTES.items()}
 SPOTS = {k: v for k, v in json.load(open(ROOT + 'tours/spots.json')).items() if not k.startswith('_')}
 MON = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
+_sv = lambda d: f'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{d}</svg>'
+ICON = {   # line icons for the glance strip and Trip at a glance (Matteo 16 Nov)
+    'route': _sv('<circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="6" r="2.2"/><path d="M7 18h8.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H17"/>'),
+    'climb': _sv('<path d="M2 20l6.5-10 4 6 3-4.5L22 20z"/><path d="M15.5 11.5l1.8-2.7"/>'),
+    'cal': _sv('<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
+    'level': _sv('<path d="M5 19v-4M12 19v-8M19 19V5"/>'),
+    'pin': _sv('<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/>'),
+    'group': _sv('<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="9.5" r="2.4"/><path d="M15.5 14.2A4.6 4.6 0 0 1 21 18.5"/>'),
+    'flag': _sv('<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>'),
+    'plane': _sv('<path d="M10.5 13.5L3 11l1.5-1.5 8 .5 4-4.5a2 2 0 0 1 3 3l-4.5 4 .5 8L14 22l-2.5-7.5L8 18v2.5L6.5 22l-1-3.5L2 17.5 3.5 16H6z"/>'),
+    'dot': _sv('<circle cx="12" cy="12" r="3"/>'),
+}
+
 def raw(pid): return json.loads(json.load(open(ROOT + f'stg-tours/backup/page-{pid}.json'))['meta']['_elementor_data'] or '[]')
 
 def faqs(data):
@@ -99,6 +112,12 @@ def trip(slug):
     h1i = next(i for i, x in enumerate(it) if x[0] == 'h1'); h1 = it[h1i][1]
     secs, cur = [], {'kind': 'top', 'h': None, 'tag': None, 'items': []}
     for k, v, s in it[h1i + 1:]:
+        if k == 'text' and cur['kind'] in ('inc', 'notinc', 'transfers', 'entry') and len(text_of(v)) < 40:   # short text lines used as box titles live
+            tt = text_of(v).strip().rstrip(':').upper()
+            if tt in ('AIRPORT TRANSFERS', 'AIRPORT TRANSFER'): secs.append(cur); cur = {'kind': 'transfers', 'h': text_of(v), 'tag': 'p', 'items': []}; continue
+            if tt.startswith('GRAN FONDO ENTRY PRICE'): secs.append(cur); cur = {'kind': 'entry', 'h': text_of(v), 'tag': 'p', 'items': []}; continue
+        if k == 'h4' and classify(k, text_of(v)) in ('inc', 'notinc', 'transfers'):   # some pages have "What's not included" as an H4
+            secs.append(cur); cur = {'kind': classify(k, text_of(v)), 'h': v, 'tag': 'h4', 'items': []}; continue
         if k in ('h2', 'h3', 'h5'):
             t = text_of(v); kind = classify(k, t)
             if kind == 'book':
@@ -146,15 +165,22 @@ def trip(slug):
     dates_live = text_of(texts[0]) if texts else ''
     hero_src = next((v for k, v, s in top['items'] if k == 'img'), None) or json.load(open(ROOT + f'stg-tours/backup/page-{pid}.json')).get('featured_media')
     # ---------- glance ----------
-    g = one('glance'); glance = []
+    g = one('glance'); glance = []; g_trans = []
+    KEYS = r'(START\s*&(?:amp;)?\s*FINISH(?: LOCATION)?|START(?: LOCATION)?|FINISH(?: LOCATION)?|DAYS RIDING|RIDING DAYS|TOTAL DISTANCE|TOTAL ELEVATION|TOTAL CLIMBING|DISTANCE|ELEVATION|CLIMBING|GROUP SIZE|LEVEL|LONGEST DAY|DIFFICULTY)'
     if g:
+        in_trans = False
         for k, v, s in g['items']:
             if k == 'text':
                 for ln in lines(v):
-                    t = text_of(ln)
-                    a, sep, b = t.partition(':')
-                    if sep and 1 < len(a.strip()) <= 40: glance.append((a.strip().capitalize(), E(b.strip().lstrip(':：-– ').strip())))
-                    elif t: glance.append(('', ln))
+                    t = text_of(ln).strip()
+                    if not t: continue
+                    if re.match(r'(?i)^airport transfers?:?$', t): in_trans = True; continue
+                    if in_trans:   # "Inbound 28/07 12:00 pm noon from Geneva Airport (GVA)"
+                        m = re.match(r'(?i)^(inbound|outbound|arrival|departure)\s*:?\s*(.*)$', t)
+                        g_trans.append((m.group(1).capitalize(), m.group(2)) if m else ('', t)); continue
+                    m = re.match(r'(?i)^' + KEYS + r'\s*:*\s*(.+)$', t)
+                    if m: glance.append((m.group(1).capitalize(), E(m.group(2).strip().lstrip(':：-– ').strip())))
+                    else: glance.append(('', ln))
     gl = {a.upper(): b for a, b in glance}
     get = lambda *keys: next((text_of(gl[k]) for k in gl for w in keys if w in k), '')
     # ---------- hero ----------
@@ -181,23 +207,31 @@ def trip(slug):
       <h1>{E(h1)}</h1>
       <div class="dates">{E(dates_live)}</div>
     </div>
-    <aside class="book" aria-label="Price and booking">
-      <span class="lab">Price</span>
-      <div class="price">{E(pr)}<small>{E(pr_rest)}</small></div>
-      {f'<span class="early">{E(early.group(1).strip())}</span>' if early else ''}
-      {spots_html}
+    <aside class="book bk2" aria-label="Price and booking">
+      <div class="bk-top">
+        <span class="lab">Price per person</span>
+        <div class="price">{E(pr)}<small>{E(pr_rest)}</small></div>
+        {f'<span class="early">{E(early.group(1).strip())}</span>' if early else ''}
+        {spots_html}
+      </div>
       <ul>{li}</ul>
-      <a class="btn btn-go btn-lg" href="{E(book)}" target="_blank" rel="noopener">Book now →</a>
-      {stay_html}{extra_small}
+      <div class="bk-cta"><a class="btn btn-go btn-lg" href="{E(book)}" target="_blank" rel="noopener">Book now →</a></div>
+      {f'<div class="bk-notes">{stay_html}{extra_small}</div>' if stay_html or extra_small else ''}
     </aside>
   </div>
 </div>'''
     # ---------- glance strip ----------
     dist, climb, days_riding = get('DISTANCE'), get('CLIMBING', 'ELEVATION'), get('DAYS RIDING', 'RIDING DAYS')
-    cells = [(dist or tr['distance'], 'Total distance'), (climb or tr['climbing'], 'Total climbing'), (days_riding, 'Days riding'),
-             (get('GROUP'), 'Group size'), (get('LEVEL') or tr['level'], 'Level'), (get('START'), 'Start & finish')]
-    strip = ''.join(f'<div><div class="n{" sm" if len(n) > 12 else ""}">{E(n)}</div><div class="l">{E(l)}</div></div>' for n, l in cells if n)
-    glance_html = f'<div class="in" style="padding-top:28px"><div class="panel glance" aria-label="Trip at a glance">{strip}</div></div>'
+    from datetime import date as _d
+    nights = (_d.fromisoformat(tr['end']) - _d.fromisoformat(tr['start'])).days
+    lvl = tr['level']; bars = {'beginner': 1, 'intermediate': 2, 'expert': 3}.get(lvl.split(',')[0].strip().lower(), 2)
+    meter = '<span class="lm" aria-hidden="true">' + ''.join('<i class=on></i>' if i < bars else '<i></i>' for i in range(3)) + '</span>'
+    short = lambda x: re.split(r'\s*(?:\(|approx|apprx|depending)', x, flags=re.I)[0].strip() or x   # the strip shows the number; the full line is in Trip at a glance
+    cells = [('route', short(dist or tr['distance']), 'Total distance'), ('climb', short(climb or tr['climbing']).lstrip('+').replace(' mt', ' m'), 'Total climbing'),
+             ('cal', short(days_riding) if days_riding else f'{nights + 1} days', 'Days riding' if days_riding else f'{nights} nights'),
+             ('level', lvl.replace(', ', ' · '), 'Level')]   # 4 cells: one full row, a closed box (Matteo 16 Nov)
+    strip = ''.join(f'<div><span class="gi" aria-hidden="true">{ICON[ic]}</span><div><div class="n{" sm" if len(n) > 12 else ""}">{meter if ic == "level" else ""}{E(n)}</div><div class="l">{E(l)}</div></div></div>' for ic, n, l in cells if n)
+    glance_html = f'<div class="in" style="padding-top:28px"><div class="panel glance g4" aria-label="Trip at a glance">{strip}</div></div>'
     # ---------- sections ----------
     def H(sec, eyebrow, fallback=None, tag=None):
         t = re.sub(r'<[^>]+>', '', sec['h']).replace('​', '').strip() if sec and sec['h'] else fallback
@@ -208,7 +242,9 @@ def trip(slug):
     intro = one('intro')
     if intro:
         paras = ''.join(clean(v) for k, v, s in intro['items'] if k == 'text')
-        cimg = f'<div class="cardimg">{img_tag(hero_src, 1200, alt=hero_alt)}</div>' if hero_src and card else ''
+        pst = M.get('poster-' + slug)   # the poster with our map badge (tools/tours_posters.py)
+        cimg = (f'<div class="cardimg"><img src="{pst["url"]}" alt="{E(pst["alt"])}" loading="lazy"></div>' if pst else
+                f'<div class="cardimg">{img_tag(hero_src, 1200, alt=hero_alt)}</div>') if hero_src and card else ''
         out.append(f'<section id="overview"><div class="in split"><div>{H(intro, "The trip")}<div class="prose">{paras}</div></div>{cimg}</div></section>')
         nav.append(('overview', 'Overview'))
     op = one('operator')
@@ -227,7 +263,16 @@ def trip(slug):
             if rimg is None and k == 'e-image':
                 try: rimg = s['image']['value']['src']['value']['id']['value']
                 except (KeyError, TypeError): pass
-    facts = ''.join(f'<div><dt>{E(a)}</dt><dd>{b}</dd></div>' for a, b in glance if a)
+    def ficon(a):
+        u = a.upper()
+        for w, ic in (('START', 'pin'), ('FINISH', 'pin'), ('DAYS', 'cal'), ('DISTANCE', 'route'), ('ELEVATION', 'climb'), ('CLIMB', 'climb'),
+                      ('GROUP', 'group'), ('LEVEL', 'level'), ('DIFFICULTY', 'level'), ('LONGEST', 'flag')):
+            if w in u: return ICON[ic]
+        return ICON['dot']
+    facts = ''.join(f'<div><span class="fi" aria-hidden="true">{ficon(a)}</span><dt>{E(a)}</dt><dd>{b}</dd></div>' for a, b in glance if a)
+    if g_trans:
+        facts += '<div class="ftrans"><span class="fi" aria-hidden="true">' + ICON['plane'] + '</span><dt>Airport transfers</dt><dd>' + ''.join(
+            f'<span class="tl"><b>{E(a)}</b> {E(b)}</span>' if a else f'<span class="tl">{E(b)}</span>' for a, b in g_trans) + '</dd></div>'
     g_tag = (g['tag'] if g else 'h3')
     g_title = re.sub(r'<[^>]+>', '', g['h']).strip() if g else ''
     dl = f'<dl class="panel facts"><{g_tag} class="facts-h">{E(g_title)}</{g_tag}>{facts}</dl>' if facts else ''
@@ -275,9 +320,13 @@ def trip(slug):
             for k, v, s in trans['items']:
                 if k == 'text':
                     for x in lines(clean(v)):
-                        m = re.match(r'^\s*(\d{1,2}/\d{1,2})\s*(.*)$', text_of(x))
+                        m = re.match(r"^\s*(\d{1,2}/\d{1,2}(?:/\d{2,4})?)\s*(.*)$", text_of(x))
                         tl.append(f'<div><b>{m.group(1)}</b>{E(m.group(2))}</div>' if m else f'<div>{x}</div>')
-            side += f'<div class="panel" style="padding:22px 24px"><{trans["tag"]}>{E(text_of(trans["h"]).rstrip(":"))}</{trans["tag"]}><div class="transfers">{"".join(tl)}</div></div>'
+            tt_ = trans["tag"]; side += f'<div class="panel" style="padding:22px 24px"><{tt_}{" class=sidet" if tt_ == "p" else ""}>{E(text_of(trans["h"]).rstrip(":"))}</{tt_}><div class="transfers">{"".join(tl)}</div></div>'
+        ent = one('entry')
+        if ent:   # Gran Fondo entry prices (Strade Bianche): grid prices and the note
+            el = ''.join(f'<li><span>{x}</span></li>' for k, v, s in ent['items'] if k == 'text' for x in lines(clean(re.sub(r'(€)(?=Grid)', r'\1<br>', v))))
+            side += f'<div class="panel entryp" style="padding:22px 24px"><p class="sidet">{E(text_of(ent["h"]).rstrip("*"))}</p><ul>{el}</ul></div>'
         out.append(f'<section id="included"><div class="in">{H(inc, "The details")}<div class="inc"><div class="panel"><ul>{inc_li}</ul></div>'
                    f'<div class="side">{side}</div></div></div></section>')
         nav.append(('included', "What's included"))
@@ -285,8 +334,9 @@ def trip(slug):
         pics = [x['id'] for k, v, s in gsec['items'] if k == 'gallery' for x in s.get('gallery', [])] + [v for k, v, s in gsec['items'] if k == 'img']
         seen = []; [seen.append(p) for p in pics if p not in seen]
         if not seen: continue
-        figs = ''.join(f'<figure{" class=g-big" if n == 0 else ""}>{img_tag(p, 1400 if n == 0 else 900, alt=f"{text_of(h1).title()} bike tour - Cigala Cycling Tours")}</figure>' for n, p in enumerate(seen[:9]))
-        out.append(f'<section id="gallery"><div class="in">{H(gsec, "Real riders, real roads")}<div class="gallery">{figs}</div></div></section>')
+        n_ = 9 if len(seen) >= 9 else 5 if len(seen) >= 5 else len(seen)   # big photo + 4 or 8: the grid has no empty cells (Matteo 16 Nov)
+        figs = ''.join(f'<figure{" class=g-big" if n == 0 and n_ >= 5 else ""}>{img_tag(p, 1400 if n == 0 else 900, alt=f"{text_of(h1).title()} bike tour - Cigala Cycling Tours")}</figure>' for n, p in enumerate(seen[:n_]))
+        out.append(f'<section id="gallery"><div class="in">{H(gsec, "Real riders, real roads")}<div class="gallery g{n_}">{figs}</div></div></section>')
     hs = one('hotels')
     if hs:
         names = [(k, v) for k, v, s in hs['items'] if k == 'h3']
@@ -297,18 +347,25 @@ def trip(slug):
             hs = dict(hs, h=mt.group(1))
         txt = ''.join(clean(v) for k, v, s in hs['items'] if k == 'text')
         pics = [x['id'] for k, v, s in hs['items'] if k == 'gallery' for x in s.get('gallery', [])] + [v for k, v, s in hs['items'] if k == 'img']
-        cards = []
+        hotels_ = []
         for n, (tg, v) in enumerate(names):
             t = text_of(v); stars = len(re.findall(r'\*', t)); sup = bool(re.search(r'\*\s*S\b', t))
             nm = re.sub(r'[*]+\s*S?\s*$', '', t).strip()
-            if not nm: continue
-            ph = f'<div class="ph">{img_tag(pics[n], 900, alt=f"{nm.title()} - {text_of(h1).title()} bike tour")}</div>' if n < len(pics) else ''
+            if nm: hotels_.append((n, tg, nm, stars, sup))
+        def hcard(n, tg, nm, stars, sup, body='', cls=''):
+            ph = f'<div class="ph">{img_tag(pics[n], 1200, alt=f"{nm.title()} - {text_of(h1).title()} bike tour")}</div>' if n < len(pics) else ''
             st = (f'<div class="stars" aria-label="{stars} stars{" superior" if sup else ""}">{"★" * stars}{"<span class=sup>S</span>" if sup else ""}</div>') if stars else ''
-            cards.append(f'<article class="panel hotel">{ph}<div class="tx">{st}<{tg}>{E(nm)}</{tg}></div></article>')
-        rest = pics[len(cards):len(cards) + 5]
-        strip_html = ('<div class="strip">' + ''.join(img_tag(p, 600, alt=f'{text_of(h1).title()} hotel - Cigala Cycling Tours') for p in rest) + '</div>') if rest else ''
-        out.append(f'<section id="hotels"><div class="in">{H(hs, "Where you stay")}<div class="prose dprose">{txt}</div>{notes}'
-                   f'<div class="hotels">{"".join(cards)}</div>{strip_html}</div></section>')
+            return f'<article class="panel hotel{cls}">{ph}<div class="tx"><div class="eyebrow">Your hotel</div>{st}<{tg}>{E(nm)}</{tg}>{body}</div></article>'
+        if len(hotels_) == 1:   # one hotel: photo and text side by side in one card (Matteo 16 Nov: no big empty black area)
+            cards_html = hcard(*hotels_[0], body=f'<div class="prose">{txt}</div>{notes}', cls=' hotel1')
+            intro_html = ''
+        else:
+            cards_html = '<div class="hotels">' + ''.join(hcard(*h, cls=' wide' if len(hotels_) % 2 and i == len(hotels_) - 1 else '') for i, h in enumerate(hotels_)) + '</div>'
+            intro_html = f'<div class="prose dprose">{txt}</div>{notes}'
+        rest = pics[len(hotels_):]
+        k = 8 if len(rest) >= 8 else 4 if len(rest) >= 4 else 3 if len(rest) == 3 else 0   # full rows only
+        strip_html = (f'<div class="strip s{4 if k != 3 else 3}">' + ''.join(img_tag(p, 600, alt=f'{text_of(h1).title()} hotel - Cigala Cycling Tours') for p in rest[:k]) + '</div>') if k else ''
+        out.append(f'<section id="hotels"><div class="in">{H(hs, "Where you stay")}{intro_html}{cards_html}{strip_html}</div></section>')
         nav.append(('hotels', 'Hotels'))
     bk = one('bike')
     if bk:
@@ -345,10 +402,11 @@ def trip(slug):
         for st_ in S('stat'):
             lab = next((text_of(v) for k, v, s in st_['items'] if k == 'text'), '')
             num = {'500+': '700+', '10': '11'}.get(text_of(st_['h']).strip(), text_of(st_['h']).strip())   # same numbers as the homepage (Matteo 15 Nov)
-            stats.append(f'<div class="stat"><div class="n">{E(num)}</div><div class="l">{E(lab)}</div></div>')
-        st_html = f'<div class="panel stats">{"".join(stats)}</div>' if stats else ''
+            num_h = E(num).replace('★', '<i>★</i>')   # the star in gold, as on the homepage
+            stats.append(f'<div class="stat"><div class="n">{num_h}</div><div class="l">{E(lab)}</div></div>')
+        st_html = f'<div class="cc tstats"><div class="stats">{"".join(stats)}</div></div>' if stats else ''   # the homepage stats (Matteo 16 Nov)
         out.append(f'<section id="guides"><div class="in">{H(gd, "Who rides with you")}<div class="lede gl">{lede}</div>'
-                   f'<div class="guides">{"".join(cards)}</div>{st_html}</div></section>')
+                   f'<div class="guides{" g3" if len(cards) == 3 else ""}">{"".join(cards)}</div>{st_html}</div></section>')
         nav.append(('guides', 'Guides'))
     fq = one('faq')
     qa = faqs(data)
@@ -373,11 +431,15 @@ def trip(slug):
     ftitle = f'<{ftag} class="fin-h">{E(text_of(fin["h"]))}</{ftag}>' if fin else f'<p class="band-title">{E(text_of(h1))}</p>'
     dtag = next((k for k, v, s in (fin['items'] if fin else []) if k in ('h3', 'h2')), None)
     fdates = f'<{dtag} class="fin-d">{E(fin_dates)}</{dtag}>' if dtag else f'<div class="fin-d">{E(fin_dates)}</div>'
-    out.append(f'<section><div class="in"><div class="panel final"><div class="eyebrow">Ready to ride?</div>{ftitle}{fdates}'
+    fspots = (f'<div class="spots fspots"><span class="dot live" aria-hidden="true"></span>{E(f"Only {sp} spot{"s" if sp != 1 else ""} left" if isinstance(sp, int) else sp)}</div>') if isinstance(sp, int) and sp <= 5 else ''   # low spots only (Matteo 16 Nov)
+    out.append(f'<section><div class="in"><div class="panel final"><div class="eyebrow">Ready to ride?</div>{ftitle}{fdates}{fspots}'
                f'<div class="ctas"><a class="btn btn-go" href="{E(book)}" target="_blank" rel="noopener">Book now →</a>'
                f'<a class="btn btn-ghost" href="{L}/contact/">Ask a question</a></div></div></div></section>')
     tabs = ''.join(f'<a href="#{a}">{E(b)}</a>' for a, b in nav)
-    out.insert(1, f'<nav class="tabs" aria-label="On this page"><div class="in">{tabs}<a class="btn btn-go" href="{E(book)}" target="_blank" rel="noopener">Book now</a></div></nav>')
+    out.insert(1, f'<nav class="tabs" aria-label="On this page"><div class="in">{tabs}<a class="btn btn-go tbook" href="{E(book)}" target="_blank" rel="noopener">Book now</a></div></nav>')
+    # one Book now on screen at a time (Matteo 16 Nov): the bar's button shows once the price box has scrolled away
+    out.append("""<script>(function(){var b=document.querySelector('.cl .thero .book'),t=document.querySelector('.cl .tabs');if(!b||!t||!('IntersectionObserver' in window))return;t.classList.add('nobook');
+new IntersectionObserver(function(es){t.classList.toggle('nobook',es[0].isIntersecting);}).observe(b);})();</script>""")
     # structured data (SEO, Matteo: only improve): TouristTrip with the route places and the euro price, linked to the site's Organization
     num = re.sub(r'[^\d.]', '', pr.replace(',', ''))
     places = [n for n, la, lo, k, ps in _trm.ROUTES.get(slug, {}).get('pts', [])]
@@ -391,7 +453,7 @@ def trip(slug):
     out.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace('</', '<\\/') + '</script>')
     out.append(YT_JS if 'class="yt"' in ''.join(out) else '')
     out.append("""<script>(function(){var l=document.querySelectorAll('.cl .stats .stat .n');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-l.forEach(function(el){var m=el.textContent.match(/^([\\d,]+)(\\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
+l.forEach(function(el){if(el.children.length)return;var m=el.textContent.match(/^([\\d,]+)(\\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
 new IntersectionObserver(function(es,ob){if(!es[0].isIntersecting)return;ob.disconnect();var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1500);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},{threshold:.5}).observe(el);});})();</script>""")
     main = '\n'.join(x for x in out if x)
     main = main.replace('href="https://staging.tours.cigalacycling.com', 'href="' + L)   # links only; images stay on staging
@@ -410,6 +472,7 @@ html .cl .route .map svg { display: block; width: 100%; height: auto; border-rad
 html .cl .route .map .mapnote { margin: 10px 0 0; font-size: 13px; color: var(--text-3); }
 html .cl .route .map img { object-fit: contain !important; height: auto !important; aspect-ratio: auto !important; }
 html .cl #overview .cardimg img { aspect-ratio: auto !important; height: auto !important; object-fit: contain !important; }
+html .cl #overview .cardimg { aspect-ratio: auto !important; height: auto; align-self: start; }   /* the box takes the poster's own shape: no empty band under square posters */
 html .cl .hnote { font-family: var(--body); font-size: 15px; font-weight: 600; letter-spacing: .02em; text-transform: none; color: var(--green-text); margin: 4px 0 16px; }
 html .cl .thero .book { min-width: 0; grid-template-columns: minmax(0, 1fr); }
 html .cl .thero .book > * { max-width: 100%; }
@@ -438,6 +501,66 @@ html .cl .final .ctas { justify-content: center; }
 html .cl h2.ey2 { font-family: var(--body); font-size: 12px; line-height: 1.4; font-weight: 600; letter-spacing: .14em; color: #ff3d33; margin: 0 0 10px; }
 html .cl .dtour .by { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #ff3d33; }
 html .cl .dtour h3 { font-size: 22px; line-height: 1.14; }
+/* ---- Matteo 16 Nov: second review ---- */
+html .cl .thero .dates { color: var(--green-text, #2bd47a); }
+html .cl .thero .book.bk2 { padding: 0; gap: 0; background: rgba(12,14,16,.95); border: 1px solid rgba(255,255,255,.16); border-radius: 16px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.5); }
+html .cl .bk2 .bk-top { padding: 22px 24px 18px; display: grid; gap: 10px; justify-items: start; }
+html .cl .bk2 .bk-top .price { margin: 0; }
+html .cl .bk2 ul { padding: 0 24px; gap: 0; border-top: 1px solid var(--border-strong); }
+html .cl .bk2 ul:empty { display: none; }
+html .cl .thero .bk2 ul li { border-top: 0; border-bottom: 1px solid var(--border); padding: 12px 0; }
+html .cl .thero .bk2 ul li:last-child { border-bottom: 0; }
+html .cl .bk2 .bk-cta { padding: 18px 24px 22px; border-top: 1px solid var(--border-strong); }
+html .cl .bk2 .bk-cta .btn { width: 100%; justify-content: center; }
+html .cl .bk2 .bk-notes { padding: 14px 24px 18px; border-top: 1px solid var(--border); background: rgba(255,255,255,.025); }
+html .cl .thero .bk2 .bk-notes p.note:first-child { margin-top: 0; }
+html .cl .glance.g4 > div { display: flex; gap: 14px; align-items: center; }
+html .cl .glance .gi { flex: none; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; color: var(--green-text, #2bd47a); background: rgba(0,154,68,.12); border: 1px solid rgba(43,212,122,.28); }
+html .cl .glance .n.sm { font-size: 15px; }
+html .cl .glance.g4 > div > div { min-width: 0; }
+html .cl .glance.g4 .n { white-space: normal; overflow-wrap: break-word; }
+@media (max-width: 600px) { html .cl .glance.g4 > div { flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px; } html .cl .glance .gi { width: 34px; height: 34px; } html .cl .glance .gi svg { width: 17px; height: 17px; } html .cl .glance.g4 .n:not(.sm) { font-size: 26px; } }
+html .cl .lm { display: inline-flex; align-items: flex-end; gap: 2px; margin-right: 8px; vertical-align: 0; }
+html .cl .lm i { display: block; width: 3px; border-radius: 1px; background: rgba(255,255,255,.22); }
+html .cl .lm i:nth-child(1) { height: 5px; } html .cl .lm i:nth-child(2) { height: 8px; } html .cl .lm i:nth-child(3) { height: 11px; }
+html .cl .lm i.on { background: var(--green-text, #2bd47a); }
+html .cl .facts .facts-h { font-family: var(--head); font-weight: 400; font-size: 28px; line-height: 1.05; letter-spacing: .01em; color: var(--green-text, #2bd47a); margin: 0 0 10px; }
+html .cl .facts div { grid-template-columns: 32px 128px minmax(0, 1fr); align-items: start; gap: 12px; }
+html .cl .facts .fi { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: var(--green-text, #2bd47a); background: rgba(0,154,68,.12); }
+html .cl .facts .fi svg { width: 16px; height: 16px; }
+html .cl .facts dt, html .cl .facts dd { padding-top: 6px; }
+html .cl .facts .tl { display: block; margin-bottom: 4px; font-weight: 500; }
+html .cl .facts .tl b { color: var(--green-text, #2bd47a); font-weight: 600; }
+@media (max-width: 600px) { html .cl .facts div { grid-template-columns: 32px minmax(0, 1fr); } html .cl .facts dd { grid-column: 2; padding-top: 0; } }
+html .cl #itinerary .gpx { margin: 8px 0 30px; }
+html .cl .gallery.g5, html .cl .gallery.g9 { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-flow: dense; }
+html .cl .gallery .g-big { grid-column: span 2; grid-row: span 2; }
+html .cl .gallery.g1 { grid-template-columns: minmax(0, 1fr); } html .cl .gallery.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html .cl .gallery.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } html .cl .gallery.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 700px) { html .cl .gallery.g5, html .cl .gallery.g9, html .cl .gallery.g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } html .cl .gallery.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 120px; } }
+html .cl .hotel1, html .cl .hotels .hotel.wide { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); overflow: hidden; }
+html .cl .hotels .hotel.wide { grid-column: 1 / -1; }
+html .cl .hotel1 .ph, html .cl .hotel.wide .ph { aspect-ratio: auto !important; height: 100%; min-height: 360px; }
+html .cl .hotel1 .ph img, html .cl .hotel.wide .ph img { height: 100% !important; aspect-ratio: auto !important; }
+html .cl .hotel1 .tx { padding: clamp(22px, 3vw, 36px); align-content: center; gap: 10px; }
+html .cl .hotel .eyebrow { margin: 0; }
+html .cl .hotel1 .prose p { font-size: 15px; line-height: 1.6; color: var(--text-2); margin: 6px 0 0; }
+html .cl .hotel1 .hnote { margin: 12px 0 0; }
+@media (max-width: 900px) { html .cl .hotel1, html .cl .hotels .hotel.wide { grid-template-columns: minmax(0, 1fr); } html .cl .hotel1 .ph, html .cl .hotel.wide .ph { min-height: 0; aspect-ratio: 16 / 10 !important; } }
+html .cl .strip.s4 { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 14px; }
+html .cl .strip.s3 { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 14px; }
+@media (max-width: 640px) { html .cl .strip.s4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+html .cl .dprose + .hotels { margin-top: 18px; }
+html .cl .guides.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+html .cl .guides.g3 .guide { grid-template-columns: minmax(0, 1fr); }
+html .cl .guides.g3 .guide .ph img { aspect-ratio: 4 / 3; min-height: 0; height: auto; }
+@media (max-width: 900px) { html .cl .guides.g3 { grid-template-columns: minmax(0, 1fr); } html .cl .guides.g3 .guide { grid-template-columns: 140px minmax(0, 1fr); } html .cl .guides.g3 .guide .ph img { aspect-ratio: auto; height: 100%; } }
+html .cl .cc.tstats { margin-top: 32px; }
+html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
+html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
+html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
+html .cl .inc .sidet { font-family: var(--head); font-weight: 400; font-size: 20px; line-height: 1.1; text-transform: uppercase; letter-spacing: .01em; color: var(--text); margin: 0 0 14px; }
+html .cl .inc .entryp li::before { width: 7px; height: 7px; margin: 8px 0 0 7px; background: var(--green-text, #2bd47a); }   /* prices, not included items: a plain dot */
 html .cl .band h3.lede { font-family: var(--body); font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 17px; line-height: 1.5; color: var(--text-2); }
 '''
 

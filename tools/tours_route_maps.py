@@ -301,7 +301,7 @@ def draw_locations(countries, lakes):
 CB = {'Italy': (6.4, 18.7, 36.5, 47.2), 'France': (-5.3, 9.8, 41.2, 51.2), 'Spain': (-9.5, 4.5, 35.8, 44.0),
       'Canary Islands': (-18.3, -13.3, 27.5, 29.5), 'Portugal': (-9.7, -6.0, 36.8, 42.3), 'Croatia': (13.3, 19.6, 42.2, 46.7),
       'Slovenia': (13.2, 16.8, 45.3, 47.0), 'Greece': (19.2, 28.4, 34.6, 41.9), 'Switzerland': (5.8, 10.6, 45.7, 47.9),
-      'Ireland': (-10.8, -5.8, 51.2, 55.6), 'Cyprus': (32.1, 34.7, 34.4, 35.8)}
+      'Ireland': (-10.8, -5.8, 51.2, 55.6), 'Cyprus': (32.1, 34.7, 34.4, 35.8), 'Belgium': (2.45, 6.5, 49.45, 51.55)}
 CN = {'Canary Islands': ['Spain'], 'Cyprus': ['Cyprus', 'N. Cyprus']}
 REGIONS = {   # destination slug: (country map, lat, lon, label)
  'tuscany': ('Italy', 43.35, 11.2, 'Tuscany'), 'lake-garda': ('Italy', 45.65, 10.65, 'Lake Garda'), 'alps-dolomites': ('Italy', 46.45, 11.6, 'Alps & Dolomites'),
@@ -382,7 +382,19 @@ def country_maps(path50):
 
 # ---------- v2 (Matteo 15 Nov): no dots or names; region borders, our regions highlighted ----------
 ADMIN = {'Italy': ['Italy'], 'France': ['France'], 'Spain': ['Spain'], 'Canary Islands': ['Spain'], 'Portugal': ['Portugal'], 'Croatia': ['Croatia'],
-         'Slovenia': ['Slovenia'], 'Greece': ['Greece'], 'Switzerland': ['Switzerland'], 'Ireland': ['Ireland'], 'Cyprus': ['Cyprus', 'Northern Cyprus']}
+         'Slovenia': ['Slovenia'], 'Greece': ['Greece'], 'Switzerland': ['Switzerland'], 'Ireland': ['Ireland'], 'Cyprus': ['Cyprus', 'Northern Cyprus'], 'Belgium': ['Belgium']}
+# map badges on the trip posters (Matteo 16 Nov: the poster's map in our new style): trip slug -> (country, highlighted area)
+POSTER_BADGES = {
+ 'french-alps': ('France', ['Savoie', 'Haute-Savoie', 'Isère', 'Hautes-Alpes', 'Alpes-de-Haute-Provence']),
+ 'wonderful-slovenia': ('Slovenia', ['region:Gorenjska', 'region:Goriška']),
+ 'lake-garda-gravel': ('Italy', ['Brescia', 'Verona', 'Trento']), 'lake-garda-and-stelvio': ('Italy', ['Brescia', 'Verona', 'Trento', 'Sondrio']),
+ 'alpine-gravel-escape': ('Italy', ['Sondrio']), 'italian-alps': ('Italy', ['Sondrio']),
+ 'tuscany-epic-gravel': ('Italy', ['region:Toscana']), 'chianti-gran-fondo-strade-bianche': ('Italy', ['region:Toscana']),
+ 'cyprus-crossing-gravel': ('Cyprus', ['Paphos', 'Limassol', 'Nicosia', 'Larnaca']),
+ 'tour-of-flanders-experience': ('Belgium', ['West Flanders', 'East Flanders']),
+ 'discover-the-algarve-granfondo': ('Portugal', ['Faro']), 'lake-como-gran-fondo-il-lombardia': ('Italy', ['Como', 'Lecco', 'Bergamo']),
+ 'italys-coast-to-coast': ('Italy', ['region:Toscana', 'region:Umbria', 'region:Marche']),
+ 'dolomites': ('Italy', ['Bozen', 'Trento', 'Belluno'])}
 HIGHLIGHT = {   # destination slug: provinces (Natural Earth admin-1 names) or 'region:<name>'
  'tuscany': ['region:Toscana'], 'lake-garda': ['Brescia', 'Verona', 'Trento'], 'alps-dolomites': ['Bozen', 'Trento', 'Belluno', 'Sondrio'],
  'lake-como': ['Como', 'Lecco'], 'sardinia': ['region:Sardegna'], 'sicily': ['region:Sicily'], 'puglia': ['region:Apulia'],
@@ -396,7 +408,7 @@ def country_maps_v2(path50, admin1):
     from shapely.ops import unary_union
     named = topo_named(path50)
     feats = [f for f in json.load(open(admin1))['features']]
-    def draw(map_name, hl):
+    def draw(map_name, hl, badge=False):
         W2, H2 = 640, 640
         lon0, lon1, lat0, lat1 = CB[map_name]
         k0 = math.cos(math.radians((lat0 + lat1) / 2))
@@ -441,6 +453,13 @@ def country_maps_v2(path50, admin1):
                     pts.append(f'{X:.1f},{Y:.1f}'); last = (X, Y)
                 if len(pts) > 2: others.append('M' + 'L'.join(pts) + 'Z')
         label = html.escape(f'Map of {map_name}' + (' with the region highlighted' if hil else ''), quote=True)
+        if badge:   # poster badge: just the country on a transparent background (the tile is drawn by tours_posters.py)
+            b = [f'<svg viewBox="0 0 {W2} {H2}" xmlns="http://www.w3.org/2000/svg">',
+                 f'<path d="{d_of(whole)}" fill="#009a44" fill-opacity=".22" fill-rule="evenodd"/>',
+                 f'<path d="{"".join(d_of(r) for r in regions)}" fill="none" stroke="#ffffff" stroke-opacity=".16" stroke-width="1.2" stroke-linejoin="round"/>']
+            if hil: b.append(f'<path d="{d_of(hil)}" fill="#2bd47a" fill-opacity=".85" stroke="none" fill-rule="evenodd"/>')
+            b.append(f'<path d="{d_of(whole)}" fill="none" stroke="#2bd47a" stroke-width="3.2" stroke-linejoin="round"/></svg>')
+            return ''.join(b)
         out = [f'<svg class="cmap" viewBox="0 0 {W2} {H2}" role="img" aria-label="{label}" xmlns="http://www.w3.org/2000/svg">',
                f'<rect width="{W2}" height="{H2}" fill="#0a0c0e"/>',
                f'<path d="{"".join(others)}" fill="#16191d" stroke="#2c3036" stroke-width=".8"/>',
@@ -454,6 +473,8 @@ def country_maps_v2(path50, admin1):
         open(OUT + f'country-{slug}.svg', 'w').write(draw(cm, HIGHLIGHT.get(slug, [])))
     for slug, cm in COUNTRY_PAGES.items():
         open(OUT + f'country-{slug}.svg', 'w').write(draw(cm, []))   # country pages: just the country and its region borders (Matteo 15 Nov)
+    for slug, (cm, hl) in POSTER_BADGES.items():
+        open(OUT + f'badge-{slug}.svg', 'w').write(draw(cm, hl, badge=True))
 
 if __name__ == '__main__':
     f = geo_files()

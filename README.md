@@ -237,6 +237,28 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Link check: 56 rebuilt pages, 84 internal links, none broken.
   - 404 page (template 7275) is in the new design with the live wording ("404 — Wrong turn"), via `tools/tours_404.py`. It returns a real 404 status.
   - Every trip page has `TouristTrip` structured data: name, description, photo, route places and the euro price with the WeTravel link, provider = the site's Organization (`build_tours_trips.py`). Existing schema (Organization, WebSite, Service) is unchanged.
+- **Matteo's review round, 16 Nov (all done on staging):**
+  - **Destination pages:**
+    - Every gallery fills complete rows of 3 (`gallery_extras` in `build_tours_pages.py` adds matching photos from the media library).
+    - "Enquire" cards always go to Custom tours: the live Portugal Madeira card linked to Cyprus.
+    - The Tuscany upcoming cards link to the tours their titles name (`FIX_CARD_URL`): live linked them to Lake Garda.
+    - Every hero is the same height (640px laptop, 600px phone), with more space around the maps.
+    - The France map outline is smoothed (the Gironde estuary drew as spikes).
+  - **Tour lists:** a level filter (Beginner / Intermediate / Expert, same logic as the homepage finder), and a 3-bar level meter next to the level text on the cards.
+  - **Trip pages:**
+    - Green dates.
+    - New price box with full lines.
+    - A 4-cell strip with icons.
+    - Trip at a glance with icons and a green title; airport transfers have their own rows (live times like "12:00" were being split).
+    - "What's not included" is on all 15 trips (Strade Bianche had it as an H4), plus the airport transfers and the Gran Fondo entry prices box.
+    - Galleries and hotel photos fill complete rows.
+    - A single hotel shows its photo and text side by side.
+    - The homepage stats block.
+    - Three guides sit in 3 columns.
+    - The section bar's Book now shows only after the price box scrolls away.
+    - The final band has a pulsing "Only N spots left" when spots are 5 or fewer.
+  - **Posters with our map badge:** `tools/tours_posters.py` paints our badge (`tourspages/maps/badge-<slug>.svg`, areas in `POSTER_BADGES` in `tours_route_maps.py`) over the live poster's badge and uploads `poster-<slug>` WebPs.
+  - **Day-by-day route maps:** not done yet. Drawing each day on real roads needs a bike router. brouter.de is now on the environment's allowed hosts, but this session's permission check blocked the request.
 - **Live errors fixed (Matteo 15 Nov: "any error you see, fix it"):**
   - The Gran Canaria H1 now reads "Cycling in Gran Canaria" (live: "Cycling in Mallorca").
   - In the Lake Como guide (post 8945), the second FAQ question is now "How hard is the Muro di Sormano?". Backup: `stg-tours/backup/post-8945-before-faq-fix.json`.
