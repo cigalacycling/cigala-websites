@@ -99,7 +99,15 @@ intro = heads[1]['title'].strip()
 gs = grid['settings']
 for k in [k for k in gs if any(x in k for x in ('typography', 'color', 'button_', 'row_gap', 'column_gap'))]: gs.pop(k)
 gs.update({'columns': 3, 'columns_tablet': 2, 'columns_mobile': 1, 'row_gap': {'unit': 'px', 'size': 16}, 'column_gap': {'unit': 'px', 'size': 16},
-           'text': 'Continue reading: all guides', '_css_classes': 'cl-ggrid'})
+           'text': 'Continue reading: all guides', '_css_classes': 'cl-ggrid', 'posts_per_page': 60, 'pagination_type': ''})   # every guide on the page, so the filter sees them all
+# filter buttons: each loop card has WordPress's tag-<slug> classes; the buttons show only the cards with that tag (no reload).
+# Elementor's own taxonomy filter returned a server error (refresh-loop 500) on staging, so this is plain JS. Tags: tools/tours_guide_tags.py
+GTAGS = [('', 'All guides'), ('destinations', 'Destinations'), ('climbs', 'Climbs'), ('events', 'Events & Gran Fondos'), ('gravel', 'Gravel'), ('planning', 'Planning & kit')]
+GFILTER = ('<div class="cl cl-gfilter" role="group" aria-label="Guide categories">' + ''.join(
+    f'<button type="button" class="gchip" data-t="{t}" aria-pressed="{"true" if not t else "false"}">{E(n)}</button>' for t, n in GTAGS) + '</div>'
+    '<script>(function(){var f=document.currentScript.previousElementSibling;f.addEventListener("click",function(e){var b=e.target.closest(".gchip");if(!b)return;'
+    'f.querySelectorAll(".gchip").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")});var t=b.dataset.t;'
+    'document.querySelectorAll(".cl-ggrid .e-loop-item").forEach(function(c){c.hidden=!!t&&!c.classList.contains("tag-"+t)})})})();</script>')
 grid['id'] = rid()
 gpage = [
     con([htmlw(f'''<div class="cl cl-page"><div class="hero phero"><img src="{HERO['url']}" alt="{E(HERO['alt'])}"><div class="in">
@@ -109,7 +117,7 @@ gpage = [
 <div class="bar"></div>
 <h2 class="lede guides-intro">{E(intro)}</h2>
 </div></div></div>''')], ''),
-    con([grid], 'cl-guides-grid'),
+    con([htmlw(GFILTER), grid], 'cl-guides-grid', flex_direction='column'),   # guide categories (tags) as filter buttons (Matteo 16 Nov)
     con([htmlw(f'''<div class="cl cl-page"><section><div class="in"><div class="band">
 <img src="{M['cta']['url']}" alt="{E(M['cta']['alt'])}" loading="lazy">
 <div class="tx"><div class="eyebrow">Ride it with us</div><p class="band-title">Ready for your next cycling adventure?</p><div class="bar"></div>
@@ -145,8 +153,11 @@ GUIDES_CSS = '''
 .cl-post-content blockquote { margin: 22px 0; padding: 4px 0 4px 18px; border-left: 3px solid #009a44; color: #f7f8f8; font-style: italic; }
 .e-con.cl-post-band { padding-top: 56px !important; }
 /* guide cards (loop item 5087): same look as the Coaching blog cards (title over the photo, green Read more) */
-.e-con.cl-gcard { position: relative; height: 100%; display: block !important; background: #0f1011; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; overflow: hidden; }
-.e-con.cl-gcard:hover { border-color: rgba(0,154,68,.5); }
+.e-con.cl-gcard { position: relative; height: 100%; display: block !important; background: #0f1011; border: 0 !important; border-radius: 14px; overflow: hidden; }
+.e-con.cl-gcard::after { content: ""; position: absolute; inset: 0; z-index: 3; border: 1px solid rgba(255,255,255,.1); border-radius: inherit; pointer-events: none; transition: border-color .2s; }   /* the border drawn over the photo: the photo reaches the rounded corners (Matteo 16 Nov) */
+.e-con.cl-gcard:hover::after { border-color: rgba(0,154,68,.6); }
+.cl-gcard-ph, .cl-gcard-ph a { display: block; height: 100%; }
+.cl-gcard-ph img { min-height: 100%; }
 .cl-gcard-ph { width: 100% !important; margin: 0 !important; }
 .cl-gcard-ph img { width: 100% !important; aspect-ratio: 4 / 3; height: auto !important; object-fit: cover; border-radius: 0 !important; display: block; transition: transform .5s ease; }
 .e-con.cl-gcard:hover .cl-gcard-ph img { transform: scale(1.04); }
@@ -160,6 +171,12 @@ GUIDES_CSS = '''
 /* Guides page */
 .e-con.cl-guides-grid { max-width: 1232px !important; margin: 0 auto !important; padding: 44px 16px 0 !important; }   /* the same gap under the hero as every page (Matteo 16 Nov) */
 .cl-ggrid .elementor-loop-container { gap: 16px !important; }
+.cl-gfilter { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; width: 100%; margin: 0 0 22px; }
+.cl-gfilter .gchip { font: 600 13px/1 Montserrat, system-ui, sans-serif; color: #d0d6e0; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.14); border-radius: 999px; padding: 10px 16px; letter-spacing: .02em; cursor: pointer; transition: border-color .2s, background .2s; }
+.cl-gfilter .gchip:hover { border-color: rgba(0,154,68,.6); color: #fff; background: rgba(255,255,255,.04); }
+.cl-gfilter .gchip[aria-pressed="true"] { background: #009a44; border-color: #009a44; color: #fff; }
+.cl-ggrid .e-loop-item[hidden] { display: none !important; }
+@media (max-width: 600px) { .cl-gfilter { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px 18px; padding: 0 16px; scrollbar-width: none; } .cl-gfilter .gchip { flex: none; } }
 .cl-ggrid .e-loop__load-more .elementor-button { font: 600 14px Montserrat, system-ui, sans-serif !important; color: #fff !important; background: #009a44 !important; border: 0 !important; border-radius: 8px !important; padding: 12px 22px !important; text-transform: none !important; }
 .cl-ggrid .e-load-more-spinner { display: none !important; }   /* Elementor shows it only while loading; its own CSS is not loaded here */
 .cl-ggrid .e-loop__load-more .elementor-button:hover { background: #00b350 !important; color: #fff !important; }
