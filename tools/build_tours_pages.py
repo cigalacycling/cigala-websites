@@ -113,6 +113,11 @@ def about():
     # Matteo 16 Nov: Alessio "Bone", support & mechanic (photo from Matteo, media 10683), with the support crew after the second Marco
     i_ = max(i for i, (src, n, r) in enumerate(team) if n.upper().startswith('MARCO')) + 1
     team.insert(i_, (10683, 'ALESSIO "BONE"', 'Support & Mechanic'))
+    # Matteo 16 Nov: first row Matteo, Amedeo, Marine, Piero, Alessio, Antonio, Giampietro 'JP'; Nicola and Jacopo move to the second row
+    team = [(a, 'GIAMPIETRO "JP"' if b.upper().startswith('GIAMPIETRO') else b, c) for a, b, c in team]
+    first = ['MATTEO', 'AMEDEO', 'MARINE', 'PIERO', 'ALESSIO', 'ANTONIO', 'GIAMPIETRO']
+    key = lambda m: next((i for i, f in enumerate(first) if m[1].upper().startswith(f)), len(first))
+    team = sorted(team, key=key)   # stable: the rest keep their live order
     def disp(n):   # live names are typed in capitals; the card shows them in capitals too (CSS), keep the words
         return n.replace("'", '’').replace('"', '“', 1).replace('"', '”', 1)
     th = ''.join(f'<div class="panel member">{img_tag(src, 600)}<div class="tx"><h3>{E(disp(n))}</h3><p>{E(r)}</p></div></div>' for src, n, r in team)

@@ -25,15 +25,15 @@ _sp = _iu.spec_from_file_location('trm', os.path.join(os.path.dirname(os.path.ab
 ROUTE_NOTES = {k: v.get('note', '') for k, v in _trm.ROUTES.items()}
 _SPJ = json.load(open(ROOT + 'tours/spots.json'))
 SPOTS = {k: v for k, v in _SPJ.items() if not k.startswith('_')}
-GUIDE_NICK = {'Giampietro': 'Giampi'}   # first name -> nickname (About page: Giampietro 'Giampi')
+GUIDE_NICK = {'Giampietro': 'JP'}   # first name -> nickname (About page: Giampietro 'JP')
 # guides from the About page team (photo, role; no bio there): added to a tour, or replacing a guide (Matteo 16 Nov)
-TEAM = {'Giampi': ('Guide', 2658, ''), 'Antonio': ('Guide', 4665, ''), 'Bone': ('Support & Mechanic', 10683, ''),   # Bone: Alessio, photo from Matteo 16 Nov
+TEAM = {'JP': ('Guide', 2658, ''), 'Marco': ('Support & Mechanic', 2651, ''), 'Antonio': ('Guide', 4665, ''), 'Bone': ('Support & Mechanic', 10683, ''),   # Bone: Alessio, photo from Matteo 16 Nov
         'Amedeo': ('Tour Guide Leader', 2214, 'A former pro cyclist, Amedeo is a cycling tour guide & massage therapist for a decade. It is one of the most experience guides that you will ever find, counting almost over 1000 days on tours.'),
         'Piero': ('Guide & Gravel Expert', 3455, 'Piero is a passionate cyclist and architect, whose eye for detail carries into his riding. He started out in downhill mountain biking before finding his true love: gravel.')}   # bios as on the live tour pages
-GUIDES_SET = {'lake-garda-and-stelvio': ['Piero', 'Amedeo', 'Giampi'], 'lake-garda-gravel': ['Piero', 'Amedeo', 'Giampi']}   # the whole guide line-up for a tour (Matteo 16 Nov)
+GUIDES_SET = {'lake-garda-and-stelvio': ['Piero', 'Amedeo', 'JP'], 'lake-garda-gravel': ['Piero', 'Amedeo', 'JP']}   # the whole guide line-up for a tour (Matteo 16 Nov)
 GALLERY_PHOTOS = {'lake-garda-and-stelvio': [2211, 2212, 2209, 434, 780, 650, 898, 2235, 2233]}   # Garda & Stelvio: the live gallery photos are 450-800px wide (soft); sharper Garda photos (Matteo 16 Nov)
-GUIDES_ADD = {'maratona-dles-dolomites': ['Giampi', 'Bone'], 'dolomites': ['Bone'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio']}   # Coast to Coast: Marco too, once Matteo says which Marco
-GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Bone'}, 'wonderful-slovenia': {'AMEDEO': 'Bone'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'Giampi'}}   # French Alps and Slovenia: Alessio 'Bone' in Amedeo's place (Matteo 16 Nov)
+GUIDES_ADD = {'maratona-dles-dolomites': ['JP', 'Bone'], 'dolomites': ['Bone'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio', 'Marco']}   # Coast to Coast: Marco = the younger support & mechanic, not Marco "DS" (Matteo 16 Nov)
+GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Bone'}, 'wonderful-slovenia': {'AMEDEO': 'Bone'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'JP'}}   # French Alps and Slovenia: Alessio 'Bone' in Amedeo's place (Matteo 16 Nov)
 HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
 EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 2225,   # gravel photo on the road tour, Stelvio photo on the gravel tour
                'lake-garda-and-stelvio': {'GRAVEL': 7766, 'STELVIO': 2225}, 'lake-garda-gravel': 434}   # by a word of the section title when a page has several   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
@@ -45,7 +45,7 @@ TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, c
 HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 8620, 'italian-alps': 2225, 'french-alps': 719, 'alpine-gravel-escape': 6100,
               'italys-coast-to-coast': 4465, 'lake-como-gran-fondo-il-lombardia': 8767}   # sharp 2560px originals (Matteo 16 Nov: the old ones looked soft)   # Dolomites / Italian Alps: photos with riders (Matteo 16 Nov)   # media id: rider in Cigala kit above an Algarve beach
 HERO_DPOS = {'tour-of-flanders-experience': '50% 65%', 'french-alps': 'center 70%', 'alpine-gravel-escape': 'center 84%', 'dolomites': 'center 55%', 'italian-alps': 'center 60%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
-HOTEL_FALLBACK = {'tour-of-flanders-experience': ('h3', 'Hotel T')}   # live has no hotel heading: the main card (stars: add '****' once Matteo confirms)
+HOTEL_FALLBACK = {'tour-of-flanders-experience': ('h3', 'Hotel T ****')}   # 4 stars (Matteo 16 Nov)   # live has no hotel heading: the main card (stars: add '****' once Matteo confirms)
 HERO_MPOS = {'tour-of-flanders-experience': '50% 70%', 'french-alps': '45% 70%', 'alpine-gravel-escape': '30% 62%', 'dolomites': '45% 60%', 'italian-alps': '30% 60%', 'discover-the-algarve-granfondo': '80% 45%', 'chianti-gran-fondo-strade-bianche': '52% 30%'}   # focus point of the hero photo on phones
 AVAIL = {'low': ('Last few spots', ''), 'mid': ('Filling up fast', ' amber'), 'high': ('Spots available', ' green')}   # wording + dot colour, same on every tour (Matteo 16 Nov)
 MON = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
