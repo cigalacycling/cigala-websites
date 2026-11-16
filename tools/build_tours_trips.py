@@ -49,7 +49,7 @@ EVENT_LOGO = {'chianti-gran-fondo-strade-bianche': 9333, 'lake-como-gran-fondo-i
 DAY_MEDIA = {'cyprus-crossing-gravel': {1: ('5wzpNhqEBR0', 3322), 2: ('6dCFozS_3aU', 6725), 3: ('MtAVyHtkKY8', 6752), 4: ('-RcfggqFlVQ', 7264),
                                        6: ('CRHb2_UW908', 3326), 7: ('ejhAFqD612A', 7261)},   # Matteo 16 Nov; day 5 video and the last-day photo to come
              'discover-the-algarve-granfondo': {1: ('Ew-QIRa8C_8', 4515), 2: ('3hmbEQFiTHY', 2523), 3: ('img', 2499), 4: ('DPPZt7TXcg4', 4955),
-                                              5: ('img', 2518), 6: ('img', 4602)},   # Matteo 16 Nov, round 2: all from the old Algarve page, upright frames; the podium with the pros moved to the gallery
+                                              5: ('img', 2518), 6: ('img', 4514)},   # Matteo 16 Nov, round 2: all from the old Algarve page, upright frames; the podium with the pros moved to the gallery
              'chianti-gran-fondo-strade-bianche': {1: ('4tBZpWAVnrc', 4446), 2: ('4dBK7nxR2nI', 11033), 3: ('jYGwgkZ9CDM', 4872), 4: ('vKw83m2nUh0', 4871),
                                                   5: ('img', 3196), 6: ('0Kw39ByYQGg', 3164)}}   # covers match the day (Matteo 16 Nov): Chianti hills, white road, cypress avenue, Siena crowd (pro race), Siena   # Matteo 16 Nov: a Short per day, day 5 = his photo winning with the bike up   # a YouTube Short in a day's box (Matteo 16 Nov): (video, our own cover photo); loads on tap
 EVENT_BOX = {'chianti-gran-fondo-strade-bianche': ('Gran Fondo Strade Bianche', 'Entry guaranteed', GUAR),
@@ -65,7 +65,7 @@ OP_NOTE = {'maratona-dles-dolomites': 'As an Official Tour Operator, we offer th
 GUIDES_DROP = {'italys-coast-to-coast': {'AMEDEO'}, 'maratona-dles-dolomites': {'AMEDEO'}}   # Matteo 16 Nov
 GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Bone'}, 'wonderful-slovenia': {'AMEDEO': 'Bone'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'JP'}}   # French Alps and Slovenia: Alessio 'Bone' in Amedeo's place (Matteo 16 Nov)
 HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
-FACT_PHOTO = {'discover-the-algarve-granfondo': 4514, 'chianti-gran-fondo-strade-bianche': 1408, 'lake-garda-and-stelvio': 4856, 'wonderful-slovenia': 6280}   # the photo in Trip at a glance (Matteo 16 Nov: Garda's was soft, Slovenia's was a map)
+FACT_PHOTO = {'discover-the-algarve-granfondo': None, 'chianti-gran-fondo-strade-bianche': 1408, 'lake-garda-and-stelvio': 4856, 'wonderful-slovenia': 6280}   # the photo in Trip at a glance (Matteo 16 Nov: Garda's was soft, Slovenia's was a map)
 EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 6143,   # Alpine Gravel: two riders on the Stelvio road, not the hairpins already on the poster (Matteo 16 Nov)
                  # gravel photo on the road tour, Stelvio photo on the gravel tour
                'lake-garda-and-stelvio': {'GRAVEL': 7766, 'STELVIO': 2225}, 'lake-garda-gravel': 434}   # by a word of the section title when a page has several   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
@@ -461,7 +461,7 @@ def trip(slug):
     g_title = re.sub(r'<[^>]+>', '', g['h']).strip() if g else ''
     gp = [x['id'] for gs in S('gallery') for k, v, s_ in gs['items'] if k == 'gallery' for x in s_.get('gallery', [])] + [v for gs in S('gallery') for k, v, s_ in gs['items'] if k == 'img']
     gp = GALLERY_PHOTOS.get(slug) or list(dict.fromkeys(gp))
-    if slug in FACT_PHOTO: gp = [FACT_PHOTO[slug]]
+    if slug in FACT_PHOTO: gp = [FACT_PHOTO[slug]] if FACT_PHOTO[slug] else []   # None: no photo in the box
     fph = (f'<figure class="fphoto">{img_tag(gp[9] if len(gp) > 9 else gp[5] if 5 < len(gp) < 9 else gp[-1], 900, alt=f"Riders on the {text_of(h1).title()} bike tour - Cigala Cycling Tours")}</figure>' if gp else '')   # fills the box beside a long map (Matteo 16 Nov)
     dl = f'<dl class="panel facts"><{g_tag} class="facts-h">{E(g_title)}</{g_tag}>{facts}{fph}</dl>' if facts else ''
     note = ROUTE_NOTES.get(slug, '')
