@@ -66,7 +66,7 @@ html .cc .ath-sec {{ padding-block: 28px 60px; }}
 <main class="cc cc-page">
 <section class="ath-sec mk-p" id="p-ath"><div class="in"><div class="ath">
 <p class="mk-note">Inside the athlete’s area, right under “Your reports”, in the athlete’s report language. Filled in here as Anna would see it after her first save.</p>
-<p class="mk-lang"><label for="mk-l">Athlete’s report language</label> <select id="mk-l">{''.join(f'<option value="{k}">{v["name"]}</option>' for k, v in P['langs'].items())}</select></p>
+<p class="mk-lang"><label for="mk-l">Athlete language</label> <select id="mk-l">{''.join(f'<option value="{k}">{v["name"]}</option>' for k, v in P['langs'].items())}</select></p>
 {card}
 </div></div></section>
 <section class="ath-sec mk-p" id="p-coach" hidden><div class="in"><div class="ath" style="max-width:1080px">

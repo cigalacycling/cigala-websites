@@ -14,7 +14,7 @@ function add_query_arg($k, $v, $u) { return $u . '?' . $k . '=' . $v; } function
 function is_user_logged_in() { return false; } function is_page() { return true; } function sanitize_key($s) { return $s; } function wp_trim_words($s, $n) { return $s; }
 function human_time_diff($t) { global $NOW; $m = round(($NOW - $t) / 60); return $m < 60 ? "$m mins" : ($m < 1440 ? round($m / 60) . ' hours' : (($d = round($m / 1440)) == 1 ? '1 day' : "$d days")); }
 function date_i18n($f, $t) { return date($f, $t); } function wp_get_attachment_url($id) { return '#voice-' . $id; }
-$LANG = ''; function get_user_meta($id = 0, $k = '') { global $NOW, $LANG; if ($k === 'cc_report_lang') return $LANG; if ($k === 'cc_lang') return ''; return $NOW - 3 * 86400; } function update_user_meta() {}
+$LANG = ''; function get_user_meta($id = 0, $k = '') { global $NOW, $LANG; if ($k === 'cc_lang') return $LANG; if ($k === 'cc_report_lang') return ''; return $NOW - 3 * 86400; } function update_user_meta() {}
 function content_url($p) { return 'LOGO_URL'; } function is_email() { return true; } function get_userdata($id) { return (object) ['user_email' => 'athlete@example.com']; }
 $MAIL = null; function wp_mail($to, $sub, $body) { global $MAIL; $MAIL = ['to' => $to, 'subject' => $sub, 'html' => $body]; }
 // sample athletes (made up for the mock-up)
