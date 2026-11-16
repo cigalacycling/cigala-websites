@@ -3,7 +3,7 @@
 //   node tools/coaching_live_check.js
 const { chromium } = require('playwright');
 const BASE = 'https://coaching.cigalacycling.com';
-const PAGES = ['/', '/blog/', '/individual-packages/', '/contact/', '/athletes/', '/tools/', '/preparatore-di-ciclismo-italia/', '/blog/come-migliorare-in-salita-ciclismo/', '/about/', '/coaching-uk/'];
+const PAGES = ['/', '/blog/', '/individual-packages/', '/contact/', '/athletes/', '/tools/', '/preparatore-di-ciclismo-italia/', '/blog/come-migliorare-in-salita-ciclismo/', '/about/', '/cycling-coach-uk/', '/testing/'];
 (async () => {
   const b = await chromium.launch();
   // 1. consent: new visitor, then Accept

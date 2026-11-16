@@ -535,3 +535,16 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Made by `tools/coaching_share_cards.js` (files in coaching/share/), uploaded and set as the Yoast og/twitter image by `tools/coaching_share_cards.py`. Backup: stg-coaching/backup/share-cards-before.json.
 - Other pages keep their own photos. STAGING only; live is waiting on Matteo's live access.
 - After going live, refresh the WhatsApp/Facebook preview cache with the Facebook Sharing Debugger.
+
+## 16 Nov 2026 evening: live access and the six staging changes copied to LIVE
+Matteo created a "Claude live" application password on coaching.cigalacycling.com. It is saved as a network secret on the cloud environment; no password is in the repo.
+- Backup before the changes: live-coaching/backup/before-2026-11-16-evening.json (page 3865, footer lib-228, the two old pages).
+- On live:
+  1. Testing (3865): the 4 INSCYD links point to the uploads.
+  2. Footer lib-228: exit pop-up rule changed to 20 s plus a quarter of the page read.
+  3. Snippet 19: breadcrumbs.
+  4. Snippet 20: 301 /dummy-page/ → / and /group-club-packages2/ → /group-club-packages/, plus /llms.txt served from the option cc_llms_txt. The pages 6074 and 3845 are now drafts, so they are out of the sitemap.
+  5. Share cards uploaded and set on 2924, 7364 and 6106 (`tools/coaching_share_cards.py --live`).
+- Checked on live: all of the above work. 10 pages at 390/1440 px are clean, consent is unchanged, and the exit pop-up timing passes.
+- LiteSpeed Cache plugin: not installed on live Coaching. The server is LiteSpeed (Hostinger), with no plugin. Nothing to purge.
+- From now on, Coaching changes go to LIVE directly, with a backup first. Never publish staging over live again: that would wipe athlete logins and form entries.

@@ -7,6 +7,8 @@ This repository holds the redesign of the Cigala Cycling sites in the Cigala Cyc
 3. coaching.cigalacycling.com: homepage and Individual Packages built on staging (15 Nov); the other pages are next (see `coaching/SEO-DECISIONS.md`)
 4. retail.cigalacycling.com: runs on Shopify, not started
 
+> **Coaching is LIVE since 16 Nov 2026.** Matteo gave Claude a live application password (network secret for coaching.cigalacycling.com). Make Coaching changes on live directly, after a backup in `live-coaching/backup/`. Never publish Hostinger staging over live Coaching: it would wipe athlete logins and form entries. Log in coaching/SEO-DECISIONS.md.
+
 ## Ground rules (from Matteo)
 
 - **Never lose SEO, only improve it.** Keep these exactly as they are:
