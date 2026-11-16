@@ -405,6 +405,8 @@ def build_page(key):
         if lw:   # a live WordPress widget (the blog's automatic post list) where the preview has a placeholder
             w = live_widget(int(lw.group(1)), lw.group(2)); w['settings']['_css_classes'] = 'cc-blog'
             if lw.group(2) == 'loop-grid': w['settings']['posts_per_page'] = 12   # Matteo 15 Nov: full rows (3 across, 2 on tablet), then Continue reading
+            if lw.group(2) == 'loop-grid':   # Matteo 16 Nov: the blog follows the post order (Italian posts mixed in; new posts get a lower number, so they go on top)
+                w['settings']['post_query_orderby'] = 'menu_order'; w['settings']['post_query_order'] = 'ASC'
             els.append(wrap([w], 'cc-wrap cc-blog-wrap')); continue
         if 'id="contact"' in b:   # any page with the contact section gets the live Elementor form
             # live Elementor form (sends to info@cigalacycling.com) instead of the preview's static form
