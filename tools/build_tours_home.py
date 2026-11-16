@@ -247,7 +247,7 @@ JS = '''<script>
     var n = 0;
     cards.forEach(function (c) {
       var ok = (!v.month || c.dataset.month.split(' ').indexOf(v.month) > -1) &&
-               (!v.type || c.dataset.k === v.type) &&
+               (!v.type || c.dataset.k === v.type || (v.type === 'road' && c.dataset.k === 'gf')) &&   /* Gran Fondo tours are road tours too (Matteo 16 Nov) */
                (!v.country || c.dataset.country === v.country) &&
                (!v.level || c.dataset.level.split(' ').indexOf(v.level) > -1);
       c.hidden = !ok; if (ok) n++;

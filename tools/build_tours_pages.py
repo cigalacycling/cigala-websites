@@ -385,7 +385,7 @@ def chips(cards):
     return f'<div class="fchips" role="group" aria-label="Filter by tour type">{b}</div>'
 FILTER_JS = """<script>(function(){document.querySelectorAll('.fchips').forEach(function(g){var grid=g.nextElementSibling;g.querySelectorAll('.fchip').forEach(function(b){b.addEventListener('click',function(){
 g.querySelectorAll('.fchip').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b);});var f=b.dataset.f;
-[].forEach.call(grid.children,function(c){c.hidden=!(f==='all'||c.dataset.k===f||c.dataset.k==='all');});});});});})();</script>"""
+[].forEach.call(grid.children,function(c){c.hidden=!(f==='all'||c.dataset.k===f||(f==='road'&&c.dataset.k==='gf')||c.dataset.k==='all');});});});});})();</script>"""
 
 LIST_BAND = re.search(r'<div class="band">.*?</div>\s*</div>\s*(?=</div>\s*</section>)', json.loads(open(ROOT + 'stg-tours/out/list-trips.json').read())['main'], re.S).group(0)
 
