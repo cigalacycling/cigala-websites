@@ -393,6 +393,14 @@ def home_cards():
     blob = ''.join(hs)
     return {re.search(r'/trips/([^"/]+)/?"', m.group(0)).group(1): m.group(0) for m in re.finditer(r'<a class="tour".*?</a>', blob, re.S)}
 HOME_CARDS = home_cards()
+DEST_CC = {'it': 'italy tuscany lake-como lake-garda alps-dolomites puglia sardinia sicily', 'es': 'spain mallorca costa-blanca gran-canaria tenerife girona',
+           'fr': 'france french-alps pyrenees corsica', 'pt': 'portugal algarve', 'si': 'slovenia', 'cy': 'cyprus', 'be': 'belgium', 'hr': 'croatia',
+           'gr': 'greece', 'ie': 'ireland', 'ch': 'switzerland'}
+DEST_CC = {d: cc for cc, ds in DEST_CC.items() for d in ds.split()}
+CC_NAME = {'it': 'Italy', 'es': 'Spain', 'fr': 'France', 'pt': 'Portugal', 'si': 'Slovenia', 'cy': 'Cyprus', 'be': 'Belgium', 'hr': 'Croatia', 'gr': 'Greece', 'ie': 'Ireland', 'ch': 'Switzerland'}
+def dflag(slug):   # the country flag, top right, on every tour card of a destination page, like the tour lists (Matteo 16 Nov)
+    cc = DEST_CC.get(slug)
+    return f'<img class="flag" src="img/flag-{cc}.webp" alt="Flag of {CC_NAME[cc]}" width="40" height="30">' if cc else ''
 KNAME = {'road': 'Road', 'gf': 'Gran Fondo', 'gravel': 'Gravel'}
 def chips(cards):
     """Filter chips (All / Road / Gran Fondo / Gravel) when a section mixes tour types (Matteo 15 Nov). JS: FILTER_JS."""
@@ -518,7 +526,7 @@ def destination(slug):
                 hm = re.match(r'^/trips/([^/]+)/?$', u)
                 if hm and hm.group(1) in HOME_CARDS and hm.group(1) != 'private-trips':
                     out.append(('home', HOME_CARDS[hm.group(1)])); continue
-                out.append(('card', f'<article class="tcard dtour" data-k="{ {"Gravel": "gravel", "Gran Fondo": "gf", "Road & Gran Fondo": "gf"}.get(tag, "road") }"><a class="ph" href="{u}">{img_tag(DEST_CARD_PHOTOS.get(slug, {}).get(html.unescape(title).lower()) or pick(c["bg"]), 900, alt=f"{title} - {name} cycling tour")}{tags}</a><div class="tx">'
+                out.append(('card', f'<article class="tcard dtour" data-k="{ {"Gravel": "gravel", "Gran Fondo": "gf", "Road & Gran Fondo": "gf"}.get(tag, "road") }"><a class="ph" href="{u}">{img_tag(DEST_CARD_PHOTOS.get(slug, {}).get(html.unescape(title).lower()) or pick(c["bg"]), 900, alt=f"{title} - {name} cycling tour")}{tags}{dflag(slug)}</a><div class="tx">'
                            f'<h2>{E(title)}</h2><div class="desc">{desc}</div><div class="ctas one"><a class="btn btn-go" href="{u}">{E(go)}</a></div></div></article>'))
             if out and all(k == 'home' for k, _ in out):
                 return '<!--HOMECARDS-->' + ''.join(h for k, h in out)

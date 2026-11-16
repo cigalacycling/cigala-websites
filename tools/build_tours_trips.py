@@ -38,8 +38,9 @@ GALLERY_PHOTOS = {'lake-garda-and-stelvio': [2211, 2212, 2209, 434, 780, 650, 89
 GUIDES_ADD = {'maratona-dles-dolomites': ['JP', 'Bone'], 'dolomites': ['Bone'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio', 'Marco']}   # Coast to Coast: Marco = the younger support & mechanic, not Marco "DS" (Matteo 16 Nov)
 OP_LOGO = {'maratona-dles-dolomites': 'logo-mdd'}
 # who may book through us (Matteo 16 Nov: our target markets as listed for Cigala on the official Maratona tour-operator page)
-OP_NOTE = {'maratona-dles-dolomites': 'As an Official Tour Operator, we can offer this tour only to riders resident in our official target markets: '
-           '<strong>Ireland, the United Kingdom, the Northern European countries, the USA, Canada and Australia</strong>.'}   # the Maratona logo beside "Official tour operator" (Matteo 16 Nov)
+OP_NOTE = {'maratona-dles-dolomites': 'As an Official Tour Operator, we offer this tour to riders resident in our official target markets: '
+           '<strong>Ireland, the United Kingdom, Northern Europe, North America and Australia</strong>. '
+           'Not sure if your country is on the list? <a href="/contact/">Get in touch</a>: we can always ask the organisers and let you know.'}   # the Maratona logo beside "Official tour operator" (Matteo 16 Nov)
 GUIDES_DROP = {'italys-coast-to-coast': {'AMEDEO'}, 'maratona-dles-dolomites': {'AMEDEO'}}   # Matteo 16 Nov
 GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Bone'}, 'wonderful-slovenia': {'AMEDEO': 'Bone'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'JP'}}   # French Alps and Slovenia: Alessio 'Bone' in Amedeo's place (Matteo 16 Nov)
 HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
@@ -80,6 +81,7 @@ EXTRA_FAQ = {   # Matteo 16 Nov: these tours had no FAQ live; answers only use f
    ('Should I specifically train for a trip like this?', TRAIN),
    ('What should I pack for this trip?', PACK.replace('WHY', 'April is mild by the sea, but the mountains around Mount Olympus are much cooler.'))],
 }
+ev_km = lambda o: ' / '.join(str(n) for n in sorted(int(re.search(r'(\d+)', b).group(1)) for a, b in o)) + ' km'   # every course length, shortest first: 87 / 137 km (Matteo 16 Nov)
 EVENT_DAY = {   # itinerary day -> (title, official courses); 2026 editions, checked 16 Nov (Matteo: list the options, "from" the shortest)
  'chianti-gran-fondo-strade-bianche': {5: ('GRAN FONDO STRADE BIANCHE', [('Gran Fondo', '137 km'), ('Medio Fondo', '87 km')])},
  'discover-the-algarve-granfondo': {4: ('GRAN FONDO ALGARVE', [('Granfondo', '130 km'), ('Mediofondo', '90 km')])},
@@ -95,7 +97,7 @@ TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, c
 HERO_TALL = {'tuscany-epic-gravel'}   # about 2 cm taller (Matteo 16 Nov)
 HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 8620, 'italian-alps': 2225, 'french-alps': 719, 'alpine-gravel-escape': 6100,
               'italys-coast-to-coast': 4465, 'lake-como-gran-fondo-il-lombardia': 8767}   # sharp 2560px originals (Matteo 16 Nov: the old ones looked soft)   # Dolomites / Italian Alps: photos with riders (Matteo 16 Nov)   # media id: rider in Cigala kit above an Algarve beach
-HERO_DPOS = {'tour-of-flanders-experience': '50% 65%', 'french-alps': 'center 70%', 'alpine-gravel-escape': 'center 84%', 'dolomites': 'center 55%', 'italian-alps': 'center 60%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
+HERO_DPOS = {'tuscany-epic-gravel': 'center 54%', 'tour-of-flanders-experience': '50% 65%', 'french-alps': 'center 70%', 'alpine-gravel-escape': 'center 84%', 'dolomites': 'center 55%', 'italian-alps': 'center 60%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
 HOTEL_FALLBACK = {'tour-of-flanders-experience': ('h3', 'Hotel T ****')}   # 4 stars (Matteo 16 Nov)   # live has no hotel heading: the main card (stars: add '****' once Matteo confirms)
 HERO_MPOS = {'tour-of-flanders-experience': '50% 70%', 'french-alps': '45% 70%', 'alpine-gravel-escape': '30% 62%', 'dolomites': '45% 60%', 'italian-alps': '30% 60%', 'discover-the-algarve-granfondo': '80% 45%', 'chianti-gran-fondo-strade-bianche': '52% 30%'}   # focus point of the hero photo on phones
 AVAIL = {'low': ('Last few spots', ''), 'mid': ('Filling up fast', ' amber'), 'high': ('Spots available', ' green')}   # wording + dot colour, same on every tour (Matteo 16 Nov)
@@ -412,7 +414,10 @@ def trip(slug):
             f'<span class="tl"><b>{E(a)}</b> {E(b)}</span>' if a else f'<span class="tl">{E(b)}</span>' for a, b in g_trans) + '</dd></div>'
     g_tag = (g['tag'] if g else 'h3')
     g_title = re.sub(r'<[^>]+>', '', g['h']).strip() if g else ''
-    dl = f'<dl class="panel facts"><{g_tag} class="facts-h">{E(g_title)}</{g_tag}>{facts}</dl>' if facts else ''
+    gp = [x['id'] for gs in S('gallery') for k, v, s_ in gs['items'] if k == 'gallery' for x in s_.get('gallery', [])] + [v for gs in S('gallery') for k, v, s_ in gs['items'] if k == 'img']
+    gp = GALLERY_PHOTOS.get(slug) or list(dict.fromkeys(gp))
+    fph = (f'<figure class="fphoto">{img_tag(gp[9] if len(gp) > 9 else gp[5] if 5 < len(gp) < 9 else gp[-1], 900, alt=f"Riders on the {text_of(h1).title()} bike tour - Cigala Cycling Tours")}</figure>' if gp else '')   # fills the box beside a long map (Matteo 16 Nov)
+    dl = f'<dl class="panel facts"><{g_tag} class="facts-h">{E(g_title)}</{g_tag}>{facts}{fph}</dl>' if facts else ''
     note = ROUTE_NOTES.get(slug, '')
     map_html = svg or (img_tag(rimg, 1400, alt=f"{text_of(h1).title()} bike tour map by Cigala Cycling Tours") if rimg else '')
     dmeta = json.load(open(ROOT + 'tours/routes/days-meta.json')).get(slug) if 'day-' in mp else None
@@ -421,7 +426,7 @@ def trip(slug):
         for n, d in enumerate(S('day'), 1):
             if str(n) not in dmeta: continue
             t, km, up = km_m(text_of(d['h']))
-            if n in EVENT_DAY.get(slug, {}): t, opts_ = EVENT_DAY[slug][n]; km = (f"from {min(int(re.search(r'(\d+)', o[1]).group(1)) for o in opts_)} km" if len(opts_) > 1 else f"{re.search(r'(\d+)', opts_[0][1]).group(1)} km")
+            if n in EVENT_DAY.get(slug, {}): t, opts_ = EVENT_DAY[slug][n]; km = ev_km(opts_)
             kmv = km or re.search(r'(\d+)\s*km', text_of(''.join(v for k, v, s_ in d['items'] if k == 'text'))) and f"{re.search(r'(\d+)\s*km', text_of(''.join(v for k, v, s_ in d['items'] if k == 'text'))).group(1)} km"
             dl_.append(f'<li><button type="button" data-d="{n}"><span class="sw" style="background:{dmeta[str(n)]["color"]}">{n}</span>'
                        f'<span class="dt">{E(t)}</span>{f"<span class=dk>{E(kmv)}</span>" if kmv else ""}</button></li>')
@@ -441,8 +446,8 @@ def trip(slug):
             evo = ''
             if n in EVENT_DAY.get(slug, {}):   # an event day: the official courses, "from" the shortest (Matteo 16 Nov)
                 t, opts_ = EVENT_DAY[slug][n]; up = None
-                km = (f"from {min(int(re.search(r'(\d+)', o[1]).group(1)) for o in opts_)} km" if len(opts_) > 1 else f"{re.search(r'(\d+)', opts_[0][1]).group(1)} km")
-                evo = f'<p class="evopts"><span>{"Choose your course:" if len(opts_) > 1 else "The course:"}</span> ' + ' · '.join(f'<b>{E(a)}</b> {E(b)}' for a, b in opts_) + '</p>'
+                km = ev_km(opts_)
+                evo = f'<div class="evopts"><span>{"Choose your course:" if len(opts_) > 1 else "The course:"}</span> ' + ''.join(f'<span class="evo"><b>{E(a)}</b> {E(b)}</span>' for a, b in sorted(opts_, key=lambda o: int(re.search(r'(\d+)', o[1]).group(1)))) + '</div>'
             chips = (f'<span class="chip km">{km}</span>' if km else '') + (f'<span class="chip up">{up}</span>' if up else '')
             body = ''.join(clean(v) for k, v, s in d['items'] if k in ('text',)) + ''.join(f'<p>{clean(v)}</p>' for k, v, s in d['items'] if k in ('h4', 'h5', 'h6'))
             tg = d['tag'] if d['tag'] in ('h2', 'h3') else 'h3'
@@ -462,8 +467,7 @@ def trip(slug):
         media_html = (f'<div class="vcard panel" style="margin-top:16px"><button type="button" class="yt" data-id="{vid.group(1)}" aria-label="Play the video">'
                       f'<img src="https://i.ytimg.com/vi/{vid.group(1)}/hqdefault.jpg" alt="{E(text_of(ex["h"]))} video" loading="lazy"><span class="play" aria-hidden="true"></span></button></div>') if vid else ''
         if len(imgs) == 1 and not vid:   # one photo (the Maratona jersey): photo on one side, text on the other (Matteo 16 Nov: too much black)
-            ph_ = (f'<img src="{M["jersey-white"]["url"]}" alt="{E(M["jersey-white"]["alt"])}" loading="lazy">' if str(imgs[0]) == '8980' and 'jersey-white' in M
-                   else img_tag(imgs[0], 1200, alt=f"{text_of(h1).title()} - Cigala Cycling Tours"))   # the jersey on white (Matteo 16 Nov)
+            ph_ = img_tag(imgs[0], 1200, alt=f"{text_of(h1).title()} - Cigala Cycling Tours")   # the jersey: original photo on its own grey (Matteo 16 Nov)
             out.append(f'<section><div class="in"><div class="panel xbox xsplit{" xcover" if xp else ""}"><div class="xph">{ph_}</div>'
                        f'<div class="xtx">{H(ex, "Make it yours" if ex["kind"] == "extra" else "Good to know")}<div class="prose">{body}</div>{f"<div class=ctas>{btns}</div>" if btns else ""}</div></div></div></section>')
             continue
@@ -747,6 +751,7 @@ html .cl .opbox { display: flex; align-items: center; justify-content: space-bet
 html .cl .opbox .head { margin: 0; }
 html .cl .opbox .optext { flex: 1 1 320px; min-width: 0; }
 html .cl .opbox .opnote { margin: 14px 0 0; max-width: 62ch; font-size: 15px; line-height: 1.55; }
+html .cl .opbox .opnote a { color: var(--green-text, #2bd47a); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
 html .cl .hotel h3, html .cl .hotel h2 { font-size: 22px; }
 html .cl .stars .sup { font-size: 11px; letter-spacing: 0; vertical-align: 2px; margin-left: 4px; }
@@ -785,6 +790,12 @@ html .cl .lm i.on { background: var(--green-text, #2bd47a); }
 html .cl .facts .facts-h { font-family: var(--head); font-weight: 400; font-size: 28px; line-height: 1.05; letter-spacing: .01em; color: var(--green-text, #2bd47a); margin: 0 0 10px; }
 html .cl .facts div { grid-template-columns: 32px 128px minmax(0, 1fr); align-items: center; gap: 12px; }   /* icon centred on its title (Matteo 16 Nov) */
 html .cl .facts div.ftrans { align-items: start; }
+@media (min-width: 901px) { html .cl dl.facts { display: flex !important; flex-direction: column; } html .cl .facts .fphoto { flex: 1 1 0; min-height: 160px; margin: 18px 0 0; border-radius: 12px; overflow: hidden; } html .cl .facts .fphoto img { width: 100%; height: 100%; object-fit: cover; display: block; } }
+@media (max-width: 900px) { html .cl .facts .fphoto { display: none; } }
+html .cl .evopts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 4px; }
+html .cl .evopts > span:first-child { font-size: 13px; color: var(--text-3); margin-right: 2px; }
+html .cl .evopts .evo { display: inline-flex; gap: 6px; align-items: baseline; padding: 5px 12px; border-radius: 999px; border: 1px solid rgba(43,212,122,.35); background: rgba(0,154,68,.10); font-size: 14px; }
+html .cl .evopts .evo b { color: var(--green-text, #2bd47a); font-weight: 600; }
 html .cl .facts .fi { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: var(--green-text, #2bd47a); background: rgba(0,154,68,.12); }
 html .cl .facts .fi svg { width: 16px; height: 16px; }
 html .cl .facts dt, html .cl .facts dd { padding-top: 0; }
@@ -820,8 +831,8 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
-html .cl .day .evopts { margin: 0 0 12px; font-size: 14px; color: var(--text-2); line-height: 1.7; }
-html .cl .day .evopts span { color: var(--text-3); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-right: 4px; }
+html .cl .day .evopts { margin: 0 0 12px; font-size: 14px; color: var(--text-2); line-height: 1.4; }
+html .cl .day .evopts > span:first-child { color: var(--text-3); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-right: 4px; }
 html .cl .day .evopts b { color: var(--green-text, #2bd47a); font-weight: 700; }
 html .cl .day .num { position: relative; z-index: 1; }   /* the timeline line runs behind the day circle, not into it (Matteo 16 Nov) */
 /* ---- dynamic trip page (pilot: Algarve), only when JS runs and motion is welcome ---- */
@@ -861,7 +872,7 @@ html .cl #included .yes .inh { color: var(--green-text, #2bd47a); }   /* Include
 html .cl .thero ~ section { padding-top: 48px; }   /* a little less space between sections on the trip pages (Matteo 16 Nov) */
 html .cl .thero ~ section#route, html .cl .thero ~ section#itinerary { padding-top: 40px; }
 html .cl .xsplit { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 0; padding: 0; overflow: hidden; align-items: stretch; }
-html .cl .xsplit .xph { background: #fff; display: grid; place-items: center; padding: 18px; }   /* white behind the jersey (Matteo 16 Nov) */
+html .cl .xsplit .xph { background: #d5dcdc; display: grid; place-items: center; padding: 18px; }   /* the jersey photo's own grey all round (Matteo 16 Nov) */
 html .cl .faq .a a { color: var(--green-text, #2bd47a); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }   /* links in answers (cycling coaching) in green */
 html .cl .xsplit .xph img { width: 100%; height: auto; max-height: 420px; object-fit: contain; }
 html .cl .xsplit .xtx { padding: clamp(22px, 3vw, 36px); align-self: center; }

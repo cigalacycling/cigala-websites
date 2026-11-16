@@ -10017,5 +10017,156 @@
    1065
   ],
   "orig": 4979
+ },
+ "flag-ie": {
+  "id": 10782,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-ie.webp",
+  "alt": "Flag of Ireland"
+ },
+ "flag-es": {
+  "id": 10783,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-es.webp",
+  "alt": "Flag of Spain"
+ },
+ "flag-gr": {
+  "id": 10784,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-gr.webp",
+  "alt": "Flag of Greece"
+ },
+ "flag-ch": {
+  "id": 10785,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-ch.webp",
+  "alt": "Flag of Switzerland"
+ },
+ "flag-hr": {
+  "id": 10786,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-hr.webp",
+  "alt": "Flag of Croatia"
+ },
+ "src-8607-900": {
+  "id": 10787,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-bestof_mdd2026-072-planinschekfreddy-900.webp",
+  "alt": "Maratona Dles Dolomites | Val Badia from above",
+  "from": [
+   4096,
+   2730
+  ],
+  "size": [
+   900,
+   600
+  ],
+  "orig": 8607
+ },
+ "src-5018-900": {
+  "id": 10788,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-IMG_20220710_064604_777-900.webp",
+  "alt": "Cycling Alps Cigala Cycling",
+  "from": [
+   1371,
+   1079
+  ],
+  "size": [
+   900,
+   708
+  ],
+  "orig": 5018
+ },
+ "src-7770-900": {
+  "id": 10789,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-01132330-900.webp",
+  "alt": "Matteo Cigala cycling uphill on a gravel bike",
+  "from": [
+   3888,
+   5184
+  ],
+  "size": [
+   900,
+   1200
+  ],
+  "orig": 7770
+ },
+ "src-6104-900": {
+  "id": 10790,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-IMG_3379-900.webp",
+  "alt": "Riders on the Alpine Gravel Escape bike tour - Cigala Cycling Tours",
+  "from": [
+   6048,
+   8064
+  ],
+  "size": [
+   900,
+   1200
+  ],
+  "orig": 6104
+ },
+ "src-3325-900": {
+  "id": 10791,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-imgi_35_6rLOjijd_lIYNTbzr_Wn1-Wwlx4edqCOZLkGnh02XSTLtH6nk62dD8Hyi9X-MSDhtgHNa_VfwDqX2fQKTXhSCZ0-c8IF-A8s804-900.webp",
+  "alt": "Cyprus Crossing Gravel Cigala Cycling Tours",
+  "from": [
+   804,
+   452
+  ],
+  "size": [
+   804,
+   452
+  ],
+  "orig": 3325
+ },
+ "src-3165-900": {
+  "id": 10792,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-imgi_29_nIPS4r2dYIQ74egYORZyfDtB_OJd4CmDZyrOHLBjNkNabnX70Oe2qGfnh4UqysRCm_ojm_BrMF3u8JGP5RZE_phCDKFXhKUs634-900.webp",
+  "alt": "Tadej Pogacar Strade Bianche le Tolfe",
+  "from": [
+   380,
+   634
+  ],
+  "size": [
+   380,
+   634
+  ],
+  "orig": 3165
+ },
+ "src-8773-900": {
+  "id": 10793,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-c762bc64-c3c1-40b1-aa5b-2fc7aa6f533e-900.webp",
+  "alt": "Riders going through Italian Villages",
+  "from": [
+   1200,
+   1600
+  ],
+  "size": [
+   900,
+   1200
+  ],
+  "orig": 8773
+ },
+ "src-6144-900": {
+  "id": 10794,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-01187837-900.webp",
+  "alt": "Mortirolo Descent | Cigala Cycling Tours",
+  "from": [
+   3888,
+   5184
+  ],
+  "size": [
+   900,
+   1200
+  ],
+  "orig": 6144
+ },
+ "src-2044-900": {
+  "id": 10795,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-26-1-900.webp",
+  "alt": "Trips Cigala Cycling Tours",
+  "from": [
+   634,
+   697
+  ],
+  "size": [
+   634,
+   697
+  ],
+  "orig": 2044
  }
 }
