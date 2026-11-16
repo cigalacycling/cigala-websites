@@ -626,6 +626,9 @@ html .cl .tcard .meta { display: flex; flex-wrap: wrap; gap: 6px; }
 html .cl .tcard .meta .chip { display: inline-flex; align-items: center; line-height: 1.2; font-size: 11px; padding: 6px 10px 5px; cursor: default; }
 html .cl .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: 13px; padding: 5px 11px; }
 html .cl .tcard .meta { margin: 2px 0; }
+html .cl .tcard .meta .chip.dist { gap: 6px; }
+html .cl .tcard .meta .chip.dist svg { width: 13px; height: 13px; fill: none; stroke: var(--green-text, #2bd47a); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+html .cl .tcard .meta .chip.dist .sep { width: 1px; height: 11px; background: rgba(255,255,255,.2); margin: 0 3px; }
 html .cl .phero .lede a { color: var(--green-text); font-weight: 600; text-decoration: none; }
 html .cl .phero .lede a:hover { color: #fff; }
 html .cl .tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
@@ -1085,13 +1088,14 @@ l.addEventListener('mouseleave',function(){set(null);});m.querySelectorAll('.ld'
 function g(k){try{return localStorage.getItem(k);}catch(e){return null;}}
 function ok(){if(!g('cc_consent'))return false;try{if(sessionStorage.getItem(K))return false;}catch(e){}
 var c=+(g(K)||0);if(c&&Date.now()-c<3*864e5)return false;var n=document.getElementById('nl-pop');if(n&&!n.hidden)return false;
-try{var nl=JSON.parse(g('cc_nl')||'{}');if(nl.c&&Date.now()-nl.c<36e5)return false;}catch(e){}return Date.now()-t0>8000;}
+try{var nl=JSON.parse(g('cc_nl')||'{}');if(nl.c&&Date.now()-nl.c<36e5)return false;}catch(e){}var h=document.documentElement.scrollHeight-innerHeight;return Date.now()-t0>30000&&maxY>h*.25;}   /* only after 30 s on the page and a quarter of it read (Matteo 16 Nov: it came too soon) */
 function open(){if(!ok())return;try{sessionStorage.setItem(K,'1');}catch(e){}last=document.activeElement;p.hidden=false;p.querySelector('.xpop-box').focus({preventScroll:true});document.addEventListener('keydown',key);}
 function close(){p.hidden=true;document.removeEventListener('keydown',key);try{localStorage.setItem(K,String(Date.now()));}catch(e){}if(last&&last.focus)last.focus({preventScroll:true});}
 function key(e){if(e.key==='Escape')close();}
 p.querySelectorAll('[data-x]').forEach(function(b){b.addEventListener('click',close);});
+addEventListener('scroll',function(){maxY=Math.max(maxY,scrollY);},{passive:true});
 document.addEventListener('mouseout',function(e){if(!e.relatedTarget&&e.clientY<=0)open();});
-if(matchMedia('(hover: none)').matches){addEventListener('scroll',function(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;maxY=Math.max(maxY,y);ys.push([Date.now(),y]);while(ys.length&&Date.now()-ys[0][0]>700)ys.shift();
+if(matchMedia('(hover: none)').matches){addEventListener('scroll',function(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;ys.push([Date.now(),y]);while(ys.length&&Date.now()-ys[0][0]>700)ys.shift();
 if(maxY>h*.5&&ys.length&&ys[0][1]-y>500)open();},{passive:true});}})();</script>
 <section id="enquire">
   <div class="in contact-grid">
