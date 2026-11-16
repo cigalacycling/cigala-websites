@@ -526,3 +526,12 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   - phone: a fast scroll up after reading half the page.
 - The other rules are unchanged: once per visit, 3 days after closing, never before consent or over the newsletter pop-up.
 - STAGING (lib-228). Tested: hidden at 9 s with 40% read; hidden at 21 s with 10% read; opens at 21 s with 30% read. Live: waiting on Matteo.
+
+## 16 Nov 2026: branded share cards (Matteo: "on cigalacycling.com you made a nice image with my branding, here I don't see it")
+- 1200x630 JPG cards in the cigalacycling.com card layout:
+  - homepage: "Online cycling & triathlon coaching";
+  - athlete area: "Athlete hub";
+  - Italian page: "Preparatore di ciclismo online".
+- Made by `tools/coaching_share_cards.js` (files in coaching/share/), uploaded and set as the Yoast og/twitter image by `tools/coaching_share_cards.py`. Backup: stg-coaching/backup/share-cards-before.json.
+- Other pages keep their own photos. STAGING only; live is waiting on Matteo's live access.
+- After going live, refresh the WhatsApp/Facebook preview cache with the Facebook Sharing Debugger.
