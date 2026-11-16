@@ -59,6 +59,8 @@ NEW = {
         'Work with an MSc sports nutritionist from anywhere. Online nutrition coaching for cyclists, triathletes and runners, with plans priced in euro and US dollars.'),
     'sports-nutritionist-dublin.html': ('/sports-nutritionist-dublin', 'Sports Nutritionist Dublin & Wicklow | Vivify Sports',
         'Sports nutritionist for athletes in Dublin and Wicklow: online nutrition coaching, club workshops and sports massage on call in Co. Wicklow and Co. Dublin.'),
+    'womens-cycling-nutrition.html': ('/womens-cycling-nutrition', "Women's Cycling Nutrition | Nutritionist for Female Cyclists | Vivify Sports",
+        "Nutrition coaching for women who ride, from a female WorldTour cyclist and MSc sports nutritionist: energy, iron, fuelling and recovery for female athletes."),
     'faq.html': ('/faq', 'Sports Nutrition FAQ | Vivify Sports',
         'Answers to common questions about sports nutrition coaching with Vivify Sports: online consultations, plans, fuelling, carbs per hour and working together.'),
     'testimonials.html': ('/testimonials', 'Client Reviews | Sports Nutrition Coaching | Vivify Sports',
@@ -393,7 +395,7 @@ def shell(file, body, schema=None):
    <li><a href="workshops.html">Workshops &amp; Talks</a></li><li><a href="massage-therapy.html">Massage Therapy</a></li><li><a href="yoga.html">Online Yoga</a></li></ul>
    <p class="fh" style="margin-top:22px">Who I help</p><ul>
    <li><a href="cycling-nutritionist.html">Cycling Nutritionist</a></li><li><a href="triathlon-nutritionist.html">Triathlon Nutritionist</a></li>
-   <li><a href="race-fuelling-plan.html">Race Fuelling Plan</a></li><li><a href="online-sports-nutritionist.html">Online, Worldwide</a></li>
+   <li><a href="womens-cycling-nutrition.html">Women's Cycling Nutrition</a></li><li><a href="race-fuelling-plan.html">Race Fuelling Plan</a></li><li><a href="online-sports-nutritionist.html">Online, Worldwide</a></li>
    <li><a href="sports-nutritionist-dublin.html">Dublin &amp; Wicklow</a></li></ul></div>
   <div><p class="fh">Get in touch</p><ul class="cinfo">
    <li>{ICON['mail']}<a href="mailto:{EMAIL}">{EMAIL}</a></li>

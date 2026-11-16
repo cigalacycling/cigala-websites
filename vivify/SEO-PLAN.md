@@ -26,6 +26,7 @@ I had no keyword-volume tool. Check the targets below in Google Keyword Planner,
 | `/sports-nutritionist-ireland` | sports nutritionist Ireland | online nutrition coaching, nutrition plans | Live page, kept |
 | **`/cycling-nutritionist`** | cycling nutritionist (Ireland) | nutritionist for cyclists, cycling nutrition coach, gravel nutrition | **New** |
 | **`/triathlon-nutritionist`** | triathlon nutritionist | Ironman / 70.3 nutrition coach | **New** |
+| **`/womens-cycling-nutrition`** | women's cycling nutrition | nutritionist for female cyclists, female athlete nutrition, iron and energy availability | **New** (17 Nov) |
 | **`/race-fuelling-plan`** | race fuelling plan | cycling fuelling plan, 70.3 nutrition plan, carbs per hour | **New** (it was only a section of the coaching page) |
 | **`/online-sports-nutritionist`** | online sports nutritionist | sports nutritionist online; international, priced in € and US$ | **New** |
 | **`/sports-nutritionist-dublin`** | sports nutritionist Dublin | sports nutritionist Wicklow; club talks, sports massage | **New** |
@@ -91,7 +92,7 @@ How the new pages are built:
 
 The online page (€ and US$ prices, video calls, clients in four countries) is the hub. In order:
 1. **Language versions**, if Marine works in other languages: she has a French name and did her MSc in Madrid, but I haven't assumed either. French, Italian or Spanish pages with hreflang open whole new markets with far less competition than English. Ask her.
-2. **Women's cycling nutrition**: a growing search area that a female WorldTour rider can speak to like no one else. Only if Marine wants to offer it.
+2. **Women's cycling nutrition**: page added (`/womens-cycling-nutrition`). Marine to confirm she wants to offer it and check the wording.
 3. **Gravel / ultra nutrition**: event-led pages (Traka, Unbound, gravel worlds), building on her world title.
 4. **Country pages (UK, USA)**: only once Search Console shows impressions from those countries. Before that they would be thin copies and can hurt.
 

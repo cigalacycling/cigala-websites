@@ -27,7 +27,7 @@ def build(b):
         cards = ''.join(f"""<article class="tcard panel"><span class="q">{ICON['quote']}</span>
  <div class="who">{img(p, a, w=64, h=64)}<div><p class="name">{e(n)} <span class="sport">{e(s)}</span></p></div></div>
  <blockquote>{e(q)}</blockquote></article>""" for p, a, n, s, q in people(names))
-        return f'<section style="padding-top:24px"><div class="wrap">{head("Client stories", title, tag=None, center=True)}<div class="tgrid" style="margin-top:32px">{cards}</div></div></section>'
+        return f'<section style="padding-top:24px"><div class="wrap">{head("Client stories", title, tag=None, center=True)}<div class="tgrid" style="{'columns:1;max-width:460px;margin:32px auto 0' if len(people(names)) == 1 else 'margin-top:32px'}">{cards}</div></div></section>'
 
     def posts(slugs, title='Read Marine’s articles'):
         allp = {(p['url'] or '').rsplit('/', 1)[-1]: p for p in b.blog_posts()}
@@ -104,6 +104,7 @@ def build(b):
   <div class="pcard panel"><span class="h3">Gravel &amp; ultra</span><p style="margin:0">Long days with little support: what to carry, how much to eat each hour and how to train your gut to take it.</p></div>
   <div class="pcard panel"><span class="h3">Sportives &amp; leisure</span><p style="margin:0">More energy on long rides, no more cramping or bonking, and healthy habits that fit around work and family.</p></div>
  </div></div></section>
+<section class="section-tight" style="padding-top:0"><div class="wrap center"><a class="btn btn-secondary" href="womens-cycling-nutrition.html">Women's cycling nutrition {ICON['arrow']}</a></div></section>
 {creds()}
 <section style="padding-top:24px"><div class="wrap">{head('Coaching options', 'Plans and prices', center=True)}<div style="margin-top:24px">{plans_strip()}</div></div></section>
 {quotes(['Francesco Pippa, Italy', 'Sean Goggin, Ireland', 'Matteo Cigala,Italy', 'James Makin, Ireland', 'Iwan Harmsen, Netherlands', 'Damian Maloney, Ireland'], 'Cyclists who fuel with Marine')}
@@ -234,6 +235,43 @@ def build(b):
              "address": {"@type": "PostalAddress", "addressLocality": "Wicklow", "addressRegion": "Co. Wicklow", "addressCountry": "IE"},
              "areaServed": ["County Wicklow", "County Dublin", "Ireland"], "founder": {"@id": LIVE + "/#marine"}}
     page('sports-nutritionist-dublin.html', body, [local, faq_schema])
+
+    # ------------------------------------------------------------ WOMEN'S CYCLING NUTRITION
+    qas = [('Should I change my nutrition across my menstrual cycle?',
+            '<p>Some women notice changes in energy, appetite, hydration or gut comfort at different points of their cycle, and some don’t. The research is still developing, so there is no single plan that suits every woman. Marine looks at your own training, symptoms and food diary and adjusts from there.</p>'),
+           ('Why do female athletes need to think about iron?',
+            '<p>Endurance training and menstrual blood loss both raise iron needs, so women who ride a lot are more likely to run low. Low iron can show up as fatigue and a drop in performance. Marine covers this in <a href="' + LIVE + '/post/iron-deficiency-anemia-and-performance">Iron Deficiency, Anemia and Performance</a>. If you think your iron is low, get your levels checked by your GP.</p>'),
+           ('I want to lose weight but keep my power. Is that possible?',
+            '<p>Yes, with care. Eating too little for the training you do (low energy availability) can affect your hormones, bones, recovery and performance. Marine’s approach is fuel for performance, not restriction: enough energy on hard days, and sustainable habits rather than crash diets.</p>'),
+           ('Do you only work with racers?',
+            '<p>No. Marine works with women at every level, from leisure riders and sportive cyclists to racers, in Ireland and online worldwide.</p>')]
+    faq_html, faq_schema = faq_block(qas, "Women's cycling nutrition", 'Common questions')
+    body = f"""
+{hero('By a female WorldTour cyclist', "Women's Cycling Nutrition",
+      'Nutrition coaching for women who ride, from Marine Lenehan: MSc sports nutritionist and LIDL-TREK WorldTour professional cyclist.',
+      '0e1488-70faaa082bbd4ad4b8d8f16a5bc3', 'Female cyclist riding a lakeside road above a lake')}
+<section><div class="wrap g2" style="align-items:start">
+ <div>{head('Made for female athletes', 'Fuel the way your body works')}
+  <p>Most sports nutrition advice was built from research on men. Women who ride have their own needs: hormones that change through the month and through life, higher iron needs, and a greater risk of under-fuelling when training is high and food is tight.</p>
+  <p>Marine races in the women's WorldTour with LIDL-TREK, so she knows these questions from the inside. Your plan is built around your training load, your cycle and your goals, whether that is a first sportive, a gravel race or a season of racing.</p></div>
+ <div class="panel" style="padding:32px"><span class="eyebrow">What we work on</span>
+  {chips(['Energy availability', 'Iron &amp; fatigue', 'Your menstrual cycle', 'Carbs per hour on the bike', 'Hydration', 'Recovery &amp; protein', 'Bone health', 'Weight without restriction', 'Gut comfort', 'Supplements'])}</div>
+</div></section>
+<section style="padding-top:8px"><div class="wrap">
+ {head('The key areas', 'Four things female cyclists should know', center=True)}
+ <div class="g4" style="margin-top:28px">
+  <div class="pcard panel"><span class="num">1.</span><span class="h3">Eat enough</span><p style="margin:0">Under-fuelling for your training (low energy availability) can affect hormones, bones, mood and performance. Fuel the work first.</p></div>
+  <div class="pcard panel"><span class="num">2.</span><span class="h3">Watch your iron</span><p style="margin:0">Training and menstrual losses raise iron needs. Low iron often shows up as fatigue that rest does not fix.</p></div>
+  <div class="pcard panel"><span class="num">3.</span><span class="h3">Know your cycle</span><p style="margin:0">Energy, appetite and gut comfort can change through the month. Your plan follows how you feel, not a generic chart.</p></div>
+  <div class="pcard panel"><span class="num">4.</span><span class="h3">Fuel on the bike</span><p style="margin:0">Carbohydrate during long rides protects your training and recovery, and that applies to women just as much as men.</p></div>
+ </div></div></section>
+{creds('A nutritionist who races')}
+<section style="padding-top:24px"><div class="wrap">{head('Coaching options', 'Plans and prices', center=True)}<div style="margin-top:24px">{plans_strip()}</div></div></section>
+{quotes(['Eleonore Vaillon, France'], 'In her words')}
+{posts(['iron-deficiency-anemia-and-performance', 'fatigue-endurance-athletes', 'why-am-i-so-tired-after-exercise-understanding-post-exercise-fatigue-in-endurance-athletes', 'carbohydrate-fueling-endurance-sports', 'daily-fat-intake-guide', 'weight-loss-metabolism-guide'], 'Articles for female athletes')}
+{faq_html}
+{cta('Ride strong, fuel well', 'Start with a free 30-minute discovery call with Marine about your riding and your goals.', 'Book your free call', DISC)}"""
+    page('womens-cycling-nutrition.html', body, [SERVICE("Women's cycling nutrition coaching", 'Sports nutrition coaching for female cyclists', ['Ireland', 'Worldwide']), faq_schema])
 
     # ------------------------------------------------------------ FAQ
     qas = [('What does a sports nutritionist do?',
