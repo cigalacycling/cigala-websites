@@ -403,3 +403,12 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Build:**
   - Website: a secure upload endpoint (application password on Matteo's PC only), draft/publish, report cards with a "new" badge, HTML reports served sandboxed.
   - PC side: one helper script the tools call at the end.
+
+### Athlete area: availability (planned, after launch, Matteo 16 Nov)
+- **"My availability" card in each athlete's area:**
+  - **Usual week:** per day, the time available (rest day, 1h, 1.5h, 2h, 3h+) and when (morning, lunch, evening). It repeats every week.
+  - **Changes:** dated exceptions ("12–19 Dec away", "next week 4h total"), plus a free note. Expired changes drop off by themselves.
+- **When an athlete saves:** Matteo gets an email every time, plus an optional phone push (ntfy app on a private topic, or Telegram, his choice).
+- **Coach page:** all athletes' availability on one screen, with a "changed since you last looked" badge.
+- **Read access:** the PC availability session (mdv workspace) can read it through the same secure API as the report delivery.
+- Each athlete sees only their own. 16px fields.
