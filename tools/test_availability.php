@@ -37,5 +37,16 @@ ok(count($n) === 1 + 8 + 1, 'note count ' . count($n));
 $n2 = cc_av_vekta_notes($a, $b, $today);
 ok(isset($n2['2026-11-23']) && !isset($n2['2026-11-20']), 'removed change gets no note');
 $long = cc_av_clean(['changes' => [['from' => '2026-11-18', 'to' => '2027-06-01', 'type' => 'away']]], $today);
-ok(count(cc_av_vekta_notes($long, $long, $today)) === 31, 'long absence capped at 31 notes');
+ok(count(cc_av_vekta_notes($long, $long, $today)) === 60, 'long absence capped at 60 notes');
+// changes on some weekdays, and with no end date (Matteo 16 Nov: "from next week, gym only on Tuesdays for 10 weeks")
+$g = cc_av_clean(['changes' => [['from' => '2026-11-23', 'to' => '2027-01-31', 'days' => ['tue', 'xx'], 'type' => 'gym', 'h' => '1'],
+                                 ['from' => '2026-11-01', 'open' => 1, 'type' => 'less', 'h' => '1'],
+                                 ['from' => '2026-12-01', 'to' => '2026-12-02', 'days' => array_keys(CC_AV_DAYS), 'type' => 'indoor']]], $today);
+ok(count($g['changes']) === 3, 'ongoing change from the past is kept');
+ok($g['changes'][0]['to'] === '' && cc_av_range($g['changes'][0]) === 'From Sun 1 Nov onwards', 'ongoing text: ' . cc_av_range($g['changes'][0]));
+ok($g['changes'][1]['days'] === ['tue'] && cc_av_change_text($g['changes'][1]) === '23 Nov – 31 Jan, Tuesdays only: Gym only (1h a day)', 'weekday text: ' . cc_av_change_text($g['changes'][1]));
+ok($g['changes'][2]['days'] === [], 'all 7 days = every day');
+$gn = cc_av_vekta_notes($g, $g, $today);
+ok(isset($gn['2026-11-24'], $gn['2027-01-26']) && strpos($gn['2026-11-24'], 'Tuesdays only: Gym only') !== false && strpos($gn['2026-11-25'], 'Gym') === false, 'gym notes only on Tuesdays');
+ok(isset($gn['2027-01-12']) && !isset($gn['2027-01-13']), 'ongoing change: notes for the next 8 weeks only');
 echo $fail ? "$fail failed\n" : "all passed\n"; exit($fail ? 1 : 0);

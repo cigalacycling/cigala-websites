@@ -5,7 +5,8 @@
  *
  * Athlete side (their own area at /athletes/): a "My availability" card with
  *   - the usual week: per day the time available (rest, 30 min ... 4h+) and when (morning, lunch, evening);
- *   - dated changes ("12-19 Dec away", "less time"), which drop off by themselves once over;
+ *   - changes with dates ("12-19 Dec away", "gym only on Tuesdays from next week for 10 weeks", "from 1 Dec onwards, less time"),
+ *     optionally only on some weekdays, with or without an end date; dated ones drop off by themselves once over;
  *   - a free note, plus a microphone: speech is typed into the note while they talk (browser speech recognition), and the
  *     recording is kept privately (uploads/cc-private, served only to that athlete and Matteo, like the reports).
  * On save: Matteo gets an email (what changed + transcript + "listen" link), and a Vekta calendar sync is queued
@@ -19,7 +20,7 @@ if (!defined('ABSPATH')) return;
 const CC_AV_DAYS = ['mon' => 'Monday', 'tue' => 'Tuesday', 'wed' => 'Wednesday', 'thu' => 'Thursday', 'fri' => 'Friday', 'sat' => 'Saturday', 'sun' => 'Sunday'];
 const CC_AV_HOURS = ['' => 'Not set', '0' => 'Rest day', '0.5' => '30 min', '1' => '1h', '1.5' => '1h 30', '2' => '2h', '3' => '3h', '4' => '4h+'];
 const CC_AV_WHEN = ['am' => 'Morning', 'mid' => 'Lunch', 'pm' => 'Evening'];
-const CC_AV_TYPES = ['away' => 'Away, no riding', 'less' => 'Less time', 'more' => 'More time', 'other' => 'Other'];
+const CC_AV_TYPES = ['away' => 'Away, no riding', 'less' => 'Less time', 'more' => 'More time', 'gym' => 'Gym only', 'indoor' => 'Indoor only', 'other' => 'Other'];
 const CC_AV_MAX_AUDIO = 8 * 1024 * 1024;   // ~8 minutes of phone speech
 
 /* ---------- data: kept on the athlete's page (post meta cc_avail, JSON) ---------- */
@@ -41,11 +42,14 @@ function cc_av_clean($in, $today) {
     }
     foreach (array_slice((array) ($in['changes'] ?? []), 0, 20) as $c) {
         $from = cc_av_date($c['from'] ?? ''); if (!$from) continue;
-        $to = cc_av_date($c['to'] ?? '') ?: $from; if ($to < $from) [$from, $to] = [$to, $from];
-        if ($to < $today) continue;                                   // over: drops off
+        $open = !empty($c['open']);                                   // "from ... onwards", no end date
+        $to = $open ? '' : (cc_av_date($c['to'] ?? '') ?: $from); if ($to !== '' && $to < $from) [$from, $to] = [$to, $from];
+        if ($to !== '' && $to < $today) continue;                     // over: drops off
+        $days = array_values(array_intersect(array_keys(CC_AV_DAYS), (array) ($c['days'] ?? [])));   // empty = every day
+        if (count($days) === 7) $days = [];
         $type = isset(CC_AV_TYPES[$c['type'] ?? '']) ? $c['type'] : 'other';
         $h = (string) ($c['h'] ?? ''); if (!array_key_exists($h, CC_AV_HOURS) || $type === 'away') $h = '';
-        $out['changes'][] = ['from' => $from, 'to' => $to, 'type' => $type, 'h' => $h, 'text' => cc_av_str($c['text'] ?? '', 200)];
+        $out['changes'][] = ['from' => $from, 'to' => $to, 'days' => $days, 'type' => $type, 'h' => $h, 'text' => cc_av_str($c['text'] ?? '', 200)];
     }
     usort($out['changes'], function ($a, $b) { return strcmp($a['from'], $b['from']); });
     return $out;
@@ -54,7 +58,7 @@ function cc_av_get($pid, $today = null) {
     $a = json_decode((string) get_post_meta($pid, 'cc_avail', true), true);
     if (!is_array($a)) return null;
     $today = $today ?: current_time('Y-m-d');
-    $a['changes'] = array_values(array_filter($a['changes'] ?? [], function ($c) use ($today) { return $c['to'] >= $today; }));
+    $a['changes'] = array_values(array_filter($a['changes'] ?? [], function ($c) use ($today) { return ($c['to'] ?? '') === '' || $c['to'] >= $today; }));
     return $a;
 }
 
@@ -66,9 +70,12 @@ function cc_av_day_text($d) {
     return CC_AV_HOURS[$d['h']] . ($w ? ', ' . implode(' or ', $w) : '');
 }
 function cc_av_range($c) {
-    $f = strtotime($c['from'] . ' 12:00'); $t = strtotime($c['to'] . ' 12:00');
-    if ($c['from'] === $c['to']) return date('D j M', $f);
-    return date('M', $f) === date('M', $t) ? date('j', $f) . '–' . date('j M', $t) : date('j M', $f) . ' – ' . date('j M', $t);
+    $f = strtotime($c['from'] . ' 12:00');
+    if (($c['to'] ?? '') === '') $r = 'From ' . date('D j M', $f) . ' onwards';
+    elseif ($c['from'] === $c['to']) $r = date('D j M', $f);
+    else { $t = strtotime($c['to'] . ' 12:00'); $r = date('M', $f) === date('M', $t) ? date('j', $f) . '–' . date('j M', $t) : date('j M', $f) . ' – ' . date('j M', $t); }
+    if (!empty($c['days'])) $r .= ', ' . implode(', ', array_map(function ($k) { return CC_AV_DAYS[$k] . 's'; }, $c['days'])) . ' only';
+    return $r;
 }
 function cc_av_change_text($c) {
     $t = CC_AV_TYPES[$c['type']] ?? 'Change';
@@ -93,12 +100,17 @@ function cc_av_diff($old, $new) {
 }
 
 /* ---------- Vekta calendar notes: which days get a note (pure PHP; tested) ----------
-   Dated changes: one note on each day they cover (max 31 days each). A new usual week: one note on the next Monday. */
+   Changes: one note on each day they cover (only their weekdays if chosen; ongoing ones for the next 8 weeks; max 60 each).
+   A new usual week: one note on the next Monday. */
 function cc_av_vekta_notes($old, $new, $today) {
     $notes = [];
     foreach ($new['changes'] as $c) {
-        $d = max($c['from'], $today); $n = 0;
-        while ($d <= $c['to'] && $n++ < 31) { $notes[$d][] = cc_av_change_text($c); $d = date('Y-m-d', strtotime($d . ' 12:00 +1 day')); }
+        $d = max($c['from'], $today); $n = 0; $span = 0;
+        $end = ($c['to'] ?? '') !== '' ? $c['to'] : date('Y-m-d', strtotime($today . ' 12:00 +55 days'));   // ongoing: the next 8 weeks
+        while ($d <= $end && $n < 60 && $span++ < 190) {
+            if (empty($c['days']) || in_array(strtolower(date('D', strtotime($d . ' 12:00'))), $c['days'], true)) { $notes[$d][] = cc_av_change_text($c); $n++; }
+            $d = date('Y-m-d', strtotime($d . ' 12:00 +1 day'));
+        }
     }
     $weekChanged = false;
     foreach (CC_AV_DAYS as $k => $_) if (!$old || cc_av_day_text($old['week'][$k] ?? []) !== cc_av_day_text($new['week'][$k])) $weekChanged = true;
@@ -179,7 +191,9 @@ function cc_av_email($pid, $uid, $diff, $a, $vid) {
     $u = get_userdata($uid); $name = get_the_title($pid);
     $board = add_query_arg('board', 'availability', home_url('/' . CC_ATH_SLUG . '/')) . '#av-' . $pid;
     $e = function ($s) { return esc_html($s); };
+    $logo = content_url('/uploads/2026/11/cigala-coaching-logo-v2.webp');   // the site header logo
     $h = '<div style="font:15px/1.5 Montserrat,Arial,sans-serif;color:#111;max-width:560px">'
+       . '<div style="background:#08090a;padding:14px 16px;border-radius:10px;margin:0 0 18px"><img src="' . esc_url($logo) . '" alt="Cigala Cycling Coaching" width="58" height="58" style="display:block;width:58px;height:58px"></div>'
        . '<p style="margin:0 0 4px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E10600;font-weight:600">Athlete availability</p>'
        . '<h2 style="margin:0 0 14px;font:400 26px/1.1 Anton,Impact,sans-serif;text-transform:uppercase;color:#111">' . $e($name) . ' updated their availability</h2>';
     if ($diff) { $h .= '<p style="margin:0 0 6px"><b style="color:#111">What changed</b></p><ul style="margin:0 0 16px;padding-left:18px">'; foreach ($diff as $d) $h .= '<li>' . $e($d) . '</li>'; $h .= '</ul>'; }
@@ -287,7 +301,7 @@ function cc_av_js() {
     return <<<'JS'
 <script>(function(){
 var app=document.getElementById('av-app');if(!app)return;var C=JSON.parse(document.getElementById('av-data').textContent);
-var ro=app.dataset.ro==='1',today=app.dataset.today,D=C.data||{week:{},changes:[],note:''},el=function(t,a,h){var e=document.createElement(t);for(var k in a)if(a[k]!=null)e.setAttribute(k,a[k]);if(h!=null)e.innerHTML=h;return e;};
+var ro=app.dataset.ro==='1',today=app.dataset.today,D=C.data||{week:{},changes:[],note:''},_n=D.changes.forEach(function(c){c.open=!c.to;c.days=c.days||[];}),el=function(t,a,h){var e=document.createElement(t);for(var k in a)if(a[k]!=null)e.setAttribute(k,a[k]);if(h!=null)e.innerHTML=h;return e;};
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 var dirty=false,blob=null,saved=+app.dataset.updated;
 function opts(sel){var o='';for(var k in C.hours)o+='<option value="'+k+'"'+(k===sel?' selected':'')+'>'+esc(C.hours[k])+'</option>';return o;}
@@ -297,7 +311,7 @@ function draw(){var h='<div class="av-week" role="group" aria-label="Your usual 
   for(var w in C.when)h+='<button type="button" class="av-w" data-w="'+w+'" aria-pressed="'+(d.w.indexOf(w)>-1)+'"'+(ro||d.h==='0'?' disabled':'')+'>'+C.when[w]+'</button>';h+='</div></div>';}
  h+='</div><p class="av-total" aria-live="polite"></p><h3 class="av-sub">Changes coming up</h3><div class="av-chs"></div>';
  if(!ro)h+='<button type="button" class="btn btn-ghost av-add">+ Add a change (holiday, busy week…)</button>';
- h+='<h3 class="av-sub">Anything else I should know?</h3><div class="av-notew"><textarea id="av-note" rows="4" placeholder="Work trips, family, how you feel… or tap the microphone and just say it."'+(ro?' readonly':'')+'>'+esc(D.note||'')+'</textarea>';
+ h+='<h3 class="av-sub">Anything else I should know?</h3><div class="av-notew"><textarea id="av-note" rows="4" placeholder="Anything at all: “from next week I can only do gym on Tuesdays, for 10 weeks”, work trips, family… or tap the microphone and just say it."'+(ro?' readonly':'')+'>'+esc(D.note||'')+'</textarea>';
  if(!ro)h+='<button type="button" class="av-mic" aria-label="Speak instead of typing" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>';
  h+='</div><p class="av-rec" hidden></p>';
  if(!ro)h+='<div class="av-save"><button type="button" class="btn btn-go av-go" disabled>Save my availability</button><span class="av-msg" role="status"></span></div>';
@@ -305,25 +319,31 @@ function draw(){var h='<div class="av-week" role="group" aria-label="Your usual 
 function drawChanges(){var w=app.querySelector('.av-chs'),h='';
  if(!D.changes.length)h='<p class="av-none">Nothing planned. If you are away or busier than usual, add it here.</p>';
  D.changes.forEach(function(c,i){var t='';for(var k in C.types)t+='<option value="'+k+'"'+(k===c.type?' selected':'')+'>'+esc(C.types[k])+'</option>';
-  h+='<div class="av-ch av-'+c.type+'" data-i="'+i+'"><div class="av-chr"><label>From<input type="date" class="av-f" value="'+c.from+'" min="'+today+'"'+(ro?' readonly':'')+'></label>'
-   +'<label>To<input type="date" class="av-t" value="'+c.to+'" min="'+today+'"'+(ro?' readonly':'')+'></label></div><div class="av-chr"><label>What<select class="av-ty"'+(ro?' disabled':'')+'>'+t+'</select></label>'
+  h+='<div class="av-ch av-'+c.type+'" data-i="'+i+'">'
+   +'<div class="av-chr av-chw"><label>What<select class="av-ty"'+(ro?' disabled':'')+'>'+t+'</select></label>'
    +'<label class="av-chh"'+(c.type==='away'?' hidden':'')+'>Time a day<select class="av-hh"'+(ro?' disabled':'')+'>'+opts(c.h)+'</select></label></div>'
-   +'<input type="text" class="av-tx" maxlength="200" placeholder="Optional: e.g. work trip to Milan, hotel gym only" value="'+esc(c.text||'')+'"'+(ro?' readonly':'')+'>'
+   +'<div class="av-chr"><label>From<input type="date" class="av-f" value="'+c.from+'" min="'+today+'"'+(ro?' readonly':'')+'></label>'
+   +'<label>To<input type="date" class="av-t" value="'+(c.to||'')+'" min="'+today+'"'+(c.open||ro?' disabled':'')+'></label></div>'
+   +'<label class="av-open"><input type="checkbox" class="av-o"'+(c.open?' checked':'')+(ro?' disabled':'')+'> No end date (from then onwards)</label>'
+   +'<div class="av-dsel" role="group" aria-label="Only on these days">'+Object.keys(C.days).map(function(k){return '<button type="button" class="av-w av-dw" data-d="'+k+'" aria-pressed="'+((c.days||[]).indexOf(k)>-1)+'"'+(ro?' disabled':'')+'>'+C.days[k].slice(0,3)+'</button>';}).join('')+'</div>'
+   +'<p class="av-hint">Only on some days? Tap them. None tapped means every day.</p>'
+   +'<input type="text" class="av-tx" maxlength="200" placeholder="Optional: e.g. hotel gym only, turbo at home, kids’ holidays" value="'+esc(c.text||'')+'"'+(ro?' readonly':'')+'>'
    +(ro?'':'<button type="button" class="av-del" aria-label="Remove this change">Remove</button>')+'</div>';});
  w.innerHTML=h;}
 function total(){var s=0;for(var k in D.week)s+=+(D.week[k].h||0);var n=0;for(k in D.week)if(+D.week[k].h>0)n++;
- app.querySelector('.av-total').innerHTML=s?'<b>'+(s%1?s.toFixed(1):s)+'h</b> a week across <b>'+n+'</b> '+(n===1?'day':'days')+'. Great, I can work with that.':'';}
+ app.querySelector('.av-total').innerHTML=s?'<b>'+(s%1?s.toFixed(1):s)+'h</b> a week across <b>'+n+'</b> '+(n===1?'day':'days')+'.':'';}
 function msg(t,bad){var m=app.querySelector('.av-msg');if(m){m.textContent=t;m.classList.toggle('bad',!!bad);}}
 function touch(){dirty=true;var b=app.querySelector('.av-go');if(b)b.disabled=false;msg('');}
 app.addEventListener('change',function(e){var t=e.target,day=t.closest('.av-day'),ch=t.closest('.av-ch');
  if(day&&t.classList.contains('av-hsel')){var k=day.dataset.k;D.week[k]=D.week[k]||{h:'',w:[]};D.week[k].h=t.value;var r=t.value==='0';if(r)D.week[k].w=[];
   day.classList.toggle('is-rest',r);day.querySelectorAll('.av-w').forEach(function(b){b.disabled=r;if(r)b.setAttribute('aria-pressed','false');});total();touch();return;}
- if(ch){var c=D.changes[+ch.dataset.i];if(t.classList.contains('av-f')){c.from=t.value;if(!c.to||c.to<c.from)c.to=c.from;}if(t.classList.contains('av-t'))c.to=t.value;
-  if(t.classList.contains('av-hh'))c.h=t.value;if(t.classList.contains('av-ty')){c.type=t.value;if(c.type==='away')c.h='';drawChanges();}else if(t.classList.contains('av-f'))ch.querySelector('.av-t').value=c.to;touch();}});
+ if(ch){var c=D.changes[+ch.dataset.i];if(t.classList.contains('av-f')){c.from=t.value;if(!c.open&&(!c.to||c.to<c.from))c.to=c.from;}if(t.classList.contains('av-t'))c.to=t.value;
+  if(t.classList.contains('av-hh'))c.h=t.value;if(t.classList.contains('av-o')){c.open=t.checked;if(c.open)c.to='';else c.to=c.from;ch.querySelector('.av-t').disabled=c.open;ch.querySelector('.av-t').value=c.to;}if(t.classList.contains('av-ty')){c.type=t.value;if(c.type==='away')c.h='';drawChanges();}else if(t.classList.contains('av-f')&&!c.open)ch.querySelector('.av-t').value=c.to;touch();}});
 app.addEventListener('input',function(e){if(e.target.id==='av-note'){D.note=e.target.value;touch();}if(e.target.classList.contains('av-tx')){D.changes[+e.target.closest('.av-ch').dataset.i].text=e.target.value;touch();}});
 app.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||ro)return;
+ if(b.classList.contains('av-dw')){var c=D.changes[+b.closest('.av-ch').dataset.i],dd=c.days=c.days||[],j=dd.indexOf(b.dataset.d);if(j>-1)dd.splice(j,1);else dd.push(b.dataset.d);b.setAttribute('aria-pressed',j<0);touch();return;}
  if(b.classList.contains('av-w')){var k=b.closest('.av-day').dataset.k,d=D.week[k]=D.week[k]||{h:'',w:[]},w=b.dataset.w,i=d.w.indexOf(w);if(i>-1)d.w.splice(i,1);else d.w.push(w);b.setAttribute('aria-pressed',i<0);touch();}
- if(b.classList.contains('av-add')){D.changes.push({from:today,to:today,type:'away',h:'',text:''});drawChanges();touch();var l=app.querySelectorAll('.av-ch');l[l.length-1].querySelector('.av-f').focus();}
+ if(b.classList.contains('av-add')){D.changes.push({from:today,to:today,open:false,days:[],type:'away',h:'',text:''});drawChanges();touch();var l=app.querySelectorAll('.av-ch');l[l.length-1].querySelector('.av-f').focus();}
  if(b.classList.contains('av-del')){D.changes.splice(+b.closest('.av-ch').dataset.i,1);drawChanges();touch();}
  if(b.classList.contains('av-mic'))mic(b);
  if(b.classList.contains('av-go'))save(b);});
@@ -376,10 +396,15 @@ html .cc .av-total b { color: var(--green-text, #34c46a); font-weight: 700; }
 html .cc .ath .av-sub { font: 700 13px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); margin: 26px 0 12px; }
 html .cc .av-none { color: var(--text-3); font-size: 14px; margin: 0 0 12px; }
 html .cc .av-ch { display: grid; gap: 10px; padding: 14px; margin: 0 0 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); border-left: 3px solid #8a8f98; background: rgba(255,255,255,.03); }
-html .cc .av-ch.av-away { border-left-color: #E10600; } html .cc .av-ch.av-less { border-left-color: #f0bf00; } html .cc .av-ch.av-more { border-left-color: #009a44; }
+html .cc .av-ch.av-away { border-left-color: #E10600; } html .cc .av-ch.av-less { border-left-color: #b9895a; } html .cc .av-ch.av-more { border-left-color: #009a44; } html .cc .av-ch:is(.av-gym, .av-indoor) { border-left-color: #d0d6e0; }
 html .cc .av-chr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
 html .cc .av-ch label > * { min-width: 0; }
 html .cc .av-ch label { display: grid; gap: 5px; margin: 0; font-size: 12.5px; color: var(--text-3); font-weight: 600; }
+html .cc .av-open { display: flex !important; align-items: center; gap: 8px !important; font-size: 14px !important; color: var(--text-2) !important; font-weight: 500 !important; }
+html .cc .av-open input { width: 18px; height: 18px; accent-color: #009a44; }
+html .cc .av-dsel { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; } html .cc .av-dsel .av-w { padding: 8px 0; min-height: 38px; font-size: 12.5px; }
+html .cc .av-chw { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) !important; }
+html .cc .av-hint { font-size: 12.5px; color: var(--text-3); margin: -4px 0 0; }
 html .cc .av-del, html .cc .av-x { justify-self: start; background: none; border: 0; padding: 4px 0; color: var(--text-3); font: 13px var(--body); text-decoration: underline; cursor: pointer; }
 html .cc .av-add { margin: 0; }
 html .cc .av-notew { position: relative; }
@@ -404,7 +429,7 @@ html .cc .av-c { display: grid; align-content: center; justify-items: center; te
 html .cc .av-c.av-hx { background: transparent; color: var(--text-3); } html .cc .av-c.av-h0 { background: rgba(255,255,255,.05); color: var(--text-3); }
 html .cc .av-c:is(.av-h2, .av-h3, .av-h4) { background: rgba(0,154,68,.42); }
 html .cc .av-up { display: grid; gap: 4px; align-content: start; color: var(--text-2); }
-html .cc .av-chg { padding-left: 8px; border-left: 3px solid #8a8f98; } html .cc .av-chg.av-away { border-color: #E10600; } html .cc .av-chg.av-less { border-color: #f0bf00; } html .cc .av-chg.av-more { border-color: #009a44; }
+html .cc .av-chg { padding-left: 8px; border-left: 3px solid #8a8f98; } html .cc .av-chg.av-away { border-color: #E10600; } html .cc .av-chg.av-less { border-color: #b9895a; } html .cc .av-chg.av-more { border-color: #009a44; } html .cc .av-chg:is(.av-gym, .av-indoor) { border-color: #d0d6e0; }
 html .cc .av-note { font-style: italic; color: var(--text-3); } html .cc .av-listen { color: var(--green-text, #34c46a); font-weight: 600; }
 html .cc .av-vk { color: var(--text-3); font-size: 11px; } html .cc .av-vk-error { color: var(--red-text, #ff3d33); }
 @media (max-width: 760px) {

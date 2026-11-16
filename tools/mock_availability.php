@@ -15,19 +15,19 @@ function is_user_logged_in() { return false; } function is_page() { return true;
 function human_time_diff($t) { global $NOW; $m = round(($NOW - $t) / 60); return $m < 60 ? "$m mins" : ($m < 1440 ? round($m / 60) . ' hours' : (($d = round($m / 1440)) == 1 ? '1 day' : "$d days")); }
 function date_i18n($f, $t) { return date($f, $t); } function wp_get_attachment_url($id) { return '#voice-' . $id; }
 function get_user_meta() { global $NOW; return $NOW - 3 * 86400; } function update_user_meta() {}
-function is_email() { return true; } function get_userdata($id) { return (object) ['user_email' => 'athlete@example.com']; }
+function content_url($p) { return 'LOGO_URL'; } function is_email() { return true; } function get_userdata($id) { return (object) ['user_email' => 'athlete@example.com']; }
 $MAIL = null; function wp_mail($to, $sub, $body) { global $MAIL; $MAIL = ['to' => $to, 'subject' => $sub, 'html' => $body]; }
 // sample athletes (made up for the mock-up)
 $P = [101 => 'Anna Rossi', 102 => 'Ciarán Byrne', 103 => 'James Walsh', 104 => 'Sophie Martin'];
 $wk = function ($m, $t, $w, $th, $f, $sa, $su) { $o = []; foreach (['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as $i => $k) { $x = func_get_args()[$i]; $o[$k] = ['h' => $x[0], 'w' => $x[1]]; } return $o; };
 $META = [
  101 => ['cc_avail_updated' => $NOW - 2 * 3600, 'cc_avail' => ['week' => $wk(['1', ['pm']], ['1.5', ['am']], ['0', []], ['1.5', ['am']], ['1', ['mid']], ['4', ['am']], ['3', ['am']]),
-         'changes' => [['from' => '2026-11-27', 'to' => '2026-11-29', 'type' => 'less', 'h' => '1', 'text' => 'Work trip to Milan, hotel gym only'], ['from' => '2026-12-20', 'to' => '2026-12-28', 'type' => 'away', 'h' => '', 'text' => 'Christmas with family in Sicily']],
+         'changes' => [['from' => '2026-11-27', 'to' => '2026-11-29', 'type' => 'less', 'h' => '1', 'text' => 'Work trip to Milan, hotel gym only'], ['from' => '2026-11-24', 'to' => '2027-01-26', 'days' => ['tue'], 'type' => 'gym', 'h' => '1', 'text' => 'Strength block, 10 weeks'], ['from' => '2026-12-20', 'to' => '2026-12-28', 'type' => 'away', 'h' => '', 'text' => 'Christmas with family in Sicily']],
          'note' => 'Saturdays I ride with the club, so the long ride works best then.', 'voice' => [['id' => 9001, 'at' => $NOW - 7200, 'text' => 'Next weekend I am in Milan for work, only the hotel gym.']]],
          'cc_avail_vekta' => ['state' => 'ok']],
  102 => ['cc_avail_updated' => $NOW - 26 * 3600, 'cc_avail' => ['week' => $wk(['0', []], ['1', ['pm']], ['1', ['pm']], ['1', ['pm']], ['0', []], ['3', ['am']], ['2', ['am']]), 'changes' => [], 'note' => '']],
  103 => ['cc_avail_updated' => $NOW - 9 * 86400, 'cc_avail' => ['week' => $wk(['1', ['am']], ['1', ['am']], ['1', ['am']], ['1', ['am']], ['0', []], ['2', ['am']], ['2', ['am']]),
-         'changes' => [['from' => '2026-12-05', 'to' => '2026-12-05', 'type' => 'more', 'h' => '4', 'text' => 'Day off work']], 'note' => '']],
+         'changes' => [['from' => '2026-12-01', 'to' => '', 'type' => 'less', 'h' => '1', 'days' => ['mon', 'tue', 'wed', 'thu'], 'text' => 'New job, early starts'], ['from' => '2026-12-05', 'to' => '2026-12-05', 'type' => 'more', 'h' => '4', 'text' => 'Day off work']], 'note' => '']],
  104 => [],
 ];
 function get_post_meta($id, $k) { global $META; $v = $META[$id][$k] ?? ''; return is_array($v) ? json_encode($v) : $v; }
