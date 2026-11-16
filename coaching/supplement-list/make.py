@@ -34,6 +34,14 @@ style += '''
 .sport .dots li::before{background:var(--text-2)}
 .italic{font-style:italic;color:var(--text-3);font-size:11px;margin-top:8px}
 .buy p{margin:0 0 8px}.buy p:last-child{margin:0}
+.dc{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;margin-top:18px;padding:22px 24px;border:1px solid var(--border-strong);border-radius:12px;background:linear-gradient(120deg,rgba(15,16,17,.95) 40%,rgba(25,68,75,.85))}
+.dc .av{width:96px;height:96px}
+.dc .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--vivify-text);margin-bottom:6px}
+.dc .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:24px;color:var(--text);line-height:1.1}
+.dc .rl{font-size:12px;color:var(--text-2);margin-top:3px}
+.dc-c{font-size:11.5px;color:var(--text);margin-top:10px;display:flex;flex-direction:column;gap:2px;line-height:1.5}
+.dc-c a,.dc-c span{color:var(--text);text-decoration:none}
+.dc .btn{margin:0;white-space:nowrap}
 '''
 
 FOOT = '  <div class="foot"><span>Cigala Cycling × Vivify Sports · Supplement List</span><span class="n">{n}</span></div>\n'
@@ -92,13 +100,13 @@ pages.append(f'''<section class="page">
   <div class="down">↓</div>
   <div class="flow">
     <div class="ph" style="--topic:var(--c-before)"><div class="hd"><i></i><span class="anton">Before</span></div><div class="sb">Hard and long sessions</div>
-      <ul class="dots"><li>Caffeine 100 mg</li><li>Beetroot juice: threshold or VO2 sessions only, 120 min before</li><li>Arginine 3 g</li><li>Electrolyte drink in heat or indoors</li></ul></div>
+      <ul class="dots"><li>Caffeine 100 mg, 1 hour before</li><li>Beetroot juice: threshold or VO2 sessions only, 90 min before</li><li>Arginine 3 g</li><li>Electrolyte drink in heat or indoors</li></ul></div>
     <div class="ar">→</div>
     <div class="ph" style="--topic:var(--c-during)"><div class="hd"><i></i><span class="anton">During</span></div><div class="sb">Races and long sessions</div>
-      <ul class="dots"><li>Carbohydrate 30–90 g per hour</li><li>Gels with 40 g of carbs each</li><li>Electrolytes</li><li>Caffeine: max 420 mg per race</li></ul></div>
+      <ul class="dots"><li>Carbohydrate 60–120 g per hour for long training and races</li><li>Gels with 40 g of carbs each</li><li>Electrolytes</li><li>Caffeine: max 420 mg per race</li></ul></div>
     <div class="ar">→</div>
     <div class="ph" style="--topic:var(--c-after)"><div class="hd"><i></i><span class="anton">After</span></div><div class="sb">Races and hard sessions</div>
-      <ul class="dots"><li>Whey protein 25–30 g (ALWAYS)</li><li>Carbohydrate if next session is within 8 h</li><li>Magnesium bisglycinate 400 mg</li><li>Collagen 20 g with vitamin C</li><li>Electrolytes</li></ul></div>
+      <ul class="dots"><li>Whey protein 25–30 g (ALWAYS)</li><li>Carbohydrate if next session is within 8 h</li><li>Magnesium bisglycinate 400 mg</li><li>Collagen 20 g with vitamin C: specific training blocks only</li><li>Electrolytes</li></ul></div>
   </div>
   <div class="ph" style="--topic:var(--c-proto);margin-top:14px">
     <div class="hd"><i></i><span class="anton">Race day only</span></div><div class="sb" style="color:var(--c-proto)">Specific protocol required</div>
@@ -120,8 +128,8 @@ pages.append(f'''<section class="page">
   </div>
   <div class="g2 sport" style="align-items:start">
     <div class="hc"><div class="hd">Cyclists</div><ul class="dots">
-      <li><b>Road races and long rides:</b> 60–90 g of carbs per hour from a glucose + fructose drink mix and gels (40 g each). Add electrolytes, and sodium capsules in the heat.</li>
-      <li><b>Time trials, threshold and VO2 sessions:</b> beetroot juice (500 mg nitrates) at least 120 minutes before, and caffeine 100 mg.</li>
+      <li><b>Road races and long rides:</b> 60–120 g of carbs per hour from a glucose + fructose drink mix and gels (40 g each). Add electrolytes, and sodium capsules in the heat.</li>
+      <li><b>Time trials, threshold and VO2 sessions:</b> beetroot juice (500 mg nitrates) at least 90 minutes before, and caffeine 100 mg 1 hour before.</li>
       <li><b>Late in a race:</b> a carbohydrate &amp; caffeine gel. Stay under 420 mg of caffeine per race.</li>
       <li><b>Sprint and track:</b> creatine 3–5 g/day if used. Trial any sodium bicarbonate protocol in training.</li>
       <li><b>Indoor training:</b> an electrolyte drink, as sweat rates are higher without airflow.</li>
@@ -132,7 +140,7 @@ pages.append(f'''<section class="page">
       <li><b>Full distance (8 h +):</b> 90 g of carbs per hour or more with gut training. Spread caffeine across the race, max 420 mg.</li>
       <li><b>Training blocks:</b> omega-3 and vitamin D, and magnesium bisglycinate 400 mg/day after sessions.</li>
       <li><b>Brick and indoor sessions:</b> an electrolyte drink and a gel or chews to practise race fuelling.</li>
-      <li><b>Recovery:</b> whey protein 25–30 g after every hard session, and collagen 20 g with vitamin C.</li></ul></div>
+      <li><b>Recovery:</b> whey protein 25–30 g after every hard session. Collagen 20 g with vitamin C during specific training blocks only.</li></ul></div>
   </div>
   <div class="mphoto" style="height:78mm;margin-top:16px"><img src="{A}cigala-cycling-jersey-wicklow.jpg" alt="Cigala Cycling rider in team kit looking over the Wicklow mountains, Ireland" style="object-position:50% 40%"></div>
 ''' + FOOT + '</section>')
@@ -154,8 +162,8 @@ pages.append('<section class="page" style="--topic:var(--c-daily)">\n' + RUN + s
  + table(daily) + '  <h3>Useful, but not daily essentials</h3><div class="bar"></div>\n' + table(useful) + FOOT + '</section>')
 
 # 5 before training + before races
-before = [('Arginine','3 g',''),('Caffeine','100 mg',''),
- ('Beetroot juice','Delivering 500 mg nitrates','Only before threshold or VO2 sessions, at least 120 minutes before.'),
+before = [('Arginine','3 g',''),('Caffeine','100 mg','1 hour before.'),
+ ('Beetroot juice','Delivering 500 mg nitrates','Only before threshold or VO2 sessions, at least 90 minutes before.'),
  ('Electrolyte drink','With pre-session fluids','Useful in the heat, for heavy sweaters and for indoor training.')]
 races = [('Beta-alanine','','Taken over several weeks. Can cause harmless tingling.'),
  ('Creatine','','Loading or daily maintenance, depending on the plan.'),
@@ -173,7 +181,7 @@ during = [('Gels','','Prefer gels with 40 g of carbs per gel.'),
  ('Carbohydrate bars','','A minimum of 20 g of carbs per bar.'),
  ('Carbohydrate &amp; caffeine gels','','Don’t take more than 420 mg of caffeine per race.'),
  ('Carbohydrate jellies','',''),('Pickle juice','','Cramp prevention.'),('Quinine','','Perception of effort.'),('Electrolytes','',''),
- ('Carbohydrate drink mix','60–90 g carbs / hour','Glucose plus fructose for long events. Practise in training.'),
+ ('Carbohydrate drink mix','60–120 g carbs / hour','Glucose plus fructose for long training and races. Practise in training.'),
  ('Caffeine chews or gum','','Fast-acting option when gels are impractical, such as the run leg of a triathlon.'),
  ('Sodium capsules or salt tablets','','Hot conditions and heavy sweaters. Trial in training.')]
 pages.append('<section class="page" style="--topic:var(--c-during)">\n' + RUN + sec('04','During races','Fuel, fluids and electrolytes','During') + table(during) + FOOT + '</section>')
@@ -184,7 +192,7 @@ after = [('Whey protein (ALWAYS)','25–30 g',''),('L-Leucine','4 g','If using a
  ('BCAA','1000 mg (500 mg L-Leucine, 250 mg L-Isoleucine, 250 mg L-Valine)','If using a vegan protein powder or unable to have a protein shake.'),
  ('Magnesium bisglycinate','400 mg / day',''),('Electrolytes','Potassium, chloride, calcium, magnesium, sodium',''),
  ('Food polyphenols','','NZ blackcurrants, cherry juice, grape juice, blueberries, mixed berries, quercetin.'),
- ('Collagen','20 g with vitamin C',''),
+ ('Collagen','20 g with vitamin C','Specific training blocks only, not after every recovery ride.'),
  ('Carbohydrate recovery drink','1–1.2 g/kg per hour for the first 4 hours','When the next hard session is within 8 hours.'),
  ('Casein protein','30–40 g before sleep','Supports overnight recovery.')]
 pages.append('<section class="page" style="--topic:var(--c-after)">\n' + RUN + sec('05','After races &amp; training','After races and hard or long training','After') + table(after) + FOOT + '</section>')
@@ -207,17 +215,15 @@ pages.append(f'''<section class="page">
   <p>You can’t just eat an orange or pop in a vitamin pill and expect one quick burst of vitamin C to prevent a cold and boost the immune system, for example. Also, it’s best for some vitamins and minerals to come from our foods rather than pill form.</p>
   <div class="anton" style="font-size:19px;margin:14px 0 10px">A balanced diet is the key to a healthy and performing body.</div>
   <p>If you would like more tailored advice on food supplements, VIVIFY SPORTS can provide you with a complete nutritional assessment. Supplements are here to support your training. If taken wrong they can actually be detrimental and decrease performance.</p>
-  <div class="consult" style="margin-top:16px">
-    <div class="l" style="display:flex;gap:18px;align-items:center">
-      <img class="av viv" style="width:96px;height:96px" src="{A}avatar-marine-lenehan.jpg" alt="Marine Lenehan">
-      <div><div class="k">Book a discovery call with Marine</div>
-      <div class="person" style="margin:0"><div class="nm">Marine Lenehan</div><div class="rl">Sports Nutritionist &amp; World Tour Cyclist</div></div>
-      <a class="btn" style="margin-top:8px" href="https://www.vivifysports.com/nutritionalcoaching">Book a discovery call</a></div>
+  <div class="dc">
+    <img class="av viv" src="{A}avatar-marine-lenehan.jpg" alt="Marine Lenehan">
+    <div class="dc-who">
+      <div class="k">Book a discovery call with Marine</div>
+      <div class="nm">Marine Lenehan</div>
+      <div class="rl">Sports Nutritionist &amp; World Tour Cyclist</div>
+      <div class="dc-c"><a href="https://vivifysports.com">vivifysports.com</a><a href="mailto:marine@vivifysports.com">marine@vivifysports.com</a><span>+353 87 224 7402</span></div>
     </div>
-    <div class="r" style="display:flex;align-items:center">
-      <div class="person" style="margin:0"><div class="k">Vivify Sports</div>
-        <a href="https://vivifysports.com">vivifysports.com</a><a href="mailto:marine@vivifysports.com">marine@vivifysports.com</a><div class="c">+353 87 224 7402</div></div>
-    </div>
+    <a class="btn" href="https://www.vivifysports.com/nutritionalcoaching">Book a discovery call</a>
   </div>
 ''' + FOOT + '</section>')
 
