@@ -40,13 +40,15 @@ style += '''
 .imp{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:12px;padding:14px 18px;margin-top:6px}
 .imp .anton{font-size:20px;margin-bottom:8px}
 .imp .dots li::before{background:var(--red)}
-.made{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin-top:14px;padding:18px 20px;border:1px solid var(--border-strong);border-radius:12px;background:var(--panel)}
+.made{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-top:14px;padding:18px 20px;border:1px solid var(--border-strong);border-radius:12px;background:var(--panel)}
 .made .av{width:76px;height:76px}
 .made .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:4px}
 .made .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:21px;color:var(--text)}
 .made .c{font-size:11.5px;color:var(--text);line-height:1.6;margin-top:4px}
 .made .c a{color:var(--text);text-decoration:none}
-.made .btn{margin:0;white-space:nowrap}
+.made .ct{display:flex;flex-direction:column;gap:8px}
+.made .ct a{display:block;text-decoration:none;color:var(--text);font-weight:600;font-size:13px;background:#17191b;border:1px solid var(--border-strong);border-left:3px solid var(--green);border-radius:8px;padding:7px 14px}
+.made .ct a span{display:block;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:1px}
 .key{margin:0 0 14px}
 '''
 
@@ -67,11 +69,17 @@ def ex_gym(doc, n, name, load, lines, kind='str'):
             f'<div class="im"><img src="img/{doc}-{n:02d}.jpg" alt="{html.escape(name)} exercise"></div>'
             f'<div><div class="nm">{name}</div>{ld}<div class="ds">{ds}</div></div></div>\n')
 
-def made_card(email):
+def made_card(email, made_by='Gym circuit made by Cigala Cycling'):
+    email = 'matteo@cigalacycling.com'
+    tel = PHONE.replace(' ', '')
     return f'''<div class="made">
   <img class="av" src="{A}avatar-matteo-cigala.jpg" alt="Matteo Cigala">
-  <div><div class="k">Gym circuit made by</div><div class="nm">Cigala Cycling</div>
-    <div class="c"><a href="https://www.cigalacycling.com">www.cigalacycling.com</a><br>{PHONE}<br><a href="mailto:{email}">{email}</a></div></div>
+  <div><div class="k">{made_by}</div><div class="nm">Any questions?</div>
+    <div class="c" style="color:var(--text-2)">Get in touch with Matteo, your coach.</div></div>
+  <div class="ct">
+    <a href="tel:{tel}"><span>Phone</span>{PHONE}</a>
+    <a href="mailto:{email}"><span>Email</span>{email}</a>
+  </div>
 </div>
 '''
 
@@ -260,7 +268,7 @@ for pi, c in enumerate(per):
         b += '  ' + r
     i += c
     if i >= len(rows):
-        b += '  ' + made_card('info@cigalacycling.com').replace('Gym circuit made by', 'Stretches &amp; core made by')
+        b += '  ' + made_card('', 'Stretches &amp; core made by Cigala Cycling')
     pages.append(b)
 write('Stretches-and-Core.html', 'Stretches & Core', page_wrap(pages, 'Stretches &amp; Core'))
 print('ok')
