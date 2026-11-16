@@ -28,12 +28,15 @@ def svg_png(svg_path, px):
     subprocess.run(['node', '-e', js], check=True)
     return Image.open(tmp).convert('RGBA')
 
+POSTER_SRC = {'italian-alps': 6145}   # a photo of its own (Matteo 16 Nov: the live poster repeated the hero photo): rider on the Gavia
 def poster(slug, base=False):   # base=True: the tile without the map (the trip page draws an animated map on it)
-    m = json.load(open(ROOT + f'stg-tours/out/list-trip-{slug}.json'))['main']
-    src = re.search(r'<div class="cardimg"><img[^>]+src="([^"]+)"', m)
-    if not src: return print(slug, 'no poster')
     done = json.load(open(MAP))
-    orig = next(v['orig'] for v in done.values() if isinstance(v, dict) and v.get('url') == src.group(1) and v.get('orig'))
+    if slug in POSTER_SRC: orig = POSTER_SRC[slug]
+    else:
+        m = json.load(open(ROOT + f'stg-tours/out/list-trip-{slug}.json'))['main']
+        src = re.search(r'<div class="cardimg[^"]*"><img[^>]+src="([^"]+)"', m)
+        if not src: return print(slug, 'no poster')
+        orig = next(v['orig'] for v in done.values() if isinstance(v, dict) and v.get('url') == src.group(1) and v.get('orig'))
     o = media(orig); u = o['source_url']
     raw = None
     if '-scaled.' in u:
@@ -55,7 +58,7 @@ def poster(slug, base=False):   # base=True: the tile without the map (the trip 
     fn = f'cigala-tours-poster{"base" if base else ""}-{slug}.webp'
     os.makedirs(OUTDIR, exist_ok=True)
     out.save(OUTDIR + fn, 'WEBP', quality=90)
-    alt = (o.get('alt_text') or '').strip() or done[next(k for k, v in done.items() if isinstance(v, dict) and v.get('url') == src.group(1))]['alt']
+    alt = (o.get('alt_text') or '').strip() or 'Italian Alps bike tour - Cigala Cycling Tours'
     r_ = json.loads(_req(B + '/media', data=open(OUTDIR + fn, 'rb').read(), method='POST',
                          headers={'Content-Type': 'image/webp', 'Content-Disposition': f'attachment; filename="{fn}"', 'User-Agent': 'Mozilla/5.0'}))
     _req(B + f'/media/{r_["id"]}', data=json.dumps({'alt_text': alt}).encode(), method='POST', headers={'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0'})

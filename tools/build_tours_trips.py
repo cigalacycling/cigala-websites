@@ -27,18 +27,55 @@ _SPJ = json.load(open(ROOT + 'tours/spots.json'))
 SPOTS = {k: v for k, v in _SPJ.items() if not k.startswith('_')}
 GUIDE_NICK = {'Giampietro': 'JP'}   # first name -> nickname (About page: Giampietro 'JP')
 # guides from the About page team (photo, role; no bio there): added to a tour, or replacing a guide (Matteo 16 Nov)
-TEAM = {'JP': ('Guide', 2658, ''), 'Marco': ('Support & Mechanic', 2651, ''), 'Antonio': ('Guide', 4665, ''), 'Bone': ('Support & Mechanic', 10683, ''),   # Bone: Alessio, photo from Matteo 16 Nov
-        'Amedeo': ('Tour Guide Leader', 2214, 'A former pro cyclist, Amedeo is a cycling tour guide & massage therapist for a decade. It is one of the most experience guides that you will ever find, counting almost over 1000 days on tours.'),
+TEAM = {'JP': ('Guide', 2658, 'Giampietro, JP to everyone, is retired and lives for cycling. Every week he guides mountain bike tours in his home region of Franciacorta, riding among its vineyards and wineries.'),
+        'Marco': ('Support & Mechanic', 2651, 'Marco is a semi-pro rider from Lake Garda. On tour he looks after the group from the van and keeps every bike running smoothly, from the first ride to the last.'),
+        'Antonio': ('Guide', 4665, 'Antonio was a professional cyclist for many years. Now he enjoys the other side of the sport: guiding our riders and sharing the roads and climbs he knows so well.'),
+        'Bone': ('Support & Mechanic', 10683, 'Alessio, known as Bone, is a former pro and a stage winner at the Baby Giro. Today he is a full-time bike mechanic who loves joining our tours.'),   # bios from Matteo 16 Nov   # Bone: Alessio, photo from Matteo 16 Nov
+        'Amedeo': ('Tour Guide Leader', 2214, 'A former pro cyclist, Amedeo has been a cycling tour guide and massage therapist for a decade, with almost 1,000 days on tours: one of the most experienced guides you will find.'),
         'Piero': ('Guide & Gravel Expert', 3455, 'Piero is a passionate cyclist and architect, whose eye for detail carries into his riding. He started out in downhill mountain biking before finding his true love: gravel.')}   # bios as on the live tour pages
 GUIDES_SET = {'lake-garda-and-stelvio': ['Piero', 'Amedeo', 'JP'], 'lake-garda-gravel': ['Piero', 'Amedeo', 'JP']}   # the whole guide line-up for a tour (Matteo 16 Nov)
 GALLERY_PHOTOS = {'lake-garda-and-stelvio': [2211, 2212, 2209, 434, 780, 650, 898, 2235, 2233]}   # Garda & Stelvio: the live gallery photos are 450-800px wide (soft); sharper Garda photos (Matteo 16 Nov)
 GUIDES_ADD = {'maratona-dles-dolomites': ['JP', 'Bone'], 'dolomites': ['Bone'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio', 'Marco']}   # Coast to Coast: Marco = the younger support & mechanic, not Marco "DS" (Matteo 16 Nov)
-GUIDES_DROP = {'italys-coast-to-coast': {'AMEDEO'}}   # Matteo 16 Nov
+OP_LOGO = {'maratona-dles-dolomites': 'logo-mdd'}   # the Maratona logo beside "Official tour operator" (Matteo 16 Nov)
+GUIDES_DROP = {'italys-coast-to-coast': {'AMEDEO'}, 'maratona-dles-dolomites': {'AMEDEO'}}   # Matteo 16 Nov
 GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Bone'}, 'wonderful-slovenia': {'AMEDEO': 'Bone'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'JP'}}   # French Alps and Slovenia: Alessio 'Bone' in Amedeo's place (Matteo 16 Nov)
 HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
 EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 2225,   # gravel photo on the road tour, Stelvio photo on the gravel tour
                'lake-garda-and-stelvio': {'GRAVEL': 7766, 'STELVIO': 2225}, 'lake-garda-gravel': 434}   # by a word of the section title when a page has several   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
 # Maratona: two hotels in one text block live -> a card each, with their own photos and stars (Matteo 16 Nov)
+FAQ_EDIT = {
+ 'alpine-gravel-escape': [(r'gravel tour running at the same time', 'I see you have a road tour running at the same time, can I join one or two road rides?',
+     '<p>Yes. Our <a href="https://tours.cigalacycling.com/trips/italian-alps/">Italian Alps</a> road tour runs at the same time, and both groups share the same accommodation and evening restaurants. You can swap in a road day or two: just let us know when booking and we will rent a road bike for you for the day.</p>')],
+}
+TRAIN = '<p>Some dedicated preparation makes a real difference. If you would like a structured plan built around this trip, visit our COACH page and Matteo can help you put together a plan based on your current level and the time you have before you travel.</p>'.replace('COACH', '<a href="https://coaching.cigalacycling.com/">cycling coaching</a>')
+PACK = '<p>Beyond your usual riding kit, bring extra layers and a rain jacket: WHY Our full <a href="https://tours.cigalacycling.com/guides/what-to-pack-cycling-holiday/">guide to packing for a European cycling holiday</a> covers everything else you will need for the week.</p>'
+EXTRA_FAQ = {   # Matteo 16 Nov: these tours had no FAQ live; answers only use facts already on each page
+ 'dolomites': [
+   ('Do I need to bring my own bike, or can I rent one?', "<p>You're welcome to bring your own bike, or rent one for the week. After booking, you will receive a form to fill out via email: let us know there, and if you want to rent, add your measurements so we can prepare the right bike for you.</p>"),
+   ('What fitness level do I need for this trip?', '<p>This trip suits Intermediate and Expert riders. Every day takes on famous Dolomites passes, with around 8,200 m of climbing over five days of riding, so a good level of fitness is needed to enjoy it.</p>'),
+   ('What kind of support is included on this trip?', '<p>A support vehicle follows the group every day with snacks and water on route, and our ex-pro guides ride with you and share their tips.</p>'),
+   ('Where do we stay?', '<p>Two nights in Canazei at Hotel Andreas (4-star) and three nights in La Villa, Alta Badia, at Hotel Rezia (3-star superior), both with breakfast included.</p>'),
+   ('Is there a single room supplement?', '<p>Yes, single rooms are available at €60 per night, with limited availability.</p>'),
+   ('Should I specifically train for a trip like this?', TRAIN),
+   ('What should I pack for this trip?', PACK.replace('WHY', 'the mountain passes are much cooler than the valleys, even in July.'))],
+ 'tuscany-epic-gravel': [
+   ('Do I need to bring my own bike, or can I rent one?', "<p>You're welcome to bring your own bike, or rent one for the week. After booking, you will receive a form to fill out via email: let us know there, and if you want to rent, add your measurements so we can prepare the right bike for you.</p>"),
+   ('What fitness level do I need for this trip?', '<p>This trip is for Expert riders. You will ride about 450 km over five days, around 80% of it on gravel, so you need good endurance and confident bike handling on loose surfaces.</p>'),
+   ('Is there an option for an e-gravel bike?', '<p>Yes, gravel e-bikes are available to rent. Let us know when you book.</p>'),
+   ('What kind of support is included on this trip?', '<p>Every day comes with the full pro experience: a van with feed zones, snacks and water on route, plus guided routes by our ex-pro guides.</p>'),
+   ('Is there a single room supplement?', '<p>Yes, single rooms are available at €60 per night, with limited availability.</p>'),
+   ('Should I specifically train for a trip like this?', TRAIN),
+   ('What should I pack for this trip?', PACK.replace('WHY', 'early June in Tuscany is usually warm, but a shower is always possible.'))],
+ 'cyprus-crossing-gravel': [
+   ('Do I need to bring my own bike, or can I rent one?', "<p>You're welcome to bring your own bike, or rent one for the week. After booking, you will receive a form to fill out via email: let us know there, and if you want to rent, add your measurements so we can prepare the right bike for you.</p>"),
+   ('What fitness level do I need for this trip?', '<p>This trip is for Expert riders: about 420 km and 8,800 m of climbing over six days on a mix of gravel and quiet mountain roads, from the coast up to Mount Olympus and back down to the sea.</p>'),
+   ('What kind of support is included on this trip?', '<p>A full back-up car follows the group every day with snacks and water on route, and our guides ride with you.</p>'),
+   ('Is my kit washed during the trip?', '<p>Yes, laundry of your cycling kit is included.</p>'),
+   ('Is there a single room supplement?', '<p>Yes, a single room supplement is available at €50 per night.</p>'),
+   ('Should I specifically train for a trip like this?', TRAIN),
+   ('What should I pack for this trip?', PACK.replace('WHY', 'April is mild by the sea, but the mountains around Mount Olympus are much cooler.'))],
+}
+HOTEL_TEXT = {'Hotel Soleil': '<p>Located in the heart of La Villa, at the foot of the famous Gran Risa, Soleil Alpine Lifestyle Hotel blends contemporary Alpine design with the character of South Tyrol. Modern rooms, excellent dining, an indoor pool, sauna and steam bath, and dedicated cycling services make it an ideal base for the Sellaronda and the Maratona climbs.</p>'}   # shorter, in line with Rezia (Matteo 16 Nov)
 HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629, 8631]), ('Hotel Soleil', 4, False, 8709, [8707, 8708])]}
 DYN = set(IDS)   # the dynamic trip page on every tour (Matteo 16 Nov, after the Algarve pilot): count-up numbers, animated map badge, route drawn day by day, days sliding in
 HOTEL_PIC_ORDER_IDS = {'discover-the-algarve-granfondo': [2572, 2563, 2565, 2564, 2566, 2561, 2567, 2562, 2573]}   # Vilar do Golf: the resort and pool first, not the gym
@@ -68,10 +105,15 @@ def trim_tag(src, alt):   # the rental bike, cropped to the bike (Matteo 16 Nov:
     im = webp(src, 1000, alt, trim=True)
     return f'<img src="{im["url"]}" alt="{E(im["alt"])}" loading="lazy">'
 
+STD_GUIDE = {
+ 'MATTEO': ('Founder & Tours Director', 'Since founding Cigala Cycling in 2015, Matteo has led over 100 tours. A former pro and current amateur racer, Matteo is the 2022 European Champion Gran Fondo.'),
+ 'AMEDEO': ('Tour Guide Leader', 'A former pro cyclist, Amedeo has been a cycling tour guide and massage therapist for a decade, with almost 1,000 days on tours: one of the most experienced guides you will find.'),
+ 'PIERO': ('Guide & Gravel Expert', 'Piero is a passionate cyclist and architect, whose eye for detail carries into his riding. He started out in downhill mountain biking before finding his true love: gravel.')}   # the live texts most tours use
+SHOWN = {'JP': 'GIAMPIETRO "JP"', 'Bone': 'ALESSIO "BONE"'}   # name and nickname, as on About (Matteo 16 Nov)
 def team_card(name):
     role, photo, bio = TEAM[name]
     return (f'<article class="panel guide"><div class="ph">{img_tag(photo, 600, alt=f"{name}, {role.lower()} at Cigala Cycling Tours")}</div>'
-            f'<div class="tx"><h3>{E(name.upper())}</h3><div class="role">{E(role)}</div>{f"<p>{E(bio)}</p>" if bio else ""}</div></article>')
+            f'<div class="tx"><h3>{E(SHOWN.get(name, name.upper()))}</h3><div class="role">{E(role)}</div>{f"<p>{E(bio)}</p>" if bio else ""}</div></article>')
 
 DYN_JS = """<script>(function(){var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,io='IntersectionObserver' in window&&!rm;
 if(io)document.documentElement.classList.add('dyn-ok');
@@ -321,8 +363,10 @@ def trip(slug):
     op = one('operator')
     if op:
         logo = next((v for k, v, s in op['items'] if k == 'img'), None)
-        out.append(f'<section style="padding-top:28px"><div class="in"><div class="panel opbox">{H(op, "Official partner")}'
-                   f'{img_tag(logo, 400, cls="oplogo") if logo else ""}</div></div></section>')
+        if logo: logo_html = img_tag(logo, 400, cls="oplogo")
+        elif slug in OP_LOGO: lg = M[OP_LOGO[slug]]; logo_html = f'<img class="oplogo" src="{lg["url"]}" alt="{E(lg["alt"])}" loading="lazy">'
+        else: logo_html = ''
+        out.append(f'<section style="padding-top:28px"><div class="in"><div class="panel opbox">{H(op, "Official partner")}{logo_html}</div></div></section>')
     route = one('route')
     # our own route map (tools/tours_route_maps.py, Cigala style) for every trip; the live map image only as a fallback
     mp = ROOT + f'tourspages/maps/day-{slug}.svg'   # day-by-day routes on real roads (tools/tours_day_routes.py, Matteo 16 Nov)
@@ -395,7 +439,9 @@ def trip(slug):
         media_html = (f'<div class="vcard panel" style="margin-top:16px"><button type="button" class="yt" data-id="{vid.group(1)}" aria-label="Play the video">'
                       f'<img src="https://i.ytimg.com/vi/{vid.group(1)}/hqdefault.jpg" alt="{E(text_of(ex["h"]))} video" loading="lazy"><span class="play" aria-hidden="true"></span></button></div>') if vid else ''
         if len(imgs) == 1 and not vid:   # one photo (the Maratona jersey): photo on one side, text on the other (Matteo 16 Nov: too much black)
-            out.append(f'<section><div class="in"><div class="panel xbox xsplit{" xcover" if xp else ""}"><div class="xph">{img_tag(imgs[0], 1200, alt=f"{text_of(h1).title()} - Cigala Cycling Tours")}</div>'
+            ph_ = (f'<img src="{M["jersey-white"]["url"]}" alt="{E(M["jersey-white"]["alt"])}" loading="lazy">' if str(imgs[0]) == '8980' and 'jersey-white' in M
+                   else img_tag(imgs[0], 1200, alt=f"{text_of(h1).title()} - Cigala Cycling Tours"))   # the jersey on white (Matteo 16 Nov)
+            out.append(f'<section><div class="in"><div class="panel xbox xsplit{" xcover" if xp else ""}"><div class="xph">{ph_}</div>'
                        f'<div class="xtx">{H(ex, "Make it yours" if ex["kind"] == "extra" else "Good to know")}<div class="prose">{body}</div>{f"<div class=ctas>{btns}</div>" if btns else ""}</div></div></div></section>')
             continue
         if imgs: media_html += '<div class="gal3" style="margin-top:16px">' + ''.join(img_tag(x, 1200, alt=f'{text_of(h1).title()} - Cigala Cycling Tours') for x in imgs[:3]) + '</div>'
@@ -444,6 +490,7 @@ def trip(slug):
                 tm = [f'{int(h):02d}:{mi}' for h, mi in re.findall(r'(\d{1,2}):(\d{2})\s*(?:am|pm)?', t, re.I)]
                 txt = re.sub(r'\s*-?\s*\d{1,2}:\d{2}\s*(?:am|pm)?', '', t, flags=re.I).strip(' -–')
                 txt = re.sub(r'\s+at(?=\s*(?:\(|$))', '', txt).strip(' -–')   # 'Airport at 10:30am' -> 'Airport' (the time is a chip)
+                txt = re.sub(r'(?i)^at\s*(?=from\b)', '', txt).strip()   # '22/04/27 at 21:30 from Paphos' -> 'From Paphos' (Cyprus)
                 txt = txt[:1].upper() + txt[1:]
                 return txt, tm
             cards = ''
@@ -498,6 +545,7 @@ def trip(slug):
         if slug in HOTELS:   # one card per hotel, each with its own text, stars and photos
             paras = re.split(r'(?=<p><strong>)', txt)
             def htext(name):
+                if name in HOTEL_TEXT: return HOTEL_TEXT[name]
                 seg = next((x for x in paras if name.lower() in x.lower()[:120]), '')
                 seg = re.sub(r'<strong>.*?</strong>(\s*<br\s*/?>)?', '', seg, count=1, flags=re.S)
                 return seg
@@ -561,12 +609,15 @@ def trip(slug):
             if 'CIGALA' not in nm.upper():   # Matteo 16 Nov: guides by first name (or nickname), for their privacy; Matteo Cigala in full
                 first = nm.split()[0]; nm = GUIDE_NICK.get(first.title(), first)
             bio = ''.join(clean(x) for x in p['texts'][1:])
+            if nm.split()[0].upper() in STD_GUIDE:   # one standard card per person on every tour (Matteo 16 Nov: same height, no contradictions)
+                role, bio = STD_GUIDE[nm.split()[0].upper()]; bio = f'<p>{E(bio)}</p>'
             ph = f'<div class="ph">{img_tag(p["img"], 600, alt=f"{nm.title()}, {role} at Cigala Cycling Tours")}</div>' if p['img'] else ''
             cards.append(f'<article class="panel guide">{ph}<div class="tx"><h3>{E(nm)}</h3><div class="role">{E(role)}</div>{bio}</div></article>')
         cards += [team_card(n) for n in GUIDES_ADD.get(slug, [])]
         if slug in GUIDES_SET: cards = [team_card(n) for n in GUIDES_SET[slug]]
         drop = {'MARINE'} | GUIDES_DROP.get(slug, set())   # Marine runs operations and bookings: on no tour (Matteo 16 Nov)
         cards = [c for c in cards if not any(f'<h3>{n}</h3>' in c for n in drop)]
+        if any('class="role"' in c and not re.search(r'</div>\s*<p>|</div>(?:<p|<div class="prose")', c.split('class="role"')[1]) for c in cards): print('  !! guide without a bio on', slug)
         stats = []
         for st_ in S('stat'):
             lab = next((text_of(v) for k, v, s in st_['items'] if k == 'text'), '')
@@ -579,6 +630,11 @@ def trip(slug):
         nav.append(('guides', 'Guides'))
     fq = one('faq')
     qa = faqs(data)
+    for rx, q2, a2 in FAQ_EDIT.get(slug, []):   # per-tour corrections (Matteo 16 Nov: every FAQ must match its tour)
+        qa = [((q2 or q), (a2 or a)) if re.search(rx, q) else (q, a) for q, a in qa]
+    qa = [(q, re.sub(r'(?i)cooler than down at lake level', 'cooler than down in the valley', a) if slug in ('alpine-gravel-escape', 'italian-alps') else a) for q, a in qa]
+    if slug in EXTRA_FAQ and not qa:
+        qa = EXTRA_FAQ[slug]; fq = {'h': 'Frequently Asked Questions', 'tag': 'h2', 'items': []}
     if fq and qa:
         fh = ''.join(f'<details class="panel faq"><summary><h3>{E(q)}</h3></summary><div class="a">{a}</div></details>' for q, a in qa)
         out.append(f'<section id="faq"><div class="in">{H(fq, "Good to know")}<div class="faqs">{fh}</div></div></section>')
@@ -776,7 +832,8 @@ html .cl #included .yes .inh { color: var(--green-text, #2bd47a); }   /* Include
 html .cl .thero ~ section { padding-top: 48px; }   /* a little less space between sections on the trip pages (Matteo 16 Nov) */
 html .cl .thero ~ section#route, html .cl .thero ~ section#itinerary { padding-top: 40px; }
 html .cl .xsplit { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 0; padding: 0; overflow: hidden; align-items: stretch; }
-html .cl .xsplit .xph { background: #e9edf0; display: grid; place-items: center; padding: 18px; }
+html .cl .xsplit .xph { background: #fff; display: grid; place-items: center; padding: 18px; }   /* white behind the jersey (Matteo 16 Nov) */
+html .cl .faq .a a { color: var(--green-text, #2bd47a); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }   /* links in answers (cycling coaching) in green */
 html .cl .xsplit .xph img { width: 100%; height: auto; max-height: 420px; object-fit: contain; }
 html .cl .xsplit .xtx { padding: clamp(22px, 3vw, 36px); align-self: center; }
 html .cl .xsplit.xcover .xph { padding: 0; background: none; } html .cl .xsplit.xcover .xph img { height: 100%; max-height: none; min-height: 300px; object-fit: cover; }   /* a photo fills its half; the grey ground is for product shots (the jersey) */

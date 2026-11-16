@@ -96,8 +96,8 @@ DAYS = {
     2: ['La Villa', 'Corvara', 'Campolongo', 'Arabba', 'Pordoi', 'Sella', 'Gardena', 'Corvara', 'La Villa'],
     3: ['La Villa', 'Corvara', 'Gardena', 'Corvara', 'Campolongo', 'Corvara', 'La Villa'],
     4: ['La Villa', 'Pedraces', 'San Martino in Badia', 'La Villa'],
-    5: ['Corvara', 'Campolongo', 'Pordoi', 'Sella', 'Gardena', 'Corvara', 'Campolongo', 'Arabba', 'Pieve di Livinallongo', 'Selva di Cadore', 'Giau', 'Pocol',
-        'Falzarego', 'Valparola', 'San Cassiano', 'Corvara']},
+    5: ['Corvara', 'Campolongo', 'Pordoi', 'Sella', 'Gardena', 'Corvara', 'Campolongo', 'Arabba', 'Pieve di Livinallongo', 'Selva di Cadore', 'Giau',
+        'Falzarego', 'Valparola', 'San Cassiano', 'Corvara']},   # no Pocol waypoint: it sat off the road and drew an out-and-back (Matteo 16 Nov)
     ['La Villa'], ['Campolongo', 'Pordoi', 'Sella', 'Gardena', 'Giau', 'Falzarego', 'Valparola']),
  'dolomites': (R, {
     2: ['La Villa', 'San Cassiano', 'Valparola', 'Falzarego', 'Pieve di Livinallongo', 'Arabba', 'Pordoi', 'Sella', 'Gardena', 'Corvara', 'La Villa'],
@@ -203,6 +203,7 @@ DAYS = {
     7: ['Camerino', 'Sarnano', 'Amandola', 'Ripatransone', 'San Benedetto del Tronto']},
     ['Viareggio', 'Peccioli', 'Siena', 'Montepulciano', 'Assisi', 'Camerino', 'San Benedetto del Tronto'], ['Pisa', 'San Gimignano', 'Pienza']),
 }
+COUNTRY_LABELS = {'italian-alps': [('SWITZERLAND', 46.33, 10.06), ('ITALY', 46.40, 10.42)]}   # Matteo 16 Nov: show where the Stelvio loop crosses into Switzerland
 INSET = {'lake-garda-and-stelvio': {'3': 'Day trip by van: Passo dello Stelvio'}}   # days far from the rest: a small map in the corner (Matteo 16 Nov)
 LABEL = {'Monetier-les-Bains': 'Monêtier-les-Bains', 'Col du Telegraphe': 'Col du Télégraphe', 'Briancon': 'Briançon', 'Ajdovscina': 'Ajdovščina', 'Ziri': 'Žiri',
          'Skofja Loka': 'Škofja Loka', 'Zelezniki': 'Železniki', 'Vrsic': 'Vršič Pass', 'Bled': 'Lake Bled', 'Salo': 'Salò', 'Loule': 'Loulé', 'Querenca': 'Querença',
@@ -449,6 +450,9 @@ def draw(slug, countries, lakes, rivers, named=None):
                    f'<g class="db" data-d="{key}"><circle cx="{bx_:.1f}" cy="{by_:.1f}" r="11" fill="{c}" stroke="#0a0c0e" stroke-width="2"/>'
                    f'<text x="{bx_:.1f}" y="{by_ + 4.3:.1f}" font-family="Montserrat, Arial, sans-serif" font-size="12" font-weight="800" fill="#0a0c0e" text-anchor="middle">{key}</text></g>'
                    f'<text x="{bx_ + (16 if bx_ < ix + iw / 2 else -16):.1f}" y="{by_ + 4:.1f}" font-family="Montserrat, Arial, sans-serif" font-size="11.5" font-weight="600" fill="#c9a36a" text-anchor="{"start" if bx_ < ix + iw / 2 else "end"}">Passo dello Stelvio 2,757 m</text>')
+    for t_, la_, lo_ in COUNTRY_LABELS.get(slug, []):   # neighbouring countries the route crosses into
+        x_, y_ = P(lo_, la_)
+        svg.append(f'<text x="{x_:.1f}" y="{y_:.1f}" font-family="Montserrat, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#d0d6e0" fill-opacity=".55" text-anchor="middle">{E(t_)}</text>')
     # small legend: hotel / overnight, climbs
     multi = len(stays) > 1
     svg.append(f'<rect x="12" y="{H - 44}" width="{(205 if multi else 160) + 175}" height="32" rx="8" fill="#0a0c0e" fill-opacity=".85" stroke="#ffffff" stroke-opacity=".12"/>'

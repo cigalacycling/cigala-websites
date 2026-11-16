@@ -8664,14 +8664,14 @@
   "orig": 9033
  },
  "poster-italian-alps": {
-  "id": 10333,
-  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-poster-italian-alps.webp",
-  "alt": "Italian Alps Bike Tour Cigala Cycling Tours",
+  "id": 10708,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-poster-italian-alps-1.webp",
+  "alt": "Cycling the Gavia Pass by the Lake | Cigala Cycling Tours",
   "size": [
-   900,
-   1125
+   1200,
+   1600
   ],
-  "orig": 9033
+  "orig": 6145
  },
  "poster-tuscany-epic-gravel": {
   "id": 10334,
@@ -9821,14 +9821,14 @@
   "orig": 9033
  },
  "posterbase-italian-alps": {
-  "id": 10656,
-  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-posterbase-italian-alps.webp",
-  "alt": "Italian Alps Bike Tour Cigala Cycling Tours",
+  "id": 10707,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-posterbase-italian-alps-1.webp",
+  "alt": "Cycling the Gavia Pass by the Lake | Cigala Cycling Tours",
   "size": [
-   900,
-   1125
+   1200,
+   1600
   ],
-  "orig": 9033
+  "orig": 6145
  },
  "posterbase-tuscany-epic-gravel": {
   "id": 10657,
@@ -9997,5 +9997,11 @@
    600
   ],
   "orig": 6403
+ },
+ "jersey-white": {
+  "id": 10724,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-maratona-jersey-white.webp",
+  "alt": "Cigala Cycling Maratona Dles Dolomites Official Tour Operator",
+  "orig": 8980
  }
 }

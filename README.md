@@ -279,6 +279,17 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
     - Strade Bianche day 3 is a loop back to Radda (Castellina, Panzano, Greve, Lamole, Volpaia).
     - Algarve day 4 is the Gran Fondo to Lagos via Monchique (approximate, until Matteo sends the Komoot GPX).
     - Rivers are off the day maps.
+- **Final trip-page round, 16 Nov:**
+  - **Guides:** every guide on every tour now has a bio of about the same length (`STD_GUIDE`, `TEAM`). Bios for Antonio, Marco, JP and Bone use Matteo's own facts. Names show with nicknames, as on About. Amedeo is off Maratona.
+  - **FAQs:**
+    - spelling and grammar fixed across all tours (`TYPOS`);
+    - Alpine Gravel's "join the gravel tour" answer now points to the Italian Alps road tour;
+    - "lake level" changed to "valley" on the two Bormio tours;
+    - new FAQs on Dolomites, Tuscany Epic and Cyprus, using only facts already on those pages (`EXTRA_FAQ`);
+    - links in the answers are green.
+  - **Maratona:** the Maratona logo sits in the Official tour operator box (`OP_LOGO`). The jersey is on white (media `jersey-white`). Hotel Soleil has a shorter text (`HOTEL_TEXT`). The day 5 route no longer goes through the off-road Pocol point.
+  - **Italian Alps:** the intro poster is the Gavia photo (6145, `POSTER_SRC` in `tours_posters.py`) with the map badge. "SWITZERLAND" and "ITALY" are labelled on the route map (`COUNTRY_LABELS`).
+  - **Other fixes:** Cyprus transfers no longer read "Atfrom". Dolomites "Longest day" is Day 5.
 - **Destination photo check, 16 Nov:** the live Ireland cards used Tuscany photos, now Irish ones (`DEST_CARD_PHOTOS`); Costa Blanca Sierra & Sea no longer shows Cyprus; media 1414 ("Ireland" but Tuscany) is excluded (`BAD_PHOTOS`); Ireland's two "Why..." sections merged into one ("Why ride Ireland?", two lists, approved by Matteo); "reland" typo fixed.
 - **Dynamic pages and more fixes, 16 Nov:**
   - **Every trip page** (`DYN` in `build_tours_trips.py`):
