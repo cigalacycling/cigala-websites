@@ -451,3 +451,16 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   3. Reports in Italian: the PC tools read the athlete's language (with the report delivery).
   4. Italian versions of the six PDFs: the hub shows the athlete's language. The Nutritional Guide and Supplement List need Marine's approval of the Italian text.
   5. Italian versions of the free tools later, as an SEO project.
+
+### Athlete area: online Rider Information Form (planned, after launch, Matteo 16 Nov)
+- **Order stays the same:** athlete signs up and pays, Matteo creates the login, the welcome email is the only thing he sends. The form is the first thing they see in their area, before the rest.
+- **Mock-up:** `coaching/athlete-area/mockup/rider-form-template.html` (the built `rider-form-mockup.html` adds the logo and background). 7 steps: About you (+ emergency contact, new for adults), Your numbers, Your week (fills "My availability"), Goals and you as a rider, Health (private), Agreements, Sign (typed name + finger signature, date added). Under-18 date of birth shows the parent/guardian part. Saved as they go.
+- **From Matteo's Word form (questions and legal wording only; the sample he sent was a real athlete's filled-in copy and was not stored).** Changes to flag for Matteo/his solicitor before go-live:
+  - spelling fixed: "pubic highway", "nay medical", "tables to aid immune function", "complains", "lack of hydrations", "should be on an ongoing process", "At no stage I will";
+  - waiver clause 16 (photos for social media) moved out of the waiver into a separate optional tick (GDPR: consent must be optional and separate);
+  - the form copies the Terms, but the website Terms are slightly different; the online form links to the live Terms page instead (one current version);
+  - the waiver says "training / cycling holiday" and "the Organiser": coaching is Cigala Cycling Ltd, Tours is Cigala Cycling Tours Ltd; the coaching form should name Cigala Cycling Ltd;
+  - Appendix A1 cites the UK "Data Protection Act 1998"; in Ireland it's GDPR and the Data Protection Act 2018 (point to the Privacy Policy);
+  - emergency contact was only in the under-18 part although waiver clause 11 says it was given: now asked of everyone.
+- **To build:** answers stored privately on the athlete page, signed PDF to cc-private and emailed to athlete and Matteo, coach page shows who has completed it, PC tools read goals over the same API, optional reminder email after a few days.
+
