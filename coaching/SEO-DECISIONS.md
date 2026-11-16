@@ -388,3 +388,4 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   simple parsers -> replaced with aria-label (page titles now read correctly). AI search: Person schema for Matteo on
   /about/ (facts from the page), coaching/llms.txt drafted (to upload to the site root at go-live). robots.txt on live
   allows all crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended): keep it that way.
+- 16 Nov: Eoin R.'s case study removed everywhere (Matteo: he wants it private): case studies page, case cards on all pages, Italian labels. Nothing about him left on staging (pages, posts, media checked).

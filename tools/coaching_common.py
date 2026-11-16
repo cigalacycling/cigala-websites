@@ -194,22 +194,9 @@ CASES = [
      'bests_title': 'Up across the board',
      'bests': ['3 minutes: 292 → 325 W', '10 minutes: 242 → 263 W', '20 minutes: 222 → 236 W', '60 minutes: 204 → 211 W', 'W′: 11.4 → 14.6 kJ (+28%)'],
      'source': 'Vekta data, last 3 months (late July – late October 2026) against the 3 months before'},
-    # Eoin, Vittorio and David: Matteo's case study posts (Canva, 15 Nov 2026), numbers from their Vekta data.
+    # Vittorio and David: Matteo's case study posts (Eoin removed 16 Nov: he wants it private) (Canva, 15 Nov 2026), numbers from their Vekta data.
     # The post tracker says each needs the athlete's OK: staging only until they agree.
-    {'slug': 'eoin', 'name': 'Eoin R.', 'where': 'IVCA racer · Ireland', 'photo': None,
-     'headline': 'All-time bests and category wins', 'stat': '+104 W sprint', 'stat_label': 'Best 15-second power', 'tag': 'Road racing',
-     'before': 'Eoin races the IVCA calendar in Ireland.',
-     'goal': 'Get stronger in the efforts that decide a race.',
-     'how': [],
-     'result': 'Between May and November he set all-time bests from 15 seconds to 5 minutes and won his category more than once. In one race, after about 100 km, he still sprinted 1,271 W in the final 10 minutes.',
-     'quote': None,
-     'labels': ('Same months 2025', 'This season'),
-     'bars': [('Best 15-second power', 'A faster finish', 1041, 1145, ' W', '+104 W'),
-              ('Best 1-minute power', 'For closing a gap or a short climb', 643, 697, ' W', '+54 W'),
-              ('Best 5-minute power', 'The breakaway: an all-time best, set in October', 383, 414, ' W', '+31 W')],
-     'bests_title': 'The engine',
-     'bests': ['Peak Critical Power: 313 → 332 W (+19 W), his highest on record', 'VO2max 59, the highest Vekta has on record for him', '1,271 W sprint after about 100 km of racing'],
-     'source': 'Vekta data, May–Nov 2025 vs May–Nov 2026'},
+
     {'slug': 'vittorio', 'name': 'Vittorio C.', 'where': 'MTB & cyclocross racer · Italy', 'photo': None, 'photo_file': 'coaching/athletes/vittorio.webp',
      'photo_alt': 'Vittorio C. racing mountain bike in an orange helmet',
      'headline': 'Faster out of every corner', 'stat': '1,112 W record', 'tag': 'MTB & cyclocross',
@@ -289,7 +276,6 @@ CASES_IT = {
     'marine-lenehan': ('Strada · Gran Fondo e gravel', 'WorldTour Pro', 'Professionista dal 1° gennaio 2026', 'Dalla prima uscita al WorldTour', 'Irlanda'),
     'tilen': ('Corse su strada', '1.063 W sprint', 'Miglior potenza su 15 secondi', 'Da non saper scattare in piedi a 1.063 W', 'Corridore su strada · Slovenia'),
     'marco': ('Strada e gravel', '+124 W sprint', '', 'Ogni numero è salito', 'Corridore strada e gravel · Portogallo'),
-    'eoin': ('Corse su strada', '+104 W sprint', 'Miglior potenza su 15 secondi', 'Record personali e vittorie di categoria', 'Corridore IVCA · Irlanda'),
     'vittorio': ('MTB e ciclocross', 'Record 1.112 W', '', 'Più veloce in uscita da ogni curva', 'Corridore MTB e ciclocross · Italia'),
     'david': ('Granfondo', '+44 W CP', '', '+44 watt di motore', 'Granfondista · Irlanda'),
     'shane-courtney': ('Corse su strada', 'FTP 220 → 260 W', '', '+40 W di FTP in meno di 4 mesi', 'Tralee Manor West ibike · Irlanda'),
