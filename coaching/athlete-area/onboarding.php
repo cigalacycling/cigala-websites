@@ -452,7 +452,19 @@ add_filter('cc_ath_board', function ($html, $board) {
         $o .= '<a class="rf-row rf-' . $st . '" href="' . esc_url(add_query_arg('a', $p->ID, $base)) . '"><b>' . esc_html($p->post_title) . '</b><span>' . $label[$st] . esc_html($when)
             . (cc_f_kind($uid) === 'update' ? ' · paper form on file' : '') . (!empty($m['u18']) && empty($m['coach']) ? ' · <em>under 18: countersign</em>' : '') . '</span></a>';
     }
-    return $o . '</div></section>';
+    $o .= '</div>';
+    // former athletes (login deleted when coaching ended): their signed form and answers stay here, read only
+    $former = [];
+    foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC']) as $p)
+        if (!get_post_meta($p->ID, 'cc_user', true) && !get_post_meta($p->ID, 'cc_shared', true) && (get_post_meta($p->ID, 'cc_form_signed', true) || get_post_meta($p->ID, 'cc_profile', true) || get_post_meta($p->ID, 'cc_profile_prefill', true))) $former[] = $p;
+    if ($former) {
+        $o .= '<h3 class="av-sub" style="margin-top:24px">Former athletes</h3><p class="av-lede">Login removed when coaching ended. Their signed form and answers are kept here (read only).</p><div class="rf-list">';
+        foreach ($former as $p) { $m = json_decode((string) get_post_meta($p->ID, 'cc_form_signed', true), true) ?: [];
+            $o .= '<a class="rf-row rf-former" href="' . esc_url(add_query_arg('a', $p->ID, $base)) . '"><b>' . esc_html(preg_replace('/^Former athlete: /', '', $p->post_title)) . '</b><span>'
+                . ($m ? 'Signed ' . esc_html(date_i18n('j M Y', $m['at'])) : 'Paper form on file') . '</span></a>'; }
+        $o .= '</div>';
+    }
+    return $o . '</section>';
 }, 10, 2);
 function cc_f_btn($pid, $act, $text, $ghost = true) {
     return '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="rf-act"><input type="hidden" name="action" value="cc_form_admin"><input type="hidden" name="page" value="' . $pid . '">'
@@ -463,6 +475,12 @@ function cc_f_one($pid, $base) {
     $m = json_decode((string) get_post_meta($pid, 'cc_form_signed', true), true) ?: [];
     $a = json_decode((string) get_post_meta($pid, 'cc_profile', true), true) ?: []; $pre = json_decode((string) get_post_meta($pid, 'cc_profile_prefill', true), true) ?: [];
     $o = '<p><a href="' . esc_url($base) . '">← All rider forms</a></p><section class="ath-s"><h2>' . cc_ath_icon('doc', 'ath-hic') . esc_html(get_post_field('post_title', $pid)) . '</h2><div class="rf-acts">';
+    if (!$uid) {   // former athlete: no login any more, nothing to unlock or ask; just the record
+        if (!empty($m['pdf_id'])) $o .= '<a class="btn btn-go" href="' . esc_url(wp_get_attachment_url($m['pdf_id'])) . '" target="_blank" rel="noopener">Signed PDF</a>';
+        $o .= '</div><p class="av-lede">Former athlete: login removed. ' . ($m ? 'Signed ' . esc_html(date_i18n('j M Y, H:i', $m['at'])) . ($m['name'] ? ' by ' . esc_html($m['name']) : '') . '.' : '') . '</p>';
+        $show = $a ?: $pre;
+        return $o . ($show ? cc_f_answers_html($show, $a ? ($m['kind'] ?? 'full') : 'full') : '<p>No answers on file.</p>') . '</section>';
+    }
     if (!empty($m['pdf_id'])) $o .= '<a class="btn btn-go" href="' . esc_url(wp_get_attachment_url($m['pdf_id'])) . '" target="_blank" rel="noopener">Signed PDF</a>';
     if (!empty($m['u18']) && empty($m['coach'])) $o .= cc_f_btn($pid, 'countersign', 'Countersign as coach (under 18)', false);
     $o .= $st === 'unlocked' ? cc_f_btn($pid, 'lock', 'Lock the hub again') : (!cc_f_open($uid) ? cc_f_btn($pid, 'unlock', 'Unlock hub') : '');
@@ -709,7 +727,7 @@ html .cc .rf-err { margin: 0 0 12px; }
 /* coach page */
 html .cc .rf-list { display: grid; gap: 6px; } html .cc .rf-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 14px; padding: 11px 14px; border-radius: 10px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.08); color: #fff; text-decoration: none; }
 html .cc .rf-row span { color: var(--text-3); font-size: 13.5px; } html .cc .rf-row.rf-signed span, html .cc .rf-row.rf-updated span { color: #34c46a; } html .cc .rf-row.rf-waiting { border-color: rgba(225,6,0,.4); }
-html .cc .rf-row em { color: #ff3d33; font-style: normal; } html .cc .rf-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; } html .cc .rf-act { margin: 0; }
+html .cc .rf-row.rf-former { opacity: .75; } html .cc .rf-row em { color: #ff3d33; font-style: normal; } html .cc .rf-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; } html .cc .rf-act { margin: 0; }
 html .cc .rf-qa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 4px 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 14px; }
 html .cc .rf-qa span { color: var(--text-3); } html .cc .rf-qa b { color: #fff; font-weight: 500; }
 @media (max-width: 640px) { html .cc .rf-grid { grid-template-columns: 1fr; } html .cc .rf-qa { grid-template-columns: 1fr; } html .cc .rf-steps { top: 60px; }

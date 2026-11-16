@@ -614,6 +614,8 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Compulsory: every agreement and every medical question, plus the details for any yes. The browser checks each step on "Next" (missing answers in red); the server checks again on submit, and hidden questions never count.
   - The coach preview says clearly that it saves and sends nothing.
 - **Italian legal texts:** `form-legal-it.php`, from Matteo's "Scheda informativa ciclista (Italiano corretto)". The Terms add, in Claude's Italian, the parts only on the website's English Terms (sign-off fee wording, the Coaching & Training Plan Liability Waiver & Informed Consent, "Cigala Cycling Limited"); **Matteo to check that translation.** Italian athletes read and sign in Italian, and their PDF keeps the Italian texts (`cc_f_legal`, the language stored in `cc_form_signed`).
+- **Former athletes (16 Nov):** Rider forms lists them at the bottom: login removed, signed PDF and answers read only. How long to keep health answers after someone leaves is for the privacy policy; a delete button can be added when Matteo decides.
+- **One place for events:** athletes use "My goals & events" only. Matteo's periodization session reads `GET /cc/v1/goals` and links athletes to `/athletes/#goals` instead of its own add-event form (see `coaching/athlete-area/PC-TOOLS-HANDOVER.md`). Possible extra: Matteo edits an athlete's goals and events from his coach view.
 - **To do before live:**
   - Marine's test with Matteo (needs his OK to send her the welcome email);
   - import the 32 paper forms (`cc_profile_prefill` + paper);

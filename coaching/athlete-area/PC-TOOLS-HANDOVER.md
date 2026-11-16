@@ -45,6 +45,12 @@ The Coaching website (`coaching.cigalacycling.com`, athlete area `/athletes/`) h
 - The website writes them into Vekta.
 - So the PC tools should read them from the website API above, not from Vekta events.
 
+## Periodization plan: one place for events (Matteo 16 Nov)
+- Athletes add and change their goals and events only in their athlete hub: "My goals & events" at https://coaching.cigalacycling.com/athletes/#goals. Matteo gets an email on every change.
+- The periodization plan must not have its own "add event" form for athletes. It reads the events from `GET /wp-json/cc/v1/goals?email=` (name, date, type, priority A/B/C, distance, climbing, note) and builds the plan around them.
+- Where the plan now says something like "some events are missing, please add them here", replace it with a link: "Missing an event? Add it in your athlete hub" → https://coaching.cigalacycling.com/athletes/#goals.
+- If the plan shows "From the form" text (`goals.from_form`), those are races an athlete typed on an old paper form. Matteo turns them into proper events.
+
 ## Vekta calendar (Matteo 16 Nov: use his existing Claude–Vekta connection)
 - **The website does not hold a Vekta key and does not write to Vekta.** Matteo's existing Claude–Vekta connection does the writing.
 - **Each run:**
