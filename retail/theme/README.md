@@ -223,3 +223,9 @@ Added to the brand theme 193220739396 and to the new sale copy "Black Friday + C
     - Zone3 Womens Aspire Wetsuit New 2026 (model year)
     - FFWD RYOT55 "2006-2026" anniversary text
     - a draft Algarve February 2026 holiday deposit (not live)
+- **BreadcrumbList (16 Nov; Matteo's "go ahead on all sites", relayed by the Tours session):** the live shop had none.
+  - Added to `snippets/cigala-schema.liquid` in the brand theme 193220739396 only:
+    - Home > Collection > Product on product pages. The collection is the one in the URL, or else the product's first normal collection (bfcm, frontpage, all and daily-deals are skipped).
+    - Home > Collection on collection pages, Home > Page on pages, Home > Blog > Article on articles.
+  - Checked on the preview: exactly one per page, none on home.
+  - **Not yet on the live sale theme v3:** that needs a v4 copy and a publish by Matteo, or it goes live with the brand theme on 1 Dec.
