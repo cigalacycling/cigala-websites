@@ -10387,5 +10387,47 @@
    634
   ],
   "orig": 3164
+ },
+ "src-11033-600": {
+  "id": 11035,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-cigala-tours-strade-bianche-white-road-vineyards-600.webp",
+  "alt": "Cyclists climbing a white gravel road between Chianti vineyards on the Strade Bianche tour",
+  "from": [
+   1500,
+   2000
+  ],
+  "size": [
+   600,
+   800
+  ],
+  "orig": 11033
+ },
+ "src-11034-1400": {
+  "id": 11036,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-cigala-tours-chianti-vineyard-road-descent-1400.webp",
+  "alt": "A group of cyclists descending a winding road through the Chianti vineyards",
+  "from": [
+   1502,
+   2000
+  ],
+  "size": [
+   1400,
+   1864
+  ],
+  "orig": 11034
+ },
+ "src-1408-900": {
+  "id": 11039,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-67-900.webp",
+  "alt": "Basilica of San Domenico, Siena - Cigala Cycling Tours",
+  "from": [
+   1600,
+   959
+  ],
+  "size": [
+   900,
+   539
+  ],
+  "orig": 1408
  }
 }

@@ -1,5 +1,23 @@
 [
  {
+  "id": 11034,
+  "alt_text": "A group of cyclists descending a winding road through the Chianti vineyards",
+  "mime_type": "image/webp",
+  "source_url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-chianti-vineyard-road-descent.webp",
+  "width": 1502,
+  "height": 2000,
+  "thumb": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-chianti-vineyard-road-descent-225x300.webp"
+ },
+ {
+  "id": 11033,
+  "alt_text": "Cyclists climbing a white gravel road between Chianti vineyards on the Strade Bianche tour",
+  "mime_type": "image/webp",
+  "source_url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-strade-bianche-white-road-vineyards.webp",
+  "width": 1500,
+  "height": 2000,
+  "thumb": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-strade-bianche-white-road-vineyards-225x300.webp"
+ },
+ {
   "id": 10952,
   "alt_text": "Soleil Hotel Dolomites lobby and lounge, La Villa",
   "mime_type": "image/jpeg",
