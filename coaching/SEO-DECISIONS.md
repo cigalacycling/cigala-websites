@@ -465,3 +465,18 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   - /athletes/ is private and noindex.
   - /dummy-page/ and /group-club-packages2/ are redirected at go-live.
   - The Vekta lock-up logo has alt="" because its link already carries the label.
+
+## 16 Nov: share photos and the last SEO texts (Matteo: "if you find … no image, the wrong image, just a logo, or SEO improvements, I would like that we change")
+- **Share photos (Yoast opengraph/twitter image, tools/coaching_share_images.py):** every page now has its own photo. Before: Home/UK/USA/Canada/Italia used the logo, the 9 tool pages and case studies all used one photo, terms/privacy had none, and individual/tri packages used a screenshot or another post's photo.
+  - Home, UK, USA, Canada, Italia, packages, tri: their hero photo.
+  - Group & Club: a group-session photo.
+  - Case studies: Matteo with the European champion medal.
+  - Each tool: a fitting photo (Vekta app, smart trainer, energy bar, long road, climb, Stelvio, mountain road, open-water swim).
+  - Terms and privacy: a team training photo.
+  - Old values: stg-coaching/backup/share-images-before.json.
+- **Texts (were the same on live):**
+  - "Tips for not getting dropped" title (73 characters) → "Tips for Not Getting Dropped | Cigala Cycling Coaching".
+  - "How to improve on Descents": the 526-character description (the first paragraph) → a 150-character summary.
+  - /book-1-on-1-session/ had no description; now one from the page's own facts (Wicklow Town, packs of 3/6/10/20, from €70 per session).
+- **The Granfondo post's featured image** was the homepage hero; it's now the Tour of Ulster podium photo.
+- **Other sites:** the same brief was passed to the Tours, main site and Retail sessions on 16 Nov.
