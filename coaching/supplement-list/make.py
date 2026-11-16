@@ -72,7 +72,7 @@ pages.append(f'''<section class="page cover">
   </div>
   <div class="photo" style="height:92mm"><img src="{A}matteo-cigala-gravel-worlds-silver.jpg" alt="Matteo Cigala, silver at the World Championship Gravel 19-34" style="object-position:0% 26%"></div>
   <div class="by">
-    <div><div class="who">Marine Lenehan</div><div class="role">Sports Nutritionist · Vivify Sports</div></div>
+    <div class="avrow"><img class="av viv" src="{A}avatar-marine-lenehan.jpg" alt="Marine Lenehan"><div><div class="who">Marine Lenehan</div><div class="role">Sports Nutritionist · Vivify Sports</div></div></div>
   </div>
 </section>''')
 
@@ -208,7 +208,8 @@ pages.append(f'''<section class="page">
   <div class="anton" style="font-size:19px;margin:14px 0 10px">A balanced diet is the key to a healthy and performing body.</div>
   <p>If you would like more tailored advice on food supplements, VIVIFY SPORTS can provide you with a complete nutritional assessment. Supplements are here to support your training. If taken wrong they can actually be detrimental and decrease performance.</p>
   <div class="consult" style="margin-top:16px">
-    <div class="l" style="display:flex;gap:16px;align-items:center">
+    <div class="l" style="display:flex;gap:18px;align-items:center">
+      <img class="av viv" style="width:96px;height:96px" src="{A}avatar-marine-lenehan.jpg" alt="Marine Lenehan">
       <div><div class="k">Book a discovery call with Marine</div>
       <div class="person" style="margin:0"><div class="nm">Marine Lenehan</div><div class="rl">Sports Nutritionist &amp; World Tour Cyclist</div></div>
       <a class="btn" style="margin-top:8px" href="https://www.vivifysports.com/nutritionalcoaching">Book a discovery call</a></div>
