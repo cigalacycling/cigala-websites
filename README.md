@@ -395,6 +395,11 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Never shown to athletes:** the Weekly Athlete Plan (Matteo: "for sure"), Early Warning flags, fatigue or risk alerts, missed-session or compliance counts, comment drafts, Command Centre, comparisons with other athletes.
 - **Every delivered report arrives as a draft only Matteo sees.** He previews and publishes it (he can edit or skip it). Nothing reaches an athlete automatically.
 - **Report wording:** lead with positives and numbers, no "you missed" or "you're behind".
+- **Notifications (Matteo 16 Nov, "perfect"):**
+  - On Publish, a branded email "your new report is ready" goes out with a button to /athletes/. Matteo can untick it per report; nothing is emailed without his Publish.
+  - In the hub: a "New" badge on the card and "You have N new reports" at the top, both cleared once opened.
+  - Optional: a note in the athlete's Vekta calendar (the report session already does this); the hub as a home-screen app.
+- **New tools:** any future tool from the Vekta sessions can deliver to the athlete area with a label and icon (generic upload with a `type`), under the same draft, motivating-only and notify rules.
 - **Build:**
   - Website: a secure upload endpoint (application password on Matteo's PC only), draft/publish, report cards with a "new" badge, HTML reports served sandboxed.
   - PC side: one helper script the tools call at the end.
