@@ -36,6 +36,15 @@ TEAM = {'JP': ('Guide', 2658, 'Giampietro, JP to everyone, is retired and lives 
 GUIDES_SET = {'lake-garda-and-stelvio': ['Piero', 'Amedeo', 'JP'], 'lake-garda-gravel': ['Piero', 'Amedeo', 'JP']}   # the whole guide line-up for a tour (Matteo 16 Nov)
 GALLERY_PHOTOS = {'lake-garda-and-stelvio': [2211, 2212, 2209, 434, 780, 650, 898, 2235, 2233]}   # Garda & Stelvio: the live gallery photos are 450-800px wide (soft); sharper Garda photos (Matteo 16 Nov)
 GUIDES_ADD = {'maratona-dles-dolomites': ['JP', 'Bone'], 'dolomites': ['Bone'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio', 'Marco']}   # Coast to Coast: Marco = the younger support & mechanic, not Marco "DS" (Matteo 16 Nov)
+# the event each event tour is built around (Matteo 16 Nov): no event logo and no "official" (we are not their tour operator);
+# what is true for each: Strade Bianche and Lombardia entries bought with us, guaranteed, grid of your choice; Algarve and Flanders: riders enter with the organiser, we support
+GUAR = 'Your entry is guaranteed when you book this tour: buy it with us and choose your start grid, VIP grids included. On the day, our guides and support vehicle ride the event with you, as on every Cigala day.'
+SUPP = 'You enter directly with the organisers; we look after everything else. On the day, our guides and support vehicle are with you on the course, as on every Cigala day.'
+EVENT_BOX = {'chianti-gran-fondo-strade-bianche': ('Gran Fondo Strade Bianche', 'Entry guaranteed', GUAR),
+             'lake-como-gran-fondo-il-lombardia': ('Gran Fondo Il Lombardia', 'Entry guaranteed', GUAR),
+             'discover-the-algarve-granfondo': ('Gran Fondo Algarve', 'Full event-day support', SUPP),
+             'tour-of-flanders-experience': ('We Ride Flanders', 'Full event-day support', SUPP)}
+TOLFE = (10959, 10960, 10961)   # Strade Bianche pro race day, VIP terrace (Matteo 16 Nov; photos and details from italybiketours.com, his partner)
 OP_LOGO = {'maratona-dles-dolomites': 'logo-mdd'}
 # who may book through us (Matteo 16 Nov: our target markets as listed for Cigala on the official Maratona tour-operator page)
 OP_NOTE = {'maratona-dles-dolomites': 'As an Official Tour Operator, we offer this tour to riders resident in our official target markets: '
@@ -92,7 +101,7 @@ EVENT_DAY = {   # itinerary day -> (title, official courses); 2026 editions, che
  'tour-of-flanders-experience': {3: ('WE RIDE FLANDERS SPORTIVE', [('Short', '79 km'), ('Medium', '133 km'), ('Long', '163 km'), ('Full Ronde', '247 km from Antwerp')])},
 }
 HOTEL_TEXT = {'Hotel Soleil': '<p>Located in the heart of La Villa, at the foot of the famous Gran Risa, Soleil Alpine Lifestyle Hotel blends contemporary Alpine design with the character of South Tyrol. Modern rooms, excellent dining, an indoor pool, sauna and steam bath, and dedicated cycling services make it an ideal base for the Sellaronda and the Maratona climbs.</p>'}   # shorter, in line with Rezia (Matteo 16 Nov)
-HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629, 8631]), ('Hotel Soleil', 4, False, 8709, [8707, 8708])]}
+HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629, 8631]), ('Hotel Soleil', 4, False, 8709, [8707, 8708, 10952])]}
 DYN = set(IDS)   # the dynamic trip page on every tour (Matteo 16 Nov, after the Algarve pilot): count-up numbers, animated map badge, route drawn day by day, days sliding in
 HOTEL_PIC_ORDER_IDS = {'discover-the-algarve-granfondo': [2572, 2563, 2565, 2564, 2566, 2561, 2567, 2562, 2573]}   # Vilar do Golf: the resort and pool first, not the gym
 TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, cover photo (our own: no YouTube request until the visitor taps play) - Matteo 16 Nov
@@ -321,7 +330,7 @@ def trip(slug):
     import datetime as _dt
     _nn = (_dt.date.fromisoformat(tr['end']) - _dt.date.fromisoformat(tr['start'])).days   # days and nights from the 2027 dates (Matteo 16 Nov: not said anywhere at the top)
     dn_html = (f'<div class="dn"><span>{ICON["cal"]}{_nn + 1} days</span><span>{ICON["moon"]}{_nn} nights</span>'
-               f'<span>{ICON["route"]}{E(tr["distance"])}</span><span>{ICON["climb"]}{E(tr["climbing"])}</span></div>')   # + distance and climbing (Matteo 16 Nov)
+               f'<span>{ICON["route"]}{E(tr["distance"])}</span><span>{ICON["climb"]}{E(tr["climbing"])}</span></div>')   # two rows: days and nights, then distance and climbing (Matteo 16 Nov)   # + distance and climbing (Matteo 16 Nov)
     hero = f'''<div class="hero thero{" tall" if slug in HERO_TALL else ""}">
   {hero_img}
   <div class="in">
@@ -395,6 +404,13 @@ def trip(slug):
         else: logo_html = ''
         note = f'<p class="opnote">{OP_NOTE[slug]}</p>' if slug in OP_NOTE else ''
         out.append(f'<section style="padding-top:28px"><div class="in"><div class="panel opbox"><div class="optext">{H(op, "Official partner")}{note}</div>{logo_html}</div></div></section>')
+    if slug in EVENT_BOX and not op:
+        ev_name, ev_chip, ev_txt = EVENT_BOX[slug]
+        ev_opts = next(iter(EVENT_DAY.get(slug, {}).values()), (None, []))[1]
+        ev_pills = ''.join(f'<span class="evo"><b>{E(a)}</b> {E(b)}</span>' for a, b in sorted(ev_opts, key=lambda o: int(re.search(r'(\d+)', o[1]).group(1))))
+        out.append(f'<section style="padding-top:28px"><div class="in"><div class="panel opbox evbox"><div class="optext"><div class="head"><div><div class="eyebrow">The event</div>'
+                   f'<p class="band-title">{E(ev_name)}</p><div class="bar"></div></div></div><span class="evchip">{ICON["flag"]}{E(ev_chip)}</span>'
+                   f'<p class="opnote">{E(ev_txt)}</p>{f"<div class=evopts><span>The courses:</span> {ev_pills}</div>" if ev_pills else ""}</div></div></div></section>')
     route = one('route')
     # our own route map (tools/tours_route_maps.py, Cigala style) for every trip; the live map image only as a fallback
     mp = ROOT + f'tourspages/maps/day-{slug}.svg'   # day-by-day routes on real roads (tools/tours_day_routes.py, Matteo 16 Nov)
@@ -546,6 +562,12 @@ def trip(slug):
             tiles = ''.join(f'<div class="ptile"><span>{E(m.group(1))}</span><b>{E(m.group(3))}</b><small>Places {E(m.group(2))}</small></div>' for m in grid_ if m)
             nts = ''.join(f'<p class="tnote">{x}</p>' for x, m in zip(ls_, grid_) if not m)
             bands += f'<div class="panel tband"><p class="inh">{E(text_of(ent["h"]).rstrip("*"))}</p><div class="prow">{tiles}</div>{nts}</div>'
+            if slug == 'chianti-gran-fondo-strade-bianche':   # the VIP terrace on the pro race day, under the Gran Fondo prices (Matteo 16 Nov); no price: a supplement, ask us
+                bands += ('<div class="panel tband tolfe"><p class="inh">VIP day at the pro race: Terrazza Le Tolfe</p>'
+                          '<div class="tolfe-ph">' + ''.join(img_tag(i, 900) for i in TOLFE) + '</div>'
+                          '<p>The day before your Gran Fondo, watch the Strade Bianche pros from a private covered terrace on the Le Tolfe climb, the final gravel sector just after Colle Pinzuto, where the race breaks apart. '
+                          'You see the women\'s and men\'s races pass twice, with a Tuscan buffet lunch, an espresso bar, wine, beer and soft drinks all day, and the race live on big screens.</p>'
+                          f'<p class="tnote">Available to tour guests as a supplement. Ask us when you book. <a href="{L}/contact/" {EXT}>Get in touch</a></p></div>')
         out.append(f'<section id="included"><div class="in">{H(inc, "The details")}<div class="inc2"><div class="panel yes"><p class="inh">Included in the price</p><ul>{inc_li}</ul></div>{no_html}</div>'
                    f'{bands}</div></section>')
         nav.append(('included', "What's included"))
@@ -716,7 +738,10 @@ addEventListener('load',c);addEventListener('resize',c);c();})();</script>""")
     # laptops: the section menu stays under the header for the whole page (sticky alone let go at the end of its block); phones: not sticky (Matteo 16 Nov)
     out.append("""<script>(function(){var t=document.querySelector('.cl .tabs');if(!t)return;var ph=document.createElement('div');t.parentNode.insertBefore(ph,t);
 function f(){var pin=window.innerWidth>900&&ph.getBoundingClientRect().top<=79;if(pin!==t.classList.contains('pinned')){t.classList.toggle('pinned',pin);ph.style.height=pin?t.offsetHeight+'px':'';}}
-addEventListener('scroll',f,{passive:true});addEventListener('resize',f);f();})();</script>""")
+addEventListener('scroll',f,{passive:true});addEventListener('resize',f);f();
+var ls=[].slice.call(t.querySelectorAll('a[href^="#"]')),ss=ls.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+function spy(){var y=160,cur=-1;ss.forEach(function(s,i){if(s&&s.getBoundingClientRect().top<=y)cur=i;});ls.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+addEventListener('scroll',spy,{passive:true});spy();})();</script>""")
     # structured data (SEO, Matteo: only improve): TouristTrip with the route places and the euro price, linked to the site's Organization
     num = re.sub(r'[^\d.]', '', pr.replace(',', ''))
     places = [n for n, la, lo, k, ps in _trm.ROUTES.get(slug, {}).get('pts', [])]
@@ -768,6 +793,14 @@ html .cl .opbox { display: flex; align-items: center; justify-content: space-bet
 html .cl .opbox .head { margin: 0; }
 html .cl .opbox .optext { flex: 1 1 320px; min-width: 0; }
 html .cl .opbox .opnote { margin: 14px 0 0; max-width: 62ch; font-size: 15px; line-height: 1.55; }
+html .cl .evbox .evchip { display: inline-flex; align-items: center; gap: 7px; margin: 14px 0 0; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(43,212,122,.4); background: rgba(0,154,68,.12); color: var(--green-text, #2bd47a); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+html .cl .evbox .evchip svg { width: 16px; height: 16px; }
+html .cl .evbox .evopts { margin-top: 14px; }
+html .cl .tolfe .tolfe-ph { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin: 6px 0 16px; }
+html .cl .tolfe .tolfe-ph img { width: 100%; height: 220px; object-fit: cover; border-radius: 10px; display: block; }
+html .cl .tolfe p { color: var(--text-2); line-height: 1.65; max-width: 80ch; }
+html .cl .tolfe .tnote a { color: var(--green-text, #2bd47a); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 600px) { html .cl .tolfe .tolfe-ph { grid-template-columns: 1fr 1fr; } html .cl .tolfe .tolfe-ph img:first-child { grid-column: 1 / -1; } html .cl .tolfe .tolfe-ph img { height: 170px; } }
 html .cl .opbox .opnote a { color: var(--green-text, #2bd47a); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
 html .cl .hotel h3, html .cl .hotel h2 { font-size: 22px; }
@@ -846,7 +879,9 @@ html .cl .guides.g3 .guide .ph img { aspect-ratio: 4 / 3; min-height: 0; height:
 @media (max-width: 900px) { html .cl .guides.g3 { grid-template-columns: minmax(0, 1fr); } html .cl .guides.g3 .guide { grid-template-columns: 140px minmax(0, 1fr); } html .cl .guides.g3 .guide .ph img { aspect-ratio: auto; height: 100%; } }
 html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
-html .cl .tabs.pinned { position: fixed !important; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + 79px); }
+html .cl .tabs.pinned { position: fixed !important; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + 79px); background: #08090a !important; }
+body:has(.cl .tabs.pinned) header.nav { background: #08090a !important; border-bottom-color: transparent !important; }   /* header and menu read as one solid bar: no line or see-through strip between them (Matteo 16 Nov) */
+html .cl .tabs a.on { color: var(--red, #e10600) !important; box-shadow: inset 0 -2px 0 var(--red, #e10600) !important; }   /* the section you are in, in red (Matteo 16 Nov) */
 @media (max-width: 900px) { html .cl .tabs { position: relative !important; top: auto !important; } }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
@@ -969,7 +1004,7 @@ html .cl .prow .ptile:nth-child(3):hover { border-color: #cd7f32; background: rg
 html .cl .prow .ptile:nth-child(4):hover { border-color: #2bd47a; background: rgba(0,154,68,.13); } html .cl .prow .ptile:nth-child(4):hover b, html .cl .prow .ptile:nth-child(4):hover span { color: #2bd47a; }
 html .cl .thero .dn { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; font-size: 15px; font-weight: 600; color: var(--text, #f7f8f8); letter-spacing: .02em; }
 html .cl .thero .dn span { display: inline-flex; align-items: center; gap: 7px; }
-@media (max-width: 600px) { html .cl .thero .dn { display: grid; grid-template-columns: auto auto; justify-content: start; column-gap: 26px; } }   /* phones: two neat rows */
+html .cl .thero .dn { display: grid; grid-template-columns: auto auto; justify-content: start; column-gap: 26px; row-gap: 8px; }   /* phones: two neat rows */
 html .cl .thero .dn svg { width: 17px; height: 17px; color: var(--green-text, #2bd47a); }
 @media (max-width: 800px) { html .cl .inc2 { grid-template-columns: minmax(0, 1fr); } }
 html .cl .inc .sidet { font-family: var(--head); font-weight: 400; font-size: 20px; line-height: 1.1; text-transform: uppercase; letter-spacing: .01em; color: var(--text); margin: 0 0 14px; }

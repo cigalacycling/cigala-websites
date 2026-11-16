@@ -194,6 +194,12 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Emails go to **tours@cigalacycling.com** (Matteo 15 Nov; the per-site inboxes are in `shared/BUSINESS.md`). Subjects: "New message from the Tours website" (Contact) and "New custom tour enquiry from the Tours website" (Custom tours). Content: [all-fields].
   - Before-change backups: `stg-tours/backup/page-461-before-form.json`, `page-1576-before-form.json`.
   - When these pages get the new design, keep the same form widget.
+- **Round 4, 16 Nov (Matteo):**
+  - Section menu: while pinned, header and menu are one solid bar (no line, no see-through strip); the section you are in turns red (scroll spy).
+  - Hero: days and nights, then distance and climbing, on two rows. Homepage cards: no description on the busiest cards (event badge + availability). Distance and climbing chip on homepage, destination and list cards.
+  - Hotel Soleil: 3rd photo, the lobby and lounge, from the hotel's own site (ciasasoleil.it, media 10952).
+  - Event box on Strade Bianche, Lake Como, Algarve, Flanders (`EVENT_BOX`): no logo and no "official". Strade Bianche and Lombardia: entry guaranteed, bought with us, start grid of your choice including VIP grids. Algarve and Flanders: riders enter with the organiser, we give full support on the day.
+  - Strade Bianche: "VIP day at the pro race: Terrazza Le Tolfe" under the Gran Fondo prices, with 3 photos from italybiketours.com (Matteo's partner page), offered as a supplement with no price shown (Matteo sells it below the partner's €225).
 - **Tour pages round 3, 16 Nov (Matteo):**
   - Maps: every French Alps climb named (Lacets de Montvernier, Madeleine, Glandon, Croix de Fer, Télégraphe, Galibier, Alpe d'Huez, Izoard, Vars, Bonette); Alpe d'Huez and the Bonette drawn one way. Dolomites: Tre Cime di Lavaredo and Campolongo. Maratona: Gardena and Valparola. Climb names can now sit above or below, and beside a day badge (`free()` in tours_day_routes.py).
   - Lake Como day 5 = the 2026 Gran Fondo course from the organiser: Bergamo, Torre de' Busi, Valico di Valcava, Costa Valle Imagna, Bedulita, Sedrina, Zogno, Miragolo San Salvatore, Salmezza, Selvino, Nembro, finish up to Bergamo Alta. No Colle Gallo. Approximate until the GPX.

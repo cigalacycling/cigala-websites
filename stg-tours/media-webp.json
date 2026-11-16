@@ -10224,5 +10224,61 @@
    1125
   ],
   "orig": 3719
+ },
+ "src-10952-600": {
+  "id": 10958,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-soleil-hotel-la-villa-lobby-600.webp",
+  "alt": "Soleil Hotel Dolomites lobby and lounge, La Villa",
+  "from": [
+   1800,
+   1051
+  ],
+  "size": [
+   600,
+   350
+  ],
+  "orig": 10952
+ },
+ "src-10959-900": {
+  "id": 10962,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-terrazza-le-tolfe-terrace-900.webp",
+  "alt": "Guests watching the Strade Bianche from the Terrazza Le Tolfe VIP terrace",
+  "from": [
+   1500,
+   1000
+  ],
+  "size": [
+   900,
+   600
+  ],
+  "orig": 10959
+ },
+ "src-10960-900": {
+  "id": 10963,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-terrazza-le-tolfe-race-900.webp",
+  "alt": "A pro rider passing the Terrazza Le Tolfe crowd at the Strade Bianche",
+  "from": [
+   1500,
+   1000
+  ],
+  "size": [
+   900,
+   600
+  ],
+  "orig": 10960
+ },
+ "src-10961-900": {
+  "id": 10964,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-terrazza-le-tolfe-buffet-900.webp",
+  "alt": "Tuscan buffet at the Terrazza Le Tolfe hospitality, Strade Bianche",
+  "from": [
+   1500,
+   1000
+  ],
+  "size": [
+   900,
+   600
+  ],
+  "orig": 10961
  }
 }

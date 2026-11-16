@@ -150,7 +150,8 @@ for t in trips:
         f'<span class="tag{" gravel" if t["type"] == "gravel" else ""}">{TYPE[t["type"]]}</span>'
         f'<img class="flag" src="img/flag-{FLAG[t["country"]]}.webp" alt="Flag of {t["country"]}" width="40" height="30">'
         f'<div class="tx">{BADGE.get(t.get("badge"), "")}<span class="whenrow"><time class="when" datetime="{t["start"]}">{dates(t)}</time>{avail(t["slug"])}</span>'
-        f'<h3>{E(name)}</h3><p>{E(BLURB[t["slug"]])}</p>'
+        f'<h3>{E(name)}</h3>' + ('' if t.get('badge') and avail(t['slug']) else f'<p>{E(BLURB[t["slug"]])}</p>') +   # no description on the busiest cards (event badge + availability): Matteo 16 Nov
+        f''
         f'<span class="dist"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="6" r="2.2"/><path d="M7 18h8.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H17"/></svg>{t["distance"]}<span class="sep" aria-hidden="true"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20l6.5-10 4 6 3-4.5L22 20z"/></svg>{t["climbing"]}</span>'   # the same chip as the tour lists (Matteo 16 Nov)
         f'<span class="go">View tour →</span></div></a>')
 
