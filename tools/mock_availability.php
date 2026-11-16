@@ -14,14 +14,14 @@ function add_query_arg($k, $v, $u) { return $u . '?' . $k . '=' . $v; } function
 function is_user_logged_in() { return false; } function is_page() { return true; } function sanitize_key($s) { return $s; } function wp_trim_words($s, $n) { return $s; }
 function human_time_diff($t) { global $NOW; $m = round(($NOW - $t) / 60); return $m < 60 ? "$m mins" : ($m < 1440 ? round($m / 60) . ' hours' : (($d = round($m / 1440)) == 1 ? '1 day' : "$d days")); }
 function date_i18n($f, $t) { return date($f, $t); } function wp_get_attachment_url($id) { return '#voice-' . $id; }
-function get_user_meta() { global $NOW; return $NOW - 3 * 86400; } function update_user_meta() {}
+$LANG = ''; function get_user_meta($id = 0, $k = '') { global $NOW, $LANG; if ($k === 'cc_report_lang') return $LANG; if ($k === 'cc_lang') return ''; return $NOW - 3 * 86400; } function update_user_meta() {}
 function content_url($p) { return 'LOGO_URL'; } function is_email() { return true; } function get_userdata($id) { return (object) ['user_email' => 'athlete@example.com']; }
 $MAIL = null; function wp_mail($to, $sub, $body) { global $MAIL; $MAIL = ['to' => $to, 'subject' => $sub, 'html' => $body]; }
 // sample athletes (made up for the mock-up)
 $P = [101 => 'Anna Rossi', 102 => 'Ciarán Byrne', 103 => 'James Walsh', 104 => 'Sophie Martin'];
 $wk = function ($m, $t, $w, $th, $f, $sa, $su) { $o = []; foreach (['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as $i => $k) { $x = func_get_args()[$i]; $o[$k] = ['h' => $x[0], 'w' => $x[1]]; } return $o; };
 $META = [
- 101 => ['cc_avail_updated' => $NOW - 2 * 3600, 'cc_avail' => ['week' => $wk(['1', ['pm']], ['1.5', ['am']], ['0', []], ['1.5', ['am']], ['1', ['mid']], ['4', ['am']], ['3', ['am']]),
+ 101 => ['cc_user' => 5, 'cc_avail_updated' => $NOW - 2 * 3600, 'cc_avail' => ['week' => $wk(['1', ['pm']], ['1.5', ['am']], ['0', []], ['1.5', ['am']], ['1', ['mid']], ['4', ['am']], ['3', ['am']]),
          'changes' => [['from' => '2026-11-27', 'to' => '2026-11-29', 'type' => 'less', 'h' => '1', 'text' => 'Work trip to Milan, hotel gym only'], ['from' => '2026-11-24', 'to' => '2027-01-26', 'days' => ['tue'], 'type' => 'gym', 'h' => '1', 'text' => 'Strength block, 10 weeks'], ['from' => '2026-12-20', 'to' => '2026-12-28', 'type' => 'away', 'h' => '', 'text' => 'Christmas with family in Sicily']],
          'note' => 'Saturdays I ride with the club, so the long ride works best then.', 'voice' => [['id' => 9001, 'at' => $NOW - 7200, 'text' => 'Next weekend I am in Milan for work, only the hotel gym.']]],
          'cc_avail_vekta' => ['state' => 'ok']],
@@ -34,10 +34,17 @@ function get_post_meta($id, $k) { global $META; $v = $META[$id][$k] ?? ''; retur
 function update_post_meta() {} function get_the_title($id) { global $P; return $P[$id]; }
 function get_posts($q) { global $P, $META; $o = []; foreach ($P as $id => $t) { if (($q['meta_key'] ?? '') === 'cc_avail_updated' && empty($META[$id]['cc_avail_updated'])) continue; $o[] = ($q['fields'] ?? '') === 'ids' ? $id : (object) ['ID' => $id, 'post_title' => $t]; } return $o; }
 require __DIR__ . '/../coaching/athlete-area/athlete-area.php';
+require __DIR__ . '/../coaching/athlete-area/availability-i18n.php';
 require __DIR__ . '/../coaching/athlete-area/availability.php';
 $out = [];
 $out['card'] = run('cc_ath_after_reports', '', 101, false);
 $out['card_new'] = (function () { global $META; $keep = $META[101]; $META[101] = []; $h = run('cc_ath_after_reports', '', 101, false); $META[101] = $keep; return $h; })();
+// the same card in each report language: the mock-up swaps these in (heading, intro, words)
+$out['langs'] = [];
+foreach (array_keys(CC_REPORT_LANGS) as $l) { $LANG = $l; $h = run('cc_ath_after_reports', '', 101, false);
+    preg_match('#<h2>.*?</h2><p class="av-lede">.*?</p>#s', $h, $hd); preg_match('#<script type="application/json" id="av-data">(.*?)</script>#s', $h, $js);
+    $out['langs'][$l] = ['name' => CC_REPORT_LANGS[$l], 'head' => $hd[0], 'data' => $js[1]]; }
+$LANG = '';
 $out['links'] = run('cc_ath_coach_links', '');
 $out['board'] = run('cc_ath_board', '', 'availability');
 $old = cc_av_get(101); $new = $old; $new['week']['wed'] = ['h' => '1', 'w' => ['pm']];

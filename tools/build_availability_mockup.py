@@ -25,6 +25,12 @@ window.SpeechRecognition=FakeSR;window.webkitSpeechRecognition=FakeSR;
 try{var md=navigator.mediaDevices||{};md.getUserMedia=function(){var C=window.AudioContext||window.webkitAudioContext,c=new C(),o=c.createOscillator(),g=c.createGain(),d=c.createMediaStreamDestination();g.gain.value=0;o.connect(g);g.connect(d);o.start();return Promise.resolve(d.stream);};
  if(!navigator.mediaDevices)Object.defineProperty(navigator,'mediaDevices',{value:md});}catch(e){}
 })();</script>"""
+LANGS = json.dumps({k: {'head': v['head'], 'data': v['data']} for k, v in P['langs'].items()}, ensure_ascii=False).replace('</', '<\\/')
+SWAP = ('<script>(function(){var L=' + LANGS + ',l=(location.hash.match(/lang=(\\w+)/)||[])[1];if(!l||!L[l])return;'
+        'var s=document.getElementById("availability");s.querySelector("h2").remove();s.querySelector(".av-lede").outerHTML="";'
+        's.insertAdjacentHTML("afterbegin",L[l].head);document.getElementById("av-data").textContent=L[l].data;})();</script>')
+i = P['card'].index('<script>(function(){\nvar app=')
+card = P['card'][:i] + SWAP + P['card'][i:]
 page = f"""<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Athlete Availability Mock-up</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +47,8 @@ body {{ background: linear-gradient(rgba(8,9,10,.6),rgba(8,9,10,.6)), #08090a ur
 .mk-tabs button {{ flex: none; font: 600 13px var(--body); padding: 9px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: transparent; color: var(--text-2); cursor: pointer; }}
 .mk-tabs button[aria-selected=true] {{ background: var(--green); border-color: var(--green); color: #fff; }}
 .mk-p[hidden] {{ display: none; }}
+.mk-lang {{ max-width: 1080px; margin: 0 auto 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; font-size: 13px; color: var(--text-3); }}
+.mk-lang select {{ font: 16px var(--body); padding: 8px 10px; border-radius: 8px; background: #0b0d0f; color: #fff; border: 1px solid var(--border-strong); }}
 .mk-mail {{ max-width: 680px; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 1px solid var(--border-strong); background: #fff; }}
 .mk-mail header {{ padding: 14px 18px; background: #f2f4f3; color: #333; font-size: 13px; line-height: 1.5; border-bottom: 1px solid #ddd; }}
 .mk-mail header b {{ color: #111; }}
@@ -57,8 +65,9 @@ html .cc .ath-sec {{ padding-block: 28px 60px; }}
 {SIM}
 <main class="cc cc-page">
 <section class="ath-sec mk-p" id="p-ath"><div class="in"><div class="ath">
-<p class="mk-note">Inside the athlete’s area, right under “Your reports”. Filled in here as Anna would see it after her first save.</p>
-{P['card']}
+<p class="mk-note">Inside the athlete’s area, right under “Your reports”, in the athlete’s report language. Filled in here as Anna would see it after her first save.</p>
+<p class="mk-lang"><label for="mk-l">Athlete’s report language</label> <select id="mk-l">{''.join(f'<option value="{k}">{v["name"]}</option>' for k, v in P['langs'].items())}</select></p>
+{card}
 </div></div></section>
 <section class="ath-sec mk-p" id="p-coach" hidden><div class="in"><div class="ath" style="max-width:1080px">
 <div class="ath-coach"><p><b>Coach view.</b> You see what every athlete sees. Choose an athlete to see their own reports…</p>{P['links']}</div>
@@ -69,7 +78,9 @@ html .cc .ath-sec {{ padding-block: 28px 60px; }}
 <div class="mk-mail"><header><b>To:</b> {html.escape(email['to'])}<br><b>Subject:</b> {html.escape(email['subject'])}</header><div class="body">{email['html']}</div></div>
 </div></section>
 </main>
-<script>document.querySelectorAll('.mk-tabs button').forEach(function(b){{b.onclick=function(){{document.querySelectorAll('.mk-tabs button').forEach(function(x){{x.setAttribute('aria-selected',x===b);}});
+<script>var ml=document.getElementById('mk-l'),hl=(location.hash.match(/lang=([a-z]+)/)||[])[1];if(hl)ml.value=hl;
+ml.onchange=function(){{location.hash='lang='+ml.value;location.reload();}};
+document.querySelectorAll('.mk-tabs button').forEach(function(b){{b.onclick=function(){{document.querySelectorAll('.mk-tabs button').forEach(function(x){{x.setAttribute('aria-selected',x===b);}});
 document.querySelectorAll('.mk-p').forEach(function(p){{p.hidden=p.id!=='p-'+b.dataset.p;}});scrollTo(0,0);}};}});</script>
 </body></html>"""
 open(ROOT + 'coaching/athlete-area/mockup/availability-mockup.html', 'w').write(page)

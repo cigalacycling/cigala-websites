@@ -232,20 +232,26 @@ add_action('cc_av_vekta_sync', function ($pid) {
 });
 
 /* ---------- the athlete's card (inside their area, after "Your reports") ---------- */
-add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view) array_splice($nav, 1, 0, [['availability', 'My availability']]); return $nav; }, 10, 3);
+// the box speaks the athlete's report language (Matteo 16 Nov); Matteo's board and emails stay English
+function cc_av_lang($view) { $uid = (int) get_post_meta($view, 'cc_user', true); return ($uid && function_exists('cc_ath_report_lang')) ? cc_ath_report_lang($uid) : 'en'; }
+add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view) array_splice($nav, 1, 0, [['availability', cc_av_words(cc_av_lang($view))['title']]]); return $nav; }, 10, 3);
 add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     if (!$view) return $html;
     $a = cc_av_get($view);
     $data = $a ? ['week' => $a['week'], 'changes' => $a['changes'], 'note' => $a['note']] : null;
     $upd = (int) get_post_meta($view, 'cc_avail_updated', true);
     $ro = $coach && cc_ath_page_of(get_current_user_id()) !== $view;   // Matteo looking at an athlete: read only
-    return $html . '<section class="ath-s av" id="availability">'
-        . '<h2>' . cc_ath_icon('calendar', 'ath-hic') . 'My availability</h2>'
-        . '<p class="av-lede">Tell me when you can ride and I will build your training around your life. Change it whenever things change.</p>'
+    $lang = cc_av_lang($view); $W = cc_av_words($lang); $speech = CC_AV_SPEECH[$lang] ?? 'en-GB';
+    $hours = CC_AV_HOURS; $hours[''] = $W['not_set']; $hours['0'] = $W['rest'];
+    $types = []; foreach (CC_AV_TYPES as $k => $_) $types[$k] = $W[$k === 'more' ? 'more_t' : $k];
+    return $html . '<section class="ath-s av" id="availability" lang="' . esc_attr($speech) . '">'
+        . '<h2>' . cc_ath_icon('calendar', 'ath-hic') . esc_html($W['title']) . '</h2>'
+        . '<p class="av-lede">' . esc_html($W['lede']) . '</p>'
         . '<div id="av-app" data-ro="' . ($ro ? 1 : 0) . '" data-updated="' . $upd . '" data-today="' . esc_attr(current_time('Y-m-d')) . '"'
         . ' data-api="' . esc_url(rest_url('cc/v1/availability')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '">'
-        . '<noscript><p>Please turn on JavaScript to fill in your availability.</p></noscript></div>'
-        . '<script type="application/json" id="av-data">' . wp_json_encode(['data' => $data, 'days' => CC_AV_DAYS, 'hours' => CC_AV_HOURS, 'when' => CC_AV_WHEN, 'types' => CC_AV_TYPES]) . '</script>'
+        . '<noscript><p>' . esc_html($W['noscript']) . '</p></noscript></div>'
+        . '<script type="application/json" id="av-data">' . wp_json_encode(['data' => $data, 'days' => CC_AV_DAYS, 'hours' => $hours, 'types' => $types, 'speech' => $speech,
+              'when' => ['am' => $W['am'], 'mid' => $W['mid'], 'pm' => $W['pm']], 'w' => $W]) . '</script>'
         . '</section>' . cc_av_js();
 }, 10, 3);
 
@@ -303,35 +309,39 @@ function cc_av_js() {
 var app=document.getElementById('av-app');if(!app)return;var C=JSON.parse(document.getElementById('av-data').textContent);
 var ro=app.dataset.ro==='1',today=app.dataset.today,D=C.data||{week:{},changes:[],note:''},_n=D.changes.forEach(function(c){c.open=!c.to;c.days=c.days||[];}),el=function(t,a,h){var e=document.createElement(t);for(var k in a)if(a[k]!=null)e.setAttribute(k,a[k]);if(h!=null)e.innerHTML=h;return e;};
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
-var dirty=false,blob=null,saved=+app.dataset.updated;
+var dirty=false,blob=null,saved=+app.dataset.updated,W=C.w,L=C.speech,t_=function(k,o){var s=W[k];for(var x in o)s=s.split('{'+x+'}').join(o[x]);return s;};
+/* day names in the athlete's language, from the browser (1 Jan 2024 was a Monday) */
+var DN={},DS={};Object.keys(C.days).forEach(function(k,i){var d=new Date(2024,0,1+i);try{DN[k]=d.toLocaleDateString(L,{weekday:'long'});DS[k]=d.toLocaleDateString(L,{weekday:'short'});}catch(x){DN[k]=C.days[k];DS[k]=C.days[k].slice(0,3);}var own=W.dn&&!(window.Intl&&Intl.DateTimeFormat.supportedLocalesOf([L]).length);if(own){DN[k]=W.dn.split(',')[i];DS[k]=W.ds.split(',')[i];}
+ DN[k]=DN[k].charAt(0).toUpperCase()+DN[k].slice(1);DS[k]=(DS[k].charAt(0).toUpperCase()+DS[k].slice(1)).replace(/\.$/,'');});
 function opts(sel){var o='';for(var k in C.hours)o+='<option value="'+k+'"'+(k===sel?' selected':'')+'>'+esc(C.hours[k])+'</option>';return o;}
-function draw(){var h='<div class="av-week" role="group" aria-label="Your usual week">';
- for(var k in C.days){var d=D.week[k]||{h:'',w:[]};h+='<div class="av-day'+(d.h==='0'?' is-rest':'')+'" data-k="'+k+'"><label class="av-dn" for="av-h-'+k+'">'+C.days[k]+'</label>'
-  +'<select id="av-h-'+k+'" class="av-hsel"'+(ro?' disabled':'')+'>'+opts(d.h)+'</select><div class="av-when" role="group" aria-label="When on '+C.days[k]+'">';
-  for(var w in C.when)h+='<button type="button" class="av-w" data-w="'+w+'" aria-pressed="'+(d.w.indexOf(w)>-1)+'"'+(ro||d.h==='0'?' disabled':'')+'>'+C.when[w]+'</button>';h+='</div></div>';}
- h+='</div><p class="av-total" aria-live="polite"></p><h3 class="av-sub">Changes coming up</h3><div class="av-chs"></div>';
- if(!ro)h+='<button type="button" class="btn btn-ghost av-add">+ Add a change (holiday, busy week…)</button>';
- h+='<h3 class="av-sub">Anything else I should know?</h3><div class="av-notew"><textarea id="av-note" rows="4" placeholder="Anything at all: “from next week I can only do gym on Tuesdays, for 10 weeks”, work trips, family… or tap the microphone and just say it."'+(ro?' readonly':'')+'>'+esc(D.note||'')+'</textarea>';
- if(!ro)h+='<button type="button" class="av-mic" aria-label="Speak instead of typing" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>';
+function draw(){var h='<div class="av-week" role="group" aria-label="'+esc(W.week_aria)+'">';
+ for(var k in C.days){var d=D.week[k]||{h:'',w:[]};h+='<div class="av-day'+(d.h==='0'?' is-rest':'')+'" data-k="'+k+'"><label class="av-dn" for="av-h-'+k+'">'+esc(DN[k])+'</label>'
+  +'<select id="av-h-'+k+'" class="av-hsel"'+(ro?' disabled':'')+'>'+opts(d.h)+'</select><div class="av-when" role="group" aria-label="'+esc(DN[k])+'">';
+  for(var w in C.when)h+='<button type="button" class="av-w" data-w="'+w+'" aria-pressed="'+(d.w.indexOf(w)>-1)+'"'+(ro||d.h==='0'?' disabled':'')+'>'+esc(C.when[w])+'</button>';h+='</div></div>';}
+ h+='</div><p class="av-total" aria-live="polite"></p><h3 class="av-sub">'+esc(W.changes)+'</h3><div class="av-chs"></div>';
+ if(!ro)h+='<button type="button" class="btn btn-ghost av-add">'+esc(W.add)+'</button>';
+ h+='<h3 class="av-sub">'+esc(W.more)+'</h3><div class="av-notew"><textarea id="av-note" rows="4" placeholder="'+esc(W.note_ph)+'"'+(ro?' readonly':'')+'>'+esc(D.note||'')+'</textarea>';
+ if(!ro)h+='<button type="button" class="av-mic" aria-label="'+esc(W.mic)+'" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>';
  h+='</div><p class="av-rec" hidden></p>';
- if(!ro)h+='<div class="av-save"><button type="button" class="btn btn-go av-go" disabled>Save my availability</button><span class="av-msg" role="status"></span></div>';
- app.innerHTML=h;drawChanges();total();msg(saved?'Last saved '+new Date(saved*1000).toLocaleDateString(undefined,{day:'numeric',month:'short'}):'');}
+ if(!ro)h+='<div class="av-save"><button type="button" class="btn btn-go av-go" disabled>'+esc(W.save)+'</button><span class="av-msg" role="status"></span></div>';
+ app.innerHTML=h;drawChanges();total();msg(saved?t_('last',{d:new Date(saved*1000).toLocaleDateString(L,{day:'numeric',month:'short'})}):'');}
 function drawChanges(){var w=app.querySelector('.av-chs'),h='';
- if(!D.changes.length)h='<p class="av-none">Nothing planned. If you are away or busier than usual, add it here.</p>';
+ if(!D.changes.length)h='<p class="av-none">'+esc(W.none)+'</p>';
  D.changes.forEach(function(c,i){var t='';for(var k in C.types)t+='<option value="'+k+'"'+(k===c.type?' selected':'')+'>'+esc(C.types[k])+'</option>';
   h+='<div class="av-ch av-'+c.type+'" data-i="'+i+'">'
-   +'<div class="av-chr av-chw"><label>What<select class="av-ty"'+(ro?' disabled':'')+'>'+t+'</select></label>'
-   +'<label class="av-chh"'+(c.type==='away'?' hidden':'')+'>Time a day<select class="av-hh"'+(ro?' disabled':'')+'>'+opts(c.h)+'</select></label></div>'
-   +'<div class="av-chr"><label>From<input type="date" class="av-f" value="'+c.from+'" min="'+today+'"'+(ro?' readonly':'')+'></label>'
-   +'<label>To<input type="date" class="av-t" value="'+(c.to||'')+'" min="'+today+'"'+(c.open||ro?' disabled':'')+'></label></div>'
-   +'<label class="av-open"><input type="checkbox" class="av-o"'+(c.open?' checked':'')+(ro?' disabled':'')+'> No end date (from then onwards)</label>'
-   +'<div class="av-dsel" role="group" aria-label="Only on these days">'+Object.keys(C.days).map(function(k){return '<button type="button" class="av-w av-dw" data-d="'+k+'" aria-pressed="'+((c.days||[]).indexOf(k)>-1)+'"'+(ro?' disabled':'')+'>'+C.days[k].slice(0,3)+'</button>';}).join('')+'</div>'
-   +'<p class="av-hint">Only on some days? Tap them. None tapped means every day.</p>'
-   +'<input type="text" class="av-tx" maxlength="200" placeholder="Optional: e.g. hotel gym only, turbo at home, kids’ holidays" value="'+esc(c.text||'')+'"'+(ro?' readonly':'')+'>'
-   +(ro?'':'<button type="button" class="av-del" aria-label="Remove this change">Remove</button>')+'</div>';});
+   +'<div class="av-chr av-chw"><label>'+esc(W.what)+'<select class="av-ty"'+(ro?' disabled':'')+'>'+t+'</select></label>'
+   +'<label class="av-chh"'+(c.type==='away'?' hidden':'')+'>'+esc(W.time)+'<select class="av-hh"'+(ro?' disabled':'')+'>'+opts(c.h)+'</select></label></div>'
+   +'<div class="av-chr"><label>'+esc(W.from)+'<input type="date" class="av-f" value="'+c.from+'" min="'+today+'"'+(ro?' readonly':'')+'></label>'
+   +'<label>'+esc(W.to)+'<input type="date" class="av-t" value="'+(c.to||'')+'" min="'+today+'"'+(c.open||ro?' disabled':'')+'></label></div>'
+   +'<label class="av-open"><input type="checkbox" class="av-o"'+(c.open?' checked':'')+(ro?' disabled':'')+'> '+esc(W.open)+'</label>'
+   +'<div class="av-dsel" role="group" aria-label="'+esc(W.days_aria)+'">'+Object.keys(C.days).map(function(k){return '<button type="button" class="av-w av-dw" data-d="'+k+'" aria-label="'+esc(DN[k])+'" aria-pressed="'+((c.days||[]).indexOf(k)>-1)+'"'+(ro?' disabled':'')+'>'+esc(DS[k])+'</button>';}).join('')+'</div>'
+   +'<p class="av-hint">'+esc(W.hint)+'</p>'
+   +'<input type="text" class="av-tx" maxlength="200" placeholder="'+esc(W.text_ph)+'" value="'+esc(c.text||'')+'"'+(ro?' readonly':'')+'>'
+   +(ro?'':'<button type="button" class="av-del">'+esc(W.remove)+'</button>')+'</div>';});
  w.innerHTML=h;}
 function total(){var s=0;for(var k in D.week)s+=+(D.week[k].h||0);var n=0;for(k in D.week)if(+D.week[k].h>0)n++;
- app.querySelector('.av-total').innerHTML=s?'<b>'+(s%1?s.toFixed(1):s)+'h</b> a week across <b>'+n+'</b> '+(n===1?'day':'days')+'.':'';}
+ var hs=(s%1?s.toFixed(1):String(s));if(L.slice(0,2)!=='en')hs=hs.replace('.',',');
+ app.querySelector('.av-total').innerHTML=s?esc(t_(n===1?'total_one':'total',{h:'\u0001'+hs+'\u0002',n:'\u0001'+n+'\u0002'})).replace(/\u0001/g,'<b>').replace(/\u0002/g,'</b>'):'';}
 function msg(t,bad){var m=app.querySelector('.av-msg');if(m){m.textContent=t;m.classList.toggle('bad',!!bad);}}
 function touch(){dirty=true;var b=app.querySelector('.av-go');if(b)b.disabled=false;msg('');}
 app.addEventListener('change',function(e){var t=e.target,day=t.closest('.av-day'),ch=t.closest('.av-ch');
@@ -350,28 +360,28 @@ app.addEventListener('click',function(e){var b=e.target.closest('button');if(!b|
 /* voice: record for Matteo + type the words into the note while they speak */
 var rec=null,sr=null,chunks=[],base='',t0=0,tick=null;
 function mic(b){if(rec){rec.stop();return;}
- if(!navigator.mediaDevices||!window.MediaRecorder){msg('Voice notes do not work in this browser. Please type instead.',true);return;}
+ if(!navigator.mediaDevices||!window.MediaRecorder){msg(W.mic_no,true);return;}
  navigator.mediaDevices.getUserMedia({audio:true}).then(function(st){
   var type=['audio/webm;codecs=opus','audio/mp4','audio/webm'].filter(function(t){return MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t);})[0];
   rec=new MediaRecorder(st,type?{mimeType:type,audioBitsPerSecond:32000}:undefined);chunks=[];rec.ondataavailable=function(e){if(e.data.size)chunks.push(e.data);};
   rec.onstop=function(){st.getTracks().forEach(function(t){t.stop();});blob=new Blob(chunks,{type:rec.mimeType||'audio/mp4'});rec=null;if(sr)try{sr.stop();}catch(x){}
    clearInterval(tick);b.setAttribute('aria-pressed','false');b.classList.remove('on');var r=app.querySelector('.av-rec');r.hidden=false;
-   r.innerHTML='Voice note ready ('+Math.round((Date.now()-t0)/1000)+'s). Check the words above, then save. <button type="button" class="av-x">Delete voice note</button>';
+   r.innerHTML=esc(t_('rec_ready',{s:Math.round((Date.now()-t0)/1000)}))+' <button type="button" class="av-x">'+esc(W.rec_del)+'</button>';
    r.querySelector('.av-x').onclick=function(){blob=null;r.hidden=true;};touch();};
   rec.start(1000);t0=Date.now();b.setAttribute('aria-pressed','true');b.classList.add('on');var r=app.querySelector('.av-rec');r.hidden=false;
-  tick=setInterval(function(){var s=Math.round((Date.now()-t0)/1000);r.textContent='Listening… '+s+'s. Tap the microphone again to stop.';if(s>=300)rec&&rec.stop();},500);
+  tick=setInterval(function(){var s=Math.round((Date.now()-t0)/1000);r.textContent=t_('listening',{s:s});if(s>=300)rec&&rec.stop();},500);
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition,ta=document.getElementById('av-note');base=ta.value?ta.value.replace(/\s*$/,'')+'\n':'';
-  if(SR){sr=new SR();sr.lang=document.documentElement.lang||navigator.language||'en-GB';sr.continuous=true;sr.interimResults=true;
+  if(SR){sr=new SR();sr.lang=L;sr.continuous=true;sr.interimResults=true;
    sr.onresult=function(e){var s='';for(var i=0;i<e.results.length;i++)s+=e.results[i][0].transcript;ta.value=base+s.trim();D.note=ta.value;};
    sr.onend=function(){if(rec)try{sr.start();}catch(x){}};sr.onerror=function(){};try{sr.start();}catch(x){}}
- }).catch(function(){msg('I could not use the microphone. Allow it in your browser settings, or type instead.',true);});}
-function save(b){b.disabled=true;msg('Saving…');var f=new FormData(),txt=document.getElementById('av-note').value;
+ }).catch(function(){msg(W.mic_denied,true);});}
+function save(b){b.disabled=true;msg(W.saving);var f=new FormData(),txt=document.getElementById('av-note').value;
  f.append('data',JSON.stringify({week:D.week,changes:D.changes,note:D.note}));
  if(blob){f.append('audio',blob,'voice.'+(/mp4/.test(blob.type)?'m4a':'webm'));f.append('transcript',txt.slice(base.length));}
  fetch(app.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':app.dataset.nonce}}).then(function(r){return r.json().then(function(j){return[r.ok,j];});})
  .then(function(x){if(!x[0])throw new Error(x[1].message||'');dirty=false;blob=null;var r=app.querySelector('.av-rec');r.hidden=true;
-  msg(x[1].unchanged?'Nothing new to save.':'Saved. Thanks! I have been told and will plan around it.');b.disabled=true;})
- .catch(function(err){b.disabled=false;msg((err.message||'That did not save.')+' Please try again.',true);});}
+  msg(x[1].unchanged?W.nothing:W.saved);b.disabled=true;})
+ .catch(function(){b.disabled=false;msg(W.err,true);});}
 addEventListener('beforeunload',function(e){if(dirty&&!ro){e.preventDefault();e.returnValue='';}});
 draw();})();</script>
 JS;

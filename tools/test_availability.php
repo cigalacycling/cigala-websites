@@ -2,6 +2,7 @@
 /* Local test of the availability logic (no WordPress needed): php tools/test_availability.php */
 define('ABSPATH', '/');
 function add_action() {} function add_filter() {}
+require __DIR__ . '/../coaching/athlete-area/availability-i18n.php';
 require __DIR__ . '/../coaching/athlete-area/availability.php';
 $fail = 0; function ok($c, $m) { global $fail; echo ($c ? "ok   " : "FAIL ") . $m . "\n"; if (!$c) $fail++; }
 $today = '2026-11-18';   // a Wednesday
