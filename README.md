@@ -606,9 +606,16 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - "New on the blog" / "Nuovi sul blog" is the first row of Worth reading. It uses the shortcode `[cc_latest_posts lang=en|it]` in athlete-area.php: English = newest posts outside the Italiano category, Italian = newest Italiano posts, sorted by date in PHP because the Simple Custom Post Order plugin overrides query order.
   - Built by `tools/coaching_athlete_area.py --hub`.
   - **On live,** the hub pages must be rebuilt only after the snippet with the shortcode is live; otherwise the raw shortcode would show.
+- **Rider form round 3 (Matteo 16 Nov):**
+  - "You as a rider": "When did you start your discipline or sport?", then a SWOT (strengths, weaknesses, opportunities, threats) with examples.
+  - Medical: a yes/no question first, details only on yes.
+  - Supplements: yes/no plus a list.
+  - Agreements: titles shown once; each tick unlocks only after its text has been scrolled to the end; bigger, bolder ticks.
+  - Compulsory: every agreement and every medical question, plus the details for any yes. The browser checks each step on "Next" (missing answers in red); the server checks again on submit, and hidden questions never count.
+  - The coach preview says clearly that it saves and sends nothing.
+- **Italian legal texts:** `form-legal-it.php`, from Matteo's "Scheda informativa ciclista (Italiano corretto)". The Terms add, in Claude's Italian, the parts only on the website's English Terms (sign-off fee wording, the Coaching & Training Plan Liability Waiver & Informed Consent, "Cigala Cycling Limited"); **Matteo to check that translation.** Italian athletes read and sign in Italian, and their PDF keeps the Italian texts (`cc_f_legal`, the language stored in `cc_form_signed`).
 - **To do before live:**
   - Marine's test with Matteo (needs his OK to send her the welcome email);
   - import the 32 paper forms (`cc_profile_prefill` + paper);
-  - the Italian legal text if Matteo sends his Italian form ("SCHEDA INFORMATIVA DEL CICLISTA");
   - then push to live with Matteo.
 

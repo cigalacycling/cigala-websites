@@ -17,13 +17,15 @@ if (!defined('ABSPATH')) return;
 /* ---------- the questions, defined once (page, checks, PDF, coach view, API) ---------- */
 // the athlete's own language (their "Athlete language"), from onboarding-i18n.php; anything missing stays English
 function cc_f($s) { $l = $GLOBALS['cc_f_lang'] ?? 'en'; if ($l === 'en' || !function_exists('cc_f_dict')) return $s; $d = cc_f_dict($l); return isset($d[$s]) && $d[$s] !== '' ? $d[$s] : $s; }
+// a legal text in the athlete's language when Matteo has one (form-legal-it.php: Italian), otherwise English
+function cc_f_legal($name) { $l = strtoupper($GLOBALS['cc_f_lang'] ?? 'en'); return defined($name . '_' . $l) ? constant($name . '_' . $l) : constant($name); }
 function cc_f_set_lang($uid) { $GLOBALS['cc_f_lang'] = $uid && function_exists('cc_ath_lang_code') ? cc_ath_lang_code($uid) : 'en'; }
 const CC_F_YN = ['Frequent or severe headaches', 'Dizziness or fainting spells', 'Heart or vascular problems', 'High or low blood pressure', 'Asthma or lung disease',
     'Epilepsy or seizures', 'Diabetes', 'Stroke', 'Muscular disorders or complaints', 'Chest pains', 'Back pains', 'Lower limb or joint problems',
     '(Women only) Are you or have you been pregnant in the past year?'];
 function cc_f_steps() {
-    $yn = []; foreach (CC_F_YN as $i => $q) $yn[] = ['yn' . $i, 'yn', $q, 'if' => $i === 12 ? 'notmale' : null];
-    $med = []; foreach (['cyc' => 'Cycling', 'run' => 'Running', 'swim' => 'Swimming', 'gym' => 'Gym', 'core' => 'Core & Stretching', 'hike' => 'Hiking'] as $k => $a) $med[] = ['med_' . $k, 'text', $a, 'ph' => 'N/A if nothing', 'half' => 1];
+    $yn = []; foreach (CC_F_YN as $i => $q) $yn[] = ['yn' . $i, 'yn', $q, 'if' => $i === 12 ? 'notmale' : null, 'req' => $i === 12 ? 'shown' : 1];
+    $med = []; foreach (['cyc' => 'Cycling', 'run' => 'Running', 'swim' => 'Swimming', 'gym' => 'Gym', 'core' => 'Core & Stretching', 'hike' => 'Hiking'] as $k => $a) $med[] = ['med_' . $k, 'text', $a, 'ph' => 'N/A if nothing', 'half' => 1, 'if' => 'yes:med_any', 'req' => 'shown'];
     return [
       ['about', 'About you', 'both', [
         ['p', 'About you', null, 'fields' => [
@@ -69,31 +71,39 @@ function cc_f_steps() {
           ['events', 'events', 'If you race or do any events, list them here with their priority: A = your main goal, B = important, C = for training or fun. League and club races too.'],
         ]],
         ['p', 'You as a rider', null, 'only' => 'full', 'fields' => [
-          ['since', 'text', 'When did you start cycling / triathlon?'],
-          ['motiv', 'radio', 'Are you motivated?', 'opts' => ['4' => 'Highly', '3' => 'Quite', '2' => 'Not really', '1' => 'Not at all']],
-          ['motiv_why', 'textarea', 'Tell me more', 'opt' => 1], ['strengths', 'textarea', 'What are your strengths?'], ['weak', 'textarea', 'What are your weaknesses?'],
+          ['since', 'text', 'When did you start your discipline or sport?', 'req' => 'full'],
+          ['motiv', 'radio', 'Are you motivated?', 'opts' => ['4' => 'Highly', '3' => 'Quite', '2' => 'Not really', '1' => 'Not at all'], 'req' => 'full'],
+          ['motiv_why', 'textarea', 'Tell me more', 'opt' => 1],
+          ['swot', 'group', 'Your SWOT: a quick look at you as an athlete. A few words for each is enough.'],
+          ['strengths', 'textarea', 'Strengths: what you are good at', 'ph' => 'e.g. climbing, consistency, early mornings, a supportive family', 'req' => 'full'],
+          ['weak', 'textarea', 'Weaknesses: what holds you back or you would like to improve', 'ph' => 'e.g. sprinting, never stretching, fuelling on long rides', 'req' => 'full'],
+          ['opps', 'textarea', 'Opportunities: what could help you improve', 'ph' => 'e.g. more time in winter, a turbo at home, a training camp, riding with a faster group', 'req' => 'full'],
+          ['threats', 'textarea', 'Threats: what could stop you or get in the way', 'ph' => 'e.g. work travel, family commitments, a recurring injury, bad weather', 'req' => 'full'],
         ]]]],
       ['health', 'Health', 'full', [
         ['note', 'Your health answers are private: only you and Matteo can see them.'],
         ['p', 'Medical history', 'CC_F_MED_INTRO', 'fields' => array_merge(
-          [['med', 'group', 'Any medical history that may prevent or be affected by your participating in the following activities? Please state:']], $med, [
-          ['injuries', 'textarea', 'Any previous or recent injuries or disabilities that may prevent or be affected by you participating in the coaching program? If yes, please state:'],
-          ['disab', 'yn', 'Have you any disabilities that may prevent you taking part in sport activity?'],
-          ['ops', 'yn', 'Have you had any operations or surgical procedures that would affect your ability to cycle at high intensity?'],
-          ['allerg', 'yn', 'Do you have any allergies?'], ['docno', 'yn', 'Has your doctor ever advised you not to take part in exercise?'],
-          ['yn2_details', 'textarea', 'Please give details', 'if' => 'yes:disab,ops,allerg,docno'],
+          [['med_any', 'yn', 'Any medical history that may prevent or be affected by your participating in cycling, running, swimming, gym, core & stretching or hiking?', 'req' => 1],
+           ['med', 'group', 'Please state, for each activity:', 'if' => 'yes:med_any']], $med, [
+          ['inj_any', 'yn', 'Any previous or recent injuries or disabilities that may prevent or be affected by you participating in the coaching program?', 'req' => 1],
+          ['injuries', 'textarea', 'Please state:', 'if' => 'yes:inj_any', 'req' => 'shown'],
+          ['disab', 'yn', 'Have you any disabilities that may prevent you taking part in sport activity?', 'req' => 1],
+          ['ops', 'yn', 'Have you had any operations or surgical procedures that would affect your ability to cycle at high intensity?', 'req' => 1],
+          ['allerg', 'yn', 'Do you have any allergies?', 'req' => 1], ['docno', 'yn', 'Has your doctor ever advised you not to take part in exercise?', 'req' => 1],
+          ['yn2_details', 'textarea', 'Please give details', 'if' => 'yes:disab,ops,allerg,docno', 'req' => 'shown'],
           ['ynh', 'group', 'Do you have or have you ever had the following?']], $yn, [
-          ['yn_details', 'textarea', 'If you have answered yes to any of the questions above, please give details:', 'if' => 'yes:yn0,yn1,yn2,yn3,yn4,yn5,yn6,yn7,yn8,yn9,yn10,yn11,yn12'],
+          ['yn_details', 'textarea', 'If you have answered yes to any of the questions above, please give details:', 'if' => 'yes:yn0,yn1,yn2,yn3,yn4,yn5,yn6,yn7,yn8,yn9,yn10,yn11,yn12', 'req' => 'shown'],
         ])],
         ['p', 'Food and diet', null, 'fields' => [
           ['diet_plan', 'textarea', 'Do you currently follow a diet plan?'], ['diet_req', 'text', 'Have you any dietary requirements?'],
           ['diet_score', 'select', 'How would you rate your diet from 1 to 10?', 'opts' => array_combine(range(1, 10), range(1, 10))],
           ['lose', 'yn', 'Do you feel you need to lose weight to improve your cycling performance?'], ['lose_more', 'text', 'Tell me more', 'opt' => 1],
-          ['supps', 'text', 'Are you currently taking tablets to aid immune function, such as a multivitamin?'],
+          ['supps_any', 'yn', 'Are you currently taking tablets to aid immune function, such as multivitamins or supplements?', 'req' => 1],
+          ['supps', 'textarea', 'Please list them:', 'if' => 'yes:supps_any', 'req' => 'shown'],
         ]]]],
       ['healthupd', 'Health', 'update', [
         ['p', 'Anything new?', 'Since your last form: a new injury, illness, operation or medication? Your answers are private: only you and Matteo can see them.', 'fields' => [
-          ['health_new', 'yn', 'Anything new since your form?', 'req' => 1], ['health_new_details', 'textarea', 'Please give details', 'if' => 'yes:health_new'],
+          ['health_new', 'yn', 'Anything new since your form?', 'req' => 1], ['health_new_details', 'textarea', 'Please give details', 'if' => 'yes:health_new', 'req' => 'shown'],
         ]]]],
       ['agree', 'Agreements', 'full', [
         ['p', 'Agreements', 'Please read each part. Ticking and signing at the end counts as your signature.', 'fields' => [
@@ -157,13 +167,24 @@ function cc_f_clean($in, $kind) {
     }
     return $out;
 }
+// a field's condition (same rules as the browser script): u18, run, notmale, yes:a,b (any is yes), has:key=value
+function cc_f_cond($c, $a, $u18) {
+    if (!$c) return true;
+    if ($c === 'u18') return $u18;
+    if ($c === 'run') return (bool) array_intersect((array) ($a['sport'] ?? []), ['running', 'triathlon']);
+    if ($c === 'notmale') return ($a['gender'] ?? '') !== 'm';
+    if (strpos($c, 'yes:') === 0) { foreach (explode(',', substr($c, 4)) as $k) if (($a[$k] ?? '') === 'yes') return true; return false; }
+    if (strpos($c, 'has:') === 0) { [$k, $v] = explode('=', substr($c, 4)); return in_array($v, (array) ($a[$k] ?? []), true); }
+    return true;
+}
 // what is missing before the form can be submitted (labels), given the answers
 function cc_f_missing($a, $kind, $sig_ok) {
     $u18 = $kind === 'full' && ($age = cc_f_age($a['dob'] ?? '')) !== null && $age < 18;
     $miss = [];
     foreach (cc_f_fields($kind) as $k => $f) {
         $r = $f['req'] ?? 0;
-        $need = $r === 1 || ($r === 'full' && $kind === 'full') || ($r === 'u18' && $u18);
+        if (!cc_f_cond($f['if'] ?? null, $a, $u18)) continue;   // hidden questions are never required
+        $need = $r === 1 || $r === 'shown' || ($r === 'full' && $kind === 'full') || ($r === 'u18' && $u18);
         if ($f['_panel_if'] === 'u18' && !$u18) $need = false;
         if ($need && ($a[$k] === '' || $a[$k] === 0 || $a[$k] === [] || $a[$k] === null)) $miss[] = $f[2];
     }
@@ -201,14 +222,15 @@ function cc_f_page($uid, $pid, $preview, $kind = null) {
             ? cc_f('This helps me build your plan around your life and your goals. It takes about 15 minutes, and you can stop and come back: your answers are saved as you go.')
             : sprintf(cc_f('Hi %s, your hub has a new home. Before it opens, take 3 minutes to update your details, so your plan starts from where you are now. Your answers are saved as you go.'), $first)) . '</p>'
        . '<a class="ath-out" href="' . esc_url(wp_logout_url(home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html(cc_t('Log out')) . '</a></div>'
+       . ($preview ? '<div class="rf-note rf-pv"><b>' . esc_html(cc_f('Coach preview.')) . '</b> ' . esc_html(cc_f('This is only to look at the form: answers are not saved and it cannot be submitted. To try it for real, log in as a test athlete.')) . '</div>' : '')
        . '<div class="rf-steps"><ol aria-hidden="true">' . str_repeat('<li></li>', $n) . '</ol><p>' . esc_html(cc_f('Step')) . ' <b class="rf-sn">1</b> / ' . $n . ' · <b class="rf-st"></b></p></div><form novalidate>';
     foreach ($steps as $i => $st) {
         $o .= '<section class="rf-step' . ($i ? '' : ' on') . '" data-t="' . esc_attr(cc_f($st[1])) . '" data-k="' . $st[0] . '">';
-        if ($st[0] === 'agree' && ($GLOBALS['cc_f_lang'] ?? 'en') !== 'en') $o .= '<div class="rf-note">' . esc_html(cc_f('The agreements are in English: that is the version you sign. Message me if anything is unclear.')) . '</div>';
+        if ($st[0] === 'agree' && ($GLOBALS['cc_f_lang'] ?? 'en') !== 'en' && !defined('CC_F_WAIVER_' . strtoupper($GLOBALS['cc_f_lang']))) $o .= '<div class="rf-note">' . esc_html(cc_f('The agreements are in English: that is the version you sign. Message me if anything is unclear.')) . '</div>';
         foreach ($st[3] as $pn) {
             if ($pn[0] === 'note') { $o .= '<div class="rf-note">' . esc_html(cc_f($pn[1])) . '</div>'; continue; }
             if (isset($pn['only']) && $pn['only'] !== $kind) continue;
-            $sub = $pn[2] ?? null; $sub = $sub && defined($sub) ? constant($sub) : ($sub ? esc_html(cc_f($sub)) : '');
+            $sub = $pn[2] ?? null; $sub = $sub && defined($sub) ? cc_f_legal($sub) : ($sub ? esc_html(cc_f($sub)) : '');
             $o .= '<div class="rf-panel"' . (isset($pn['if']) ? ' data-if="' . $pn['if'] . '" hidden' : '') . '><h2>' . esc_html(cc_f($pn[1])) . '</h2><div class="bar"></div>'
                 . ($sub ? '<p class="rf-sub">' . $sub . '</p>' : '') . '<div class="rf-grid">';
             foreach ($pn['fields'] as $f) { if (isset($f['only']) && $f['only'] !== $kind) continue; $o .= cc_f_field($f, $vals[$f[0]] ?? null, $kind); }
@@ -222,13 +244,16 @@ function cc_f_page($uid, $pid, $preview, $kind = null) {
         . '<p class="ath-help">' . esc_html(cc_f('Any trouble?')) . ' <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp</a> · <a href="mailto:matteo@cigalacycling.com">matteo@cigalacycling.com</a></p></div>'
         . '<script type="application/json" id="rf-words">' . wp_json_encode(['next' => cc_f('Next'), 'submit' => cc_f($kind === 'full' ? 'Submit and sign' : 'Save and open my hub'),
             'saving' => cc_f('Saving…'), 'saved' => cc_f('Saved'), 'almost' => cc_f('Almost there: please fill in'), 'err' => cc_f('That did not save. Please check your connection and try again.'),
-            'age' => cc_f('Age'), 'preview' => cc_f('Preview: nothing is saved.')]) . '</script>' . cc_f_js();
+            'age' => cc_f('Age'), 'preview' => cc_f('This is the coach preview, so nothing is saved or sent. Everything else is ready: an athlete would now sign and submit.'),
+            'step' => cc_f('Please answer the questions marked in red:')]) . '</script>' . cc_f_js();
     return $o;
 }
 function cc_f_field($f, $v, $kind) {
     [$k, $t, $label] = $f; $label = $label !== '' ? esc_html(cc_f($label)) : '';
     $opt = ($f['opt'] ?? 0) === 1 ? ' <small>' . esc_html(cc_f('(optional)')) . '</small>' : (($f['opt'] ?? 0) === 'adult' ? ' <small class="rf-opt">' . esc_html(cc_f('(optional)')) . '</small>' : '');
-    $wrap = function ($inner, $cls = '') use ($f) { return '<div class="rf-f' . (!empty($f['half']) ? ' half' : '') . $cls . '"' . (!empty($f['if']) ? ' data-if="' . esc_attr($f['if']) . '" hidden' : '') . '>' . $inner . '</div>'; };
+    $rq = $f['req'] ?? 0; $rq = ($rq === 1 || $rq === 'shown' || ($rq === 'full' && $kind === 'full')) ? '1' : ($rq === 'u18' ? 'u18' : '');
+    $wrap = function ($inner, $cls = '') use ($f, $rq) { return '<div class="rf-f' . (!empty($f['half']) ? ' half' : '') . $cls . '"' . ($rq ? ' data-req="' . $rq . '" data-label="' . esc_attr(cc_f($f[2])) . '"' : '')
+        . (!empty($f['if']) ? ' data-if="' . esc_attr($f['if']) . '" hidden' : '') . '>' . $inner . '</div>'; };
     $ph = isset($f['ph']) ? ' placeholder="' . esc_attr(cc_f($f['ph'])) . '"' : ''; $ac = isset($f['ac']) ? ' autocomplete="' . $f['ac'] . '"' : '';
     $id = 'rf-' . $k; $name = ' name="' . $k . '" id="' . $id . '"';
     switch ($t) {
@@ -249,8 +274,8 @@ function cc_f_field($f, $v, $kind) {
                . '<label><input type="radio" name="' . $k . '" value="' . ($o ? 'no' : 'yes') . '"' . ($v === ($o ? 'no' : 'yes') ? ' checked' : '') . '><span>' . esc_html(cc_f($o ? 'No' : 'Yes')) . '</span></label>';
             return $wrap('<fieldset class="rf-yn"><legend>' . $label . '</legend><div class="rf-seg">' . $c . '</div></fieldset>', ' full');
         case 'tick': return $wrap('<label class="rf-tick"><input type="checkbox" name="' . $k . '" value="1"' . ($v ? ' checked' : '') . '><span>' . $label . '</span></label>', ' full');
-        case 'group': return $wrap('<p class="rf-group">' . $label . '</p>' . (isset($f['text']) ? '<div class="rf-group-t">' . constant($f['text']) . '</div>' : ''), ' full');
-        case 'legal': return $wrap('<div class="rf-legal" tabindex="0" role="region" aria-label="' . esc_attr($label) . '"><h3>' . $label . '</h3>' . constant($f['text']) . '</div>', ' full');
+        case 'group': return $wrap('<p class="rf-group">' . $label . '</p>' . (isset($f['text']) ? '<div class="rf-group-t">' . cc_f_legal($f['text']) . '</div>' : ''), ' full');
+        case 'legal': return $wrap('<div class="rf-legal" tabindex="0" role="region" aria-label="' . esc_attr($label) . '">' . cc_f_legal($f['text']) . '</div><p class="rf-scrollhint">' . esc_html(cc_f('Scroll to the end to agree.')) . '</p>', ' full');
         case 'week':
             $w = is_array($v) ? $v : []; $g = '<div class="av-week rf-week">';
             foreach (CC_AV_DAYS as $dk => $dn) { $d = $w[$dk] ?? ['h' => '', 'w' => []]; $s = '';
@@ -528,6 +553,7 @@ function cc_f_html2text($h) {   // legal HTML -> plain text for the PDF (numbere
     return trim(preg_replace("/\n{3,}/", "\n\n", preg_replace('/[ \t]+/', ' ', $t)));
 }
 function cc_f_pdf($pid, $a, $m, $sig) {
+    $GLOBALS['cc_f_lang'] = $m['lang'] ?? 'en';   // the legal texts as signed (Italian for Italian athletes)
     $p = new CC_Pdf();
     $p->text('Cigala Cycling Coaching', 9, true, 0, 0, '0.88 0.02 0');
     $p->text('Rider Information Form', 20, true, 0, 4);
@@ -540,10 +566,10 @@ function cc_f_pdf($pid, $a, $m, $sig) {
             $has = false; foreach ($pn['fields'] as $f) if (in_array($f[1], ['legal', 'group'], true) || (array_key_exists($f[0], $a) && cc_f_val($f, $a[$f[0]]) !== '')) $has = true;
             if (!$has) continue;   // no empty headings
             $p->space(6); $p->text($pn[1], 13, true, 0, 4);
-            if (($pn[2] ?? '') === 'CC_F_MED_INTRO') $p->text(cc_f_html2text(CC_F_MED_INTRO), 8.5, false, 0, 4, '0.3 0.3 0.3');
+            if (($pn[2] ?? '') === 'CC_F_MED_INTRO') $p->text(cc_f_html2text(cc_f_legal('CC_F_MED_INTRO')), 8.5, false, 0, 4, '0.3 0.3 0.3');
             foreach ($pn['fields'] as $f) {
-                if ($f[1] === 'legal') { $p->space(4); foreach (explode("\n", cc_f_html2text(constant($f['text']))) as $ln) { $b = strpos($ln, '[[B]]') === 0; $p->text($b ? substr($ln, 5) : $ln, $b ? 9.5 : 8.5, $b, 0, 1, $b ? '0 0 0' : '0.2 0.2 0.2'); } $p->space(4); continue; }
-                if ($f[1] === 'group') { $p->text($f[2], 9.5, true, 0, 2); if (isset($f['text'])) $p->text(cc_f_html2text(constant($f['text'])), 8.5, false, 0, 3, '0.2 0.2 0.2'); continue; }
+                if ($f[1] === 'legal') { $p->space(4); foreach (explode("\n", cc_f_html2text(cc_f_legal($f['text']))) as $ln) { $b = strpos($ln, '[[B]]') === 0; $p->text($b ? substr($ln, 5) : $ln, $b ? 9.5 : 8.5, $b, 0, 1, $b ? '0 0 0' : '0.2 0.2 0.2'); } $p->space(4); continue; }
+                if ($f[1] === 'group') { $p->text($f[2], 9.5, true, 0, 2); if (isset($f['text'])) $p->text(cc_f_html2text(cc_f_legal($f['text'])), 8.5, false, 0, 3, '0.2 0.2 0.2'); continue; }
                 if (in_array($f[1], ['sig'], true) || !array_key_exists($f[0], $a)) continue;
                 $v = cc_f_val($f, $a[$f[0]]); if ($v === '' && $f[1] !== 'tick') continue;
                 $p->text($f[2] ?: 'Usual week', 8.5, false, 0, 0, '0.35 0.35 0.35'); $p->text($v === '' ? '-' : $v, 10, true, 0, 5);
@@ -579,7 +605,7 @@ function cond(){var d=data(),a=age(),u18=a!==null&&a<18;var A=R.querySelector('.
   else if(c.indexOf('yes:')===0)s=c.slice(4).split(',').some(function(k){return d[k]==='yes';});e.hidden=!s;});}
 function show(n){steps[i].classList.remove('on');i=n;steps[i].classList.add('on');dots.forEach(function(x,k){x.className=k<i?'done':(k===i?'now':'');});
  R.querySelector('.rf-sn').textContent=i+1;R.querySelector('.rf-st').textContent=steps[i].dataset.t;R.querySelector('.rf-back').style.visibility=i?'visible':'hidden';
- R.querySelector('.rf-next').textContent=i===steps.length-1?W.submit:W.next;R.querySelector('.rf-err').hidden=true;if(steps[i].dataset.k==='sign')pad();
+ R.querySelector('.rf-next').textContent=i===steps.length-1?(pv?W.preview.split('.')[0]:W.submit):W.next;R.querySelector('.rf-err').hidden=true;if(steps[i].dataset.k==='sign')pad();
  var t=R.getBoundingClientRect().top+scrollY-90;scrollTo({top:t,behavior:'smooth'});}
 function post(action,extra){var b={action:action,data:data()};for(var k in extra)b[k]=extra[k];
  return fetch(R.dataset.api,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-WP-Nonce':R.dataset.nonce},body:JSON.stringify(b)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw j;return j;});});}
@@ -603,8 +629,22 @@ if(c){var pt=function(e){var r=c.getBoundingClientRect();return[e.clientX-r.left
  c.addEventListener('pointerdown',function(e){down=true;last=pt(e);c.setPointerCapture(e.pointerId);});
  c.addEventListener('pointermove',function(e){if(!down)return;var p=pt(e);x.beginPath();x.moveTo(last[0],last[1]);x.lineTo(p[0],p[1]);x.stroke();last=p;if(!drawn){drawn=true;R.querySelector('.rf-sig-ph').hidden=true;}});
  ['pointerup','pointercancel'].forEach(function(t){c.addEventListener(t,function(){down=false;});});R.querySelector('.rf-clr').onclick=pad;}
+/* every required question on this step must be answered before "Next" (hidden ones never count) */
+function check(st){var miss=[],a=age(),u18=a!==null&&a<18;st.querySelectorAll('.rf-f[data-req]').forEach(function(w){w.classList.remove('rf-miss');if(w.closest('[hidden]')||(w.dataset.req==='u18'&&!u18))return;var ok;
+  var tk=w.querySelector('.rf-tick input');if(tk)ok=tk.checked;else{var rs=w.querySelectorAll('input[type=radio],input[type=checkbox]');
+   if(rs.length)ok=[].some.call(rs,function(x){return x.checked;});else{var f=w.querySelector('input,select,textarea');ok=!f||f.value.trim()!=='';}}
+  if(!ok){w.classList.add('rf-miss');miss.push(w.dataset.label);}});return miss;}
+F.addEventListener('change',function(e){var w=e.target.closest('.rf-miss');if(w)w.classList.remove('rf-miss');});
+F.addEventListener('input',function(e){var w=e.target.closest('.rf-miss');if(w)w.classList.remove('rf-miss');});
+/* agreements: each tick opens once its text has been scrolled to the end */
+R.querySelectorAll('.rf-legal').forEach(function(L){var w=L.closest('.rf-f'),n=w.nextElementSibling,t=n&&n.querySelector('.rf-tick input');if(!t)return;
+ var open=function(){t.disabled=false;var h=w.querySelector('.rf-scrollhint');if(h)h.hidden=true;};
+ var test=function(){if(L.scrollHeight-L.scrollTop-L.clientHeight<24)open();};if(!t.checked)t.disabled=true;else open();
+ L.addEventListener('scroll',test);new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)test();});}).observe(L);});
 R.querySelector('.rf-back').onclick=function(){if(i)show(i-1);};
-R.querySelector('.rf-next').onclick=function(){if(i<steps.length-1){show(i+1);autosave();return;}
+R.querySelector('.rf-next').onclick=function(){var m=check(steps[i]),er=R.querySelector('.rf-err');
+ if(m.length){er.hidden=false;er.textContent=W.step+' '+m.join(' · ');var f=steps[i].querySelector('.rf-miss');if(f)f.scrollIntoView({behavior:'smooth',block:'center'});return;}
+ if(i<steps.length-1){show(i+1);autosave();return;}
  clearTimeout(timer);var er=R.querySelector('.rf-err'),btn=this;if(pv){er.hidden=false;er.textContent=W.preview;return;}btn.disabled=true;
  post('submit',{sig:drawn?c.toDataURL('image/jpeg',.85):''}).then(function(){location.reload();}).catch(function(j){btn.disabled=false;er.hidden=false;er.textContent=j&&j.code==='cc_missing'?W.almost+': '+j.message+'.':W.err;});};
 cond();show(0);scrollTo(0,0);
@@ -642,7 +682,13 @@ html .cc .rf-legal { max-height: 300px; overflow: auto; padding: 14px 16px; bord
 html .cc .rf-legal h3 { font: 700 12.5px var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--text); margin: 14px 0 6px; } html .cc .rf-legal h3:first-child { margin-top: 0; }
 html .cc .rf-legal :is(p, li) { margin: 0 0 8px; } html .cc .rf-legal ol { padding-left: 20px; margin: 0; } html .cc .rf-legal a { color: #34c46a; word-break: break-all; }
 html .cc .rf-tick { display: flex !important; gap: 12px; align-items: flex-start; font-weight: 500 !important; font-size: 14px !important; cursor: pointer; }
-html .cc .rf-tick input { flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: #009a44; }
+html .cc .rf-tick input { flex: none; appearance: none; -webkit-appearance: none; width: 28px; height: 28px; margin: 0; border: 2.5px solid rgba(255,255,255,.7); border-radius: 7px; background: #0b0d0f center / 18px no-repeat; cursor: pointer; }
+html .cc .rf-tick input:checked { background-color: #009a44; border-color: #009a44; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E"); }
+html .cc .rf-tick input:disabled { opacity: .35; cursor: not-allowed; } html .cc .rf-tick input:focus-visible { outline: 2px solid #34c46a; outline-offset: 2px; }
+html .cc .rf-tick span { padding-top: 3px; } html .cc .rf-scrollhint { margin: 8px 0 0; font-size: 12.5px; color: #ff3d33; font-weight: 600; } html .cc .rf-scrollhint[hidden] { display: none; }
+html .cc .rf-miss :is(input:not([type=radio]):not([type=checkbox]), select, textarea, .rf-seg, .rf-tick input) { border-color: #ff3d33 !important; box-shadow: 0 0 0 1px #ff3d33; }
+html .cc .rf-miss :is(label, legend, .rf-tick span) { color: #ff3d33 !important; } html .cc .rf-miss .rf-chips { outline: 2px solid #ff3d33; outline-offset: 4px; border-radius: 8px; }
+html .cc .rf-pv { border-color: rgba(240,191,0,.5); background: rgba(240,191,0,.08); }
 html .cc .rf-group { margin: 6px 0 0; font-weight: 600; color: var(--text); font-size: 14px; } html .cc .rf-group-t p { margin: 8px 0 0; font-size: 14px; }
 html .cc .rf-week { display: grid; gap: 8px; }
 html .cc .rf-evs { display: grid; gap: 10px; margin: 4px 0 10px; } html .cc .rf-ev { display: grid; gap: 8px; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.03); }
