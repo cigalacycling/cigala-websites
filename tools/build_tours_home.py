@@ -134,6 +134,10 @@ def months(t):
 
 BADGE = json.load(open(ROOT + 'tours/badges.json'))   # Gran Fondo badges from the survey design
 BADGE = {'entry': BADGE['entry'], 'support': BADGE['support']}
+_SPJ = json.load(open(ROOT + 'tours/spots.json'))
+def avail(slug):   # the same availability as the trip pages (tours/spots.json); cards show only low and mid
+    lv = _SPJ.get(slug, _SPJ.get('_default'))
+    return {'low': '<span class="avl low">Last few spots</span>', 'mid': '<span class="avl mid">Filling up fast</span>'}.get(lv, '')
 cards = []
 for t in trips:
     lv = [x.strip().lower() for x in t['level'].split(',')]
@@ -145,7 +149,7 @@ for t in trips:
         f'<img src="{img}" alt="{E(name)} bike tour" loading="lazy">'
         f'<span class="tag{" gravel" if t["type"] == "gravel" else ""}">{TYPE[t["type"]]}</span>'
         f'<img class="flag" src="img/flag-{FLAG[t["country"]]}.webp" alt="Flag of {t["country"]}" width="40" height="30">'
-        f'<div class="tx">{BADGE.get(t.get("badge"), "")}<time class="when" datetime="{t["start"]}">{dates(t)}</time>'
+        f'<div class="tx">{BADGE.get(t.get("badge"), "")}<span class="whenrow"><time class="when" datetime="{t["start"]}">{dates(t)}</time>{avail(t["slug"])}</span>'
         f'<h3>{E(name)}</h3><p>{E(BLURB[t["slug"]])}</p>'
         f'<span class="facts"><span>{t["country"]}</span><span>{t["distance"]}</span><span>{t["climbing"]} climbing</span></span>'
         f'<span class="go">View tour →</span></div></a>')
@@ -354,6 +358,15 @@ i = s.index('</details>', s.index('<details id="faq-4">')) + len('</details>')
 s = s[:i] + extra + s[i:]
 
 CSS2 = """
+.avl { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: #fff; white-space: nowrap; }   /* availability on the cards: only low (red) and mid (amber), Matteo 16 Nov */
+.avl::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: rgb(var(--av)); animation: avl-pulse 1.8s ease-in-out infinite; }
+.avl.low { --av: 225,6,0; } .avl.mid { --av: 240,191,0; }
+@keyframes avl-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(var(--av), .7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(var(--av), 0); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .avl::before { animation: none; } }
+.tour .whenrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-bottom: 10px; }
+.tour .whenrow .when { margin-bottom: 0; }
+.tour .whenrow .avl { background: rgba(8,9,10,.78); border: 1px solid rgba(var(--av), .55); border-radius: 6px; padding: 4px 9px; font-size: 11px; letter-spacing: .07em; text-transform: uppercase; }
+
 .stats .stat { --c: #34c46a; position: relative; transition: transform .25s, box-shadow .25s, background .25s; cursor: default; }
 .stats .stat:nth-child(2) { --c: #f0bf00; } .stats .stat:nth-child(3) { --c: #ff3d33; } .stats .stat:nth-child(4) { --c: #5f86c9; }
 .stats .stat::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); transform: scaleX(.18); transform-origin: left; transition: transform .35s; }

@@ -594,6 +594,17 @@ html .cl .tcard .early::before { animation: early-pulse 1.8s ease-in-out infinit
  }
 html .cl .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
 html .cl .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
+html .cl .avl { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: #fff; white-space: nowrap; }
+html .cl .avl::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: rgb(var(--av)); animation: avl-pulse 1.8s ease-in-out infinite; }
+html .cl .avl.low { --av: 225,6,0; }
+html .cl .avl.mid { --av: 240,191,0; }
+@keyframes avl-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(var(--av), .7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(var(--av), 0); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) {html .cl .avl::before { animation: none; }
+ }
+html .cl .tcard .meta .chip.avc { border-color: rgba(var(--avb), .5); background: rgba(var(--avb), .1); }
+html .cl .tcard .meta .chip.avc:has(.low) { --avb: 225,6,0; }
+html .cl .tcard .meta .chip.avc:has(.mid) { --avb: 240,191,0; }
+html .cl .tcard .meta .chip.avc .avl { font-size: 11px; }
 html .cl .lm { display: inline-flex; align-items: flex-end; gap: 2px; margin-right: 7px; vertical-align: -1px; }
 html .cl .lm i { display: block; width: 3px; border-radius: 1px; background: rgba(255,255,255,.22); }
 html .cl .lm i:nth-child(1) { height: 5px; }
@@ -826,6 +837,15 @@ html .cc .cc-social a { display: inline-grid; place-items: center; width: 40px; 
 html .cc .cc-social a:hover, html .cc .cc-social a:active { color: var(--green-text, #34c46a); background: rgba(255,255,255,.04); }
 html .cc .cc-social a:focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 2px; }
 html .cc .cc-social svg { width: 20px; height: 20px; fill: currentColor; display: block; }
+html .cc .avl { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: #fff; white-space: nowrap; }
+html .cc .avl::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: rgb(var(--av)); animation: avl-pulse 1.8s ease-in-out infinite; }
+html .cc .avl.low { --av: 225,6,0; }
+html .cc .avl.mid { --av: 240,191,0; }
+@keyframes avl-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(var(--av), .7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(var(--av), 0); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) {html .cc .avl::before { animation: none; }
+ }
+html .cc .tour .whenrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-bottom: 10px; }
+html .cc .tour .whenrow .when { margin-bottom: 0; }
 html .cc .stats .stat { --c: #34c46a; position: relative; transition: transform .25s, box-shadow .25s, background .25s; cursor: default; }
 html .cc .stats .stat:nth-child(2) { --c: #f0bf00; }
 html .cc .stats .stat:nth-child(3) { --c: #ff3d33; }
@@ -979,7 +999,7 @@ html .cc .tour:hover img { transform: none; }
     <div class="facts4"><div class="panel fact"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/></svg></div><div><h3>Location</h3><p>Portugal sits on the Atlantic coast of the Iberian Peninsula, with the sun-soaked Algarve along its southern coastline and the terraced Douro Valley further north near Porto. Its long coastline and varied interior offer a genuinely diverse range of cycling terrain within one country.</p></div></div><div class="panel fact"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg></div><div><h3>Climate</h3><p>The Algarve enjoys one of the mildest winter climates in Europe, with average winter temperatures around 16-18°C and over 300 days of sunshine a year — a major reason it has become a favourite winter training base. The Douro Valley and northern Portugal have a more continental climate, with warmer, drier summers.</p></div></div><div class="panel fact"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8l-.5 6a3.5 3.5 0 0 1-7 0L8 3zM12 12.5V20M8.5 20.5h7"/></svg></div><div><h3>Cuisine</h3><p>Portuguese cuisine is built around exceptional seafood — bacalhau, grilled sardines and fresh Atlantic catches — alongside the famous pastel de nata and, in the north, some of the world's most celebrated Port and Douro wines.</p></div></div><div class="panel fact"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 19.5 9 8l4 6.5 2.5-3.5 6 8.5z"/></svg></div><div><h3>Terrain</h3><p>From the flat, quiet coastal roads of the Algarve to the steep, terraced vineyard climbs of the Douro Valley and the genuine mountain terrain of the Serra da Estrela, Portugal offers something for riders of every level and ambition.</p></div></div></div>
   </div>
 </section>
-<div class="cc cc-page"><section id="tours" class="dtours"><div class="in"><div class="head"><div><div class="eyebrow">2027 season</div><h2>UPCOMING PORTUGAL TRIPS</h2><div class="bar"></div><p class=lede>Discover our upcoming Portugal cycling tours and experience sun-soaked roads, spectacular landscapes and unforgettable days in the saddle.</p></div></div><div class="tours"><a class="tour" data-k="gf" data-country="portugal" data-month="2" data-level="beginner intermediate expert" href="/trips/discover-the-algarve-granfondo/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-discover-the-algarve-granfondo.webp" alt="Algarve &amp; Gran Fondo bike tour" loading="lazy"><span class="tag">Gran Fondo</span><img class="flag" src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-pt.webp" alt="Flag of Portugal" width="40" height="30"><div class="tx"><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span><time class="when" datetime="2027-02-17">17–22 Feb 2027</time><h3>Algarve &amp; Gran Fondo</h3><p>Early season sunshine, watch the pros and ride the Gran Fondo.</p><span class="facts"><span>Portugal</span><span>420 km</span><span>5,800 m climbing</span></span><span class="go">View tour →</span></div></a></div></div></section></div>
+<div class="cc cc-page"><section id="tours" class="dtours"><div class="in"><div class="head"><div><div class="eyebrow">2027 season</div><h2>UPCOMING PORTUGAL TRIPS</h2><div class="bar"></div><p class=lede>Discover our upcoming Portugal cycling tours and experience sun-soaked roads, spectacular landscapes and unforgettable days in the saddle.</p></div></div><div class="tours"><a class="tour" data-k="gf" data-country="portugal" data-month="2" data-level="beginner intermediate expert" href="/trips/discover-the-algarve-granfondo/"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-discover-the-algarve-granfondo.webp" alt="Algarve &amp; Gran Fondo bike tour" loading="lazy"><span class="tag">Gran Fondo</span><img class="flag" src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-pt.webp" alt="Flag of Portugal" width="40" height="30"><div class="tx"><span class="entry entry-support"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>Event day fully supported</span><span class="whenrow"><time class="when" datetime="2027-02-17">17–22 Feb 2027</time><span class="avl mid">Filling up fast</span></span><h3>Algarve &amp; Gran Fondo</h3><p>Early season sunshine, watch the pros and ride the Gran Fondo.</p><span class="facts"><span>Portugal</span><span>420 km</span><span>5,800 m climbing</span></span><span class="go">View tour →</span></div></a></div></div></section></div>
 <section>
   <div class="in">
     <div class="head"><div><div class="eyebrow">Custom tours</div><h2>MOST POPULAR PORTUGAL CUSTOM TOURS</h2><div class="bar"></div></div></div>

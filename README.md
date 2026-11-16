@@ -271,6 +271,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - **Availability:** a word and a pulsing dot instead of numbers, the same on every tour (`tours/spots.json`): red "Last few spots" (Strade Bianche), amber "Filling up fast" (Algarve), green "Spots available" (the rest, `_default`). Shown in the price box and in the bottom "Ready to ride" band.
   - **Phone hero:** on phones the trip photo is a clear band at the top (440px, focus point per trip in `HERO_MPOS`), with the title and price box below it. The breadcrumb sits in a dark pill. On laptops the focus point is in `HERO_DPOS` (Flanders: the riders).
   - **Algarve hero:** media 710 (rider in Cigala kit above the beach, `HERO_PHOTO`). On laptops the price box covers the rider.
+  - **Availability on cards:** home, tour lists and destination cards show the red "Last few spots" and amber "Filling up fast" pills with the pulse (`avail()` in `build_tours_home.py` and `build_tours_list.py`, same `tours/spots.json`). Green stays on the trip pages only.
   - **Cyprus video:** "Watch the trip" section after the intro, plus a "Watch the video" button in the hero (`TRIP_VIDEO`). Our own cover photo (media 3353); YouTube (no-cookie) loads only when the visitor taps play. Add more tours to `TRIP_VIDEO` as videos come.
   - **Flanders:** "Hotel T" main card (`HOTEL_FALLBACK`: live has no hotel heading) and 8 photos below. Star rating to add when Matteo confirms it.
   - **Text:** no space before a comma, site-wide (`TYPOS`): "RIDE INTO THE LEGEND, TAKE PART…".

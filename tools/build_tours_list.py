@@ -49,6 +49,10 @@ LIVE_ALT = {
  "lake-garda-and-stelvio": "Lake Garda Bike Tour | Cigala Cycling",
  "lake-como-gran-fondo-il-lombardia": "Lake Como & Lombardia 2027"
 }   # live card alts ('Cigla' typo on Lake Garda fixed)
+_SPJ = json.load(open(ROOT + 'tours/spots.json'))
+def avail(slug):   # the same availability as the trip pages (tours/spots.json); cards show only low and mid
+    lv = _SPJ.get(slug, _SPJ.get('_default'))
+    return {'low': '<span class="avl low">Last few spots</span>', 'mid': '<span class="avl mid">Filling up fast</span>'}.get(lv, '')
 rows = {}
 TAGS = {'road': ['Road'], 'gf': ['Road', 'Gran Fondo'], 'gravel': ['Gravel']}
 for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
@@ -82,7 +86,7 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
   <div class="tx">
     <h2>{name}</h2>
     <h3 class="where">{where}</h3>
-    <div class="meta"><span class="chip date"><time datetime="{t['start']}">{dates(t)}</time></span><span class="chip">{nights}</span><span class="chip lvl">{meter}Level: {level}</span></div>
+    <div class="meta"><span class="chip date"><time datetime="{t['start']}">{dates(t)}</time></span><span class="chip">{nights}</span><span class="chip lvl">{meter}Level: {level}</span>{f'<span class="chip avc">{avail(slug)}</span>' if avail(slug) else ''}</div>
     <div class="desc clamp">{desc}</div>
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
@@ -232,6 +236,13 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 @media (prefers-reduced-motion: reduce) { .tcard .early::before { animation: none; } }
 .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
 .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
+.avl { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; letter-spacing: .02em; color: #fff; white-space: nowrap; }   /* availability on the cards: only low (red) and mid (amber), Matteo 16 Nov */
+.avl::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: rgb(var(--av)); animation: avl-pulse 1.8s ease-in-out infinite; }
+.avl.low { --av: 225,6,0; } .avl.mid { --av: 240,191,0; }
+@keyframes avl-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(var(--av), .7); opacity: 1; } 50% { box-shadow: 0 0 0 5px rgba(var(--av), 0); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .avl::before { animation: none; } }
+.tcard .meta .chip.avc { border-color: rgba(var(--avb), .5); background: rgba(var(--avb), .1); } .tcard .meta .chip.avc:has(.low) { --avb: 225,6,0; } .tcard .meta .chip.avc:has(.mid) { --avb: 240,191,0; }
+.tcard .meta .chip.avc .avl { font-size: 11px; }
 .lm { display: inline-flex; align-items: flex-end; gap: 2px; margin-right: 7px; vertical-align: -1px; }   /* level meter: 3 bars (Matteo 16 Nov: text + meter, not icons only) */
 .lm i { display: block; width: 3px; border-radius: 1px; background: rgba(255,255,255,.22); }
 .lm i:nth-child(1) { height: 5px; } .lm i:nth-child(2) { height: 8px; } .lm i:nth-child(3) { height: 11px; }
