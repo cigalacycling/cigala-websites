@@ -36,3 +36,14 @@ There are 35 products with 38 variants. They are not visible to customers yet.
 2. Set the products to Active.
 3. Make the 4 new collections visible on the Online Store.
 4. Add "E-Readers" to the Electronics menu.
+
+## 16 Nov, later
+
+- **Prices:** Matteo keeps the suggested RRP for now; to be discussed later.
+- **Matteo re-uploaded the 3 spreadsheets:** identical to the email ones (same checksums), with no photos inside.
+- **Photos:** www.dropbox.com and dl.dropboxusercontent.com were added to the environment's allowed hosts. The Dropbox folder download was then blocked by the session's permission check, so no photos yet.
+- **JDM EOL list of 15 Nov, archived:**
+  - Garmin HRM-Fit (was ACTIVE); redirect `/products/garmin-hrm-fit` → `/collections/heart-rate-monitors`.
+  - Igloohome Smart Padlock (was DRAFT).
+  - Not in the shop: Knaap AMS01 Space Grey/Matt Black (the Knaap V2 RTD is a different model and stays).
+  - Not in the shop: Shokz OpenRun Grey (from the 8 Nov list).
