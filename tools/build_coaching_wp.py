@@ -70,6 +70,8 @@ def scope_sel(sel):
     sel = sel.strip()
     if sel in (':root', 'html', 'body', 'html, body'): return P
     if sel == '*': return P + ' *'
+    if sel.startswith('html.'):   # a class on <html> set by script, e.g. html.sig-ok .sigph ...
+        h, _, rest = sel.partition(' '); return f'{h} .cc {rest}'
     return P + ' ' + sel
 def scope(block):
     out, i = [], 0
@@ -306,6 +308,72 @@ if COACH_NL_URL:
     # the OpenWidget chat (loaded after Accept) sat above the pop-up on phones and covered the email field (main chat, 15 Nov)
     pop += '<style>#nl-pop{z-index:2147483647!important}#nl-pop .nl-t{font-family:Anton,Impact,"Arial Narrow",sans-serif!important}</style>'
     widgets.append(html_widget(pop))
+# ---------- exit pop-up (Matteo 16 Nov: "I follow your advice and design that you recommend"), ported from Tours ----------
+# One box in the footer library; the wording comes from the page path (JS map below), and it only runs on the sales pages:
+# not on contact, legal, tools, the blog or posts. Same limits as Tours: once per visit, not before the cookie choice, not while the
+# newsletter pop-up is open or was closed in the last hour, 8 s minimum, snoozed 3 days after closing.
+# Desktop: the pointer leaves through the top of the window. Phones: a fast scroll back up after reading half the page.
+XP_EN = {'e': 'Before you go', 'wa': 'WhatsApp me →', 'call': 'Book a free call', 's': 'I usually reply within a few hours.', 'x': 'Close'}
+XP_IT = {'e': 'Prima di andare', 'wa': 'Scrivimi su WhatsApp →', 'call': 'Prenota una call gratuita', 's': 'Di solito rispondo entro poche ore.', 'x': 'Chiudi'}
+_D = ('Any questions?', 'Tell me about your riding and your goals. I will tell you honestly which coaching fits you, free and with no commitment.')
+_PLAN = ('Not sure which plan fits you?', 'Book a free call or send me a message: I will help you choose, with no commitment.')
+XP_PAGES = {
+    '/': _D, '/about/': _D, '/coaching-vision/': _D, '/testimonials/': _D, '/case-studies/': _D,
+    '/individual-packages/': _PLAN, '/cycling-coach-uk/': _PLAN, '/cycling-coach-usa/': _PLAN, '/cycling-coach-canada/': _PLAN,
+    '/tri-individual-packages/': ('Not sure which triathlon plan fits you?', 'Book a free call or send me a message: I will help you choose, with no commitment.'),
+    '/about2/': ('Questions about triathlon coaching?', 'Tell me about your swim, bike and run and your next race. I will tell you honestly what would help most.'),
+    '/group-club-packages/': ('Coaching a club or a group?', 'Tell me about your group and I will suggest a plan that fits, free and with no commitment.'),
+    '/club-talk/': ('Want a workshop for your club?', 'Tell me about your club and the topics you are interested in, and we can find a date.'),
+    '/talent-scout/': ('Questions about the Talent Programme?', 'Ask me anything about the programme, A&J AllSports or the next steps for your rider.'),
+    '/testing/': ('Questions about INSCYD testing?', 'Ask me what the test shows and how it would change your training.'),
+    '/nutrition/': ('Questions about nutrition coaching?', 'Tell us about your goals and we will tell you which option fits you, free and with no commitment.'),
+    '/bike-fitting/': ('Questions about your bike fit?', 'Ask me about the fit, your bike or a date that suits you.'),
+    '/book-1-on-1-session/': ('Questions about a 1-to-1 session?', 'Ask me about the session, what to bring or a date that suits you.'),
+    '/preparatore-di-ciclismo-italia/': ('Hai qualche domanda?', 'Raccontami come pedali e quali sono i tuoi obiettivi: ti dico con sincerità quale percorso fa per te, gratis e senza impegno.'),
+}
+XP_HTML = ('<div class="cc"><div class="xpop" id="xpop" hidden><div class="xpop-bg" data-x></div>'
+           '<div class="xpop-box" role="dialog" aria-modal="true" aria-labelledby="xpop-t" tabindex="-1">'
+           '<button type="button" class="xpop-x" data-x></button><div class="eyebrow xpop-e"></div><p class="xpop-t" id="xpop-t"></p>'
+           '<p class="xpop-p"></p><div class="xpop-ctas"><a class="btn btn-go xpop-wa" href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener"></a>'
+           '<a class="btn btn-ghost xpop-call" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener"></a></div><p class="xpop-s"></p></div></div></div>')
+XP_JS = ("""<script>(function(){var P=""" + json.dumps(XP_PAGES, ensure_ascii=False) + """,L={en:""" + json.dumps(XP_EN, ensure_ascii=False) + """,it:""" + json.dumps(XP_IT, ensure_ascii=False) + """};
+var path=location.pathname.replace(/\\/?$/,'/'),w=P[path],p=document.getElementById('xpop');if(!w||!p)return;
+var l=/^\\/preparatore-/.test(path)?L.it:L.en,q=function(s){return p.querySelector(s);};
+q('.xpop-e').textContent=l.e;q('.xpop-t').textContent=w[0];q('.xpop-p').textContent=w[1];q('.xpop-wa').textContent=l.wa;q('.xpop-call').textContent=l.call;q('.xpop-s').textContent=l.s;q('.xpop-x').setAttribute('aria-label',l.x);
+document.body.appendChild(p.parentNode);
+var K='cc_exit',t0=Date.now(),last=null,maxY=0,ys=[];
+function g(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function ok(){if(!g('cc_consent'))return false;try{if(sessionStorage.getItem(K))return false;}catch(e){}
+var c=+(g(K)||0);if(c&&Date.now()-c<3*864e5)return false;var n=document.getElementById('nl-pop');if(n&&!n.hidden&&getComputedStyle(n).display!=='none')return false;
+try{var nl=JSON.parse(g('cc_nl')||'{}');if(nl.c&&Date.now()-nl.c<36e5)return false;}catch(e){}return Date.now()-t0>8000;}
+function open(){if(!ok())return;try{sessionStorage.setItem(K,'1');}catch(e){}last=document.activeElement;p.hidden=false;q('.xpop-box').focus({preventScroll:true});document.addEventListener('keydown',key);}
+function close(){p.hidden=true;document.removeEventListener('keydown',key);try{localStorage.setItem(K,String(Date.now()));}catch(e){}if(last&&last.focus)last.focus({preventScroll:true});}
+function key(e){if(e.key==='Escape')close();}
+p.querySelectorAll('[data-x]').forEach(function(b){b.addEventListener('click',close);});
+p.querySelectorAll('.xpop-ctas a').forEach(function(a){a.addEventListener('click',function(){setTimeout(close,50);});});
+document.addEventListener('mouseout',function(e){if(!e.relatedTarget&&e.clientY<=0)open();});
+if(matchMedia('(hover: none)').matches){addEventListener('scroll',function(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;maxY=Math.max(maxY,y);ys.push([Date.now(),y]);while(ys.length&&Date.now()-ys[0][0]>700)ys.shift();
+if(maxY>h*.5&&ys.length&&ys[0][1]-y>500)open();},{passive:true});}
+window.ccExitOpen=function(){t0=0;open();};})();</script>""")
+css += '''
+/* ---- exit pop-up (same design as Tours) ---- */
+html .cc .xpop { position: fixed; inset: 0; z-index: 2147483646; display: grid; place-items: center; padding: 16px; }
+html .cc .xpop[hidden] { display: none; }
+html .cc .xpop-bg { position: absolute; inset: 0; background: rgba(4,5,6,.72); backdrop-filter: blur(3px); }
+html .cc .xpop-box { position: relative; width: min(460px, 100%); padding: 30px 28px 24px; border: 1px solid rgba(43,212,122,.35); border-radius: 16px; background: #0f1113; box-shadow: 0 30px 80px rgba(0,0,0,.6); outline: none; animation: xpop-in .3s ease; }
+@keyframes xpop-in { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { html .cc .xpop-box { animation: none; } }
+html .cc .xpop-x { position: absolute !important; min-height: 0 !important; line-height: 0 !important; top: 12px; right: 12px; width: 36px; height: 36px; display: grid; place-items: center; padding: 0 !important; border: 0 !important; border-radius: 50% !important; background: rgba(255,255,255,.08) !important; cursor: pointer; font-size: 0; }
+html .cc .xpop-x::before, html .cc .xpop-x::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 2px; margin: -1px 0 0 -7px; border-radius: 1px; background: #fff; transform: rotate(45deg); }
+html .cc .xpop-x::after { transform: rotate(-45deg); }
+html .cc .xpop-x:hover { background: rgba(255,255,255,.16) !important; }
+html .cc .xpop-e { margin: 0; }
+html .cc .xpop-t { font-family: var(--head); font-size: clamp(26px, 5vw, 32px); line-height: 1.05; text-transform: uppercase; color: #fff; margin: 4px 0 10px; padding-right: 30px; }
+html .cc .xpop-p { color: var(--text-2); font-size: 15px; line-height: 1.55; margin: 0 0 18px; }
+html .cc .xpop-ctas { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+html .cc .xpop-s { margin: 14px 0 0; font-size: 12.5px; color: var(--text-3); }
+'''
+widgets.append(html_widget(XP_HTML + XP_JS))
 json.dump({"meta": {"_elementor_data": json.dumps([wrap(widgets)])}}, open(OUT + 'lib-228.json', 'w'))
 json.dump({"title": "Cigala consent mode default", "status": "publish",
            "meta": {"_elementor_location": "elementor_head", "_elementor_priority": 1, "_elementor_code": head_snippet()}}, open(OUT + 'snippet-head.json', 'w'))

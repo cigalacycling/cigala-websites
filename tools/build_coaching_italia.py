@@ -194,7 +194,7 @@ MAIN = f'''<div class="hero hero-sm">
 
 <section class="it-intro-sec">
   <div class="in it-intro">
-    <div class="it-me"><img src="{conv('coaching/brand/matteo-cigala-author-signature.webp', 'italia-matteo-firma')}" alt="Matteo Cigala, preparatore di ciclismo, con la maglia bianca Cigala Cycling e la sua firma" loading="lazy" width="720" height="943"></div>
+    <div class="it-me">{sig_photo('italia-matteo-firma-photo', 'Matteo Cigala, preparatore di ciclismo, con la maglia bianca Cigala Cycling e la sua firma')}</div>
     <div class="gn-txt">
       <div class="eyebrow">Il tuo coach</div>
       <ul class="it-nums">{''.join(f'<li><b>{a}</b><span>{b}</span></li>' for a, b in (('28+', 'anni nel ciclismo'), ('10+', 'anni da preparatore'), ('200+', 'vittorie')))}</ul>

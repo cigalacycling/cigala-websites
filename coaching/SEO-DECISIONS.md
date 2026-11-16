@@ -389,3 +389,10 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   /about/ (facts from the page), coaching/llms.txt drafted (to upload to the site root at go-live). robots.txt on live
   allows all crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended): keep it that way.
 - 16 Nov: Eoin R.'s case study removed everywhere (Matteo: he wants it private): case studies page, case cards on all pages, Italian labels. Nothing about him left on staging (pages, posts, media checked).
+
+## 16 Nov: signature that writes itself and an exit pop-up (Matteo approved both)
+- Matteo's cut-out photo on About, UK/USA/Canada, Italia and Vision is now two layers: the photo (`coaching/brand/matteo-cigala-photo-nosig.webp`) and the signature (`matteo-cigala-signature-layer.webp`, `alt=""`, decorative). The signature writes itself when it comes into view, as on Tours (`sig_photo()` + `SIGN_JS` in `tools/coaching_common.py`). The photo alt texts are unchanged. If reduced motion is on, the signature just shows. Not done on the blog post author boxes (they sit in 46 post bodies).
+- Exit pop-up, same design and limits as Tours (`XP_*` in `tools/build_coaching_wp.py`, footer library 228): WhatsApp plus a free Calendly call. Wording depends on the page; the Italian page has its own wording. Not on contact, legal, tools, blog or posts.
+  - Limits: once per visit, only after the cookie choice, never while the newsletter pop-up is open or within an hour of it, at least 8 s on the page, 3-day snooze after closing.
+  - The text is set by script and has no headings, so the crawl results don't change.
+- CSS scoper: selectors starting with `html.` (classes set on `<html>`) now become `html.x .cc …`.

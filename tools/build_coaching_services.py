@@ -843,7 +843,7 @@ def vision():
       <h2>It's our vision</h2><div class="bar"></div>
       <blockquote class="bf-quote vi-quote"><p>“{E(quote)}”</p><cite>Matteo Cigala – Founder &amp; Head Coach</cite></blockquote>
     </div>
-    <div class="vi-sig"><img src="{conv('coaching/brand/matteo-cigala-author-signature.webp', 'vision-matteo-signature')}" alt="Matteo Cigala, Founder &amp; Head Coach, in the white Cigala Cycling jersey, with his signature" loading="lazy" width="720" height="933"></div>
+    <div class="vi-sig">{sig_photo('vision-matteo-signature-photo', 'Matteo Cigala, Founder & Head Coach, in the white Cigala Cycling jersey, with his signature')}</div>
   </div>
 </section>
 

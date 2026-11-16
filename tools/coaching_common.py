@@ -132,6 +132,13 @@ def tools_band():
   </div>
 </section>'''
 FT_CSS = '''<style>
+.sigph { position: relative; display: block; }
+.sigph img { display: block; width: 100%; height: auto; }
+.sigph img.signature { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.sigph .sig-anchor { position: absolute; left: 10%; right: 10%; top: 82%; bottom: 0; }
+html.sig-ok .sigph img.signature { clip-path: inset(0 100% 0 0); }
+html.sig-ok .sigph img.signature.go { animation: sig-write 2.2s cubic-bezier(.55,.1,.35,1) forwards; }
+@keyframes sig-write { to { clip-path: inset(0 0 0 0); } }
 .ft-box { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 60%), var(--panel-grad), var(--panel); }
 .ft-head p { margin: 14px 0 0; color: var(--text-2); }
 .ft-head .arrow-link { display: inline-block; margin-top: 14px; }
@@ -283,6 +290,19 @@ CASES_IT = {
     'rob-kavanagh': ('Forma fisica e dimagrimento', '−16 kg', '', 'Quasi 16 kg persi in 6 mesi', 'Irlanda'),
     'derek-lawler': ('Granfondo e salute', 'Haute Route a 60 anni', '', 'Dal divano all’Haute Route a 60 anni', 'Kilkenny, Irlanda'),
 }
+# Matteo 16 Nov: the signature writes itself when it comes into view (as on Tours). Photo and signature are two layers
+# of the same size (coaching/brand/matteo-cigala-photo-nosig.webp + -signature-layer.webp, made from the same sources as
+# the old composite). The script watches a box over the signature (a fully clipped image never counts as on screen).
+SIGN_JS = """<script>(function(){if(window._ccSig)return;window._ccSig=1;if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var s=document.querySelectorAll('img.signature');if(!s.length)return;document.documentElement.classList.add('sig-ok');
+var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){o.unobserve(e.target);e.target._sig.classList.add('go');}});},{threshold:.5});
+s.forEach(function(x){var t=x.nextElementSibling||x.parentElement;t._sig=x;o.observe(t);});})();</script>"""
+def sig_photo(name, alt):
+    """Matteo's cut-out with his signature as a separate layer that writes itself"""
+    return (f'<span class="sigph"><img src="{conv("coaching/brand/matteo-cigala-photo-nosig.webp", name)}" alt="{E(alt)}" width="720" height="933">'
+            f'<img class="signature" src="{conv("coaching/brand/matteo-cigala-signature-layer.webp", "matteo-cigala-signature")}" alt="" aria-hidden="true" width="720" height="933">'
+            f'<span class="sig-anchor" aria-hidden="true"></span></span>{SIGN_JS}')
+
 def case_cards(link_base, lang='en'):
     """Scrolling case study cards; link_base is the case studies page URL. lang='it': Italian labels (CASES_IT)."""
     def tr(c):

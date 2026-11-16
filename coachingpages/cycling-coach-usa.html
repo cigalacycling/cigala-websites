@@ -645,6 +645,13 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
   .vk-logos > span img { max-height: 84px; }
 }
 </style><style>
+.sigph { position: relative; display: block; }
+.sigph img { display: block; width: 100%; height: auto; }
+.sigph img.signature { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.sigph .sig-anchor { position: absolute; left: 10%; right: 10%; top: 82%; bottom: 0; }
+html.sig-ok .sigph img.signature { clip-path: inset(0 100% 0 0); }
+html.sig-ok .sigph img.signature.go { animation: sig-write 2.2s cubic-bezier(.55,.1,.35,1) forwards; }
+@keyframes sig-write { to { clip-path: inset(0 0 0 0); } }
 .ft-box { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 60%), var(--panel-grad), var(--panel); }
 .ft-head p { margin: 14px 0 0; color: var(--text-2); }
 .ft-head .arrow-link { display: inline-block; margin-top: 14px; }
@@ -871,7 +878,10 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
 
 <section class="cx-intro-sec">
   <div class="in cx-intro">
-    <div class="cx-me"><img src="img/country-matteo-signature.webp" alt="Matteo Cigala, Head Coach, in the white Cigala Cycling jersey, with his signature" loading="lazy" width="720" height="943"></div>
+    <div class="cx-me"><span class="sigph"><img src="img/country-matteo-signature-photo.webp" alt="Matteo Cigala, Head Coach, in the white Cigala Cycling jersey, with his signature" width="720" height="933"><img class="signature" src="img/matteo-cigala-signature.webp" alt="" aria-hidden="true" width="720" height="933"><span class="sig-anchor" aria-hidden="true"></span></span><script>(function(){if(window._ccSig)return;window._ccSig=1;if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var s=document.querySelectorAll('img.signature');if(!s.length)return;document.documentElement.classList.add('sig-ok');
+var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){o.unobserve(e.target);e.target._sig.classList.add('go');}});},{threshold:.5});
+s.forEach(function(x){var t=x.nextElementSibling||x.parentElement;t._sig=x;o.observe(t);});})();</script></div>
     <div class="gn-txt">
       <div class="eyebrow">Your coach</div>
       <ul class="cx-nums"><li><b>28+</b><span>years in cycling</span></li><li><b>10+</b><span>years coaching</span></li><li><b>200+</b><span>race wins</span></li></ul>

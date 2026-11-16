@@ -209,7 +209,7 @@ def build_country(key):
 
 <section class="cx-intro-sec">
   <div class="in cx-intro">
-    <div class="cx-me"><img src="{conv('coaching/brand/matteo-cigala-author-signature.webp', 'country-matteo-signature')}" alt="Matteo Cigala, Head Coach, in the white Cigala Cycling jersey, with his signature" loading="lazy" width="720" height="943"></div>
+    <div class="cx-me">{sig_photo('country-matteo-signature-photo', 'Matteo Cigala, Head Coach, in the white Cigala Cycling jersey, with his signature')}</div>
     <div class="gn-txt">
       <div class="eyebrow">Your coach</div>
       <ul class="cx-nums">{''.join(f'<li><b>{a}</b><span>{b}</span></li>' for a, b in (('28+', 'years in cycling'), ('10+', 'years coaching'), ('200+', 'race wins')))}</ul>

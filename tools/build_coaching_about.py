@@ -117,7 +117,7 @@ MAIN = f'''<div class="ab-hero">
       <ul class="ab-quals">{''.join(f'<li>{ic(I["grad"])}<span>{q}</span></li>' for q in QUALS)}</ul>
       <div class="ctas"><a class="btn btn-go" href="{C}/individual-packages/" {EXT}>Train with Matteo</a><a class="btn btn-ghost" href="#story">Matteo’s story ↓</a></div>
     </div>
-    <div class="ab-hero-img ab-cut"><img src="{conv('coaching/brand/matteo-cigala-author-signature.webp', 'about-hero-matteo-signature')}" alt="{E(live_alt('IMG_5948-1'))}" width="720" height="943"></div>
+    <div class="ab-hero-img ab-cut">{sig_photo('about-hero-matteo-photo', live_alt('IMG_5948-1'))}</div>
   </div>
 </div>
 
