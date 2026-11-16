@@ -427,3 +427,12 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Tests: `php tools/test_availability.php`. Mock-up: `php tools/mock_availability.php > coaching/athlete-area/mockup/parts.json && python3 -I tools/build_availability_mockup.py` (checked at 390/820/1440, 16px fields, mic and save simulated).
   - Matteo's feedback 16 Nov, done: the logo is on the email (dark band, site header logo) and the mock-up; changes can be "Gym only" or "Indoor only", limited to some weekdays (e.g. Tuesdays only) and open-ended ("from 1 Dec onwards"; Vekta gets those for the next 8 weeks); the note's placeholder suggests things like "gym only on Tuesdays for 10 weeks"; the weekly total no longer says "Great, I can work with that".
   - Open: Vekta key location and calendar item type; whether the privacy policy draft should mention voice notes.
+
+### Athlete area: Italian athletes (planned, after launch, Matteo 16 Nov)
+- **Per-athlete language:** use the WordPress user Language setting (locale). Matteo sets it when he creates the login.
+- **Order (recommended):**
+  1. The hub interface and the notification emails in Italian (greeting, sections, buttons, login page, empty states).
+  2. Worth reading: Italian posts first for Italian athletes.
+  3. Reports in Italian: the PC tools read the athlete's language (with the report delivery).
+  4. Italian versions of the six PDFs: the hub shows the athlete's language. The Nutritional Guide and Supplement List need Marine's approval of the Italian text.
+  5. Italian versions of the free tools later, as an SEO project.
