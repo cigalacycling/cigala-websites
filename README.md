@@ -258,7 +258,15 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
     - The section bar's Book now shows only after the price box scrolls away.
     - The final band has a pulsing "Only N spots left" when spots are 5 or fewer.
   - **Posters with our map badge:** `tools/tours_posters.py` paints our badge (`tourspages/maps/badge-<slug>.svg`, areas in `POSTER_BADGES` in `tours_route_maps.py`) over the live poster's badge and uploads `poster-<slug>` WebPs.
-  - **Day-by-day route maps:** not done yet. Drawing each day on real roads needs a bike router. brouter.de is now on the environment's allowed hosts, but this session's permission check blocked the request.
+  - **Day-by-day route maps (Matteo approved brouter.de):** `tools/tours_day_routes.py` routes every riding day on real roads with BRouter (OpenStreetMap; road profile for road tours, gravel profile for gravel tours).
+    - Waypoints come from each day's text (`DAYS`, coordinates in `G`). Tracks are cached in `tours/routes/<slug>.json`, so maps rebuild offline.
+    - Output: `tourspages/maps/day-<slug>.svg`: each day in its own colour with a numbered badge, hotels/overnight towns in white, named climbs. The frame height follows the route's shape.
+    - Lake Garda and Lake Como are drawn from their shore roads: Natural Earth's outlines were too coarse at this zoom.
+    - Under the map, the trip page lists the days (colour, title, distance from the itinerary). Hover or tap highlights that day's route.
+    - The old overview maps (`<slug>.svg`) stay as the fallback.
+    - Router distances differ a little from the itinerary in places (e.g. the French Alps loops). The list shows Matteo's itinerary numbers.
+  - **Hero tags:** the country is a round flag, and the level has the 3-bar meter.
+  - **What's included:** Included and Not included side by side. The airport transfers are a full-width band of date cards, and the Gran Fondo entry prices are tiles.
 - **Live errors fixed (Matteo 15 Nov: "any error you see, fix it"):**
   - The Gran Canaria H1 now reads "Cycling in Gran Canaria" (live: "Cycling in Mallorca").
   - In the Lake Como guide (post 8945), the second FAQ question is now "How hard is the Muro di Sormano?". Backup: `stg-tours/backup/post-8945-before-faq-fix.json`.

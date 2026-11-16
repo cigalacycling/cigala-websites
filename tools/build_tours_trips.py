@@ -186,6 +186,13 @@ def trip(slug):
     # ---------- hero ----------
     hero_alt = f'{text_of(h1).title()} bike tour - Cigala Cycling Tours'
     tags = [TYPE[tr['type']], tr['country'], tr['level'].replace(', ', ' · ')]
+    # Matteo 16 Nov: the country as a round flag, the level with the same 3-bar meter as the tour cards
+    fl = M.get('flag-' + {'Italy': 'it', 'France': 'fr', 'Portugal': 'pt', 'Slovenia': 'si', 'Cyprus': 'cy', 'Belgium': 'be'}.get(tr['country'], ''))
+    lb = {'beginner': 1, 'intermediate': 2, 'expert': 3}.get(tr['level'].split(',')[0].strip().lower(), 2)
+    lmeter = '<span class="lm" aria-hidden="true">' + ''.join('<i class=on></i>' if i < lb else '<i></i>' for i in range(3)) + '</span>'
+    tags_html = (f'<span class="tag{" dot" if tr["type"] != "gravel" else " gdot"}">{E(tags[0])}</span>'
+                 + (f'<span class="tag tflag"><img src="{fl["url"]}" alt="{E(tr["country"])}" width="22" height="22"></span>' if fl else f'<span class="tag">{E(tags[1])}</span>')
+                 + f'<span class="tag tlvl">{lmeter}{E(tags[2])}</span>')
     pr = prices[0] if prices else ''
     pr_rest = ' · '.join(prices[1:])
     li = ''.join(f'<li><span>{E(a)}</span><span>{E(b)}</span></li>' for a, b in [x for x in [
@@ -203,7 +210,7 @@ def trip(slug):
   <div class="in">
     <div>
       <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / <a href="{L}/trips/" {EXT}>Bike tours</a> / {E(tr['name'])}</div>
-      <div class="tags">{''.join(f'<span class="tag{" dot" if i == 0 and tr["type"] != "gravel" else " gdot" if i == 0 else ""}">{E(t)}</span>' for i, t in enumerate(tags))}</div>
+      <div class="tags">{tags_html}</div>
       <h1>{E(h1)}</h1>
       <div class="dates">{E(dates_live)}</div>
     </div>
@@ -254,7 +261,8 @@ def trip(slug):
                    f'{img_tag(logo, 400, cls="oplogo") if logo else ""}</div></div></section>')
     route = one('route')
     # our own route map (tools/tours_route_maps.py, Cigala style) for every trip; the live map image only as a fallback
-    mp = ROOT + f'tourspages/maps/{slug}.svg'
+    mp = ROOT + f'tourspages/maps/day-{slug}.svg'   # day-by-day routes on real roads (tools/tours_day_routes.py, Matteo 16 Nov)
+    if not os.path.exists(mp): mp = ROOT + f'tourspages/maps/{slug}.svg'
     svg = open(mp).read().replace('aria-label="Route map"', f'aria-label="{E(text_of(h1).title())} bike tour route map by Cigala Cycling Tours"') if os.path.exists(mp) else ''
     rimg = None
     if route and not svg:
@@ -278,6 +286,16 @@ def trip(slug):
     dl = f'<dl class="panel facts"><{g_tag} class="facts-h">{E(g_title)}</{g_tag}>{facts}</dl>' if facts else ''
     note = ROUTE_NOTES.get(slug, '')
     map_html = svg or (img_tag(rimg, 1400, alt=f"{text_of(h1).title()} bike tour map by Cigala Cycling Tours") if rimg else '')
+    dmeta = json.load(open(ROOT + 'tours/routes/days-meta.json')).get(slug) if 'day-' in mp else None
+    if dmeta and svg:   # the day list under the map: colour, day, title and distance from the itinerary; hover or tap highlights the day
+        dl_ = []
+        for n, d in enumerate(S('day'), 1):
+            if str(n) not in dmeta: continue
+            t, km, up = km_m(text_of(d['h']))
+            kmv = km or re.search(r'(\d+)\s*km', text_of(''.join(v for k, v, s_ in d['items'] if k == 'text'))) and f"{re.search(r'(\d+)\s*km', text_of(''.join(v for k, v, s_ in d['items'] if k == 'text'))).group(1)} km"
+            dl_.append(f'<li><button type="button" data-d="{n}"><span class="sw" style="background:{dmeta[str(n)]["color"]}">{n}</span>'
+                       f'<span class="dt">{E(t)}</span>{f"<span class=dk>{E(kmv)}</span>" if kmv else ""}</button></li>')
+        map_html += f'<ol class="dleg" aria-label="Days on the map">{"".join(dl_)}</ol>'
     if map_html or dl:
         head = H(route, 'Where you ride') if route else '<div class="head"><div><div class="eyebrow">Where you ride</div><p class="band-title">Route</p><div class="bar"></div></div></div>'
         out.append(f'<section id="route"><div class="in">{head}<div class="route"><div class="map">{map_html}'
@@ -311,24 +329,36 @@ def trip(slug):
     inc, notinc, trans = one('inc'), one('notinc'), one('transfers')
     if inc:
         inc_li = ''.join(f'<li><span>{x}</span></li>' for k, v, s in inc['items'] if k == 'text' for x in lines(clean(v)))
-        side = ''
+        # Matteo 16 Nov: no stack of boxes on the right. Included | Not included side by side, then the airport transfers
+        # and the Gran Fondo entry prices as full-width bands underneath.
+        no_html = ''
         if notinc:
             no_li = ''.join(f'<li><span>{x}</span></li>' for k, v, s in notinc['items'] if k == 'text' for x in lines(clean(v)))
-            side += f'<div class="panel no" style="padding:22px 24px"><{notinc["tag"]}>{E(text_of(notinc["h"]))}</{notinc["tag"]}><ul>{no_li}</ul></div>'
+            no_html = f'<div class="panel no"><{notinc["tag"]} class="inh">{E(text_of(notinc["h"]))}</{notinc["tag"]}><ul>{no_li}</ul></div>'
+        bands = ''
         if trans:
-            tl = []
+            rows, notes_ = [], []
             for k, v, s in trans['items']:
-                if k == 'text':
-                    for x in lines(clean(v)):
-                        m = re.match(r"^\s*(\d{1,2}/\d{1,2}(?:/\d{2,4})?)\s*(.*)$", text_of(x))
-                        tl.append(f'<div><b>{m.group(1)}</b>{E(m.group(2))}</div>' if m else f'<div>{x}</div>')
-            tt_ = trans["tag"]; side += f'<div class="panel" style="padding:22px 24px"><{tt_}{" class=sidet" if tt_ == "p" else ""}>{E(text_of(trans["h"]).rstrip(":"))}</{tt_}><div class="transfers">{"".join(tl)}</div></div>'
+                if k != 'text': continue
+                for x in lines(clean(v)):
+                    t = text_of(x).strip()
+                    m = re.match(r"^\s*(\d{1,2}/\d{1,2}(?:/\d{2,4})?)\s*(.*)$", t)
+                    if m: rows.append([m.group(1), m.group(2)])
+                    elif rows and not rows[-1][1]: rows[-1][1] = t   # the date on its own line, the details on the next
+                    else: notes_.append(x)
+            cards = ''.join(f'<div class="tcard2"><span class="ic" aria-hidden="true">{ICON["plane"]}</span><div><b>{E(d)}</b><span>{E(t)}</span></div></div>' for d, t in rows)
+            tt_ = trans["tag"]
+            bands += (f'<div class="panel tband"><{tt_} class="inh">{E(text_of(trans["h"]).rstrip(":"))}</{tt_}><div class="trow">{cards}</div>'
+                      + ''.join(f'<p class="tnote">{x}</p>' for x in notes_) + '</div>')
         ent = one('entry')
-        if ent:   # Gran Fondo entry prices (Strade Bianche): grid prices and the note
-            el = ''.join(f'<li><span>{x}</span></li>' for k, v, s in ent['items'] if k == 'text' for x in lines(clean(re.sub(r'(€)(?=Grid)', r'\1<br>', v))))
-            side += f'<div class="panel entryp" style="padding:22px 24px"><p class="sidet">{E(text_of(ent["h"]).rstrip("*"))}</p><ul>{el}</ul></div>'
-        out.append(f'<section id="included"><div class="in">{H(inc, "The details")}<div class="inc"><div class="panel"><ul>{inc_li}</ul></div>'
-                   f'<div class="side">{side}</div></div></div></section>')
+        if ent:   # Gran Fondo entry prices (Strade Bianche): the grid prices as tiles, then the notes
+            ls_ = [x for k, v, s in ent['items'] if k == 'text' for x in lines(clean(re.sub(r'(€)(?=Grid)', r'\1<br>', v)))]
+            grid_ = [re.match(r'^\s*(Grid \d+)\s*\(([^)]*)\)\s*:?\s*(.*)$', text_of(x)) for x in ls_]
+            tiles = ''.join(f'<div class="ptile"><span>{E(m.group(1))}</span><b>{E(m.group(3))}</b><small>Places {E(m.group(2))}</small></div>' for m in grid_ if m)
+            nts = ''.join(f'<p class="tnote">{x}</p>' for x, m in zip(ls_, grid_) if not m)
+            bands += f'<div class="panel tband"><p class="inh">{E(text_of(ent["h"]).rstrip("*"))}</p><div class="prow">{tiles}</div>{nts}</div>'
+        out.append(f'<section id="included"><div class="in">{H(inc, "The details")}<div class="inc2"><div class="panel yes"><p class="inh">Included in the price</p><ul>{inc_li}</ul></div>{no_html}</div>'
+                   f'{bands}</div></section>')
         nav.append(('included', "What's included"))
     for gsec in S('gallery'):
         pics = [x['id'] for k, v, s in gsec['items'] if k == 'gallery' for x in s.get('gallery', [])] + [v for k, v, s in gsec['items'] if k == 'img']
@@ -437,6 +467,11 @@ def trip(slug):
                f'<a class="btn btn-ghost" href="{L}/contact/">Ask a question</a></div></div></div></section>')
     tabs = ''.join(f'<a href="#{a}">{E(b)}</a>' for a, b in nav)
     out.insert(1, f'<nav class="tabs" aria-label="On this page"><div class="in">{tabs}<a class="btn btn-go tbook" href="{E(book)}" target="_blank" rel="noopener">Book now</a></div></nav>')
+    out.append("""<script>(function(){var m=document.querySelector('.cl .dmap'),l=document.querySelector('.cl .dleg');if(!m||!l)return;var cur=null;
+function set(d){cur=d;m.classList.toggle('hl',!!d);m.querySelectorAll('.dr,.db').forEach(function(g){g.classList.toggle('on',g.dataset.d===d);});
+l.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.d===d);b.setAttribute('aria-pressed',b.dataset.d===d);});}
+l.querySelectorAll('button').forEach(function(b){b.addEventListener('mouseenter',function(){set(b.dataset.d);});b.addEventListener('focus',function(){set(b.dataset.d);});
+b.addEventListener('click',function(){set(cur===b.dataset.d?null:b.dataset.d);});});l.addEventListener('mouseleave',function(){set(null);});})();</script>""")   # day highlight on the route map
     # one Book now on screen at a time (Matteo 16 Nov): the bar's button shows once the price box has scrolled away
     out.append("""<script>(function(){var b=document.querySelector('.cl .thero .book'),t=document.querySelector('.cl .tabs');if(!b||!t||!('IntersectionObserver' in window))return;t.classList.add('nobook');
 new IntersectionObserver(function(es){t.classList.toggle('nobook',es[0].isIntersecting);}).observe(b);})();</script>""")
@@ -559,6 +594,41 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
+html .cl .thero .tag.tflag { padding: 3px; background: rgba(8,9,10,.6); }
+html .cl .thero .tag.tflag img { display: block; width: 22px; height: 22px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgba(255,255,255,.35); }
+html .cl .thero .tag.tlvl .lm { margin-right: 7px; }
+html .cl .dleg { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 6px; }
+html .cl .dleg button { width: 100%; display: flex; align-items: center; gap: 10px; text-align: left; background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; color: var(--text-2); font: 600 13px/1.3 var(--body); cursor: pointer; transition: border-color .2s, background .2s; }
+html .cl .dleg button:hover, html .cl .dleg button.on { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.06); color: #fff; }
+html .cl .dleg .sw { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: #0a0c0e; font: 800 12px/1 var(--body); }
+html .cl .dleg .dt { flex: 1; min-width: 0; white-space: normal; overflow-wrap: break-word; text-transform: uppercase; font-size: 11.5px; letter-spacing: .05em; }
+html .cl .dleg button { white-space: normal; }
+html .cl .dleg .dk { flex: none; color: var(--text-3); font-weight: 600; font-size: 12px; }
+html .cl .dmap .dr, html .cl .dmap .db { transition: opacity .2s; }
+html .cl .dmap.hl .dr:not(.on), html .cl .dmap.hl .db:not(.on) { opacity: .12; }
+html .cl .dmap.hl .dr.on .ln { stroke-width: 4.5; }
+html .cl .inc2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+html .cl .inc2 .panel, html .cl .tband { padding: 24px 26px; }
+html .cl #included .inh { font-family: var(--head); font-weight: 400; font-size: 22px; line-height: 1.1; text-transform: uppercase; letter-spacing: .01em; color: var(--text); margin: 0 0 16px; }
+html .cl #included ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+html .cl #included li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; font-size: 14.5px; }
+html .cl #included .yes li::before, html .cl #included .no li::before { content: ""; width: 20px; height: 20px; border-radius: 50%; margin-top: 2px; }
+html .cl #included .yes li::before { background: rgba(0,154,68,.18) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%232bd47a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 20px no-repeat; }
+html .cl #included .no li::before { background: rgba(255,255,255,.04) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M7 7l6 6M13 7l-6 6' fill='none' stroke='%238a8f98' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / 20px no-repeat; }
+html .cl .tband { margin-top: 16px; }
+html .cl .trow { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+html .cl .tcard2 { display: flex; gap: 12px; align-items: flex-start; background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+html .cl .tcard2 .ic { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: var(--green-text, #2bd47a); background: rgba(0,154,68,.12); }
+html .cl .tcard2 .ic svg { width: 17px; height: 17px; }
+html .cl .tcard2 b { display: block; font-family: var(--head); font-weight: 400; font-size: 19px; color: var(--green-text, #2bd47a); letter-spacing: .02em; }
+html .cl .tcard2 span { font-size: 14px; color: var(--text-2); line-height: 1.45; }
+html .cl .tnote { margin: 12px 0 0; font-size: 13.5px; color: var(--text-3); }
+html .cl .prow { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+html .cl .ptile { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: grid; gap: 2px; }
+html .cl .ptile span { font-size: 11.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
+html .cl .ptile b { font-family: var(--head); font-weight: 400; font-size: 28px; color: #fff; }
+html .cl .ptile small { font-size: 12.5px; color: var(--text-3); }
+@media (max-width: 800px) { html .cl .inc2 { grid-template-columns: minmax(0, 1fr); } }
 html .cl .inc .sidet { font-family: var(--head); font-weight: 400; font-size: 20px; line-height: 1.1; text-transform: uppercase; letter-spacing: .01em; color: var(--text); margin: 0 0 14px; }
 html .cl .inc .entryp li::before { width: 7px; height: 7px; margin: 8px 0 0 7px; background: var(--green-text, #2bd47a); }   /* prices, not included items: a plain dot */
 html .cl .band h3.lede { font-family: var(--body); font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 17px; line-height: 1.5; color: var(--text-2); }
