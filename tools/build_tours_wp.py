@@ -211,6 +211,12 @@ els[-1]['elements'].append(html_widget(finder_js))
 cj = re.search(r"<script>\(function\(\)\{var l=document\.querySelectorAll\('\.stats \.stat \.n'\).*?</script>", home, re.S)   # count-up numbers (Matteo 15 Nov)
 assert cj, 'count-up script missing from tourspages/home.html'
 els[-1]['elements'].append(html_widget(cj.group(0)))
+# Matteo 16 Nov: a subtle, livelier homepage: section titles and tour cards rise in as they come into view, and the signature writes itself
+HOME_DYN = ("""<script>(function(){if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;var d=document.documentElement;d.classList.add('hdyn-ok');
+var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){o.unobserve(e.target);e.target.classList.add('in-view');}});},{threshold:.15});
+document.querySelectorAll('.cc-page section .head, .cc-page .tour').forEach(function(x){var g=x.parentElement?[].indexOf.call(x.parentElement.children,x):0;if(x.classList.contains('tour'))x.style.setProperty('--d',(g%3)*90+'ms');o.observe(x);});
+var s=document.querySelectorAll('.cc img.signature');if(s.length){d.classList.add('sig-ok');var q=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){q.unobserve(e.target);e.target._sig.classList.add('go');}});},{threshold:.5});s.forEach(function(x){x.loading='eager';var t=x.nextElementSibling||x.parentElement;t._sig=x;q.observe(t);});}})();</script>""")
+els[-1]['elements'].append(html_widget(HOME_DYN))
 content = '\n'.join('<div class="cc cc-page">' + b + '</div>' for b in blocks)
 json.dump({"meta": {"_elementor_data": json.dumps(els), "_elementor_edit_mode": "builder"}, "content": content}, open(OUT + 'page-5212.json', 'w'))
 

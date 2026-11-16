@@ -304,7 +304,7 @@ rep('<a class="btn btn-ghost" href="https://tours.cigalacycling.com/about/" targ
 # Matteo's titles: same list as cigalacycling.com
 s = re.sub(r'<ul class="creds">.*?</ul>', '<ul class="creds">\n        <li>European Road Champion Gran Fondo</li>\n        <li>UCI Gran Fondo Vice World Champion</li>\n        <li>UCI Gravel Vice World Champion</li>\n        <li>Italian Gravel Champion</li>\n        <li>200+ race wins</li>\n      </ul>', s, count=1, flags=re.S)
 # signature under the name in "Our story" (cut from the coaching blog; typed name stays for Google and screen readers)
-rep('<p class="sig">Matteo Cigala<span>Tours Director</span></p>', '<img class="signature" src="img/cigala-tours-signature.webp" alt="Matteo Cigala\'s signature" width="924" height="251" loading="lazy">\n      <p class="sig">Matteo Cigala<span>Tours Director</span></p>')  # letter style: signature, then typed name
+rep('<p class="sig">Matteo Cigala<span>Tours Director</span></p>', '<img class="signature" src="img/cigala-tours-signature.webp" alt="Matteo Cigala\'s signature" width="924" height="251">\n      <p class="sig">Matteo Cigala<span>Tours Director</span></p>')  # letter style: signature, then typed name
 # phone menu: same order as the desktop menu, with Bike tours as a sub-menu (Matteo, 15 Nov)
 m = re.search(r'(<nav aria-label="Main \(mobile\)">)(.*?)(\n      </nav>)', s, re.S)
 sub = ''.join(f'\n            <a href="{L}{u}" {EXT}>{t}</a>' for t, u in MENU_SUB)

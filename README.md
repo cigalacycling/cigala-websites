@@ -279,6 +279,31 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
     - Strade Bianche day 3 is a loop back to Radda (Castellina, Panzano, Greve, Lamole, Volpaia).
     - Algarve day 4 is the Gran Fondo to Lagos via Monchique (approximate, until Matteo sends the Komoot GPX).
     - Rivers are off the day maps.
+- **Dynamic pages and more fixes, 16 Nov:**
+  - **Every trip page** (`DYN` in `build_tours_trips.py`):
+    - the numbers count up;
+    - the poster's map badge draws itself on a tile-only poster (`tours_posters.py --base` → `posterbase-<slug>`);
+    - the route map draws day by day;
+    - the day cards slide in.
+    - All of it only runs when JS is on and the visitor hasn't asked for reduced motion.
+  - **Exit pop-up** on every trip page and on Custom tours (`exit_pop()` in `build_tours_pages.py`):
+    - wording per tour, with WhatsApp and contact buttons;
+    - once per visit, never before the cookie choice;
+    - skipped when the newsletter pop-up is open or was closed in the last hour;
+    - snoozed 3 days after closing.
+  - **Custom tours location map:** the dots pop in one by one, and the list and the dots highlight each other.
+  - **About:** Matteo's cut-out photo with the signature; the signature writes itself on About and the homepage; team cards lift with a green outline on hover.
+  - **Homepage:** section titles and tour cards rise in as you scroll (`HOME_DYN` in `build_tours_wp.py`).
+  - **Spacing:** one gap under the hero on every page (44px). The day timeline line no longer runs into the circles. The Contact social icons start under the text column.
+  - **Guides on tours:** per-tour line-ups in `GUIDES_SET`, `GUIDES_ADD` and `GUIDES_SWAP`; team members' photos and roles in `TEAM`. Still to come:
+    - **Alessio "Bone"** (Support & Mechanic): waiting for his photo; then add him to About, Maratona, Dolomites, Slovenia (in place of Amedeo) and French Alps (in place of Antonio).
+    - **Marco on Coast to Coast:** which of the two Marcos.
+  - **Photos:** heroes in `HERO_PHOTO`, with focus points in `HERO_DPOS` and `HERO_MPOS`. Italian Alps cards use the Stelvio photo. The Garda & Stelvio gallery is rebuilt from sharper photos (`GALLERY_PHOTOS`).
+  - **Maps:**
+    - The Garda & Stelvio day 3 sits in a corner inset.
+    - Short out-and-back spikes are removed (`despike`).
+    - Tuscany Epic day 3 leaves Peccioli to the east.
+    - Lake Como day 5 is the Gran Fondo from Bergamo (approximate until the GPX).
 - **Live errors fixed (Matteo 15 Nov: "any error you see, fix it"):**
   - The Gran Canaria H1 now reads "Cycling in Gran Canaria" (live: "Cycling in Mallorca").
   - In the Lake Como guide (post 8945), the second FAQ question is now "How hard is the Muro di Sormano?". Backup: `stg-tours/backup/post-8945-before-faq-fix.json`.

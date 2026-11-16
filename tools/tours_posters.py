@@ -28,12 +28,12 @@ def svg_png(svg_path, px):
     subprocess.run(['node', '-e', js], check=True)
     return Image.open(tmp).convert('RGBA')
 
-def poster(slug):
+def poster(slug, base=False):   # base=True: the tile without the map (the trip page draws an animated map on it)
     m = json.load(open(ROOT + f'stg-tours/out/list-trip-{slug}.json'))['main']
     src = re.search(r'<div class="cardimg"><img[^>]+src="([^"]+)"', m)
     if not src: return print(slug, 'no poster')
     done = json.load(open(MAP))
-    orig = next(v['orig'] for v in done.values() if isinstance(v, dict) and v.get('url') == src.group(1))
+    orig = next(v['orig'] for v in done.values() if isinstance(v, dict) and v.get('url') == src.group(1) and v.get('orig'))
     o = media(orig); u = o['source_url']
     raw = None
     if '-scaled.' in u:
@@ -47,11 +47,12 @@ def poster(slug):
     tile = Image.new('RGBA', (s, y1 - y0), (0, 0, 0, 0))
     d = ImageDraw.Draw(tile)
     d.rounded_rectangle((0, 0, s - 1, y1 - y0 - 1), radius=r, fill=(12, 14, 16, 255), outline=(255, 255, 255, 40), width=max(1, s // 180))
-    mp = svg_png(ROOT + f'tourspages/maps/badge-{slug}.svg', round(s * .86))
-    tile.alpha_composite(mp, ((s - mp.width) // 2, (y1 - y0 - mp.height) // 2))
+    if not base:
+        mp = svg_png(ROOT + f'tourspages/maps/badge-{slug}.svg', round(s * .86))
+        tile.alpha_composite(mp, ((s - mp.width) // 2, (y1 - y0 - mp.height) // 2))
     out = im.convert('RGBA'); out.alpha_composite(tile, (x0, y0)); out = out.convert('RGB')
     if os.environ.get('DRY'): out.save(os.environ['DRY'] + f'poster-{slug}.jpg'); return print(slug, 'dry run')
-    fn = f'cigala-tours-poster-{slug}.webp'
+    fn = f'cigala-tours-poster{"base" if base else ""}-{slug}.webp'
     os.makedirs(OUTDIR, exist_ok=True)
     out.save(OUTDIR + fn, 'WEBP', quality=90)
     alt = (o.get('alt_text') or '').strip() or done[next(k for k, v in done.items() if isinstance(v, dict) and v.get('url') == src.group(1))]['alt']
@@ -59,11 +60,12 @@ def poster(slug):
                          headers={'Content-Type': 'image/webp', 'Content-Disposition': f'attachment; filename="{fn}"', 'User-Agent': 'Mozilla/5.0'}))
     _req(B + f'/media/{r_["id"]}', data=json.dumps({'alt_text': alt}).encode(), method='POST', headers={'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0'})
     done = json.load(open(MAP))
-    done['poster-' + slug] = {'id': r_['id'], 'url': r_['source_url'], 'alt': alt, 'size': list(out.size), 'orig': orig}
+    done[('posterbase-' if base else 'poster-') + slug] = {'id': r_['id'], 'url': r_['source_url'], 'alt': alt, 'size': list(out.size), 'orig': orig}
     json.dump(done, open(MAP, 'w'), indent=1, ensure_ascii=False)
     print(slug, out.size, r_['id'])
 
 if __name__ == '__main__':
     import tours_route_maps as trm
-    for slug in sys.argv[1:] or trm.POSTER_BADGES:
-        poster(slug)
+    base = '--base' in sys.argv
+    for slug in [a for a in sys.argv[1:] if not a.startswith('--')] or trm.POSTER_BADGES:
+        poster(slug, base)

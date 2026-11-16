@@ -121,8 +121,8 @@ def about():
     matteo = next(src for src, n, r in team if n.upper().startswith('MATTEO'))
     # Matteo 16 Nov: the same cut-out photo and signature as on the other sites (the homepage "Our story" block)
     _MW = json.load(open(ROOT + 'stg-tours/media-webp.json'))
-    SIGN = (f'<img class="signature" src="{_MW["signature"]["url"]}" alt="Matteo Cigala\'s signature" width="924" height="251" loading="lazy">'
-            '<p class="sig">Matteo Cigala<span>Tours Director</span></p>')
+    SIGN = (f'<img class="signature" src="{_MW["signature"]["url"]}" alt="Matteo Cigala\'s signature" width="924" height="251">'
+            '<p class="sig">Matteo Cigala<span>Tours Director</span></p>' + SIGN_JS)
     main = f'''<div class="hero plain-hero">
   <div class="in">
     <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / About</div>
@@ -131,7 +131,7 @@ def about():
     <div class="bar"></div>
   </div>
 </div>
-<section style="padding-top:40px">
+<section style="padding-top:44px">
   <div class="in story">
     <div class="panel prose" style="padding:clamp(22px,4vw,40px)">{story}{SIGN}</div>
     <div class="photo mcut"><img src="{_MW['matteo']['url']}" alt="{E(_MW['matteo']['alt'])}" loading="lazy"></div>
@@ -194,7 +194,7 @@ def contact():
     <div class="ctas"><a class="btn btn-go" href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">WhatsApp us →</a><a class="btn btn-ghost" href="mailto:{email}">Email us</a></div>
   </div>
 </div>
-<section style="padding-top:40px">
+<section style="padding-top:44px">
   <div class="in contact-grid">
 <!--FORM-->
     <div class="panel cpanel info">
@@ -581,7 +581,7 @@ def testimonials():
     <div class="bar"></div>
   </div>
 </div>
-{reviews_block(h2_top)}
+{reviews_block(h2_top).replace('<section', '<section style="padding-top:44px"', 1)}
 <section>
   <div class="in">
     <div class="head"><div><div class="eyebrow">On video</div><p class="band-title">Hear it from our guests</p><div class="bar"></div></div></div>
@@ -630,8 +630,11 @@ def custom():
     locs = [x.replace(chr(0x200b), '').strip() for x in locs if 'Patagonia' not in x]   # Europe map (Matteo 15 Nov)
     locs += ['Ireland', 'Provence, France', 'Switzerland']   # added by Matteo 15 Nov (same order as the map, tools/tours_route_maps.py)
     lmap = open(ROOT + 'tourspages/maps/custom-locations.svg').read()
+    # Matteo 16 Nov: a livelier map: the numbered dots pop in one by one, and the list and the dots highlight each other
+    lmap = re.sub(r'<g>(<circle[^>]*/><text[^>]*>(\d+)</text>)</g>', lambda m_: f'<g class="ld" data-n="{m_.group(2)}" style="--i:{m_.group(2)}">{m_.group(1)}</g>', lmap)
+    lmap = lmap.replace('<svg class="lmap"', '<svg class="lmap dyn-l"', 1)
     loc_html = ('<div class="locwrap"><div class="lmapbox">' + lmap + '</div><ol class="locs loclist">' +
-                ''.join(f'<li><span class="n">{i}</span>{x}</li>' for i, x in enumerate(locs, 1)) + '</ol></div>')
+                ''.join(f'<li data-n="{i}" tabindex="0"><span class="n">{i}</span>{x}</li>' for i, x in enumerate(locs, 1)) + '</ol></div>' + LOC_JS)
     faq_html = ''.join(f'<details class="panel faq"><summary><h3>{E(q)}</h3></summary><div class="a">{a}</div></details>' for q, a in faq)
     tel = '+35340478107'
     main = f'''<div class="hero phero">
@@ -645,7 +648,7 @@ def custom():
     <div class="ctas"><a class="btn btn-go" href="#enquire">{E(btn.capitalize())} →</a></div>
   </div>
 </div>
-<section style="padding-top:40px">
+<section style="padding-top:44px">
   <div class="in">
     <div class="head"><div><div class="eyebrow">Tell us</div><p class="band-title">Four questions to start</p><div class="bar"></div></div></div>
     <div class="steps4">{ask_html}</div>
@@ -695,6 +698,8 @@ def custom():
     </div>
   </div>
 </section>'''
+    xp_ = exit_pop('Planning a tour of your own?', 'Tell us where, when and how you like to ride: we will put together a first idea for your group, free and with no commitment.', ('Send us your idea', '#enquire'))
+    main = main.replace('<section id="enquire">', xp_ + '\n<section id="enquire">', 1)   # the exit pop-up (before the form block: the push keeps the form last)
     return {'id': 1576, 'slug': 'private-trips', 'main': main, 'css': PAGE_CSS, 'crumb': 'Custom tours', 'form': True}
 
 
@@ -734,8 +739,8 @@ html .cl .hero-phone a, html .cl .info h2 a { color: var(--text); text-decoratio
 html .cl .hero-phone a:hover, html .cl .info h2 a:hover { color: var(--green-text); }
 html .cl .info h3 { font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: .1em; color: var(--text-3); margin: 0 0 2px; }
 html .cl .info h2 { font-family: var(--body); font-size: 17px; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--text); overflow-wrap: anywhere; }
-html .cl .info .cc-social { margin-top: 2px; }
-.e-con.cl-contact { display: grid !important; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px !important; align-items: start; max-width: 1232px !important; margin: 0 auto !important; padding: 40px 16px 0 !important; }
+html .cl .info .cc-social { margin-top: 2px; margin-left: 48px !important; }   /* icons start under the text column (Matteo 16 Nov) */
+.e-con.cl-contact { display: grid !important; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px !important; align-items: start; max-width: 1232px !important; margin: 0 auto !important; padding: 44px 16px 0 !important; }   /* the same gap under the hero as every page (Matteo 16 Nov) */
 .e-con.cl-contact > .elementor-widget-form { margin: 0 !important; width: 100% !important; max-width: 100% !important; --container-widget-width: 100% !important; }
 .e-con.cl-contact > .elementor-widget-form .cc-form, .e-con.cl-contact .elementor-widget-form.cc-form { margin-top: 0 !important; }
 @media (max-width: 900px) { .e-con.cl-contact { grid-template-columns: minmax(0, 1fr); } }
@@ -757,6 +762,15 @@ html .cl .story .photo.mcut { background: none; border: 0; border-radius: 0; ove
 html .cl .story .photo.mcut::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }
 html .cl .story .photo.mcut img { width: 100%; max-width: 480px; height: auto !important; aspect-ratio: auto !important; object-fit: contain !important; -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, #000 82%, transparent 100%); }
 html .cl .story img.signature { display: block; width: 150px; max-width: 45%; height: auto; margin: 22px 0 0 -4px; opacity: .92; }
+html.sig-ok .cl img.signature, html.sig-ok .cc img.signature { clip-path: inset(0 100% 0 0); }   /* the signature writes itself, left to right, when it comes into view (Matteo 16 Nov) */
+html.sig-ok .cl img.signature.go, html.sig-ok .cc img.signature.go { animation: sig-write 2.2s cubic-bezier(.55,.1,.35,1) forwards; }
+@keyframes sig-write { to { clip-path: inset(0 0 0 0); } }
+html .cl .team .member { transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+html .cl .team .member img { transition: transform .5s ease; }
+html .cl .team .member:hover { transform: translateY(-4px); border-color: rgba(43,212,122,.7); box-shadow: 0 18px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(43,212,122,.35); }   /* team cards come alive on hover (Matteo 16 Nov) */
+html .cl .team .member:hover img { transform: scale(1.04); }
+html .cl .team .member { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { html .cl .team .member, html .cl .team .member img { transition: none; } html .cl .team .member:hover { transform: none; } }
 html .cl .story .sig { margin: 6px 0 0 !important; font-family: var(--head); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; color: var(--text); }
 html .cl .story .sig span { display: block; font-family: var(--body); font-size: 12.5px; letter-spacing: 0; text-transform: none; color: var(--text-3); margin-top: 2px; }
 html .cl .band-up > img { object-position: center 58% !important; }   /* show the riders' faces (Matteo) */
@@ -854,6 +868,70 @@ html .cl .info p { margin: 0; color: var(--text-2); }
 html .cl .info p a { color: var(--text); font-weight: 600; text-decoration: none; }
 html .cl h2.lab { font-family: var(--body); font-size: 11px; line-height: 1.4; letter-spacing: .09em; font-weight: 600; color: var(--text-3); text-transform: uppercase; margin: 0 0 12px; }
 '''
+
+# ---------- exit pop-up (Matteo 16 Nov): "any questions?" when a visitor is about to leave a tour page or Custom tours ----------
+# Once per visit; not before the cookie choice; not when the newsletter pop-up is open or was closed in the last hour; snoozed 3 days after closing.
+# Desktop: the pointer leaves through the top of the window. Phones: a fast scroll back up after reading half the page.
+def exit_pop(title, text, second):
+    t2, u2 = second
+    return (f'<div class="xpop" id="xpop" hidden><div class="xpop-bg" data-x></div><div class="xpop-box panel" role="dialog" aria-modal="true" aria-labelledby="xpop-t" tabindex="-1">'
+            f'<button type="button" class="xpop-x" aria-label="Close" data-x>×</button><div class="eyebrow">Before you go</div><p class="xpop-t" id="xpop-t">{E(title)}</p>'
+            f'<p class="xpop-p">{E(text)}</p><div class="ctas"><a class="btn btn-go" href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">WhatsApp us →</a>'
+            f'<a class="btn btn-ghost" href="{E(u2)}">{E(t2)}</a></div><p class="xpop-s">We usually reply within a few hours.</p></div></div>' + EXIT_JS)
+EXIT_JS = """<script>(function(){var p=document.getElementById('xpop');if(!p)return;var K='cc_exit',t0=Date.now(),last=null,maxY=0,ys=[];
+function g(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function ok(){if(!g('cc_consent'))return false;try{if(sessionStorage.getItem(K))return false;}catch(e){}
+var c=+(g(K)||0);if(c&&Date.now()-c<3*864e5)return false;var n=document.getElementById('nl-pop');if(n&&!n.hidden)return false;
+try{var nl=JSON.parse(g('cc_nl')||'{}');if(nl.c&&Date.now()-nl.c<36e5)return false;}catch(e){}return Date.now()-t0>8000;}
+function open(){if(!ok())return;try{sessionStorage.setItem(K,'1');}catch(e){}last=document.activeElement;p.hidden=false;p.querySelector('.xpop-box').focus({preventScroll:true});document.addEventListener('keydown',key);}
+function close(){p.hidden=true;document.removeEventListener('keydown',key);try{localStorage.setItem(K,String(Date.now()));}catch(e){}if(last&&last.focus)last.focus({preventScroll:true});}
+function key(e){if(e.key==='Escape')close();}
+p.querySelectorAll('[data-x]').forEach(function(b){b.addEventListener('click',close);});
+document.addEventListener('mouseout',function(e){if(!e.relatedTarget&&e.clientY<=0)open();});
+if(matchMedia('(hover: none)').matches){addEventListener('scroll',function(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;maxY=Math.max(maxY,y);ys.push([Date.now(),y]);while(ys.length&&Date.now()-ys[0][0]>700)ys.shift();
+if(maxY>h*.5&&ys.length&&ys[0][1]-y>500)open();},{passive:true});}})();</script>"""
+EXIT_CSS = '''
+html .cl .xpop { position: fixed; inset: 0; z-index: 99990; display: grid; place-items: center; padding: 16px; }
+html .cl .xpop[hidden] { display: none; }
+html .cl .xpop-bg { position: absolute; inset: 0; background: rgba(4,5,6,.72); backdrop-filter: blur(3px); }
+html .cl .xpop-box { position: relative; width: min(460px, 100%); padding: 30px 28px 24px; border: 1px solid rgba(43,212,122,.35); border-radius: 16px; background: #0f1113; box-shadow: 0 30px 80px rgba(0,0,0,.6); outline: none; animation: xpop-in .3s ease; }
+@keyframes xpop-in { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { html .cl .xpop-box { animation: none; } }
+html .cl .xpop-x { position: absolute !important; min-height: 0 !important; line-height: 0 !important; top: 12px; right: 12px; width: 36px; height: 36px; display: grid; place-items: center; padding: 0 !important; border: 0; border-radius: 50%; background: rgba(255,255,255,.08); cursor: pointer; font-size: 0; }
+html .cl .xpop-x::before, html .cl .xpop-x::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 2px; margin: -1px 0 0 -7px; border-radius: 1px; background: #fff; transform: rotate(45deg); }   /* a drawn X, pinned to the middle (Matteo 16 Nov) */
+html .cl .xpop-x::after { transform: rotate(-45deg); }
+html .cl .xpop-x:hover { background: rgba(255,255,255,.16); }
+html .cl .xpop-t { font-family: var(--head); font-size: clamp(26px, 5vw, 32px); line-height: 1.05; text-transform: uppercase; color: #fff; margin: 4px 0 10px; padding-right: 30px; }
+html .cl .xpop-p { color: var(--text-2); font-size: 15px; line-height: 1.55; margin: 0 0 18px; }
+html .cl .xpop .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+html .cl .xpop-s { margin: 14px 0 0; font-size: 12.5px; color: var(--text-3); }
+'''
+
+PAGE_CSS += EXIT_CSS
+PAGE_CSS += '''
+html.hdyn-ok .cc-page section .head, html.hdyn-ok .cc-page .tour { opacity: 0; transform: translateY(18px); }
+html.hdyn-ok .cc-page section .head.in-view, html.hdyn-ok .cc-page .tour.in-view { opacity: 1; transform: none; transition: opacity .7s ease, transform .7s ease; transition-delay: var(--d, 0ms); }
+'''   # homepage: titles and tour cards rise in (Matteo 16 Nov); only when the script runs and motion is welcome
+SIGN_JS = """<script>(function(){if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;var s=document.querySelectorAll('img.signature');if(!s.length)return;
+document.documentElement.classList.add('sig-ok');var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){o.unobserve(e.target);e.target._sig.classList.add('go');}});},{threshold:.5});
+s.forEach(function(x){var t=x.nextElementSibling||x.parentElement;t._sig=x;o.observe(t);});})();</script>"""   # watch the name under the signature: a clipped image never counts as on screen   # the signature writes itself (About, homepage)
+LOC_JS = """<script>(function(){var m=document.querySelector('.cl .lmap.dyn-l'),l=document.querySelector('.cl .loclist');if(!m||!l)return;
+var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!rm&&'IntersectionObserver' in window){m.classList.add('wait');new IntersectionObserver(function(es,o){if(es[0].isIntersecting){o.disconnect();m.classList.add('go');}},{threshold:.3}).observe(m);}
+function set(n){m.classList.toggle('hl',!!n);m.querySelectorAll('.ld').forEach(function(g){g.classList.toggle('on',g.dataset.n===n);});l.querySelectorAll('li').forEach(function(li){li.classList.toggle('on',li.dataset.n===n);});}
+l.querySelectorAll('li').forEach(function(li){['mouseenter','focus'].forEach(function(ev){li.addEventListener(ev,function(){set(li.dataset.n);});});li.addEventListener('click',function(){set(li.dataset.n);});});
+l.addEventListener('mouseleave',function(){set(null);});m.querySelectorAll('.ld').forEach(function(g){g.addEventListener('mouseenter',function(){set(g.dataset.n);});g.addEventListener('mouseleave',function(){set(null);});});})();</script>"""
+PAGE_CSS += '''
+html .cl .lmap .ld { transform-box: fill-box; transform-origin: center; transition: opacity .25s, transform .25s; cursor: default; }
+html .cl .lmap.wait .ld { opacity: 0; transform: scale(.3); }
+html .cl .lmap.wait.go .ld { opacity: 1; transform: none; transition: opacity .35s ease, transform .35s cubic-bezier(.3,1.6,.5,1); transition-delay: calc(var(--i) * 60ms); }
+html .cl .lmap.hl .ld:not(.on) { opacity: .25; transition-delay: 0s; }
+html .cl .lmap .ld.on { transform: scale(1.45); transition-delay: 0s; }
+html .cl .lmap .ld.on circle { fill: #2bd47a; }
+html .cl .loclist li { cursor: default; border-radius: 8px; transition: background .2s, color .2s; outline: none; }
+html .cl .loclist li.on, html .cl .loclist li:focus-visible { background: rgba(0,154,68,.14); color: #fff; }
+html .cl .loclist li.on .n { background: #2bd47a; color: #0a0c0e; }
+'''   # the location ideas map (Custom tours): dots pop in, list and dots highlight each other (Matteo 16 Nov)
 
 PAGES = {'about': about, 'contact': contact, 'destinations': destinations, 'testimonials': testimonials, 'private-trips': custom}
 for _slug in DEST_IDS: PAGES['dest-' + _slug] = (lambda s_: (lambda: destination(s_)))(_slug)

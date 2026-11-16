@@ -158,7 +158,7 @@ GUIDES_CSS = '''
 .cl-gcard-go .elementor-button { background: #009a44 !important; border: 0 !important; border-radius: 8px !important; padding: 9px 16px !important; font: 600 13px Montserrat, system-ui, sans-serif !important; color: #fff !important; text-transform: none !important; box-shadow: none !important; }
 .cl-gcard-go .elementor-button:hover { background: #00b350 !important; color: #fff !important; }
 /* Guides page */
-.e-con.cl-guides-grid { max-width: 1232px !important; margin: 0 auto !important; padding: 24px 16px 0 !important; }
+.e-con.cl-guides-grid { max-width: 1232px !important; margin: 0 auto !important; padding: 44px 16px 0 !important; }   /* the same gap under the hero as every page (Matteo 16 Nov) */
 .cl-ggrid .elementor-loop-container { gap: 16px !important; }
 .cl-ggrid .e-loop__load-more .elementor-button { font: 600 14px Montserrat, system-ui, sans-serif !important; color: #fff !important; background: #009a44 !important; border: 0 !important; border-radius: 8px !important; padding: 12px 22px !important; text-transform: none !important; }
 .cl-ggrid .e-load-more-spinner { display: none !important; }   /* Elementor shows it only while loading; its own CSS is not loaded here */

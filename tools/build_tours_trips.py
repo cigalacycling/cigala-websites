@@ -12,7 +12,7 @@ python3 -I tools/push_tours_list.py trip-<slug>.
 """
 import os, re, sys, json, html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from build_tours_pages import fix_text, items, text_of, clean, img_tag, reviews_block, PARTNERS_H2, PAGE_CSS, L, EXT, E, YT_JS
+from build_tours_pages import fix_text, items, text_of, clean, img_tag, reviews_block, PARTNERS_H2, PAGE_CSS, L, EXT, E, YT_JS, exit_pop
 from tours_img import media, webp
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
@@ -39,6 +39,8 @@ EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 2225,   # gravel ph
                'lake-garda-and-stelvio': {'GRAVEL': 7766, 'STELVIO': 2225}, 'lake-garda-gravel': 434}   # by a word of the section title when a page has several   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
 # Maratona: two hotels in one text block live -> a card each, with their own photos and stars (Matteo 16 Nov)
 HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629, 8631]), ('Hotel Soleil', 4, False, 8709, [8707, 8708])]}
+DYN = set(IDS)   # the dynamic trip page on every tour (Matteo 16 Nov, after the Algarve pilot): count-up numbers, animated map badge, route drawn day by day, days sliding in
+HOTEL_PIC_ORDER_IDS = {'discover-the-algarve-granfondo': [2572, 2563, 2565, 2564, 2566, 2561, 2567, 2562, 2573]}   # Vilar do Golf: the resort and pool first, not the gym
 TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, cover photo (our own: no YouTube request until the visitor taps play) - Matteo 16 Nov
 HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 8620, 'italian-alps': 2225, 'french-alps': 719, 'alpine-gravel-escape': 6100,
               'italys-coast-to-coast': 4465, 'lake-como-gran-fondo-il-lombardia': 8767}   # sharp 2560px originals (Matteo 16 Nov: the old ones looked soft)   # Dolomites / Italian Alps: photos with riders (Matteo 16 Nov)   # media id: rider in Cigala kit above an Algarve beach
@@ -69,6 +71,14 @@ def team_card(name):
     role, photo, bio = TEAM[name]
     return (f'<article class="panel guide"><div class="ph">{img_tag(photo, 600, alt=f"{name}, {role.lower()} at Cigala Cycling Tours")}</div>'
             f'<div class="tx"><h3>{E(name.upper())}</h3><div class="role">{E(role)}</div>{f"<p>{E(bio)}</p>" if bio else ""}</div></article>')
+
+DYN_JS = """<script>(function(){var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,io='IntersectionObserver' in window&&!rm;
+if(io)document.documentElement.classList.add('dyn-ok');
+function when(el,cb,th){if(!io){cb(el);return;}var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){o.unobserve(e.target);cb(e.target);}});},{threshold:th||.25});o.observe(el);}
+document.querySelectorAll('.cl .dyn-in').forEach(function(el){when(el,function(x){x.classList.add('go');},el.classList.contains('day')?.15:.3);});
+document.querySelectorAll('.cl .dyn-count .n').forEach(function(el){var t=el.lastChild;if(!t||t.nodeType!==3)return;var m=t.textContent.match(/^([\\d,]+)(.*)$/);if(!m)return;
+var to=+m[1].replace(/,/g,''),suf=m[2];if(!io)return;var fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';t.textContent=fmt(0);
+when(el,function(){var t0=performance.now();(function f(n){var k=Math.min(1,(n-t0)/1400);t.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},.5);});})();</script>"""
 
 def raw(pid): return json.loads(json.load(open(ROOT + f'stg-tours/backup/page-{pid}.json'))['meta']['_elementor_data'] or '[]')
 
@@ -277,7 +287,7 @@ def trip(slug):
              ('cal', short(days_riding) if days_riding else f'{nights + 1} days', 'Days riding' if days_riding else f'{nights} nights'),
              ('level', lvl.replace(', ', ' · '), 'Level')]   # 4 cells: one full row, a closed box (Matteo 16 Nov)
     strip = ''.join(f'<div><span class="gi" aria-hidden="true">{ICON[ic]}</span><div><div class="n{" sm" if len(n) > 12 else ""}">{meter if ic == "level" else ""}{E(n)}</div><div class="l">{E(l)}</div></div></div>' for ic, n, l in cells if n)
-    glance_html = f'<div class="in" style="padding-top:28px"><div class="panel glance g4" aria-label="Trip at a glance">{strip}</div></div>'
+    glance_html = f'<div class="in" style="padding-top:28px"><div class="panel glance g4{" dyn-count" if slug in DYN else ""}" aria-label="Trip at a glance">{strip}</div></div>'
     # ---------- sections ----------
     def H(sec, eyebrow, fallback=None, tag=None):
         t = re.sub(r'<[^>]+>', '', sec['h']).replace('​', '').strip() if sec and sec['h'] else fallback
@@ -289,7 +299,14 @@ def trip(slug):
     if intro:
         paras = ''.join(clean(v) for k, v, s in intro['items'] if k == 'text')
         pst = M.get('poster-' + slug)   # the poster with our map badge (tools/tours_posters.py)
-        cimg = (f'<div class="cardimg"><img src="{pst["url"]}" alt="{E(pst["alt"])}" loading="lazy"></div>' if pst else
+        pb = M.get('posterbase-' + slug) if slug in DYN else None
+        if pb and os.path.exists(ROOT + f'tourspages/maps/badge-{slug}.svg'):   # the map draws itself on the poster's tile
+            bsvg = open(ROOT + f'tourspages/maps/badge-{slug}.svg').read()
+            cls = iter(['bf', 'br', 'bh', 'bo'] if bsvg.count('<path') == 4 else ['bf', 'br', 'bo'])
+            bsvg = re.sub(r'<path ', lambda m_: f'<path class="{next(cls)}" pathLength="1" ', bsvg)
+            pst = dict(pb, alt=pst['alt'] if pst else pb['alt'])
+            cimg = f'<div class="cardimg pdyn dyn-in"><img src="{pst["url"]}" alt="{E(pst["alt"])}" loading="lazy"><div class="pbadge" aria-hidden="true">{bsvg}</div></div>'
+        else: cimg = (f'<div class="cardimg"><img src="{pst["url"]}" alt="{E(pst["alt"])}" loading="lazy"></div>' if pst else
                 f'<div class="cardimg">{img_tag(hero_src, 1200, alt=hero_alt)}</div>') if hero_src and card else ''
         out.append(f'<section id="overview"><div class="in split"><div>{H(intro, "The trip")}<div class="prose">{paras}</div></div>{cimg}</div></section>')
         nav.append(('overview', 'Overview'))
@@ -310,6 +327,10 @@ def trip(slug):
     mp = ROOT + f'tourspages/maps/day-{slug}.svg'   # day-by-day routes on real roads (tools/tours_day_routes.py, Matteo 16 Nov)
     if not os.path.exists(mp): mp = ROOT + f'tourspages/maps/{slug}.svg'
     svg = open(mp).read().replace('aria-label="Route map"', f'aria-label="{E(text_of(h1).title())} bike tour route map by Cigala Cycling Tours"') if os.path.exists(mp) else ''
+    if svg and slug in DYN:   # the route draws itself, one day after the other
+        svg = svg.replace('<svg class="rmap dmap"', '<svg class="rmap dmap anim dyn-in"', 1)
+        svg = re.sub(r'<path id="dr(\d+)"', r'<path id="dr\1" pathLength="1"', svg)
+        _n = iter(range(99)); svg = re.sub(r'<g class="(dr|db)" data-d="(\d+)"', lambda m_: f'<g class="{m_.group(1)}" data-d="{m_.group(2)}" style="--i:{m_.group(2)}"', svg)
     rimg = None
     if route and not svg:
         rimg = next((v for k, v, s in route['items'] if k == 'img'), None)
@@ -360,6 +381,7 @@ def trip(slug):
             lis.append(f'<li class="day"><div class="num"><span><small>DAY</small>{n}</span></div><div class="panel box"><{tg}>{E(t)}</{tg}>'
                        f'{f"<div class=meta>{chips}</div>" if chips else ""}<div class="prose">{body}</div></div></li>')
         head = H(d2d, 'Itinerary') if d2d else '<div class="head"><div><div class="eyebrow">Itinerary</div><p class="band-title">Day by day</p><div class="bar"></div></div></div>'
+        if slug in DYN: lis = [x.replace('<li class="day">', '<li class="day dyn-in">', 1) for x in lis]
         out.append(f'<section id="itinerary"><div class="in">{head}{gpx}<ol class="days">{"".join(lis)}</ol></div></section>')
         nav.append(('itinerary', 'Day by day'))
     for ex in S('extra') + S('other'):
@@ -462,6 +484,7 @@ def trip(slug):
         if not names and slug in HOTEL_FALLBACK: names = [HOTEL_FALLBACK[slug]]
         if slug in HOTEL_PIC_ORDER:
             o_ = HOTEL_PIC_ORDER[slug]; pics = [pics[i] for i in o_] + pics[len(o_):]
+        if slug in HOTEL_PIC_ORDER_IDS: pics = HOTEL_PIC_ORDER_IDS[slug]
         hotels_ = []
         for n, (tg, v) in enumerate(names):
             t = text_of(v); stars = len(re.findall(r'\*', t)); sup = bool(re.search(r'\*\s*S\b', t))
@@ -585,6 +608,8 @@ function set(d){cur=d;m.classList.toggle('hl',!!d);m.querySelectorAll('.dr,.db')
 l.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.d===d);b.setAttribute('aria-pressed',b.dataset.d===d);});}
 l.querySelectorAll('button').forEach(function(b){b.addEventListener('mouseenter',function(){set(b.dataset.d);});b.addEventListener('focus',function(){set(b.dataset.d);});
 b.addEventListener('click',function(){set(cur===b.dataset.d?null:b.dataset.d);});});l.addEventListener('mouseleave',function(){set(null);});})();</script>""")   # day highlight on the route map
+    if slug in DYN: out.append(DYN_JS)
+    out.append(exit_pop(f'Any questions about {re.sub(r"\s*\|\s*Gravel$", "", tr["name"])}?', 'Dates, fitness, bikes, rooms or the route: ask Matteo and the team, we are happy to help before you book.', ('Send us a message', f'{L}/contact/')))   # exit pop-up (Matteo 16 Nov)
     # one Book now on screen at a time (Matteo 16 Nov): the bar's button shows once the price box has scrolled away
     out.append("""<script>(function(){var b=document.querySelector('.cl .thero .book'),t=document.querySelector('.cl .tabs');if(!b||!t||!('IntersectionObserver' in window))return;t.classList.add('nobook');
 new IntersectionObserver(function(es){t.classList.toggle('nobook',es[0].isIntersecting);}).observe(b);})();</script>""")
@@ -710,6 +735,26 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
+html .cl .day .num { position: relative; z-index: 1; }   /* the timeline line runs behind the day circle, not into it (Matteo 16 Nov) */
+/* ---- dynamic trip page (pilot: Algarve), only when JS runs and motion is welcome ---- */
+html .cl .cardimg.pdyn { position: relative; overflow: hidden; }
+html .cl .pdyn .pbadge { position: absolute; left: 65.5%; width: 30.9%; top: 0; margin-top: 3.6%; aspect-ratio: 309 / 320; display: grid; place-items: center; pointer-events: none; }
+html .cl .pdyn .pbadge svg { width: 86%; height: auto; overflow: visible; }
+html.dyn-ok .cl .pdyn .bo { stroke-dasharray: 1; stroke-dashoffset: 1; }
+html.dyn-ok .cl .pdyn .bf, html.dyn-ok .cl .pdyn .br, html.dyn-ok .cl .pdyn .bh { opacity: 0; }
+html.dyn-ok .cl .pdyn.go .bo { transition: stroke-dashoffset 1.8s ease; stroke-dashoffset: 0; }
+html.dyn-ok .cl .pdyn.go .bf, html.dyn-ok .cl .pdyn.go .br { transition: opacity .8s ease 1.2s; opacity: 1; }
+html.dyn-ok .cl .pdyn.go .bh { transition: opacity .6s ease 1.8s; opacity: .85; animation: bh-glow 2.6s ease-in-out 2.6s infinite; }
+@keyframes bh-glow { 0%, 100% { fill-opacity: .85; } 50% { fill-opacity: .45; } }
+html.dyn-ok .cl .dmap.anim .dr use { stroke-dasharray: 1; stroke-dashoffset: 1; }
+html.dyn-ok .cl .dmap.anim .db { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.4); }
+html.dyn-ok .cl .dmap.anim.go .dr use { transition: stroke-dashoffset 1.4s ease-in-out; transition-delay: calc((var(--i) - 1) * .55s); stroke-dashoffset: 0; }
+html.dyn-ok .cl .dmap.anim.go .db { transition: opacity .35s ease, transform .35s ease; transition-delay: calc((var(--i) - 1) * .55s + 1.1s); opacity: 1; transform: none; }
+html.dyn-ok .cl .days .day.dyn-in { opacity: 0; transform: translateY(18px); }
+html.dyn-ok .cl .days .day.dyn-in::before { transform: scaleY(0); transform-origin: top; }
+html.dyn-ok .cl .days .day.dyn-in.go { opacity: 1; transform: none; transition: opacity .6s ease, transform .6s ease; }
+html.dyn-ok .cl .days .day.dyn-in.go::before { transform: scaleY(1); transition: transform .9s ease .3s; }
+@media (prefers-reduced-motion: reduce) { html .cl .pdyn .bh { animation: none; } }
 html .cl #guides .gl { margin: 4px 0 26px; }   /* more room between the intro line and the guide cards (Matteo 16 Nov) */
 html .cl #guides .guide .tx { padding: 22px 22px 24px; }
 html .cl #guides .guide .role { margin: 8px 0 12px; }
@@ -744,7 +789,7 @@ html .cl .hcards .hx .prose p { font-size: 14.5px; line-height: 1.6; color: var(
 html .cl .hthumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
 html .cl .hthumbs.n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 html .cl .hthumbs img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
-html .cl .tvid { max-width: 1000px; }
+html .cl .tvid { max-width: none; width: 100%; }   /* the video uses the full content width, like the other sections (Matteo 16 Nov) */
 html .cl .tvid .play { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
 html .cl .tvid .play::after { left: 34px; top: 26px; border-width: 16px 0 16px 25px; }
 html .cl .hvid { margin-top: 18px; display: inline-flex; align-items: center; gap: 10px; }

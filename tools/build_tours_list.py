@@ -171,7 +171,7 @@ def page_main(slug):
              f'    <div class="lede">{"".join(f"<p>{E(p)}</p>" for p in intro)}</div>\n    {hero_custom}\n  </div>\n</div>']
     if slug == 'road-trips':
         gf_html = '\n'.join(rows[s][1] for s in GF)
-        parts.append(f'<section id="calendar" style="padding-top:24px">\n  <div class="in">\n    {head}\n'
+        parts.append(f'<section id="calendar" style="padding-top:44px">\n  <div class="in">\n    {head}\n'
                      f'    <div class="tgrid">\n{tours_html}\n    </div>{NONE}\n  </div>\n</section>')
         parts.append(f'<section style="padding-top:56px">\n  <div class="in">\n'
                      f'    <div class="head"><div><div class="eyebrow">Ride the event</div><h2>Road tours with a Gran Fondo</h2><div class="bar"></div>\n'
@@ -179,7 +179,7 @@ def page_main(slug):
                      f'      <a class="arrow-link" href="{L}/trips/granfondo-trips/" {EXT}>All Gran Fondo tours →</a></div>\n'
                      f'    <div class="tgrid">\n{gf_html}\n    </div>{NONE}\n    {footnote}\n  </div>\n</section>')
     else:
-        parts.append(f'<section id="calendar" style="padding-top:24px">\n  <div class="in">\n    {head}\n'
+        parts.append(f'<section id="calendar" style="padding-top:44px">\n  <div class="in">\n    {head}\n'
                      f'    <div class="tgrid">\n{tours_html}\n    </div>{NONE}\n    {footnote}\n  </div>\n</section>')
     parts += [band, partners, READMORE, LEVEL_JS]
     return '\n'.join(parts)
