@@ -133,6 +133,7 @@
     var c=null;try{c=localStorage.getItem('cc_consent');}catch(e){c='x';}
     if(!c){return false;}
     var b=document.getElementById('cc-consent');if(b&&!b.hidden){return false;}
+    var xp=document.getElementById('xpop');if(xp&&!xp.hidden){return false;}
     var a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)){return false;}
     return true;
   }

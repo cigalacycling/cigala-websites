@@ -177,7 +177,7 @@ nlpop = open(S + 'wp/nl-popup.html').read()
 assert ftr.startswith('<footer>')
 ftr = '<footer>\n  ' + nlband + ftr[len('<footer>'):]
 parallax = open(S + 'shared/parallax/parallax.html').read()
-json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget(ftr + parallax), html_widget(banner), html_widget(nlpop)])])}}, open(OUT + 'lib-228.json', 'w'))
+json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget(ftr + parallax), html_widget(banner), html_widget(nlpop), html_widget(open(S + 'wp/exit-popup.html').read())])])}}, open(OUT + 'lib-228.json', 'w'))
 json.dump({"meta": {"_elementor_data": json.dumps([wrap([html_widget(hdr)])])}}, open(OUT + 'lib-170.json', 'w'))
 
 # kit settings

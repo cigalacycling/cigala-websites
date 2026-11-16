@@ -1,0 +1,53 @@
+<div class="xpop" id="xpop" hidden>
+  <div class="xpop-bg" data-x></div>
+  <div class="xpop-box" role="dialog" aria-modal="true" aria-labelledby="xpop-t" tabindex="-1">
+    <button type="button" class="xpop-x" aria-label="Close" data-x></button>
+    <div class="eyebrow">Before you go</div>
+    <p class="xpop-t" id="xpop-t">Looking for something?</p>
+    <p class="xpop-p">Coaching, bike tours or our online shop: jump straight to the right place, or message us and we'll point you in the right direction.</p>
+    <div class="xpop-go">
+      <a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike tours <span aria-hidden="true">→</span></a>
+      <a href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching <span aria-hidden="true">→</span></a>
+      <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="ctas"><a class="btn btn-go" href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">WhatsApp us →</a></div>
+    <p class="xpop-s">Or email <a href="mailto:info@cigalacycling.com">info@cigalacycling.com</a>. We usually reply within a few hours.</p>
+  </div>
+</div>
+<style>
+.xpop { position: fixed; inset: 0; z-index: 2147483646; display: grid; place-items: center; padding: 16px; }
+.xpop[hidden] { display: none; }
+.xpop-bg { position: absolute; inset: 0; background: rgba(4,5,6,.72); backdrop-filter: blur(3px); }
+.xpop-box { position: relative; width: min(460px, 100%); box-sizing: border-box; padding: 30px 28px 24px; border: 1px solid rgba(43,212,122,.35); border-radius: 16px; background: #0f1113; box-shadow: 0 30px 80px rgba(0,0,0,.6); outline: none; animation: xpop-in .3s ease; font-family: Montserrat, system-ui, sans-serif; }
+@keyframes xpop-in { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .xpop-box { animation: none; } }
+.xpop-x { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,.08); cursor: pointer; font-size: 0; line-height: 0; }
+.xpop-x::before, .xpop-x::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 2px; margin: -1px 0 0 -7px; border-radius: 1px; background: #fff; transform: rotate(45deg); }
+.xpop-x::after { transform: rotate(-45deg); }
+.xpop-x:hover { background: rgba(255,255,255,.16); }
+#xpop .xpop-x { position: absolute !important; top: 12px; right: 12px; width: 36px !important; height: 36px !important; min-height: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 50% !important; background: rgba(255,255,255,.08) !important; box-shadow: none !important; font-size: 0 !important; line-height: 0 !important; }
+#xpop .xpop-x:hover { background: rgba(255,255,255,.16) !important; }
+.xpop-x:focus-visible { outline: 2px solid #009a44; outline-offset: 2px; }
+.xpop .eyebrow { margin: 0 0 10px; }
+.xpop-t { font-family: Anton, Impact, "Arial Narrow", sans-serif; font-weight: 400; font-size: clamp(26px, 5vw, 32px); line-height: 1.08; text-transform: uppercase; color: #fff; margin: 4px 0 10px; padding-right: 30px; }
+.xpop-p { color: #d0d6e0; font-size: 15px; line-height: 1.55; margin: 0 0 16px; }
+.xpop-go { display: grid; gap: 8px; margin: 0 0 16px; }
+#xpop .xpop-go a { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border: 1px solid rgba(255,255,255,.14); border-radius: 8px; background: rgba(255,255,255,.04); color: #f7f8f8; font-weight: 600; font-size: 14px; text-decoration: none; transition: border-color .15s, color .15s; }
+#xpop .xpop-go a:hover, #xpop .xpop-go a:focus-visible { border-color: #009a44; color: #34c46a; }
+.xpop .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+.xpop-s { margin: 14px 0 0; font-size: 12.5px; color: #8a8f98; }
+#xpop .xpop-s a { color: #d0d6e0; }
+</style>
+<script>(function(){var p=document.getElementById('xpop');if(!p)return;if(/^\/contact\/?$/.test(location.pathname))return;var K='cc_exit',t0=Date.now(),last=null,maxY=0,ys=[];
+function g(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function ok(){if(!g('cc_consent'))return false;try{if(sessionStorage.getItem(K))return false;}catch(e){}
+var c=+(g(K)||0);if(c&&Date.now()-c<3*864e5)return false;var n=document.getElementById('nl-pop');if(n&&!n.hidden)return false;
+var b=document.getElementById('cc-consent');if(b&&!b.hidden)return false;
+try{var nl=JSON.parse(g('cc_nl')||'{}');if(nl.c&&Date.now()-nl.c<36e5)return false;}catch(e){}return Date.now()-t0>8000;}
+function open(){if(!ok())return;try{sessionStorage.setItem(K,'1');}catch(e){}last=document.activeElement;p.hidden=false;p.querySelector('.xpop-box').focus({preventScroll:true});document.addEventListener('keydown',key);}
+function close(){p.hidden=true;document.removeEventListener('keydown',key);try{localStorage.setItem(K,String(Date.now()));}catch(e){}if(last&&last.focus)last.focus({preventScroll:true});}
+function key(e){if(e.key==='Escape')close();}
+p.querySelectorAll('[data-x]').forEach(function(b){b.addEventListener('click',close);});
+document.addEventListener('mouseout',function(e){if(!e.relatedTarget&&e.clientY<=0)open();});
+if(matchMedia('(hover: none)').matches){addEventListener('scroll',function(){var y=scrollY,h=document.documentElement.scrollHeight-innerHeight;maxY=Math.max(maxY,y);ys.push([Date.now(),y]);while(ys.length&&Date.now()-ys[0][0]>700)ys.shift();
+if(maxY>h*.5&&ys.length&&ys[0][1]-y>500)open();},{passive:true});}})();</script>
