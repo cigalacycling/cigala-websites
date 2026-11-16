@@ -215,3 +215,11 @@ Added to the brand theme 193220739396 and to the new sale copy "Black Friday + C
   - The popup heading uses Anton, the button gets a #00b350 hover, and the popup fields are 16px.
   - The texts live in `snippets/ordersify-bis.liquid`, not in the app admin. If the Ordersify app ever rewrites this snippet, re-apply them.
 - **Collection intro texts:** applied to 17 collections on 16 Nov, approved by Matteo. Old HTML is backed up in `retail/collections-before/descriptions-2026-11-16.json`; old images are kept after the text. Several descriptions still hold old banner images (POWER, DRINKS, a Black Friday cover on Sport Headphones, and others). Review them before the new banner template goes live, so a collection doesn't show two banners.
+- **"2026 → 2027" SEO check (16 Nov, request relayed from the Tours session):** no change needed.
+  - **Searched:** SEO titles and descriptions of all 1,787 products (export), all 201 collections, 25 pages and the blog, plus the 234 live crawled titles and descriptions.
+  - **Result:** none say 2026.
+  - **Product names with 2026 (genuinely 2026, left as they are):**
+    - Garmin Drive 2026 7.1" / 8.8" (model name)
+    - Zone3 Womens Aspire Wetsuit New 2026 (model year)
+    - FFWD RYOT55 "2006-2026" anniversary text
+    - a draft Algarve February 2026 holiday deposit (not live)
