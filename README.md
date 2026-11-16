@@ -392,7 +392,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 ### Athlete area: reports from Matteo's PC tools (planned, after launch, Matteo 16 Nov)
 - **Plan:** the PC tools (Vekta: progress report, race day simulator, assessment, reviews) deliver each athlete's page to their area, matched by email, instead of public Netlify or claude.ai links.
 - **Rule (Matteo):** only motivating, athlete-friendly content. That means progress and highlights, race plans, the first assessment framed as a starting point, milestones.
-- **Never shown to athletes:** Early Warning flags, fatigue or risk alerts, missed-session or compliance counts, comment drafts, Command Centre, comparisons with other athletes.
+- **Never shown to athletes:** the Weekly Athlete Plan (Matteo: "for sure"), Early Warning flags, fatigue or risk alerts, missed-session or compliance counts, comment drafts, Command Centre, comparisons with other athletes.
 - **Every delivered report arrives as a draft only Matteo sees.** He previews and publishes it (he can edit or skip it). Nothing reaches an athlete automatically.
 - **Report wording:** lead with positives and numbers, no "you missed" or "you're behind".
 - **Build:**
