@@ -214,3 +214,4 @@ Added to the brand theme 193220739396 and to the new sale copy "Black Friday + C
   - New wording in the Cigala voice: button "Email me when it's back"; popup heading "Get an email when it's back"; button "Email me"; a friendlier success message and errors; placeholder "Your email".
   - The popup heading uses Anton, the button gets a #00b350 hover, and the popup fields are 16px.
   - The texts live in `snippets/ordersify-bis.liquid`, not in the app admin. If the Ordersify app ever rewrites this snippet, re-apply them.
+- **Collection intro texts:** applied to 17 collections on 16 Nov, approved by Matteo. Old HTML is backed up in `retail/collections-before/descriptions-2026-11-16.json`; old images are kept after the text. Several descriptions still hold old banner images (POWER, DRINKS, a Black Friday cover on Sport Headphones, and others). Review them before the new banner template goes live, so a collection doesn't show two banners.

@@ -3,7 +3,7 @@
 These are for collections that have no description today. Each text is short, factual and names brands we actually stock, so Google and AI search (ChatGPT, Claude, Gemini, Perplexity) can understand and quote the page.
 
 - **Where it goes:** the collection description in the admin. It shows under the new banner and becomes the meta description.
-- **Status:** nothing has been applied yet. Each text needs Matteo's OK first, because it is new body copy.
+- **Status:** approved by Matteo on 16 Nov (PISSEI: official distributor; e-bikes: Bike to Work friendly) and applied. Each text was added in front of the existing description, and any old images in the description were kept.
 - **Not included:** Road Bikes, Gravel Bikes and Road Frames already have their own pre-order text, which stays as it is.
 
 | Collection | Draft text |
@@ -23,8 +23,8 @@ These are for collections that have no description today. Each text is short, fa
 | **Massage Guns** (`massage-guns`) | Percussion massage guns from Hyperice Hypervolt and Recovapro, for faster recovery and less muscle soreness after training. |
 | **Drinks & Gels** (`drinks-gels`) | Sports drinks and energy gels from Tailwind, Maurten, PowerBar and more, to fuel long rides, races and hard intervals. |
 | **Sport Headphones** (`sport-headphones`) | Open-ear bone conduction headphones from Shokz: hear your music and the road at the same time. |
-| **Electric Bikes** (`electric-bikes`) | Electric bikes from MATE and Eovolt: folding and city e-bikes for commuting, Bike to Work scheme friendly. |
-| **PISSEI** (`pissei`) | Italian cycling clothing from PISSEI, official partner of Cigala Cycling: jerseys, bib shorts, jackets and accessories for racing and training. Custom club kit available. |
+| **Electric Bikes** (`electric-bikes`) | Electric bikes from MATE and Eovolt: folding and city e-bikes for commuting, and Bike to Work scheme friendly. |
+| **PISSEI** (`pissei`) | Italian cycling clothing from PISSEI. Cigala Cycling is the official PISSEI distributor in Ireland: jerseys, bib shorts, jackets and accessories for racing and training, plus custom club kit. |
 
 **Checks for Matteo:**
 
