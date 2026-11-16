@@ -15,7 +15,7 @@ style += '''
 .head h1 span{display:block;color:var(--text-2);font-size:30px;margin-top:6px}
 .head .bar{margin-top:14px}
 .head img{width:26mm;height:26mm}
-.ex{display:grid;grid-template-columns:54px 50mm 1fr;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--topic);border-radius:12px;padding:8px 16px 8px 12px;margin-bottom:8px;break-inside:avoid}
+.ex{display:grid;grid-template-columns:54px 70mm 1fr;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--topic);border-radius:12px;padding:8px 16px 8px 12px;margin-bottom:8px;break-inside:avoid}
 .ex .no{font-family:Anton,sans-serif;font-size:34px;color:var(--topic);text-align:center;line-height:1}
 .ex .im{height:26mm;background:#fff;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .ex .im img{max-width:100%;max-height:100%;object-fit:contain;display:block}
@@ -28,9 +28,11 @@ style += '''
 .ex .ds{font-size:11.5px;color:var(--text-2);line-height:1.5}
 .ex .ds div{margin-top:1px}
 .ex.sc{grid-template-columns:54px 56mm 1fr}
+.im.pair{display:grid !important;grid-template-columns:1fr 1fr;gap:2px;background:#000 !important;padding:0}
+.im.pair img{width:100%;height:100%;object-fit:cover;max-width:none;max-height:none}
 .ex.sc .im{height:40mm}
 .ex.sc .ds{font-size:12px}
-.wu{display:grid;grid-template-columns:34mm 1fr;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--c-bike);border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.wu{display:grid;grid-template-columns:52mm 1fr;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--c-bike);border-radius:12px;padding:12px 16px;margin-bottom:14px}
 .wu .im{height:24mm;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .wu .im img{max-height:100%;max-width:100%}
 .wu .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--c-bike);margin-bottom:4px}
@@ -62,11 +64,26 @@ def keybar(items):
     names = {'str': 'Strength &amp; core', 'bike': 'Bike &amp; cardio', 'mob': 'Stretching &amp; mobility'}
     return '<div class="key">' + ''.join(f'<span><i style="background:var(--c-{k})"></i>{names[k]}</span>' for k in items) + '</div>\n'
 
+# Photos from free-exercise-db (github.com/yuhonas/free-exercise-db, Unlicense): start and finish position.
+PHOTO = {
+ 'Back extension': 'Hyperextensions_Back_Extensions', 'Back extension on side': 'Weighted_Ball_Side_Bend',
+ 'Chest press': 'Leverage_Chest_Press', 'Farmer walk': 'Farmers_Walk', 'Moving plank': 'Plank', 'Push-up': 'Pushups',
+ 'Calf machine': 'Standing_Calf_Raises', 'Pull machine': 'Seated_Cable_Rows', 'Leg curl': 'Seated_Leg_Curl',
+ 'Triceps pushdown': 'Triceps_Pushdown', 'Leg press': 'Leg_Press', 'Abs on bench': 'Decline_Crunch',
+ 'Explosive jumps on step': 'Front_Box_Jump', 'Shoulder press': 'Leverage_Shoulder_Press', 'Leg extension': 'Leg_Extensions',
+ 'Bike': 'Bicycling_Stationary', 'Swing with kettlebell': 'One-Arm_Kettlebell_Swings', 'Jump rope': 'Rope_Jumping',
+ 'treadmill': 'Walking_Treadmill', 'bike': 'Bicycling_Stationary'}
+
+def pair(key, alt):
+    p = PHOTO[key]
+    return (f'<div class="im pair"><img src="img/exercises/{p}_0.jpg" alt="{html.escape(alt)}, start position">'
+            f'<img src="img/exercises/{p}_1.jpg" alt="{html.escape(alt)}, finish position"></div>')
+
 def ex_gym(doc, n, name, load, lines, kind='str'):
     ld = f'<div class="ld">{load}</div>' if load else ''
     ds = ''.join(f'<div>{l}</div>' for l in lines)
     return (f'<div class="ex" style="--topic:var(--c-{kind})"><div class="no">{n}</div>'
-            f'<div class="im"><img src="img/{doc}-{n:02d}.jpg" alt="{html.escape(name)} exercise"></div>'
+            + pair(name, name) +
             f'<div><div class="nm">{name}</div>{ld}<div class="ds">{ds}</div></div></div>\n')
 
 def made_card(email, made_by='Gym circuit made by Cigala Cycling'):
@@ -91,7 +108,7 @@ def gym_doc(doc, title, sub, warm_k, warm, exercises, important, email, per_page
         if pi == 0:
             body += f'''  <div class="head"><div><div class="eyebrow">Cigala Cycling Coaching</div><h1>{title}{f"<span>{sub}</span>" if sub else ""}</h1><div class="bar"></div></div>
     <img src="{A}cigala-cycling-coaching-logo.png" alt="Cigala Cycling Coaching logo"></div>
-  {keybar(['str','bike'])}  <div class="wu"><div class="im"><img src="img/{doc}-warmup.jpg" alt="Warm-up"></div><div><div class="k">{warm_k}</div><div class="ds">{"<br>".join(warm)}</div></div></div>
+  {keybar(['str','bike'])}  <div class="wu">{pair('bike' if 'bike' in warm_k else 'treadmill', 'Warm-up on the ' + ('bike' if 'bike' in warm_k else 'treadmill'))}<div><div class="k">{warm_k}</div><div class="ds">{"<br>".join(warm)}</div></div></div>
   <div class="div">Start of the circuit</div>
 '''
         for e in exercises[i:i + count]:
