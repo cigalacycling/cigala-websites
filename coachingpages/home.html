@@ -439,11 +439,13 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .burger .mob-ctas .mob-login { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid var(--border-strong); border-radius: 8px; color: var(--text) !important; }
 .burger .mob-ctas .mob-login svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 @media (max-width: 1080px) {   /* Matteo 16 Nov: the consultation button stays in the phone header, next to Menu */
-  .nav .in > .btn { display: inline-flex; margin-left: auto; padding: 8px 12px; font-size: 12.5px; }
+  .nav .in { gap: 10px; }
+  .nav .in > .nav-login { margin-left: auto; width: 34px; height: 34px; }   /* Matteo 16 Nov: athlete login icon also in the phone header */
+  .nav .in > .btn { display: inline-flex; padding: 8px 12px; font-size: 12.5px; }
   .nav .in > .burger { margin-left: -6px; }   /* sit right next to the button */
-  .nav .in > .nav-login { display: none; }
 }
-@media (max-width: 360px) { .nav .in > .btn { padding: 8px 9px; font-size: 11.5px; } }
+@media (max-width: 360px) { .nav .in > .btn { padding: 8px 9px; font-size: 11.5px; } .nav .in > .nav-login { width: 32px; height: 32px; } }
+@media (max-width: 340px) { .nav .in > .nav-login { display: none; } .nav .in > .btn { margin-left: auto; } }   /* very small phones: the login stays in the menu */
 .ticks .pk-new { display: inline-block; margin-left: 6px; padding: 2px 8px; border-radius: 999px; background: #12a150; color: #fff; font-size: 10.5px; font-weight: 700; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; vertical-align: 2px; }   /* Matteo 16 Nov: athlete hub line */
 .sigph { position: relative; display: block; }
 .sigph img { display: block; width: 100%; height: auto; }
