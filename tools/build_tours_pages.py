@@ -256,6 +256,11 @@ FIX_CARD_URL = {('tuscany', 'chianti & gran fondo strade bianche'): '/trips/chia
 GAL_KW = {'italy': ['italy', 'italian', 'tuscany', 'dolomites', 'garda', 'como', 'stelvio', 'chianti'], 'france': ['france', 'french', 'alpe d', 'galibier', 'ventoux', 'pyrenees', 'corsica'],
           'spain': ['spain', 'spanish', 'mallorca', 'girona', 'calpe', 'costa blanca', 'tenerife', 'canaria', 'teide'],
           'girona': ['girona', 'catalonia'], 'slovenia': ['slovenia', 'bled', 'vrsic', 'soca'], 'french-alps': ['french alps', 'alpe d', 'galibier', 'izoard', 'france']}
+# Matteo 16 Nov: the live Ireland cards reuse the Tuscany page's photos: Irish photos by card title
+DEST_CARD_PHOTOS = {'ireland': {'wild atlantic way': 4938, 'wicklow mountains cycling escape': 6788, 'mizen head to malin head': 4939, 'wicklow gravel': 6787,
+                                "giant's causeway & antrim coast": 1469, 'the burren & cliffs of moher': 1484},
+                     'costa-blanca': {'sierra & sea gravel tour': 6403}}   # live used a Cyprus gravel photo
+BAD_PHOTOS = {1414}   # labelled 'Cigala Cycling Tours Ireland' in the media library, but it is Tuscany
 def gallery_extras(slug, name, need, used):
     kws = GAL_KW.get(slug, [name.lower()])
     out = []
@@ -264,6 +269,7 @@ def gallery_extras(slug, name, need, used):
         if w < 1200 or h * 1.05 > w or 'webp' in x.get('mime_type', '') or not x.get('mime_type', '').startswith('image/'): continue
         txt = ((x.get('alt_text') or '') + ' ' + x['source_url'].rsplit('/', 1)[-1]).lower()
         if x['source_url'].lower().endswith('.png'): continue   # PNGs are designs/graphics, not photos
+        if int(x['id']) in BAD_PHOTOS: continue
         if any(re.search(r'\b' + re.escape(k) + r's?\b', txt) for k in kws) and media(x['source_url'])['id'] not in used and 'logo' not in txt and 'map' not in txt:
             out.append(x['source_url'])
     return out[:need]
@@ -409,7 +415,7 @@ def destination(slug):
     name = re.sub(r'^(cycling in( the)?)\s+', '', text_of(h1), flags=re.I).strip()
     name = name.title() if name.isupper() or name.islower() or name == name.capitalize() else name
     hero_bg = next(v for k, v, s in it if k == 'bg')
-    used = {media(hero_bg)['id']}   # Matteo 15 Nov: never the same photo twice on one page
+    used = {media(hero_bg)['id']} | set(DEST_CARD_PHOTOS.get(slug, {}).values())   # Matteo 15 Nov: never the same photo twice on one page (card photos reserved)
     spare = [v for k, v, s in it if k == 'img' and (media(v).get('width') or 0) >= 900]
     def pick(x):
         mid = media(x)['id']
@@ -461,6 +467,15 @@ def destination(slug):
             add('btn', v); i += 1; continue
         i += 1
     sections.append(cur)
+    # Matteo 16 Nov: two "Why ...?" sections in a row (Ireland: "Why Ireland?" + "Why ride Ireland?") -> one section, two lists side by side
+    for n_ in range(len(sections) - 1, 0, -1):
+        a_, b_ = sections[n_ - 1], sections[n_]
+        if a_['h2'] and b_['h2'] and text_of(a_['h2']).strip().upper().startswith('WHY') and text_of(b_['h2']).strip().upper().startswith('WHY'):
+            pa = [v for k, v in a_['blocks'] if k == 'p']; pb = [v for k, v in b_['blocks'] if k == 'p']
+            rest = [x for x in a_['blocks'] if x[0] != 'p'] + [x for x in b_['blocks'] if x[0] != 'p']
+            two = ('<div class="why2"><div class="panel"><h3>Why riders love it</h3>' + ''.join(sum(pa, [])) + '</div>'
+                   '<div class="panel"><h3>Highlights</h3>' + ''.join(sum(pb, [])) + '</div></div>')
+            sections[n_ - 1:n_ + 1] = [{'h2': b_['h2'], 'blocks': [('raw', [two])] + rest}]
 
     def eyebrow(h):
         t = text_of(h).upper()
@@ -471,6 +486,7 @@ def destination(slug):
         return name
     def render_block(kind, vals):
         if kind == 'p': return f'<div class="prose dprose">{"".join(vals)}</div>'
+        if kind == 'raw': return ''.join(vals)
         if kind == 'gal':
             seen = []
             for x in vals:
@@ -479,7 +495,8 @@ def destination(slug):
             if len(seen) % 3:
                 extra = gallery_extras(slug, name, 3 - len(seen) % 3, used)
                 for x in extra: used.add(media(x)['id']); seen.append(x); print('  + gallery', slug, media(x)['id'], (media(x).get('alt_text') or '')[:70], x.rsplit('/', 1)[-1][:50])
-                if len(seen) % 3: print('  !! gallery not full', slug, len(seen))
+                if len(seen) % 3 and len(seen) > 3: seen = seen[:len(seen) - len(seen) % 3]   # no photo left to fill the row: full rows only
+                elif len(seen) % 3: print('  !! gallery not full', slug, len(seen))
             return f'<div class="gal3">{"".join(img_tag(x, 1200, alt=f"Cycling in {name} - Cigala Cycling Tours") for x in seen)}</div>'
         if kind == 'facts':
             return '<div class="facts4">' + ''.join(
@@ -501,7 +518,7 @@ def destination(slug):
                 hm = re.match(r'^/trips/([^/]+)/?$', u)
                 if hm and hm.group(1) in HOME_CARDS and hm.group(1) != 'private-trips':
                     out.append(('home', HOME_CARDS[hm.group(1)])); continue
-                out.append(('card', f'<article class="tcard dtour" data-k="{ {"Gravel": "gravel", "Gran Fondo": "gf", "Road & Gran Fondo": "gf"}.get(tag, "road") }"><a class="ph" href="{u}">{img_tag(pick(c["bg"]), 900, alt=f"{title} - {name} cycling tour")}{tags}</a><div class="tx">'
+                out.append(('card', f'<article class="tcard dtour" data-k="{ {"Gravel": "gravel", "Gran Fondo": "gf", "Road & Gran Fondo": "gf"}.get(tag, "road") }"><a class="ph" href="{u}">{img_tag(DEST_CARD_PHOTOS.get(slug, {}).get(html.unescape(title).lower()) or pick(c["bg"]), 900, alt=f"{title} - {name} cycling tour")}{tags}</a><div class="tx">'
                            f'<h2>{E(title)}</h2><div class="desc">{desc}</div><div class="ctas one"><a class="btn btn-go" href="{u}">{E(go)}</a></div></div></article>'))
             if out and all(k == 'home' for k, _ in out):
                 return '<!--HOMECARDS-->' + ''.join(h for k, h in out)
@@ -712,7 +729,7 @@ def custom():
 
 
 # Spelling mistakes on the live pages (Matteo 15 Nov: "any error you see, fix it"). Visible text only, never links.
-TYPOS = [(r'(?<=\w) +,(?=\s)', ','),   # no space before a comma (Matteo 16 Nov: 'RIDE INTO THE LEGEND , TAKE PART')
+TYPOS = [(r'(?<=\w) +,(?=\s)', ','), (r'\breland enjoys', 'Ireland enjoys'),   # no space before a comma (Matteo 16 Nov: 'RIDE INTO THE LEGEND , TAKE PART')
          (r'\bMechnical\b', 'Mechanical'), (r'\bmechnical\b', 'mechanical'), (r'\bDurace\b', 'Dura-Ace'), (r'\bACCOMODATION', 'ACCOMMODATION'),
          (r'\bAccomodation\b', 'Accommodation'), (r'\baccomodation\b', 'accommodation'), (r'\baccomodate\b', 'accommodate'), (r'\bCOFFE\b', 'COFFEE'),
          (r'\bAlantejo\b', 'Alentejo'), (r'\bMarocco\b', 'Morocco'), (r'\brecipies\b', 'recipes'), (r'\bcusine\b', 'cuisine'), (r'\bTentino\b', 'Trentino'),
@@ -916,6 +933,13 @@ html .cl .xpop-s { margin: 14px 0 0; font-size: 12.5px; color: var(--text-3); }
 '''
 
 PAGE_CSS += EXIT_CSS
+PAGE_CSS += '''
+html .cl .why2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 4px; }
+html .cl .why2 .panel { padding: 22px 26px; }
+html .cl .why2 h3 { font-size: 20px; margin: 0 0 12px; color: var(--green-text, #2bd47a); }
+html .cl .why2 p { margin: 0; line-height: 1.9; color: var(--text-2); }
+@media (max-width: 760px) { html .cl .why2 { grid-template-columns: minmax(0, 1fr); } }
+'''
 PAGE_CSS += '''
 html.hdyn-ok .cc-page section .head, html.hdyn-ok .cc-page .tour { opacity: 0; transform: translateY(18px); }
 html.hdyn-ok .cc-page section .head.in-view, html.hdyn-ok .cc-page .tour.in-view { opacity: 1; transform: none; transition: opacity .7s ease, transform .7s ease; transition-delay: var(--d, 0ms); }

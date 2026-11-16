@@ -9913,5 +9913,89 @@
    800
   ],
   "orig": 10683
+ },
+ "src-4938-900": {
+  "id": 10699,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-dji_fly_20260605_124402_468_1780659867030_photo_optimized-900.webp",
+  "alt": "Ireland Wild Atlantic Way",
+  "from": [
+   2250,
+   4000
+  ],
+  "size": [
+   900,
+   1600
+  ],
+  "orig": 4938
+ },
+ "src-6788-900": {
+  "id": 10700,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-mark-lawson-I1gJ0ti_jKo-unsplash-900.webp",
+  "alt": "Wicklow Roads Cycling",
+  "from": [
+   5184,
+   3223
+  ],
+  "size": [
+   900,
+   560
+  ],
+  "orig": 6788
+ },
+ "src-4939-900": {
+  "id": 10701,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-01164673-900.webp",
+  "alt": "Cycling Ireland's Wild Atlantic Way: A Rider's Guide",
+  "from": [
+   3888,
+   5184
+  ],
+  "size": [
+   900,
+   1200
+  ],
+  "orig": 4939
+ },
+ "src-1469-900": {
+  "id": 10702,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-81-900.webp",
+  "alt": "Winding road in green valley | Cigala Cycling Tours",
+  "from": [
+   1600,
+   900
+  ],
+  "size": [
+   900,
+   506
+  ],
+  "orig": 1469
+ },
+ "src-1484-900": {
+  "id": 10703,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-79-900.webp",
+  "alt": "Group of cyclists posing at Cliffs of Moher - Cigala Cycling Tours",
+  "from": [
+   636,
+   589
+  ],
+  "size": [
+   636,
+   589
+  ],
+  "orig": 1484
+ },
+ "src-6403-900": {
+  "id": 10704,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-pexels-guilherme-marques-1364342506-26934008-900.webp",
+  "alt": "Calpe Bike Tours | Cigala Cycling Tours",
+  "from": [
+   6000,
+   4000
+  ],
+  "size": [
+   900,
+   600
+  ],
+  "orig": 6403
  }
 }

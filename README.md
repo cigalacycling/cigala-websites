@@ -279,6 +279,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
     - Strade Bianche day 3 is a loop back to Radda (Castellina, Panzano, Greve, Lamole, Volpaia).
     - Algarve day 4 is the Gran Fondo to Lagos via Monchique (approximate, until Matteo sends the Komoot GPX).
     - Rivers are off the day maps.
+- **Destination photo check, 16 Nov:** the live Ireland cards used Tuscany photos, now Irish ones (`DEST_CARD_PHOTOS`); Costa Blanca Sierra & Sea no longer shows Cyprus; media 1414 ("Ireland" but Tuscany) is excluded (`BAD_PHOTOS`); Ireland's two "Why..." sections merged into one ("Why ride Ireland?", two lists, approved by Matteo); "reland" typo fixed.
 - **Dynamic pages and more fixes, 16 Nov:**
   - **Every trip page** (`DYN` in `build_tours_trips.py`):
     - the numbers count up;

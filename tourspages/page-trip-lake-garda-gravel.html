@@ -152,6 +152,12 @@ html .cl .xpop-p { color: var(--text-2); font-size: 15px; line-height: 1.55; mar
 html .cl .xpop .ctas { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
 html .cl .xpop-s { margin: 14px 0 0; font-size: 12.5px; color: var(--text-3); }
 
+html .cl .why2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 4px; }
+html .cl .why2 .panel { padding: 22px 26px; }
+html .cl .why2 h3 { font-size: 20px; margin: 0 0 12px; color: var(--green-text, #2bd47a); }
+html .cl .why2 p { margin: 0; line-height: 1.9; color: var(--text-2); }
+@media (max-width: 760px) { html .cl .why2 { grid-template-columns: minmax(0, 1fr); } }
+
 html.hdyn-ok .cc-page section .head, html.hdyn-ok .cc-page .tour { opacity: 0; transform: translateY(18px); }
 html.hdyn-ok .cc-page section .head.in-view, html.hdyn-ok .cc-page .tour.in-view { opacity: 1; transform: none; transition: opacity .7s ease, transform .7s ease; transition-delay: var(--d, 0ms); }
 
