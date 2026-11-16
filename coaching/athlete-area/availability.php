@@ -206,7 +206,7 @@ function cc_av_email($pid, $uid, $diff, $a, $vid) {
     $h .= '<p style="margin:0 0 6px"><b style="color:#111">Usual week</b></p><table style="border-collapse:collapse;margin:0 0 16px">';
     foreach (CC_AV_DAYS as $k => $d) $h .= '<tr><td style="padding:2px 14px 2px 0;color:#555">' . $d . '</td><td style="padding:2px 0">' . $e(cc_av_day_text($a['week'][$k])) . '</td></tr>';
     $h .= '</table>';
-    if ($a['changes']) { $h .= '<p style="margin:0 0 6px"><b style="color:#111">Coming up</b></p><ul style="margin:0 0 16px;padding-left:18px">'; foreach ($a['changes'] as $c) $h .= '<li>' . $e(cc_av_change_text($c)) . '</li>'; $h .= '</ul>'; }
+    if ($a['changes']) { $h .= '<p style="margin:0 0 6px"><b style="color:#111">Changes to the usual week</b></p><ul style="margin:0 0 16px;padding-left:18px">'; foreach ($a['changes'] as $c) $h .= '<li>' . $e(cc_av_change_text($c)) . '</li>'; $h .= '</ul>'; }
     $h .= '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open all athletes’ availability</a></p></div>';
     $headers = ['Content-Type: text/html; charset=UTF-8'];
     if ($u && is_email($u->user_email)) $headers[] = 'Reply-To: ' . $name . ' <' . $u->user_email . '>';   // reply goes straight to the athlete
@@ -276,7 +276,7 @@ add_filter('cc_ath_board', function ($html, $board) {
        . '<p class="av-lede">Every athlete’s usual week and what is coming up. <b>Changed</b> means updated since you last opened this page.</p>'
        . '<div class="av-tbl" role="table" aria-label="Usual week per athlete"><div class="av-tr av-th" role="row"><span role="columnheader">Athlete</span>';
     foreach (CC_AV_DAYS as $k => $d) $o .= '<span role="columnheader">' . substr($d, 0, 3) . '</span>';
-    $o .= '<span role="columnheader">Coming up</span></div>';
+    $o .= '<span role="columnheader">Changes to the usual week</span></div>';
     foreach ($rows as [$state, $upd, $p]) {
         $a = cc_av_get($p->ID);
         $o .= '<div class="av-tr' . ($state === 2 ? ' is-new' : '') . '" role="row" id="av-' . $p->ID . '"><span role="cell" class="av-who"><b>' . esc_html($p->post_title) . '</b>'
@@ -314,15 +314,15 @@ var dirty=false,blob=null,saved=+app.dataset.updated,W=C.w,L=C.speech,t_=functio
 var DN={},DS={};Object.keys(C.days).forEach(function(k,i){var d=new Date(2024,0,1+i);try{DN[k]=d.toLocaleDateString(L,{weekday:'long'});DS[k]=d.toLocaleDateString(L,{weekday:'short'});}catch(x){DN[k]=C.days[k];DS[k]=C.days[k].slice(0,3);}var own=W.dn&&!(window.Intl&&Intl.DateTimeFormat.supportedLocalesOf([L]).length);if(own){DN[k]=W.dn.split(',')[i];DS[k]=W.ds.split(',')[i];}
  DN[k]=DN[k].charAt(0).toUpperCase()+DN[k].slice(1);DS[k]=(DS[k].charAt(0).toUpperCase()+DS[k].slice(1)).replace(/\.$/,'');});
 function opts(sel){var o='';for(var k in C.hours)o+='<option value="'+k+'"'+(k===sel?' selected':'')+'>'+esc(C.hours[k])+'</option>';return o;}
-function draw(){var h='<div class="av-week" role="group" aria-label="'+esc(W.week_aria)+'">';
+function draw(){var h='<h3 class="av-sub av-first"><span class="av-n" aria-hidden="true">1</span>'+esc(W.week_h)+'</h3><p class="av-subp">'+esc(W.week_sub)+'</p><div class="av-week" role="group" aria-label="'+esc(W.week_aria)+'">';
  for(var k in C.days){var d=D.week[k]||{h:'',w:[]};h+='<div class="av-day'+(d.h==='0'?' is-rest':'')+'" data-k="'+k+'"><label class="av-dn" for="av-h-'+k+'">'+esc(DN[k])+'</label>'
   +'<select id="av-h-'+k+'" class="av-hsel"'+(ro?' disabled':'')+'>'+opts(d.h)+'</select><div class="av-when" role="group" aria-label="'+esc(DN[k])+'">';
   for(var w in C.when)h+='<button type="button" class="av-w" data-w="'+w+'" aria-pressed="'+(d.w.indexOf(w)>-1)+'"'+(ro||d.h==='0'?' disabled':'')+'>'+esc(C.when[w])+'</button>';h+='</div></div>';}
- h+='</div><p class="av-total" aria-live="polite"></p><h3 class="av-sub">'+esc(W.changes)+'</h3><div class="av-chs"></div>';
- if(!ro)h+='<button type="button" class="btn btn-ghost av-add">'+esc(W.add)+'</button>';
- h+='<h3 class="av-sub">'+esc(W.more)+'</h3><div class="av-notew"><textarea id="av-note" rows="4" placeholder="'+esc(W.note_ph)+'"'+(ro?' readonly':'')+'>'+esc(D.note||'')+'</textarea>';
+ h+='</div><p class="av-total" aria-live="polite"></p><div class="av-part"><h3 class="av-sub"><span class="av-n" aria-hidden="true">2</span>'+esc(W.changes)+'</h3><p class="av-subp">'+esc(W.changes_sub)+'</p><div class="av-chs"></div>';
+ if(!ro)h+='<button type="button" class="btn btn-ghost av-add">'+esc(W.add)+'</button>';h+='</div>';
+ h+='<div class="av-part"><h3 class="av-sub"><span class="av-n" aria-hidden="true">3</span>'+esc(W.more)+'</h3><div class="av-notew"><textarea id="av-note" rows="4" placeholder="'+esc(W.note_ph)+'"'+(ro?' readonly':'')+'>'+esc(D.note||'')+'</textarea>';
  if(!ro)h+='<button type="button" class="av-mic" aria-label="'+esc(W.mic)+'" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>';
- h+='</div><p class="av-rec" hidden></p>';
+ h+='</div><p class="av-rec" hidden></p></div>';
  if(!ro)h+='<div class="av-save"><button type="button" class="btn btn-go av-go" disabled>'+esc(W.save)+'</button><span class="av-msg" role="status"></span></div>';
  app.innerHTML=h;drawChanges();total();msg(saved?t_('last',{d:new Date(saved*1000).toLocaleDateString(L,{day:'numeric',month:'short'})}):'');}
 function drawChanges(){var w=app.querySelector('.av-chs'),h='';
@@ -403,7 +403,10 @@ html .cc .av-w[aria-pressed=true] { background: #009a44; border-color: #009a44; 
 html .cc .av-w:disabled { opacity: .35; cursor: default; }
 html .cc .av-total { min-height: 1.4em; margin: 12px 0 0; color: var(--text-2); font-size: 14px; }
 html .cc .av-total b { color: var(--green-text, #34c46a); font-weight: 700; }
-html .cc .ath .av-sub { font: 700 13px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); margin: 26px 0 12px; }
+html .cc .ath .av-sub { display: flex; align-items: center; gap: 10px; font: 700 13px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); margin: 0 0 6px; }
+html .cc .av-n { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #009a44; color: #fff; font: 700 13px/1 var(--body); letter-spacing: 0; }
+html .cc .av-subp { margin: 0 0 14px 36px; color: var(--text-3); font-size: 14px; }
+html .cc .av-part { margin-top: 30px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.1); }
 html .cc .av-none { color: var(--text-3); font-size: 14px; margin: 0 0 12px; }
 html .cc .av-ch { display: grid; gap: 10px; padding: 14px; margin: 0 0 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); border-left: 3px solid #8a8f98; background: rgba(255,255,255,.03); }
 html .cc .av-ch.av-away { border-left-color: #E10600; } html .cc .av-ch.av-less { border-left-color: #b9895a; } html .cc .av-ch.av-more { border-left-color: #009a44; } html .cc .av-ch:is(.av-gym, .av-indoor) { border-left-color: #d0d6e0; }
