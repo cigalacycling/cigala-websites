@@ -20,6 +20,43 @@ EXTRA='''
 /* inner pages */
 .hero .in.proof-wrap { display: block; padding-block: 0; }
 .proof-mob { display: none; }
+/* hero photo, label pill and buttons, like Coaching/Tours (Matteo 16 Nov) */
+.hero-photo { position: relative; isolation: isolate; overflow: hidden; }
+.hero-photo .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 55%; z-index: -2; }
+.hero-photo::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,.67) 0%, rgba(8,9,10,.55) 40%, rgba(8,9,10,.92) 78%, #08090a 100%); }
+.hero-photo > .in:first-of-type { padding-top: clamp(72px, 9vw, 128px); }
+.eyebrow-pill { display: inline-flex; align-items: center; gap: 8px; color: #fff; background: rgba(8,9,10,.7); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; margin-bottom: 18px; }
+.eyebrow-pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex: none; }
+.hero-photo .lede { color: var(--text); }
+.hero-photo .since { text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+/* reviews (same component as Coaching) */
+.rv-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 24px; margin-bottom: 22px; }
+.rv-head .g-rev { margin-top: 0; }
+.rv-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.rv-tag { margin: 0; }
+.cs-row, .rv-row { scrollbar-width: none !important; }
+.rv-row, .cs-row { padding-top: 8px !important; margin-top: -8px; }   /* Matteo 15 Nov: the green top border showed cut on hover */   /* Matteo 15 Nov: arrows instead of a drag bar */
+.cs-row::-webkit-scrollbar, .rv-row::-webkit-scrollbar { display: none; }
+.rv-wrap { position: relative; }
+.rv-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, calc((100% - 32px) / 3)); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 14px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.2) transparent; }
+.rv-row:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; border-radius: 12px; }
+.rv { transition: border-color .25s, box-shadow .25s, transform .25s; }
+.rv:hover { border-color: var(--green) !important; box-shadow: 0 16px 40px rgba(0,154,68,.15); transform: translateY(-3px); }
+.rv { margin: 0; scroll-snap-align: start; display: flex; flex-direction: column; gap: 14px; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; min-width: 0; }
+.rv-tag { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-text); background: var(--green-wash); border-radius: 999px; padding: 4px 10px; }
+.rv blockquote { margin: 0; padding: 0; border: 0; font-style: normal; font-size: 15px; line-height: 1.6; color: var(--text-2); }
+.rv figcaption { display: flex; align-items: center; gap: 12px; font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
+.rv figcaption b { display: block; color: var(--text); }
+.rv figcaption img { width: 48px; height: 48px; flex: none; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); }   /* like the Tours guest photos */
+.rv figcaption span { color: var(--text-3); font-size: 13px; }
+.rv-nav { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
+.rv-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
+.rv-btn:hover { border-color: var(--green); color: var(--green-text); }
+.rv-links { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
+@media (max-width: 900px) { .rv-row { grid-auto-columns: minmax(260px, 70%); } }
+@media (max-width: 640px) { .rv-row { grid-auto-columns: 86%; } .rv-nav { display: none; } }
+.rv-stars { color: var(--star); letter-spacing: 3px; font-size: 15px; line-height: 1; }
+
 .g-rev { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--green-text); text-decoration: none; transition: color .15s; }
 .g-rev span { color: var(--star); font-size: 15px; }
 .gstar { color: var(--star); }

@@ -1,12 +1,14 @@
 
 
-<div class="hero">
+<div class="hero hero-photo">
+  <img class="hero-bg" src="img/hero.webp" alt="Aerial view of a winding mountain road with hairpin bends" width="2048" height="1152" fetchpriority="high">
   <div class="in">
     <div>
-      <div class="eyebrow">Cigala Cycling</div>
+      <div class="eyebrow eyebrow-pill">Cigala Cycling</div>
       <h1>Cycling &amp; Triathlon Coaching, Bike Tours &amp; Retail</h1>
       <div class="bar"></div>
       <p class="lede">Whether it is to help you improve your cycling and triathlon abilities, to give you the most unforgettable bike tour or to help you shop the right product, Cigala Cycling has you covered.</p>
+      <div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching →</a><a class="btn btn-ghost" href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike tours</a></div>
     </div>
     <div class="since"><b>2016</b>Founded in Ireland</div>
   </div>
@@ -84,6 +86,20 @@
 
 <section>
   <div class="in">
+    <div class="rv-head">
+      <div>
+        <div class="eyebrow">Our riders</div>
+        <h2>What our riders say</h2>
+        <div class="bar"></div>
+      </div>
+      <div class="rv-links"><a class="g-rev" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener"><span aria-hidden="true">★</span> Read our reviews on Google →</a></div>
+    </div>
+    <div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Rider reviews, scroll sideways"><figure class="rv"><div class="rv-top"><span class="rv-tag">Coaching</span><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div></div><blockquote>“He has not only made me fall in love with cycling, but has believed in me even when I didn’t. As I speak, I am current European Gran Fondo &amp; gravel 19-34 champion, silver medalist at the Gran Fondo Worlds, from only starting cycling last February this year.”</blockquote><figcaption><img src="img/rv-marine-lenehan.webp" alt="Female cyclist biting gold medal" loading="lazy" width="48" height="48"><div><b>Marine Lenehan</b><span>Now a WorldTour Pro · Ireland</span></div></figcaption></figure><figure class="rv"><div class="rv-top"><span class="rv-tag">Bike tours</span><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div></div><blockquote>“Had a wonderful tour with Cigala in the French Alps in June 2025. I just showed up ready to pedal and they took care of the rest: excellent rental bikes, phenomenal routes with stunning views, gracious accommodations and delicious food with local charm. As an added bonus, Matteo captures the action with amazing photos.”</blockquote><figcaption><img src="img/rv-hank.webp" alt="Cycling Alps Cigala Cycling" loading="lazy" width="48" height="48"><div><b>Hank</b><span>USA · French Alps</span></div></figcaption></figure><figure class="rv"><div class="rv-top"><span class="rv-tag">Coaching</span><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div></div><blockquote>“With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.”</blockquote><figcaption><img src="img/rv-bernd-ondruch.webp" alt="Cycling Pro wearing Kask helmet" loading="lazy" width="48" height="48"><div><b>Bernd Ondruch</b><span>Germany &amp; UK</span></div></figcaption></figure><figure class="rv"><div class="rv-top"><span class="rv-tag">Bike tours</span><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div></div><blockquote>“This was my first cycling trip, and I was depending on Cigala Tours to make it a good one. They did not disappoint. Matteo, Marine and company were fantastic, putting together a great itinerary and making sure that everyone had a wonderful time. And if you haven’t been to Lake Garda, you have to go; it’s beautiful.”</blockquote><figcaption><img src="img/rv-steve.webp" alt="Person smiling while riding a celeste-colored Bianchi road bicycle" loading="lazy" width="48" height="48"><div><b>Steve</b><span>Canada · Lake Garda</span></div></figcaption></figure></div><div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Previous reviews">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Next reviews">→</button></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
     <div class="band">
       <img src="img/contact.jpg" alt="Cigala Cycling riders in the black team kit" loading="lazy">
       <div class="tx">
@@ -105,3 +121,11 @@
 <script>(function(){var l=document.querySelectorAll('.proof b');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 l.forEach(function(el){var m=el.textContent.match(/^([\d,]+)(\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
 new IntersectionObserver(function(es,ob){if(!es[0].isIntersecting)return;ob.disconnect();var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1500);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},{threshold:.5}).observe(el);});})();</script>
+<script>(function(){var r=document.getElementById('rv-row');if(!r)return;var red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function go(d){var max=r.scrollWidth-r.clientWidth;if(d>0&&r.scrollLeft>=max-4){r.scrollTo({left:0,behavior:red?'auto':'smooth'});return;}r.scrollBy({left:d*r.clientWidth*0.85,behavior:red?'auto':'smooth'});}
+document.querySelectorAll('.rv-btn').forEach(function(b){b.addEventListener('click',function(){stop=true;go(+b.dataset.d);});});
+/* Matteo 15 Nov: the reviews move on slowly by themselves; they stop while you hover, touch or use the arrows */
+var stop=red,hold=false;['mouseenter','focusin','touchstart'].forEach(function(e){r.addEventListener(e,function(){hold=true;},{passive:true});});
+['mouseleave','focusout'].forEach(function(e){r.addEventListener(e,function(){hold=false;});});r.addEventListener('touchstart',function(){stop=true;},{passive:true});
+var vis=false;if('IntersectionObserver' in window)new IntersectionObserver(function(es){vis=es[0].isIntersecting;}).observe(r);
+setInterval(function(){if(!stop&&!hold&&vis&&!document.hidden)go(1);},5000);})();</script>

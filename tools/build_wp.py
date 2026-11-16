@@ -17,6 +17,11 @@ IMG.update({
     'retail.jpg': W['cigala-retail-smart-bike']['url'],
     'matteo-white.png': W['matteo-cigala-white-jersey']['url'],
     'contact.jpg': W['cigala-group-black-kit']['url'],
+    'hero.webp': W['cigala-cycling-hero-mountain-hairpins-1200']['url'] + '" srcset="' + W['cigala-cycling-hero-mountain-hairpins-1200']['url'] + ' 1200w, ' + W['cigala-cycling-hero-mountain-hairpins']['url'] + ' 2048w" sizes="100vw',
+    'rv-marine-lenehan.webp': W['cigala-review-marine-lenehan']['url'],
+    'rv-bernd-ondruch.webp': W['cigala-review-bernd-ondruch']['url'],
+    'rv-steve.webp': W['cigala-review-steve']['url'],
+    'rv-hank.webp': W['cigala-review-hank']['url'],
     'team-white.jpg': W['cigala-team-white-jerseys-1200']['url'] + '" srcset="' + W['cigala-team-white-jerseys-1200']['url'] + ' 1200w, ' + W['cigala-team-white-jerseys']['url'] + ' 2400w" sizes="100vw',
 })
 

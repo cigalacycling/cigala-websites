@@ -216,5 +216,47 @@
   "alt": "Cigala Cycling riders in white jerseys celebrating on the coast",
   "w": 1200,
   "sizes": {}
+ },
+ "cigala-cycling-hero-mountain-hairpins": {
+  "id": 739,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-cycling-hero-mountain-hairpins.webp",
+  "alt": "Aerial view of a winding mountain road with hairpin bends",
+  "w": 2048,
+  "sizes": {}
+ },
+ "cigala-cycling-hero-mountain-hairpins-1200": {
+  "id": 740,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-cycling-hero-mountain-hairpins-1200.webp",
+  "alt": "Aerial view of a winding mountain road with hairpin bends",
+  "w": 1200,
+  "sizes": {}
+ },
+ "cigala-review-marine-lenehan": {
+  "id": 741,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-review-marine-lenehan.webp",
+  "alt": "Female cyclist biting gold medal",
+  "w": 160,
+  "sizes": {}
+ },
+ "cigala-review-bernd-ondruch": {
+  "id": 742,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-review-bernd-ondruch.webp",
+  "alt": "Cycling Pro wearing Kask helmet",
+  "w": 160,
+  "sizes": {}
+ },
+ "cigala-review-steve": {
+  "id": 743,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-review-steve.webp",
+  "alt": "Person smiling while riding a celeste-colored Bianchi road bicycle",
+  "w": 160,
+  "sizes": {}
+ },
+ "cigala-review-hank": {
+  "id": 744,
+  "url": "https://staging.cigalacycling.com/wp-content/uploads/2026/11/cigala-review-hank.webp",
+  "alt": "Cycling Alps Cigala Cycling",
+  "w": 160,
+  "sizes": {}
  }
 }

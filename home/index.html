@@ -158,6 +158,43 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
 /* inner pages */
 .hero .in.proof-wrap { display: block; padding-block: 0; }
 .proof-mob { display: none; }
+/* hero photo, label pill and buttons, like Coaching/Tours (Matteo 16 Nov) */
+.hero-photo { position: relative; isolation: isolate; overflow: hidden; }
+.hero-photo .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 55%; z-index: -2; }
+.hero-photo::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(8,9,10,.67) 0%, rgba(8,9,10,.55) 40%, rgba(8,9,10,.92) 78%, #08090a 100%); }
+.hero-photo > .in:first-of-type { padding-top: clamp(72px, 9vw, 128px); }
+.eyebrow-pill { display: inline-flex; align-items: center; gap: 8px; color: #fff; background: rgba(8,9,10,.7); border: 1px solid var(--border-strong); border-radius: 999px; padding: 6px 12px; margin-bottom: 18px; }
+.eyebrow-pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex: none; }
+.hero-photo .lede { color: var(--text); }
+.hero-photo .since { text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+/* reviews (same component as Coaching) */
+.rv-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 24px; margin-bottom: 22px; }
+.rv-head .g-rev { margin-top: 0; }
+.rv-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.rv-tag { margin: 0; }
+.cs-row, .rv-row { scrollbar-width: none !important; }
+.rv-row, .cs-row { padding-top: 8px !important; margin-top: -8px; }   /* Matteo 15 Nov: the green top border showed cut on hover */   /* Matteo 15 Nov: arrows instead of a drag bar */
+.cs-row::-webkit-scrollbar, .rv-row::-webkit-scrollbar { display: none; }
+.rv-wrap { position: relative; }
+.rv-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, calc((100% - 32px) / 3)); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 14px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.2) transparent; }
+.rv-row:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; border-radius: 12px; }
+.rv { transition: border-color .25s, box-shadow .25s, transform .25s; }
+.rv:hover { border-color: var(--green) !important; box-shadow: 0 16px 40px rgba(0,154,68,.15); transform: translateY(-3px); }
+.rv { margin: 0; scroll-snap-align: start; display: flex; flex-direction: column; gap: 14px; background: var(--panel-grad), var(--panel); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; min-width: 0; }
+.rv-tag { align-self: flex-start; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-text); background: var(--green-wash); border-radius: 999px; padding: 4px 10px; }
+.rv blockquote { margin: 0; padding: 0; border: 0; font-style: normal; font-size: 15px; line-height: 1.6; color: var(--text-2); }
+.rv figcaption { display: flex; align-items: center; gap: 12px; font-style: normal; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 14px; }
+.rv figcaption b { display: block; color: var(--text); }
+.rv figcaption img { width: 48px; height: 48px; flex: none; border-radius: 50%; object-fit: cover; border: 2px solid var(--green); }   /* like the Tours guest photos */
+.rv figcaption span { color: var(--text-3); font-size: 13px; }
+.rv-nav { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
+.rv-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--panel-solid); color: var(--text); font-size: 16px; cursor: pointer; }
+.rv-btn:hover { border-color: var(--green); color: var(--green-text); }
+.rv-links { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
+@media (max-width: 900px) { .rv-row { grid-auto-columns: minmax(260px, 70%); } }
+@media (max-width: 640px) { .rv-row { grid-auto-columns: 86%; } .rv-nav { display: none; } }
+.rv-stars { color: var(--star); letter-spacing: 3px; font-size: 15px; line-height: 1; }
+
 .g-rev { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--green-text); text-decoration: none; transition: color .15s; }
 .g-rev span { color: var(--star); font-size: 15px; }
 .gstar { color: var(--star); }
@@ -275,13 +312,15 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
 </header>
 
 
-<div class="hero">
+<div class="hero hero-photo">
+  <img class="hero-bg" src="img/hero.webp" alt="Aerial view of a winding mountain road with hairpin bends" width="2048" height="1152" fetchpriority="high">
   <div class="in">
     <div>
-      <div class="eyebrow">Cigala Cycling</div>
+      <div class="eyebrow eyebrow-pill">Cigala Cycling</div>
       <h1>Cycling &amp; Triathlon Coaching, Bike Tours &amp; Retail</h1>
       <div class="bar"></div>
       <p class="lede">Whether it is to help you improve your cycling and triathlon abilities, to give you the most unforgettable bike tour or to help you shop the right product, Cigala Cycling has you covered.</p>
+      <div class="ctas"><a class="btn btn-go" href="https://coaching.cigalacycling.com/" target="_blank" rel="noopener">Coaching →</a><a class="btn btn-ghost" href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike tours</a></div>
     </div>
     <div class="since"><b>2016</b>Founded in Ireland</div>
   </div>
@@ -359,6 +398,20 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
 
 <section>
   <div class="in">
+    <div class="rv-head">
+      <div>
+        <div class="eyebrow">Our riders</div>
+        <h2>What our riders say</h2>
+        <div class="bar"></div>
+      </div>
+      <div class="rv-links"><a class="g-rev" href="https://share.google/lwboSfcuStGhX0c0p" target="_blank" rel="noopener"><span aria-hidden="true">★</span> Read our reviews on Google →</a></div>
+    </div>
+    <div class="rv-wrap"><div class="rv-row" id="rv-row" tabindex="0" aria-label="Rider reviews, scroll sideways"><figure class="rv"><div class="rv-top"><span class="rv-tag">Coaching</span><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div></div><blockquote>“He has not only made me fall in love with cycling, but has believed in me even when I didn’t. As I speak, I am current European Gran Fondo &amp; gravel 19-34 champion, silver medalist at the Gran Fondo Worlds, from only starting cycling last February this year.”</blockquote><figcaption><img src="img/rv-marine-lenehan.webp" alt="Female cyclist biting gold medal" loading="lazy" width="48" height="48"><div><b>Marine Lenehan</b><span>Now a WorldTour Pro · Ireland</span></div></figcaption></figure><figure class="rv"><div class="rv-top"><span class="rv-tag">Bike tours</span><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div></div><blockquote>“Had a wonderful tour with Cigala in the French Alps in June 2025. I just showed up ready to pedal and they took care of the rest: excellent rental bikes, phenomenal routes with stunning views, gracious accommodations and delicious food with local charm. As an added bonus, Matteo captures the action with amazing photos.”</blockquote><figcaption><img src="img/rv-hank.webp" alt="Cycling Alps Cigala Cycling" loading="lazy" width="48" height="48"><div><b>Hank</b><span>USA · French Alps</span></div></figcaption></figure><figure class="rv"><div class="rv-top"><span class="rv-tag">Coaching</span><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div></div><blockquote>“With his expertise, support, and personalized approach, I have achieved my goal of qualifying for the UCI Granfondo World Championship.”</blockquote><figcaption><img src="img/rv-bernd-ondruch.webp" alt="Cycling Pro wearing Kask helmet" loading="lazy" width="48" height="48"><div><b>Bernd Ondruch</b><span>Germany &amp; UK</span></div></figcaption></figure><figure class="rv"><div class="rv-top"><span class="rv-tag">Bike tours</span><div class="rv-stars" role="img" aria-label="5 stars">★★★★★</div></div><blockquote>“This was my first cycling trip, and I was depending on Cigala Tours to make it a good one. They did not disappoint. Matteo, Marine and company were fantastic, putting together a great itinerary and making sure that everyone had a wonderful time. And if you haven’t been to Lake Garda, you have to go; it’s beautiful.”</blockquote><figcaption><img src="img/rv-steve.webp" alt="Person smiling while riding a celeste-colored Bianchi road bicycle" loading="lazy" width="48" height="48"><div><b>Steve</b><span>Canada · Lake Garda</span></div></figcaption></figure></div><div class="rv-nav"><button type="button" class="rv-btn" data-d="-1" aria-label="Previous reviews">←</button><button type="button" class="rv-btn" data-d="1" aria-label="Next reviews">→</button></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="in">
     <div class="band">
       <img src="img/contact.jpg" alt="Cigala Cycling riders in the black team kit" loading="lazy">
       <div class="tx">
@@ -380,6 +433,14 @@ footer ul a:hover, footer ul a:active { color: var(--green-text); text-decoratio
 <script>(function(){var l=document.querySelectorAll('.proof b');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 l.forEach(function(el){var m=el.textContent.match(/^([\d,]+)(\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
 new IntersectionObserver(function(es,ob){if(!es[0].isIntersecting)return;ob.disconnect();var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1500);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},{threshold:.5}).observe(el);});})();</script>
+<script>(function(){var r=document.getElementById('rv-row');if(!r)return;var red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function go(d){var max=r.scrollWidth-r.clientWidth;if(d>0&&r.scrollLeft>=max-4){r.scrollTo({left:0,behavior:red?'auto':'smooth'});return;}r.scrollBy({left:d*r.clientWidth*0.85,behavior:red?'auto':'smooth'});}
+document.querySelectorAll('.rv-btn').forEach(function(b){b.addEventListener('click',function(){stop=true;go(+b.dataset.d);});});
+/* Matteo 15 Nov: the reviews move on slowly by themselves; they stop while you hover, touch or use the arrows */
+var stop=red,hold=false;['mouseenter','focusin','touchstart'].forEach(function(e){r.addEventListener(e,function(){hold=true;},{passive:true});});
+['mouseleave','focusout'].forEach(function(e){r.addEventListener(e,function(){hold=false;});});r.addEventListener('touchstart',function(){stop=true;},{passive:true});
+var vis=false;if('IntersectionObserver' in window)new IntersectionObserver(function(es){vis=es[0].isIntersecting;}).observe(r);
+setInterval(function(){if(!stop&&!hold&&vis&&!document.hidden)go(1);},5000);})();</script>
 
 <footer>
   <div class="in">
