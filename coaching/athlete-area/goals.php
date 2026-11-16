@@ -54,7 +54,7 @@ function cc_g_save(WP_REST_Request $r) {
     if (!$diff) return ['ok' => true, 'unchanged' => true];
     $new['updated'] = time();
     update_post_meta($pid, 'cc_goals', wp_slash(wp_json_encode($new)));
-    $u = get_userdata($uid); $name = get_the_title($pid);
+    $u = get_userdata($uid); $name = get_post_field('post_title', $pid);
     $h = '<div style="font:15px/1.5 Montserrat,Arial,sans-serif;color:#111;max-width:560px"><p style="margin:0 0 4px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E10600;font-weight:600">Goals &amp; events</p>'
        . '<h2 style="margin:0 0 14px;color:#111">' . esc_html($name) . ' updated their goals and events</h2><ul>' . implode('', array_map(function ($x) { return '<li>' . esc_html($x) . '</li>'; }, $diff)) . '</ul>'
        . ($new['events'] ? '<p style="margin:16px 0 6px"><b style="color:#111">All their events</b></p><ul>' . implode('', array_map(function ($e) { return '<li>' . esc_html(cc_g_event_text($e)) . '</li>'; }, $new['events'])) . '</ul>' : '')

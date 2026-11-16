@@ -189,7 +189,7 @@ function cc_f_page($uid, $pid, $preview, $kind = null) {
     $first = $u ? ($u->first_name ?: $u->display_name) : '';
     $o = '<div class="rf" id="rf" data-kind="' . $kind . '" data-preview="' . ($preview ? 1 : 0) . '" data-api="' . esc_url(rest_url('cc/v1/form')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '">'
        . '<div class="rf-hero"><p class="eyebrow">' . esc_html(cc_f($kind === 'full' ? 'Welcome to Cigala Cycling Coaching' : 'Athlete hub')) . '</p>'
-       . '<h1>' . esc_html(cc_f($kind === 'full' ? 'Tell me about you' : 'Update your details')) . '</h1><div class="bar"></div>'
+       . ($preview ? '<h2 class="rf-h1">' : '<h1>') . esc_html(cc_f($kind === 'full' ? 'Tell me about you' : 'Update your details')) . ($preview ? '</h2>' : '</h1>') . '<div class="bar"></div>'
        . '<p class="ath-lede">' . esc_html($kind === 'full'
             ? cc_f('This helps me build your plan around your life and your goals. It takes about 15 minutes, and you can stop and come back: your answers are saved as you go.')
             : sprintf(cc_f('Hi %s, your hub has a new home. Before it opens, take 3 minutes to update your details, so your plan starts from where you are now. Your answers are saved as you go.'), $first)) . '</p>'
@@ -300,7 +300,7 @@ function cc_f_store($pid, $bytes, $base, $ext, $mime, $title) {   // private fil
     return is_wp_error($id) ? 0 : (int) $id;
 }
 function cc_f_mail($uid, $pid, $a, $meta, $pdf) {
-    $u = get_userdata($uid); $name = get_the_title($pid); $full = $meta['kind'] === 'full';
+    $u = get_userdata($uid); $name = get_post_field('post_title', $pid); $full = $meta['kind'] === 'full';
     $board = add_query_arg(['board' => 'forms', 'a' => $pid], home_url('/' . CC_ATH_SLUG . '/'));
     $tmp = ''; if ($pdf !== '') { $tmp = trailingslashit(get_temp_dir()) . 'Rider-Information-Form-' . sanitize_file_name($name) . '.pdf'; file_put_contents($tmp, $pdf); }
     $flags = []; foreach (CC_F_YN as $i => $q) if (($a['yn' . $i] ?? '') === 'yes') $flags[] = $q;
@@ -419,7 +419,7 @@ function cc_f_one($pid, $base) {
     $uid = (int) get_post_meta($pid, 'cc_user', true); $st = cc_f_status($uid); $kind = cc_f_kind($uid);
     $m = json_decode((string) get_post_meta($pid, 'cc_form_signed', true), true) ?: [];
     $a = json_decode((string) get_post_meta($pid, 'cc_profile', true), true) ?: []; $pre = json_decode((string) get_post_meta($pid, 'cc_profile_prefill', true), true) ?: [];
-    $o = '<p><a href="' . esc_url($base) . '">← All rider forms</a></p><section class="ath-s"><h2>' . cc_ath_icon('doc', 'ath-hic') . esc_html(get_the_title($pid)) . '</h2><div class="rf-acts">';
+    $o = '<p><a href="' . esc_url($base) . '">← All rider forms</a></p><section class="ath-s"><h2>' . cc_ath_icon('doc', 'ath-hic') . esc_html(get_post_field('post_title', $pid)) . '</h2><div class="rf-acts">';
     if (!empty($m['pdf_id'])) $o .= '<a class="btn btn-go" href="' . esc_url(wp_get_attachment_url($m['pdf_id'])) . '" target="_blank" rel="noopener">Signed PDF</a>';
     if (!empty($m['u18']) && empty($m['coach'])) $o .= cc_f_btn($pid, 'countersign', 'Countersign as coach (under 18)', false);
     $o .= $st === 'unlocked' ? cc_f_btn($pid, 'lock', 'Lock the hub again') : (!cc_f_open($uid) ? cc_f_btn($pid, 'unlock', 'Unlock hub') : '');
@@ -514,12 +514,14 @@ function cc_f_pdf($pid, $a, $m, $sig) {
     $p = new CC_Pdf();
     $p->text('Cigala Cycling Coaching', 9, true, 0, 0, '0.88 0.02 0');
     $p->text('Rider Information Form', 20, true, 0, 4);
-    $p->text(get_the_title($pid) . ' · signed ' . date_i18n('j F Y, H:i', $m['at']) . ($m['u18'] ? ' · under 18' : ''), 10, false, 0, 6, '0.35 0.35 0.35');
+    $p->text(get_post_field('post_title', $pid) . ' · signed ' . date_i18n('j F Y, H:i', $m['at']) . ($m['u18'] ? ' · under 18' : ''), 10, false, 0, 6, '0.35 0.35 0.35');
     $p->rule();
     foreach (cc_f_steps() as $st) {
         if ($st[2] !== 'both' && $st[2] !== 'full') continue;
         foreach ($st[3] as $pn) {
             if (($pn[0] ?? '') !== 'p' || $st[0] === 'sign' || (($pn['if'] ?? '') === 'u18' && !$m['u18'])) continue;
+            $has = false; foreach ($pn['fields'] as $f) if (in_array($f[1], ['legal', 'group'], true) || (array_key_exists($f[0], $a) && cc_f_val($f, $a[$f[0]]) !== '')) $has = true;
+            if (!$has) continue;   // no empty headings
             $p->space(6); $p->text($pn[1], 13, true, 0, 4);
             if (($pn[2] ?? '') === 'CC_F_MED_INTRO') $p->text(cc_f_html2text(CC_F_MED_INTRO), 8.5, false, 0, 4, '0.3 0.3 0.3');
             foreach ($pn['fields'] as $f) {
@@ -576,7 +578,7 @@ if(c){var pt=function(e){var r=c.getBoundingClientRect();return[e.clientX-r.left
  ['pointerup','pointercancel'].forEach(function(t){c.addEventListener(t,function(){down=false;});});R.querySelector('.rf-clr').onclick=pad;}
 R.querySelector('.rf-back').onclick=function(){if(i)show(i-1);};
 R.querySelector('.rf-next').onclick=function(){if(i<steps.length-1){show(i+1);autosave();return;}
- var er=R.querySelector('.rf-err'),btn=this;if(pv){er.hidden=false;er.textContent=W.preview;return;}btn.disabled=true;
+ clearTimeout(timer);var er=R.querySelector('.rf-err'),btn=this;if(pv){er.hidden=false;er.textContent=W.preview;return;}btn.disabled=true;
  post('submit',{sig:drawn?c.toDataURL('image/jpeg',.85):''}).then(function(){location.reload();}).catch(function(j){btn.disabled=false;er.hidden=false;er.textContent=j&&j.code==='cc_missing'?W.almost+': '+j.message+'.':W.err;});};
 cond();show(0);scrollTo(0,0);
 })();</script>
@@ -587,7 +589,7 @@ add_action('wp_head', function () {
     echo <<<'CSS'
 <style id="cc-rider-form">
 html .cc .rf { max-width: 760px; margin: 0 auto; }
-html .cc .rf-hero { margin: 0 0 18px; } html .cc .rf-hero h1 { font-size: clamp(34px, 8vw, 54px); margin: 6px 0 0; }
+html .cc .rf-hero { margin: 0 0 18px; } html .cc .rf-hero :is(h1, .rf-h1) { font-size: clamp(34px, 8vw, 54px); margin: 6px 0 0; }
 html .cc .rf .bar { width: 40px; height: 3px; border-radius: 2px; background: #009a44; margin: 14px 0 16px; }
 html .cc .rf-steps { position: sticky; top: 70px; z-index: 5; background: rgba(8,9,10,.94); backdrop-filter: blur(6px); padding: 10px 0; margin: 0 0 14px; border-bottom: 1px solid rgba(255,255,255,.08); }
 html .cc .rf-steps ol { list-style: none; display: flex; gap: 4px; margin: 0 0 6px; padding: 0; } html .cc .rf-steps li { flex: 1; height: 5px; border-radius: 3px; background: rgba(255,255,255,.12); }

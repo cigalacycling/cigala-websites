@@ -187,7 +187,7 @@ function cc_av_notify_to() {   // on staging only to the address in the option c
     return 'info@cigalacycling.com';
 }
 function cc_av_email($pid, $uid, $diff, $a, $vid) {
-    $u = get_userdata($uid); $name = get_the_title($pid);
+    $u = get_userdata($uid); $name = get_post_field('post_title', $pid);
     $board = add_query_arg('board', 'availability', home_url('/' . CC_ATH_SLUG . '/')) . '#av-' . $pid;
     $e = function ($s) { return esc_html($s); };
     $logo = content_url('/uploads/2026/11/cigala-coaching-logo-v2.webp');   // the site header logo
