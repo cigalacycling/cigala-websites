@@ -76,11 +76,12 @@ def upload_guides(hub_id):
             ids[f] = {'id': d['id'], 'url': d['source_url']}; print('uploaded', f, d['id'])
             json.dump(ids, open(FILES, 'w'), indent=1)
 HUB = lambda: (h2('Quick links')
-       + buttons(btn('Book a catch-up call', 'https://calendly.com/cigalacycling'), btn('Nutrition consult with Marine', 'https://www.vivifysports.com/nutritionalcoaching'),
+       + buttons(btn('Book a catch-up call', 'https://cal.com/matteocigala/15min'), btn('Nutrition consult with Marine', 'https://www.vivifysports.com/nutritionalcoaching'),
                  btn('WhatsApp Matteo', 'https://wa.me/message/WVBRO6XAMQMCH1', True), btn('Community on Skool', 'https://www.skool.com/cigala-cycling-collective-1115', True))
+       + para('The Skool community is free for coaching clients. No invitation yet? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">Email me</a> and I will send it.')
        + h2('Your training apps')
-       + para('Your plan is in Vekta or TrainingPeaks and syncs to your Garmin, Wahoo or Zwift.')
-       + buttons(btn('Open Vekta', 'https://joinvekta.com/', True), btn('Open TrainingPeaks', 'https://app.trainingpeaks.com/', True))
+       + para('Your plan is in Vekta and syncs to your Garmin, Wahoo or Zwift.')   # Matteo 16 Nov: Vekta only
+       + buttons(btn('Open Vekta', 'https://joinvekta.com/', True))
        + h2('Training guides')
        + guides_html()
        + h2('Training tools')

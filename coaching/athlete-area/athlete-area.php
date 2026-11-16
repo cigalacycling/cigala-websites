@@ -203,8 +203,7 @@ function cc_ath_inner() {
     $o .= '<header class="ath-hero"><div class="ath-hero-txt"><p class="eyebrow">Athlete area' . ($coach ? ' · coach view' : '') . '</p>'
         . '<h1><span class="ath-greet">Welcome</span>, ' . esc_html($first) . '</h1>'
         . '<p class="ath-lede">Everything for your coaching in one place. Train smarter. Ride faster.</p>'
-        . '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $days . '">' . $days . '</b> ' . ($days === 1 ? 'day' : 'days') . ' with Cigala Cycling</span>'
-        . '<span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . ($nrep === 1 ? 'report' : 'reports') . ' in your folder</span></div>'
+        . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . ($nrep === 1 ? 'report' : 'reports') . ' in your folder</span></div>' : '')
         . '<a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">Log out</a></div>'
         . '<div class="ath-hero-me">' . cc_ath_sig_photo() . '</div></header>';
     if ($coach) {
@@ -260,8 +259,8 @@ function cc_ath_icon($k, $cls = 'ath-ic') {
 }
 // what a link is, from where it goes: [icon, line under the title]; Matteo can edit the hub freely and the cards follow
 function cc_ath_kind($href) {
-    $m = [['calendly.com', 'calendar', 'Pick a time that suits you'], ['vivifysports', 'food', 'With Marine Lenehan, sports nutritionist'],
-          ['wa.me', 'chat', 'I usually reply within a few hours'], ['skool.com', 'people', 'Chat with the Cigala community'],
+    $m = [['cal.com/', 'calendar', 'Pick a time that suits you'], ['calendly.com', 'calendar', 'Pick a time that suits you'], ['vivifysports', 'food', 'Your one-off consult with Marine Lenehan, sports nutritionist'],
+          ['wa.me', 'chat', 'I usually reply within a few hours'], ['skool.com', 'people', 'Free for coaching clients'],
           ['vekta', 'bolt', 'Your plan, workouts and analysis'], ['trainingpeaks', 'peaks', 'Your plan and workouts'],
           ['training-zones', 'zones', ''], ['carbs-per-hour', 'carbs', ''], ['critical-power', 'cp', ''], ['ftp-test', 'ftp', ''],
           ['sweat-rate', 'sweat', ''], ['climb-time', 'climb', ''], ['gear-speed', 'gear', ''], ['swim-pace', 'swim', ''], ['.pdf', 'doc', '']];
@@ -372,7 +371,6 @@ html .cc .ath-help a, html .cc .ath-body a:not([class]) { color: var(--green-tex
 html .cc .ath-sec:has(.ath-hero) .ath { max-width: 1080px; }
 html .cc .ath-hero { position: relative; display: grid; grid-template-columns: 1fr 250px; align-items: end; gap: 24px; padding: 34px 36px 0; margin: 0 0 18px; border-radius: 20px; overflow: hidden;
   background: radial-gradient(120% 140% at 100% 100%, rgba(18,161,80,.28), transparent 55%), radial-gradient(90% 120% at 0% 0%, rgba(255,61,51,.14), transparent 60%), rgba(12,14,16,.92); border: 1px solid rgba(43,212,122,.3); box-shadow: 0 30px 80px rgba(0,0,0,.45); }
-html .cc .ath-hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: linear-gradient(90deg, #12a150 0 33.3%, #fff 33.3% 66.6%, #e2231a 66.6%); opacity: .9; }
 html .cc .ath-hero-txt { padding-bottom: 34px; min-width: 0; }
 html .cc .ath-hero h1 { font-size: clamp(36px, 6.4vw, 66px); line-height: 1; margin: 8px 0 12px; }
 html .cc h1 .ath-greet { color: var(--green-text, #2bd47a); font-family: var(--head); }
