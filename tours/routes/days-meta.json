@@ -8,22 +8,22 @@
   "2": {
    "km": 98,
    "up": 1609,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "3": {
    "km": 56,
    "up": 1155,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "4": {
    "km": 23,
    "up": 301,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "5": {
    "km": 129,
    "up": 2083,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   }
  },
  "maratona-dles-dolomites": {
@@ -35,22 +35,22 @@
   "2": {
    "km": 62,
    "up": 1820,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "3": {
    "km": 39,
    "up": 1061,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "4": {
    "km": 33,
    "up": 576,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "5": {
    "km": 147,
    "up": 4510,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   }
  },
  "dolomites": {
@@ -62,22 +62,22 @@
   "3": {
    "km": 96,
    "up": 2870,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "4": {
    "km": 43,
    "up": 1520,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "5": {
    "km": 89,
    "up": 2185,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "6": {
    "km": 20,
    "up": 156,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   }
  },
  "french-alps": {
@@ -89,27 +89,27 @@
   "3": {
    "km": 63,
    "up": 1784,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "4": {
    "km": 71,
    "up": 2276,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "5": {
    "km": 30,
    "up": 1166,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "6": {
    "km": 115,
    "up": 2648,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   },
   "7": {
    "km": 64,
    "up": 1710,
-   "color": "#ff8a3d"
+   "color": "#e3f28a"
   }
  },
  "wonderful-slovenia": {
@@ -121,22 +121,22 @@
   "3": {
    "km": 74,
    "up": 458,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "4": {
    "km": 82,
    "up": 1162,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "5": {
    "km": 82,
    "up": 1505,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "6": {
    "km": 78,
    "up": 493,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   }
  },
  "lake-garda-gravel": {
@@ -148,27 +148,27 @@
   "2": {
    "km": 71,
    "up": 603,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "3": {
    "km": 83,
    "up": 513,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "4": {
    "km": 53,
    "up": 1166,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "5": {
    "km": 34,
    "up": 588,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   },
   "6": {
    "km": 44,
    "up": 277,
-   "color": "#ff8a3d"
+   "color": "#e3f28a"
   }
  },
  "lake-garda-and-stelvio": {
@@ -180,22 +180,22 @@
   "2": {
    "km": 128,
    "up": 2133,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "4": {
    "km": 57,
    "up": 366,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "5": {
    "km": 145,
    "up": 1220,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "6": {
    "km": 32,
    "up": 215,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   }
  },
  "alpine-gravel-escape": {
@@ -207,22 +207,22 @@
   "3": {
    "km": 99,
    "up": 2851,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "4": {
    "km": 47,
    "up": 1658,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "5": {
    "km": 97,
    "up": 2726,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "6": {
    "km": 40,
    "up": 997,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   }
  },
  "italian-alps": {
@@ -234,22 +234,22 @@
   "3": {
    "km": 80,
    "up": 1995,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "4": {
    "km": 73,
    "up": 1963,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "5": {
    "km": 109,
    "up": 3145,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "6": {
    "km": 31,
    "up": 813,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   }
  },
  "tuscany-epic-gravel": {
@@ -261,22 +261,22 @@
   "3": {
    "km": 75,
    "up": 1555,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "4": {
    "km": 93,
    "up": 1631,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "5": {
    "km": 101,
    "up": 1009,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "6": {
    "km": 85,
    "up": 813,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   }
  },
  "cyprus-crossing-gravel": {
@@ -288,27 +288,27 @@
   "3": {
    "km": 35,
    "up": 1038,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "4": {
    "km": 47,
    "up": 1406,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "5": {
    "km": 102,
    "up": 3398,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "6": {
    "km": 44,
    "up": 815,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   },
   "7": {
    "km": 57,
    "up": 917,
-   "color": "#ff8a3d"
+   "color": "#e3f28a"
   }
  },
  "tour-of-flanders-experience": {
@@ -320,12 +320,12 @@
   "2": {
    "km": 47,
    "up": 231,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "3": {
    "km": 75,
    "up": 537,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   }
  },
  "discover-the-algarve-granfondo": {
@@ -337,27 +337,27 @@
   "2": {
    "km": 95,
    "up": 1146,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "3": {
    "km": 49,
    "up": 555,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "4": {
    "km": 75,
    "up": 1075,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "5": {
    "km": 103,
    "up": 697,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   },
   "6": {
    "km": 22,
    "up": 74,
-   "color": "#ff8a3d"
+   "color": "#e3f28a"
   }
  },
  "lake-como-gran-fondo-il-lombardia": {
@@ -369,22 +369,22 @@
   "2": {
    "km": 105,
    "up": 2181,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "3": {
    "km": 100,
    "up": 1274,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "4": {
    "km": 31,
    "up": 304,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "5": {
    "km": 114,
    "up": 2963,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   }
  },
  "italys-coast-to-coast": {
@@ -396,27 +396,27 @@
   "3": {
    "km": 78,
    "up": 1151,
-   "color": "#ff3d33"
+   "color": "#b6f36a"
   },
   "4": {
    "km": 68,
    "up": 783,
-   "color": "#f0bf00"
+   "color": "#5ad6d0"
   },
   "5": {
    "km": 95,
    "up": 711,
-   "color": "#5f86c9"
+   "color": "#f7f8f8"
   },
   "6": {
    "km": 67,
    "up": 952,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   },
   "7": {
    "km": 119,
    "up": 1450,
-   "color": "#ff8a3d"
+   "color": "#e3f28a"
   }
  }
 }

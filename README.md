@@ -260,12 +260,12 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - **Posters with our map badge:** `tools/tours_posters.py` paints our badge (`tourspages/maps/badge-<slug>.svg`, areas in `POSTER_BADGES` in `tours_route_maps.py`) over the live poster's badge and uploads `poster-<slug>` WebPs.
   - **Day-by-day route maps (Matteo approved brouter.de):** `tools/tours_day_routes.py` routes every riding day on real roads with BRouter (OpenStreetMap; road profile for road tours, gravel profile for gravel tours).
     - Waypoints come from each day's text (`DAYS`, coordinates in `G`). Tracks are cached in `tours/routes/<slug>.json`, so maps rebuild offline.
-    - Output: `tourspages/maps/day-<slug>.svg`: each day in its own colour with a numbered badge, hotels/overnight towns in white, named climbs. The frame height follows the route's shape.
+    - Output: `tourspages/maps/day-<slug>.svg`, in the country-map style (Matteo 16 Nov): the tour's country in green with a green outline, neighbours dark, days in a family of greens with a soft glow, numbered badges, hotels/overnight towns in white, named climbs. The frame height follows the route's shape.
     - Lake Garda and Lake Como are drawn from their shore roads: Natural Earth's outlines were too coarse at this zoom.
     - Under the map, the trip page lists the days (colour, title, distance from the itinerary). Hover or tap highlights that day's route.
     - The old overview maps (`<slug>.svg`) stay as the fallback.
     - Router distances differ a little from the itinerary in places (e.g. the French Alps loops). The list shows Matteo's itinerary numbers.
-  - **Hero tags:** the country is a round flag, and the level has the 3-bar meter.
+  - **Hero tags:** the country by name (Matteo did not want a flag there; the flags stay on the tour cards), and the level has the 3-bar meter. Trip at a glance icons sit centred beside their titles.
   - **What's included:** Included and Not included side by side. The airport transfers are a full-width band of date cards, and the Gran Fondo entry prices are tiles.
 - **Live errors fixed (Matteo 15 Nov: "any error you see, fix it"):**
   - The Gran Canaria H1 now reads "Cycling in Gran Canaria" (live: "Cycling in Mallorca").

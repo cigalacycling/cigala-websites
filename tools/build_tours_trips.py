@@ -191,7 +191,7 @@ def trip(slug):
     lb = {'beginner': 1, 'intermediate': 2, 'expert': 3}.get(tr['level'].split(',')[0].strip().lower(), 2)
     lmeter = '<span class="lm" aria-hidden="true">' + ''.join('<i class=on></i>' if i < lb else '<i></i>' for i in range(3)) + '</span>'
     tags_html = (f'<span class="tag{" dot" if tr["type"] != "gravel" else " gdot"}">{E(tags[0])}</span>'
-                 + (f'<span class="tag tflag"><img src="{fl["url"]}" alt="{E(tr["country"])}" width="22" height="22"></span>' if fl else f'<span class="tag">{E(tags[1])}</span>')
+                 + f'<span class="tag">{E(tags[1])}</span>'   # the country by name (Matteo 16 Nov: the flags stay on the cards only)
                  + f'<span class="tag tlvl">{lmeter}{E(tags[2])}</span>')
     pr = prices[0] if prices else ''
     pr_rest = ' · '.join(prices[1:])
@@ -560,13 +560,16 @@ html .cl .lm i { display: block; width: 3px; border-radius: 1px; background: rgb
 html .cl .lm i:nth-child(1) { height: 5px; } html .cl .lm i:nth-child(2) { height: 8px; } html .cl .lm i:nth-child(3) { height: 11px; }
 html .cl .lm i.on { background: var(--green-text, #2bd47a); }
 html .cl .facts .facts-h { font-family: var(--head); font-weight: 400; font-size: 28px; line-height: 1.05; letter-spacing: .01em; color: var(--green-text, #2bd47a); margin: 0 0 10px; }
-html .cl .facts div { grid-template-columns: 32px 128px minmax(0, 1fr); align-items: start; gap: 12px; }
+html .cl .facts div { grid-template-columns: 32px 128px minmax(0, 1fr); align-items: center; gap: 12px; }   /* icon centred on its title (Matteo 16 Nov) */
+html .cl .facts div.ftrans { align-items: start; }
 html .cl .facts .fi { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: var(--green-text, #2bd47a); background: rgba(0,154,68,.12); }
 html .cl .facts .fi svg { width: 16px; height: 16px; }
-html .cl .facts dt, html .cl .facts dd { padding-top: 6px; }
+html .cl .facts dt, html .cl .facts dd { padding-top: 0; }
+html .cl .facts div.ftrans dt { padding-top: 7px; } html .cl .facts div.ftrans dd { padding-top: 5px; }
 html .cl .facts .tl { display: block; margin-bottom: 4px; font-weight: 500; }
 html .cl .facts .tl b { color: var(--green-text, #2bd47a); font-weight: 600; }
-@media (max-width: 600px) { html .cl .facts div { grid-template-columns: 32px minmax(0, 1fr); } html .cl .facts dd { grid-column: 2; padding-top: 0; } }
+@media (max-width: 600px) { html .cl .facts div, html .cl .facts div.ftrans { grid-template-columns: 32px minmax(0, 1fr); align-items: center; row-gap: 4px; }
+  html .cl .facts dt, html .cl .facts div.ftrans dt { padding-top: 0; } html .cl .facts dd, html .cl .facts div.ftrans dd { grid-column: 2; padding-top: 0; } }   /* phones: icon beside the title, the value under the title */
 html .cl #itinerary .gpx { margin: 8px 0 30px; }
 html .cl .gallery.g5, html .cl .gallery.g9 { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-flow: dense; }
 html .cl .gallery .g-big { grid-column: span 2; grid-row: span 2; }

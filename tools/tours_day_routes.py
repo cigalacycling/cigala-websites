@@ -20,7 +20,8 @@ ROOT = trm.ROOT
 CACHE = ROOT + 'tours/routes/'
 OUT = trm.OUT
 W, H = 900, 640
-COLORS = ['#2bd47a', '#ff3d33', '#f0bf00', '#5f86c9', '#f7f8f8', '#ff8a3d', '#b98be0']   # Cigala green, red, gold, blue, white, orange, violet
+COLORS = ['#2bd47a', '#b6f36a', '#5ad6d0', '#f7f8f8', '#8fe8b6', '#e3f28a', '#1fae63']   # a family of greens, as our country maps (Matteo 16 Nov): green, lime, teal, white, mint, pale lime, emerald
+COUNTRY = {t['slug']: t['country'] for t in json.load(open(ROOT + 'tours/trips-2027.json'))['trips']}
 
 G = {   # (lat, lon), approximate: town centres, pass summits
  # Dolomites
@@ -266,7 +267,7 @@ def como_ring():
     json.dump({'via': way, 'coords': got['coords']}, open(fn, 'w'), separators=(',', ':'))
     return [tuple(p) for p in got['coords']]
 
-def draw(slug, countries, lakes, rivers):
+def draw(slug, countries, lakes, rivers, named=None):
     from shapely.geometry import LineString
     profile, days, stays, climbs = DAYS[slug]
     T = tracks(slug)
@@ -321,11 +322,16 @@ def draw(slug, countries, lakes, rivers):
         if len(d) > 1: riv.append('M' + 'L'.join(d))
     label = f'{trm.ROUTES.get(slug, {}).get("label", "")}' or 'Route map'
     svg = [f'<svg class="rmap dmap" viewBox="0 0 {W} {H}" role="img" aria-label="Route map" xmlns="http://www.w3.org/2000/svg">',
-           '<defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity=".03"/></pattern></defs>',
-           f'<rect width="{W}" height="{H}" fill="#0a0c0e"/><rect width="{W}" height="{H}" fill="url(#grid)"/>',
-           f'<path d="{land}" fill="#1b1e22" stroke="#3a3f46" stroke-width="1" fill-rule="evenodd"/>',
-           f'<path d="{"".join(riv)}" fill="none" stroke="#1d4f63" stroke-width="1.2" stroke-opacity=".8"/>',
-           f'<path d="{water}" fill="#0f2a36" stroke="#1d4f63" stroke-width="1"/>']
+           '<defs><filter id="gl" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="3.5"/></filter></defs>',
+           f'<rect width="{W}" height="{H}" fill="#0a0c0e"/>',
+           f'<path d="{land}" fill="#16191d" stroke="#2c3036" stroke-width=".8" fill-rule="evenodd"/>']   # neighbours: as the country maps
+    home = [r for n in ({'Cyprus': ['Cyprus', 'N. Cyprus']}.get(COUNTRY.get(slug), [COUNTRY.get(slug)])) for r in (named or {}).get(n, [])]
+    if home:   # the tour's country in our green, with a green outline (the country-map style)
+        hd = ring_d(home)
+        svg += [f'<path d="{hd}" fill="#009a44" fill-opacity=".13" fill-rule="evenodd"/>',
+                f'<path d="{hd}" fill="none" stroke="#2bd47a" stroke-opacity=".55" stroke-width="1.6" stroke-linejoin="round"/>']
+    svg += [f'<path d="{"".join(riv)}" fill="none" stroke="#2b5d5a" stroke-width=".9" stroke-opacity=".6"/>',
+            f'<path d="{water}" fill="#0c1c20" stroke="#2b5d5a" stroke-width="1" stroke-opacity=".8"/>']
     order = sorted(T, key=int)
     badges = []
     for i, key in enumerate(order):
@@ -336,8 +342,10 @@ def draw(slug, countries, lakes, rivers):
             ln = LineString(xy).simplify(.6)
             ds.append('M' + 'L'.join(f'{x:.1f},{y:.1f}' for x, y in ln.coords))
         d = ''.join(ds)
-        svg.append(f'<g class="dr" data-d="{key}"><path d="{d}" fill="none" stroke="#0a0c0e" stroke-width="7" stroke-linejoin="round" stroke-linecap="round" stroke-opacity=".85"/>'
-                   f'<path class="ln" d="{d}" fill="none" stroke="{c}" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/></g>')
+        svg.append(f'<defs><path id="dr{key}" d="{d}"/></defs><g class="dr" data-d="{key}" fill="none" stroke-linejoin="round" stroke-linecap="round">'   # one path, drawn three times
+                   f'<use href="#dr{key}" stroke="{c}" stroke-width="8" stroke-opacity=".28" filter="url(#gl)"/>'
+                   f'<use href="#dr{key}" stroke="#0a0c0e" stroke-width="6" stroke-opacity=".7"/>'
+                   f'<use class="ln" href="#dr{key}" stroke="{c}" stroke-width="3.2"/></g>')
         if len(T[key]['legs']) > 1:   # ferry crossings between legs: dashed
             for a, b in zip(T[key]['legs'], T[key]['legs'][1:]):
                 (x1, y1), (x2, y2) = P(*a[-1]), P(*b[0])
@@ -397,7 +405,7 @@ def draw(slug, countries, lakes, rivers):
         svg.append(f'<path d="M{x:.1f},{y - 6:.1f}L{x + 5.5:.1f},{y + 4:.1f}L{x - 5.5:.1f},{y + 4:.1f}Z" fill="#c9a36a" stroke="#0a0c0e" stroke-width="1.5"/>' + (text(x, y, lab(n), False, side) if side else ''))
     svg += stay_svg
     for (x, y), c, key in badges:
-        svg.append(f'<g class="db" data-d="{key}"><circle cx="{x:.1f}" cy="{y:.1f}" r="12.5" fill="{c}" stroke="#0a0c0e" stroke-width="2.5"/>'
+        svg.append(f'<g class="db" data-d="{key}"><circle cx="{x:.1f}" cy="{y:.1f}" r="16" fill="{c}" fill-opacity=".18"/><circle cx="{x:.1f}" cy="{y:.1f}" r="12" fill="{c}" stroke="#0a0c0e" stroke-width="2"/>'
                    f'<text x="{x:.1f}" y="{y + 4.6:.1f}" font-family="Montserrat, Arial, sans-serif" font-size="12.5" font-weight="800" fill="#0a0c0e" text-anchor="middle">{key}</text></g>')
     # small legend: hotel / overnight, climbs
     multi = len(stays) > 1
@@ -414,9 +422,10 @@ def draw(slug, countries, lakes, rivers):
 if __name__ == '__main__':
     f = trm.geo_files()
     countries, lakes, rivers = trm.topo_polys(f['countries']), trm.geojson_polys(f['lakes']), trm.geojson_lines(f['rivers'])
+    named = trm.topo_named(f['countries'])
     allmeta = {}
     for slug in sys.argv[1:] or DAYS:
-        svg, meta = draw(slug, countries, lakes, rivers)
+        svg, meta = draw(slug, countries, lakes, rivers, named)
         open(OUT + 'day-' + slug + '.svg', 'w').write(svg)   # day-<slug>.svg: build_tours_trips.py prefers it to the overview map <slug>.svg
         allmeta[slug] = meta
         print(slug, len(svg) // 1024, 'KB', {k: v['km'] for k, v in meta.items()})
