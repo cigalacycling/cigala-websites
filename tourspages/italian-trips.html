@@ -1043,7 +1043,8 @@ Routes are hand-built by our team of former pro riders, covering everything from
 <script>(function(){var g=document.querySelector('.cl .lvchips');if(!g)return;g.querySelectorAll('.fchip').forEach(function(b){b.addEventListener('click',function(){
 g.querySelectorAll('.fchip').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b);});var v=b.dataset.lv;
 document.querySelectorAll('.cl .tgrid').forEach(function(grid){var n=0;[].forEach.call(grid.querySelectorAll('.tcard'),function(c){var ok=!v||c.dataset.level.split(' ').indexOf(v)>-1;c.hidden=!ok;if(ok)n++;});
-var m=grid.nextElementSibling&&grid.nextElementSibling.classList.contains('lvnone')?grid.nextElementSibling:null;if(m)m.hidden=n>0;});});});})();</script>
+var m=grid.nextElementSibling&&grid.nextElementSibling.classList.contains('lvnone')?grid.nextElementSibling:null;if(m)m.hidden=n>0;
+var sec=grid.closest('section');if(sec&&sec.id!=='calendar')sec.hidden=n===0;});});});})();</script>
 </div>
 <div class="cc"><footer>
   <div class="in">

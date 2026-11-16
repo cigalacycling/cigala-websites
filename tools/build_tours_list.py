@@ -143,14 +143,18 @@ def browse(cur):
         f'<a class="chip" href="{L}{URL[s]}" {EXT}' + (' aria-current="page"' if s == cur else '') + f'>{t}</a>'
         for t, s in items) + '</nav>'
 
-LEVELS = ('<div class="fchips lvchips" role="group" aria-label="Filter by level">'
-          '<button type="button" class="fchip on" data-lv="" aria-pressed="true">All levels</button>'
-          + ''.join(f'<button type="button" class="fchip" data-lv="{k}" aria-pressed="false"><span class="lm" aria-hidden="true">{"".join("<i class=on></i>" if i < n else "<i></i>" for i in range(3))}</span>{k.title()}</button>'
-                    for n, k in ((1, 'beginner'), (2, 'intermediate'), (3, 'expert'))) + '</div>')
+def LEVELS_FOR(slugs):   # Matteo 16 Nov: only the levels that have tours on this page (Road and Gran Fondo have no expert-only tour)
+    have = {re.search(r'data-level="(\w+)"', rows[x][1]).group(1) for x in slugs}
+    if len(have) < 2: return ''
+    return ('<div class="fchips lvchips" role="group" aria-label="Filter by level">'
+            '<button type="button" class="fchip on" data-lv="" aria-pressed="true">All levels</button>'
+            + ''.join(f'<button type="button" class="fchip" data-lv="{k}" aria-pressed="false"><span class="lm" aria-hidden="true">{"".join("<i class=on></i>" if i < n else "<i></i>" for i in range(3))}</span>{k.title()}</button>'
+                      for n, k in ((1, 'beginner'), (2, 'intermediate'), (3, 'expert')) if k in have) + '</div>')
 LEVEL_JS = """<script>(function(){var g=document.querySelector('.cl .lvchips');if(!g)return;g.querySelectorAll('.fchip').forEach(function(b){b.addEventListener('click',function(){
 g.querySelectorAll('.fchip').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b);});var v=b.dataset.lv;
 document.querySelectorAll('.cl .tgrid').forEach(function(grid){var n=0;[].forEach.call(grid.querySelectorAll('.tcard'),function(c){var ok=!v||c.dataset.level.split(' ').indexOf(v)>-1;c.hidden=!ok;if(ok)n++;});
-var m=grid.nextElementSibling&&grid.nextElementSibling.classList.contains('lvnone')?grid.nextElementSibling:null;if(m)m.hidden=n>0;});});});})();</script>"""
+var m=grid.nextElementSibling&&grid.nextElementSibling.classList.contains('lvnone')?grid.nextElementSibling:null;if(m)m.hidden=n>0;
+var sec=grid.closest('section');if(sec&&sec.id!=='calendar')sec.hidden=n===0;});});});})();</script>"""
 NONE = f'<p class="lvnone" hidden>No tour here for this level yet. <a href="{L}/trips/private-trips/" {EXT}>Ask us for a custom tour</a> and we will plan one for you.</p>'
 
 READMORE = """<script>(function(){document.querySelectorAll('.cl .tcard .desc.clamp').forEach(function(d){var b=d.parentNode.querySelector('.more-txt');if(d.scrollHeight>d.clientHeight+4){b.hidden=false;b.addEventListener('click',function(){var o=d.classList.toggle('clamp');b.textContent=o?'Read more':'Show less';b.setAttribute('aria-expanded',!o);});}});})();</script>"""
@@ -163,7 +167,7 @@ def page_main(slug):
         crumbs = f'<a href="{L}/" {EXT}>Home</a> / <a href="{L}/trips/" {EXT}>Bike tours</a> / {crumb}'
     label = 'All public tours' if slug == 'trips' else crumb
     head = (f'<div class="head"><div><div class="eyebrow">{label}</div><h2>2027 Calendar</h2>'
-            f'<div class="bar"></div></div>{browse(slug)}</div>{LEVELS}')
+            f'<div class="bar"></div></div>{browse(slug)}</div>{LEVELS_FOR(list(tour_list) + (GF if slug == "road-trips" else []))}')
     tours_html = '\n'.join(rows[s][1] for s in tour_list)
     parts = [f'<div class="hero phero">\n  <img src="{hero}" alt="{E(HERO_ALT.get(hero, ""))}">\n  <div class="in">\n'
              f'    <div class="crumbs">{crumbs}</div>\n    <div class="pill-eyebrow">{eyebrow}</div>\n'
