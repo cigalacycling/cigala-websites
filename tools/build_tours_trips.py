@@ -700,6 +700,10 @@ b.addEventListener('click',function(){set(cur===b.dataset.d?null:b.dataset.d);})
     # one Book now on screen at a time (Matteo 16 Nov): the bar's button shows once the price box has scrolled away
     out.append("""<script>(function(){var b=document.querySelector('.cl .thero .book'),t=document.querySelector('.cl .tabs');if(!b||!t||!('IntersectionObserver' in window))return;t.classList.add('nobook');
 new IntersectionObserver(function(es){t.classList.toggle('nobook',es[0].isIntersecting);}).observe(b);})();</script>""")
+    # laptops: the section menu stays under the header for the whole page (sticky alone let go at the end of its block); phones: not sticky (Matteo 16 Nov)
+    out.append("""<script>(function(){var t=document.querySelector('.cl .tabs');if(!t)return;var ph=document.createElement('div');t.parentNode.insertBefore(ph,t);
+function f(){var pin=window.innerWidth>900&&ph.getBoundingClientRect().top<=79;if(pin!==t.classList.contains('pinned')){t.classList.toggle('pinned',pin);ph.style.height=pin?t.offsetHeight+'px':'';}}
+addEventListener('scroll',f,{passive:true});addEventListener('resize',f);f();})();</script>""")
     # structured data (SEO, Matteo: only improve): TouristTrip with the route places and the euro price, linked to the site's Organization
     num = re.sub(r'[^\d.]', '', pr.replace(',', ''))
     places = [n for n, la, lo, k, ps in _trm.ROUTES.get(slug, {}).get('pts', [])]
@@ -829,6 +833,8 @@ html .cl .guides.g3 .guide .ph img { aspect-ratio: 4 / 3; min-height: 0; height:
 @media (max-width: 900px) { html .cl .guides.g3 { grid-template-columns: minmax(0, 1fr); } html .cl .guides.g3 .guide { grid-template-columns: 140px minmax(0, 1fr); } html .cl .guides.g3 .guide .ph img { aspect-ratio: auto; height: 100%; } }
 html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
+html .cl .tabs.pinned { position: fixed !important; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + 79px); }
+@media (max-width: 900px) { html .cl .tabs { position: relative !important; top: auto !important; } }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
 html .cl .day .evopts { margin: 0 0 12px; font-size: 14px; color: var(--text-2); line-height: 1.4; }
