@@ -40,7 +40,7 @@ style += '''
 .imp{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:12px;padding:14px 18px;margin-top:6px}
 .imp .anton{font-size:20px;margin-bottom:8px}
 .imp .dots li::before{background:var(--red)}
-.made{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-top:14px;padding:18px 20px;border:1px solid var(--border-strong);border-radius:12px;background:var(--panel)}
+.made{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin-top:14px;padding:18px 20px;border:1px solid var(--border-strong);border-radius:12px;background:var(--panel)}
 .made .av{width:76px;height:76px}
 .made .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:4px}
 .made .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:21px;color:var(--text)}
@@ -72,7 +72,6 @@ def made_card(email):
   <img class="av" src="{A}avatar-matteo-cigala.jpg" alt="Matteo Cigala">
   <div><div class="k">Gym circuit made by</div><div class="nm">Cigala Cycling</div>
     <div class="c"><a href="https://www.cigalacycling.com">www.cigalacycling.com</a><br>{PHONE}<br><a href="mailto:{email}">{email}</a></div></div>
-  <a class="btn" href="https://calendly.com/cigalacycling">Book a free call with Matteo</a>
 </div>
 '''
 
