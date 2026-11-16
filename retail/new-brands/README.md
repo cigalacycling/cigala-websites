@@ -47,3 +47,29 @@ There are 35 products with 38 variants. They are not visible to customers yet.
   - Igloohome Smart Padlock (was DRAFT).
   - Not in the shop: Knaap AMS01 Space Grey/Matt Black (the Knaap V2 RTD is a different model and stays).
   - Not in the shop: Shokz OpenRun Grey (from the 8 Nov list).
+
+## 16 Nov: completed and live
+
+Matteo: "make sure you have description, picture, SKU, barcode, everything", sourced from the official brand websites.
+
+**Sources** (each host was added to the environment allowlist):
+- **BLUETTI:** bluettipower.eu product pages. Images come from checkout.bluettipower.eu/cdn and cdn.shopify.com.
+- **PocketBook:** pocketbook.ch catalog. Images from /uploads/.
+- **Easypix, Aquapix, GoXtreme:** easypix.com product pages. Images are /media/image/... and named after JDM's product codes.
+
+**What every product has now:**
+- an English description written from the official specs: intro, key features and specifications
+- 1–7 official photos, each with alt text
+- SKU, barcode and cost, as before
+
+**Title fixes:** "Easypix V64 Flip Camera" and "Easypix V48 Pocket Camera" (they were listed as camcorders; the handles are unchanged).
+
+**Now ACTIVE and published to the Online Store:**
+- 32 products
+- the 4 collections: e-readers, bluetti, easypix and pocketbook
+
+**Still DRAFT:** BLUETTI SORA 60/130/220W panels. They are not on bluettipower.eu; the official page is cl.bluettipower.com, which the session's permission check blocked.
+
+**Stock:** every variant is at 0, so the products show "Sold out" until the JDM stock sync picks up the new SKUs.
+
+**Menu:** "E-Readers" has not been added to the Electronics menu yet.
