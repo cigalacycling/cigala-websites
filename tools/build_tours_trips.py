@@ -823,9 +823,8 @@ html .cl .tolfe .tolfe-tx { grid-column: 1 / -1; }
 html .cl .tolfe p { color: var(--text-2); line-height: 1.65; max-width: 80ch; }
 html .cl .tolfe .tnote a { color: var(--green-text, #2bd47a); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 html .cl .tolfe .tolfe-go { grid-column: 1 / -1; justify-self: start; margin-top: -4px; }
-@media (max-width: 700px) {   /* phones: text first, then video and photo side by side, then a full-width button (Matteo 16 Nov) */
+@media (max-width: 700px) {   /* phones: title, video and photo side by side, text, then a full-width button (Matteo 16 Nov) */
   html .cl .tolfe .tolfe-in { grid-template-columns: 42% minmax(0, 1fr); gap: 10px; }
-  html .cl .tolfe .tolfe-tx { order: -1; }
   html .cl .tolfe .tolfe-tx p { max-width: none; }
   html .cl .tolfe .tolfe-go { display: flex; justify-content: center; width: 100%; justify-self: stretch; margin-top: 4px; order: 2; }
 }
@@ -836,9 +835,12 @@ html .cl .shorts .vcard .yt, html .cl .shorts .vcard iframe { aspect-ratio: 9 / 
 html .cl .day .box.hasmedia { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 22px; align-items: start; }
 html .cl .day .dvid { border-radius: 12px; }
 html .cl .day .dvid .yt, html .cl .day .dvid iframe { aspect-ratio: 9 / 16; }
-@media (max-width: 700px) { html .cl .day .box.hasmedia { grid-template-columns: 1fr; } html .cl .day .dvid { width: 62%; max-width: 240px; } }
+@media (max-width: 700px) { html .cl .day .box.hasmedia { grid-template-columns: 1fr; } html .cl .day .dvid { width: 100%; max-width: none; } }   /* phones: the video as wide as the day box (Matteo 16 Nov) */
 html .cl .opbox .opnote a { color: var(--green-text, #2bd47a); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
+html .cl .evbox .oplogo { width: 190px; padding: 14px; border-radius: 14px; flex: none; }   /* event logos bigger (Matteo 16 Nov) */
+html .cl .evbox .opnote { max-width: 78ch; }   /* the text runs wider: less empty space before the logo */
+@media (max-width: 600px) { html .cl .evbox .oplogo { width: 150px; } }
 html .cl .hotel h3, html .cl .hotel h2 { font-size: 22px; }
 html .cl .stars .sup { font-size: 11px; letter-spacing: 0; vertical-align: 2px; margin-left: 4px; }
 html .cl .guide .tx p { margin: 8px 0 0; font-size: 14px; color: var(--text-2); }
