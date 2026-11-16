@@ -40,6 +40,11 @@ GUIDES_ADD = {'maratona-dles-dolomites': ['JP', 'Bone'], 'dolomites': ['Bone'], 
 # what is true for each: Strade Bianche and Lombardia entries bought with us, guaranteed, grid of your choice; Algarve and Flanders: riders enter with the organiser, we support
 GUAR = 'Your entry is guaranteed when you book this tour: buy it with us and choose your start grid, VIP grids included. On the day, our guides and support vehicle ride the event with you, as on every Cigala day.'
 SUPP = 'You enter directly with the organisers; we look after everything else. On the day, our guides and support vehicle are with you on the course, as on every Cigala day.'
+_LIB = {x['id']: x for x in json.load(open(ROOT + 'stg-tours/media-library.json'))}
+lib_url = lambda i: _LIB[i]['source_url']
+lib_alt = lambda i: re.sub(r'\s*-\s*Cigala Cycling Tours$', '', _LIB[i].get('alt_text') or '')
+EVENT_LOGO = {'chianti-gran-fondo-strade-bianche': 9333, 'lake-como-gran-fondo-il-lombardia': 9326, 'discover-the-algarve-granfondo': 9324, 'tour-of-flanders-experience': 9340}   # the event's own logo on the right of its box (Matteo 16 Nov: the box looked like it was missing it)
+DAY_MEDIA = {'chianti-gran-fondo-strade-bianche': {2: ('3hmbEQFiTHY', 4871), 3: ('jYGwgkZ9CDM', 4872)}}   # a YouTube Short in a day's box (Matteo 16 Nov): (video, our own cover photo); loads on tap
 EVENT_BOX = {'chianti-gran-fondo-strade-bianche': ('Gran Fondo Strade Bianche', 'Entry guaranteed', GUAR),
              'lake-como-gran-fondo-il-lombardia': ('Gran Fondo Il Lombardia', 'Entry guaranteed', GUAR),
              'discover-the-algarve-granfondo': ('Gran Fondo Algarve', 'Full event-day support', SUPP),
@@ -417,7 +422,8 @@ def trip(slug):
         ev_pills = ''.join(f'<span class="evo"><b>{E(a)}</b> {E(b)}</span>' for a, b in sorted(ev_opts, key=lambda o: int(re.search(r'(\d+)', o[1]).group(1))))
         out.append(f'<section style="padding-top:28px"><div class="in"><div class="panel opbox evbox"><div class="optext"><div class="head"><div><div class="eyebrow">The event</div>'
                    f'<p class="band-title">{E(ev_name)}</p><div class="bar"></div></div></div><span class="evchip">{ICON["flag"]}{E(ev_chip)}</span>'
-                   f'<p class="opnote">{E(ev_txt)}</p>{f"<div class=evopts><span>The courses:</span> {ev_pills}</div>" if ev_pills else ""}</div></div></div></section>')
+                   f'<p class="opnote">{E(ev_txt)}</p>{f"<div class=evopts><span>The courses:</span> {ev_pills}</div>" if ev_pills else ""}</div>'
+                   + (f'<img class="oplogo" src="{lib_url(EVENT_LOGO[slug])}" alt="{E(lib_alt(EVENT_LOGO[slug]))}" loading="lazy">' if EVENT_LOGO.get(slug) else '') + '</div></div></section>')
     route = one('route')
     # our own route map (tools/tours_route_maps.py, Cigala style) for every trip; the live map image only as a fallback
     mp = ROOT + f'tourspages/maps/day-{slug}.svg'   # day-by-day routes on real roads (tools/tours_day_routes.py, Matteo 16 Nov)
@@ -484,8 +490,10 @@ def trip(slug):
             chips = (f'<span class="chip km">{km}</span>' if km else '') + (f'<span class="chip up">{up}</span>' if up else '')
             body = ''.join(clean(v) for k, v, s in d['items'] if k in ('text',)) + ''.join(f'<p>{clean(v)}</p>' for k, v, s in d['items'] if k in ('h4', 'h5', 'h6'))
             tg = d['tag'] if d['tag'] in ('h2', 'h3') else 'h3'
-            lis.append(f'<li class="day"><div class="num"><span><small>DAY</small>{n}</span></div><div class="panel box"><{tg}>{E(t)}</{tg}>'
-                       f'{f"<div class=meta>{chips}</div>" if chips else ""}{evo}<div class="prose">{body}</div></div></li>')
+            dm = DAY_MEDIA.get(slug, {}).get(n)
+            dmh = (f'<div class="vcard dvid"><button type="button" class="yt" data-id="{dm[0]}" aria-label="Play the day {n} video">{img_tag(dm[1], 600, alt=f"Day {n} of the {text_of(h1).title()} tour - Cigala Cycling Tours")}<span class="play" aria-hidden="true"></span></button></div>') if dm else ''
+            lis.append(f'<li class="day"><div class="num"><span><small>DAY</small>{n}</span></div><div class="panel box{" hasmedia" if dm else ""}"><div class="dtx"><{tg}>{E(t)}</{tg}>'
+                       f'{f"<div class=meta>{chips}</div>" if chips else ""}{evo}<div class="prose">{body}</div></div>{dmh}</div></li>')
         head = H(d2d, 'Itinerary') if d2d else '<div class="head"><div><div class="eyebrow">Itinerary</div><p class="band-title">Day by day</p><div class="bar"></div></div></div>'
         if slug in DYN: lis = [x.replace('<li class="day">', '<li class="day dyn-in">', 1) for x in lis]
         out.append(f'<section id="itinerary"><div class="in">{head}{gpx}<ol class="days">{"".join(lis)}</ol></div></section>')
@@ -825,6 +833,10 @@ html .cl .shorts { display: grid; grid-template-columns: repeat(auto-fill, minma
 html .cl .shorts .vcard { border-radius: 12px; }
 html .cl .shorts .vcard .yt, html .cl .shorts .vcard iframe { aspect-ratio: 9 / 16; }
 @media (max-width: 600px) { html .cl .shorts { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 72%; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 16px; margin: 0 -16px !important; padding: 0 16px 6px !important; scrollbar-width: none; } html .cl .shorts .vcard { scroll-snap-align: start; } }
+html .cl .day .box.hasmedia { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 22px; align-items: start; }
+html .cl .day .dvid { border-radius: 12px; }
+html .cl .day .dvid .yt, html .cl .day .dvid iframe { aspect-ratio: 9 / 16; }
+@media (max-width: 700px) { html .cl .day .box.hasmedia { grid-template-columns: 1fr; } html .cl .day .dvid { width: 62%; max-width: 240px; } }
 html .cl .opbox .opnote a { color: var(--green-text, #2bd47a); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
 html .cl .hotel h3, html .cl .hotel h2 { font-size: 22px; }
