@@ -166,3 +166,12 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - fonts Montserrat
 - **Checkout background image:** Matteo is keeping the existing one. Shops on the Grow plan can't add a background image again once it is removed, so don't suggest removing it. The `cigala-retail-checkout-banner.jpg` file is unused.
 - **Publish (15 Nov 2026):** Matteo said yes to publishing. `theme_publish` refused with "Only agent-created themes can be published here" (the themes are duplicates), so Matteo publishes in Online Store → Themes. The reminder `trig_01RNagD79QA3dvaTyepxwssj` fires on 1 Dec 09:00 Dublin to switch back to the Horizon brand theme and restore any price drops.
+
+**16 Nov 2026**
+
+- **Meta descriptions** written for the 14 pages that had none: 13 pages plus the News blog, via `global.description_tag`. Checked live.
+- **Brand theme 193220739396** (`cigala-brand.liquid`):
+  - Phone menu: uppercase Montserrat 14px, like the other sites. The current page gets a 2px red line under the word instead of the red bar on the left, and hover is green.
+  - Judge.me: the summary line, the sort dropdown and its arrow, reviewer names and the verified badge are now green.
+  - Phone home type scale: Anton 42 / 30 / 20, Montserrat 15 text, 14 buttons, 12 labels.
+- **Live sale theme:** these changes are not on it yet, because the live theme can't be committed and the library is full (20/20). `themeDelete` is blocked by the connector, so Matteo removes the Debut, Venture, Simple and Minimal sample themes in the admin. Then: `themeDuplicate` the live theme 193226244420, apply the same CSS, and Matteo publishes the copy. After that, update the 1 Dec reminder's theme ID.
