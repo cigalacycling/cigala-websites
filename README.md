@@ -462,5 +462,6 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - the waiver says "training / cycling holiday" and "the Organiser": coaching is Cigala Cycling Ltd, Tours is Cigala Cycling Tours Ltd; the coaching form should name Cigala Cycling Ltd;
   - Appendix A1 cites the UK "Data Protection Act 1998"; in Ireland it's GDPR and the Data Protection Act 2018 (point to the Privacy Policy);
   - emergency contact was only in the under-18 part although waiver clause 11 says it was given: now asked of everyone.
+- **Locked once signed (Matteo 16 Nov):** athletes can read their signed form and PDF but not change it. Things that change go in their own boxes: "My availability" (built) and a planned "My goals & events" box (goals + a list of events with date and priority, prefilled from the form, emails Matteo on change, read by the PC tools for periodization).
 - **To build:** answers stored privately on the athlete page, signed PDF to cc-private and emailed to athlete and Matteo, coach page shows who has completed it, PC tools read goals over the same API, optional reminder email after a few days.
 

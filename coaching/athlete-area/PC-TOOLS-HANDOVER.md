@@ -37,7 +37,8 @@ The Coaching website (`coaching.cigalacycling.com`, athlete area `/athletes/`) h
   - health answers, diet;
   - signed date.
 
-  The usual week from the form fills the availability above.
+  The usual week from the form fills the availability above. The form is locked once signed.
+- **Goals & events** (planned, same API): `GET /wp-json/cc/v1/goals?email=` will return the athlete's current goals and events list. Each event has a name, date, type, priority (A/B/C) and a note. The athlete keeps it up to date, and it starts from the form's answers. Use it for periodization.
 
 ## Vekta calendar
 When an athlete saves availability, the website writes notes into their Vekta calendar.
