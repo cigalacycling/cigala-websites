@@ -1,6 +1,6 @@
 {
- "_note": "Spots left on each tour, shown in the price box with a pulsing red dot (shared/dot). Matteo updates these; remove a line to hide it. A number of 5 or fewer reads 'N spots left'; text is shown as is.",
- "discover-the-algarve-granfondo": "More than 5 spots left",
- "chianti-gran-fondo-strade-bianche": 3,
- "tour-of-flanders-experience": "More than 5 spots left"
+ "_note": "Availability on each trip page (Matteo 16 Nov): a word and a pulsing dot, no numbers. low = red 'Last few spots', mid = amber 'Filling up fast', high = green 'Spots available'. Tours not listed use _default. Shown in the price box and in the bottom 'Ready to ride' band.",
+ "_default": "high",
+ "chianti-gran-fondo-strade-bianche": "low",
+ "discover-the-algarve-granfondo": "mid"
 }

@@ -23,7 +23,13 @@ TYPE = {'road': 'Road', 'gf': 'Gran Fondo', 'gravel': 'Gravel'}
 import importlib.util as _iu
 _sp = _iu.spec_from_file_location('trm', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tours_route_maps.py')); _trm = _iu.module_from_spec(_sp); _sp.loader.exec_module(_trm)
 ROUTE_NOTES = {k: v.get('note', '') for k, v in _trm.ROUTES.items()}
-SPOTS = {k: v for k, v in json.load(open(ROOT + 'tours/spots.json')).items() if not k.startswith('_')}
+_SPJ = json.load(open(ROOT + 'tours/spots.json'))
+SPOTS = {k: v for k, v in _SPJ.items() if not k.startswith('_')}
+HERO_PHOTO = {'discover-the-algarve-granfondo': 710}   # media id: rider in Cigala kit above an Algarve beach
+HERO_DPOS = {'tour-of-flanders-experience': '50% 65%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
+HOTEL_FALLBACK = {'tour-of-flanders-experience': ('h3', 'Hotel T')}   # live has no hotel heading: the main card (stars: add '****' once Matteo confirms)
+HERO_MPOS = {'tour-of-flanders-experience': '50% 70%', 'discover-the-algarve-granfondo': '80% 45%', 'chianti-gran-fondo-strade-bianche': '52% 30%'}   # focus point of the hero photo on phones
+AVAIL = {'low': ('Last few spots', ''), 'mid': ('Filling up fast', ' amber'), 'high': ('Spots available', ' green')}   # wording + dot colour, same on every tour (Matteo 16 Nov)
 MON = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 _sv = lambda d: f'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">{d}</svg>'
@@ -201,10 +207,14 @@ def trip(slug):
         ('Group size', re.split(r'\s*\(', get('GROUP'))[0]) if get('GROUP') else None] if x])   # short form here; the full text is in the Route facts
     extra_small = ''.join(f'<p class="note">{E(x)}</p>' for x in other_small)
     stay_html = (f'<p class="note">{E(stay)}</p>'.replace('contact us', f'<a href="{L}/contact/">contact us</a>')) if stay else ''
-    sp = SPOTS.get(slug)
-    spots_html = (f'<div class="spots"><span class="dot live" aria-hidden="true"></span>{E(f"{sp} spot{"s" if sp != 1 else ""} left" if isinstance(sp, int) else sp)}</div>') if sp else ''
+    sp = SPOTS.get(slug, _SPJ.get('_default'))
+    av_txt, av_cls = AVAIL.get(sp, AVAIL['high'])
+    spots_html = f'<div class="spots av-{sp}"><span class="dot live{av_cls}" aria-hidden="true"></span>{E(av_txt)}</div>'
     card = M.get('trip-' + slug)   # the trip's photo (tour cards); the live top image is a designed poster, shown next to the intro
     hero_img = (f'<img src="{card["url"]}" alt="{E(card["alt"])}">' if card else img_tag(hero_src, 2000, alt=hero_alt, lazy=False))
+    if slug in HERO_PHOTO:   # a hero photo of its own (Matteo 16 Nov: the Algarve card photo was also used further down)
+        hero_img = img_tag(HERO_PHOTO[slug], 2000, alt=hero_alt, lazy=False)
+    hero_img = hero_img.replace('<img ', f'<img style="--mpos:{HERO_MPOS.get(slug, "50% 30%")};--dpos:{HERO_DPOS.get(slug, "center 40%")}" ', 1)   # phones: where the rider is in the photo
     hero = f'''<div class="hero thero">
   {hero_img}
   <div class="in">
@@ -377,6 +387,7 @@ def trip(slug):
             hs = dict(hs, h=mt.group(1))
         txt = ''.join(clean(v) for k, v, s in hs['items'] if k == 'text')
         pics = [x['id'] for k, v, s in hs['items'] if k == 'gallery' for x in s.get('gallery', [])] + [v for k, v, s in hs['items'] if k == 'img']
+        if not names and slug in HOTEL_FALLBACK: names = [HOTEL_FALLBACK[slug]]
         hotels_ = []
         for n, (tg, v) in enumerate(names):
             t = text_of(v); stars = len(re.findall(r'\*', t)); sup = bool(re.search(r'\*\s*S\b', t))
@@ -461,7 +472,7 @@ def trip(slug):
     ftitle = f'<{ftag} class="fin-h">{E(text_of(fin["h"]))}</{ftag}>' if fin else f'<p class="band-title">{E(text_of(h1))}</p>'
     dtag = next((k for k, v, s in (fin['items'] if fin else []) if k in ('h3', 'h2')), None)
     fdates = f'<{dtag} class="fin-d">{E(fin_dates)}</{dtag}>' if dtag else f'<div class="fin-d">{E(fin_dates)}</div>'
-    fspots = (f'<div class="spots fspots"><span class="dot live" aria-hidden="true"></span>{E(f"Only {sp} spot{"s" if sp != 1 else ""} left" if isinstance(sp, int) else sp)}</div>') if isinstance(sp, int) and sp <= 5 else ''   # low spots only (Matteo 16 Nov)
+    fspots = f'<div class="spots fspots av-{sp}"><span class="dot live{av_cls}" aria-hidden="true"></span>{E(av_txt)}</div>'   # the same availability line under the dates (Matteo 16 Nov)
     out.append(f'<section><div class="in"><div class="panel final"><div class="eyebrow">Ready to ride?</div>{ftitle}{fdates}{fspots}'
                f'<div class="ctas"><a class="btn btn-go" href="{E(book)}" target="_blank" rel="noopener">Book now →</a>'
                f'<a class="btn btn-ghost" href="{L}/contact/">Ask a question</a></div></div></div></section>')
@@ -597,6 +608,14 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
+@media (min-width: 901px) { html .cl .hero.thero > img { object-position: var(--dpos, center 40%); } }
+/* phones: the hero photo as a clear band at the top, the title and the price box under it (Matteo 16 Nov: the rider and the jersey logo were hidden) */
+@media (max-width: 900px) {
+  html .cl .hero.thero > img { inset: 0 0 auto 0; height: 440px; object-position: var(--mpos, 50% 30%); }
+  html .cl .hero.thero::after { inset: 0 0 auto 0; height: 442px; background: linear-gradient(180deg, rgba(8,9,10,.45) 0%, rgba(8,9,10,.05) 22%, rgba(8,9,10,.1) 55%, rgba(8,9,10,1) 100%); }
+  html .cl .hero.thero .in { padding-top: 300px !important; }
+  html .cl .hero.thero .crumbs { position: absolute; top: 94px; left: 16px; max-width: calc(100% - 32px); width: fit-content; box-sizing: border-box; background: rgba(8,9,10,.62); backdrop-filter: blur(6px); border-radius: 999px; padding: 5px 12px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }   /* readable over the photo */
+}
 html .cl .thero .tag.tflag { padding: 3px; background: rgba(8,9,10,.6); }
 html .cl .thero .tag.tflag img { display: block; width: 22px; height: 22px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgba(255,255,255,.35); }
 html .cl .thero .tag.tlvl .lm { margin-right: 7px; }

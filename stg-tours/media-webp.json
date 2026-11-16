@@ -9353,5 +9353,47 @@
    683
   ],
   "orig": 2042
+ },
+ "src-710-2000": {
+  "id": 10485,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-17-2000.webp",
+  "alt": "Cyclist overlooking Algarve beach | Cigala Cycling Tours",
+  "from": [
+   1600,
+   899
+  ],
+  "size": [
+   1600,
+   899
+  ],
+  "orig": 710
+ },
+ "src-3247-1200": {
+  "id": 10501,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-imgi_30_FQYgNBRAQzHp2u8WAIBMMrxVTnroUdlAHcT8d8LYrb5zv2Vrx2RClI9L_3WSMmNShqfXb7hKrq_Ubkohyf2BjEreGsxuJ0Is1086-1200.webp",
+  "alt": "Tour of Flanders Experience Cigala Cycling Tours",
+  "from": [
+   1024,
+   682
+  ],
+  "size": [
+   1024,
+   682
+  ],
+  "orig": 3247
+ },
+ "src-3255-600": {
+  "id": 10502,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-imgi_38_krA3B7vYWRX0FnQQn-NuLSiAu636gTIYzM9SfaKeSk34HdYSCCE9OiKvmSJ9Niyr6La0SrA-GykBVbTQ6NFoqtFbjHlpBtN7s1600-600.webp",
+  "alt": "Tour of Flanders Experience Cigala Cycling Tours",
+  "from": [
+   1024,
+   682
+  ],
+  "size": [
+   600,
+   400
+  ],
+  "orig": 3255
  }
 }

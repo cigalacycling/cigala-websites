@@ -695,7 +695,8 @@ def custom():
 
 
 # Spelling mistakes on the live pages (Matteo 15 Nov: "any error you see, fix it"). Visible text only, never links.
-TYPOS = [(r'\bMechnical\b', 'Mechanical'), (r'\bmechnical\b', 'mechanical'), (r'\bDurace\b', 'Dura-Ace'), (r'\bACCOMODATION', 'ACCOMMODATION'),
+TYPOS = [(r'(?<=\w) +,(?=\s)', ','),   # no space before a comma (Matteo 16 Nov: 'RIDE INTO THE LEGEND , TAKE PART')
+         (r'\bMechnical\b', 'Mechanical'), (r'\bmechnical\b', 'mechanical'), (r'\bDurace\b', 'Dura-Ace'), (r'\bACCOMODATION', 'ACCOMMODATION'),
          (r'\bAccomodation\b', 'Accommodation'), (r'\baccomodation\b', 'accommodation'), (r'\baccomodate\b', 'accommodate'), (r'\bCOFFE\b', 'COFFEE'),
          (r'\bAlantejo\b', 'Alentejo'), (r'\bMarocco\b', 'Morocco'), (r'\brecipies\b', 'recipes'), (r'\bcusine\b', 'cuisine'), (r'\bTentino\b', 'Trentino'),
          (r'\blagguages\b', 'luggage'), (r'\bsuitcaseses\b', 'suitcases'), (r'\bwinfe\b', 'wine'), (r'\bprive viewing\b', 'private viewing'),

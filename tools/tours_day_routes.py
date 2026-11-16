@@ -63,7 +63,7 @@ G = {   # (lat, lon), approximate: town centres, pass summits
  "Lucignano d'Asso": (43.148, 11.590), 'Pienza': (43.077, 11.679), "Castiglione d'Orcia": (43.004, 11.615), 'Paganico': (42.950, 11.287), 'Grosseto': (42.763, 11.113),
  'Marina di Grosseto': (42.718, 10.981), 'Castiglione della Pescaia': (42.764, 10.881), 'Follonica': (42.926, 10.761), 'Suvereto': (43.077, 10.676),
  'Radda in Chianti': (43.486, 11.374), 'Gaiole in Chianti': (43.467, 11.435), 'Monteaperti': (43.364, 11.410), 'Colle Pinzuto': (43.338, 11.392), 'Tolfe': (43.346, 11.357),
- 'Castelnuovo Berardenga': (43.346, 11.503), 'Panzano': (43.545, 11.313), 'Greve in Chianti': (43.584, 11.317), 'Lamole': (43.547, 11.354), 'Castellina in Chianti': (43.471, 11.287),
+ 'Castelnuovo Berardenga': (43.346, 11.503), 'Panzano': (43.545, 11.313), 'Greve in Chianti': (43.584, 11.317), 'Lamole': (43.547, 11.354), 'Volpaia': (43.512, 11.393), 'Castellina in Chianti': (43.471, 11.287),
  'Vescovado di Murlo': (43.170, 11.388), 'Montalcino': (43.058, 11.489), "San Giovanni d'Asso": (43.153, 11.590), 'Asciano': (43.234, 11.561),
  'Viareggio': (43.872, 10.250), 'Pisa': (43.723, 10.396), 'Montepulciano': (43.093, 11.781), 'Castiglione del Lago': (43.127, 12.051), 'Magione': (43.141, 12.205),
  'Assisi': (43.071, 12.617), 'Foligno': (42.956, 12.703), 'Colfiorito': (43.026, 12.890), 'Camerino': (43.135, 13.068), 'Sarnano': (43.034, 13.300),
@@ -79,7 +79,7 @@ G = {   # (lat, lon), approximate: town centres, pass summits
  # Algarve
  'Quinta do Lago': (37.028, -8.018), 'Sao Bras de Alportel': (37.152, -7.888), 'Loule': (37.138, -8.020), 'Alto do Malhao': (37.214, -7.940), 'Salir': (37.240, -8.050),
  'Alte': (37.236, -8.174), 'Boliqueime': (37.135, -8.162), 'Querenca': (37.198, -7.989), 'Barranco do Velho': (37.234, -7.937), 'Tavira': (37.127, -7.649),
- 'Olhao': (37.026, -7.841), 'Santa Catarina da Fonte do Bispo': (37.150, -7.780), 'Faro': (37.019, -7.931), 'Almancil': (37.084, -8.032), 'Vale do Lobo': (37.054, -8.069),
+ 'Olhao': (37.026, -7.841), 'Sao Bartolomeu de Messines': (37.258, -8.287), 'Silves': (37.189, -8.438), 'Lagos': (37.102, -8.673), 'Monchique': (37.318, -8.556), 'Santa Catarina da Fonte do Bispo': (37.150, -7.780), 'Faro': (37.019, -7.931), 'Almancil': (37.084, -8.032), 'Vale do Lobo': (37.054, -8.069),
  # Lake Como
  'Como': (45.808, 9.085), 'Civiglio': (45.826, 9.110), 'Brunate': (45.818, 9.098), 'Erba': (45.811, 9.226), 'Canzo': (45.848, 9.272), 'Sormano': (45.878, 9.247),
  'Colma di Sormano': (45.893, 9.231), 'Nesso': (45.913, 9.159), 'Bellagio': (45.987, 9.262), 'Ghisallo': (45.923, 9.268), 'Asso': (45.861, 9.270),
@@ -173,7 +173,7 @@ DAYS = {
  'chianti-gran-fondo-strade-bianche': (R, {
     1: ['Radda in Chianti', 'Gaiole in Chianti', 'Radda in Chianti'],
     2: ['Radda in Chianti', 'Castelnuovo Berardenga', 'Monteaperti', 'Colle Pinzuto', 'Tolfe', 'Siena', 'Castellina in Chianti', 'Radda in Chianti'],
-    3: ['Radda in Chianti', 'Panzano', 'Greve in Chianti', 'Lamole', 'Radda in Chianti'],
+    3: ['Radda in Chianti', 'Castellina in Chianti', 'Panzano', 'Greve in Chianti', 'Lamole', 'Volpaia', 'Radda in Chianti'],   # a loop back to Radda (Matteo 16 Nov)
     4: ['Radda in Chianti', 'Castellina in Chianti', 'Radda in Chianti'],
     5: ['Siena', 'Vescovado di Murlo', 'Montalcino', "San Giovanni d'Asso", 'Asciano', 'Monteaperti', 'Colle Pinzuto', 'Tolfe', 'Siena']},
     ['Radda in Chianti', 'Siena'], ['Gaiole in Chianti', 'Monteaperti', 'Montalcino', 'Greve in Chianti', 'Castellina in Chianti']),
@@ -181,10 +181,10 @@ DAYS = {
     1: ['Quinta do Lago', 'Loule', 'Sao Bras de Alportel', 'Faro', 'Quinta do Lago'],
     2: ['Quinta do Lago', 'Loule', 'Alto do Malhao', 'Salir', 'Alte', 'Boliqueime', 'Quinta do Lago'],
     3: ['Quinta do Lago', 'Loule', 'Querenca', 'Loule', 'Quinta do Lago'],
-    4: ['Loule', 'Alte', 'Salir', 'Barranco do Velho', 'Alto do Malhao', 'Sao Bras de Alportel', 'Loule'],
+    4: ['Loule', 'Salir', 'Alte', 'Sao Bartolomeu de Messines', 'Silves', 'Monchique', 'Lagos'],   # the Gran Fondo goes west all the way to Lagos (Matteo 16 Nov); exact course to come from Komoot
     5: ['Quinta do Lago', 'Santa Catarina da Fonte do Bispo', 'Tavira', 'Olhao', 'Quinta do Lago'],
     6: ['Quinta do Lago', 'Almancil', 'Vale do Lobo', 'Quinta do Lago']},
-    ['Quinta do Lago'], ['Alto do Malhao', 'Querenca', 'Tavira', 'Alte']),
+    ['Quinta do Lago'], ['Alto do Malhao', 'Querenca', 'Tavira', 'Alte', 'Monchique', 'Lagos']),
  'lake-como-gran-fondo-il-lombardia': (R, {
     1: ['Como', 'Civiglio', 'Brunate', 'Como'],
     2: ['Como', 'Erba', 'Canzo', 'Sormano', 'Colma di Sormano', 'Nesso', 'Bellagio', 'Ghisallo', 'Asso', 'Erba', 'Como'],
@@ -330,8 +330,7 @@ def draw(slug, countries, lakes, rivers, named=None):
         hd = ring_d(home)
         svg += [f'<path d="{hd}" fill="#009a44" fill-opacity=".13" fill-rule="evenodd"/>',
                 f'<path d="{hd}" fill="none" stroke="#2bd47a" stroke-opacity=".55" stroke-width="1.6" stroke-linejoin="round"/>']
-    svg += [f'<path d="{"".join(riv)}" fill="none" stroke="#2b5d5a" stroke-width=".9" stroke-opacity=".6"/>',
-            f'<path d="{water}" fill="#0c1c20" stroke="#2b5d5a" stroke-width="1" stroke-opacity=".8"/>']
+    svg += [f'<path d="{water}" fill="#0c1c20" stroke="#2b5d5a" stroke-width="1" stroke-opacity=".8"/>']   # no rivers: at this zoom they read as stray lines (Matteo 16 Nov)
     order = sorted(T, key=int)
     badges = []
     for i, key in enumerate(order):

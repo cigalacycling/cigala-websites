@@ -267,6 +267,16 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
     - Router distances differ a little from the itinerary in places (e.g. the French Alps loops). The list shows Matteo's itinerary numbers.
   - **Hero tags:** the country by name (Matteo did not want a flag there; the flags stay on the tour cards), and the level has the 3-bar meter. Trip at a glance icons sit centred beside their titles.
   - **What's included:** Included and Not included side by side. The airport transfers are a full-width band of date cards, and the Gran Fondo entry prices are tiles.
+- **Phone review, 16 Nov:**
+  - **Availability:** a word and a pulsing dot instead of numbers, the same on every tour (`tours/spots.json`): red "Last few spots" (Strade Bianche), amber "Filling up fast" (Algarve), green "Spots available" (the rest, `_default`). Shown in the price box and in the bottom "Ready to ride" band.
+  - **Phone hero:** on phones the trip photo is a clear band at the top (440px, focus point per trip in `HERO_MPOS`), with the title and price box below it. The breadcrumb sits in a dark pill. On laptops the focus point is in `HERO_DPOS` (Flanders: the riders).
+  - **Algarve hero:** media 710 (rider in Cigala kit above the beach, `HERO_PHOTO`). On laptops the price box covers the rider.
+  - **Flanders:** "Hotel T" main card (`HOTEL_FALLBACK`: live has no hotel heading) and 8 photos below. Star rating to add when Matteo confirms it.
+  - **Text:** no space before a comma, site-wide (`TYPOS`): "RIDE INTO THE LEGEND, TAKE PART…".
+  - **Maps:**
+    - Strade Bianche day 3 is a loop back to Radda (Castellina, Panzano, Greve, Lamole, Volpaia).
+    - Algarve day 4 is the Gran Fondo to Lagos via Monchique (approximate, until Matteo sends the Komoot GPX).
+    - Rivers are off the day maps.
 - **Live errors fixed (Matteo 15 Nov: "any error you see, fix it"):**
   - The Gran Canaria H1 now reads "Cycling in Gran Canaria" (live: "Cycling in Mallorca").
   - In the Lake Como guide (post 8945), the second FAQ question is now "How hard is the Muro di Sormano?". Backup: `stg-tours/backup/post-8945-before-faq-fix.json`.
