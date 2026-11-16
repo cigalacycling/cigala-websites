@@ -1,7 +1,7 @@
 """Matteo 15 Nov: the blog cards of the 7 articles from vivifysports.com didn't show "By Marine Lenehan".
 The blog card reads the ACF field `author_name` (field_6a429034e5022), which the older Marine posts have and the new ones
 didn't. ACF isn't in the REST API, so (staging only) a temporary Code Snippets snippet registers the two meta keys,
-the value is copied from an older Marine post, then the snippet is deleted and Code Snippets switched off again.
+the value is copied from an older Marine post, then the snippet is deleted (Code Snippets stays on: the athlete area runs on it).
   python3 -I tools/coaching_vivify_author_field.py
 """
 import json, os, subprocess
@@ -26,4 +26,4 @@ try:
         print(slug, '->', r['meta'].get('author_name'))
 finally:
     print('delete snippet', req(f'{B}/code-snippets/v1/snippets/{sid}', None, 'DELETE') is not None)
-    print(req(f'{B}/wp/v2/plugins/code-snippets/code-snippets?_fields=status', {'status': 'inactive'}, 'POST'))
+    # Code Snippets stays ON since 16 Nov: the athlete area (snippet 8) and the Italian language snippet run on it

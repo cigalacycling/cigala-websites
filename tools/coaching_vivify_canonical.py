@@ -17,7 +17,7 @@ for slug, p in P.items():
     print(slug, '->', (r.get('meta') or {}).get('_yoast_wpseo_canonical'))
 if len(sys.argv) > 1:
     print('delete snippet', req(f'{B}/code-snippets/v1/snippets/{sys.argv[1]}', None, 'DELETE') is not None)
-    print(req(f'{B}/wp/v2/plugins/code-snippets/code-snippets?_fields=plugin,status', {'status': 'inactive'}, 'POST'))
+    # Code Snippets stays ON since 16 Nov (athlete area)
 for slug, p in P.items():
     h = req(f'{B}/wp/v2/posts/{p["id"]}?_fields=yoast_head_json')
     print('check', slug, (h.get('yoast_head_json') or {}).get('canonical'))

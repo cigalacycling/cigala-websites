@@ -125,6 +125,11 @@ EV_MORE = ['**Campionato Italiano Gravel** (FCI)', '**Campionati Italiani Granfo
            '**Veneto Gravel** (Bassano del Grappa)', '**Dolomiti Superbike** (Villabassa, Alta Pusteria)', '**Capoliveri Legend Cup** (Isola d’Elba)', '**La Fausto Coppi** (Cuneo)']
 EV_T.update({'Superbike': 'MTB', 'Capoliveri': 'MTB', 'Tuscany Trail': 'Ultra', 'Italy Divide': 'Ultra', 'Veneto Gravel': 'Gravel', 'Fausto Coppi': 'Strada', 'Gimondi': 'Strada', 'Gravel': 'Gravel', 'Eroica': 'Gravel', 'Granfondo e Marathon': 'Tutte le discipline', 'Lombardia': 'Strada', 'Tre Valli': 'Strada', 'Sportful': 'Strada', 'Campagnolo': 'Strada'})
 WON = ('Strade Bianche', 'Campionato Italiano Gravel', 'Il Lombardia', 'Tre Valli Varesine', 'Mondiali, Europei')   # Mondiali/Europei: European Champion Gran Fondo 2022   # About page: Matteo's own wins
+# Matteo 16 Nov: the Italian articles, linked from the Italian page (internal links for Italian SEO), like the country pages' guides
+GUIDE_IT = [('come-scegliere-preparatore-ciclismo-online', 'Come scegliere un preparatore'), ('come-migliorare-in-salita-ciclismo', 'Migliorare in salita'),
+            ('granfondo-ritmo-alimentazione-giorno-gara', 'Ritmo e alimentazione in granfondo'), ('allenamento-invernale-ciclismo-rulli', 'Allenamento invernale e rulli'),
+            ('ciclismo-dopo-i-40-anni', 'Ciclismo dopo i 40 anni'), ('zone-di-potenza-critical-power-ciclismo', 'Zone di potenza e Critical Power'),
+            ('preparazione-gran-fondo-strade-bianche', 'Preparare la Strade Bianche'), ('preparazione-maratona-dles-dolomites', 'Maratona dles Dolomites')]
 def ev_card(x):
     t = next((v for k, v in EV_T.items() if k in x), 'Strada'); c = TYPES[t]
     m = re.match(r'\*\*(.+?)\*\*\s*(.*)', x.replace('**\n\n**', '').strip())
@@ -271,6 +276,8 @@ MAIN = f'''<div class="hero hero-sm">
     </div>
     <ul class="it-ev-grid">{''.join(ev_card(x) for x in ev_li + EV_MORE)}</ul>
     {''.join(f'<p class="it-ev-note">{E(x)}</p>' for x in ev_p[1:])}
+    <h3 class="h-sm cn-gh">Le mie guide in italiano</h3>
+    <ul class="cn-guides cn-gcards">{''.join(f'<li><a class="btn btn-go" href="{C}/blog/{u}/" {EXT}>{E(t)} →</a></li>' for u, t in GUIDE_IT)}</ul>
   </div>
 </section>
 

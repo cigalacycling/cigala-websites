@@ -114,8 +114,13 @@ TOOLS_IT = [('Zone di allenamento', '/tools/training-zones-calculator/'), ('Carb
             ('Critical Power', '/tools/critical-power-calculator/'), ('Test FTP', '/tools/ftp-test-calculator/'),
             ('Tasso di sudorazione', '/tools/sweat-rate-calculator/'), ('Tempo in salita', '/tools/climb-time-calculator/'),
             ('Rapporti e velocità', '/tools/gear-speed-calculator/'), ('Passo nuoto (CSS)', '/tools/swim-pace-calculator/')]
-READ_IT = [('In italiano', [('Come prepararsi alla Gran Fondo Strade Bianche', '/blog/preparazione-gran-fondo-strade-bianche/'),
-                            ('Come allenarsi per la Maratona dles Dolomites', '/blog/preparazione-maratona-dles-dolomites/')])] + \
+READ_IT = [('Allenamento', [('Zone di potenza e Critical Power, spiegate semplici', '/blog/zone-di-potenza-critical-power-ciclismo/'),
+                             ('Come migliorare in salita', '/blog/come-migliorare-in-salita-ciclismo/'),
+                             ('Allenamento invernale: rulli, palestra e uscite', '/blog/allenamento-invernale-ciclismo-rulli/'),
+                             ('Ciclismo dopo i 40 anni', '/blog/ciclismo-dopo-i-40-anni/')]),
+           ('Gare e granfondo', [('Granfondo: ritmo e alimentazione il giorno della gara', '/blog/granfondo-ritmo-alimentazione-giorno-gara/'),
+                                 ('Come prepararsi alla Gran Fondo Strade Bianche', '/blog/preparazione-gran-fondo-strade-bianche/'),
+                                 ('Come allenarsi per la Maratona dles Dolomites', '/blog/preparazione-maratona-dles-dolomites/')])] + \
           [({'Training': 'Allenamento', 'Fuelling': 'Alimentazione', 'Recovery': 'Recupero', 'Race week': 'Settimana di gara'}[g] + ' (in inglese)', items) for g, items in READ]
 HUB_IT = lambda: (h2('Link rapidi')
        + buttons(btn('Prenota una call di aggiornamento', 'https://cal.com/matteocigala/15min'), btn('Consulenza nutrizionale con Marine', 'https://www.vivifysports.com/nutritionalcoaching'),

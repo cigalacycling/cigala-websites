@@ -411,3 +411,18 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Phones and tablets (up to 1080 px): the green "Book Consultation" button now stays in the header next to Menu (it was hidden before). The open menu ends with a full-width "Book a free consultation" button and an "Athlete login" button.
 - Computers: a small person icon ("Athlete login", with aria-label and title) sits next to Book Consultation.
 - Menu items, links and headings are unchanged.
+
+## 16 Nov: six new Italian articles and Italian language signals (Matteo: "you know best what to do for SEO")
+- **Six new articles**, written from scratch in Italian (not translations of the English posts), so no hreflang is needed: hreflang only links translations of the same page.
+  - /blog/come-scegliere-preparatore-ciclismo-online/
+  - /blog/come-migliorare-in-salita-ciclismo/
+  - /blog/granfondo-ritmo-alimentazione-giorno-gara/
+  - /blog/allenamento-invernale-ciclismo-rulli/
+  - /blog/ciclismo-dopo-i-40-anni/
+  - /blog/zone-di-potenza-critical-power-ciclismo/
+  - Source: coaching/blog-it/articles.py; publisher: tools/coaching_italian_posts.py.
+  - Each has an Italian Yoast title, description and keyphrase, one H1, Matteo's author line and sign-off, and an Italian alt text on the in-article photo.
+- **"Italiano" category:** the six new posts plus the two existing Italian posts. Category isn't in the permalink, so no URL changed.
+- **Language signals:** Code Snippets snippet 9 sets `<html lang="it-IT">` and og:locale it_IT on Italian posts AND on /preparatore-di-ciclismo-italia/ (which was en-US before).
+- **Internal links:** the Italian page has a "Le mie guide in italiano" row (H3, green pills like the country pages) linking all 8 Italian posts, and the Italian athlete hub lists them.
+- **Future languages:** use a multilingual plugin (e.g. /it/ folders) with hreflang between real translations. Don't publish bulk machine translations.
