@@ -558,3 +558,6 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - The Users list has an "Athlete hub" column: no email yet / email sent / password set.
 - Sent from noreply@cigalacycling.com, reply-to matteo@. The logo PNG is in the option cc_mail_logo.
 - Tested on staging (EN + IT: short/mismatch errors, link reused = expired, email login) and on live with a temporary user, deleted afterwards.
+- **16 Nov 2026, 22:20: 35 athletes created on LIVE** (Matteo's list via the availability session; user IDs 20–54, Subscribers, hub pages created, cc_lang 28 en / 5 it / 1 pt / 1 sl). The names and emails are not in the repo (personal data); they are in WordPress.
+  - **No welcome emails sent:** Matteo announces the hub once the rider-form and availability parts are tested (availability session).
+  - athlete-area.php is shared with the availability session. It is building the rider-form lock on staging. Don't push athlete-area.php until it says it's done.
