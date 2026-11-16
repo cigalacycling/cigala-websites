@@ -122,6 +122,18 @@ READ_IT = [('Allenamento', [('Zone di potenza e Critical Power, spiegate semplic
                                  ('Come prepararsi alla Gran Fondo Strade Bianche', '/blog/preparazione-gran-fondo-strade-bianche/'),
                                  ('Come allenarsi per la Maratona dles Dolomites', '/blog/preparazione-maratona-dles-dolomites/')])] + \
           [({'Training': 'Allenamento', 'Fuelling': 'Alimentazione', 'Recovery': 'Recupero', 'Race week': 'Settimana di gara'}[g] + ' (in inglese)', items) for g, items in READ]
+def upload_guides_it(hub_it_id):   # the Italian PDFs (made in the "New session" chat), into the Italian hub's private folder
+    ids = json.load(open(FILES)) if os.path.exists(FILES) else {}
+    for _, items in GUIDES_IT:
+        for t, f in items:
+            it = f[:-4] + '-IT.pdf'
+            if it in ids or not os.path.exists(ROOT + it): continue
+            r = subprocess.run(['curl', '-sS', '-m', '300', '-X', 'POST', f'{B}/wp/v2/media', '-F', f'file=@{ROOT + it};type=application/pdf',
+                                '-F', f'post={hub_it_id}', '-F', 'title=' + t], capture_output=True, text=True)
+            d = json.loads(r.stdout); assert d.get('id'), r.stdout[:300]
+            assert '/athletes/?cc_file=' in d['source_url'], 'not in the private folder: ' + d['source_url']
+            ids[it] = {'id': d['id'], 'url': d['source_url']}; print('uploaded', it, d['id'])
+            json.dump(ids, open(FILES, 'w'), indent=1)
 HUB_IT = lambda: (h2('Link rapidi')
        + buttons(btn('Prenota una call di aggiornamento', 'https://cal.com/matteocigala/15min'), btn('Consulenza nutrizionale con Marine', 'https://www.vivifysports.com/nutritionalcoaching'),
                  btn('WhatsApp Matteo', 'https://wa.me/353834777697', True), btn('Community su Skool', 'https://www.skool.com/cigala-cycling-collective-1115', True))
@@ -171,5 +183,6 @@ if __name__ == '__main__':
     if not hub_it:
         hub_it = [req(f'{B}/wp/v2/cc_athlete', {'title': 'Shared hub (Italian athletes)', 'status': 'private', 'content': HUB_IT(), 'meta': {'cc_shared': True, 'cc_lang': 'it'}}, 'POST')]
     elif '--hub' in sys.argv:
+        upload_guides_it(hub_it[0]['id'])
         req(f'{B}/wp/v2/cc_athlete/{hub_it[0]["id"]}', {'content': HUB_IT()}, 'POST')
     print('hub it', hub_it[0].get('id'), hub_it[0].get('message', ''))

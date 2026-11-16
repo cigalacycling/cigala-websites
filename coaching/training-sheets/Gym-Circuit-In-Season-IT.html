@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>Circuito palestra in stagione | Cigala Cycling</title>
+<link rel="stylesheet" href="../nutrition-guide/assets/fonts.css"><style>
+:root{
+  --bg:#08090a; --panel:rgba(15,16,17,.92); --panel-solid:#0f1011;
+  --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14);
+  --text:#f7f8f8; --text-2:#d0d6e0; --text-3:#8a8f98;
+  --green:#009a44; --green-text:#34c46a; --red:#E10600; --red-text:#ff3d33;
+  /* Vivify Sports (partner) */
+  --vivify:#19444b;
+  /* topic colours: one per nutrient, used through the whole guide */
+  --c-carb:#f28c38; --c-pro:#e8606a; --c-fat:#f2cf4a; --c-mic:#34c46a; --c-hyd:#4aa8e8; --topic:#d0d6e0; --vivify-2:#2f6f7a; --vivify-text:#7fc3cc;
+}
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:Montserrat,sans-serif;color:var(--text-2);font-size:12.5px;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+b,strong{color:var(--text);font-weight:600}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;padding:13mm 15mm 22mm;
+  background:#08090a url(../nutrition-guide/assets/topo-a4.jpg) center/100% 100% no-repeat;
+  page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto}
+/* running header + footer */
+.run{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);font-weight:600;padding-bottom:9px;border-bottom:1px solid var(--border);margin-bottom:18px}
+.run img{height:22px;width:auto}
+.run .logos{display:flex;align-items:center;gap:9px}
+.run .logos span{color:var(--text-3);font-weight:400}
+.foot{position:absolute;left:15mm;right:15mm;bottom:9mm;display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600;border-top:1px solid var(--border);padding-top:9px}
+.foot .n{color:var(--text);font-family:Anton,sans-serif;font-size:15px;letter-spacing:.04em}
+/* type */
+h1,h2,h3,.anton{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:var(--text);letter-spacing:.01em;line-height:1.02}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--red-text)}
+.bar{width:40px;height:3px;background:var(--green);border-radius:2px}
+h3{font-size:19px;margin:18px 0 4px}
+h3+.bar{margin:10px 0 12px}
+p{margin:0 0 10px}
+.lead{font-size:13.5px;color:var(--text-2)}
+.note{font-size:10.5px;color:var(--text-3);margin-top:6px}
+/* section header */
+.sec{position:relative;padding:4px 0 0;margin-bottom:14px}
+.sec .eyebrow{margin-bottom:10px}
+.sec h2{font-size:42px;max-width:78%}
+.sec .bar{margin:14px 0 12px}
+.sec .sub{font-size:14px;color:var(--text-2);max-width:72%}
+.sec .big{position:absolute;right:-2mm;top:-8px;font-family:Anton,sans-serif;font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--topic);opacity:.55}
+.topic{display:inline-flex;align-items:center;gap:7px;margin-left:10px;padding:0 10px 0 8px;line-height:17px;vertical-align:1px;border-radius:999px;border:1px solid var(--border-strong);color:var(--text);font-size:9.5px;letter-spacing:.16em}
+.topic i{width:8px;height:8px;border-radius:50%;background:var(--topic);display:inline-block}
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.dots{list-style:none;display:grid;gap:7px 22px}
+.dots li{position:relative;padding-left:16px}
+.dots li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--green)}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:1fr 1fr 1fr}
+.callout{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:12px;padding:12px 18px;margin-top:12px}
+.callout .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green-text);margin-bottom:4px}
+.callout.viv{border-left-color:var(--vivify-2)}
+.callout.viv .k{color:var(--vivify-text)}
+.callout p{margin:0}
+/* stat tiles */
+.tiles{display:grid;gap:8px}
+.tile{border-radius:12px;padding:11px 8px 10px;text-align:center;border:1px solid var(--border);background:var(--panel-solid)}
+.tile .v{font-family:Anton,sans-serif;font-size:27px;color:var(--text);line-height:1.1}
+.tile .u{font-size:10.5px;color:var(--text-2);margin-top:2px}
+.tile .l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-top:7px;line-height:1.35}
+.m{display:flex;gap:3px;justify-content:center;margin-top:10px}.m i{width:14px;height:4px;border-radius:2px;background:rgba(255,255,255,.14)}.m i.on{background:var(--topic)}
+.tile.wide{padding:16px;border-top:3px solid var(--topic)}.tile.wide .v{font-size:40px;color:var(--topic)}
+.tiles.plain .tile,.tiles.scale .tile{border-top:3px solid var(--topic)}
+/* tables */
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:11.5px}
+.tbl{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+th{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);text-align:left;padding:10px 12px;background:#17191b;border-bottom:1px solid var(--border-strong)}
+td{padding:5px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td small{color:var(--text-3);font-size:10px}
+th .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.d-green{background:var(--green)}.d-viv{background:var(--vivify-text)}.d-red{background:var(--red)}.d-grey{background:var(--text-3)}.d-white{background:var(--text)}
+th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;color:var(--red-text);font-size:9.5px;margin-top:1px}
+.avoid td:nth-child(2){color:var(--text-3)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+/* fats cards */
+.fat{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:11px}
+.fat .hd{padding:11px 12px 10px;border-bottom:1px solid var(--border-strong)}
+.fat .hd .anton{font-size:17px;display:flex;align-items:center;gap:7px}
+.fat .hd .anton i{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.fat .hd .tag{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-top:4px}
+.fat .ds{padding:10px 12px 4px;color:var(--text-3);font-style:italic;font-size:10.5px;line-height:1.45}
+.fat ul{list-style:none;padding:4px 12px 12px}
+.fat li{padding:2.5px 0 2.5px 13px;position:relative;line-height:1.35}
+.fat li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--text-3)}
+.fat.mono li::before{background:var(--green)}.fat.poly li::before{background:var(--green)}.fat.trans li::before{background:var(--red)}
+.fat.trans{border-color:rgba(225,6,0,.35)}
+/* micronutrients */
+.micro td{font-size:10.5px;line-height:1.45;padding:8px 10px}
+.micro td:first-child{font-weight:600;color:var(--text);width:24%;border-left:3px solid var(--green)}
+.micro td:last-child{width:33%}
+.micro b{font-weight:600}
+/* food sources */
+.foods td{padding:7px 14px;font-size:11.5px}
+.foods td:first-child{width:32%;font-weight:600;color:var(--text)}
+.foods td em{color:var(--text-3)}
+/* timing */
+.row{display:grid;grid-template-columns:150px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:9px;background:var(--panel)}
+.row .lab{padding:14px;display:flex;align-items:center;font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);background:#151719;border-right:3px solid var(--green);line-height:1.1}
+.row.v .lab{border-right-color:var(--vivify-2)}
+.row .bd{padding:11px 16px;font-size:11.5px}
+.row .bd .dots{gap:4px}
+.row .bd .k{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green-text);margin:7px 0 4px}
+.row .bd em{color:var(--text-3);font-size:10.5px}
+/* hydration cards */
+.hc{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.hc .hd{padding:10px 14px;font-family:Anton,sans-serif;text-transform:uppercase;font-size:16px;color:var(--text);background:#151719;border-bottom:1px solid var(--border-strong)}
+.hc .dots{padding:12px 14px;gap:6px;font-size:11.2px}
+/* plates */
+.plates{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.plate{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 10px 18px;text-align:center}
+.plate .t{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-bottom:10px;min-height:2.6em}
+.plate svg{width:196px;height:196px;display:block;margin:0 auto 10px}
+.plate .x{font-size:11.5px;color:var(--text-3);line-height:1.6}
+.legend{display:flex;gap:18px;justify-content:center;margin-top:12px;font-size:10.5px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+/* contents */
+.toc{list-style:none;margin-top:4px}
+.toc li{display:grid;grid-template-columns:62px 1fr 40px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.toc .no{font-family:Anton,sans-serif;font-size:28px;color:transparent;-webkit-text-stroke:1px var(--topic)}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:8px;font-size:11px;color:var(--text)}
+.key span{display:flex;align-items:center;gap:7px}.key i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.toc .tt{font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);line-height:1.1}
+.toc .ds{font-size:11px;color:var(--text-3);margin-top:2px}
+.toc .pg{text-align:right;font-weight:600;color:var(--text)}
+/* cover */
+.cover{padding:0}
+.cover .in{position:absolute;inset:0;padding:18mm 16mm}
+.cover .logos{display:flex;align-items:center;gap:16px}
+.cover .logos .cc{width:30mm;height:30mm}
+.cover .logos .x{font-size:28px;color:var(--text-3);font-weight:300}
+.cover .logos .vv{height:30mm}
+.cover h1{font-size:104px;line-height:.92;margin-top:22mm}
+.cover .eyebrow{margin-top:20mm}
+.cover .bar{margin:18px 0 16px;width:56px;height:4px}
+.cover .tag{font-size:17px;color:var(--text-2);max-width:120mm;line-height:1.45}
+.cover .photo{position:absolute;left:16mm;right:16mm;bottom:44mm;height:74mm;border-radius:12px;overflow:hidden;border:1px solid var(--border-strong)}
+.cover .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
+.cover .by{position:absolute;left:16mm;right:16mm;bottom:16mm;display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--border-strong);padding-top:12px}
+.cover .by .who{font-family:Anton,sans-serif;text-transform:uppercase;font-size:22px;color:var(--text);line-height:1.1}
+.cover .by .role{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600;margin-top:4px}
+.cover .by .r{text-align:right}
+/* consultation */
+.consult{display:grid;grid-template-columns:1.05fr 1fr;gap:0;border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;background:var(--panel)}
+.consult .l{padding:20px 22px}
+.consult .r{padding:20px 22px;background:linear-gradient(160deg,rgba(25,68,75,.85),rgba(15,16,17,.95));border-left:1px solid var(--border-strong)}
+.consult .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:8px}
+.consult .r .k{color:var(--vivify-text)}
+.person{margin-bottom:16px}
+.person .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:19px;color:var(--text)}
+.person .rl{font-size:10.5px;color:var(--text-3);margin-bottom:6px}
+.person a,.person div.c{display:block;color:var(--text);font-size:11.5px;font-weight:500;text-decoration:none;line-height:1.6}
+.btn{display:inline-block;background:var(--green);color:#fff;font-weight:600;font-size:13px;padding:11px 18px;border-radius:8px;text-decoration:none;margin-top:14px}
+.mphoto{height:86mm;border-radius:12px;overflow:hidden;border:1px solid var(--border-strong);margin-bottom:16px;position:relative}
+.mphoto img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.pill{position:absolute;left:14px;bottom:14px;background:rgba(15,16,17,.92);border:1px solid var(--border-strong);border-radius:999px;color:#fff;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 13px 7px 11px;display:flex;align-items:center;gap:8px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block}
+.coach{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:12px;padding:14px 18px;margin-top:14px}
+.coach img{width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid var(--green)}
+.av{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--green);flex:none;display:block}
+.av.viv{border-color:var(--vivify-text)}
+.avrow{display:flex;gap:12px;align-items:center}.avrow.rev{flex-direction:row-reverse}
+.coach .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:3px}
+.coach p{margin:0}
+.ratio td{text-align:center;font-size:12.5px;padding:8px 10px}.ratio td:first-child{text-align:left}.ratio th{text-align:center}.ratio th:first-child{text-align:left}
+.ratio td b{color:var(--green-text)}
+.pk td{font-size:11.5px;padding:8px 12px}.pk td:not(:first-child),.pk th:not(:first-child){text-align:center;width:18%}
+.ok{color:var(--green-text);font-weight:700}.no{color:var(--text-3)}
+.tool{display:block;text-decoration:none;color:var(--text-2);background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.tool .anton{font-size:17px;margin-bottom:4px}.tool .go{color:var(--green-text);font-weight:600;font-size:11.5px;margin-top:6px;display:block}
+/* foundations */
+.fd{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.fd .card{grid-column:span 3;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--topic);border-radius:12px;padding:16px;text-align:center}
+.fd .card.s2{grid-column:span 2}
+.fd .ic{width:44px;height:44px;border-radius:50%;background:var(--topic);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.fd .ic svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fd .card .anton{font-size:18px;margin-bottom:6px}
+.fd .card p{font-size:11px;margin:0}
+.hub{display:flex;justify-content:center;margin:16px 0}
+.hub span{font-family:Anton,sans-serif;font-size:24px;letter-spacing:.06em;color:#fff;background:var(--green);padding:9px 28px;border-radius:999px}
+.tl{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr;align-items:center;gap:8px;margin-top:6px}
+.tl .st{display:flex;gap:11px;align-items:center}
+.tl .st .ic{width:40px;height:40px;border-radius:50%;background:var(--green);flex:none;display:flex;align-items:center;justify-content:center}
+.tl .st .ic svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tl .anton{font-size:16px}
+.tl p{font-size:10.5px;margin:0;line-height:1.4}
+.tl .ar{color:var(--green-text);font-size:20px;text-align:center}
+.quote{text-align:center;margin-top:18px;padding:18px;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong)}
+.quote .anton{font-size:22px}
+.quote p{margin:6px 0 0;font-size:13px}
+
+/* training sheets: green = strength & core, blue = bike & cardio, yellow = stretching & mobility */
+:root{--c-str:#34c46a;--c-bike:#4aa8e8;--c-mob:#f2cf4a}
+.head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.head h1{font-size:54px;line-height:.95;margin-top:10px}
+.head h1 span{display:block;color:var(--text-2);font-size:30px;margin-top:6px}
+.head .bar{margin-top:14px}
+.head img{width:26mm;height:26mm}
+.ex{display:grid;grid-template-columns:54px 70mm 1fr;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--topic);border-radius:12px;padding:8px 16px 8px 12px;margin-bottom:8px;break-inside:avoid}
+.ex .no{font-family:Anton,sans-serif;font-size:34px;color:var(--topic);text-align:center;line-height:1}
+.ex .im{height:26mm;background:#fff;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ex .im img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.ex .im.ph{background:#000}
+.ex .im.ph img{width:100%;height:100%;object-fit:cover}
+.ex .im.two{flex-direction:column;gap:2px;background:#000}
+.ex .im.two img{height:50%;width:100%;object-fit:cover}
+.ex .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:19px;color:var(--text);line-height:1.1}
+.ex .ld{display:inline-block;margin:5px 0 3px;padding:2px 10px;border-radius:999px;border:1px solid var(--topic);color:var(--text);font-size:10.5px;font-weight:600}
+.ex .ds{font-size:11.5px;color:var(--text-2);line-height:1.5}
+.ex .ds div{margin-top:1px}
+.ex.sc{grid-template-columns:54px 56mm 1fr}
+.im.pair{display:grid !important;grid-template-columns:1fr 1fr;gap:2px;background:#000 !important;padding:0}
+.im.pair img{width:100%;height:100%;object-fit:cover;max-width:none;max-height:none}
+.ex.sc .im{height:40mm}
+.ex.sc .ds{font-size:12px}
+.wu{display:grid;grid-template-columns:52mm 1fr;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--c-bike);border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.wu .im{height:24mm;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.wu .im img{max-height:100%;max-width:100%}
+.wu .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--c-bike);margin-bottom:4px}
+.wu .ds{font-size:12.5px;color:var(--text);line-height:1.55}
+.div{display:flex;align-items:center;gap:14px;margin:10px 0 12px;font-family:Anton,sans-serif;text-transform:uppercase;font-size:17px;color:var(--text);letter-spacing:.04em}
+.div::before,.div::after{content:"";flex:1;height:1px;background:var(--border-strong)}
+.imp{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:12px;padding:14px 18px;margin-top:6px}
+.imp .anton{font-size:20px;margin-bottom:8px}
+.imp .dots li::before{background:var(--red)}
+.made{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-top:14px;padding:18px 20px;border:1px solid var(--border-strong);border-radius:12px;background:var(--panel)}
+.made .av{width:76px;height:76px}
+.made .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:4px}
+.made .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:21px;color:var(--text)}
+.made .c{font-size:11.5px;color:var(--text);line-height:1.6;margin-top:4px}
+.made .c a{color:var(--text);text-decoration:none}
+.made .ct{display:flex;flex-direction:column;gap:8px}
+.made .ct a{display:block;text-decoration:none;color:var(--text);font-weight:600;font-size:13px;background:#17191b;border:1px solid var(--border-strong);border-left:3px solid var(--green);border-radius:8px;padding:7px 14px}
+.made .ct a span{display:block;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:1px}
+.key{margin:0 0 14px}
+
+/* Italian runs longer: a little less space around headings */
+h3{margin:15px 0 4px}h3+.bar{margin:9px 0 10px}.sec{margin-bottom:10px}.sec .bar{margin:12px 0 10px}.cover .by .role{letter-spacing:.08em}.mantra{font-size:17px}
+</style></head>
+<body>
+<section class="page">
+  <div class="head"><div><div class="eyebrow">Cigala Cycling Coaching</div><h1>Circuito palestra<span>In stagione</span></h1><div class="bar"></div></div>
+    <img src="../nutrition-guide/assets/cigala-cycling-coaching-logo.png" alt="Logo Cigala Cycling Coaching"></div>
+  <div class="key"><span><i style="background:var(--c-str)"></i>Forza e core</span><span><i style="background:var(--c-bike)"></i>Bici e cardio</span></div>
+  <div class="wu"><div class="im pair"><img src="img/exercises/Bicycling_Stationary_0.jpg" alt="Riscaldamento in bici, posizione iniziale"><img src="img/exercises/Bicycling_Stationary_1.jpg" alt="Riscaldamento in bici, posizione finale"></div><div><div class="k">Riscaldamento in bici:</div><div class="ds">5’ riscaldamento @100<br>5’ ZONA 3 @90<br>5’ defaticamento @100</div></div></div>
+  <div class="div">Inizio del circuito</div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">1</div><div class="im pair"><img src="img/exercises/Hyperextensions_Back_Extensions_0.jpg" alt="Iperestensioni, posizione iniziale"><img src="img/exercises/Hyperextensions_Back_Extensions_1.jpg" alt="Iperestensioni, posizione finale"></div><div><div class="nm">Iperestensioni</div><div class="ld">Se serve, tieni un peso</div><div class="ds"><div>(Regola il cuscinetto a metà altezza delle cosce)</div><div>2x da 10 a 20 ripetizioni</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">2</div><div class="im pair"><img src="img/exercises/Weighted_Ball_Side_Bend_0.jpg" alt="Iperestensioni laterali, posizione iniziale"><img src="img/exercises/Weighted_Ball_Side_Bend_1.jpg" alt="Iperestensioni laterali, posizione finale"></div><div><div class="nm">Iperestensioni laterali</div><div class="ld">Se serve, tieni un peso</div><div class="ds"><div>da 10 a 20 ripetizioni per lato</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">3</div><div class="im pair"><img src="img/exercises/Seated_Cable_Rows_0.jpg" alt="Tirata in basso, posizione iniziale"><img src="img/exercises/Seated_Cable_Rows_1.jpg" alt="Tirata in basso, posizione finale"></div><div><div class="nm">Tirata in basso</div><div class="ld">peso intorno al 60% del tuo massimale</div><div class="ds"><div>2x da 10 a 15 ripetizioni</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">4</div><div class="im pair"><img src="img/exercises/Farmers_Walk_0.jpg" alt="Farmer walk, posizione iniziale"><img src="img/exercises/Farmers_Walk_1.jpg" alt="Farmer walk, posizione finale"></div><div><div class="nm">Farmer walk</div><div class="ld">Con un peso adeguato in mano</div><div class="ds"><div>2x da 10 a 20 ripetizioni per lato</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">5</div><div class="im pair"><img src="img/exercises/Plank_0.jpg" alt="Plank dinamico, posizione iniziale"><img src="img/exercises/Plank_1.jpg" alt="Plank dinamico, posizione finale"></div><div><div class="nm">Plank dinamico</div><div class="ld">Continua a muoverti seguendo le foto 1 e 2</div><div class="ds"><div>Tieni 1’</div></div></div></div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Circuito palestra in stagione</span><span class="n">1</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Circuito palestra in stagione</span><span>Cigala Cycling Coaching</span></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">6</div><div class="im pair"><img src="img/exercises/One-Arm_Kettlebell_Swings_0.jpg" alt="Swing con kettlebell, posizione iniziale"><img src="img/exercises/One-Arm_Kettlebell_Swings_1.jpg" alt="Swing con kettlebell, posizione finale"></div><div><div class="nm">Swing con kettlebell</div><div class="ld">con un peso adeguato</div><div class="ds"><div>2x da 15 a 30 secondi</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">7</div><div class="im pair"><img src="img/exercises/Pushups_0.jpg" alt="Piegamenti (push-up), posizione iniziale"><img src="img/exercises/Pushups_1.jpg" alt="Piegamenti (push-up), posizione finale"></div><div><div class="nm">Piegamenti (push-up)</div><div class="ds"><div>2x da 15 a 30 ripetizioni</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">8</div><div class="im pair"><img src="img/exercises/Rope_Jumping_0.jpg" alt="Salto della corda, posizione iniziale"><img src="img/exercises/Rope_Jumping_1.jpg" alt="Salto della corda, posizione finale"></div><div><div class="nm">Salto della corda</div><div class="ld">2 salti consecutivi per lato</div><div class="ds"><div>2x da 20 a 30 secondi</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">9</div><div class="im pair"><img src="img/exercises/Standing_Calf_Raises_0.jpg" alt="Calf machine, posizione iniziale"><img src="img/exercises/Standing_Calf_Raises_1.jpg" alt="Calf machine, posizione finale"></div><div><div class="nm">Calf machine</div><div class="ld">peso circa al 50% del tuo massimale</div><div class="ds"><div>2x da 15 a 20 ripetizioni veloci</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">10</div><div class="im pair"><img src="img/exercises/Leg_Press_0.jpg" alt="Leg press, posizione iniziale"><img src="img/exercises/Leg_Press_1.jpg" alt="Leg press, posizione finale"></div><div><div class="nm">Leg press</div><div class="ld">peso intorno al 50% del tuo massimale, non serve scendere fino in fondo</div><div class="ds"><div>3x da 15 a 20 ripetizioni veloci</div><div>30” - 1’ di recupero tra le serie</div><div>+ 10” di sprint in bici con un rapporto duro + 3’ Zona 2 @110</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">11</div><div class="im pair"><img src="img/exercises/Decline_Crunch_0.jpg" alt="Addominali su panca, posizione iniziale"><img src="img/exercises/Decline_Crunch_1.jpg" alt="Addominali su panca, posizione finale"></div><div><div class="nm">Addominali su panca</div><div class="ds"><div>2x da 20 a 30 ripetizioni</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">12</div><div class="im pair"><img src="img/exercises/Front_Box_Jump_0.jpg" alt="Salti esplosivi sullo step, posizione iniziale"><img src="img/exercises/Front_Box_Jump_1.jpg" alt="Salti esplosivi sullo step, posizione finale"></div><div><div class="nm">Salti esplosivi sullo step</div><div class="ds"><div>2x 5 salti</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Circuito palestra in stagione</span><span class="n">2</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Circuito palestra in stagione</span><span>Cigala Cycling Coaching</span></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">13</div><div class="im pair"><img src="img/exercises/Seated_Leg_Curl_0.jpg" alt="Leg curl, posizione iniziale"><img src="img/exercises/Seated_Leg_Curl_1.jpg" alt="Leg curl, posizione finale"></div><div><div class="nm">Leg curl</div><div class="ld">peso circa al 50% del tuo massimale</div><div class="ds"><div>2x da 15 a 20 ripetizioni veloci</div><div>30” - 1’ di recupero tra le serie</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-str)"><div class="no">14</div><div class="im pair"><img src="img/exercises/Leg_Extensions_0.jpg" alt="Leg extension, posizione iniziale"><img src="img/exercises/Leg_Extensions_1.jpg" alt="Leg extension, posizione finale"></div><div><div class="nm">Leg extension</div><div class="ld">peso intorno al 50% del tuo massimale, non serve salire fino in fondo</div><div class="ds"><div>3x da 15 a 20 ripetizioni veloci</div><div>30” - 1’ di recupero tra le serie</div><div>+ 10” di sprint in bici con un rapporto duro</div></div></div></div>
+  <div class="ex" style="--topic:var(--c-bike)"><div class="no">15</div><div class="im pair"><img src="img/exercises/Bicycling_Stationary_0.jpg" alt="Bici, posizione iniziale"><img src="img/exercises/Bicycling_Stationary_1.jpg" alt="Bici, posizione finale"></div><div><div class="nm">Bici</div><div class="ds"><div>continua in bici per 10’ in Zona 2 @110</div></div></div></div>
+  <div class="div">Fine del circuito</div>
+  <div class="imp"><div class="anton">Importante</div><ul class="dots"><li>In stagione la palestra non deve essere traumatica. Concentrati su pesi più leggeri e ripetizioni più veloci, per simulare il movimento della pedalata.</li><li>Alla leg press non serve scendere fino a piegare il ginocchio a 90 gradi. Lo stesso alla leg extension: non serve salire fino in fondo.</li><li>È importante scegliere il peso giusto per gli esercizi. Per farlo, devi provare il tuo massimale e poi calcolare la percentuale che ti serve.</li><li>Se puoi usare la Wattbike invece della cyclette, meglio, perché ti adatti di più alla posizione di gara.</li><li>Recupera bene dopo la palestra, con 20/25 g di proteine whey subito dopo.</li><li>Cerca di rispettare l’ordine del circuito.</li></ul></div>
+  <div class="made">
+  <img class="av" src="../nutrition-guide/assets/avatar-matteo-cigala.jpg" alt="Matteo Cigala">
+  <div><div class="k">Circuito preparato da Cigala Cycling</div><div class="nm">Hai domande?</div>
+    <div class="c" style="color:var(--text-2)">Scrivi o chiama Matteo, il tuo coach.</div></div>
+  <div class="ct">
+    <a href="tel:+353834777697"><span>Telefono</span>+353 83 477 7697</a>
+    <a href="mailto:matteo@cigalacycling.com"><span>Email</span>matteo@cigalacycling.com</a>
+  </div>
+</div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Circuito palestra in stagione</span><span class="n">3</span></div>
+</section>
+</body></html>
