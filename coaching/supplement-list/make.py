@@ -134,7 +134,7 @@ pages.append(f'''<section class="page">
       <li><b>Brick and indoor sessions:</b> an electrolyte drink and a gel or chews to practise race fuelling.</li>
       <li><b>Recovery:</b> whey protein 25–30 g after every hard session, and collagen 20 g with vitamin C.</li></ul></div>
   </div>
-  <div class="mphoto" style="height:78mm;margin-top:16px"><img src="{A}time-trial-rider.jpg" alt="Cyclist racing a time trial in an aero position" style="object-position:50% 8%"></div>
+  <div class="mphoto" style="height:78mm;margin-top:16px"><img src="{A}cigala-cycling-jersey-wicklow.jpg" alt="Cigala Cycling rider in team kit looking over the Wicklow mountains, Ireland" style="object-position:50% 40%"></div>
 ''' + FOOT + '</section>')
 
 # 4 daily
