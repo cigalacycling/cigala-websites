@@ -509,3 +509,12 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   - Elementor Regenerate;
   - revoke the Claude app passwords (copied from staging by the sync);
   - Search Console sitemap.
+
+## 16 Nov 2026: breadcrumb structured data (Matteo via Tours: "go ahead on all sites")
+- Coaching has no Yoast schema graph: its JSON-LD is Organization, Service and WebSite only, the same as the baseline. So no BreadcrumbList existed.
+- Snippet 19 on STAGING (`coaching/seo/breadcrumbs.php`, `tools/coaching_breadcrumbs.py`) adds one BreadcrumbList per page:
+  - posts: Home > Blog > post;
+  - pages: Home > parent pages > page.
+- Not output on the homepage, noindex pages (athletes), archives or 404s.
+- Additive only: nothing visible, and the existing schema is unchanged.
+- Live: NOT yet. The site is live since 16 Nov, so this needs the same snippet added on live (Matteo's go; I have no live access).
