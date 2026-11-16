@@ -189,3 +189,8 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
 - It needs no images per collection.
 - Preview: `/collections/powermeters?view=banner&preview_theme_id=193220739396`. Checked at 1440, 820 and 390 px: no sideways scroll, one H1. The band is about 220px tall on desktop and 170px on phone.
 - **Not applied to any collection yet.** Once Matteo approves, either make it the default `collection.json` in the brand theme, so it goes live when we switch back on 1 Dec, or also add it to a new sale-theme copy.
+- **Banner tiles = best sellers, mixed (16 Nov).** The page fetches its own section with `?sort_by=best-selling&section_id=…` and fills the tiles from that.
+  - Pass 1 takes one product per brand; pass 2 fills up with other models.
+  - A product whose first three title words match one already shown (same model, another colour) is skipped.
+  - Results: Powermeters → Assioma UNO, 4iiii Ultegra, InPeak; Helmets → Sweet Protection Outrider, Kask Valegro, Falconer Aero; Indoor trainers → KICKR CORE 2, Feedback Omnium, CYCPLUS R200.
+  - The UNO drops out by itself once it's archived.
