@@ -546,3 +546,14 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Contact:** the share image is the page's first photo, a WebP, and some apps (WhatsApp) don't show WebP previews. Matteo sets the share image in the page's Yoast Social tab.
 - **Homepage title:** 66 characters, so Google may cut the last word. Kept as live: it's the live title and still reads fine if truncated.
 - **retail.cigalacycling.com:** returned 429 (Shopify rate limit) to the checker. Not a broken link.
+
+### Athlete welcome email (16 Nov 2026, LIVE)
+- Matteo (or Claude) creates the athlete as a Subscriber with a throwaway password, with first name, email and "Athlete language".
+- Then: Users > hover the athlete > **Send hub welcome email**, or `POST /wp-json/cc/v1/athlete-welcome {"user": ID}`.
+  - `{"test_to": "..."}` sends a preview to another address.
+  - `{"dry": true}` returns the HTML and link without sending, for tests.
+- The email (EN/IT per athlete) has a "Choose your password" button → /athletes/?cc_set=KEY&u=LOGIN. It is WordPress's reset key: one use, 7 days.
+- The athlete sets the password and lands in the hub, logged in. Nobody else sees the password.
+- The Users list has an "Athlete hub" column: no email yet / email sent / password set.
+- Sent from noreply@cigalacycling.com, reply-to matteo@. The logo PNG is in the option cc_mail_logo.
+- Tested on staging (EN + IT: short/mismatch errors, link reused = expired, email login) and on live with a temporary user, deleted afterwards.

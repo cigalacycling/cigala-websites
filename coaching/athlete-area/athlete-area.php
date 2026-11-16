@@ -245,6 +245,7 @@ function cc_ath_inner() {
         $al = strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '');
         $GLOBALS['cc_ath_lang'] = (($_GET['lang'] ?? '') === 'it' || (($_GET['lang'] ?? '') !== 'en' && strpos($al, 'it') === 0)) ? 'it' : 'en';
         $it = $GLOBALS['cc_ath_lang'] === 'it';
+        if (isset($_GET['cc_set'])) return $o . cc_ath_setpw_html() . '</div>';   // link from the welcome email
         $next = isset($_GET['next']) ? add_query_arg('cc_file', (int) $_GET['next'], $url) : $url;
         $o .= '<div class="ath-login"><p class="eyebrow">' . cc_t('Coached athletes') . '</p><h1>' . cc_t('Athlete login') . '</h1>'
             . '<p class="ath-lede">' . cc_t('Your training guides, links and your own reports, all in one place.') . '</p>';
@@ -422,6 +423,120 @@ if(!rm&&io){document.documentElement.classList.add('ath-anim');var o=new Interse
 })();</script>
 JS;
 }
+/* ---------- welcome email + "choose your password" (Matteo 16 Nov 2026, live) ----------
+   Matteo creates the athlete (Users > Add New, Subscriber, any password), then Users > hover the athlete > "Send hub welcome email"
+   (or Claude via POST /wp-json/cc/v1/athlete-welcome). The athlete gets a branded email in their language with a button that opens
+   /athletes/?cc_set=KEY&u=LOGIN, where they choose their own password and land in their hub, logged in. Nobody else sees the password.
+   The link is WordPress's own password-reset key: one use, valid 7 days (a new email makes the old link stop working). */
+add_filter('password_reset_expiration', function () { return 7 * DAY_IN_SECONDS; });
+function cc_ath_setpw_user() {
+    $login = isset($_GET['u']) ? sanitize_user(wp_unslash($_GET['u'])) : '';
+    $key = isset($_GET['cc_set']) ? preg_replace('/[^a-zA-Z0-9]/', '', wp_unslash($_GET['cc_set'])) : '';
+    if ($login === '' || $key === '') return null;
+    $u = check_password_reset_key($key, $login);
+    return is_wp_error($u) ? null : $u;
+}
+add_action('template_redirect', function () {   // the form posts back to the same link
+    if (!is_page(CC_ATH_SLUG) || !isset($_GET['cc_set']) || ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !isset($_POST['cc_pw1'])) return;
+    $back = remove_query_arg('err');
+    $u = cc_ath_setpw_user();
+    if (!$u) { wp_safe_redirect(add_query_arg('err', 'expired', $back)); exit; }
+    $p1 = (string) wp_unslash($_POST['cc_pw1']); $p2 = (string) wp_unslash($_POST['cc_pw2'] ?? '');
+    if (strlen($p1) < 8) { wp_safe_redirect(add_query_arg('err', 'short', $back)); exit; }
+    if ($p1 !== $p2) { wp_safe_redirect(add_query_arg('err', 'match', $back)); exit; }
+    reset_password($u, $p1);
+    update_user_meta($u->ID, 'cc_pw_set', current_time('mysql'));
+    wp_set_current_user($u->ID); wp_set_auth_cookie($u->ID, true);
+    wp_safe_redirect(home_url('/' . CC_ATH_SLUG . '/')); exit;
+}, 2);
+function cc_ath_setpw_html() {
+    $u = cc_ath_setpw_user();
+    $login = isset($_GET['u']) ? sanitize_user(wp_unslash($_GET['u'])) : '';
+    $lu = $u ?: get_user_by('login', $login);
+    $GLOBALS['cc_ath_lang'] = $lu ? cc_ath_user_lang($lu->ID) : 'en';
+    $it = $GLOBALS['cc_ath_lang'] === 'it';
+    $help = $it ? '<p class="ath-help">Problemi? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">Scrivimi su WhatsApp</a> o <a href="mailto:matteo@cigalacycling.com">mandami un’email</a>.</p>'
+                : '<p class="ath-help">Any trouble? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a> or <a href="mailto:matteo@cigalacycling.com">email me</a>.</p>';
+    $eb = '<p class="eyebrow">' . cc_t('Coached athletes') . '</p>';
+    if (!$u) return '<div class="ath-login">' . $eb . '<h1>' . ($it ? 'Link scaduto' : 'This link has expired') . '</h1><p class="ath-lede">'
+        . ($it ? 'Il link per scegliere la password vale 7 giorni e si usa una volta sola. Scrivimi e te ne mando uno nuovo.' : 'The link to choose your password works once and lasts 7 days. Message me and I will send you a new one.')
+        . '</p><p><a class="btn btn-go" href="https://wa.me/353834777697" target="_blank" rel="noopener">' . ($it ? 'Scrivimi su WhatsApp' : 'WhatsApp me') . '</a></p>'
+        . '<p class="ath-help">' . ($it ? 'Hai già una password?' : 'Already have a password?') . ' <a href="' . esc_url(home_url('/' . CC_ATH_SLUG . '/')) . '">' . cc_t('Log in') . '</a></p></div>';
+    $first = $u->first_name ?: $u->display_name;
+    $err = ['short' => $it ? 'Usa almeno 8 caratteri.' : 'Use at least 8 characters.', 'match' => $it ? 'Le due password non coincidono.' : 'The two passwords are not the same.',
+            'expired' => $it ? 'Il link è scaduto. Scrivimi e te ne mando uno nuovo.' : 'The link has expired. Message me and I will send you a new one.'][$_GET['err'] ?? ''] ?? '';
+    return '<div class="ath-login">' . $eb . '<h1>' . ($it ? 'Scegli la tua password' : 'Choose your password') . '</h1>'
+        . '<p class="ath-lede">' . sprintf($it ? 'Ciao %s, scegli una password per la tua area atleta. Per entrare userai la tua email, <strong>%s</strong>, e questa password.' : 'Hi %s, choose a password for your athlete hub. You will log in with your email, <strong>%s</strong>, and this password.', esc_html($first), esc_html($u->user_email)) . '</p>'
+        . ($err ? '<p class="ath-err" role="alert">' . esc_html($err) . '</p>' : '')
+        . '<form method="post" action="' . esc_url(remove_query_arg('err')) . '">'
+        . '<input type="text" name="log" value="' . esc_attr($u->user_email) . '" autocomplete="username" hidden>'
+        . '<label for="ath-p1">' . ($it ? 'Nuova password (almeno 8 caratteri)' : 'New password (at least 8 characters)') . '</label><input id="ath-p1" name="cc_pw1" type="password" autocomplete="new-password" minlength="8" required>'
+        . '<label for="ath-p2">' . ($it ? 'Ripeti la password' : 'Repeat the password') . '</label><input id="ath-p2" name="cc_pw2" type="password" autocomplete="new-password" minlength="8" required>'
+        . '<button type="submit" class="btn btn-go">' . ($it ? 'Salva e apri la mia area' : 'Save and open my hub') . '</button></form>' . $help . '</div>';
+}
+function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
+    $u = get_userdata((int) $uid); if (!$u) return new WP_Error('nouser', 'No such user');
+    $key = get_password_reset_key($u); if (is_wp_error($key)) return $key;
+    $link = add_query_arg(['cc_set' => $key, 'u' => rawurlencode($u->user_login)], home_url('/' . CC_ATH_SLUG . '/'));
+    $it = cc_ath_user_lang($u->ID) === 'it'; $first = esc_html($u->first_name ?: $u->display_name);
+    $logo = esc_url(get_option('cc_mail_logo', ''));
+    $T = $it ? ['subj' => 'La tua area atleta Cigala Coaching è pronta', 'hi' => "Ciao $first,",
+                'p1' => 'la tua area atleta personale è pronta. Qui trovi i tuoi report, le guide di allenamento, gli strumenti gratuiti senza registrazione e un contatto diretto con me, tutto in un unico posto.',
+                'btn' => 'Scegli la tua password', 'p2' => 'Per entrare usi la tua email, <strong>' . esc_html($u->user_email) . '</strong>. Il pulsante vale 7 giorni: se è scaduto, scrivimi e te ne mando uno nuovo.',
+                'p3' => 'Una volta dentro, salva la pagina tra i preferiti del telefono: così è sempre a un tocco.', 'bye' => 'A presto in bici,', 'eb' => 'Area atleta']
+             : ['subj' => 'Your Cigala Coaching athlete hub is ready', 'hi' => "Hi $first,",
+                'p1' => 'Your personal athlete hub is ready. It is where you will find your reports from me, the training guides, the free tools without any sign-up and a direct line to me, all in one place.',
+                'btn' => 'Choose your password', 'p2' => 'You log in with your email, <strong>' . esc_html($u->user_email) . '</strong>. The button works for 7 days: if it has expired, just message me and I will send you a new one.',
+                'p3' => 'Once you are in, bookmark the page on your phone so it is always one tap away.', 'bye' => 'See you on the road,', 'eb' => 'Athlete hub'];
+    $f = "font-family:Montserrat,Helvetica,Arial,sans-serif";
+    $h = '<!doctype html><html><body style="margin:0;padding:0;background:#eef0f2"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef0f2"><tr><td align="center" style="padding:28px 12px">'
+       . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:14px;overflow:hidden">'
+       . '<tr><td style="background:#07080a;padding:26px 30px">' . ($logo ? '<img src="' . $logo . '" width="70" height="70" alt="Cigala Cycling Coaching" style="display:block;border:2px solid #fff">' : '<span style="color:#fff;' . $f . ';font-weight:700;font-size:18px">Cigala Cycling Coaching</span>') . '</td></tr>'
+       . '<tr><td style="padding:30px 30px 8px;' . $f . ';color:#16181b;font-size:16px;line-height:1.6">'
+       . '<p style="margin:0 0 6px;color:#d62d30;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase">' . $T['eb'] . '</p>'
+       . '<p style="margin:0 0 14px;font-size:18px;font-weight:700">' . $T['hi'] . '</p><p style="margin:0 0 22px">' . $T['p1'] . '</p>'
+       . '<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:10px;background:#12a150"><a href="' . esc_url($link) . '" style="display:inline-block;padding:15px 26px;' . $f . ';font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px">' . $T['btn'] . '</a></td></tr></table>'
+       . '<p style="margin:22px 0 10px;font-size:14px;color:#454a52">' . $T['p2'] . '</p><p style="margin:0 0 22px;font-size:14px;color:#454a52">' . $T['p3'] . '</p>'
+       . '<p style="margin:0">' . $T['bye'] . '<br><strong>Matteo</strong></p></td></tr>'
+       . '<tr><td style="padding:18px 30px 26px;' . $f . ';font-size:12px;color:#7a808a;border-top:1px solid #eceef1">Matteo Cigala · Head Coach, Cigala Cycling Coaching · <a href="https://wa.me/353834777697" style="color:#12a150">WhatsApp</a> · <a href="mailto:matteo@cigalacycling.com" style="color:#12a150">matteo@cigalacycling.com</a></td></tr>'
+       . '</table></td></tr></table></body></html>';
+    if ($dry) return ['to' => $to ?: $u->user_email, 'subject' => $T['subj'], 'link' => $link, 'html' => $h];
+    $ok = wp_mail($to ?: $u->user_email, $T['subj'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <noreply@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
+    if ($ok && !$to) update_user_meta($u->ID, 'cc_welcome_sent', current_time('mysql'));
+    return $ok ? ['sent' => true, 'to' => $to ?: $u->user_email] : new WP_Error('mail', 'wp_mail failed');
+}
+add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/athlete-welcome', ['methods' => 'POST', 'permission_callback' => function () { return current_user_can('edit_users'); },
+        'callback' => function ($r) {
+            $res = cc_ath_welcome_mail((int) $r['user'], $r['test_to'] ? sanitize_email($r['test_to']) : null, (bool) $r['dry']);
+            return is_wp_error($res) ? $res : rest_ensure_response($res);
+        }]);
+});
+add_filter('user_row_actions', function ($a, $u) {   // Users list: "Send hub welcome email" under each athlete
+    if (in_array('subscriber', (array) $u->roles, true) && current_user_can('edit_users')) {
+        $sent = get_user_meta($u->ID, 'cc_welcome_sent', true);
+        $a['cc_welcome'] = '<a href="' . esc_url(wp_nonce_url(admin_url('admin-post.php?action=cc_welcome&user=' . $u->ID), 'cc_welcome_' . $u->ID)) . '">' . ($sent ? 'Resend hub welcome email' : 'Send hub welcome email') . '</a>';
+    }
+    return $a;
+}, 10, 2);
+add_action('admin_post_cc_welcome', function () {
+    $id = (int) ($_GET['user'] ?? 0);
+    if (!current_user_can('edit_users') || !wp_verify_nonce($_GET['_wpnonce'] ?? '', 'cc_welcome_' . $id)) wp_die('Not allowed');
+    $r = cc_ath_welcome_mail($id);
+    wp_safe_redirect(add_query_arg('cc_welcome', is_wp_error($r) ? 'fail' : 'ok', admin_url('users.php'))); exit;
+});
+add_action('admin_notices', function () {
+    if (!isset($_GET['cc_welcome'])) return;
+    echo $_GET['cc_welcome'] === 'ok' ? '<div class="notice notice-success is-dismissible"><p>Hub welcome email sent.</p></div>' : '<div class="notice notice-error"><p>The welcome email could not be sent.</p></div>';
+});
+add_filter('manage_users_columns', function ($c) { $c['cc_hub'] = 'Athlete hub'; return $c; });
+add_filter('manage_users_custom_column', function ($v, $col, $uid) {
+    if ($col !== 'cc_hub') return $v;
+    if (!user_can($uid, 'subscriber') || user_can($uid, 'edit_posts')) return '';
+    $pw = get_user_meta($uid, 'cc_pw_set', true); $ws = get_user_meta($uid, 'cc_welcome_sent', true);
+    return $pw ? '✅ password set ' . esc_html(mysql2date('j M', $pw)) : ($ws ? '✉️ email sent ' . esc_html(mysql2date('j M', $ws)) : '— no email yet');
+}, 10, 3);
+
 function cc_ath_shortcode() {   // in the site design: the .cc wrapper picks up the Coaching kit styles
     $inner = cc_ath_inner();
     return '<div class="cc cc-page" lang="' . ($GLOBALS['cc_ath_lang'] === 'it' ? 'it' : 'en') . '"><section class="ath-sec"><div class="in">' . $inner . '</div></section></div>';

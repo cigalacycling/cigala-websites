@@ -1,14 +1,16 @@
 """Athlete area on Coaching STAGING (Matteo, 16 Nov 2026): one login per athlete, removed when they finish.
-  python3 -I tools/coaching_athlete_area.py [--hub] [--availability]   (--availability adds coaching/athlete-area/availability.php; --hub rewrites the shared hub page; only before Matteo edits it himself)
+  python3 -I tools/coaching_athlete_area.py [--hub] [--availability] [--live]   (--availability adds coaching/athlete-area/availability.php; --hub rewrites the shared hub page; only before Matteo edits it himself)
 Switches Code Snippets on, pushes coaching/athlete-area/athlete-area.php as a snippet (ID kept in stg-coaching/athlete-snippet-id.txt),
 creates the /athletes/ page and the "Shared hub (all athletes)" page once. Re-running updates the snippet only.
 The proxy adds the staging application password; there are no secrets here.
 """
 import json, os, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
-HOST = 'staging.coaching.cigalacycling.com'   # never the live host
+LIVE = '--live' in sys.argv   # live since 16 Nov 2026 evening (Matteo gave live access): test on staging first, back up, then --live
+if LIVE and ('--hub' in sys.argv or '--availability' in sys.argv): raise SystemExit('--hub/--availability on live only with Matteo\'s explicit go: run them by hand')
+HOST = 'coaching.cigalacycling.com' if LIVE else 'staging.coaching.cigalacycling.com'
 B = f'https://{HOST}/wp-json'
-SNIP = ROOT + 'stg-coaching/athlete-snippet-id.txt'
+SNIP = ROOT + ('live-coaching' if LIVE else 'stg-coaching') + '/athlete-snippet-id.txt'
 
 def req(url, body=None, method='GET'):
     assert url.startswith(f'https://{HOST}/')
