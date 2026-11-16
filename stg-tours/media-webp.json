@@ -10779,5 +10779,33 @@
    1200
   ],
   "orig": 11121
+ },
+ "src-11127-900": {
+  "id": 11128,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-cigala-tours-flanders-cobbled-road-900.webp",
+  "alt": "Riders on a cobbled road in Flanders on a sunny spring day",
+  "from": [
+   1280,
+   1707
+  ],
+  "size": [
+   900,
+   1200
+  ],
+  "orig": 11127
+ },
+ "src-11126-900": {
+  "id": 11129,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-cigala-tours-flanders-pro-race-cobbles-900.webp",
+  "alt": "Pro riders on the cobbles of the Tour of Flanders, with fans at the roadside",
+  "from": [
+   1280,
+   1707
+  ],
+  "size": [
+   900,
+   1200
+  ],
+  "orig": 11126
  }
 }
