@@ -479,7 +479,7 @@ function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
     $key = get_password_reset_key($u); if (is_wp_error($key)) return $key;
     $link = add_query_arg(['cc_set' => $key, 'u' => rawurlencode($u->user_login)], home_url('/' . CC_ATH_SLUG . '/'));
     $it = cc_ath_user_lang($u->ID) === 'it'; $first = esc_html($u->first_name ?: $u->display_name);
-    $logo = esc_url(get_option('cc_mail_logo', '')); $topo = esc_url(get_option('cc_mail_topo', '')); $head = esc_url(get_option($it ? 'cc_mail_header_it' : 'cc_mail_header_en', ''));
+    $logo = esc_url(get_option('cc_mail_logo', '')); $topo = esc_url(get_option('cc_mail_topo', '')); 
     $T = $it ? ['subj' => 'La tua area atleta Cigala Coaching è pronta', 'hi' => "Ciao $first,",
                 'p1' => 'la tua area atleta personale è pronta. Qui trovi i tuoi report, le guide di allenamento, gli strumenti gratuiti senza registrazione e un contatto diretto con me, tutto in un unico posto.',
                 'btn' => 'Scegli la tua password', 'p2' => 'Per entrare usi la tua email, <strong>' . esc_html($u->user_email) . '</strong>. Il pulsante vale 7 giorni: se è scaduto, scrivimi e te ne mando uno nuovo.',
@@ -491,16 +491,21 @@ function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
     $f = "font-family:Montserrat,Helvetica,Arial,sans-serif";
     // Matteo 16 Nov: topographic background (an image, so it works in email apps; Outlook shows the plain dark colour)
     $h = '<!doctype html><html><body style="margin:0;padding:0;background:#07080a"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#07080a"><tr><td align="center"' . ($topo ? ' background="' . $topo . '"' : '') . ' style="padding:34px 12px;background-color:#07080a;' . ($topo ? 'background-image:url(' . $topo . ');background-size:1200px auto;background-position:center top;' : '') . '">'
-       . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.45)">'
-       . ($head ? '<tr><td style="background:#07080a;padding:0"><img src="' . $head . '" width="560" alt="Cigala Cycling Coaching, ' . $T['eb'] . '" style="display:block;width:100%;max-width:560px;height:auto;border:0"></td></tr>' : '<tr><td style="background:#07080a;padding:26px 30px">' . ($logo ? '<img src="' . $logo . '" width="70" height="70" alt="Cigala Cycling Coaching" style="display:block;border:2px solid #fff">' : '<span style="color:#fff;' . $f . ';font-weight:700;font-size:18px">Cigala Cycling Coaching</span>') . '</td></tr>')
+       . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px">'
+       // Matteo 16 Nov: one topographic layer only (the background): logo and title sit on it, above the white card
+       . '<tr><td style="padding:2px 4px 20px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>'
+       . '<td valign="middle" width="84">' . ($logo ? '<img src="' . $logo . '" width="70" height="70" alt="Cigala Cycling Coaching" style="display:block;border:2px solid #fff">' : '') . '</td>'
+       . '<td valign="middle" align="right" style="' . $f . '"><div style="color:#e8373a;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase">Cigala Cycling</div>'
+       . '<div style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:3px">' . $T['eb'] . '</div>'
+       . '<div style="width:46px;height:4px;background:#12a150;border-radius:2px;margin:9px 0 0 auto;font-size:0;line-height:0">&nbsp;</div></td></tr></table></td></tr>'
+       . '<tr><td style="background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.45)"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
        . '<tr><td style="padding:30px 30px 8px;' . $f . ';color:#16181b;font-size:16px;line-height:1.6">'
-       . ($head ? '' : '<p style="margin:0 0 6px;color:#d62d30;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase">' . $T['eb'] . '</p>')
        . '<p style="margin:0 0 14px;font-size:18px;font-weight:700">' . $T['hi'] . '</p><p style="margin:0 0 22px">' . $T['p1'] . '</p>'
        . '<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:10px;background:#12a150"><a href="' . esc_url($link) . '" style="display:inline-block;padding:15px 26px;' . $f . ';font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px">' . $T['btn'] . '</a></td></tr></table>'
        . '<p style="margin:22px 0 10px;font-size:14px;color:#454a52">' . $T['p2'] . '</p><p style="margin:0 0 22px;font-size:14px;color:#454a52">' . $T['p3'] . '</p>'
        . '<p style="margin:0">' . $T['bye'] . '<br><strong>Matteo</strong></p></td></tr>'
        . '<tr><td style="padding:18px 30px 26px;' . $f . ';font-size:12px;color:#7a808a;border-top:1px solid #eceef1">Matteo Cigala · Head Coach, Cigala Cycling Coaching · <a href="https://wa.me/353834777697" style="color:#12a150">WhatsApp</a> · <a href="mailto:matteo@cigalacycling.com" style="color:#12a150">matteo@cigalacycling.com</a></td></tr>'
-       . '</table></td></tr></table></body></html>';
+       . '</table></td></tr></table></td></tr></table></body></html>';
     if ($dry) return ['to' => $to ?: $u->user_email, 'subject' => $T['subj'], 'link' => $link, 'html' => $h];
     $ok = wp_mail($to ?: $u->user_email, $T['subj'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <noreply@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
     if ($ok && !$to) update_user_meta($u->ID, 'cc_welcome_sent', current_time('mysql'));
