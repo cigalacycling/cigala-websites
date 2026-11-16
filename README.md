@@ -388,3 +388,13 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - Logged-in athletes: the free tools open without the newsletter step on any device, and the newsletter and exit pop-ups stay away. Matteo logged in still sees the site as a visitor.
 - Tested 16 Nov on staging: login and wrong password, 1-year login cookie, file open/refused/direct-download blocked, a deleted athlete can't log in, wp-admin redirects athletes. 390/820/1440 widths, 16px fields, one H1. Test users removed.
 - After go-live: open /athletes/ logged out on live and check that LiteSpeed doesn't cache it, and that `/wp-content/uploads/cc-private/` answers 403.
+
+### Athlete area: reports from Matteo's PC tools (planned, after launch, Matteo 16 Nov)
+- **Plan:** the PC tools (Vekta: progress report, race day simulator, assessment, reviews) deliver each athlete's page to their area, matched by email, instead of public Netlify or claude.ai links.
+- **Rule (Matteo):** only motivating, athlete-friendly content. That means progress and highlights, race plans, the first assessment framed as a starting point, milestones.
+- **Never shown to athletes:** Early Warning flags, fatigue or risk alerts, missed-session or compliance counts, comment drafts, Command Centre, comparisons with other athletes.
+- **Every delivered report arrives as a draft only Matteo sees.** He previews and publishes it (he can edit or skip it). Nothing reaches an athlete automatically.
+- **Report wording:** lead with positives and numbers, no "you missed" or "you're behind".
+- **Build:**
+  - Website: a secure upload endpoint (application password on Matteo's PC only), draft/publish, report cards with a "new" badge, HTML reports served sandboxed.
+  - PC side: one helper script the tools call at the end.
