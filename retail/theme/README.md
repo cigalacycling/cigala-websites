@@ -178,3 +178,14 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
 - **Black Friday v2:** Matteo removed the 4 sample themes. `themeDuplicate` of the live sale theme → "Black Friday + Cyber Monday v2 (Cigala)" `gid://shopify/OnlineStoreTheme/193242267972`, with the same 16 Nov CSS. Checked at 390, 820 and 1440 px (no sideways scroll, one H1, season bf). Matteo publishes it. The 1 Dec reminder now points at v2.
 - **Rule from now on:** every change goes into BOTH the brand theme (193220739396) and the sale theme. While a sale theme is live, it can't be committed, so make a copy, change it, and have Matteo publish it.
 - **16 Nov:** Matteo published v2 (193242267972), checked live at 3 widths. The old sale theme 193226244420 is unpublished and can be removed to free a slot.
+
+**Collection banner test (16 Nov, brand theme 193220739396 only)**
+
+- New section `cigala-collection-banner` and template `collection.banner.json`. It replaces the plain title row with a short wide band:
+  - contour background with a green glow, crumbs Home / Shop
+  - H1 with the collection title (same wording, still one H1)
+  - green bar and product count
+  - three products from the collection as tilted white tiles (two on phone)
+- It needs no images per collection.
+- Preview: `/collections/powermeters?view=banner&preview_theme_id=193220739396`. Checked at 1440, 820 and 390 px: no sideways scroll, one H1. The band is about 220px tall on desktop and 170px on phone.
+- **Not applied to any collection yet.** Once Matteo approves, either make it the default `collection.json` in the brand theme, so it goes live when we switch back on 1 Dec, or also add it to a new sale-theme copy.
