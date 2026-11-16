@@ -406,3 +406,8 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - Basic lists it under "Included in Advanced & Premium". A new row is added to the compare tables (cycling, triathlon).
 - Pages: Individual and Triathlon packages, UK/USA/Canada, Italia. No headings or titles changed: only a list line and a table row were added.
 - The hub itself doesn't check the package: Matteo creates logins only for Advanced and Premium athletes.
+
+## 16 Nov: header (Matteo)
+- Phones and tablets (up to 1080 px): the green "Book Consultation" button now stays in the header next to Menu (it was hidden before). The open menu ends with a full-width "Book a free consultation" button and an "Athlete login" button.
+- Computers: a small person icon ("Athlete login", with aria-label and title) sits next to Book Consultation.
+- Menu items, links and headings are unchanged.

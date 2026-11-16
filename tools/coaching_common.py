@@ -95,6 +95,7 @@ HEADER = f'''<header class="nav">
       {a(R, 'Shop')}
       {a(C + '/contact/', 'Contact')}
     </nav>
+    <a class="nav-login" href="{C}/athletes/" {EXT} aria-label="Athlete login" title="Athlete login"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></a>
     <a class="btn btn-go" href="https://calendly.com/cigalacycling" {EXT}>Book Consultation</a>
     <details class="burger" id="menu-mobile">
       <summary>Menu</summary>
@@ -105,6 +106,7 @@ HEADER = f'''<header class="nav">
         {mob('Services', SERV)}
         {mob('Results', RES)}
         {a(C + '/blog/', 'Blog')}{a(T + '/', 'Bike Tours')}{a(R, 'Shop')}{a(C + '/contact/', 'Contact')}
+        <div class="mob-ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" {EXT}>Book a free consultation</a><a class="mob-login" href="{C}/athletes/" {EXT}><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>Athlete login</a></div>
       </nav>
     </details>
   </div>
@@ -132,6 +134,19 @@ def tools_band():
   </div>
 </section>'''
 FT_CSS = '''<style>
+.nav-login { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border-strong); color: var(--text-2); transition: border-color .2s, color .2s; }   /* Matteo 16 Nov: athlete login in the header */
+.nav-login svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.nav-login:hover { border-color: var(--green); color: var(--green-text); }
+.burger .mob-ctas { display: grid; gap: 12px; padding: 18px 0 6px; }
+.burger .mob-ctas .btn { display: flex !important; justify-content: center; width: 100%; text-transform: none !important; letter-spacing: .02em !important; font-size: 15px !important; padding: 14px 16px; color: #fff !important; box-shadow: none !important; }
+.burger .mob-ctas .mob-login { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid var(--border-strong); border-radius: 8px; color: var(--text) !important; }
+.burger .mob-ctas .mob-login svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+@media (max-width: 1080px) {   /* Matteo 16 Nov: the consultation button stays in the phone header, next to Menu */
+  .nav .in > .btn { display: inline-flex; margin-left: auto; padding: 8px 12px; font-size: 12.5px; }
+  .nav .in > .burger { margin-left: -6px; }   /* sit right next to the button */
+  .nav .in > .nav-login { display: none; }
+}
+@media (max-width: 360px) { .nav .in > .btn { padding: 8px 9px; font-size: 11.5px; } }
 .ticks .pk-new { display: inline-block; margin-left: 6px; padding: 2px 8px; border-radius: 999px; background: #12a150; color: #fff; font-size: 10.5px; font-weight: 700; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; vertical-align: 2px; }   /* Matteo 16 Nov: athlete hub line */
 .sigph { position: relative; display: block; }
 .sigph img { display: block; width: 100%; height: auto; }
