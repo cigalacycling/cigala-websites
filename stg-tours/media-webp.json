@@ -10239,48 +10239,6 @@
   ],
   "orig": 10952
  },
- "src-10959-900": {
-  "id": 10962,
-  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-terrazza-le-tolfe-terrace-900.webp",
-  "alt": "Guests watching the Strade Bianche from the Terrazza Le Tolfe VIP terrace",
-  "from": [
-   1500,
-   1000
-  ],
-  "size": [
-   900,
-   600
-  ],
-  "orig": 10959
- },
- "src-10960-900": {
-  "id": 10963,
-  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-terrazza-le-tolfe-race-900.webp",
-  "alt": "A pro rider passing the Terrazza Le Tolfe crowd at the Strade Bianche",
-  "from": [
-   1500,
-   1000
-  ],
-  "size": [
-   900,
-   600
-  ],
-  "orig": 10960
- },
- "src-10961-900": {
-  "id": 10964,
-  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-terrazza-le-tolfe-buffet-900.webp",
-  "alt": "Tuscan buffet at the Terrazza Le Tolfe hospitality, Strade Bianche",
-  "from": [
-   1500,
-   1000
-  ],
-  "size": [
-   900,
-   600
-  ],
-  "orig": 10961
- },
  "tolfe-photo": {
   "id": 10981,
   "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-terrazza-le-tolfe-strade-bianche.webp",
@@ -10415,5 +10373,19 @@
    634
   ],
   "orig": 3165
+ },
+ "src-3164-600": {
+  "id": 11030,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-imgi_28_up20oDfwJOf6PGWV_MfMyvoaRBkj8W5wdSHbYkr9G3OTSXj-AZ_Sfl7WCk7f3ENUtvRatsl3Mwznyq-cLzbkvg3AghfWs634-600.webp",
+  "alt": "Chianti & Gran Fondo Strade Bianche Cigala Cycling Tours",
+  "from": [
+   476,
+   634
+  ],
+  "size": [
+   476,
+   634
+  ],
+  "orig": 3164
  }
 }

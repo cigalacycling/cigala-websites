@@ -45,7 +45,7 @@ lib_url = lambda i: _LIB[i]['source_url']
 lib_alt = lambda i: re.sub(r'\s*-\s*Cigala Cycling Tours$', '', _LIB[i].get('alt_text') or '')
 EVENT_LOGO = {'chianti-gran-fondo-strade-bianche': 9333, 'lake-como-gran-fondo-il-lombardia': 9326, 'discover-the-algarve-granfondo': 9324, 'tour-of-flanders-experience': 9340}   # the event's own logo on the right of its box (Matteo 16 Nov: the box looked like it was missing it)
 DAY_MEDIA = {'chianti-gran-fondo-strade-bianche': {1: ('4tBZpWAVnrc', 4446), 2: ('4dBK7nxR2nI', 4448), 3: ('jYGwgkZ9CDM', 4872), 4: ('vKw83m2nUh0', 4871),
-                                                  5: ('img', 3196), 6: ('0Kw39ByYQGg', 1408)}}   # covers match the day (Matteo 16 Nov): Chianti hills, white road, cypress avenue, Siena crowd (pro race), Siena   # Matteo 16 Nov: a Short per day, day 5 = his photo winning with the bike up   # a YouTube Short in a day's box (Matteo 16 Nov): (video, our own cover photo); loads on tap
+                                                  5: ('img', 3196), 6: ('0Kw39ByYQGg', 3164)}}   # covers match the day (Matteo 16 Nov): Chianti hills, white road, cypress avenue, Siena crowd (pro race), Siena   # Matteo 16 Nov: a Short per day, day 5 = his photo winning with the bike up   # a YouTube Short in a day's box (Matteo 16 Nov): (video, our own cover photo); loads on tap
 EVENT_BOX = {'chianti-gran-fondo-strade-bianche': ('Gran Fondo Strade Bianche', 'Entry guaranteed', GUAR),
              'lake-como-gran-fondo-il-lombardia': ('Gran Fondo Il Lombardia', 'Entry guaranteed', GUAR),
              'discover-the-algarve-granfondo': ('Gran Fondo Algarve', 'Full event-day support', SUPP),
