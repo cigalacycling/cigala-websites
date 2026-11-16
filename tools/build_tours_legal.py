@@ -87,7 +87,7 @@ priv_main = legal_page('Privacy Policy', 'Privacy Policy', [i['t'] for i in item
 # ---------- CSS (the cigalacycling.com Terms style, scoped to .cl like the tour pages) ----------
 LEGAL_CSS = '''
 .terms { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; align-items: start; }
-.toc { position: sticky; top: 110px; display: grid; gap: 2px; font-size: 13px; }
+.toc { position: sticky; top: 110px; display: grid; gap: 2px; font-size: 13px; max-height: calc(100vh - 130px); overflow-y: auto; overscroll-behavior: contain; align-content: start; }   /* scrolls on its own when it is taller than the window (Matteo 16 Nov) */
 .toc a { color: var(--text-3); text-decoration: none; padding: 5px 10px; border-left: 2px solid var(--border); }
 .toc a:hover { color: var(--green-text); border-left-color: var(--green); }
 .toc b { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin: 0 0 8px; font-weight: 600; }

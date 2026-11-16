@@ -140,12 +140,12 @@ def avail(slug):   # the same availability as the trip pages (tours/spots.json);
     return {'low': '<span class="avl low">Last few spots</span>', 'mid': '<span class="avl mid">Filling up fast</span>'}.get(lv, '')
 cards = []
 for t in trips:
-    lv = [x.strip().lower() for x in t['level'].split(',')]
+    lv = [x.strip().lower() for x in t['level'].split(',')]   # the filter uses the tour's level: the easiest level it suits (Matteo 16 Nov: Expert = expert tours only), as the card's bar meter
     img = f'img/trip-{t["slug"]}.webp'  # featured photo of the live trip page, WebP q90
     name = SHORT.get(t['name'], t['name'])
     a = date.fromisoformat(t['start'])
     cards.append(
-        f'<a class="tour" data-k="{t["type"]}" data-country="{t["country"].lower()}" data-month="{" ".join(months(t))}" data-level="{" ".join(lv)}" href="{t["url"]}" {EXT}>'
+        f'<a class="tour" data-k="{t["type"]}" data-country="{t["country"].lower()}" data-month="{" ".join(months(t))}" data-level="{lv[0]}" href="{t["url"]}" {EXT}>'
         f'<img src="{img}" alt="{E(name)} bike tour" loading="lazy">'
         f'<span class="tag{" gravel" if t["type"] == "gravel" else ""}">{TYPE[t["type"]]}</span>'
         f'<img class="flag" src="img/flag-{FLAG[t["country"]]}.webp" alt="Flag of {t["country"]}" width="40" height="30">'

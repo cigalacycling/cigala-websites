@@ -1,6 +1,8 @@
 {
- "_note": "Availability on each trip page (Matteo 16 Nov): a word and a pulsing dot, no numbers. low = red 'Last few spots', mid = amber 'Filling up fast', high = green 'Spots available'. Tours not listed use _default. Shown in the price box and in the bottom 'Ready to ride' band.",
+ "_note": "Availability on each trip page (Matteo 16 Nov): a word and a pulsing dot, no numbers. low = red 'Last few spots', mid = amber 'Filling up fast', high = green 'Spots available' (a still dot: only red and amber pulse). Tours not listed use _default. Shown in the price box and in the bottom 'Ready to ride' band.",
  "_default": "high",
  "chianti-gran-fondo-strade-bianche": "low",
- "discover-the-algarve-granfondo": "mid"
+ "discover-the-algarve-granfondo": "mid",
+ "tour-of-flanders-experience": "mid",
+ "maratona-dles-dolomites": "mid"
 }

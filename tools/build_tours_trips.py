@@ -43,7 +43,9 @@ HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photo
 EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 2225,   # gravel photo on the road tour, Stelvio photo on the gravel tour
                'lake-garda-and-stelvio': {'GRAVEL': 7766, 'STELVIO': 2225}, 'lake-garda-gravel': 434}   # by a word of the section title when a page has several   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
 # Maratona: two hotels in one text block live -> a card each, with their own photos and stars (Matteo 16 Nov)
+LEVEL_FROM_DATA = {'italys-coast-to-coast'}   # Matteo 16 Nov: Coast to Coast is open to beginners too (tours/trips-2027.json)
 FAQ_EDIT = {
+ 'italys-coast-to-coast': [(r'fitness level', None, '<p>This trip suits Beginner, Intermediate and Expert riders. The route features rolling terrain with a few climbs each day, generally 3 to 6 km long at 5 to 8%, and the support van is always there if you want a break.</p>')],
  'alpine-gravel-escape': [(r'gravel tour running at the same time', 'I see you have a road tour running at the same time, can I join one or two road rides?',
      '<p>Yes. Our <a href="https://tours.cigalacycling.com/trips/italian-alps/">Italian Alps</a> road tour runs at the same time, and both groups share the same accommodation and evening restaurants. You can swap in a road day or two: just let us know when booking and we will rent a road bike for you for the day.</p>')],
 }
@@ -80,6 +82,7 @@ HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629
 DYN = set(IDS)   # the dynamic trip page on every tour (Matteo 16 Nov, after the Algarve pilot): count-up numbers, animated map badge, route drawn day by day, days sliding in
 HOTEL_PIC_ORDER_IDS = {'discover-the-algarve-granfondo': [2572, 2563, 2565, 2564, 2566, 2561, 2567, 2562, 2573]}   # Vilar do Golf: the resort and pool first, not the gym
 TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, cover photo (our own: no YouTube request until the visitor taps play) - Matteo 16 Nov
+HERO_TALL = {'tuscany-epic-gravel'}   # about 2 cm taller (Matteo 16 Nov)
 HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 8620, 'italian-alps': 2225, 'french-alps': 719, 'alpine-gravel-escape': 6100,
               'italys-coast-to-coast': 4465, 'lake-como-gran-fondo-il-lombardia': 8767}   # sharp 2560px originals (Matteo 16 Nov: the old ones looked soft)   # Dolomites / Italian Alps: photos with riders (Matteo 16 Nov)   # media id: rider in Cigala kit above an Algarve beach
 HERO_DPOS = {'tour-of-flanders-experience': '50% 65%', 'french-alps': 'center 70%', 'alpine-gravel-escape': 'center 84%', 'dolomites': 'center 55%', 'italian-alps': 'center 60%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
@@ -268,6 +271,7 @@ def trip(slug):
                     m = re.match(r'(?i)^' + KEYS + r'\s*:*\s*(.+)$', t)
                     if m: glance.append((m.group(1).capitalize(), E(m.group(2).strip().lstrip(':：-– ').strip())))
                     else: glance.append(('', ln))
+    glance = [(a, E(tr['level'].replace(', ', ', ')) if a.upper() == 'LEVEL' and slug in LEVEL_FROM_DATA else b) for a, b in glance]   # level changed by Matteo
     gl = {a.upper(): b for a, b in glance}
     get = lambda *keys: next((text_of(gl[k]) for k in gl for w in keys if w in k), '')
     # ---------- hero ----------
@@ -286,17 +290,19 @@ def trip(slug):
         ('Deposit', re.sub(r'(?i)^deposit\s*', '', deposit)) if deposit else None,
         ('Non-cycling companion', re.sub(r'(?i).*companion\s*(for)?\s*', '', companion)) if companion else None,
         ('Group size', re.split(r'\s*\(', get('GROUP'))[0]) if get('GROUP') else None] if x])   # short form here; the full text is in the Route facts
-    extra_small = ''.join(f'<p class="note">{E(x)}</p>' for x in other_small)
+    TC = f'{L}/terms-conditions/#rider-eligibility'   # the Expert tours rules in the terms (Matteo 16 Nov)
+    extra_small = ''.join(f'<p class="note">{E(x)}</p>'.replace('Expert', f'<a href="{TC}">Expert</a>') if re.match(r'(?i)^level\b', x) else f'<p class="note">{E(x)}</p>' for x in other_small)
     stay_html = (f'<p class="note">{E(stay)}</p>'.replace('contact us', f'<a href="{L}/contact/">contact us</a>')) if stay else ''
     sp = SPOTS.get(slug, _SPJ.get('_default'))
     av_txt, av_cls = AVAIL.get(sp, AVAIL['high'])
-    spots_html = f'<div class="spots av-{sp}"><span class="dot live{av_cls}" aria-hidden="true"></span>{E(av_txt)}</div>'
+    live_ = ' live' if sp in ('low', 'mid') else ''   # only red and amber pulse: urgency stands out (Matteo 16 Nov)
+    spots_html = f'<div class="spots av-{sp}"><span class="dot{live_}{av_cls}" aria-hidden="true"></span>{E(av_txt)}</div>'
     card = M.get('trip-' + slug)   # the trip's photo (tour cards); the live top image is a designed poster, shown next to the intro
     hero_img = (f'<img src="{card["url"]}" alt="{E(card["alt"])}">' if card else img_tag(hero_src, 2000, alt=hero_alt, lazy=False))
     if slug in HERO_PHOTO:   # a hero photo of its own (Matteo 16 Nov: the Algarve card photo was also used further down)
         hero_img = img_tag(HERO_PHOTO[slug], 2000, alt=hero_alt, lazy=False)
     hero_img = hero_img.replace('<img ', f'<img style="--mpos:{HERO_MPOS.get(slug, "50% 30%")};--dpos:{HERO_DPOS.get(slug, "center 40%")}" ', 1)   # phones: where the rider is in the photo
-    hero = f'''<div class="hero thero">
+    hero = f'''<div class="hero thero{" tall" if slug in HERO_TALL else ""}">
   {hero_img}
   <div class="in">
     <div>
@@ -630,6 +636,7 @@ def trip(slug):
         nav.append(('guides', 'Guides'))
     fq = one('faq')
     qa = faqs(data)
+    qa = [(q, a.replace('/terms-conditions/"', '/terms-conditions/#rider-eligibility"')) for q, a in qa]   # 'Expert' links straight to the rule
     for rx, q2, a2 in FAQ_EDIT.get(slug, []):   # per-tour corrections (Matteo 16 Nov: every FAQ must match its tour)
         qa = [((q2 or q), (a2 or a)) if re.search(rx, q) else (q, a) for q, a in qa]
     qa = [(q, re.sub(r'(?i)cooler than down at lake level', 'cooler than down in the valley', a) if slug in ('alpine-gravel-escape', 'italian-alps') else a) for q, a in qa]
@@ -656,7 +663,7 @@ def trip(slug):
     ftitle = f'<{ftag} class="fin-h">{E(text_of(fin["h"]))}</{ftag}>' if fin else f'<p class="band-title">{E(text_of(h1))}</p>'
     dtag = next((k for k, v, s in (fin['items'] if fin else []) if k in ('h3', 'h2')), None)
     fdates = f'<{dtag} class="fin-d">{E(fin_dates)}</{dtag}>' if dtag else f'<div class="fin-d">{E(fin_dates)}</div>'
-    fspots = f'<div class="spots fspots av-{sp}"><span class="dot live{av_cls}" aria-hidden="true"></span>{E(av_txt)}</div>'   # the same availability line under the dates (Matteo 16 Nov)
+    fspots = f'<div class="spots fspots av-{sp}"><span class="dot{live_}{av_cls}" aria-hidden="true"></span>{E(av_txt)}</div>'   # the same availability line under the dates (Matteo 16 Nov)
     out.append(f'<section><div class="in"><div class="panel final"><div class="eyebrow">Ready to ride?</div>{ftitle}{fdates}{fspots}'
                f'<div class="ctas"><a class="btn btn-go" href="{E(book)}" target="_blank" rel="noopener">Book now →</a>'
                f'<a class="btn btn-ghost" href="{L}/contact/">Ask a question</a></div></div></div></section>')
@@ -857,6 +864,8 @@ html .cl .hvid { margin-top: 18px; display: inline-flex; align-items: center; ga
 html .cl .hvid .pl { width: 22px; height: 22px; border-radius: 50%; background: #009a44; position: relative; flex: none; }
 html .cl .hvid .pl::after { content: ""; position: absolute; left: 8px; top: 6px; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent #fff; }
 @media (min-width: 901px) { html .cl .hero.thero > img { object-position: var(--dpos, center 40%); } }
+@media (min-width: 901px) { html .cl .hero.thero.tall .in { padding-top: 172px !important; } }
+@media (max-width: 900px) { html .cl .hero.thero.tall > img { height: 516px; } html .cl .hero.thero.tall::after { height: 518px; } html .cl .hero.thero.tall .in { padding-top: 376px !important; } }
 /* phones: the hero photo as a clear band at the top, the title and the price box under it (Matteo 16 Nov: the rider and the jersey logo were hidden) */
 @media (max-width: 900px) {
   html .cl .hero.thero > img { inset: 0 0 auto 0; height: 440px; object-position: var(--mpos, 50% 30%); }

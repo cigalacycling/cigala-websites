@@ -342,6 +342,8 @@ html .cl .hvid { margin-top: 18px; display: inline-flex; align-items: center; ga
 html .cl .hvid .pl { width: 22px; height: 22px; border-radius: 50%; background: #009a44; position: relative; flex: none; }
 html .cl .hvid .pl::after { content: ""; position: absolute; left: 8px; top: 6px; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent #fff; }
 @media (min-width: 901px) { html .cl .hero.thero > img { object-position: var(--dpos, center 40%); } }
+@media (min-width: 901px) { html .cl .hero.thero.tall .in { padding-top: 172px !important; } }
+@media (max-width: 900px) { html .cl .hero.thero.tall > img { height: 516px; } html .cl .hero.thero.tall::after { height: 518px; } html .cl .hero.thero.tall .in { padding-top: 376px !important; } }
 /* phones: the hero photo as a clear band at the top, the title and the price box under it (Matteo 16 Nov: the rider and the jersey logo were hidden) */
 @media (max-width: 900px) {
   html .cl .hero.thero > img { inset: 0 0 auto 0; height: 440px; object-position: var(--mpos, 50% 30%); }
@@ -1261,7 +1263,7 @@ html .cc .tour:hover img { transform: none; }
         <span class="lab">Price per person</span>
         <div class="price">€1299<small>£1149 · $1549*</small></div>
         
-        <div class="spots av-high"><span class="dot live green" aria-hidden="true"></span>Spots available</div>
+        <div class="spots av-mid"><span class="dot live amber" aria-hidden="true"></span>Filling up fast</div>
       </div>
       <ul><li><span>Deposit</span><span>€299</span></li><li><span>Non-cycling companion</span><span>€799</span></li><li><span>Group size</span><span>15/16 max</span></li></ul>
       <div class="bk-cta"><a class="btn btn-go btn-lg" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=8767371711&amp;source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
@@ -1298,7 +1300,7 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </section></div>
 <section><div class="in"><div class="band"><img src="https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-01142924-1600.webp" alt="Cigala Cycling Tuscany Gravel tour on the route of the Tuscany Trail" loading="lazy"><div class="tx"><div class="eyebrow">Custom tours</div><h2>DO YOU WANT TO CUSTOMISE YOUR TOUR?</h2><div class="bar"></div><h3 class=lede>Build your tour with us. Choose your dates, location, distances and much more.</h3><div class="ctas"><a class="btn btn-go" href="https://tours.cigalacycling.com/trips/private-trips/">More information →</a></div></div></div></div></section>
-<section><div class="in"><div class="panel final"><div class="eyebrow">Ready to ride?</div><h2 class="fin-h">TOUR OF FLANDERS EXPERIENCE</h2><h3 class="fin-d">1-5 April 2027</h3><div class="spots fspots av-high"><span class="dot live green" aria-hidden="true"></span>Spots available</div><div class="ctas"><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=8767371711&amp;source=direct_link" target="_blank" rel="noopener">Book now →</a><a class="btn btn-ghost" href="https://tours.cigalacycling.com/contact/">Ask a question</a></div></div></div></section>
+<section><div class="in"><div class="panel final"><div class="eyebrow">Ready to ride?</div><h2 class="fin-h">TOUR OF FLANDERS EXPERIENCE</h2><h3 class="fin-d">1-5 April 2027</h3><div class="spots fspots av-mid"><span class="dot live amber" aria-hidden="true"></span>Filling up fast</div><div class="ctas"><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=8767371711&amp;source=direct_link" target="_blank" rel="noopener">Book now →</a><a class="btn btn-ghost" href="https://tours.cigalacycling.com/contact/">Ask a question</a></div></div></div></section>
 <script>(function(){var m=document.querySelector('.cl .dmap'),l=document.querySelector('.cl .dleg');if(!m||!l)return;var cur=null;
 function set(d){cur=d;m.classList.toggle('hl',!!d);m.querySelectorAll('.dr,.db').forEach(function(g){g.classList.toggle('on',g.dataset.d===d);});
 l.querySelectorAll('button').forEach(function(b){b.classList.toggle('on',b.dataset.d===d);b.setAttribute('aria-pressed',b.dataset.d===d);});}

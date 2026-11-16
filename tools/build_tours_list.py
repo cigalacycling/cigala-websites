@@ -64,7 +64,7 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     where = g(r'<h3 class="where">(.*?)</h3>').rstrip('.').strip()   # no full stop after the country
     chips = re.findall(r'<span class="chip[^"]*">(.*?)</span>', g(r'<div class="meta">(.*?)</div>'))
     nights = [c for c in chips if 'night' in c.lower()][0]
-    level = [c for c in chips if c.startswith('Level')][0].replace('Level: ', '')
+    level = t.get('level') or [c for c in chips if c.startswith('Level')][0].replace('Level: ', '')   # tours/trips-2027.json (Matteo 16 Nov: Coast to Coast open to beginners)
     desc = g(r'<div class="desc">(.*?)</div>')
     price_label = g(r'<div class="price"><small>(.*?)</small>')
     price = g(r'<div class="price"><small>.*?</small>(.*?)</div>')
@@ -81,7 +81,7 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     lv = [x.strip().lower() for x in level.split(',')]
     bars = {'beginner': 1, 'intermediate': 2, 'expert': 3}.get(lv[0], 2)   # how hard: set by the easiest level the tour suits
     meter = f'<span class="lm" aria-hidden="true">{"".join("<i class=on></i>" if i < bars else "<i></i>" for i in range(3))}</span>'
-    rows[slug] = (t['type'], f"""<article class="tcard" data-k="{t['type']}" data-level="{' '.join(lv)}">
+    rows[slug] = (t['type'], f"""<article class="tcard" data-k="{t['type']}" data-level="{lv[0]}">
   <a class="ph" href="{more}" {EXT}><img src="{img}" alt="{E(alt)}" loading="lazy" width="1200" height="900"><span class="tags">{tags}</span><img class="flag" src="img/flag-{FLAG[t['country']]}.webp" alt="Flag of {t['country']}" width="40" height="30">{badge}</a>
   <div class="tx">
     <h2>{name}</h2>

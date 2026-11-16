@@ -58,7 +58,7 @@ G = {   # (lat, lon), approximate: town centres, pass summits
  'Grosio': (46.297, 10.276), 'Fusino': (46.322, 10.226), 'Eita': (46.364, 10.198), 'Mazzo': (46.256, 10.257), 'Mortirolo': (46.247, 10.293),
  'Monno': (46.213, 10.340), 'Santa Caterina': (46.412, 10.494), 'Gavia': (46.344, 10.488), 'Ponte di Legno': (46.258, 10.510), 'Torri di Fraele': (46.528, 10.300),
  # Tuscany / Italy
- 'Castagneto Carducci': (43.160, 10.610), 'Bolgheri': (43.236, 10.615), 'Lajatico': (43.474, 10.729), 'Peccioli': (43.548, 10.719), 'Ghizzano': (43.575, 10.784), 'Villamagna': (43.483, 10.858), 'Volterra': (43.402, 10.861),
+ 'Castagneto Carducci': (43.160, 10.610), 'Bolgheri': (43.236, 10.615), 'Lajatico': (43.474, 10.729), 'Peccioli': (43.548, 10.719), 'Castel San Gimignano': (43.434, 10.986), 'Volterra east': (43.4045, 10.8935), 'Ghizzano': (43.575, 10.784), 'Villamagna': (43.483, 10.858), 'Volterra': (43.402, 10.861),
  'San Gimignano': (43.467, 11.043), "Colle di Val d'Elsa": (43.421, 11.126), 'Monteriggioni': (43.390, 11.223), 'Siena': (43.318, 11.331), 'Buonconvento': (43.134, 11.484),
  "Lucignano d'Asso": (43.148, 11.590), 'Pienza': (43.077, 11.679), "Castiglione d'Orcia": (43.004, 11.615), 'Paganico': (42.950, 11.287), 'Grosseto': (42.763, 11.113),
  'Marina di Grosseto': (42.718, 10.981), 'Castiglione della Pescaia': (42.764, 10.881), 'Follonica': (42.926, 10.761), 'Suvereto': (43.077, 10.676),
@@ -154,7 +154,7 @@ DAYS = {
     ['Bormio'], ['Stelvio', 'Umbrail', 'Mortirolo', 'Foscagno', 'Livigno', 'Gavia', 'Torri di Fraele']),
  'tuscany-epic-gravel': (GR, {
     2: ['Castagneto Carducci', 'Bolgheri', 'Lajatico', 'Peccioli'],
-    3: ['Peccioli', 'Ghizzano', 'Villamagna', 'Volterra', 'San Gimignano', "Colle di Val d'Elsa"],   # leave Peccioli eastwards: no out-and-back on the Lajatico road (Matteo 16 Nov)
+    3: ['Peccioli', 'Ghizzano', 'Villamagna', 'Volterra', 'Volterra east', 'Castel San Gimignano', 'San Gimignano', "Colle di Val d'Elsa"],   # through Volterra and out east (Matteo 16 Nov: no out-and-back)   # leave Peccioli eastwards: no out-and-back on the Lajatico road (Matteo 16 Nov)
     4: ["Colle di Val d'Elsa", 'Monteriggioni', 'Siena', 'Buonconvento', "Lucignano d'Asso", 'Pienza'],
     5: ['Pienza', "Castiglione d'Orcia", 'Paganico', 'Grosseto', 'Marina di Grosseto'],
     6: ['Marina di Grosseto', 'Castiglione della Pescaia', 'Follonica', 'Suvereto', 'Castagneto Carducci']},
