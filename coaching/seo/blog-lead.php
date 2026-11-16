@@ -14,3 +14,7 @@ add_filter('body_class', function ($c) {
     if (is_singular('post') && cc_lead_repeats(get_queried_object())) $c[] = 'cc-no-lead';
     return $c;
 });
+// Blog types (tags Training, Nutrition, Racing & Events, Recovery & Health) drive the filter buttons on /blog/. Their archive
+// pages would be thin copies of the blog list: noindex, and left out of the Yoast sitemap (Matteo 16 Nov).
+add_filter('wpseo_robots', function ($r) { return is_tag() ? 'noindex, follow' : $r; });
+add_filter('wpseo_sitemap_exclude_taxonomy', function ($exclude, $tax) { return $tax === 'post_tag' ? true : $exclude; }, 10, 2);

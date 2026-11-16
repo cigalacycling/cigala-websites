@@ -480,3 +480,10 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   - /book-1-on-1-session/ had no description; now one from the page's own facts (Wicklow Town, packs of 3/6/10/20, from €70 per session).
 - **The Granfondo post's featured image** was the homepage hero; it's now the Tour of Ulster podium photo.
 - **Other sites:** the same brief was passed to the Tours, main site and Retail sessions on 16 Nov.
+
+## 16 Nov 2026: blog in the Tours guide style (Matteo: "Yes, all of it"; flag instead of "Italiano")
+- Filter chips above the blog grid: All / Training / Nutrition / Racing & Events / Recovery & Health, plus an Italian flag chip (Italiano category). Filtering is client-side only; the URLs are unchanged.
+- The types are WordPress tags (training 22, nutrition 23, racing-events 24, recovery-health 25) on all 66 posts (`tools/coaching_blog_tags.py`). Tag archives are `noindex, follow` and out of the Yoast sitemap (snippet 11), so no thin pages are indexed.
+- The blog loop shows all posts on one page (posts_per_page 100, no pagination), sorted by menu_order. Paginated /blog/page/N/ URLs no longer have content of their own; every post is still linked from /blog/.
+- Cards: Tours look (bigger title, border overlay, hover zoom, round flag on Italian posts).
+- Post template 4028: the author byline is a red eyebrow above the H1, and the excerpt and content sit in one boxed panel (`tools/coaching_post_template.py`, backup stg-coaching/backup/lib-4028-before-tours-style.json). Headings, copy and alt text are unchanged; still one H1.

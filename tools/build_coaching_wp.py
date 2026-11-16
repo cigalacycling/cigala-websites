@@ -155,7 +155,7 @@ html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 va
 .cc-form .elementor-message { color: #d0d6e0; font-family: Montserrat, system-ui, sans-serif; }
 .cc-form { background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012)), rgba(15,16,17,.92); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 22px !important; margin-top: 22px; }
 /* blog: the live loop grid (posts appear automatically) as cards, and the single post template 4028 in the brand */
-.cc-blog-wrap { padding: 8px 16px 0 !important; max-width: 1232px !important; margin: 0 auto !important; }
+.e-con.cc-wrap.cc-blog-wrap { padding: 8px 16px 0 !important; max-width: 1232px !important; margin: 0 auto !important; }
 .cc-blog .elementor-loop-container { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
 @media (max-width: 1024px) { .cc-blog .elementor-loop-container { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
 @media (max-width: 640px) { .cc-blog .elementor-loop-container { grid-template-columns: minmax(0, 1fr) !important; } }
@@ -188,6 +188,29 @@ html .cc .blog-hero > img { object-position: 50% 58%; }
 /* Marine Lenehan's articles (tag "By Marine Lenehan", tools/coaching_vivify_posts.py): her name on the card instead of Matteo's */
 .cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title { font-size: 0 !important; }
 .cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title::after { content: "By Sports Nutritionist, Marine Lenehan"; display: block; font: 600 11px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .08em !important; text-transform: uppercase; color: #ff3d33 !important; }
+/* Matteo 16 Nov: the blog in the Tours guides style */
+.cc-bfilter { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; width: 100%; margin: 0 0 22px; }
+.cc-bfilter .gchip { font: 600 13px/1 Montserrat, system-ui, sans-serif; color: #d0d6e0; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.14); border-radius: 999px; padding: 10px 16px; letter-spacing: .02em; cursor: pointer; transition: border-color .2s, background .2s; text-transform: none; min-height: 0; }
+.cc-bfilter .gchip:hover { border-color: rgba(0,154,68,.6); color: #fff; }
+.cc-bfilter .gchip[aria-pressed="true"] { background: #009a44; border-color: #009a44; color: #fff; }
+.cc-bfilter .gflag { padding: 6px 10px; display: inline-flex; align-items: center; }
+.flag-it { display: inline-block; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(90deg, #009246 0 33.3%, #fff 33.3% 66.6%, #ce2b37 66.6%); box-shadow: 0 0 0 1px rgba(255,255,255,.35); }
+.cc-blog .e-loop-item[hidden] { display: none !important; }
+@media (max-width: 600px) { .cc-bfilter { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px 18px; padding: 0 16px; scrollbar-width: none; } .cc-bfilter .gchip { flex: none; } }
+/* cards: Tours size and look (16px side margin on phones, title 21px, border over the photo, small Italian flag on Italian posts) */
+@media (max-width: 640px) { .e-con.cc-wrap.cc-blog-wrap { padding-left: 16px !important; padding-right: 16px !important; } .cc-blog .elementor-loop-container { padding: 0 !important; } }
+.cc-blog .elementor-widget-theme-post-title .elementor-heading-title, .cc-blog .elementor-widget-theme-post-title a { font-size: 21px !important; }
+.cc-blog .e-loop-item { border: 0 !important; }
+.cc-blog .e-loop-item::after { content: ""; position: absolute; inset: 0; z-index: 3; border: 1px solid rgba(255,255,255,.1); border-radius: inherit; pointer-events: none; transition: border-color .2s; }
+.cc-blog .e-loop-item:hover::after { border-color: rgba(0,154,68,.6); }
+.cc-blog .e-loop-item img { transition: transform .5s ease; }
+.cc-blog .e-loop-item:hover img { transform: scale(1.04); }
+.cc-blog .e-loop-item.category-italiano::before { content: ""; position: absolute; top: 14px; right: 14px; z-index: 4; width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(90deg, #009246 0 33.3%, #fff 33.3% 66.6%, #ce2b37 66.6%); box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); }
+/* post page: the byline above the title as a red eyebrow, the text in a boxed panel (template 4028, tools/coaching_post_template.py) */
+body.single-post .elementor-4028 .elementor-widget-heading.elementor-element.cc-post-author .elementor-heading-title { font: 600 12px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .14em !important; text-transform: uppercase !important; color: #ff3d33 !important; margin: 0 0 12px !important; }
+body.single-post .elementor-4028 .elementor-widget-heading.elementor-element.cc-post-author .elementor-heading-title::before { content: "By "; }
+body.single-post .elementor-4028 .e-con.cc-post-body { max-width: 860px !important; width: 100% !important; margin: 24px auto 0 !important; padding: clamp(24px, 4vw, 44px) clamp(20px, 4vw, 44px) !important; background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.012)), rgba(15,16,17,.92) !important; border: 1px solid rgba(255,255,255,.08) !important; border-radius: 12px !important; }
+body.single-post .elementor-4028 .e-con.cc-post-body > .elementor-widget:last-child { margin-bottom: 0 !important; }
 /* Matteo 16 Nov: the opening line of a post (the excerpt) at exactly the article's text size, and hidden when it only repeats
    the article's first words (body.cc-no-lead from coaching/seo/blog-lead.php) */
 body.single-post .elementor-4028 .elementor-widget-theme-post-excerpt, body.single-post .elementor-4028 .elementor-widget-theme-post-excerpt * { font: 400 17px/1.75 Montserrat, system-ui, sans-serif !important; color: #d0d6e0 !important; letter-spacing: normal !important; text-transform: none !important; }
@@ -396,6 +419,16 @@ def live_widget(page_id, wtype):
             if r: return r
     w = copy.deepcopy(walk(d)); assert w, (page_id, wtype); return w
 
+# blog filter (Matteo 16 Nov: "same as the Tours guides", Italian flag instead of the word): each loop card has WordPress's
+# tag-<slug> and category-<slug> classes; a button shows only the cards with its class. Tags: tools/coaching_blog_tags.py
+BLOG_TYPES = [('', 'All'), ('tag-training', 'Training'), ('tag-nutrition', 'Nutrition'), ('tag-racing-events', 'Racing & Events'), ('tag-recovery-health', 'Recovery & Health')]
+BLOG_FILTER = ('<div class="cc"><div class="cc-bfilter" role="group" aria-label="Blog topics">' + ''.join(
+    f'<button type="button" class="gchip" data-t="{t}" aria-pressed="{"true" if not t else "false"}">{html.escape(n)}</button>' for t, n in BLOG_TYPES)
+    + '<button type="button" class="gchip gflag" data-t="category-italiano" aria-pressed="false" aria-label="Articoli in italiano" title="Articoli in italiano"><span class="flag-it" aria-hidden="true"></span></button>'
+    + '</div><script>(function(){var f=document.currentScript.previousElementSibling;f.addEventListener("click",function(e){var b=e.target.closest(".gchip");if(!b)return;'
+    'f.querySelectorAll(".gchip").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")});var t=b.dataset.t;'
+    'document.querySelectorAll(".cc-blog .e-loop-item").forEach(function(c){c.hidden=!!t&&!c.classList.contains(t)})})})();</script></div>')
+
 def build_page(key):
     src = SRC[key]; els = []; content = []
     for b in blocks_of(src):
@@ -407,6 +440,9 @@ def build_page(key):
             if lw.group(2) == 'loop-grid': w['settings']['posts_per_page'] = 12   # Matteo 15 Nov: full rows (3 across, 2 on tablet), then Continue reading
             if lw.group(2) == 'loop-grid':   # Matteo 16 Nov: the blog follows the post order (Italian posts mixed in; new posts get a lower number, so they go on top)
                 w['settings']['post_query_orderby'] = 'menu_order'; w['settings']['post_query_order'] = 'ASC'
+            if lw.group(2) == 'loop-grid':   # Matteo 16 Nov, like the Tours guides: type filter buttons, every post on the page so the filter sees them all
+                w['settings']['posts_per_page'] = 100; w['settings']['pagination_type'] = ''
+                els.append(wrap([html_widget(BLOG_FILTER), w], 'cc-wrap cc-blog-wrap')); continue
             els.append(wrap([w], 'cc-wrap cc-blog-wrap')); continue
         if 'id="contact"' in b:   # any page with the contact section gets the live Elementor form
             # live Elementor form (sends to info@cigalacycling.com) instead of the preview's static form
