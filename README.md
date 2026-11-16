@@ -194,6 +194,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Emails go to **tours@cigalacycling.com** (Matteo 15 Nov; the per-site inboxes are in `shared/BUSINESS.md`). Subjects: "New message from the Tours website" (Contact) and "New custom tour enquiry from the Tours website" (Custom tours). Content: [all-fields].
   - Before-change backups: `stg-tours/backup/page-461-before-form.json`, `page-1576-before-form.json`.
   - When these pages get the new design, keep the same form widget.
+- **Maratona target markets, 16 Nov:** the Official Tour Operator box on the Maratona page says the tour is only for riders resident in our target markets (Ireland, UK, Northern European countries, USA, Canada, Australia), as listed for Cigala on maratona.it. Set in `OP_NOTE` in `tools/build_tours_trips.py`.
 - **Terms (564) and Privacy Policy (new, 9347, /privacy-policy/), 15 Nov:** built in the cigalacycling.com Terms style by `tools/build_tours_legal.py`, pushed with `push_tours_list.py terms` and `push_tours_list.py privacy-policy`.
   - The terms text is the live page word for word, with the same H1, and title, meta, robots, OG and schema are unchanged.
   - The privacy text is in `tours/privacy.txt`: Tours' own processors (WeTravel, tour partners, event organisers, Hostinger, Google, Meta, OpenWidget), with no tracking IDs. **Matteo to review it** (ideally his accountant or solicitor too).

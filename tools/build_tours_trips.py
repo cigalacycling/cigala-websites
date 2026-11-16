@@ -36,7 +36,10 @@ TEAM = {'JP': ('Guide', 2658, 'Giampietro, JP to everyone, is retired and lives 
 GUIDES_SET = {'lake-garda-and-stelvio': ['Piero', 'Amedeo', 'JP'], 'lake-garda-gravel': ['Piero', 'Amedeo', 'JP']}   # the whole guide line-up for a tour (Matteo 16 Nov)
 GALLERY_PHOTOS = {'lake-garda-and-stelvio': [2211, 2212, 2209, 434, 780, 650, 898, 2235, 2233]}   # Garda & Stelvio: the live gallery photos are 450-800px wide (soft); sharper Garda photos (Matteo 16 Nov)
 GUIDES_ADD = {'maratona-dles-dolomites': ['JP', 'Bone'], 'dolomites': ['Bone'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio', 'Marco']}   # Coast to Coast: Marco = the younger support & mechanic, not Marco "DS" (Matteo 16 Nov)
-OP_LOGO = {'maratona-dles-dolomites': 'logo-mdd'}   # the Maratona logo beside "Official tour operator" (Matteo 16 Nov)
+OP_LOGO = {'maratona-dles-dolomites': 'logo-mdd'}
+# who may book through us (Matteo 16 Nov: our target markets as listed for Cigala on the official Maratona tour-operator page)
+OP_NOTE = {'maratona-dles-dolomites': 'As an Official Tour Operator, we can offer this tour only to riders resident in our official target markets: '
+           '<strong>Ireland, the United Kingdom, the Northern European countries, the USA, Canada and Australia</strong>.'}   # the Maratona logo beside "Official tour operator" (Matteo 16 Nov)
 GUIDES_DROP = {'italys-coast-to-coast': {'AMEDEO'}, 'maratona-dles-dolomites': {'AMEDEO'}}   # Matteo 16 Nov
 GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Bone'}, 'wonderful-slovenia': {'AMEDEO': 'Bone'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'JP'}}   # French Alps and Slovenia: Alessio 'Bone' in Amedeo's place (Matteo 16 Nov)
 HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
@@ -379,7 +382,8 @@ def trip(slug):
         if logo: logo_html = img_tag(logo, 400, cls="oplogo")
         elif slug in OP_LOGO: lg = M[OP_LOGO[slug]]; logo_html = f'<img class="oplogo" src="{lg["url"]}" alt="{E(lg["alt"])}" loading="lazy">'
         else: logo_html = ''
-        out.append(f'<section style="padding-top:28px"><div class="in"><div class="panel opbox">{H(op, "Official partner")}{logo_html}</div></div></section>')
+        note = f'<p class="opnote">{OP_NOTE[slug]}</p>' if slug in OP_NOTE else ''
+        out.append(f'<section style="padding-top:28px"><div class="in"><div class="panel opbox"><div class="optext">{H(op, "Official partner")}{note}</div>{logo_html}</div></div></section>')
     route = one('route')
     # our own route map (tools/tours_route_maps.py, Cigala style) for every trip; the live map image only as a fallback
     mp = ROOT + f'tourspages/maps/day-{slug}.svg'   # day-by-day routes on real roads (tools/tours_day_routes.py, Matteo 16 Nov)
@@ -741,6 +745,8 @@ html .cl .day .prose p { margin: 0 0 10px; }
 html .cl .xbox, html .cl .opbox { padding: clamp(20px, 3vw, 32px); }
 html .cl .opbox { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 html .cl .opbox .head { margin: 0; }
+html .cl .opbox .optext { flex: 1 1 320px; min-width: 0; }
+html .cl .opbox .opnote { margin: 14px 0 0; max-width: 62ch; font-size: 15px; line-height: 1.55; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
 html .cl .hotel h3, html .cl .hotel h2 { font-size: 22px; }
 html .cl .stars .sup { font-size: 11px; letter-spacing: 0; vertical-align: 2px; margin-left: 4px; }
