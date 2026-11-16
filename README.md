@@ -297,7 +297,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - **Spacing:** one gap under the hero on every page (44px). The day timeline line no longer runs into the circles. The Contact social icons start under the text column.
   - **Guides on tours:** per-tour line-ups in `GUIDES_SET`, `GUIDES_ADD` and `GUIDES_SWAP`; team members' photos and roles in `TEAM`. Still to come:
     - **Alessio "Bone"** (Support & Mechanic, photo `tours/team/alessio-bone.jpg`, media 10683): done on 16 Nov. He is on About, Maratona and Dolomites, and on Slovenia and French Alps in place of Amedeo.
-    - **Coast to Coast:** Antonio and Marco (the younger support & mechanic, not Marco "DS"). Giampietro is "JP" everywhere. About first row: Matteo, Amedeo, Marine, Piero, Alessio, Antonio, JP. Hotel T is 4 stars.
+    - **Coast to Coast:** Matteo, Antonio and Marco (the younger support & mechanic, not Marco "DS"); no Amedeo. Marine (operations & bookings) is on no tour, only on About (`GUIDES_DROP`). Giampietro is "JP" everywhere. About first row: Matteo, Amedeo, Marine, Piero, Alessio, Antonio, JP. Hotel T is 4 stars.
     - **Komoot GPX:** Matteo decided to go live with the current routed maps (16 Nov).
   - **Photos:** heroes in `HERO_PHOTO`, with focus points in `HERO_DPOS` and `HERO_MPOS`. Italian Alps cards use the Stelvio photo. The Garda & Stelvio gallery is rebuilt from sharper photos (`GALLERY_PHOTOS`).
   - **Maps:**

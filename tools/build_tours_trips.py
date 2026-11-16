@@ -33,6 +33,7 @@ TEAM = {'JP': ('Guide', 2658, ''), 'Marco': ('Support & Mechanic', 2651, ''), 'A
 GUIDES_SET = {'lake-garda-and-stelvio': ['Piero', 'Amedeo', 'JP'], 'lake-garda-gravel': ['Piero', 'Amedeo', 'JP']}   # the whole guide line-up for a tour (Matteo 16 Nov)
 GALLERY_PHOTOS = {'lake-garda-and-stelvio': [2211, 2212, 2209, 434, 780, 650, 898, 2235, 2233]}   # Garda & Stelvio: the live gallery photos are 450-800px wide (soft); sharper Garda photos (Matteo 16 Nov)
 GUIDES_ADD = {'maratona-dles-dolomites': ['JP', 'Bone'], 'dolomites': ['Bone'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio', 'Marco']}   # Coast to Coast: Marco = the younger support & mechanic, not Marco "DS" (Matteo 16 Nov)
+GUIDES_DROP = {'italys-coast-to-coast': {'AMEDEO'}}   # Matteo 16 Nov
 GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Bone'}, 'wonderful-slovenia': {'AMEDEO': 'Bone'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'JP'}}   # French Alps and Slovenia: Alessio 'Bone' in Amedeo's place (Matteo 16 Nov)
 HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
 EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 2225,   # gravel photo on the road tour, Stelvio photo on the gravel tour
@@ -564,6 +565,8 @@ def trip(slug):
             cards.append(f'<article class="panel guide">{ph}<div class="tx"><h3>{E(nm)}</h3><div class="role">{E(role)}</div>{bio}</div></article>')
         cards += [team_card(n) for n in GUIDES_ADD.get(slug, [])]
         if slug in GUIDES_SET: cards = [team_card(n) for n in GUIDES_SET[slug]]
+        drop = {'MARINE'} | GUIDES_DROP.get(slug, set())   # Marine runs operations and bookings: on no tour (Matteo 16 Nov)
+        cards = [c for c in cards if not any(f'<h3>{n}</h3>' in c for n in drop)]
         stats = []
         for st_ in S('stat'):
             lab = next((text_of(v) for k, v, s in st_['items'] if k == 'text'), '')
