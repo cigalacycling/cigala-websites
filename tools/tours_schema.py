@@ -37,9 +37,20 @@ service = {"@context": "https://schema.org", "@type": "Service", "@id": SITE + "
                {"@type": "Offer", "itemOffered": {"@type": "Trip", "name": SHORT.get(t['slug'], t['name']), "url": f"{SITE}/trips/{t['slug']}/"}}
                for t in trips]}}
 code = ''.join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False) + '</script>' for x in (org, website, service))
+# BreadcrumbList on every page but the homepage (Matteo 16 Nov: "go ahead on all sites"). Built in the browser from the URL and the
+# page's H1, so new tours, destinations and guides get it by themselves; Google reads structured data added by JavaScript.
+# Section names: the menu labels of those hub pages.
+BC_JS = (r'<script>(function(){var p=location.pathname.replace(/\/+$/,"").split("/").filter(Boolean);if(!p.length)return;'
+         r'var N={trips:"Bike tours",destinations:"Destinations",guides:"Guides"},o=location.origin,it=[{n:"Home",u:o+"/"}],acc="";'
+         r'function go(){var h=document.querySelector("h1");var last=h?h.textContent.replace(/\s+/g," ").trim():document.title.split(/\s[|–-]\s/)[0];if(last===last.toUpperCase())last=last.toLowerCase().replace(/(^|[\s&(-])(\S)/g,function(m,a,b){return a+b.toUpperCase()});'
+         r'for(var i=0;i<p.length;i++){acc+="/"+p[i];var name=i===p.length-1?last:(N[p[i]]||p[i].replace(/-/g," "));if(i<p.length-1&&!N[p[i]])continue;it.push({n:name,u:o+acc+"/"});}'
+         r'var d={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":it.map(function(x,k){return{"@type":"ListItem",position:k+1,name:x.n,item:x.u}})};'
+         r'var s=document.createElement("script");s.type="application/ld+json";s.text=JSON.stringify(d);document.head.appendChild(s);}'
+         r'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go();})();</script>')
+code += BC_JS
 IDS = ROOT + 'stg-tours/pages.json'
 ids = json.load(open(IDS))
-body = {"title": "Tours structured data (Organization, WebSite, Service)", "status": "publish",
+body = {"title": "Tours structured data (Organization, WebSite, Service, BreadcrumbList)", "status": "publish",
         "meta": {"_elementor_location": "elementor_head", "_elementor_priority": 2, "_elementor_code": code}}
 if 'snippet-schema' in ids:
     code_, r = req(f"{B}/wp/v2/elementor_snippet/{ids['snippet-schema']}", json.dumps(body).encode(), 'POST')
