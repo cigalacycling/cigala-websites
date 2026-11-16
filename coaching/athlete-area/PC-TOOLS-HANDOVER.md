@@ -45,17 +45,20 @@ The Coaching website (`coaching.cigalacycling.com`, athlete area `/athletes/`) h
 - The website writes them into Vekta.
 - So the PC tools should read them from the website API above, not from Vekta events.
 
-## Vekta calendar
-When an athlete saves availability, the website writes notes into their Vekta calendar.
-- **Which days:**
-  - a note on each day a change covers, only on the weekdays they picked;
-  - for a change with no end date, notes for the next 8 weeks;
-  - when the usual week changes, one note on the next Monday.
-- **Off until two things are confirmed against the Vekta API these PC tools already use:**
-  - **the endpoint and calendar item type** for a note;
-  - **where Matteo's Vekta key lives.** Recommended: in the website's `wp-config.php`, which Matteo adds himself, so it works with the PC off.
-
-  If you know the endpoint and item type, tell the availability chat or Matteo.
+## Vekta calendar (Matteo 16 Nov: use his existing Claude–Vekta connection)
+- **The website does not hold a Vekta key and does not write to Vekta.** Matteo's existing Claude–Vekta connection does the writing.
+- **Each run:**
+  1. Read availability (and later goals & events) from the website API above. Only athletes whose `updated` time is newer than the last sync.
+  2. Write notes into each athlete's Vekta calendar, matched by email.
+- **Which days get a note:**
+  - each day a change covers, only on its chosen weekdays (`days`);
+  - for a change with no end date, the next 8 weeks;
+  - when the usual week changes, one note on the next Monday;
+  - for events, the event date.
+- **Removing:** when a change or event is removed or edited, remove or update the note written for it. Keep a record of what was written for which athlete and date.
+- **Question for this session:** which Vekta calendar item type fits each case? For example: away = unavailable day; gym only, indoor only, less or more time = note; race = event. Tell Matteo or the availability chat.
+- **Running it:** if the Vekta connection is a claude.ai connector, this can be a scheduled task (e.g. hourly) that runs with the PC off. Otherwise it runs whenever the PC session runs.
+- Matteo already gets an email the moment an athlete saves, so a delay in Vekta is fine.
 
 ## Rules (Matteo)
 - Athletes only ever see motivating, athlete-friendly things.

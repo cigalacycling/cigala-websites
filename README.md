@@ -413,7 +413,8 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Voice (Matteo 16 Nov):** a microphone button in the availability box (browser recording, iPhone and Android, no app).
   - Speech is written into the box as text while they speak (browser speech recognition), so the athlete can correct it before saving.
   - The audio is kept privately (cc-private, like the reports) for Matteo to listen to. His notification has the text and a "listen" link.
-- **Vekta calendar (Matteo 16 Nov, wanted):** every saved change is also written to the athlete's Vekta calendar as notes on those days.
+- **Vekta sync decided (Matteo 16 Nov):** his existing Claude–Vekta connection writes to Vekta, reading the website API. No Vekta key on the website. The website-side Vekta code in availability.php (CC_VEKTA_*, cc_av_vekta_*) is to be removed when building. Still open: which Vekta item type fits each case (see `coaching/athlete-area/PC-TOOLS-HANDOVER.md`).
+- **Vekta calendar (Matteo 16 Nov, first plan, superseded by the line above):** every saved change is also written to the athlete's Vekta calendar as notes on those days.
   - Preferred: from the website, so it works with the PC off. That needs Matteo's Vekta key in the server config, never in chat.
   - Alternative: the PC session syncs while the PC is on.
 - **Notifications:** email is fine for Matteo; a phone push app is not needed for now.
