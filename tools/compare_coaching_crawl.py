@@ -1,10 +1,11 @@
 """Compare the staging crawl with the live baseline (CLAUDE.md: compare against the crawl after).
   python3 -I tools/compare_coaching_crawl.py stg-coaching/crawl-after-2026-11-15.json
+  (also works on a crawl of live after the push: python3 -I tools/crawl.py coaching.cigalacycling.com <seeds> > coaching/crawl-live-<date>.json)
 Per page: title, meta description, H1, H2 set (footer tagline change approved), image alt texts, schema types.
 """
 import sys, json, re
 base = {r['url'].replace('https://coaching.cigalacycling.com', ''): r for r in json.load(open('coaching/baseline.json')) if r.get('status') == 200}
-after = {r['url'].replace('https://staging.coaching.cigalacycling.com', ''): r for r in json.load(open(sys.argv[1])) if r.get('status') == 200}
+after = {r['url'].replace('https://staging.coaching.cigalacycling.com', '').replace('https://coaching.cigalacycling.com', ''): r for r in json.load(open(sys.argv[1])) if r.get('status') == 200}
 FOOT = {'Cycling & Triathlon Coaching - Bike Tours - Retail': 'TRAIN SMARTER. RIDE FASTER.'}
 norm = lambda s: re.sub(r'\s+', ' ', (s or '').replace('Canda', 'Canada')).strip()
 issues = 0
