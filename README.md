@@ -437,9 +437,11 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - The coach view shows each athlete in their language and marks Italian athletes with "IT"; `?lang=it` previews the Italian hub.
   - The PDFs show the English files marked "(in inglese)" until `<name>-IT.pdf` files exist, are uploaded and listed in athlete-hub-files.json. The PDF session was asked for them on 16 Nov; the Marine ones need her approval.
   - The site header and footer stay English (they're the site's own).
-  - **Report language (Matteo 16 Nov, e.g. Slovenian athletes):** a second user setting, user meta `cc_report_lang` (en, it, sl, de, fr, es, nl, pt, pl, hr, cs, da, sv, no, fi, ga; empty means the same as the hub). It's readable over REST (`/wp/v2/users/<id>?context=edit`, meta.cc_report_lang).
-    - The hub interface is English or Italian only.
-    - Everything personal follows the report language: reports from the PC tools, race plans, assessments, the availability box labels and text.
+  - **One "Athlete language" per athlete (Matteo 16 Nov):** user meta `cc_lang`, any of en, it, sl, de, fr, es, nl, pt, pl, hr, cs, da, sv, no, fi, ga. It replaces the earlier two settings (`cc_report_lang` is only read as a fallback).
+    - The hub interface, the reports and the availability box use it.
+    - The interface is translated for `CC_UI_LANGS` (en, it) via `cc_t()`. To add a language, add its strings to `cc_t()` and its code to `CC_UI_LANGS`, and have a native athlete check them. Until then the interface is English.
+    - PDFs, articles and free tools: English for everyone, Italian versions for Italian athletes where they exist.
+    - In code: `cc_ath_lang_code($uid)` is the athlete's language, `cc_ath_user_lang()` the interface language, `cc_ath_report_lang()` = `cc_ath_lang_code()`.
 - **Still planned:**
 - **Per-athlete language:** use the WordPress user Language setting (locale). Matteo sets it when he creates the login.
 - **Order (recommended):**
