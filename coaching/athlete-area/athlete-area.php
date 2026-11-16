@@ -242,11 +242,16 @@ html .cc .ath-mine { border-color: rgba(43,212,122,.35); }
 html .cc .ath-empty { color: var(--text-3); margin: 0; }
 html .cc .ath-body h2 { margin-top: 30px; }
 html .cc .ath-mine .ath-body h2, html .cc .ath-mine .ath-body h3 { font-size: 20px; margin: 22px 0 10px; }
+html .cc .ath-body ul { columns: 2 260px; column-gap: 32px; padding-left: 18px; margin: 0 0 10px; }
+html .cc .ath-body li { break-inside: avoid; margin: 0 0 8px; }
+html .cc .ath-body li::marker { color: #12a150; }
 html .cc .ath-body > :first-child { margin-top: 0; }
 html .cc .ath-body > :last-child { margin-bottom: 0; }
 html .cc .ath-body p, html .cc .ath-body li { color: var(--text-2); }
 html .cc .ath-body .wp-block-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 0 0 8px; }
 html .cc .ath-body .wp-block-button { margin: 0; }
+html .cc .ath-body .ath-tools { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+html .cc .ath-body .ath-tools .wp-block-button__link { min-height: 46px; font-size: 14px; padding: 10px; }
 html .cc .ath-body .wp-block-button__link { display: flex; align-items: center; justify-content: center; min-height: 52px; width: 100%; box-sizing: border-box; padding: 12px 16px; border-radius: 10px; background: #12a150; color: #fff; font-weight: 600; text-decoration: none; text-align: center; }
 html .cc .ath-body .is-style-outline .wp-block-button__link { background: transparent; border: 1px solid rgba(255,255,255,.25); }
 html .cc .ath-body .wp-block-button__link:hover { filter: brightness(1.1); }
