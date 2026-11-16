@@ -1,0 +1,343 @@
+[
+ {
+  "url": "https://cigalacycling.com/",
+  "status": 200,
+  "in_sitemap": true,
+  "title": "Cigala Cycling | Cycling & Triathlon Coaching, Bike Tours & Retail",
+  "meta_description": "Cycling & Triathlon coaching. Guided tours. Retail. Cigala Cycling covers every part of your cycling journey.",
+  "canonical": "https://cigalacycling.com/",
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "og_title": "Cigala Cycling | Cycling & Triathlon Coaching, Bike Tours & Retail",
+  "h1": [
+   "Cycling & Triathlon Coaching, Bike Tours & Retail"
+  ],
+  "h2": [
+   "Cycling & Triathlon Coaching",
+   "Tours",
+   "Retail Store",
+   "All of your cycling needs at your fingertips",
+   "What our riders say",
+   "Questions about coaching, tours or an order?"
+  ],
+  "images": [
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-logo.webp",
+    "alt": "Cigala Cycling logo with chain | Cigala Cycling"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-hero-mountain-hairpins-1200.webp",
+    "alt": "Aerial view of a winding mountain road with hairpin bends"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-coaching-riders.webp",
+    "alt": "Three Cigala Cycling riders climbing a mountain road together"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-tours-riders-cyprus-card.webp",
+    "alt": "Cigala Cycling Tours riders in white team jerseys celebrating on the coast in Cyprus"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-retail-smart-bike.webp",
+    "alt": "Rider training on a Wahoo smart bike in front of a mountain backdrop"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/matteo-cigala-white-jersey.webp",
+    "alt": "Matteo Cigala, former pro cyclist and founder of Cigala Cycling, in the white Cigala Cycling jersey"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-review-marine-lenehan.webp",
+    "alt": "Female cyclist biting gold medal"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-review-hank.webp",
+    "alt": "Cycling Alps Cigala Cycling"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-review-bernd-ondruch.webp",
+    "alt": "Cycling Pro wearing Kask helmet"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-review-steve.webp",
+    "alt": "Person smiling while riding a celeste-colored Bianchi road bicycle"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-group-black-kit.webp",
+    "alt": "Cigala Cycling riders in the black team kit"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-logo.webp",
+    "alt": "Cigala Cycling logo with chain | Cigala Cycling"
+   }
+  ],
+  "schema_types": [
+   "WebPage",
+   "BreadcrumbList",
+   "WebSite",
+   "Organization",
+   "Organization",
+   "Person"
+  ],
+  "internal_links": [
+   "https://cigalacycling.com/",
+   "https://cigalacycling.com/about/",
+   "https://cigalacycling.com/contact/",
+   "https://cigalacycling.com/privacy-policy/",
+   "https://cigalacycling.com/terms-conditions/"
+  ],
+  "external_links": [
+   "https://coaching.cigalacycling.com/",
+   "https://retail.cigalacycling.com/",
+   "https://share.google/lwboSfcuStGhX0c0p",
+   "https://tours.cigalacycling.com/",
+   "https://wa.me/message/WVBRO6XAMQMCH1",
+   "https://www.facebook.com/CigalaCycling/",
+   "https://www.instagram.com/cigalacycling/",
+   "https://www.threads.com/@cigalacycling",
+   "https://www.tiktok.com/@cigalacycling",
+   "https://www.youtube.com/@cigalacycling",
+   "https://x.com/CigalaCycling"
+  ]
+ },
+ {
+  "url": "https://cigalacycling.com/about/",
+  "status": 200,
+  "in_sitemap": true,
+  "title": "About Cigala Cycling | Our Story & Our Mission",
+  "meta_description": "Cigala Cycling offers guided cycling tours across Europe, expert cycling and triathlon coaching, and Ireland's leading online cycling store.",
+  "canonical": "https://cigalacycling.com/about/",
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "og_title": "About Cigala Cycling | Our Story & Our Mission",
+  "h1": [
+   "Our mission"
+  ],
+  "h2": [
+   "Cycling & Triathlon Coaching",
+   "Tours",
+   "Retail Store",
+   "Cigala Cycling"
+  ],
+  "images": [
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-logo.webp",
+    "alt": "Cigala Cycling logo with chain | Cigala Cycling"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-coaching-riders.webp",
+    "alt": "Three Cigala Cycling riders climbing a mountain road together"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-tours-riders-cyprus-card.webp",
+    "alt": "Cigala Cycling Tours riders in white team jerseys celebrating on the coast in Cyprus"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-retail-smart-bike.webp",
+    "alt": "Rider training on a Wahoo smart bike in front of a mountain backdrop"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-team-white-jerseys-1200.webp",
+    "alt": "Cigala Cycling riders in white jerseys celebrating on the coast"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-logo.webp",
+    "alt": "Cigala Cycling logo with chain | Cigala Cycling"
+   }
+  ],
+  "schema_types": [
+   "WebPage",
+   "BreadcrumbList",
+   "WebSite",
+   "Organization",
+   "Organization",
+   "Person"
+  ],
+  "internal_links": [
+   "https://cigalacycling.com/",
+   "https://cigalacycling.com/about/",
+   "https://cigalacycling.com/contact/",
+   "https://cigalacycling.com/privacy-policy/",
+   "https://cigalacycling.com/terms-conditions/"
+  ],
+  "external_links": [
+   "https://coaching.cigalacycling.com/",
+   "https://retail.cigalacycling.com/",
+   "https://share.google/lwboSfcuStGhX0c0p",
+   "https://tours.cigalacycling.com/",
+   "https://wa.me/message/WVBRO6XAMQMCH1",
+   "https://www.facebook.com/CigalaCycling/",
+   "https://www.instagram.com/cigalacycling/",
+   "https://www.threads.com/@cigalacycling",
+   "https://www.tiktok.com/@cigalacycling",
+   "https://www.youtube.com/@cigalacycling",
+   "https://x.com/CigalaCycling"
+  ]
+ },
+ {
+  "url": "https://cigalacycling.com/contact/",
+  "status": 200,
+  "in_sitemap": true,
+  "title": "Contact Cigala Cycling | Coaching, Bike Tours & Retail",
+  "meta_description": "Get in touch today with Cigala Cycling — questions about coaching, guided European tours, or our retail store.",
+  "canonical": "https://cigalacycling.com/contact/",
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "og_title": "Contact Cigala Cycling | Coaching, Bike Tours & Retail",
+  "h1": [
+   "Contact us"
+  ],
+  "h2": [
+   "Email",
+   "Phone",
+   "Follow us online",
+   "Go straight to the right team"
+  ],
+  "images": [
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-logo.webp",
+    "alt": "Cigala Cycling logo with chain | Cigala Cycling"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-group-black-kit.webp",
+    "alt": "Cigala Cycling riders in the black team kit"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-logo.webp",
+    "alt": "Cigala Cycling logo with chain | Cigala Cycling"
+   }
+  ],
+  "schema_types": [
+   "WebPage",
+   "BreadcrumbList",
+   "WebSite",
+   "Organization",
+   "Organization",
+   "Person"
+  ],
+  "internal_links": [
+   "https://cigalacycling.com/",
+   "https://cigalacycling.com/about/",
+   "https://cigalacycling.com/contact/",
+   "https://cigalacycling.com/privacy-policy/",
+   "https://cigalacycling.com/terms-conditions/"
+  ],
+  "external_links": [
+   "https://coaching.cigalacycling.com/",
+   "https://retail.cigalacycling.com/",
+   "https://share.google/lwboSfcuStGhX0c0p",
+   "https://tours.cigalacycling.com/",
+   "https://wa.me/message/WVBRO6XAMQMCH1",
+   "https://www.facebook.com/CigalaCycling/",
+   "https://www.instagram.com/cigalacycling/",
+   "https://www.threads.com/@cigalacycling",
+   "https://www.tiktok.com/@cigalacycling",
+   "https://www.youtube.com/@cigalacycling",
+   "https://x.com/CigalaCycling"
+  ]
+ },
+ {
+  "url": "https://cigalacycling.com/terms-conditions/",
+  "status": 200,
+  "in_sitemap": true,
+  "title": "Cigala Cycling | Terms & Conditions",
+  "meta_description": "Review Terms and conditions for Cigala Cycling: subscription policies, cancellation terms and more. Get in touch for any questions.",
+  "canonical": "https://cigalacycling.com/terms-conditions/",
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "og_title": "Cigala Cycling | Terms & Conditions",
+  "h1": [
+   "Terms & Conditions"
+  ],
+  "h2": [
+   "COACHING & TRAINING PLAN LIABILITY WAIVER & INFORMED CONSENT",
+   "Coach/Provider: Cigala Cycling Limited (\"Coach\")"
+  ],
+  "images": [
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-logo.webp",
+    "alt": "Cigala Cycling logo with chain | Cigala Cycling"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-logo.webp",
+    "alt": "Cigala Cycling logo with chain | Cigala Cycling"
+   }
+  ],
+  "schema_types": [
+   "WebPage",
+   "BreadcrumbList",
+   "WebSite",
+   "Organization",
+   "Organization",
+   "Person"
+  ],
+  "internal_links": [
+   "https://cigalacycling.com/",
+   "https://cigalacycling.com/about/",
+   "https://cigalacycling.com/contact/",
+   "https://cigalacycling.com/privacy-policy/",
+   "https://cigalacycling.com/terms-conditions/"
+  ],
+  "external_links": [
+   "https://coaching.cigalacycling.com/",
+   "https://retail.cigalacycling.com/",
+   "https://share.google/lwboSfcuStGhX0c0p",
+   "https://tours.cigalacycling.com/",
+   "https://wa.me/message/WVBRO6XAMQMCH1",
+   "https://www.facebook.com/CigalaCycling/",
+   "https://www.instagram.com/cigalacycling/",
+   "https://www.threads.com/@cigalacycling",
+   "https://www.tiktok.com/@cigalacycling",
+   "https://www.wada-ama.org/sites/default/files/2025-09/2026list_en_final_clean_september_2025.pdf",
+   "https://www.youtube.com/@cigalacycling",
+   "https://x.com/CigalaCycling"
+  ]
+ },
+ {
+  "url": "https://cigalacycling.com/privacy-policy/",
+  "status": 200,
+  "in_sitemap": true,
+  "title": "Privacy Policy - Cigala Cycling",
+  "meta_description": null,
+  "canonical": "https://cigalacycling.com/privacy-policy/",
+  "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  "og_title": "Privacy Policy - Cigala Cycling",
+  "h1": [
+   "Privacy Policy"
+  ],
+  "h2": [],
+  "images": [
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-logo.webp",
+    "alt": "Cigala Cycling logo with chain | Cigala Cycling"
+   },
+   {
+    "src": "/wp-content/uploads/2026/11/cigala-cycling-logo.webp",
+    "alt": "Cigala Cycling logo with chain | Cigala Cycling"
+   }
+  ],
+  "schema_types": [
+   "WebPage",
+   "BreadcrumbList",
+   "WebSite",
+   "Organization",
+   "Organization",
+   "Person"
+  ],
+  "internal_links": [
+   "https://cigalacycling.com/",
+   "https://cigalacycling.com/about/",
+   "https://cigalacycling.com/contact/",
+   "https://cigalacycling.com/privacy-policy/",
+   "https://cigalacycling.com/terms-conditions/"
+  ],
+  "external_links": [
+   "https://coaching.cigalacycling.com/",
+   "https://retail.cigalacycling.com/",
+   "https://share.google/lwboSfcuStGhX0c0p",
+   "https://tours.cigalacycling.com/",
+   "https://wa.me/message/WVBRO6XAMQMCH1",
+   "https://www.facebook.com/CigalaCycling/",
+   "https://www.instagram.com/cigalacycling/",
+   "https://www.threads.com/@cigalacycling",
+   "https://www.tiktok.com/@cigalacycling",
+   "https://www.youtube.com/@cigalacycling",
+   "https://x.com/CigalaCycling"
+  ]
+ }
+]
