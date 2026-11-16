@@ -87,7 +87,7 @@ def btn(label, url, cls='btn-go', note=''):
 ASSESS = 'Deep Initial Assessment of your training data (last 6–12 months)'   # Matteo 15 Nov: shorter
 # Matteo 16 Nov: the athlete area (/athletes/) is part of Advanced & Premium, not Basic; shown as a new feature
 HUB = 'Personal Athlete Hub: your reports, guides & tools'
-NEW_PILL = ' <span class="pk-new">New</span>'
+NEW_PILL = ''   # Matteo 16 Nov: no "New" tag
 def hub_pill(items, label): return items.replace('>' + E(label) + '<', '>' + E(label) + NEW_PILL + '<', 1)
 # Who each package is for: short lines taken from the live FAQ answer "What would the most suitable package for me?"
 FOR = {

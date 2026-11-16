@@ -66,7 +66,7 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     if key == 'base': no = no + [HUB_IT]
     else: inc.insert(3, HUB_IT)
     items = ''.join(f'<li{" class=\"more\"" if i >= 12 else ""}>{E(x)}</li>' for i, x in enumerate(inc))
-    if key != 'base': items = items.replace('>' + E(HUB_IT) + '<', '>' + E(HUB_IT) + ' <span class="pk-new">Novità</span><', 1)
+    if key != 'base': items = items.replace('>' + E(HUB_IT) + '<', '>' + E(HUB_IT) + '<', 1)
     if no:
         items += '<li class="more no-lab">Incluso in Avanzato e Premium</li>' + ''.join(f'<li class="more no">{E(x)}<span class="vh"> (non incluso nel Base)</span></li>' for x in no)
     first = re.search(r'<a [^>]*>.*?</a>', buttons).group(0).replace(' pay"', ' pay pay2"')
