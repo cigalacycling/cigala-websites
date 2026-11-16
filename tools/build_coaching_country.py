@@ -387,12 +387,12 @@ def country_map(key):
     m = _json.load(open(ROOT + f'coaching/map-{key}.json'))
     c = C_[key]
     vb = f"{m['minx'] - 14} {m['miny'] - 14} {m['w'] - m['minx'] + 28} {m['h'] - m['miny'] + 28}"
-    dots = ''.join(f'<g class="it-city" style="--i:{i}"><circle cx="{x}" cy="{y}" r="9" class="it-halo"/><circle cx="{x}" cy="{y}" r="4"/><title>{E(n)}</title></g>' for i, (n, (x, y)) in enumerate(m['pts'].items()))
+    dots = ''.join(f'<g class="it-city" style="--i:{i}"><circle cx="{x}" cy="{y}" r="9" class="it-halo"/><circle cx="{x}" cy="{y}" r="4"/></g>' for i, (n, (x, y)) in enumerate(m['pts'].items()))
     labels = ''.join(f'<text x="{m["pts"][n][0] + dx}" y="{m["pts"][n][1] + dy}" class="it-lab" text-anchor="{a}">{E(n)}</text>' for n, dx, dy, a in c['map_labels'])
     fs = round((m['w'] - m['minx']) / 34, 1)   # labels the same size on screen whatever the map's scale
     labels = labels.replace('class="it-lab"', f'class="it-lab" style="font-size:{fs}px;stroke-width:{fs / 4:.1f}px"')
     dots = dots.replace('r="9"', f'r="{fs * .7:.1f}"').replace('r="4"', f'r="{fs * .32:.1f}"')
-    return (f'<svg class="it-map cx-map-{key}" viewBox="{vb}" role="img" aria-labelledby="map-t"><title id="map-t">Map of {E(c["name"])} with the cities where Matteo coaches riders</title>'
+    return (f'<svg class="it-map cx-map-{key}" viewBox="{vb}" role="img" aria-label="Map of {E(c["name"])} with the cities where Matteo coaches riders">'
             f'<defs><linearGradient id="it-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#009a44" stop-opacity=".35"/><stop offset="1" stop-color="#009a44" stop-opacity=".08"/></linearGradient>'
             f'<filter id="it-glow" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter></defs>'
             f'<path d="{m["d"]}" fill="#009a44" opacity=".35" filter="url(#it-glow)"/><path d="{m["d"]}" class="it-land" fill="url(#it-g)"/>{dots}{labels}</svg>')

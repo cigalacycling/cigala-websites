@@ -383,3 +383,8 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   Known gap: the site's <html lang> is en-US on every page, including the Italian one (WordPress site language); hreflang
   "it" tells Google the right language. To fix properly at go-live: set the language per page (WPML/Polylang or a small
   snippet). Not done on staging.
+- 16 Nov, pre-go-live check (fresh crawl stg-coaching/crawl-after-2026-11-16.json vs live): all differences are approved
+  changes already logged, except a crawler artefact: SVG <title> tags in the maps/chart were read as the page title by
+  simple parsers -> replaced with aria-label (page titles now read correctly). AI search: Person schema for Matteo on
+  /about/ (facts from the page), coaching/llms.txt drafted (to upload to the site root at go-live). robots.txt on live
+  allows all crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended): keep it that way.

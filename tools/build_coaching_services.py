@@ -537,8 +537,8 @@ def pd_chart():
         body += ''.join(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="4" fill="{c}" stroke="#0f1011" stroke-width="2"/>' for px, py in pts)
     hits = ''.join(f'<rect x="{x(t) - 26:.1f}" y="{Tt}" width="52" height="{H - Tt - B}" class="pd-hit" data-x="{x(t):.1f}" data-t="{lab}" data-v="'
                    + '|'.join(f'{n}:{v[i]}:{c}' for n, c, v in PD_L) + '"/>' for i, (t, lab) in enumerate(PD_T))
-    svg = (f'<svg class="pd-svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="pd-t">'
-           f'<title id="pd-t">Typical best power in watts per kilo for U23 riders, Continental pros and WorldTour riders, from 5 seconds to 60 minutes</title>'
+    svg = (f'<svg class="pd-svg" viewBox="0 0 {W} {H}" role="img" aria-label="Typical best power in watts per kilo for U23 riders, Continental pros and WorldTour riders, from 5 seconds to 60 minutes">'
+           f''
            f'{defs}{vgrid}{grid}{xt}<line x1="{L}" x2="{W - Rr}" y1="{H - B}" y2="{H - B}" class="pd-base"/><line class="pd-cross" x1="0" x2="0" y1="{Tt}" y2="{H - B}"/>{body}{hits}</svg>')
     rows = ''.join(f'<tr><td>{n}</td>' + ''.join(f'<td>{w}</td>' for w in v) + '</tr>' for n, c, v in PD_L)
     leg = ''.join(f'<span><i class="pd-sw" style="border-top-color:{c}"></i>{n}</span>' for n, c, v in PD_L)

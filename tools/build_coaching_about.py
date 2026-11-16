@@ -354,7 +354,22 @@ CSS = '''<style>
 .ab-plain li::before { content: ""; position: absolute; left: 12px; top: 16px; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
 </style>'''
 
+# Matteo 16 Nov (AI search): who Matteo is, in structured data, built only from facts already on this page
+import json as _json
+PERSON_LD = '<script type="application/ld+json">' + _json.dumps({'@context': 'https://schema.org', '@type': 'Person', '@id': 'https://coaching.cigalacycling.com/about/#matteo',
+    'name': 'Matteo Cigala', 'jobTitle': 'Founder & Head Coach', 'url': 'https://coaching.cigalacycling.com/about/',
+    'image': 'https://coaching.cigalacycling.com/wp-content/uploads/2026/11/IMG_5948-1.jpg', 'nationality': 'Italian',
+    'homeLocation': {'@type': 'Place', 'name': 'Wicklow, Ireland'},
+    'worksFor': {'@id': 'https://coaching.cigalacycling.com/#organization'},
+    'description': 'Italian cycling coach based in Wicklow, Ireland: 28 years in cycling, over a decade of coaching, 200+ race wins. European Road Champion Gran Fondo, Vice-World Champion UCI Gran Fondo and UCI Gravel, Italian Gravel Champion.',
+    'award': ['European Road Champion Gran Fondo (Masters 19-34)', 'Vice-World Champion, UCI Gran Fondo World Championship', 'Vice-World Champion, UCI Gravel World Championship', 'Italian National Gravel Champion'],
+    'hasCredential': [{'@type': 'EducationalOccupationalCredential', 'name': 'UCI & Cycling Ireland Coach'}, {'@type': 'EducationalOccupationalCredential', 'name': 'TrainingPeaks Level 2 Coach'},
+                      {'@type': 'EducationalOccupationalCredential', 'name': 'BA in Business Management'}, {'@type': 'EducationalOccupationalCredential', 'name': 'Diploma in Science and Sports'}],
+    'knowsAbout': ['Cycling coaching', 'Triathlon coaching', 'Gravel racing', 'Gran Fondo training', 'Power-based training', 'Critical Power', 'Periodisation', 'Sports science'],
+    'sameAs': ['https://www.facebook.com/CigalaCycling/', 'https://x.com/CigalaCycling', 'https://www.youtube.com/@cigalacycling', 'https://www.instagram.com/cigalacycling/', 'https://www.threads.com/@cigalacycling']},
+    ensure_ascii=False) + '</script>'
+
 if __name__ == '__main__':
     build('about', '/about/', MAIN, 'About redesigned: split hero, facts, the story as a timeline with season cards, coaching lists as icons, case studies, the three brands.',
           h1='MATTEO CIGALA', h2_changes={'drop': ['READ OUR TESTIMONIALS - WHAT PEOPLE SAY ABOUT CIGALA CYCLING'], 'add': ['READ OUR CASE STUDIES']},
-          extra_css=G.GCSS + CS_CSS + S.CSS + CSS, extra_js=REVIEWS_JS + G.NUMS_JS)
+          extra_css=G.GCSS + CS_CSS + S.CSS + CSS, extra_js=REVIEWS_JS + G.NUMS_JS + PERSON_LD)

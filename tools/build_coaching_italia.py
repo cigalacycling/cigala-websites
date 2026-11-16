@@ -151,11 +151,11 @@ import json as _json
 def italy_map():
     m = _json.load(open(ROOT + 'coaching/italy-map.json'))
     vb = f"{m['minx'] - 10} {m['miny'] - 10} {m['w'] - m['minx'] + 20} {m['h'] - m['miny'] + 20}"
-    dots = ''.join(f'<g class="it-city" style="--i:{i}"><circle cx="{x}" cy="{y}" r="9" class="it-halo"/><circle cx="{x}" cy="{y}" r="4"/><title>{E(n)}</title></g>' for i, (n, (x, y)) in enumerate(m['pts'].items()))
+    dots = ''.join(f'<g class="it-city" style="--i:{i}"><circle cx="{x}" cy="{y}" r="9" class="it-halo"/><circle cx="{x}" cy="{y}" r="4"/></g>' for i, (n, (x, y)) in enumerate(m['pts'].items()))
     labels = ''.join(f'<text x="{m["pts"][n][0] + dx}" y="{m["pts"][n][1] + dy}" class="it-lab" text-anchor="{a}">{n}</text>' for n, dx, dy, a in
                      [('Milano', 0, 24, 'middle'), ('Venezia', 12, 16, 'start'), ('Torino', -12, 5, 'end'), ('Bolzano', 12, -4, 'start'), ('Firenze', 12, -2, 'start'), ('Siena', -12, 10, 'end'),
                       ('Roma', 12, 5, 'start'), ('Napoli', 12, 5, 'start'), ('Bari', 12, -2, 'start'), ('Cagliari', 0, 22, 'middle'), ('Palermo', 0, -12, 'middle'), ('Catania', 12, 5, 'start')])
-    return (f'<svg class="it-map" viewBox="{vb}" role="img" aria-labelledby="it-map-t"><title id="it-map-t">Mappa dell’Italia con le città dove seguiamo ciclisti</title>'
+    return (f'<svg class="it-map" viewBox="{vb}" role="img" aria-label="Mappa dell’Italia con le città dove seguo ciclisti">'
             f'<defs><linearGradient id="it-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#009a44" stop-opacity=".35"/><stop offset="1" stop-color="#009a44" stop-opacity=".08"/></linearGradient>'
             f'<filter id="it-glow" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="6"/></filter></defs>'
             f'<path d="{m["d"]}" fill="#009a44" opacity=".35" filter="url(#it-glow)"/><path d="{m["d"]}" class="it-land" fill="url(#it-g)"/>'
@@ -433,7 +433,7 @@ FIRST = [("(membership incluso, valore €19,99/mese)", "(iscrizione inclusa, va
          ("Obbiettivi raggiunti dai nostri atleti", "Obiettivi raggiunti dai miei atleti"),
          ("LEGGI I NOSTRI CASI STUDIO", "LEGGI I MIEI CASI STUDIO"), ("Leggi i nostri casi studio", "Leggi i miei casi studio"),
          ("Dove alleniamo", "Dove alleno"), ("Seguiamo ciclisti in tutta Italia</h2>", "Seguo ciclisti in tutta Italia</h2>"),
-         ("Matteo segue da remoto atleti in tutta Italia", "Seguo da remoto atleti in tutta Italia"), ("dove seguiamo ciclisti", "dove seguo ciclisti"),
+         ("Matteo segue da remoto atleti in tutta Italia", "Seguo da remoto atleti in tutta Italia"),
          ("perché include accesso settimanale a Matteo oltre", "perché include un contatto settimanale con me oltre"), ("No. Seguiamo ciclisti", "No. Seguo ciclisti"),
          ("Inizia a collaborare con Matteo", "Inizia a collaborare con me"),
          ("Seguiamo ciclisti in tutta Italia e in tutto il mondo.", "Seguo ciclisti in tutta Italia e in tutto il mondo."),
