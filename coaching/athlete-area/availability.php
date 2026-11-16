@@ -9,8 +9,8 @@
  *     optionally only on some weekdays, with or without an end date; dated ones drop off by themselves once over;
  *   - a free note, plus a microphone: speech is typed into the note while they talk (browser speech recognition), and the
  *     recording is kept privately (uploads/cc-private, served only to that athlete and Matteo, like the reports).
- * On save: Matteo gets an email (what changed + transcript + "listen" link), and a Vekta calendar sync is queued
- *   (website-side, only when CC_VEKTA_* is set in wp-config.php; see cc_avail_vekta_put).
+ * On save: Matteo gets an email (what changed + transcript + "listen" link). Vekta (Matteo 16 Nov): his existing Claude-Vekta
+ *   connection reads GET /wp-json/cc/v1/availability twice a day and writes the notes; the website holds no Vekta key.
  * Coach side: /athletes/?board=availability shows every athlete's availability with a "changed" badge.
  * Read access for Matteo's PC tools: GET /wp-json/cc/v1/availability (application password, editor or above).
  * Never shown to athletes: plans, warnings, compliance. The card only asks and thanks.
@@ -99,7 +99,7 @@ function cc_av_diff($old, $new) {
     return $out;
 }
 
-/* ---------- Vekta calendar notes: which days get a note (pure PHP; tested) ----------
+/* ---------- Vekta calendar notes: which days get a note (pure PHP; tested). Reference for the PC-side sync, not called here ----------
    Changes: one note on each day they cover (only their weekdays if chosen; ongoing ones for the next 8 weeks; max 60 each).
    A new usual week: one note on the next Monday. */
 function cc_av_vekta_notes($old, $new, $today) {
@@ -150,11 +150,6 @@ function cc_av_save(WP_REST_Request $r) {
     update_post_meta($pid, 'cc_avail', wp_slash(wp_json_encode($new)));
     update_post_meta($pid, 'cc_avail_updated', $new['updated']);
     cc_av_email($pid, $uid, $diff, $new, $vid ?? 0);
-    if (cc_av_vekta_ready()) {
-        $notes = cc_av_vekta_notes($old, $new, $today);
-        update_post_meta($pid, 'cc_avail_vekta', wp_slash(wp_json_encode(['state' => 'queued', 'at' => time(), 'notes' => $notes])));
-        wp_schedule_single_event(time() + 5, 'cc_av_vekta_sync', [$pid]);
-    }
     return ['ok' => true, 'updated' => $new['updated']];
 }
 // the recording: into uploads/cc-private, attached to the athlete page, so the athlete-area file check guards it
@@ -186,7 +181,11 @@ function cc_av_list(WP_REST_Request $r) {
 }
 
 /* ---------- Matteo's email ---------- */
-function cc_av_notify_to() { return defined('CC_AVAIL_NOTIFY') ? CC_AVAIL_NOTIFY : 'info@cigalacycling.com'; }
+function cc_av_notify_to() {   // on staging only to the address in the option cc_staging_notify (none by default), so tests never reach Matteo
+    if (defined('CC_AVAIL_NOTIFY')) return CC_AVAIL_NOTIFY;
+    if (strpos(home_url(), '//staging.') !== false) return (string) get_option('cc_staging_notify', '');
+    return 'info@cigalacycling.com';
+}
 function cc_av_email($pid, $uid, $diff, $a, $vid) {
     $u = get_userdata($uid); $name = get_the_title($pid);
     $board = add_query_arg('board', 'availability', home_url('/' . CC_ATH_SLUG . '/')) . '#av-' . $pid;
@@ -210,26 +209,8 @@ function cc_av_email($pid, $uid, $diff, $a, $vid) {
     $h .= '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open all athletes’ availability</a></p></div>';
     $headers = ['Content-Type: text/html; charset=UTF-8'];
     if ($u && is_email($u->user_email)) $headers[] = 'Reply-To: ' . $name . ' <' . $u->user_email . '>';   // reply goes straight to the athlete
-    wp_mail(cc_av_notify_to(), 'Availability: ' . $name . ($diff ? ' – ' . $diff[0] : ' – voice note'), $h, $headers);
+    if (cc_av_notify_to()) wp_mail(cc_av_notify_to(), 'Availability: ' . $name . ($diff ? ' – ' . $diff[0] : ' – voice note'), $h, $headers);
 }
-
-/* ---------- Vekta calendar, website-side (works with Matteo's PC off). Off until wp-config.php has:
-     define('CC_VEKTA_API_URL', '...');  define('CC_VEKTA_API_KEY', '...');   (Matteo adds the key himself; never in chat or git)
-   The athlete is matched to Vekta by email. The HTTP call itself is written once the endpoint and the calendar item type
-   are confirmed against the API the PC tools use (open question for Matteo); until then nothing is sent. ---------- */
-function cc_av_vekta_ready() { return defined('CC_VEKTA_API_URL') && defined('CC_VEKTA_API_KEY') && CC_VEKTA_API_KEY !== '' && has_filter('cc_av_vekta_put'); }
-add_action('cc_av_vekta_sync', function ($pid) {
-    $st = json_decode((string) get_post_meta($pid, 'cc_avail_vekta', true), true) ?: [];
-    $u = get_userdata((int) get_post_meta($pid, 'cc_user', true));
-    if (!$u || empty($st['notes'])) return;
-    $err = '';
-    foreach ($st['notes'] as $date => $text) {
-        // filter returns true or WP_Error; implemented once the Vekta call is confirmed (see README)
-        $r = apply_filters('cc_av_vekta_put', new WP_Error('cc_vekta', 'not set up'), $u->user_email, $date, $text);
-        if (is_wp_error($r)) { $err = $r->get_error_message(); break; }
-    }
-    update_post_meta($pid, 'cc_avail_vekta', wp_slash(wp_json_encode(['state' => $err ? 'error' : 'ok', 'at' => time(), 'error' => $err, 'notes' => $st['notes']])));
-});
 
 /* ---------- the athlete's card (inside their area, after "Your reports") ---------- */
 // the box speaks the athlete's report language (Matteo 16 Nov); Matteo's board and emails stay English
@@ -293,8 +274,6 @@ add_filter('cc_ath_board', function ($html, $board) {
         if (($a['note'] ?? '') !== '') $o .= '<span class="av-note">' . esc_html(wp_trim_words($a['note'], 30)) . '</span>';
         $v = !empty($a['voice']) ? end($a['voice']) : null;
         if ($v) $o .= '<a class="av-listen" href="' . esc_url(wp_get_attachment_url($v['id'])) . '" target="_blank" rel="noopener">▶ Voice note, ' . esc_html(date_i18n('j M', $v['at'])) . '</a>';
-        $vs = json_decode((string) get_post_meta($p->ID, 'cc_avail_vekta', true), true);
-        if ($vs) $o .= '<small class="av-vk av-vk-' . esc_attr($vs['state']) . '">Vekta: ' . esc_html($vs['state'] === 'ok' ? 'synced' : ($vs['state'] === 'queued' ? 'sending…' : 'not sent (' . $vs['error'] . ')')) . '</small>';
         $o .= '</span></div>';
     }
     $o .= '</div></section>';

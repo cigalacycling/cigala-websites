@@ -1,5 +1,5 @@
 """Athlete area on Coaching STAGING (Matteo, 16 Nov 2026): one login per athlete, removed when they finish.
-  python3 -I tools/coaching_athlete_area.py [--hub] [--availability] [--live]   (--availability adds coaching/athlete-area/availability.php; --hub rewrites the shared hub page; only before Matteo edits it himself)
+  python3 -I tools/coaching_athlete_area.py [--hub] [--availability] [--live]   (--availability adds the new athlete-area parts: availability, rider form + hub lock, goals & events, passwords; --hub rewrites the shared hub page; only before Matteo edits it himself)
 Switches Code Snippets on, pushes coaching/athlete-area/athlete-area.php as a snippet (ID kept in stg-coaching/athlete-snippet-id.txt),
 creates the /athletes/ page and the "Shared hub (all athletes)" page once. Re-running updates the snippet only.
 The proxy adds the staging application password; there are no secrets here.
@@ -15,8 +15,8 @@ SNIP = ROOT + ('live-coaching' if LIVE else 'stg-coaching') + '/athlete-snippet-
 def req(url, body=None, method='GET'):
     assert url.startswith(f'https://{HOST}/')
     a = ['curl', '-sS', '-m', '90', '-X', method, url]
-    if body is not None: a += ['-H', 'Content-Type: application/json', '--data-binary', json.dumps(body)]
-    r = subprocess.run(a, capture_output=True, text=True)
+    if body is not None: a += ['-H', 'Content-Type: application/json', '--data-binary', '@-']   # from stdin: the snippet is too big for an argument
+    r = subprocess.run(a, capture_output=True, text=True, input=json.dumps(body) if body is not None else None)
     try: return json.loads(r.stdout or 'null')
     except ValueError: raise SystemExit('bad response: ' + r.stdout[:300])
 
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     code = open(ROOT + 'coaching/athlete-area/athlete-area.php').read()
     assert code.startswith('<?php\n'); code = code[len('<?php\n'):]
     if '--availability' in sys.argv:   # the availability card (README "Athlete area: availability"); only once Matteo says go
-        for f in ('availability-i18n.php', 'availability.php'):
+        for f in ('availability-i18n.php', 'availability.php', 'form-legal.php', 'onboarding.php', 'goals.php', 'passwords.php'):
             extra = open(ROOT + 'coaching/athlete-area/' + f).read()
             assert extra.startswith('<?php\n'); code += '\n' + extra[len('<?php\n'):].replace("if (!defined('ABSPATH')) return;", '', 1)
     body = {'name': 'Cigala athlete area (one login per athlete)', 'desc': 'Built by tools/coaching_athlete_area.py from coaching/athlete-area/athlete-area.php in the cigala-websites repo. Do not edit here.',
