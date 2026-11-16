@@ -85,6 +85,10 @@ def btn(label, url, cls='btn-go', note=''):
 # New feature line, added by Matteo (15 Nov 2026): Advanced and Premium only, a normal line after the training plan.
 # Matteo 15 Nov (2nd review): 'deep initial assessment ... across the year or 6 months, depending on how much training data'
 ASSESS = 'Deep Initial Assessment of your training data (last 6–12 months)'   # Matteo 15 Nov: shorter
+# Matteo 16 Nov: the athlete area (/athletes/) is part of Advanced & Premium, not Basic; shown as a new feature
+HUB = 'Personal Athlete Hub: your reports, guides & tools'
+NEW_PILL = ' <span class="pk-new">New</span>'
+def hub_pill(items, label): return items.replace('>' + E(label) + '<', '>' + E(label) + NEW_PILL + '<', 1)
 # Who each package is for: short lines taken from the live FAQ answer "What would the most suitable package for me?"
 FOR = {
     'basic': 'For riders who can follow the training without the human aspect of a coach.',
@@ -101,13 +105,14 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     # The live page marks each line <li class="included|excluded">: Basic's excluded lines come from there (EXCLUDED),
     # plus what Advanced/Premium add that isn't in Basic's live list at all.
     # Matteo 15 Nov (4th review): Basic's zones don't change weekly either -> 'Adaptive Training Zones changing weekly' is an X too
-    no = (EXCLUDED + ['Adaptive Training Zones changing weekly', ASSESS, 'Monthly catch up call', 'Race Strategy', 'Continuous Support & Motivation', 'Vekta membership']) if key == 'basic' else []
+    no = (EXCLUDED + ['Adaptive Training Zones changing weekly', ASSESS, HUB, 'Monthly catch up call', 'Race Strategy', 'Continuous Support & Motivation', 'Vekta membership']) if key == 'basic' else []
     top = [x for x in top if x not in no]
     # Matteo 15 Nov (3rd review): lead with what you GET. Every card shows its first 8 included lines; "Show all" opens
     # the rest and, on Basic only, the lines it does not include, at the very end under their own label.
     inc = [x for x in top + rest if x not in no]; SHOW = 12   # Matteo 15 Nov: two more lines visible before "See all"
     NUT = 'Nutritional Consult with our Sports Nutritionist'   # Matteo 15 Nov: higher up, right after the assessment
     if NUT in inc: inc.remove(NUT); inc.insert(3 if key != 'basic' else 2, NUT)
+    if key != 'basic': inc.insert(4, HUB)   # right after the nutrition consult, so it shows without "See all"
     AZ = 'Adaptive Training Zones changing weekly'   # now a coached-only line (not in Basic), so show it with the other differences
     if key != 'basic' and AZ in inc: inc.remove(AZ); inc.insert(11, AZ)
     LBL = {'Race Strategy': 'Race & Pacing Strategy',   # Matteo 15 Nov: pacing on the same line
@@ -117,6 +122,7 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         items += '<li class="more no-lab">Included in Advanced &amp; Premium</li>'
         NO_LABEL = {'Daily Training Analysis': 'Training Analysis', 'Race Strategy': 'Race & Pacing Strategy'}   # Matteo 15 Nov: Basic has no training analysis at all, not just no daily one
         items += ''.join(f'<li class="more no">{E(NO_LABEL.get(x, x))}<span class="vh"> (not included in Basic)</span></li>' for x in no)
+    if key != 'basic': items = hub_pill(items, HUB)
     total = len(inc)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
         {badge}
@@ -137,6 +143,7 @@ Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria
 ROWS = [
     ('Coaching package', 'Daily plan built for 12 weeks', 'Daily plan built on a weekly basis', 'Daily plan built on a weekly basis'),
     ('Deep Initial Assessment of your training data', N, Y, Y),
+    ('Personal Athlete Hub: reports, guides &amp; tools', N, Y, Y),   # Matteo 16 Nov
     ('Contact', 'When needed via email', 'Weekly', 'Daily'),
     ('Feedback', N, 'Weekly', 'Daily'),
     ('Schedule adjustment', N, 'Weekly', 'Daily'),

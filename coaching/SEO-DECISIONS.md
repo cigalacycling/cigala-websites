@@ -400,3 +400,9 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 ## 16 Nov: athlete area
 - New private page `/athletes/`: noindex, nofollow (meta tag and X-Robots-Tag header), left out of the Yoast sitemap, not cached. It adds no public content, so the existing pages, titles and headings are unchanged.
 - The footer gains an "Athlete login" link in the bottom row.
+
+## 16 Nov: athlete hub in the package cards (Matteo)
+- New feature line on Advanced & Premium, with a green "New" tag: "Personal Athlete Hub: your reports, guides & tools". In Italian: "Area atleta personale: i tuoi report, guide e strumenti" with "Novità".
+- Basic lists it under "Included in Advanced & Premium". A new row is added to the compare tables (cycling, triathlon).
+- Pages: Individual and Triathlon packages, UK/USA/Canada, Italia. No headings or titles changed: only a list line and a table row were added.
+- The hub itself doesn't check the package: Matteo creates logins only for Advanced and Premium athletes.

@@ -132,6 +132,7 @@ def tools_band():
   </div>
 </section>'''
 FT_CSS = '''<style>
+.ticks .pk-new { display: inline-block; margin-left: 6px; padding: 2px 8px; border-radius: 999px; background: #12a150; color: #fff; font-size: 10.5px; font-weight: 700; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; vertical-align: 2px; }   /* Matteo 16 Nov: athlete hub line */
 .sigph { position: relative; display: block; }
 .sigph img { display: block; width: 100%; height: auto; }
 .sigph img.signature { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }

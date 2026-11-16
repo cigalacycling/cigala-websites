@@ -40,14 +40,17 @@ FOR = {
 def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     top = [x for x in own[key] if not (key == 'basic' and x in NOT_IN_BASIC)]
     no = [x for x in own[key] if key == 'basic' and x in NOT_IN_BASIC]
+    if key == 'basic': no = no + [P.HUB]   # Matteo 16 Nov: athlete hub in Advanced & Premium only
     rest = [f for f in F[key] if f not in own[key]]
     # same as the cycling cards (Matteo 15 Nov): what you get first, 12 lines visible, Basic's missing lines last
     LBL = {'Race Strategy': 'Race & Pacing Strategy', 'Access to World Class Nutritionist & Mental Coach': 'Access to work 1-to-1 with our World Class Nutritionist & Mental Coach'}
     inc = top + rest
+    if key != 'basic': inc.insert(3, P.HUB)
     items = ''.join(f'<li{" class=\"more\"" if i >= 12 else ""}>{E(LBL.get(x, x))}</li>' for i, x in enumerate(inc))
     if no:
         items += '<li class="more no-lab">Included in Advanced &amp; Premium</li>' + ''.join(
             f'<li class="more no">{E({"Daily Training Analysis": "Training Analysis"}.get(x, x))}<span class="vh"> (not included in Basic)</span></li>' for x in no)
+    if key != 'basic': items = P.hub_pill(items, P.HUB)
     total = len(inc)
     return f'''<article class="pkg {cls}" id="pkg-{key}">
         {badge}
@@ -83,6 +86,7 @@ ROWS = [
     ('Training analysis', N, 'Weekly', 'Daily'),
     ('Catch up call', N, 'Monthly or when needed', 'Weekly or when needed'),
     ('Race strategy', N, Y, Y),
+    ('Personal Athlete Hub: reports, guides &amp; tools', N, Y, Y),   # Matteo 16 Nov
     ('Continuous support &amp; motivation', N, Y, Y),
     ('Platform', 'Training Peaks membership included (value €19.99/m)', 'Training Peaks membership included (value €19.99/m)', 'Training Peaks membership included (value €19.99/m)'),
     ('Price', '€237 one-time for 12 weeks', '€149/mo', '€249/mo for 3 months'),
