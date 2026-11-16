@@ -210,3 +210,7 @@ Added to the brand theme 193220739396 and to the new sale copy "Black Friday + C
 - **Shipping schema left out on purpose:** bulky items are priced at checkout, so fixed rates in the schema would be wrong for trainers and bikes.
 - **Collection texts:** drafts are in `retail/COLLECTION-TEXTS.md`, waiting for approval.
 - **v3:** Matteo publishes it, and the 1 Dec reminder should then refer to v3. The banner is NOT in v3 (it's in the brand theme only, for 1 Dec).
+- **Back-in-stock alerts (Ordersify, 16 Nov), in the brand theme and v3:**
+  - New wording in the Cigala voice: button "Email me when it's back"; popup heading "Get an email when it's back"; button "Email me"; a friendlier success message and errors; placeholder "Your email".
+  - The popup heading uses Anton, the button gets a #00b350 hover, and the popup fields are 16px.
+  - The texts live in `snippets/ordersify-bis.liquid`, not in the app admin. If the Ordersify app ever rewrites this snippet, re-apply them.
