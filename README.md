@@ -436,6 +436,9 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - The coach view shows each athlete in their language and marks Italian athletes with "IT"; `?lang=it` previews the Italian hub.
   - The PDFs show the English files marked "(in inglese)" until `<name>-IT.pdf` files exist, are uploaded and listed in athlete-hub-files.json. The PDF session was asked for them on 16 Nov; the Marine ones need her approval.
   - The site header and footer stay English (they're the site's own).
+  - **Report language (Matteo 16 Nov, e.g. Slovenian athletes):** a second user setting, user meta `cc_report_lang` (en, it, sl, de, fr, es, nl, pt, pl, hr, cs, da, sv, no, fi, ga; empty means the same as the hub). It's readable over REST (`/wp/v2/users/<id>?context=edit`, meta.cc_report_lang).
+    - The hub interface is English or Italian only.
+    - Everything personal follows the report language: reports from the PC tools, race plans, assessments, the availability box labels and text.
 - **Still planned:**
 - **Per-athlete language:** use the WordPress user Language setting (locale). Matteo sets it when he creates the login.
 - **Order (recommended):**

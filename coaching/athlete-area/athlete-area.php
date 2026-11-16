@@ -45,14 +45,24 @@ add_filter('wp_insert_post_data', function ($d) {
    Set per athlete on their WordPress user page ("Hub language"). The login page follows the phone's language. */
 add_action('init', function () {
     register_meta('user', 'cc_lang', ['type' => 'string', 'single' => true, 'show_in_rest' => true, 'auth_callback' => function () { return current_user_can('edit_users'); }]);
+    // the language of the athlete's personal things: reports from Matteo's PC tools, availability box, race plans (any language)
+    register_meta('user', 'cc_report_lang', ['type' => 'string', 'single' => true, 'show_in_rest' => true, 'auth_callback' => function () { return current_user_can('edit_users'); }]);
     register_post_meta('cc_athlete', 'cc_lang', ['type' => 'string', 'single' => true, 'show_in_rest' => true, 'auth_callback' => function () { return current_user_can('edit_pages'); }]);
 });
 function cc_ath_user_lang($uid) { return get_user_meta((int) $uid, 'cc_lang', true) === 'it' ? 'it' : 'en'; }
+const CC_REPORT_LANGS = ['en' => 'English', 'it' => 'Italiano', 'sl' => 'Slovenščina', 'de' => 'Deutsch', 'fr' => 'Français', 'es' => 'Español',
+    'nl' => 'Nederlands', 'pt' => 'Português', 'pl' => 'Polski', 'hr' => 'Hrvatski', 'cs' => 'Čeština', 'da' => 'Dansk', 'sv' => 'Svenska', 'no' => 'Norsk', 'fi' => 'Suomi', 'ga' => 'Gaeilge'];
+// reports and personal pages: the athlete's own language; when not set, the hub language
+function cc_ath_report_lang($uid) { $l = get_user_meta((int) $uid, 'cc_report_lang', true); return isset(CC_REPORT_LANGS[$l]) ? $l : cc_ath_user_lang($uid); }
 function cc_ath_lang_field($user = null) {
     $v = ($user instanceof WP_User) ? cc_ath_user_lang($user->ID) : 'en';
     echo '<h2>Athlete hub</h2><table class="form-table" role="presentation"><tr><th><label for="cc_lang">Hub language</label></th><td><select name="cc_lang" id="cc_lang">'
        . '<option value="en"' . selected($v, 'en', false) . '>English</option><option value="it"' . selected($v, 'it', false) . '>Italiano</option></select>'
-       . '<p class="description">The language of this athlete\'s hub (/athletes/).</p></td></tr></table>';
+       . '<p class="description">The language of this athlete\'s hub (/athletes/): English or Italian.</p></td></tr>';
+    $r = ($user instanceof WP_User) ? cc_ath_report_lang($user->ID) : '';
+    echo '<tr><th><label for="cc_report_lang">Report language</label></th><td><select name="cc_report_lang" id="cc_report_lang"><option value="">Same as the hub</option>';
+    foreach (CC_REPORT_LANGS as $k => $n) echo '<option value="' . $k . '"' . selected($r === $k && ($user instanceof WP_User) && get_user_meta($user->ID, 'cc_report_lang', true), true, false) . '>' . esc_html($n) . '</option>';
+    echo '</select><p class="description">Reports, race plans, the availability box and anything else made for this athlete are written in this language.</p></td></tr></table>';
 }
 add_action('user_new_form', function ($type) { if ($type === 'add-new-user') cc_ath_lang_field(); });
 add_action('show_user_profile', 'cc_ath_lang_field');
@@ -60,6 +70,8 @@ add_action('edit_user_profile', 'cc_ath_lang_field');
 function cc_ath_lang_save($uid) {
     if (!isset($_POST['cc_lang']) || !current_user_can('edit_users')) return;
     update_user_meta($uid, 'cc_lang', $_POST['cc_lang'] === 'it' ? 'it' : 'en');
+    $r = sanitize_key($_POST['cc_report_lang'] ?? '');
+    if ($r !== '' && isset(CC_REPORT_LANGS[$r])) update_user_meta($uid, 'cc_report_lang', $r); else delete_user_meta($uid, 'cc_report_lang');
 }
 add_action('user_register', 'cc_ath_lang_save', 5);
 add_action('edit_user_profile_update', 'cc_ath_lang_save');
@@ -135,7 +147,8 @@ add_action('manage_cc_athlete_posts_custom_column', function ($col, $pid) {
     if ($col !== 'cc_user') return;
     if (get_post_meta($pid, 'cc_shared', true)) { echo 'All athletes'; return; }
     $u = get_userdata((int) get_post_meta($pid, 'cc_user', true));
-    echo $u ? esc_html($u->user_login . ' (' . $u->user_email . ')' . (cc_ath_user_lang($u->ID) === 'it' ? ' · Italiano' : '')) : '—';
+    echo $u ? esc_html($u->user_login . ' (' . $u->user_email . ')' . (cc_ath_user_lang($u->ID) === 'it' ? ' · hub Italiano' : '')
+        . (cc_ath_report_lang($u->ID) !== cc_ath_user_lang($u->ID) ? ' · reports ' . CC_REPORT_LANGS[cc_ath_report_lang($u->ID)] : '')) : '—';
 }, 10, 2);
 
 /* ---------- private files: uploads made inside an athlete page go to uploads/cc-private ---------- */
