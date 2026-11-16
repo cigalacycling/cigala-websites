@@ -34,8 +34,9 @@ def buttons(*b, cls=''):
 def links(items):
     li = ''.join(f'<!-- wp:list-item --><li><a href="{u}">{t}</a></li><!-- /wp:list-item -->' for t, u in items)
     return f'<!-- wp:list --><ul class="wp-block-list">{li}</ul><!-- /wp:list -->'
-TOOLS = [('Training zones', '/tools/training-zones-calculator/'), ('Carbs per hour', '/tools/carbs-per-hour-calculator/'),
-         ('Critical Power', '/tools/critical-power-calculator/'), ('FTP test', '/tools/ftp-test-calculator/'),
+# Matteo 16 Nov: no Training zones or FTP test here (his athletes work with Critical Power and already have their zones)
+TOOLS = [('Carbs per hour', '/tools/carbs-per-hour-calculator/'),
+         ('Critical Power', '/tools/critical-power-calculator/'),
          ('Sweat rate', '/tools/sweat-rate-calculator/'), ('Climb time', '/tools/climb-time-calculator/'),
          ('Gear &amp; speed', '/tools/gear-speed-calculator/'), ('Swim pace (CSS)', '/tools/swim-pace-calculator/')]
 READ = [('Training', [('The power of Zone 2 training', '/blog/zone-2-training/'), ('Critical Power', '/blog/critical-power/'),
@@ -83,12 +84,13 @@ HUB = lambda: (h2('Quick links')
        + para('The Skool community is free for coaching clients. No invitation yet? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">Email me</a> and I will send it (please check your spam folder too, sometimes it ends up there).')
        + h2('Your training apps')
        + para('Your plan is in Vekta and syncs to your Garmin, Wahoo or Zwift.')   # Matteo 16 Nov: Vekta only
-       + buttons(btn('Open Vekta', 'https://joinvekta.com/', True))
+       + buttons(btn('Open my Vekta calendar', 'https://app.joinvekta.com/me/calendar', True))   # Matteo 16 Nov: straight to the calendar
        + h2('Training guides')
        + guides_html()
        + h2('Training tools')
        + buttons(*[btn(t, u, True, False) for t, u in TOOLS], cls='ath-tools')
        + h2('Worth reading')
+       + '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">New on the blog</h3><!-- /wp:heading --><!-- wp:shortcode -->[cc_latest_posts lang="en"]<!-- /wp:shortcode -->'
        + ''.join(f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{g}</h3><!-- /wp:heading -->' + links(items) for g, items in READ))
 
 
@@ -112,8 +114,8 @@ def guides_html_it():
             elif f in ids: blocks += file_block(ids[f]['id'], ids[f]['url'], t + ' (in inglese)')
         if blocks: out += f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{g}</h3><!-- /wp:heading -->' + blocks
     return out or para('Core, esercizi e palestra: i PDF arriveranno qui a breve.')
-TOOLS_IT = [('Zone di allenamento', '/tools/training-zones-calculator/'), ('Carboidrati per ora', '/tools/carbs-per-hour-calculator/'),
-            ('Critical Power', '/tools/critical-power-calculator/'), ('Test FTP', '/tools/ftp-test-calculator/'),
+TOOLS_IT = [('Carboidrati per ora', '/tools/carbs-per-hour-calculator/'),
+            ('Critical Power', '/tools/critical-power-calculator/'),
             ('Tasso di sudorazione', '/tools/sweat-rate-calculator/'), ('Tempo in salita', '/tools/climb-time-calculator/'),
             ('Rapporti e velocità', '/tools/gear-speed-calculator/'), ('Passo nuoto (CSS)', '/tools/swim-pace-calculator/')]
 READ_IT = [('Allenamento', [('Zone di potenza e Critical Power, spiegate semplici', '/blog/zone-di-potenza-critical-power-ciclismo/'),
@@ -142,12 +144,13 @@ HUB_IT = lambda: (h2('Link rapidi')
        + para('La community su Skool è gratuita per gli atleti che seguo. Non hai ancora ricevuto l’invito? <a href="mailto:matteo@cigalacycling.com?subject=Invito%20Skool">Scrivimi</a> e te lo mando (controlla anche lo spam, a volte finisce lì).')
        + h2('Le tue app di allenamento')
        + para('Il tuo piano è su Vekta e si sincronizza con Garmin, Wahoo o Zwift.')
-       + buttons(btn('Apri Vekta', 'https://joinvekta.com/', True))
+       + buttons(btn('Apri il mio calendario Vekta', 'https://app.joinvekta.com/me/calendar', True))
        + h2('Guide di allenamento')
        + guides_html_it()
        + h2('Strumenti di allenamento')
        + buttons(*[btn(t, u, True, False) for t, u in TOOLS_IT], cls='ath-tools')
        + h2('Da leggere')
+       + '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Nuovi sul blog</h3><!-- /wp:heading --><!-- wp:shortcode -->[cc_latest_posts lang="it"]<!-- /wp:shortcode -->'
        + ''.join(f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{g}</h3><!-- /wp:heading -->' + links(items) for g, items in READ_IT))
 
 if __name__ == '__main__':

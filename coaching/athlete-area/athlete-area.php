@@ -316,6 +316,21 @@ function cc_ath_inner() {
     return $o . '</div>' . cc_ath_js();
 }
 
+/* ---------- [cc_latest_posts lang="en|it" n="4"] in the shared hubs (Matteo 16 Nov): the newest posts appear by themselves.
+   English hub: newest posts outside the "Italiano" category; Italian hub: newest Italiano posts. The list of /blog/ links
+   becomes photo cards (cc_ath_dress), like the hand-picked reading list. ---------- */
+add_shortcode('cc_latest_posts', function ($at) {
+    $at = shortcode_atts(['lang' => 'en', 'n' => 4], $at);
+    $it = get_term_by('name', 'Italiano', 'category');
+    // the Simple Custom Post Order plugin imposes its own order on queries, so take them all (about 70) and sort by date here
+    $q = ['numberposts' => -1, 'post_status' => 'publish'];
+    if ($it) $q[$at['lang'] === 'it' ? 'category__in' : 'category__not_in'] = [$it->term_id];
+    $ps = get_posts($q); usort($ps, function ($a, $b) { return strcmp($b->post_date, $a->post_date); });
+    $li = '';
+    foreach (array_slice($ps, 0, max(1, min(8, (int) $at['n']))) as $p) $li .= '<li><a href="' . esc_url(get_permalink($p)) . '">' . esc_html(get_the_title($p)) . '</a></li>';
+    return $li ? '<ul class="wp-block-list">' . $li . '</ul>' : '';
+});
+
 /* ---------- the dashboard look ---------- */
 function cc_ath_icon($k, $cls = 'ath-ic') {
     static $I = [

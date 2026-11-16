@@ -600,6 +600,12 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - REST profile and goals;
   - coach pages at 390/820/1440 with no sideways scroll.
   - the update step in Italian: pre-filled from earlier answers, saves and opens the hub, hub and goals in Italian.
+- **Hub changes (Matteo 16 Nov), staging only:**
+  - The Vekta button opens https://app.joinvekta.com/me/calendar.
+  - Training zones and the FTP test are out of the hub tools: his athletes work with Critical Power and already have their zones.
+  - "New on the blog" / "Nuovi sul blog" is the first row of Worth reading. It uses the shortcode `[cc_latest_posts lang=en|it]` in athlete-area.php: English = newest posts outside the Italiano category, Italian = newest Italiano posts, sorted by date in PHP because the Simple Custom Post Order plugin overrides query order.
+  - Built by `tools/coaching_athlete_area.py --hub`.
+  - **On live,** the hub pages must be rebuilt only after the snippet with the shortcode is live; otherwise the raw shortcode would show.
 - **To do before live:**
   - Marine's test with Matteo (needs his OK to send her the welcome email);
   - import the 32 paper forms (`cc_profile_prefill` + paper);
