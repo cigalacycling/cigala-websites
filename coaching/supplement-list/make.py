@@ -70,7 +70,7 @@ pages.append(f'''<section class="page cover">
     <div class="bar"></div>
     <p class="tag">Evidence-based support for cyclists and triathletes.</p>
   </div>
-  <div class="photo"><img src="{A}water-bottle-dark.jpg" alt="A water bottle standing on a table in front of a bright window"></div>
+  <div class="photo" style="height:92mm"><img src="{A}matteo-cigala-gravel-worlds-silver.jpg" alt="Matteo Cigala, silver at the World Championship Gravel 19-34" style="object-position:0% 26%"></div>
   <div class="by">
     <div><div class="who">Marine Lenehan</div><div class="role">Sports Nutritionist · Vivify Sports</div></div>
   </div>
@@ -134,7 +134,7 @@ pages.append(f'''<section class="page">
       <li><b>Brick and indoor sessions:</b> an electrolyte drink and a gel or chews to practise race fuelling.</li>
       <li><b>Recovery:</b> whey protein 25–30 g after every hard session, and collagen 20 g with vitamin C.</li></ul></div>
   </div>
-  <div class="mphoto" style="height:70mm;margin-top:16px"><img src="{A}cigala-cycling-team-ride.jpg" alt="Four Cigala Cycling riders climbing together in team kit" style="object-position:50% 55%"></div>
+  <div class="mphoto" style="height:78mm;margin-top:16px"><img src="{A}time-trial-rider.jpg" alt="Cyclist racing a time trial in an aero position" style="object-position:50% 8%"></div>
 ''' + FOOT + '</section>')
 
 # 4 daily
