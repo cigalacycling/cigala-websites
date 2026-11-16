@@ -136,6 +136,8 @@ add_filter('wpseo_exclude_from_sitemap_by_post_ids', function ($ids) {
 add_action('wp_head', function () {
     if (!is_user_logged_in() || cc_ath_is_coach() || !cc_ath_page_of(get_current_user_id())) return;
     echo "<script>try{localStorage.setItem('cc_tools_ok','1');var n=JSON.parse(localStorage.getItem('cc_nl')||'{}');if(!n.s){n.c=Date.now();localStorage.setItem('cc_nl',JSON.stringify(n));}sessionStorage.setItem('cc_exit','1');}catch(e){}</script>\n";
+    // already coached: no "Want a plan built around these numbers?" box under the free tools (Matteo 16 Nov)
+    echo '<style>.cc section:has(.tl-cta){display:none!important}</style>' . "\n";
 }, 1);
 
 /* ---------- logins: athletes never see wp-admin and stay logged in for a year ---------- */
@@ -348,7 +350,7 @@ add_action('wp_head', function () {
     if (!is_page(CC_ATH_SLUG)) return;
     echo <<<'CSS'
 <style id="cc-athletes">
-html .cc .ath-sec { padding-block: 140px 80px; min-height: 70vh; }
+html .cc .ath-sec { padding-block: 48px 80px; min-height: 70vh; }   /* Matteo 16 Nov: closer to the header */
 html .cc .ath { max-width: 860px; margin: 0 auto; }
 html .cc .ath h1 { font-size: clamp(38px, 7vw, 64px); margin: 6px 0 14px; }
 html .cc .ath h2 { font-size: clamp(24px, 4vw, 32px); margin: 0 0 16px; }
@@ -434,7 +436,7 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(2) { animation-d
 html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-delay: .18s; } html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(n+5) { animation-delay: .24s; }
 @keyframes ath-pop { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
 @media (max-width: 760px) {
-  html .cc .ath-sec { padding-block: 100px 56px; }
+  html .cc .ath-sec { padding-block: 24px 56px; }
   html .cc .ath-login { padding: 24px 18px; }
   html .cc .ath-hero { grid-template-columns: 1fr 104px; gap: 8px; padding: 24px 16px 0; }
   html .cc .ath-hero h1 { font-size: clamp(32px, 10vw, 44px); }
