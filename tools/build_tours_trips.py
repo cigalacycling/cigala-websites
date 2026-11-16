@@ -27,15 +27,21 @@ _SPJ = json.load(open(ROOT + 'tours/spots.json'))
 SPOTS = {k: v for k, v in _SPJ.items() if not k.startswith('_')}
 GUIDE_NICK = {'Giampietro': 'Giampi'}   # first name -> nickname (About page: Giampietro 'Giampi')
 # guides from the About page team (photo, role; no bio there): added to a tour, or replacing a guide (Matteo 16 Nov)
-TEAM = {'Giampi': ('Guide', 2658), 'Antonio': ('Guide', 4665)}
-GUIDES_ADD = {'maratona-dles-dolomites': ['Giampi'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio']}
-GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Antonio'}}   # French Alps: Alessio once Matteo sends his photo
+TEAM = {'Giampi': ('Guide', 2658, ''), 'Antonio': ('Guide', 4665, ''),
+        'Amedeo': ('Tour Guide Leader', 2214, 'A former pro cyclist, Amedeo is a cycling tour guide & massage therapist for a decade. It is one of the most experience guides that you will ever find, counting almost over 1000 days on tours.'),
+        'Piero': ('Guide & Gravel Expert', 3455, 'Piero is a passionate cyclist and architect, whose eye for detail carries into his riding. He started out in downhill mountain biking before finding his true love: gravel.')}   # bios as on the live tour pages
+GUIDES_SET = {'lake-garda-and-stelvio': ['Piero', 'Amedeo', 'Giampi'], 'lake-garda-gravel': ['Piero', 'Amedeo', 'Giampi']}   # the whole guide line-up for a tour (Matteo 16 Nov)
+GALLERY_PHOTOS = {'lake-garda-and-stelvio': [2211, 2212, 2209, 434, 780, 650, 898, 2235, 2233]}   # Garda & Stelvio: the live gallery photos are 450-800px wide (soft); sharper Garda photos (Matteo 16 Nov)
+GUIDES_ADD = {'maratona-dles-dolomites': ['Giampi'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio']}   # Coast to Coast: Marco too, once Matteo says which Marco
+GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Antonio'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'Giampi'}}   # French Alps: Alessio once Matteo sends his photo
 HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
-EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 2225}   # gravel photo on the road tour, Stelvio photo on the gravel tour   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
+EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 2225,   # gravel photo on the road tour, Stelvio photo on the gravel tour
+               'lake-garda-and-stelvio': {'GRAVEL': 7766, 'STELVIO': 2225}, 'lake-garda-gravel': 434}   # by a word of the section title when a page has several   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
 # Maratona: two hotels in one text block live -> a card each, with their own photos and stars (Matteo 16 Nov)
 HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629, 8631]), ('Hotel Soleil', 4, False, 8709, [8707, 8708])]}
 TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, cover photo (our own: no YouTube request until the visitor taps play) - Matteo 16 Nov
-HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 8620, 'italian-alps': 2225, 'french-alps': 719, 'alpine-gravel-escape': 6100}   # Dolomites / Italian Alps: photos with riders (Matteo 16 Nov)   # media id: rider in Cigala kit above an Algarve beach
+HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 8620, 'italian-alps': 2225, 'french-alps': 719, 'alpine-gravel-escape': 6100,
+              'italys-coast-to-coast': 4465, 'lake-como-gran-fondo-il-lombardia': 8767}   # sharp 2560px originals (Matteo 16 Nov: the old ones looked soft)   # Dolomites / Italian Alps: photos with riders (Matteo 16 Nov)   # media id: rider in Cigala kit above an Algarve beach
 HERO_DPOS = {'tour-of-flanders-experience': '50% 65%', 'french-alps': 'center 70%', 'alpine-gravel-escape': 'center 84%', 'dolomites': 'center 55%', 'italian-alps': 'center 60%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
 HOTEL_FALLBACK = {'tour-of-flanders-experience': ('h3', 'Hotel T')}   # live has no hotel heading: the main card (stars: add '****' once Matteo confirms)
 HERO_MPOS = {'tour-of-flanders-experience': '50% 70%', 'french-alps': '45% 70%', 'alpine-gravel-escape': '30% 62%', 'dolomites': '45% 60%', 'italian-alps': '30% 60%', 'discover-the-algarve-granfondo': '80% 45%', 'chianti-gran-fondo-strade-bianche': '52% 30%'}   # focus point of the hero photo on phones
@@ -60,9 +66,9 @@ def trim_tag(src, alt):   # the rental bike, cropped to the bike (Matteo 16 Nov:
     return f'<img src="{im["url"]}" alt="{E(im["alt"])}" loading="lazy">'
 
 def team_card(name):
-    role, photo = TEAM[name]
+    role, photo, bio = TEAM[name]
     return (f'<article class="panel guide"><div class="ph">{img_tag(photo, 600, alt=f"{name}, {role.lower()} at Cigala Cycling Tours")}</div>'
-            f'<div class="tx"><h3>{E(name.upper())}</h3><div class="role">{E(role)}</div></div></article>')
+            f'<div class="tx"><h3>{E(name.upper())}</h3><div class="role">{E(role)}</div>{f"<p>{E(bio)}</p>" if bio else ""}</div></article>')
 
 def raw(pid): return json.loads(json.load(open(ROOT + f'stg-tours/backup/page-{pid}.json'))['meta']['_elementor_data'] or '[]')
 
@@ -177,6 +183,9 @@ def trip(slug):
     price_t = text_of(price_h).replace('​', '')
     early = re.search(r'(Early bird.*)$', price_t, re.I)
     price_main = price_t[:early.start()].strip() if early else price_t
+    if early and not price_main and '€' in price_t:   # 'Early bird prices until 30/05 €1299 | £1149 | $1499*' (Lake Como): the note first, then the price
+        i_ = price_t.index('€'); price_main = price_t[i_:].strip()
+        early = re.match(r'(.*)', price_t[:i_].strip())
     prices = [p.strip() for p in price_main.split('|')]
     book_urls = [v for k, v, s in it if k == 'book' and v] + [x[1] for x in [(k, v) for k, v, s in it] if False]
     book = next((s.get('link', {}).get('url') for k, v, s in it if k in ('h2', 'h3', 'h5') and classify(k, text_of(v)) == 'book' and s.get('link', {}).get('url')), None)
@@ -356,12 +365,14 @@ def trip(slug):
     for ex in S('extra') + S('other'):
         body = ''.join(clean(v) for k, v, s in ex['items'] if k == 'text') + ''.join(f'<p>{clean(v)}</p>' for k, v, s in ex['items'] if k in ('h4', 'h5', 'h6'))
         btns = ''.join(f'<a class="btn btn-go" href="{E(u)}">{E(t.capitalize())} →</a>' for k, (t, u), s in [(k, v, s) for k, v, s in ex['items'] if k == 'btn'] if u)
-        imgs = [v for k, v, s in ex['items'] if k == 'img'] or ([EXTRA_PHOTO[slug]] if slug in EXTRA_PHOTO and ex['kind'] == 'extra' else [])
+        xp = EXTRA_PHOTO.get(slug)
+        if isinstance(xp, dict): xp = next((v for w, v in xp.items() if w in text_of(ex['h']).upper()), None)
+        imgs = [v for k, v, s in ex['items'] if k == 'img'] or ([xp] if xp and ex['kind'] == 'extra' else [])
         vid = next((re.search(r'(?:v=|youtu\.be/)([\w-]{11})', s.get('youtube_url', '')) for k, v, s in ex['items'] if k == 'video'), None)
         media_html = (f'<div class="vcard panel" style="margin-top:16px"><button type="button" class="yt" data-id="{vid.group(1)}" aria-label="Play the video">'
                       f'<img src="https://i.ytimg.com/vi/{vid.group(1)}/hqdefault.jpg" alt="{E(text_of(ex["h"]))} video" loading="lazy"><span class="play" aria-hidden="true"></span></button></div>') if vid else ''
         if len(imgs) == 1 and not vid:   # one photo (the Maratona jersey): photo on one side, text on the other (Matteo 16 Nov: too much black)
-            out.append(f'<section><div class="in"><div class="panel xbox xsplit{" xcover" if slug in EXTRA_PHOTO else ""}"><div class="xph">{img_tag(imgs[0], 1200, alt=f"{text_of(h1).title()} - Cigala Cycling Tours")}</div>'
+            out.append(f'<section><div class="in"><div class="panel xbox xsplit{" xcover" if xp else ""}"><div class="xph">{img_tag(imgs[0], 1200, alt=f"{text_of(h1).title()} - Cigala Cycling Tours")}</div>'
                        f'<div class="xtx">{H(ex, "Make it yours" if ex["kind"] == "extra" else "Good to know")}<div class="prose">{body}</div>{f"<div class=ctas>{btns}</div>" if btns else ""}</div></div></div></section>')
             continue
         if imgs: media_html += '<div class="gal3" style="margin-top:16px">' + ''.join(img_tag(x, 1200, alt=f'{text_of(h1).title()} - Cigala Cycling Tours') for x in imgs[:3]) + '</div>'
@@ -389,7 +400,7 @@ def trip(slug):
             for d_, lab_, parts in gr:
                 main_ = re.sub(r'(?i)\bnoon\s+', '', parts[0]) if parts else ''
                 main_ = re.sub(r'^(\d{1,2}:\d{2}\s*(?:am|pm)?\s*)from\b', r'\1From', main_)
-                rows.append([d_, (f'{lab_} · ' if lab_ else '') + main_ + (f' ({", ".join(parts[1:])})' if len(parts) > 1 else '')])
+                rows.append([d_, main_ + (f' ({", ".join(parts[1:])})' if len(parts) > 1 else '')])   # no Inbound/Outbound label (Matteo 16 Nov)
             for k, v, s in (trans['items'] if trans else []):
                 if k != 'text': continue
                 for x in lines(clean(v)):
@@ -398,11 +409,19 @@ def trip(slug):
                     if m: rows.append([m.group(1), m.group(2)])
                     elif rows and not rows[-1][1]: rows[-1][1] = t   # the date on its own line, the details on the next
                     elif rows and re.match(r'^[-–\s]*\d{1,2}:\d{2}', t): rows[-1][1] += ' - ' + t.strip('- –')   # a pick-up time on its own line belongs to the transfer above
+                    elif re.match(r'(?i)^(inbound|outbound)$', t): continue   # labels on their own line: not shown (Matteo 16 Nov)
                     else: notes_.append(x)
+            lv_ = [n for n in notes_ if re.search(r'(?i)leaves at\s*\d', text_of(n))]
+            if lv_ and len(lv_) == len(rows):   # 'Airport transfer leaves at 11:00 am' notes (Lake Como): the times belong to the transfers, in order
+                for r_, n_ in zip(rows, lv_):
+                    mm = re.search(r'(?i)leaves at\s*(\d{1,2}:\d{2}\s*(?:am|pm)?)(.*)$', text_of(n_))
+                    r_[1] += ' - ' + mm.group(1) + (' ' + mm.group(2).strip() if mm.group(2).strip() else '')
+                notes_ = [n for n in notes_ if n not in lv_]
             def tparts(t):   # '... Airport - 13:00 pm - 19:30 pm' -> text and the pick-up times (Matteo 16 Nov: show them)
                 tm = [f'{int(h):02d}:{mi}' for h, mi in re.findall(r'(\d{1,2}):(\d{2})\s*(?:am|pm)?', t, re.I)]
                 txt = re.sub(r'\s*-?\s*\d{1,2}:\d{2}\s*(?:am|pm)?', '', t, flags=re.I).strip(' -–')
                 txt = re.sub(r'\s+at(?=\s*(?:\(|$))', '', txt).strip(' -–')   # 'Airport at 10:30am' -> 'Airport' (the time is a chip)
+                txt = txt[:1].upper() + txt[1:]
                 return txt, tm
             cards = ''
             for d, t in rows:
@@ -424,7 +443,7 @@ def trip(slug):
                    f'{bands}</div></section>')
         nav.append(('included', "What's included"))
     for gsec in S('gallery'):
-        pics = [x['id'] for k, v, s in gsec['items'] if k == 'gallery' for x in s.get('gallery', [])] + [v for k, v, s in gsec['items'] if k == 'img']
+        pics = GALLERY_PHOTOS.get(slug) or ([x['id'] for k, v, s in gsec['items'] if k == 'gallery' for x in s.get('gallery', [])] + [v for k, v, s in gsec['items'] if k == 'img'])
         seen = []; [seen.append(p) for p in pics if p not in seen]
         if not seen: continue
         n_ = 9 if len(seen) >= 9 else 5 if len(seen) >= 5 else len(seen)   # big photo + 4 or 8: the grid has no empty cells (Matteo 16 Nov)
@@ -487,8 +506,12 @@ def trip(slug):
         for k, v, s in bk['items']:
             if k != 'text': continue
             for ln in lines(clean(v)):
-                m = re.match(r'^\s*(?:<[^>]+>)*([A-Z][A-Z ]{2,20}):?\s*(?:</[^>]+>)?\s+(.+)$', ln, re.S)
-                if m and m.group(1).strip().isupper(): dl.append((m.group(1).strip().capitalize(), m.group(2).strip()))
+                tl_ = html.unescape(text_of(ln)).replace('\u200b', '').strip()
+                tl_ = re.sub(r'^(?:START\s*&\s*)?F+RAMESET\s*:?\s*', 'FRAMESET: ', tl_)   # live 'START & FFRAMESET 3T...' (Cyprus, Tuscany Epic): the frameset line
+                m = re.match(r'^([A-Z][A-Z &/-]{2,30})\s*:\s*(\S.*)$', tl_) or re.match(r'^([A-Z][A-Z]{2,20})\s+(\S.*)$', tl_)   # the label runs to the colon
+                if m and m.group(1).strip().isupper():   # 'START & FRAMESET: Guerciotti...' (Coast to Coast) -> Frameset (Matteo 16 Nov)
+                    lab_ = 'Frameset' if 'FRAMESET' in m.group(1) else m.group(1).strip().capitalize()
+                    dl.append((lab_, E(m.group(2).strip().lstrip(':').strip())))
                 else: lede.append(ln)
         dlh = ''.join(f'<dt>{E(a)}</dt><dd>{b}</dd>' for a, b in dl)
         out.append(f'<section id="bike-rental"><div class="in"><div class="panel bike">'
@@ -517,6 +540,7 @@ def trip(slug):
             ph = f'<div class="ph">{img_tag(p["img"], 600, alt=f"{nm.title()}, {role} at Cigala Cycling Tours")}</div>' if p['img'] else ''
             cards.append(f'<article class="panel guide">{ph}<div class="tx"><h3>{E(nm)}</h3><div class="role">{E(role)}</div>{bio}</div></article>')
         cards += [team_card(n) for n in GUIDES_ADD.get(slug, [])]
+        if slug in GUIDES_SET: cards = [team_card(n) for n in GUIDES_SET[slug]]
         stats = []
         for st_ in S('stat'):
             lab = next((text_of(v) for k, v, s in st_['items'] if k == 'text'), '')
@@ -686,6 +710,9 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
+html .cl #guides .gl { margin: 4px 0 26px; }   /* more room between the intro line and the guide cards (Matteo 16 Nov) */
+html .cl #guides .guide .tx { padding: 22px 22px 24px; }
+html .cl #guides .guide .role { margin: 8px 0 12px; }
 html .cl .bk2 .bk-top { gap: 8px; }
 html .cl .bk2 .bk-top .price { margin-bottom: 4px; }
 html .cl .bk2 .bk-top .price small { padding-left: 0; margin-left: 0; }

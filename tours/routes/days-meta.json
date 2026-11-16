@@ -182,20 +182,25 @@
    "up": 2133,
    "color": "#b6f36a"
   },
+  "3": {
+   "km": 51,
+   "up": 1865,
+   "color": "#5ad6d0"
+  },
   "4": {
    "km": 57,
    "up": 366,
-   "color": "#5ad6d0"
+   "color": "#f7f8f8"
   },
   "5": {
    "km": 145,
    "up": 1220,
-   "color": "#f7f8f8"
+   "color": "#8fe8b6"
   },
   "6": {
    "km": 32,
    "up": 215,
-   "color": "#8fe8b6"
+   "color": "#e3f28a"
   }
  },
  "alpine-gravel-escape": {
@@ -382,8 +387,8 @@
    "color": "#f7f8f8"
   },
   "5": {
-   "km": 114,
-   "up": 2963,
+   "km": 94,
+   "up": 1642,
    "color": "#8fe8b6"
   }
  },

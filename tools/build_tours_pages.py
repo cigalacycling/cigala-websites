@@ -119,6 +119,10 @@ def about():
     hero_bg = next(v for k, v, s in it if k == 'bg')
     band_bg = 2650   # Matteo 15 Nov: the live "Why riders choose us" photo is a tilted shot; the About hero group photo instead
     matteo = next(src for src, n, r in team if n.upper().startswith('MATTEO'))
+    # Matteo 16 Nov: the same cut-out photo and signature as on the other sites (the homepage "Our story" block)
+    _MW = json.load(open(ROOT + 'stg-tours/media-webp.json'))
+    SIGN = (f'<img class="signature" src="{_MW["signature"]["url"]}" alt="Matteo Cigala\'s signature" width="924" height="251" loading="lazy">'
+            '<p class="sig">Matteo Cigala<span>Tours Director</span></p>')
     main = f'''<div class="hero plain-hero">
   <div class="in">
     <div class="crumbs"><a href="{L}/" {EXT}>Home</a> / About</div>
@@ -129,8 +133,8 @@ def about():
 </div>
 <section style="padding-top:40px">
   <div class="in story">
-    <div class="panel prose" style="padding:clamp(22px,4vw,40px)">{story}</div>
-    <div class="photo">{img_tag(matteo, 1100)}</div>
+    <div class="panel prose" style="padding:clamp(22px,4vw,40px)">{story}{SIGN}</div>
+    <div class="photo mcut"><img src="{_MW['matteo']['url']}" alt="{E(_MW['matteo']['alt'])}" loading="lazy"></div>
   </div>
 </section>
 <section>
@@ -749,6 +753,12 @@ html .cl .band .lede p { margin: 0; }
 html .cl .vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 @media (max-width: 1000px) { html .cl .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { html .cl .vgrid { grid-template-columns: minmax(0, 1fr); } }
+html .cl .story .photo.mcut { background: none; border: 0; border-radius: 0; overflow: visible; aspect-ratio: auto !important; position: relative; display: flex; justify-content: center; align-items: flex-end; isolation: isolate; }
+html .cl .story .photo.mcut::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }
+html .cl .story .photo.mcut img { width: 100%; max-width: 480px; height: auto !important; aspect-ratio: auto !important; object-fit: contain !important; -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, #000 82%, transparent 100%); }
+html .cl .story img.signature { display: block; width: 150px; max-width: 45%; height: auto; margin: 22px 0 0 -4px; opacity: .92; }
+html .cl .story .sig { margin: 6px 0 0 !important; font-family: var(--head); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; color: var(--text); }
+html .cl .story .sig span { display: block; font-family: var(--body); font-size: 12.5px; letter-spacing: 0; text-transform: none; color: var(--text-3); margin-top: 2px; }
 html .cl .band-up > img { object-position: center 58% !important; }   /* show the riders' faces (Matteo) */
 html .cl .band-up.priv > img { object-position: center 75% !important; }
 html .cl .hero.phero.dhero .in { padding-block: 150px 60px !important; }   /* taller destination hero: more of the photo (Matteo) */

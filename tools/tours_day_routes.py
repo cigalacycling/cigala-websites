@@ -84,7 +84,8 @@ G = {   # (lat, lon), approximate: town centres, pass summits
  'Como': (45.808, 9.085), 'Civiglio': (45.826, 9.110), 'Brunate': (45.818, 9.098), 'Erba': (45.811, 9.226), 'Canzo': (45.848, 9.272), 'Sormano': (45.878, 9.247),
  'Colma di Sormano': (45.893, 9.231), 'Nesso': (45.913, 9.159), 'Bellagio': (45.987, 9.262), 'Ghisallo': (45.923, 9.268), 'Asso': (45.861, 9.270),
  'Varenna': (46.010, 9.284), 'Lecco': (45.853, 9.390), 'Cernobbio': (45.842, 9.073), 'Menaggio': (46.021, 9.238), 'Gravedona': (46.145, 9.307),
- 'Colico': (46.134, 9.371), 'Onno': (45.926, 9.348),
+ 'Colico': (46.134, 9.371), 'Onno': (45.926, 9.348), 'Bergamo': (45.698, 9.677), 'Almenno San Salvatore': (45.750, 9.590),
+ "Sant'Omobono Terme": (45.806, 9.536), 'Costa Valle Imagna': (45.832, 9.497), 'Brembilla': (45.818, 9.596), 'Zogno': (45.794, 9.664), 'Selvino': (45.781, 9.751), 'Nembro': (45.744, 9.759),
 }
 
 R, GR = 'fastbike', 'gravel'
@@ -132,6 +133,7 @@ DAYS = {
  'lake-garda-and-stelvio': (R, {
     1: ['Moniga del Garda', 'Desenzano', 'Sirmione', 'Moniga del Garda'],
     2: ['Moniga del Garda', 'Salo', 'Gargnano', 'Porto di Tremosine', 'Pieve di Tremosine', 'Tignale', 'Gargnano', 'Salo', 'Moniga del Garda'],
+    3: ['Prato allo Stelvio', 'Stelvio', 'Prato allo Stelvio'],   # the Stelvio day trip by van: drawn in a corner inset (INSET)
     4: ['Moniga del Garda', 'Lonato', 'Castiglione delle Stiviere', 'Solferino', 'Pozzolengo', 'Desenzano', 'Moniga del Garda'],
     5: ['Moniga del Garda', 'Salo', 'Gargnano', 'Limone', 'Riva del Garda', 'Torbole', 'Malcesine', 'Garda', 'Peschiera', 'Desenzano', 'Moniga del Garda'],
     6: ['Moniga del Garda', 'Salo', 'Gardone Riviera', 'Salo', 'Moniga del Garda']},
@@ -190,8 +192,8 @@ DAYS = {
     2: ['Como', 'Erba', 'Canzo', 'Sormano', 'Colma di Sormano', 'Nesso', 'Bellagio', 'Ghisallo', 'Asso', 'Erba', 'Como'],
     3: [['Como', 'Erba', 'Asso', 'Ghisallo', 'Bellagio'], ['Varenna', 'Lecco', 'Erba', 'Como']],   # ferry Bellagio - Varenna
     4: ['Como', 'Erba', 'Lecco'],
-    5: ['Como', 'Nesso', 'Bellagio', 'Ghisallo', 'Asso', 'Sormano', 'Colma di Sormano', 'Nesso', 'Civiglio', 'Como']},
-    ['Como'], ['Civiglio', 'Colma di Sormano', 'Ghisallo', 'Bellagio', 'Varenna', 'Lecco']),
+    5: ['Bergamo', 'Almenno San Salvatore', "Sant'Omobono Terme", 'Costa Valle Imagna', 'Brembilla', 'Zogno', 'Selvino', 'Nembro', 'Bergamo']},   # the Gran Fondo now starts and ends in Bergamo (Matteo 16 Nov); approximate course until the GPX
+    ['Como'], ['Civiglio', 'Colma di Sormano', 'Ghisallo', 'Bellagio', 'Varenna', 'Lecco', 'Bergamo', 'Selvino']),
  'italys-coast-to-coast': (R, {
     2: ['Viareggio', 'Pisa', 'Peccioli'],
     3: ['Peccioli', 'San Gimignano', 'Monteriggioni', 'Siena'],
@@ -201,6 +203,7 @@ DAYS = {
     7: ['Camerino', 'Sarnano', 'Amandola', 'Ripatransone', 'San Benedetto del Tronto']},
     ['Viareggio', 'Peccioli', 'Siena', 'Montepulciano', 'Assisi', 'Camerino', 'San Benedetto del Tronto'], ['Pisa', 'San Gimignano', 'Pienza']),
 }
+INSET = {'lake-garda-and-stelvio': {'3': 'Day trip by van: Passo dello Stelvio'}}   # days far from the rest: a small map in the corner (Matteo 16 Nov)
 LABEL = {'Monetier-les-Bains': 'Monêtier-les-Bains', 'Col du Telegraphe': 'Col du Télégraphe', 'Briancon': 'Briançon', 'Ajdovscina': 'Ajdovščina', 'Ziri': 'Žiri',
          'Skofja Loka': 'Škofja Loka', 'Zelezniki': 'Železniki', 'Vrsic': 'Vršič Pass', 'Bled': 'Lake Bled', 'Salo': 'Salò', 'Loule': 'Loulé', 'Querenca': 'Querença',
          'Alto do Malhao': 'Alto do Malhão', 'Sao Bras de Alportel': 'São Brás de Alportel', 'Olhao': 'Olhão', 'Stelvio': 'Passo dello Stelvio', 'Gavia': 'Passo Gavia',
@@ -289,7 +292,8 @@ def draw(slug, countries, lakes, rivers, named=None):
     profile, days, stays, climbs = DAYS[slug]
     T = tracks(slug)
     T = {k: dict(v, legs=[despike(l) for l in v['legs']]) for k, v in T.items()}
-    allpts = [(x, y) for d in T.values() for leg in d['legs'] for x, y in leg]
+    inset = INSET.get(slug, {})
+    allpts = [(x, y) for k_, d in T.items() if k_ not in inset for leg in d['legs'] for x, y in leg]
     lons = [p[0] for p in allpts]; lats = [p[1] for p in allpts]
     lat0 = (min(lats) + max(lats)) / 2; k0 = math.cos(math.radians(lat0))
     span_x = (max(lons) - min(lons)) * k0; span_y = max(lats) - min(lats)
@@ -352,6 +356,7 @@ def draw(slug, countries, lakes, rivers, named=None):
     order = sorted(T, key=int)
     badges = []
     for i, key in enumerate(order):
+        if key in inset: continue
         c = COLORS[i % len(COLORS)]
         ds = []
         for leg in T[key]['legs']:
@@ -424,6 +429,26 @@ def draw(slug, countries, lakes, rivers, named=None):
     for (x, y), c, key in badges:
         svg.append(f'<g class="db" data-d="{key}"><circle cx="{x:.1f}" cy="{y:.1f}" r="16" fill="{c}" fill-opacity=".18"/><circle cx="{x:.1f}" cy="{y:.1f}" r="12" fill="{c}" stroke="#0a0c0e" stroke-width="2"/>'
                    f'<text x="{x:.1f}" y="{y + 4.6:.1f}" font-family="Montserrat, Arial, sans-serif" font-size="12.5" font-weight="800" fill="#0a0c0e" text-anchor="middle">{key}</text></g>')
+    for key, title in inset.items():   # the inset: its own frame top right, its own scale
+        c = COLORS[order.index(key) % len(COLORS)]
+        pts_ = [p for leg in T[key]['legs'] for p in leg]
+        iw, ih, ix, iy = 270, 200, W - 270 - 14, H - 200 - 14   # bottom right: the empty corner (the legend is bottom left)
+        xs = [p[0] for p in pts_]; ys = [p[1] for p in pts_]
+        k1 = math.cos(math.radians(sum(ys) / len(ys)))
+        sc = min((iw - 40) / max((max(xs) - min(xs)) * k1, 1e-6), (ih - 64) / max(max(ys) - min(ys), 1e-6))
+        Q = lambda lon, lat: (ix + iw / 2 + (lon - (min(xs) + max(xs)) / 2) * k1 * sc, iy + 34 + (ih - 44) / 2 - (lat - (min(ys) + max(ys)) / 2) * sc)
+        d = ''.join('M' + 'L'.join(f'{x:.1f},{y:.1f}' for x, y in LineString([Q(*q) for q in leg]).simplify(.5).coords) for leg in T[key]['legs'])
+        bx_, by_ = Q(*max(pts_, key=lambda q: (q[0] - pts_[0][0]) ** 2 + ((q[1] - pts_[0][1]) / k1) ** 2))   # badge at the far end: the pass
+        px_, py_ = Q(*pts_[0])
+        svg.append(f'<rect x="{ix}" y="{iy}" width="{iw}" height="{ih}" rx="12" fill="#0a0c0e" fill-opacity=".92" stroke="#2bd47a" stroke-opacity=".35"/>'
+                   f'<text x="{ix + 14}" y="{iy + 22}" font-family="Montserrat, Arial, sans-serif" font-size="12" font-weight="700" fill="#d0d6e0">{E(title)}</text>'
+                   f'<g class="dr" data-d="{key}" fill="none" stroke-linejoin="round" stroke-linecap="round"><path d="{d}" stroke="{c}" stroke-width="7" stroke-opacity=".25" filter="url(#gl)"/>'
+                   f'<path class="ln" d="{d}" stroke="{c}" stroke-width="3"/></g>'
+                   f'<circle cx="{px_:.1f}" cy="{py_:.1f}" r="5.5" fill="#f7f8f8" stroke="#009a44" stroke-width="2.5"/>'
+                   f'<text x="{px_ + (10 if px_ < ix + iw - 120 else -10):.1f}" y="{py_ + 4:.1f}" text-anchor="{"start" if px_ < ix + iw - 120 else "end"}" font-family="Montserrat, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#f7f8f8">Prato allo Stelvio</text>'
+                   f'<g class="db" data-d="{key}"><circle cx="{bx_:.1f}" cy="{by_:.1f}" r="11" fill="{c}" stroke="#0a0c0e" stroke-width="2"/>'
+                   f'<text x="{bx_:.1f}" y="{by_ + 4.3:.1f}" font-family="Montserrat, Arial, sans-serif" font-size="12" font-weight="800" fill="#0a0c0e" text-anchor="middle">{key}</text></g>'
+                   f'<text x="{bx_ + (16 if bx_ < ix + iw / 2 else -16):.1f}" y="{by_ + 4:.1f}" font-family="Montserrat, Arial, sans-serif" font-size="11.5" font-weight="600" fill="#c9a36a" text-anchor="{"start" if bx_ < ix + iw / 2 else "end"}">Passo dello Stelvio 2,757 m</text>')
     # small legend: hotel / overnight, climbs
     multi = len(stays) > 1
     svg.append(f'<rect x="12" y="{H - 44}" width="{(205 if multi else 160) + 175}" height="32" rx="8" fill="#0a0c0e" fill-opacity=".85" stroke="#ffffff" stroke-opacity=".12"/>'
