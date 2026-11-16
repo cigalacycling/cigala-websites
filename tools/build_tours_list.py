@@ -86,7 +86,7 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
   <div class="tx">
     <h2>{name}</h2>
     <h3 class="where">{where}</h3>
-    <div class="meta"><span class="chip date"><time datetime="{t['start']}">{dates(t)}</time></span><span class="chip">{nights}</span><span class="chip lvl">{meter}Level: {level}</span>{f'<span class="chip avc">{avail(slug)}</span>' if avail(slug) else ''}</div>
+    <div class="meta"><span class="chip date"><time datetime="{t['start']}">{dates(t)}</time></span><span class="chip">{nights}</span><span class="chip dist"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="6" r="2.2"/><path d="M7 18h8.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H17"/></svg>{t['distance']}<span class="sep" aria-hidden="true"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20l6.5-10 4 6 3-4.5L22 20z"/></svg>{t['climbing']}</span><span class="chip lvl">{meter}Level: {level}</span>{f'<span class="chip avc">{avail(slug)}</span>' if avail(slug) else ''}</div>
     <div class="desc clamp">{desc}</div>
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
@@ -224,6 +224,9 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 .tcard .meta .chip { display: inline-flex; align-items: center; line-height: 1.2; font-size: 11px; padding: 6px 10px 5px; cursor: default; }   /* text centred in the chip (Matteo 16 Nov) */
 .tcard .meta .chip.date { background: var(--red); border-color: var(--red); color: #fff; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: 13px; padding: 5px 11px; }
 .tcard .meta { margin: 2px 0; }
+.tcard .meta .chip.dist { gap: 6px; }   /* distance and climbing on the card (Matteo 16 Nov) */
+.tcard .meta .chip.dist svg { width: 13px; height: 13px; fill: none; stroke: var(--green-text, #2bd47a); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.tcard .meta .chip.dist .sep { width: 1px; height: 11px; background: rgba(255,255,255,.2); margin: 0 3px; }
 .phero .lede a { color: var(--green-text); font-weight: 600; text-decoration: none; }
 .phero .lede a:hover { color: #fff; }
 .tcard .desc p { margin: 0 0 8px; font-size: 14px; color: var(--text-2); line-height: 1.55; }
