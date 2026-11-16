@@ -44,7 +44,7 @@ Open `vivify/site/index.html` in a browser to click through the preview.
   - The live site has no Analytics or Pixel, so nothing needs consent yet.
   - If Marine adds tracking on WordPress, it must load only after consent. The banner would need Vivify colours and her own chat or none, so it would be a Vivify version of `shared/consent/`, not the Cigala one. Ask Matteo first.
 
-## Pages built (13)
+## Pages built (20)
 
 | Page | Notes |
 |---|---|
@@ -61,6 +61,17 @@ Open `vivify/site/index.html` in a browser to click through the preview.
 | Free Discovery Call | Built from the live content. |
 | Privacy Policy | Built from the live content. |
 | One post template | Uses `/post/carbohydrate-fueling-endurance-sports`, word for word. |
+
+**New SEO pages (7, draft copy for Marine to approve), added 16 Nov 2026:**
+- Cycling Nutritionist
+- Triathlon Nutritionist
+- Race Fuelling Plan
+- Online Sports Nutritionist
+- Sports Nutritionist Dublin & Wicklow
+- FAQ
+- Client Reviews
+
+Built by `tools/vivify_seo_pages.py`; the plan and keyword map are in `SEO-PLAN.md`.
 
 ## SEO: what is kept and what changed
 

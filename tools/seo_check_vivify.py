@@ -10,6 +10,7 @@ from html.parser import HTMLParser
 src = open(ROOT + 'tools/crawl.py').read(); exec('import json\n' + src[src.index('class P('):src.index('def norm')])
 def n(x): return re.sub(r'\s+', ' ', x.replace('​', '')).strip().upper()
 for f, path in b.PAGES.items():
+    if f in b.NEW: continue
     live = b.BASE.get(b.LIVE + path) or b.BASE[b.LIVE]
     p = P(); p.feed(open(ROOT + 'vivify/site/' + f).read()); d = p.d
     out = []

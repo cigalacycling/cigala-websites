@@ -10,7 +10,7 @@ Matteo 16 Nov 2026: "remake this site using my own style of fonts but using thei
 
   python3 -I tools/build_vivify.py      -> vivify/site/*.html (+ vivify/site/img/)
 """
-import os, re, json, html, shutil, glob
+import os, re, sys, json, html, shutil, glob
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 V = ROOT + 'vivify/'
@@ -47,6 +47,24 @@ PAGES = {  # file -> live path
     'free-sports-nutrition-consultation.html': '/free-sports-nutrition-consultation',
     'post-carbohydrate-fueling-endurance-sports.html': '/post/carbohydrate-fueling-endurance-sports',
 }
+# New SEO pages (16 Nov 2026, not on the live site): file -> (path, Yoast title, meta description). Copy in vivify_seo_pages.py.
+NEW = {
+    'cycling-nutritionist.html': ('/cycling-nutritionist', 'Cycling Nutritionist Ireland & Online | Vivify Sports',
+        'Cycling nutrition coaching from Marine Lenehan, MSc sports nutritionist and LIDL-TREK WorldTour rider. Road, gravel and sportive fuelling, Ireland and online.'),
+    'race-fuelling-plan.html': ('/race-fuelling-plan', 'Race Fuelling Plan for Cyclists & Triathletes | Vivify Sports',
+        'A personal race fuelling plan for your event: carbs per hour, hydration and gut training, built by a WorldTour cyclist and MSc sports nutritionist.'),
+    'triathlon-nutritionist.html': ('/triathlon-nutritionist', 'Triathlon Nutritionist | Ironman & 70.3 Nutrition | Vivify Sports',
+        'Triathlon nutrition coaching for Ironman, 70.3 and sprint athletes: daily fuelling for swim, bike and run training and a race-day plan. Online, from Ireland.'),
+    'online-sports-nutritionist.html': ('/online-sports-nutritionist', 'Online Sports Nutritionist for Endurance Athletes | Vivify Sports',
+        'Work with an MSc sports nutritionist from anywhere. Online nutrition coaching for cyclists, triathletes and runners, with plans priced in euro and US dollars.'),
+    'sports-nutritionist-dublin.html': ('/sports-nutritionist-dublin', 'Sports Nutritionist Dublin & Wicklow | Vivify Sports',
+        'Sports nutritionist for athletes in Dublin and Wicklow: online nutrition coaching, club workshops and sports massage on call in Co. Wicklow and Co. Dublin.'),
+    'faq.html': ('/faq', 'Sports Nutrition FAQ | Vivify Sports',
+        'Answers to common questions about sports nutrition coaching with Vivify Sports: online consultations, plans, fuelling, carbs per hour and working together.'),
+    'testimonials.html': ('/testimonials', 'Client Reviews | Sports Nutrition Coaching | Vivify Sports',
+        'What cyclists and triathletes say about sports nutrition coaching with Marine Lenehan at Vivify Sports: more energy, better fuelling and race PBs.'),
+}
+PAGES.update({f: v[0] for f, v in NEW.items()})
 NAV = [('index.html', 'Home'), ('about.html', 'About'), ('nutrition-nutrition-philosophy.html', 'Sports Nutrition Philosophy'),
        ('sports-nutritionist-ireland.html', 'Sports Nutrition Coaching'), ('workshops.html', 'Workshops'),
        ('recipies.html', 'E-Book'), ('blog.html', 'Blog'), ('contact.html', 'Contact')]
@@ -300,6 +318,13 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .cinfo svg{color:var(--aqua);flex:none}
 .cinfo a{color:var(--text);text-decoration:none}
 
+/* faq */
+.qa{margin-bottom:12px;padding:0}
+.qa summary{cursor:pointer;list-style:none;padding:20px 56px 20px 24px;font:700 16px/1.4 Montserrat,sans-serif;color:var(--text);position:relative}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:"+";position:absolute;right:22px;top:50%;transform:translateY(-50%);font:400 26px/1 Montserrat,sans-serif;color:var(--aqua)}
+.qa[open] summary::after{content:"–"}
+.qa>div{padding:0 24px 8px;color:var(--text-2)}
 /* footer */
 footer.site{margin-top:40px;background:linear-gradient(180deg,rgba(25,68,75,.35),rgba(25,68,75,.7));border-top:1px solid var(--border)}
 footer.site .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:40px;padding:64px 24px 40px}
@@ -320,7 +345,10 @@ footer.site .bottom a{color:var(--text-3)}
 # ---------------------------------------------------------------- shell
 def shell(file, body, schema=None):
     path = PAGES[file]
-    b = BASE[LIVE + path] if (LIVE + path) in BASE else BASE[LIVE]
+    if file in NEW:
+        b = {'title': NEW[file][1], 'meta_description': NEW[file][2]}
+    else:
+        b = BASE[LIVE + path] if (LIVE + path) in BASE else BASE[LIVE]
     title, desc = b['title'], b.get('meta_description') or ''
     navh = ''.join(f'<li><a href="{f}"' + (' aria-current="page"' if f == file else '') + f'>{t}</a></li>' for f, t in NAV)
     ld = f'<script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script>' if schema else ''
@@ -358,10 +386,15 @@ def shell(file, body, schema=None):
    <p class="tag">Healthy habits to ignite your potential</p></div>
   <div><p class="fh">Explore</p><ul>
    <li><a href="about.html">About Marine</a></li><li><a href="nutrition-nutrition-philosophy.html">Sports Nutrition Philosophy</a></li>
-   <li><a href="blog.html">Blog</a></li><li><a href="recipies.html">E-Book</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+   <li><a href="blog.html">Blog</a></li><li><a href="recipies.html">E-Book</a></li><li><a href="testimonials.html">Client Reviews</a></li>
+   <li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
   <div><p class="fh">Services</p><ul>
    <li><a href="sports-nutritionist-ireland.html">Sports Nutrition Coaching</a></li><li><a href="free-sports-nutrition-consultation.html">Free Discovery Call</a></li>
-   <li><a href="workshops.html">Workshops &amp; Talks</a></li><li><a href="massage-therapy.html">Massage Therapy</a></li><li><a href="yoga.html">Online Yoga</a></li></ul></div>
+   <li><a href="workshops.html">Workshops &amp; Talks</a></li><li><a href="massage-therapy.html">Massage Therapy</a></li><li><a href="yoga.html">Online Yoga</a></li></ul>
+   <p class="fh" style="margin-top:22px">Who I help</p><ul>
+   <li><a href="cycling-nutritionist.html">Cycling Nutritionist</a></li><li><a href="triathlon-nutritionist.html">Triathlon Nutritionist</a></li>
+   <li><a href="race-fuelling-plan.html">Race Fuelling Plan</a></li><li><a href="online-sports-nutritionist.html">Online, Worldwide</a></li>
+   <li><a href="sports-nutritionist-dublin.html">Dublin &amp; Wicklow</a></li></ul></div>
   <div><p class="fh">Get in touch</p><ul class="cinfo">
    <li>{ICON['mail']}<a href="mailto:{EMAIL}">{EMAIL}</a></li>
    <li>{ICON['phone']}<a href="tel:{PHONE_TEL}">{PHONE}</a></li>
@@ -427,10 +460,15 @@ def home():
         ('recipies.html', img('0e1488-8cee9e1e3ac743dd828b4bd69d89', 'Raspberry Chia Seed pudding', w=640, h=363), 'E-Book', 'Breakfasts to ignite your potential: 30 recipes.'),
         ('workshops.html', f'<span>{ICON["talk"]}</span>', 'Workshops & Talks', 'Nutrition talks for clubs, gyms and teams.'),
     ]
+    who = [('cycling-nutritionist.html', 'Cyclists', 'Road, gravel and sportive riders'), ('triathlon-nutritionist.html', 'Triathletes', 'Ironman, 70.3 and shorter races'),
+           ('race-fuelling-plan.html', 'Race day', 'A fuelling plan for your event'), ('online-sports-nutritionist.html', 'Worldwide', 'Online coaching, wherever you train')]
+    WHO_I_HELP = ('<section style="padding-top:24px"><div class="wrap">' + head('Who Marine works with', 'Nutrition for endurance athletes', tag=None, center=True)
+                  + '<div class="g4" style="margin-top:32px">' + ''.join(f'<a class="scard panel" href="{h}"><div class="tx"><span class="eyebrow">{e(d)}</span><span class="h3">{e(t)}</span><span class="go">Learn more {ICON["arrow"]}</span></div></a>' for h, t, d in who)
+                  + '</div></div></section>')
     sc = ''.join(f'<a class="scard panel" href="{h}"><div class="ph">{im}</div><div class="tx"><span class="h3">{e(t)}</span><p class="muted">{e(d)}</p><span class="go">Learn more {ICON["arrow"]}</span></div></a>' for h, im, t, d in services)
     body = f"""
 <section class="hero">
- {img('0e1488-70faaa082bbd4ad4b8d8f16a5bc3', 'Marine Lenehan cycling on a lakeside road', lazy=False, w=1922, h=2560)}
+ {img('0e1488-70faaa082bbd4ad4b8d8f16a5bc3', 'Cyclist riding a lakeside road above a lake', lazy=False, w=1922, h=2560)}
  <div class="wrap">
   <span class="pill">Sports Nutritionist · Wicklow, Ireland</span>
   <h1>Healthy habits to ignite your potential</h1>
@@ -446,6 +484,7 @@ def home():
   {ticks(['MSc-qualified Sports Nutritionist', 'Professional WorldTour cycling experience', 'Individualised nutrition plans', 'Online coaching worldwide', 'Practical, science-based advice'])}</div>
 </div></section>
 {testimonials()}
+{WHO_I_HELP}
 <section style="padding-top:24px"><div class="wrap">
  {head('More from Vivify Sports', 'Support for the whole athlete', tag=None, center=True)}
  <div class="g4" style="margin-top:32px">{sc}</div></div></section>
@@ -907,4 +946,7 @@ if __name__ == '__main__':
                  ('free-sports-nutrition-consultation.html', discovery()), ('privacy-policy.html', privacy()),
                  ('post-carbohydrate-fueling-endurance-sports.html', post())]:
         open(OUT + f, 'w').write(h)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import vivify_seo_pages
+    vivify_seo_pages.build(sys.modules[__name__])
     print(f'built {len(PAGES)} pages; blog cards {n} (with image {ni}, with live URL {nu})')

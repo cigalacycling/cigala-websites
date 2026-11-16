@@ -226,6 +226,13 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .cinfo svg{color:var(--aqua);flex:none}
 .cinfo a{color:var(--text);text-decoration:none}
 
+/* faq */
+.qa{margin-bottom:12px;padding:0}
+.qa summary{cursor:pointer;list-style:none;padding:20px 56px 20px 24px;font:700 16px/1.4 Montserrat,sans-serif;color:var(--text);position:relative}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:"+";position:absolute;right:22px;top:50%;transform:translateY(-50%);font:400 26px/1 Montserrat,sans-serif;color:var(--aqua)}
+.qa[open] summary::after{content:"–"}
+.qa>div{padding:0 24px 8px;color:var(--text-2)}
 /* footer */
 footer.site{margin-top:40px;background:linear-gradient(180deg,rgba(25,68,75,.35),rgba(25,68,75,.7));border-top:1px solid var(--border)}
 footer.site .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:40px;padding:64px 24px 40px}
