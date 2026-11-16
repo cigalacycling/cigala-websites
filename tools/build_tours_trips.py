@@ -923,7 +923,7 @@ html .cl .hotel1 .hnote { margin: 12px 0 0; }
 @media (max-width: 900px) { html .cl .hotel1, html .cl .hotels .hotel.wide { grid-template-columns: minmax(0, 1fr); } html .cl .hotel1 .ph, html .cl .hotel.wide .ph { min-height: 0; aspect-ratio: 16 / 10 !important; } }
 html .cl .strip.s4 { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 14px; }
 html .cl .strip.s3 { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 14px; }
-@media (max-width: 640px) { html .cl .strip.s4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { html .cl .strip.s4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } html .cl .strip.s4 img:nth-child(-n+4) { display: block !important; } html .cl .strip.s4 img:nth-child(n+5) { display: none !important; } }   /* phones: 4 photos in 2 full rows, no empty box (Matteo 16 Nov) */
 html .cl .dprose + .hotels { margin-top: 18px; }
 html .cl .guides.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 html .cl .guides.g3 .guide { grid-template-columns: minmax(0, 1fr); }
