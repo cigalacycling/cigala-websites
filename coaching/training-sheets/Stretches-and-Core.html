@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><title>Stretches & Core | Cigala Cycling</title>
+<link rel="stylesheet" href="../nutrition-guide/assets/fonts.css"><style>
+:root{
+  --bg:#08090a; --panel:rgba(15,16,17,.92); --panel-solid:#0f1011;
+  --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14);
+  --text:#f7f8f8; --text-2:#d0d6e0; --text-3:#8a8f98;
+  --green:#009a44; --green-text:#34c46a; --red:#E10600; --red-text:#ff3d33;
+  /* Vivify Sports (partner) */
+  --vivify:#19444b;
+  /* topic colours: one per nutrient, used through the whole guide */
+  --c-carb:#f28c38; --c-pro:#e8606a; --c-fat:#f2cf4a; --c-mic:#34c46a; --c-hyd:#4aa8e8; --topic:#d0d6e0; --vivify-2:#2f6f7a; --vivify-text:#7fc3cc;
+}
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:Montserrat,sans-serif;color:var(--text-2);font-size:12.5px;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+b,strong{color:var(--text);font-weight:600}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;padding:13mm 15mm 22mm;
+  background:#08090a url(../nutrition-guide/assets/topo-a4.jpg) center/100% 100% no-repeat;
+  page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto}
+/* running header + footer */
+.run{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);font-weight:600;padding-bottom:9px;border-bottom:1px solid var(--border);margin-bottom:18px}
+.run img{height:22px;width:auto}
+.run .logos{display:flex;align-items:center;gap:9px}
+.run .logos span{color:var(--text-3);font-weight:400}
+.foot{position:absolute;left:15mm;right:15mm;bottom:9mm;display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600;border-top:1px solid var(--border);padding-top:9px}
+.foot .n{color:var(--text);font-family:Anton,sans-serif;font-size:15px;letter-spacing:.04em}
+/* type */
+h1,h2,h3,.anton{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:var(--text);letter-spacing:.01em;line-height:1.02}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--red-text)}
+.bar{width:40px;height:3px;background:var(--green);border-radius:2px}
+h3{font-size:19px;margin:18px 0 4px}
+h3+.bar{margin:10px 0 12px}
+p{margin:0 0 10px}
+.lead{font-size:13.5px;color:var(--text-2)}
+.note{font-size:10.5px;color:var(--text-3);margin-top:6px}
+/* section header */
+.sec{position:relative;padding:4px 0 0;margin-bottom:14px}
+.sec .eyebrow{margin-bottom:10px}
+.sec h2{font-size:42px;max-width:78%}
+.sec .bar{margin:14px 0 12px}
+.sec .sub{font-size:14px;color:var(--text-2);max-width:72%}
+.sec .big{position:absolute;right:-2mm;top:-8px;font-family:Anton,sans-serif;font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--topic);opacity:.55}
+.topic{display:inline-flex;align-items:center;gap:7px;margin-left:10px;padding:0 10px 0 8px;line-height:17px;vertical-align:1px;border-radius:999px;border:1px solid var(--border-strong);color:var(--text);font-size:9.5px;letter-spacing:.16em}
+.topic i{width:8px;height:8px;border-radius:50%;background:var(--topic);display:inline-block}
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.dots{list-style:none;display:grid;gap:7px 22px}
+.dots li{position:relative;padding-left:16px}
+.dots li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--green)}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:1fr 1fr 1fr}
+.callout{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:12px;padding:12px 18px;margin-top:12px}
+.callout .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green-text);margin-bottom:4px}
+.callout.viv{border-left-color:var(--vivify-2)}
+.callout.viv .k{color:var(--vivify-text)}
+.callout p{margin:0}
+/* stat tiles */
+.tiles{display:grid;gap:8px}
+.tile{border-radius:12px;padding:11px 8px 10px;text-align:center;border:1px solid var(--border);background:var(--panel-solid)}
+.tile .v{font-family:Anton,sans-serif;font-size:27px;color:var(--text);line-height:1.1}
+.tile .u{font-size:10.5px;color:var(--text-2);margin-top:2px}
+.tile .l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-top:7px;line-height:1.35}
+.m{display:flex;gap:3px;justify-content:center;margin-top:10px}.m i{width:14px;height:4px;border-radius:2px;background:rgba(255,255,255,.14)}.m i.on{background:var(--topic)}
+.tile.wide{padding:16px;border-top:3px solid var(--topic)}.tile.wide .v{font-size:40px;color:var(--topic)}
+.tiles.plain .tile,.tiles.scale .tile{border-top:3px solid var(--topic)}
+/* tables */
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:11.5px}
+.tbl{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+th{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);text-align:left;padding:10px 12px;background:#17191b;border-bottom:1px solid var(--border-strong)}
+td{padding:5px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td small{color:var(--text-3);font-size:10px}
+th .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.d-green{background:var(--green)}.d-viv{background:var(--vivify-text)}.d-red{background:var(--red)}.d-grey{background:var(--text-3)}.d-white{background:var(--text)}
+th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;color:var(--red-text);font-size:9.5px;margin-top:1px}
+.avoid td:nth-child(2){color:var(--text-3)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+/* fats cards */
+.fat{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:11px}
+.fat .hd{padding:11px 12px 10px;border-bottom:1px solid var(--border-strong)}
+.fat .hd .anton{font-size:17px;display:flex;align-items:center;gap:7px}
+.fat .hd .anton i{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.fat .hd .tag{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-top:4px}
+.fat .ds{padding:10px 12px 4px;color:var(--text-3);font-style:italic;font-size:10.5px;line-height:1.45}
+.fat ul{list-style:none;padding:4px 12px 12px}
+.fat li{padding:2.5px 0 2.5px 13px;position:relative;line-height:1.35}
+.fat li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--text-3)}
+.fat.mono li::before{background:var(--green)}.fat.poly li::before{background:var(--green)}.fat.trans li::before{background:var(--red)}
+.fat.trans{border-color:rgba(225,6,0,.35)}
+/* micronutrients */
+.micro td{font-size:10.5px;line-height:1.45;padding:8px 10px}
+.micro td:first-child{font-weight:600;color:var(--text);width:24%;border-left:3px solid var(--green)}
+.micro td:last-child{width:33%}
+.micro b{font-weight:600}
+/* food sources */
+.foods td{padding:7px 14px;font-size:11.5px}
+.foods td:first-child{width:32%;font-weight:600;color:var(--text)}
+.foods td em{color:var(--text-3)}
+/* timing */
+.row{display:grid;grid-template-columns:150px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:9px;background:var(--panel)}
+.row .lab{padding:14px;display:flex;align-items:center;font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);background:#151719;border-right:3px solid var(--green);line-height:1.1}
+.row.v .lab{border-right-color:var(--vivify-2)}
+.row .bd{padding:11px 16px;font-size:11.5px}
+.row .bd .dots{gap:4px}
+.row .bd .k{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green-text);margin:7px 0 4px}
+.row .bd em{color:var(--text-3);font-size:10.5px}
+/* hydration cards */
+.hc{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.hc .hd{padding:10px 14px;font-family:Anton,sans-serif;text-transform:uppercase;font-size:16px;color:var(--text);background:#151719;border-bottom:1px solid var(--border-strong)}
+.hc .dots{padding:12px 14px;gap:6px;font-size:11.2px}
+/* plates */
+.plates{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.plate{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 10px 18px;text-align:center}
+.plate .t{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-bottom:10px;min-height:2.6em}
+.plate svg{width:196px;height:196px;display:block;margin:0 auto 10px}
+.plate .x{font-size:11.5px;color:var(--text-3);line-height:1.6}
+.legend{display:flex;gap:18px;justify-content:center;margin-top:12px;font-size:10.5px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+/* contents */
+.toc{list-style:none;margin-top:4px}
+.toc li{display:grid;grid-template-columns:62px 1fr 40px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.toc .no{font-family:Anton,sans-serif;font-size:28px;color:transparent;-webkit-text-stroke:1px var(--topic)}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:8px;font-size:11px;color:var(--text)}
+.key span{display:flex;align-items:center;gap:7px}.key i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.toc .tt{font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);line-height:1.1}
+.toc .ds{font-size:11px;color:var(--text-3);margin-top:2px}
+.toc .pg{text-align:right;font-weight:600;color:var(--text)}
+/* cover */
+.cover{padding:0}
+.cover .in{position:absolute;inset:0;padding:18mm 16mm}
+.cover .logos{display:flex;align-items:center;gap:16px}
+.cover .logos .cc{width:30mm;height:30mm}
+.cover .logos .x{font-size:28px;color:var(--text-3);font-weight:300}
+.cover .logos .vv{height:30mm}
+.cover h1{font-size:104px;line-height:.92;margin-top:22mm}
+.cover .eyebrow{margin-top:20mm}
+.cover .bar{margin:18px 0 16px;width:56px;height:4px}
+.cover .tag{font-size:17px;color:var(--text-2);max-width:120mm;line-height:1.45}
+.cover .photo{position:absolute;left:16mm;right:16mm;bottom:44mm;height:74mm;border-radius:12px;overflow:hidden;border:1px solid var(--border-strong)}
+.cover .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
+.cover .by{position:absolute;left:16mm;right:16mm;bottom:16mm;display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--border-strong);padding-top:12px}
+.cover .by .who{font-family:Anton,sans-serif;text-transform:uppercase;font-size:22px;color:var(--text);line-height:1.1}
+.cover .by .role{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600;margin-top:4px}
+.cover .by .r{text-align:right}
+/* consultation */
+.consult{display:grid;grid-template-columns:1.05fr 1fr;gap:0;border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;background:var(--panel)}
+.consult .l{padding:20px 22px}
+.consult .r{padding:20px 22px;background:linear-gradient(160deg,rgba(25,68,75,.85),rgba(15,16,17,.95));border-left:1px solid var(--border-strong)}
+.consult .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:8px}
+.consult .r .k{color:var(--vivify-text)}
+.person{margin-bottom:16px}
+.person .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:19px;color:var(--text)}
+.person .rl{font-size:10.5px;color:var(--text-3);margin-bottom:6px}
+.person a,.person div.c{display:block;color:var(--text);font-size:11.5px;font-weight:500;text-decoration:none;line-height:1.6}
+.btn{display:inline-block;background:var(--green);color:#fff;font-weight:600;font-size:13px;padding:11px 18px;border-radius:8px;text-decoration:none;margin-top:14px}
+.mphoto{height:86mm;border-radius:12px;overflow:hidden;border:1px solid var(--border-strong);margin-bottom:16px;position:relative}
+.mphoto img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.pill{position:absolute;left:14px;bottom:14px;background:rgba(15,16,17,.92);border:1px solid var(--border-strong);border-radius:999px;color:#fff;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 13px 7px 11px;display:flex;align-items:center;gap:8px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block}
+.coach{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:12px;padding:14px 18px;margin-top:14px}
+.coach img{width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid var(--green);box-shadow:0 0 16px rgba(0,154,68,.35)}
+.av{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--green);box-shadow:0 0 16px rgba(0,154,68,.35);flex:none;display:block}
+.av.viv{border-color:var(--vivify-text);box-shadow:0 0 16px rgba(127,195,204,.3)}
+.avrow{display:flex;gap:12px;align-items:center}.avrow.rev{flex-direction:row-reverse}
+.coach .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:3px}
+.coach p{margin:0}
+.ratio td{text-align:center;font-size:12.5px;padding:8px 10px}.ratio td:first-child{text-align:left}.ratio th{text-align:center}.ratio th:first-child{text-align:left}
+.ratio td b{color:var(--green-text)}
+.pk td{font-size:11.5px;padding:8px 12px}.pk td:not(:first-child),.pk th:not(:first-child){text-align:center;width:18%}
+.ok{color:var(--green-text);font-weight:700}.no{color:var(--text-3)}
+.tool{display:block;text-decoration:none;color:var(--text-2);background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.tool .anton{font-size:17px;margin-bottom:4px}.tool .go{color:var(--green-text);font-weight:600;font-size:11.5px;margin-top:6px;display:block}
+/* foundations */
+.fd{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.fd .card{grid-column:span 3;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--topic);border-radius:12px;padding:16px;text-align:center}
+.fd .card.s2{grid-column:span 2}
+.fd .ic{width:44px;height:44px;border-radius:50%;background:var(--topic);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.fd .ic svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fd .card .anton{font-size:18px;margin-bottom:6px}
+.fd .card p{font-size:11px;margin:0}
+.hub{display:flex;justify-content:center;margin:16px 0}
+.hub span{font-family:Anton,sans-serif;font-size:24px;letter-spacing:.06em;color:#fff;background:var(--green);padding:9px 28px;border-radius:999px}
+.tl{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr;align-items:center;gap:8px;margin-top:6px}
+.tl .st{display:flex;gap:11px;align-items:center}
+.tl .st .ic{width:40px;height:40px;border-radius:50%;background:var(--green);flex:none;display:flex;align-items:center;justify-content:center}
+.tl .st .ic svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tl .anton{font-size:16px}
+.tl p{font-size:10.5px;margin:0;line-height:1.4}
+.tl .ar{color:var(--green-text);font-size:20px;text-align:center}
+.quote{text-align:center;margin-top:18px;padding:18px;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong)}
+.quote .anton{font-size:22px}
+.quote p{margin:6px 0 0;font-size:13px}
+
+/* training sheets: green = strength & core, blue = bike & cardio, yellow = stretching & mobility */
+:root{--c-str:#34c46a;--c-bike:#4aa8e8;--c-mob:#f2cf4a}
+.head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.head h1{font-size:54px;line-height:.95;margin-top:10px}
+.head h1 span{display:block;color:var(--text-2);font-size:30px;margin-top:6px}
+.head .bar{margin-top:14px}
+.head img{width:26mm;height:26mm}
+.ex{display:grid;grid-template-columns:54px 50mm 1fr;align-items:center;gap:16px;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--topic);border-radius:12px;padding:8px 16px 8px 12px;margin-bottom:8px;break-inside:avoid}
+.ex .no{font-family:Anton,sans-serif;font-size:34px;color:var(--topic);text-align:center;line-height:1}
+.ex .im{height:26mm;background:#fff;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ex .im img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.ex .im.ph{background:#000}
+.ex .im.ph img{width:100%;height:100%;object-fit:cover}
+.ex .im.two{flex-direction:column;gap:2px;background:#000}
+.ex .im.two img{height:50%;width:100%;object-fit:cover}
+.ex .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:19px;color:var(--text);line-height:1.1}
+.ex .ld{display:inline-block;margin:5px 0 3px;padding:2px 10px;border-radius:999px;border:1px solid var(--topic);color:var(--text);font-size:10.5px;font-weight:600}
+.ex .ds{font-size:11.5px;color:var(--text-2);line-height:1.5}
+.ex .ds div{margin-top:1px}
+.ex.sc{grid-template-columns:54px 56mm 1fr}
+.ex.sc .im{height:40mm}
+.ex.sc .ds{font-size:12px}
+.wu{display:grid;grid-template-columns:34mm 1fr;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--c-bike);border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.wu .im{height:24mm;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.wu .im img{max-height:100%;max-width:100%}
+.wu .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--c-bike);margin-bottom:4px}
+.wu .ds{font-size:12.5px;color:var(--text);line-height:1.55}
+.div{display:flex;align-items:center;gap:14px;margin:10px 0 12px;font-family:Anton,sans-serif;text-transform:uppercase;font-size:17px;color:var(--text);letter-spacing:.04em}
+.div::before,.div::after{content:"";flex:1;height:1px;background:var(--border-strong)}
+.imp{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:12px;padding:14px 18px;margin-top:6px}
+.imp .anton{font-size:20px;margin-bottom:8px}
+.imp .dots li::before{background:var(--red)}
+.made{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-top:14px;padding:18px 20px;border:1px solid var(--border-strong);border-radius:12px;background:var(--panel)}
+.made .av{width:76px;height:76px}
+.made .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:4px}
+.made .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:21px;color:var(--text)}
+.made .c{font-size:11.5px;color:var(--text);line-height:1.6;margin-top:4px}
+.made .c a{color:var(--text);text-decoration:none}
+.made .btn{margin:0;white-space:nowrap}
+.key{margin:0 0 14px}
+</style></head>
+<body>
+<section class="page">
+  <div class="head"><div><div class="eyebrow">Cigala Cycling Coaching</div><h1>Stretches &amp; core</h1><div class="bar"></div></div>
+    <img src="../nutrition-guide/assets/cigala-cycling-logo-square-print.png" alt="Cigala Cycling logo"></div>
+  <div class="key"><span><i style="background:var(--c-mob)"></i>Stretching &amp; mobility</span><span><i style="background:var(--c-str)"></i>Strength &amp; core</span></div>
+  <div class="div">Stretches</div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">1</div><div class="im ph"><img src="img/sc-01.jpg" alt="Exercise 1"></div><div class="ds">On your back, flex your right leg and extend your left leg. With the left ankle make 20 clockwise circles. Repeat with the right ankle.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">2</div><div class="im ph"><img src="img/sc-02.jpg" alt="Exercise 2"></div><div class="ds">On your back, put your right hand on your stomach and your left hand on your chest. Take 20 deep, slow diaphragmatic breaths: when you breathe in, inflate your stomach.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">3</div><div class="im ph"><img src="img/sc-03.jpg" alt="Exercise 3"></div><div class="ds">On your back, flex your right leg as much as you can and bring it to the left, while your body and head rotate to the right. Hold for 30 seconds and reverse.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">4</div><div class="im ph"><img src="img/sc-04.jpg" alt="Exercise 4"></div><div class="ds">On your back, cross and flex both legs. Keep your hands under your knees, hold the position for 1 minute and reverse.</div></div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Stretches &amp; Core</span><span class="n">1</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Stretches &amp; Core</span><span>Cigala Cycling Coaching</span></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">5</div><div class="im ph"><img src="img/sc-05.jpg" alt="Exercise 5"></div><div class="ds">From a face-down position, sit on your heels and stretch your arms out forward. 1 minute.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">6+7</div><div class="im two"><img src="img/sc-06a.jpg" alt="Cat stretch, back down"><img src="img/sc-06b.jpg" alt="Cat stretch, back up"></div><div class="ds">From the four-point position, do the “cat” movement, repeating 15 times.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">8</div><div class="im ph"><img src="img/sc-08.jpg" alt="Exercise 8"></div><div class="ds">Sitting, extend your legs straight and together. Flex your body forward as much as you can and hold for 45 seconds.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">9</div><div class="im ph"><img src="img/sc-09.jpg" alt="Exercise 9"></div><div class="ds">Sitting with your right leg extended and your left leg flexed, leaning backward, reach to the ankle and hold the position for 45 seconds, then reverse.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">10</div><div class="im ph"><img src="img/sc-10.jpg" alt="Exercise 10"></div><div class="ds">Sitting with your legs crossed, flex your body forward as much as you can for 1 minute.</div></div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Stretches &amp; Core</span><span class="n">2</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Stretches &amp; Core</span><span>Cigala Cycling Coaching</span></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">11</div><div class="im ph"><img src="img/sc-11.jpg" alt="Exercise 11"></div><div class="ds">From the four-point position, bring your left leg to the height of your left arm and extend your right leg for 1 minute, then reverse.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">12</div><div class="im ph"><img src="img/sc-12.jpg" alt="Exercise 12"></div><div class="ds">Standing, flex your left leg for 30 seconds, then reverse.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">13</div><div class="im ph"><img src="img/sc-13.jpg" alt="Exercise 13"></div><div class="ds">Standing, bring your left arm behind your neck and pull with your right hand. Hold for 30 seconds and reverse.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">14</div><div class="im ph"><img src="img/sc-14.jpg" alt="Exercise 14"></div><div class="ds">Standing, bring your left arm behind your neck and pull with your right hand. Hold for 30 seconds and reverse.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">15</div><div class="im ph"><img src="img/sc-15.jpg" alt="Exercise 15"></div><div class="ds">Standing with your legs extended, touch the floor with your hands without flexing your knees.</div></div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Stretches &amp; Core</span><span class="n">3</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Stretches &amp; Core</span><span>Cigala Cycling Coaching</span></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">16</div><div class="im ph"><img src="img/sc-16.jpg" alt="Exercise 16"></div><div class="ds">As the exercise before, but open your legs as much as you can. Hold for 30 seconds.</div></div>
+  <div class="ex sc" style="--topic:var(--c-mob)"><div class="no">17</div><div class="im ph"><img src="img/sc-17.jpg" alt="Exercise 17"></div><div class="ds">Sitting, flex your legs and try to keep your feet as close as possible to your body. Move your legs like wings, 50 times.</div></div>
+  <div class="div">Core &amp; strength</div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">18</div><div class="im ph"><img src="img/sc-18.jpg" alt="Exercise 18"></div><div class="ds">On your back, cross your feet and do abs exercises, coming halfway up without touching your legs. 3 series of 50 each.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">19</div><div class="im ph"><img src="img/sc-19.jpg" alt="Exercise 19"></div><div class="ds">On your back, bring your right foot onto your left knee. Do abs exercises touching your right knee with your left elbow. 50 times on both sides.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">20</div><div class="im ph"><img src="img/sc-20.jpg" alt="Exercise 20"></div><div class="ds">Hold the plank position for 1 minute, keeping your body straight and contracting your abs. Repeat 3 times.</div></div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Stretches &amp; Core</span><span class="n">4</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Stretches &amp; Core</span><span>Cigala Cycling Coaching</span></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">21</div><div class="im ph"><img src="img/sc-21.jpg" alt="Exercise 21"></div><div class="ds">As the exercise before, but hold the position on your hands instead of your elbows. Hold for 1 minute contracting your abs. Repeat 2 times.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">22</div><div class="im ph"><img src="img/sc-22.jpg" alt="Exercise 22"></div><div class="ds">In a four-point position, raise your right arm and left leg together and hold them in position for 30 seconds. Repeat 5 times.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">23</div><div class="im ph"><img src="img/sc-23.jpg" alt="Exercise 23"></div><div class="ds">From a face-down position, cross your legs and extend your body upwards. Do 3 series of 10 each (front, right, left).</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">24</div><div class="im ph"><img src="img/sc-24.jpg" alt="Exercise 24"></div><div class="ds">On your back, bring your legs straight up in front of you. Move your legs together to the right, keeping them straight and contracting your abs, until they almost touch the floor. Continue to the left side. Do 2 series of 20 each.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">25</div><div class="im ph"><img src="img/sc-25.jpg" alt="Exercise 25"></div><div class="ds">On your back with your arms along your body, raise your shoulders from the floor contracting your abs and hold the position for 30 seconds. Repeat 3 times.</div></div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Stretches &amp; Core</span><span class="n">5</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Stretches &amp; Core</span><span>Cigala Cycling Coaching</span></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">26</div><div class="im ph"><img src="img/sc-26.jpg" alt="Exercise 26"></div><div class="ds">From a face-down position, extend your arms in front of you. Raise your shoulders from the floor, going up and down with your arms straight. Do 2 series of 30 seconds each.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">27</div><div class="im ph"><img src="img/sc-27.jpg" alt="Exercise 27"></div><div class="ds">Do 30 push-ups. On the last one, hold the position without touching the floor with your body.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">28</div><div class="im ph"><img src="img/sc-28.jpg" alt="Exercise 28"></div><div class="ds">Standing, flex your knees and hold the position as long as you can. Recover and repeat.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">29</div><div class="im ph"><img src="img/sc-29.jpg" alt="Exercise 29"></div><div class="ds">Standing, go down flexing your knees and come back up (squat). Do 2 series of 30 squats each. In the last series, jump on the way up.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">30</div><div class="im ph"><img src="img/sc-30.jpg" alt="Exercise 30"></div><div class="ds">As the exercise before, but squat bending to the side: first to the right, then to the left. Do 2 series of squats on each side.</div></div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Stretches &amp; Core</span><span class="n">6</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Stretches &amp; Core</span><span>Cigala Cycling Coaching</span></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">31</div><div class="im ph"><img src="img/sc-31.jpg" alt="Exercise 31"></div><div class="ds">Standing, put one foot behind the other and rise up onto your toes, then come back down slowly. Do 2 series of 15 for each foot (better done on the stairs).</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">32</div><div class="im ph"><img src="img/sc-32.jpg" alt="Exercise 32"></div><div class="ds">Hold the position for 1 minute on both sides, contracting your abs. Repeat moving just the body, or better the hips, up and down.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">33</div><div class="im ph"><img src="img/sc-33.jpg" alt="Exercise 33"></div><div class="ds">On your back, contracting your abs, move your legs slowly as if you were pedalling your bike. Do it for 1 minute.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">34</div><div class="im ph"><img src="img/sc-34.jpg" alt="Exercise 34"></div><div class="ds">With the bench behind you, standing, flex your knee and keep the left leg straight. Flex until almost sitting on the bench. Come back to the starting position and repeat 15 times for each leg.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">35</div><div class="im ph"><img src="img/sc-35.jpg" alt="Exercise 35"></div><div class="ds">With the bench in front of you, do a strong jump landing on one foot, bringing the knee of the other leg to your stomach. Do 20 times and repeat with the other leg.</div></div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Stretches &amp; Core</span><span class="n">7</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Stretches &amp; Core</span><span>Cigala Cycling Coaching</span></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">36</div><div class="im ph"><img src="img/sc-36.jpg" alt="Exercise 36"></div><div class="ds">With the bench in front of you, do a strong jump landing with both feet. Repeat 30 times.</div></div>
+  <div class="ex sc" style="--topic:var(--c-str)"><div class="no">37</div><div class="im ph"><img src="img/sc-37.jpg" alt="Exercise 37"></div><div class="ds">From this position, raise your right leg and move your hips up and down. Do 20 times for each leg.</div></div>
+  <div class="made">
+  <img class="av" src="../nutrition-guide/assets/avatar-matteo-cigala.jpg" alt="Matteo Cigala">
+  <div><div class="k">Stretches &amp; core made by</div><div class="nm">Cigala Cycling</div>
+    <div class="c"><a href="https://www.cigalacycling.com">www.cigalacycling.com</a><br>+353 83 477 7697<br><a href="mailto:info@cigalacycling.com">info@cigalacycling.com</a></div></div>
+  <a class="btn" href="https://calendly.com/cigalacycling">Book a free call with Matteo</a>
+</div>
+  <div class="foot"><span>Cigala Cycling – www.cigalacycling.com · Stretches &amp; Core</span><span class="n">8</span></div>
+</section>
+</body></html>
