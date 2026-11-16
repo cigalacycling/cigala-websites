@@ -445,3 +445,23 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   - Their Yoast opengraph fields were cleared, so a shared link now shows the post's own SEO title, meta description and featured image.
   - Their SEO titles and meta descriptions (what Google shows) are unchanged.
 - Old values: stg-coaching/backup/social-fields-before.json; script: tools/coaching_social_titles.py.
+
+## 16 Nov: full site audit (Matteo: "check the rest of the website that there is no errors")
+- tools/coaching_audit.py checks all 101 published pages and posts (title, description, H1, canonical, lang, share title/image, JSON-LD, duplicates, internal links and images, http://, alt, English in Italian posts). Reports: stg-coaching/audit-<date>.json.
+- **Fixed:**
+  - No broken links or images remain.
+  - Three internal links went through redirects:
+    - the old menu's "Nutrition" pointed to /trips__trashed/nutrition/; menu item 2897 now links to the Nutrition page;
+    - the What is FTP post linked /critical-power/ and /diet-of-a-cyclist/; now /blog/critical-power/ and /blog/diet-of-a-cyclist/.
+  - Alt text on 16 blog images that had none (tools/coaching_alt_fix.py). Where the media item already had alt text, that text was used; nothing existing was changed.
+  - Shorter titles (under ~60 characters) on pages and posts that are new in this redesign: four tool pages and two of Marine's posts.
+  - The new Privacy Policy page got a title and description.
+- **Left as on live (Matteo to decide):**
+  - "Tips for not getting dropped" title is 73 characters.
+  - The "How to improve on Descents" description is 526 characters (Google shows about 155).
+  - /book-1-on-1-session/ has no meta description.
+  - Two http://bit.ly links in "Calibrate a power meter" (external).
+- **Fine as they are:**
+  - /athletes/ is private and noindex.
+  - /dummy-page/ and /group-club-packages2/ are redirected at go-live.
+  - The Vekta lock-up logo has alt="" because its link already carries the label.

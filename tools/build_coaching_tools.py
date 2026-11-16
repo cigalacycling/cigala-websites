@@ -927,13 +927,13 @@ HMAIN = hero('Free tools', 'Free Cycling Training Tools', 'Free calculators from
 
 page('tools', '/tools/', 'Free Cycling Training Tools', 'Free Cycling Training Tools | Cigala Cycling Coaching',
      'Free cycling calculators from Cigala Cycling Coaching: training zones from FTP and heart rate, carbs per hour for your rides, and Critical Power and W′.', HMAIN, '')
-page('tools-training-zones', '/tools/training-zones-calculator/', 'Training Zones Calculator', 'Cycling Training Zones Calculator (Power & Heart Rate) | Cigala Cycling Coaching',
+page('tools-training-zones', '/tools/training-zones-calculator/', 'Training Zones Calculator', 'Cycling Training Zones Calculator | Cigala Cycling Coaching',
      'Free cycling training zones calculator: your 7 power zones from FTP or a 20-minute test, and heart-rate zones from threshold heart rate, with W/kg.', ZMAIN, ZJS)
 page('tools-carbs-per-hour', '/tools/carbs-per-hour-calculator/', 'Carbs per Hour Calculator', 'Carbs per Hour Calculator for Cycling | Cigala Cycling Coaching',
      'How many carbs per hour should you eat on the bike? Free fuelling calculator: grams per hour, gels and bottles for your ride length and intensity.', CMAIN, CJS)
-page('tools-critical-power', '/tools/critical-power-calculator/', 'Critical Power & W′ Calculator', 'Critical Power & W Prime Calculator for Cycling | Cigala Cycling Coaching',
+page('tools-critical-power', '/tools/critical-power-calculator/', 'Critical Power & W′ Calculator', 'Critical Power & W Prime Calculator | Cigala Cycling',
      'Free Critical Power and W′ (W prime) calculator: enter two all-out efforts to get your CP, W′ and predicted best power from 2 to 20 minutes.', PMAIN, PJS)
-page('tools-climb-time', '/tools/climb-time-calculator/', 'Climb Time Calculator', 'Cycling Climb Time Calculator (Stelvio, Alpe d’Huez, Ventoux) | Cigala Cycling Coaching',
+page('tools-climb-time', '/tools/climb-time-calculator/', 'Climb Time Calculator', 'Cycling Climb Time Calculator | Cigala Cycling Coaching',
      'How long will a climb take you? Free cycling climb time calculator for the Stelvio, Alpe d’Huez, Ventoux or any climb, from your power and weight.', CLMAIN, CLJS)
 page('tools-sweat-rate', '/tools/sweat-rate-calculator/', 'Sweat Rate Calculator', 'Sweat Rate Calculator for Cyclists | Cigala Cycling Coaching',
      'Free sweat rate calculator: weigh yourself before and after a ride to find how much you sweat per hour and how much to drink on the bike.', SWMAIN, SWJS)
@@ -941,5 +941,5 @@ page('tools-swim-pace', '/tools/swim-pace-calculator/', 'Swim Pace (CSS) Calcula
      'Free Critical Swim Speed (CSS) calculator: your CSS pace per 100 m from a 400 m and 200 m time trial, plus training paces for every swim session.', CSSMAIN, CSSJS)
 page('tools-ftp-test', '/tools/ftp-test-calculator/', 'FTP Test Calculator', 'FTP Test Calculator (Ramp, 8-min, 20-min) | Cigala Cycling Coaching',
      'Free FTP calculator: your FTP from a ramp test, an 8-minute or a 20-minute test, with W/kg and your training zones.', FTMAIN, FTJS)
-page('tools-gear-speed', '/tools/gear-speed-calculator/', 'Gear & Speed Calculator', 'Bike Gear & Speed Calculator (Cadence, Gear Ratio) | Cigala Cycling Coaching',
+page('tools-gear-speed', '/tools/gear-speed-calculator/', 'Gear & Speed Calculator', 'Bike Gear & Speed Calculator | Cigala Cycling Coaching',
      'Free bike gear calculator: your speed in every gear at any cadence for your chainrings, cassette and tyre size, plus development per pedal turn.', GEMAIN, GEJS)

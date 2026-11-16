@@ -12,7 +12,11 @@ items = []
 for slug, p in P.items():
     t = p['seo_title'].replace(' | Vivify Sports', '').strip()
     if len(t) > 58: t = t[:t.rfind(' ', 0, 58)].rstrip(':,') 
-    items += [{'id': p['id'], 'seo_title': t + ' | Cigala Cycling Coaching'}, {'id': p['id'], 'meta_description': p['desc']}, {'id': p['id'], 'focus_keyphrase': KEY[slug]}]
+    SHORT = {'cycling-nutrition-what-to-eat-and-drink-on-the-bike': 'Cycling Nutrition: What to Eat and Drink on the Bike',   # audit 16 Nov: titles under ~60 characters
+             'daily-fat-intake-guide': 'How Much Fat Should You Eat a Day?'}
+    t = SHORT.get(slug, t)
+    sfx = ' | Cigala Cycling Coaching' if len(t) + 26 <= 62 else (' | Cigala Cycling' if len(t) + 17 <= 62 else '')
+    items += [{'id': p['id'], 'seo_title': t + sfx}, {'id': p['id'], 'meta_description': p['desc']}, {'id': p['id'], 'focus_keyphrase': KEY[slug]}]
 for i in range(0, len(items), 18):   # Yoast takes at most 20 items per request
     r = subprocess.run(['curl', '-sS', '-m', '60', '-X', 'POST', '-H', 'Content-Type: application/json', '--data-binary', json.dumps({'items': items[i:i + 18]}), B], capture_output=True, text=True)
     res = json.loads(r.stdout).get('results', [])
