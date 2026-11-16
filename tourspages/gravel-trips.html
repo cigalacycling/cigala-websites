@@ -464,6 +464,17 @@ html .cl .tcard .early::before { animation: early-pulse 1.8s ease-in-out infinit
  }
 html .cl .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
 html .cl .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
+html .cl .lm { display: inline-flex; align-items: flex-end; gap: 2px; margin-right: 7px; vertical-align: -1px; }
+html .cl .lm i { display: block; width: 3px; border-radius: 1px; background: rgba(255,255,255,.22); }
+html .cl .lm i:nth-child(1) { height: 5px; }
+html .cl .lm i:nth-child(2) { height: 8px; }
+html .cl .lm i:nth-child(3) { height: 11px; }
+html .cl .lm i.on { background: var(--green-text, #2bd47a); }
+html .cl .fchip.on .lm i.on { background: #fff; }
+html .cl .fchip.on .lm i { background: rgba(255,255,255,.35); }
+html .cl .lvchips { margin: 18px 0 22px; }
+html .cl .lvnone { color: var(--text-2); font-size: 15px; margin: 8px 0 0; }
+html .cl .lvnone a { color: var(--green-text); }
 @media (max-width: 1100px) {html .cl .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
  }
 @media (max-width: 640px) {html .cl .tgrid { grid-template-columns: minmax(0, 1fr); }
@@ -685,6 +696,15 @@ html .cc .cc-social a { display: inline-grid; place-items: center; width: 40px; 
 html .cc .cc-social a:hover, html .cc .cc-social a:active { color: var(--green-text, #34c46a); background: rgba(255,255,255,.04); }
 html .cc .cc-social a:focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 2px; }
 html .cc .cc-social svg { width: 20px; height: 20px; fill: currentColor; display: block; }
+html .cc .stats .stat { --c: #34c46a; position: relative; transition: transform .25s, box-shadow .25s, background .25s; cursor: default; }
+html .cc .stats .stat:nth-child(2) { --c: #f0bf00; }
+html .cc .stats .stat:nth-child(3) { --c: #ff3d33; }
+html .cc .stats .stat:nth-child(4) { --c: #5f86c9; }
+html .cc .stats .stat::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); transform: scaleX(.18); transform-origin: left; transition: transform .35s; }
+html .cc .stats .stat:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,.45), 0 0 0 1px var(--c); background: color-mix(in srgb, var(--c) 10%, transparent); z-index: 1; }
+html .cc .stats .stat:hover::before { transform: scaleX(1); }
+html .cc .stats .stat .n { transition: color .25s; }
+html .cc .stats .stat:hover .n { color: var(--c); }
 html .cc .tour > img.flag { position: absolute !important; inset: 14px 14px auto auto !important; top: 14px !important; right: 14px !important; left: auto !important; bottom: auto !important; width: auto !important; height: 28px !important; filter: none !important; transform: none !important; aspect-ratio: 1 / 1; object-fit: cover; object-position: center; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); z-index: 2; }
 html .cc .who img { border: 2px solid var(--green); }
 html .cc .cc [hidden], html .cc [hidden] { display: none !important; }
@@ -820,14 +840,14 @@ html .cc .tour:hover img { transform: none; }
 </div>
 <section id="calendar" style="padding-top:24px">
   <div class="in">
-    <div class="head"><div><div class="eyebrow">Gravel tours</div><h2>2027 Calendar</h2><div class="bar"></div></div><nav class="browse" aria-label="Tour types"><a class="chip" href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All</a><a class="chip" href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road</a><a class="chip" href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener" aria-current="page">Gravel</a><a class="chip" href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo</a><a class="chip" href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italy</a></nav></div>
+    <div class="head"><div><div class="eyebrow">Gravel tours</div><h2>2027 Calendar</h2><div class="bar"></div></div><nav class="browse" aria-label="Tour types"><a class="chip" href="https://tours.cigalacycling.com/trips/" target="_blank" rel="noopener">All</a><a class="chip" href="https://tours.cigalacycling.com/trips/road-trips/" target="_blank" rel="noopener">Road</a><a class="chip" href="https://tours.cigalacycling.com/trips/gravel-trips/" target="_blank" rel="noopener" aria-current="page">Gravel</a><a class="chip" href="https://tours.cigalacycling.com/trips/granfondo-trips/" target="_blank" rel="noopener">Gran Fondo</a><a class="chip" href="https://tours.cigalacycling.com/italian-trips/" target="_blank" rel="noopener">Italy</a></nav></div><div class="fchips lvchips" role="group" aria-label="Filter by level"><button type="button" class="fchip on" data-lv="" aria-pressed="true">All levels</button><button type="button" class="fchip" data-lv="beginner" aria-pressed="false"><span class="lm" aria-hidden="true"><i class=on></i><i></i><i></i></span>Beginner</button><button type="button" class="fchip" data-lv="intermediate" aria-pressed="false"><span class="lm" aria-hidden="true"><i class=on></i><i class=on></i><i></i></span>Intermediate</button><button type="button" class="fchip" data-lv="expert" aria-pressed="false"><span class="lm" aria-hidden="true"><i class=on></i><i class=on></i><i class=on></i></span>Expert</button></div>
     <div class="tgrid">
-<article class="tcard" data-k="gravel">
+<article class="tcard" data-k="gravel" data-level="expert">
   <a class="ph" href="https://tours.cigalacycling.com/trips/cyprus-crossing-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-cyprus-crossing-gravel.webp" alt="Cyprus Crossing Gravel Tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span><img class="flag" src="img/flag-cy.webp" alt="Flag of Cyprus" width="40" height="30"></a>
   <div class="tx">
     <h2>Cyprus Crossing</h2>
     <h3 class="where">Paphos, Cyprus</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-04-22">22–29 Apr 2027</time></span><span class="chip">7 nights/8 days</span><span class="chip">Level: Expert</span></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-04-22">22–29 Apr 2027</time></span><span class="chip">7 nights/8 days</span><span class="chip lvl"><span class="lm" aria-hidden="true"><i class=on></i><i class=on></i><i class=on></i></span>Level: Expert</span></div>
     <div class="desc clamp"><p>Are you ready for the gravel adventure of your lifetime?</p><p>Cyprus offers endless of gravel routes combined with amazing weather all year round with great food &amp; hospitality.</p><p>We have designed a unique gravel trip with 80% off road which takes you to the top of Mt Olympus, and across the island. Don't miss out on this trip if you are a gravel lover.</p></div>
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
@@ -837,12 +857,12 @@ html .cc .tour:hover img { transform: none; }
     </div>
   </div>
 </article>
-<article class="tcard" data-k="gravel">
+<article class="tcard" data-k="gravel" data-level="expert">
   <a class="ph" href="https://tours.cigalacycling.com/trips/tuscany-epic-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-tuscany-epic-gravel.webp" alt="Tuscany Gravel Epic" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"></a>
   <div class="tx">
     <h2>Tuscany Epic</h2>
     <h3 class="where">Castagneto Carducci, Tuscany, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-05-31">31 May – 6 Jun 2027</time></span><span class="chip">6 nights / 7 days</span><span class="chip">Level: Expert</span></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-05-31">31 May – 6 Jun 2027</time></span><span class="chip">6 nights / 7 days</span><span class="chip lvl"><span class="lm" aria-hidden="true"><i class=on></i><i class=on></i><i class=on></i></span>Level: Expert</span></div>
     <div class="desc clamp"><p>When you think about Tuscany, as a cycling lover you immediately think about the white roads, cypress trees and rolling green hills.</p><p>Well, we have built a trip that goes around the whole region in order for to discover and immerse yourself in the Tuscany culture and gastronomy. All with your gravel bike, on 80% off roads. Simply a trip of a lifetime.</p></div>
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
@@ -852,12 +872,12 @@ html .cc .tour:hover img { transform: none; }
     </div>
   </div>
 </article>
-<article class="tcard" data-k="gravel">
+<article class="tcard" data-k="gravel" data-level="expert">
   <a class="ph" href="https://tours.cigalacycling.com/trips/alpine-gravel-escape/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-alpine-gravel-escape.webp" alt="Alpine Gravel Tour Bormio Cigala" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"></a>
   <div class="tx">
     <h2>Alpine Gravel Escape</h2>
     <h3 class="where">Bormio, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-07-15">15–20 Jul 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Expert</span></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-07-15">15–20 Jul 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip lvl"><span class="lm" aria-hidden="true"><i class=on></i><i class=on></i><i class=on></i></span>Level: Expert</span></div>
     <div class="desc clamp"><p>Experience the Italian Alps like never before. This unique gravel adventure takes you beyond the tarmac to ride the iconic Stelvio Gravel, spectacular alpine trails and historic military roads through breathtaking mountain landscapes. Designed for adventurous riders, it combines epic climbs, remote gravel routes and unforgettable scenery.</p></div>
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
@@ -867,12 +887,12 @@ html .cc .tour:hover img { transform: none; }
     </div>
   </div>
 </article>
-<article class="tcard" data-k="gravel">
+<article class="tcard" data-k="gravel" data-level="intermediate expert">
   <a class="ph" href="https://tours.cigalacycling.com/trips/lake-garda-gravel/" target="_blank" rel="noopener"><img src="img/cigala-tours-trip-lake-garda-gravel.webp" alt="Lake Garda Gravel bike tour" loading="lazy" width="1200" height="900"><span class="tags"><span class="tag gravel">Gravel</span></span><img class="flag" src="img/flag-it.webp" alt="Flag of Italy" width="40" height="30"></a>
   <div class="tx">
     <h2>Lake Garda Gravel</h2>
     <h3 class="where">Lake Garda, Italy</h3>
-    <div class="meta"><span class="chip date"><time datetime="2027-09-07">7–12 Sep 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip">Level: Intermediate, Expert</span></div>
+    <div class="meta"><span class="chip date"><time datetime="2027-09-07">7–12 Sep 2027</time></span><span class="chip">5 nights/6 days</span><span class="chip lvl"><span class="lm" aria-hidden="true"><i class=on></i><i class=on></i><i></i></span>Level: Intermediate, Expert</span></div>
     <div class="desc clamp"><p>Trade the tarmac for gravel on Lake Garda's quieter side.</p><p>Based in Moniga del Garda, explore the vineyard tracks of Valtenesi, the Moreniche hills, the Mincio Valley and the renowned Amarone wine region of Valpolicella. Six days of scenic gravel riding, historic villages and some of Italy's finest wine country.</p></div>
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
@@ -882,7 +902,7 @@ html .cc .tour:hover img { transform: none; }
     </div>
   </div>
 </article>
-    </div>
+    </div><p class="lvnone" hidden>No tour here for this level yet. <a href="https://tours.cigalacycling.com/trips/private-trips/" target="_blank" rel="noopener">Ask us for a custom tour</a> and we will plan one for you.</p>
     <p class="footnote">*Prices in GBP or USD could be slightly different at the time of booking based on the current exchange rate. On our booking page you can choose your currency, see the live price in it and pay in the currency you prefer. By signing up to any of our Cycling Holidays (public or custom) you accept our Terms &amp; Conditions. <a href="https://tours.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">View T&amp;C</a></p>
   </div>
 </section>
@@ -908,6 +928,10 @@ html .cc .tour:hover img { transform: none; }
   </div>
 </section>
 <script>(function(){document.querySelectorAll('.cl .tcard .desc.clamp').forEach(function(d){var b=d.parentNode.querySelector('.more-txt');if(d.scrollHeight>d.clientHeight+4){b.hidden=false;b.addEventListener('click',function(){var o=d.classList.toggle('clamp');b.textContent=o?'Read more':'Show less';b.setAttribute('aria-expanded',!o);});}});})();</script>
+<script>(function(){var g=document.querySelector('.cl .lvchips');if(!g)return;g.querySelectorAll('.fchip').forEach(function(b){b.addEventListener('click',function(){
+g.querySelectorAll('.fchip').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b);});var v=b.dataset.lv;
+document.querySelectorAll('.cl .tgrid').forEach(function(grid){var n=0;[].forEach.call(grid.querySelectorAll('.tcard'),function(c){var ok=!v||c.dataset.level.split(' ').indexOf(v)>-1;c.hidden=!ok;if(ok)n++;});
+var m=grid.nextElementSibling&&grid.nextElementSibling.classList.contains('lvnone')?grid.nextElementSibling:null;if(m)m.hidden=n>0;});});});})();</script>
 </div>
 <div class="cc"><footer>
   <div class="in">
@@ -943,6 +967,8 @@ html .cc .tour:hover img { transform: none; }
 </footer></div>
 </div>
 
-
+<script>(function(){var l=document.querySelectorAll('.stats .stat .n');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+l.forEach(function(el){if(el.children.length)return;var m=el.textContent.match(/^([\d,]+)(\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
+new IntersectionObserver(function(es,ob){if(!es[0].isIntersecting)return;ob.disconnect();var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1500);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},{threshold:.5}).observe(el);});})();</script>
 
 </body></html>

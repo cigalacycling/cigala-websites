@@ -74,12 +74,15 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     tags = ''.join(f'<span class="tag{" gravel" if x == "Gravel" else ""}">{x}</span>' for x in TAGS[t['type']])
     badge = BADGES[t['badge']] if t.get('badge') else ''
     alt = LIVE_ALT.get(slug) or f'{t["name"]} bike tour'
-    rows[slug] = (t['type'], f"""<article class="tcard" data-k="{t['type']}">
+    lv = [x.strip().lower() for x in level.split(',')]
+    bars = {'beginner': 1, 'intermediate': 2, 'expert': 3}.get(lv[0], 2)   # how hard: set by the easiest level the tour suits
+    meter = f'<span class="lm" aria-hidden="true">{"".join("<i class=on></i>" if i < bars else "<i></i>" for i in range(3))}</span>'
+    rows[slug] = (t['type'], f"""<article class="tcard" data-k="{t['type']}" data-level="{' '.join(lv)}">
   <a class="ph" href="{more}" {EXT}><img src="{img}" alt="{E(alt)}" loading="lazy" width="1200" height="900"><span class="tags">{tags}</span><img class="flag" src="img/flag-{FLAG[t['country']]}.webp" alt="Flag of {t['country']}" width="40" height="30">{badge}</a>
   <div class="tx">
     <h2>{name}</h2>
     <h3 class="where">{where}</h3>
-    <div class="meta"><span class="chip date"><time datetime="{t['start']}">{dates(t)}</time></span><span class="chip">{nights}</span><span class="chip">Level: {level}</span></div>
+    <div class="meta"><span class="chip date"><time datetime="{t['start']}">{dates(t)}</time></span><span class="chip">{nights}</span><span class="chip lvl">{meter}Level: {level}</span></div>
     <div class="desc clamp">{desc}</div>
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
@@ -136,6 +139,16 @@ def browse(cur):
         f'<a class="chip" href="{L}{URL[s]}" {EXT}' + (' aria-current="page"' if s == cur else '') + f'>{t}</a>'
         for t, s in items) + '</nav>'
 
+LEVELS = ('<div class="fchips lvchips" role="group" aria-label="Filter by level">'
+          '<button type="button" class="fchip on" data-lv="" aria-pressed="true">All levels</button>'
+          + ''.join(f'<button type="button" class="fchip" data-lv="{k}" aria-pressed="false"><span class="lm" aria-hidden="true">{"".join("<i class=on></i>" if i < n else "<i></i>" for i in range(3))}</span>{k.title()}</button>'
+                    for n, k in ((1, 'beginner'), (2, 'intermediate'), (3, 'expert'))) + '</div>')
+LEVEL_JS = """<script>(function(){var g=document.querySelector('.cl .lvchips');if(!g)return;g.querySelectorAll('.fchip').forEach(function(b){b.addEventListener('click',function(){
+g.querySelectorAll('.fchip').forEach(function(x){x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b);});var v=b.dataset.lv;
+document.querySelectorAll('.cl .tgrid').forEach(function(grid){var n=0;[].forEach.call(grid.querySelectorAll('.tcard'),function(c){var ok=!v||c.dataset.level.split(' ').indexOf(v)>-1;c.hidden=!ok;if(ok)n++;});
+var m=grid.nextElementSibling&&grid.nextElementSibling.classList.contains('lvnone')?grid.nextElementSibling:null;if(m)m.hidden=n>0;});});});})();</script>"""
+NONE = f'<p class="lvnone" hidden>No tour here for this level yet. <a href="{L}/trips/private-trips/" {EXT}>Ask us for a custom tour</a> and we will plan one for you.</p>'
+
 READMORE = """<script>(function(){document.querySelectorAll('.cl .tcard .desc.clamp').forEach(function(d){var b=d.parentNode.querySelector('.more-txt');if(d.scrollHeight>d.clientHeight+4){b.hidden=false;b.addEventListener('click',function(){var o=d.classList.toggle('clamp');b.textContent=o?'Read more':'Show less';b.setAttribute('aria-expanded',!o);});}});})();</script>"""
 
 def page_main(slug):
@@ -146,7 +159,7 @@ def page_main(slug):
         crumbs = f'<a href="{L}/" {EXT}>Home</a> / <a href="{L}/trips/" {EXT}>Bike tours</a> / {crumb}'
     label = 'All public tours' if slug == 'trips' else crumb
     head = (f'<div class="head"><div><div class="eyebrow">{label}</div><h2>2027 Calendar</h2>'
-            f'<div class="bar"></div></div>{browse(slug)}</div>')
+            f'<div class="bar"></div></div>{browse(slug)}</div>{LEVELS}')
     tours_html = '\n'.join(rows[s][1] for s in tour_list)
     parts = [f'<div class="hero phero">\n  <img src="{hero}" alt="{E(HERO_ALT.get(hero, ""))}">\n  <div class="in">\n'
              f'    <div class="crumbs">{crumbs}</div>\n    <div class="pill-eyebrow">{eyebrow}</div>\n'
@@ -155,16 +168,16 @@ def page_main(slug):
     if slug == 'road-trips':
         gf_html = '\n'.join(rows[s][1] for s in GF)
         parts.append(f'<section id="calendar" style="padding-top:24px">\n  <div class="in">\n    {head}\n'
-                     f'    <div class="tgrid">\n{tours_html}\n    </div>\n  </div>\n</section>')
+                     f'    <div class="tgrid">\n{tours_html}\n    </div>{NONE}\n  </div>\n</section>')
         parts.append(f'<section style="padding-top:56px">\n  <div class="in">\n'
                      f'    <div class="head"><div><div class="eyebrow">Ride the event</div><h2>Road tours with a Gran Fondo</h2><div class="bar"></div>\n'
                      f'      <p class="lede">These tours are ridden on the road bike too, built around a Gran Fondo or a pro race weekend.</p></div>\n'
                      f'      <a class="arrow-link" href="{L}/trips/granfondo-trips/" {EXT}>All Gran Fondo tours →</a></div>\n'
-                     f'    <div class="tgrid">\n{gf_html}\n    </div>\n    {footnote}\n  </div>\n</section>')
+                     f'    <div class="tgrid">\n{gf_html}\n    </div>{NONE}\n    {footnote}\n  </div>\n</section>')
     else:
         parts.append(f'<section id="calendar" style="padding-top:24px">\n  <div class="in">\n    {head}\n'
-                     f'    <div class="tgrid">\n{tours_html}\n    </div>\n    {footnote}\n  </div>\n</section>')
-    parts += [band, partners, READMORE]
+                     f'    <div class="tgrid">\n{tours_html}\n    </div>{NONE}\n    {footnote}\n  </div>\n</section>')
+    parts += [band, partners, READMORE, LEVEL_JS]
     return '\n'.join(parts)
 
 # ---------- CSS: design CSS scoped to .cl, plus the brand fixes used on the homepage ----------
@@ -219,6 +232,13 @@ button, .btn { text-transform: none; letter-spacing: .02em; }
 @media (prefers-reduced-motion: reduce) { .tcard .early::before { animation: none; } }
 .tcard .ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 0; }
 .tcard .ctas .btn { padding: 11px 10px; text-align: center; justify-content: center; }
+.lm { display: inline-flex; align-items: flex-end; gap: 2px; margin-right: 7px; vertical-align: -1px; }   /* level meter: 3 bars (Matteo 16 Nov: text + meter, not icons only) */
+.lm i { display: block; width: 3px; border-radius: 1px; background: rgba(255,255,255,.22); }
+.lm i:nth-child(1) { height: 5px; } .lm i:nth-child(2) { height: 8px; } .lm i:nth-child(3) { height: 11px; }
+.lm i.on { background: var(--green-text, #2bd47a); }
+.fchip.on .lm i.on { background: #fff; } .fchip.on .lm i { background: rgba(255,255,255,.35); }
+.lvchips { margin: 18px 0 22px; }
+.lvnone { color: var(--text-2); font-size: 15px; margin: 8px 0 0; } .lvnone a { color: var(--green-text); }
 @media (max-width: 1100px) { .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .tgrid { grid-template-columns: minmax(0, 1fr); } }
 '''
