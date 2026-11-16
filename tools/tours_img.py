@@ -47,9 +47,9 @@ def media(src):
         if k.rsplit('.', 1)[0] in (stem, stem + '-scaled'): return v
     raise KeyError('not in the staging media library: ' + src)
 
-def webp(src, maxw=1600, alt=None, redo=False):
+def webp(src, maxw=1600, alt=None, redo=False, trim=False):
     m = media(src)
-    key = f"src-{m['id']}-{maxw}"
+    key = f"src-{m['id']}-{maxw}" + ('-trim' if trim else '')
     done = json.load(open(MAP))
     if key in done and not redo: return done[key]
     u = m['source_url']
@@ -61,11 +61,17 @@ def webp(src, maxw=1600, alt=None, redo=False):
     im = ImageOps.exif_transpose(Image.open(io.BytesIO(raw)))   # phone photos: apply the camera's rotation tag
     im = im.convert('RGBA') if im.mode in ('RGBA', 'LA') or (im.mode == 'P' and 'transparency' in im.info) else im.convert('RGB')
     w0 = im.size
+    if trim:   # product photos on white (the rental bike): crop the empty white around the subject, keep a small margin
+        from PIL import ImageChops
+        bb = ImageChops.difference(im.convert('RGB'), Image.new('RGB', im.size, (255, 255, 255))).convert('L').point(lambda v: 255 if v > 18 else 0).getbbox()
+        if bb:
+            mx, my = round((bb[2] - bb[0]) * .04), round((bb[3] - bb[1]) * .06)
+            im = im.crop((max(0, bb[0] - mx), max(0, bb[1] - my), min(im.width, bb[2] + mx), min(im.height, bb[3] + my)))
     if im.width > maxw: im = im.resize((maxw, round(im.height * maxw / im.width)), Image.LANCZOS)
     a = (m.get('alt_text') or '').strip() or alt
     assert a, f'no alt text for {u}: pass alt='
     stem = os.path.basename(u).rsplit('.', 1)[0].replace('-scaled', '')
-    fn = f'cigala-tours-{stem}-{maxw}.webp'
+    fn = f'cigala-tours-{stem}-{maxw}{"-trim" if trim else ""}.webp'
     os.makedirs(OUTDIR, exist_ok=True)
     im.save(OUTDIR + fn, 'WEBP', quality=90)
     r = json.loads(_req(B + '/media', data=open(OUTDIR + fn, 'rb').read(), method='POST',

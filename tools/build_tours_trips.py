@@ -25,6 +25,9 @@ _sp = _iu.spec_from_file_location('trm', os.path.join(os.path.dirname(os.path.ab
 ROUTE_NOTES = {k: v.get('note', '') for k, v in _trm.ROUTES.items()}
 _SPJ = json.load(open(ROOT + 'tours/spots.json'))
 SPOTS = {k: v for k, v in _SPJ.items() if not k.startswith('_')}
+GUIDE_NICK = {}   # first name -> nickname, e.g. {'Amedeo': 'Ame'}: Matteo to send
+# Maratona: two hotels in one text block live -> a card each, with their own photos and stars (Matteo 16 Nov)
+HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629, 8631]), ('Hotel Soleil', 4, False, 8709, [8707, 8708])]}
 TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, cover photo (our own: no YouTube request until the visitor taps play) - Matteo 16 Nov
 HERO_PHOTO = {'discover-the-algarve-granfondo': 710}   # media id: rider in Cigala kit above an Algarve beach
 HERO_DPOS = {'tour-of-flanders-experience': '50% 65%'}   # focus point on laptops (Matteo 16 Nov: Flanders showed the arch, not the riders)
@@ -45,6 +48,10 @@ ICON = {   # line icons for the glance strip and Trip at a glance (Matteo 16 Nov
     'plane': _sv('<path d="M10.5 13.5L3 11l1.5-1.5 8 .5 4-4.5a2 2 0 0 1 3 3l-4.5 4 .5 8L14 22l-2.5-7.5L8 18v2.5L6.5 22l-1-3.5L2 17.5 3.5 16H6z"/>'),
     'dot': _sv('<circle cx="12" cy="12" r="3"/>'),
 }
+
+def trim_tag(src, alt):   # the rental bike, cropped to the bike (Matteo 16 Nov: it sat small in a lot of white)
+    im = webp(src, 1000, alt, trim=True)
+    return f'<img src="{im["url"]}" alt="{E(im["alt"])}" loading="lazy">'
 
 def raw(pid): return json.loads(json.load(open(ROOT + f'stg-tours/backup/page-{pid}.json'))['meta']['_elementor_data'] or '[]')
 
@@ -342,6 +349,10 @@ def trip(slug):
         vid = next((re.search(r'(?:v=|youtu\.be/)([\w-]{11})', s.get('youtube_url', '')) for k, v, s in ex['items'] if k == 'video'), None)
         media_html = (f'<div class="vcard panel" style="margin-top:16px"><button type="button" class="yt" data-id="{vid.group(1)}" aria-label="Play the video">'
                       f'<img src="https://i.ytimg.com/vi/{vid.group(1)}/hqdefault.jpg" alt="{E(text_of(ex["h"]))} video" loading="lazy"><span class="play" aria-hidden="true"></span></button></div>') if vid else ''
+        if len(imgs) == 1 and not vid:   # one photo (the Maratona jersey): photo on one side, text on the other (Matteo 16 Nov: too much black)
+            out.append(f'<section><div class="in"><div class="panel xbox xsplit"><div class="xph">{img_tag(imgs[0], 1200, alt=f"{text_of(h1).title()} - Cigala Cycling Tours")}</div>'
+                       f'<div class="xtx">{H(ex, "Make it yours" if ex["kind"] == "extra" else "Good to know")}<div class="prose">{body}</div>{f"<div class=ctas>{btns}</div>" if btns else ""}</div></div></div></section>')
+            continue
         if imgs: media_html += '<div class="gal3" style="margin-top:16px">' + ''.join(img_tag(x, 1200, alt=f'{text_of(h1).title()} - Cigala Cycling Tours') for x in imgs[:3]) + '</div>'
         out.append(f'<section><div class="in"><div class="panel xbox">{H(ex, "Make it yours" if ex["kind"] == "extra" else "Good to know")}'
                    f'<div class="prose">{body}</div>{f"<div class=ctas>{btns}</div>" if btns else ""}{media_html}</div></div></section>')
@@ -364,8 +375,19 @@ def trip(slug):
                     m = re.match(r"^\s*(\d{1,2}/\d{1,2}(?:/\d{2,4})?)\s*(.*)$", t)
                     if m: rows.append([m.group(1), m.group(2)])
                     elif rows and not rows[-1][1]: rows[-1][1] = t   # the date on its own line, the details on the next
+                    elif rows and re.match(r'^[-–\s]*\d{1,2}:\d{2}', t): rows[-1][1] += ' - ' + t.strip('- –')   # a pick-up time on its own line belongs to the transfer above
                     else: notes_.append(x)
-            cards = ''.join(f'<div class="tcard2"><span class="ic" aria-hidden="true">{ICON["plane"]}</span><div><b>{E(d)}</b><span>{E(t)}</span></div></div>' for d, t in rows)
+            def tparts(t):   # '... Airport - 13:00 pm - 19:30 pm' -> text and the pick-up times (Matteo 16 Nov: show them)
+                tm = [f'{int(h):02d}:{mi}' for h, mi in re.findall(r'(\d{1,2}):(\d{2})\s*(?:am|pm)?', t, re.I)]
+                txt = re.sub(r'\s*-?\s*\d{1,2}:\d{2}\s*(?:am|pm)?', '', t, flags=re.I).strip(' -–')
+                txt = re.sub(r'\s+at(?=\s*(?:\(|$))', '', txt).strip(' -–')   # 'Airport at 10:30am' -> 'Airport' (the time is a chip)
+                return txt, tm
+            cards = ''
+            for d, t in rows:
+                txt, tm = tparts(t)
+                chips_ = ''.join(f'<span class="tt">{x}</span>' for x in tm)
+                cards += (f'<div class="tcard2"><span class="ic" aria-hidden="true">{ICON["plane"]}</span><div><b>{E(d)}</b><span>{E(txt)}</span>'
+                          + (f'<span class="tts">{"Pick-up times" if len(tm) > 1 else "Pick-up"}: {chips_}</span>' if tm else '') + '</div></div>')
             tt_ = trans["tag"]
             bands += (f'<div class="panel tband"><{tt_} class="inh">{E(text_of(trans["h"]).rstrip(":"))}</{tt_}><div class="trow">{cards}</div>'
                       + ''.join(f'<p class="tnote">{x}</p>' for x in notes_) + '</div>')
@@ -406,7 +428,24 @@ def trip(slug):
             ph = f'<div class="ph">{img_tag(pics[n], 1200, alt=f"{nm.title()} - {text_of(h1).title()} bike tour")}</div>' if n < len(pics) else ''
             st = (f'<div class="stars" aria-label="{stars} stars{" superior" if sup else ""}">{"★" * stars}{"<span class=sup>S</span>" if sup else ""}</div>') if stars else ''
             return f'<article class="panel hotel{cls}">{ph}<div class="tx"><div class="eyebrow">Your hotel</div>{st}<{tg}>{E(nm)}</{tg}>{body}</div></article>'
-        if len(hotels_) == 1:   # one hotel: photo and text side by side in one card (Matteo 16 Nov: no big empty black area)
+        if slug in HOTELS:   # one card per hotel, each with its own text, stars and photos
+            paras = re.split(r'(?=<p><strong>)', txt)
+            def htext(name):
+                seg = next((x for x in paras if name.lower() in x.lower()[:120]), '')
+                seg = re.sub(r'<strong>.*?</strong>(\s*<br\s*/?>)?', '', seg, count=1, flags=re.S)
+                return seg
+            cards_html = '<div class="hotels hcards">'
+            for nm, st_n, sup, main, extra_ in HOTELS[slug]:
+                body = htext(nm)   # the hotel's own paragraphs (Soleil has two)
+                stars_ = f'<div class="stars" aria-label="{st_n} stars{" superior" if sup else ""}">{"★" * st_n}{"<span class=sup>S</span>" if sup else ""}</div>'
+                thumbs = ''.join(img_tag(x, 600, alt=f'{nm} - {text_of(h1).title()} bike tour') for x in extra_)
+                cards_html += (f'<article class="panel hotel hx"><div class="ph">{img_tag(main, 1200, alt=f"{nm} - {text_of(h1).title()} bike tour")}</div>'
+                               f'<div class="tx"><div class="eyebrow">Your hotel</div>{stars_}<h3>{E(nm)}</h3><div class="prose">{body}</div>'
+                               f'<div class="hthumbs n{len(extra_)}">{thumbs}</div></div></article>')
+            cards_html += '</div>'
+            intro_html, pics = '', []
+            hotels_ = HOTELS[slug]
+        elif len(hotels_) == 1:   # one hotel: photo and text side by side in one card (Matteo 16 Nov: no big empty black area)
             cards_html = hcard(*hotels_[0], body=f'<div class="prose">{txt}</div>{notes}', cls=' hotel1')
             intro_html = ''
         else:
@@ -429,7 +468,7 @@ def trip(slug):
                 else: lede.append(ln)
         dlh = ''.join(f'<dt>{E(a)}</dt><dd>{b}</dd>' for a, b in dl)
         out.append(f'<section id="bike-rental"><div class="in"><div class="panel bike">'
-                   f'{f"<div class=ph>{img_tag(bimg, 1000, alt=f'Rental bike for the {text_of(h1).title()} tour')}</div>" if bimg else ""}'
+                   f'{f"<div class=ph>{trim_tag(bimg, alt=f'Rental bike for the {text_of(h1).title()} tour')}</div>" if bimg else ""}'
                    f'<div class="tx">{H(bk, "Travel light")}<div class="lede">{"".join(f"<p>{x}</p>" for x in lede)}</div><dl>{dlh}</dl></div></div></div></section>')
         nav.append(('bike-rental', 'Bike rental'))
     gd = one('guides')
@@ -445,6 +484,8 @@ def trip(slug):
         for p in ppl:
             if 'name' not in p: continue
             nm = text_of(p['name'][1]); role = text_of(p['texts'][0]) if p['texts'] else ''
+            if 'CIGALA' not in nm.upper():   # Matteo 16 Nov: guides by first name (or nickname), for their privacy; Matteo Cigala in full
+                first = nm.split()[0]; nm = GUIDE_NICK.get(first.title(), first)
             bio = ''.join(clean(x) for x in p['texts'][1:])
             ph = f'<div class="ph">{img_tag(p["img"], 600, alt=f"{nm.title()}, {role} at Cigala Cycling Tours")}</div>' if p['img'] else ''
             cards.append(f'<article class="panel guide">{ph}<div class="tx"><h3>{E(nm)}</h3><div class="role">{E(role)}</div>{bio}</div></article>')
@@ -617,6 +658,23 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
+html .cl .xsplit { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 0; padding: 0; overflow: hidden; align-items: stretch; }
+html .cl .xsplit .xph { background: #e9edf0; display: grid; place-items: center; padding: 18px; }
+html .cl .xsplit .xph img { width: 100%; height: auto; max-height: 420px; object-fit: contain; }
+html .cl .xsplit .xtx { padding: clamp(22px, 3vw, 36px); align-self: center; }
+html .cl .xbox .prose a { color: var(--green-text, #2bd47a); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 800px) { html .cl .xsplit { grid-template-columns: minmax(0, 1fr); } }
+html .cl .bike .ph { padding: 12px 18px; }
+html .cl .bike .ph img { width: 100%; max-height: 380px; height: auto; object-fit: contain; }
+html .cl .tcard2 .tts { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; color: var(--text-3); }
+html .cl .tcard2 .tt { display: inline-block; font-family: var(--head); font-size: 16px; letter-spacing: .03em; color: #fff; background: rgba(0,154,68,.18); border: 1px solid rgba(43,212,122,.35); border-radius: 6px; padding: 2px 8px; }
+html .cl .hotels.hcards { align-items: start; }   /* each hotel card as tall as its own text */
+html .cl .hcards .hx { display: flex; flex-direction: column; }
+html .cl .hcards .hx .tx { gap: 8px; }
+html .cl .hcards .hx .prose p { font-size: 14.5px; line-height: 1.6; color: var(--text-2); margin: 4px 0 0; }
+html .cl .hthumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+html .cl .hthumbs.n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html .cl .hthumbs img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
 html .cl .tvid { max-width: 1000px; }
 html .cl .tvid .play { width: 84px; height: 84px; margin: -42px 0 0 -42px; }
 html .cl .tvid .play::after { left: 34px; top: 26px; border-width: 16px 0 16px 25px; }

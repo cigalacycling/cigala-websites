@@ -9409,5 +9409,117 @@
    900
   ],
   "orig": 3353
+ },
+ "src-8626-1200": {
+  "id": 10550,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-download-94-1200.webp",
+  "alt": "Hotel Rezia La Villa from outside",
+  "from": [
+   1360,
+   765
+  ],
+  "size": [
+   1200,
+   675
+  ],
+  "orig": 8626
+ },
+ "src-8709-1200": {
+  "id": 10551,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-download-2026-10-01T143449.205-1200.webp",
+  "alt": "Soleil Hotel Dolomites Rooms",
+  "from": [
+   1024,
+   683
+  ],
+  "size": [
+   1024,
+   683
+  ],
+  "orig": 8709
+ },
+ "src-3187-1000-trim": {
+  "id": 10552,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-imgi_73_raxhi-vTqPh6qcropDzVKDCpuQKlZb76Xa5rKKZEUZudjmsBE__sZtiAkEMNtHxSlC7wcMFPFuO8c2MOltmFMPe-CDOTf_8s1600-1000-trim.webp",
+  "alt": "Bianchi turquoise and black road bike - Cigala Cycling Tours",
+  "from": [
+   1000,
+   1000
+  ],
+  "size": [
+   1000,
+   630
+  ],
+  "orig": 3187
+ },
+ "src-6099-1000-trim": {
+  "id": 10553,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-download-19-1000-trim.webp",
+  "alt": "Bianchi Arcadex",
+  "from": [
+   1600,
+   1280
+  ],
+  "size": [
+   1000,
+   628
+  ],
+  "orig": 6099
+ },
+ "src-3398-1000-trim": {
+  "id": 10554,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-72-1000-trim.webp",
+  "alt": "Bianchi Impulso Pro gravel bike - Cigala Cycling Tours",
+  "from": [
+   1600,
+   1280
+  ],
+  "size": [
+   1000,
+   865
+  ],
+  "orig": 3398
+ },
+ "src-3346-1000-trim": {
+  "id": 10555,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-imgi_49_cnKA0xKV-5lSfL4uypb6bGH2gZAebndJ0g57MCKhdKUL-4DLY05iQVKrDId60fgn4M-7mTkQp44e_H5jGzcSwHmuQaQYU5mes1600-1000-trim.webp",
+  "alt": "3T Racemax Integrale gravel bike - Cigala Cycling Tours",
+  "from": [
+   1512,
+   1134
+  ],
+  "size": [
+   1000,
+   644
+  ],
+  "orig": 3346
+ },
+ "src-2570-1000-trim": {
+  "id": 10556,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-unnamed-71-1-1000-trim.webp",
+  "alt": "Red Megamo carbon road bike - Cigala Cycling Tours",
+  "from": [
+   1600,
+   1014
+  ],
+  "size": [
+   1000,
+   629
+  ],
+  "orig": 2570
+ },
+ "src-4476-1000-trim": {
+  "id": 10557,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-download-2-1000-trim.webp",
+  "alt": "Bianchi Specialissima",
+  "from": [
+   1080,
+   1080
+  ],
+  "size": [
+   1000,
+   668
+  ],
+  "orig": 4476
  }
 }
