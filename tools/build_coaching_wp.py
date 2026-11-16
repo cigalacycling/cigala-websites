@@ -188,6 +188,9 @@ html .cc .blog-hero > img { object-position: 50% 58%; }
 /* Marine Lenehan's articles (tag "By Marine Lenehan", tools/coaching_vivify_posts.py): her name on the card instead of Matteo's */
 .cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title { font-size: 0 !important; }
 .cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title::after { content: "By Sports Nutritionist, Marine Lenehan"; display: block; font: 600 11px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .08em !important; text-transform: uppercase; color: #ff3d33 !important; }
+/* Matteo 16 Nov: the author's name in red, on the blog cards and under the post title, on every screen size */
+body .cc-blog .e-loop-item .elementor-widget-heading.elementor-element.elementor-element-f9f544d .elementor-heading-title { color: #ff3d33 !important; }
+body.single-post .elementor-4028 .elementor-widget-heading.elementor-element.elementor-element-2a7c116 .elementor-heading-title { color: #ff3d33 !important; }
 .single-post .elementor-4028 .cc-marine-sig { margin-top: 32px !important; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.12); color: #d0d6e0 !important; }
 .single-post .elementor-4028 .cc-marine-src { font-size: 14px !important; color: #8a8f98 !important; }
 .single-post .elementor-4028 .wp-block-table table { width: 100%; border-collapse: collapse; font: 400 15px/1.5 Montserrat, system-ui, sans-serif; color: #d0d6e0; }

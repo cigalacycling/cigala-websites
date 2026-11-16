@@ -426,3 +426,7 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - **Language signals:** Code Snippets snippet 9 sets `<html lang="it-IT">` and og:locale it_IT on Italian posts AND on /preparatore-di-ciclismo-italia/ (which was en-US before).
 - **Internal links:** the Italian page has a "Le mie guide in italiano" row (H3, green pills like the country pages) linking all 8 Italian posts, and the Italian athlete hub lists them.
 - **Future languages:** use a multilingual plugin (e.g. /it/ folders) with hreflang between real translations. Don't publish bulk machine translations.
+
+## 16 Nov: blog details (Matteo)
+- The author's name is red on the blog cards and under every post title, at all widths (it was grey/white). Style only.
+- The "Bike Tours" tile at the bottom of every post (post template 4028, container 8c0b592) now uses the Cyprus photo of the riders in white Cigala jerseys with their hands up (media 6624; alt is on the media item, it's a CSS background). Backup of the template before the change: stg-coaching/backup/lib-4028-before-tours-photo.json.
