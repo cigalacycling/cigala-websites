@@ -25,6 +25,9 @@ IMG.update({
     'team-white.jpg': W['cigala-team-white-jerseys-1200']['url'] + '" srcset="' + W['cigala-team-white-jerseys-1200']['url'] + ' 1200w, ' + W['cigala-team-white-jerseys']['url'] + ' 2400w" sizes="100vw',
 })
 
+# Relative image addresses, so nothing points at the staging domain after the push to live (16 Nov)
+IMG = {k: v.replace('https://staging.cigalacycling.com/wp-content/', '/wp-content/') for k, v in IMG.items()}
+
 def rid():
     return ''.join(random.choice('0123456789abcdef') for _ in range(7))
 
