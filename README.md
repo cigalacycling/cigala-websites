@@ -7,6 +7,8 @@ This repository holds the redesign of the Cigala Cycling sites in the Cigala Cyc
 3. coaching.cigalacycling.com: homepage and Individual Packages built on staging (15 Nov); the other pages are next (see `coaching/SEO-DECISIONS.md`)
 4. retail.cigalacycling.com: runs on Shopify, not started
 
+Partner site, separate business: **vivifysports.com** (Marine Lenehan, Vivify Sports). Redesign preview in Matteo's fonts with Vivify's logo and colours, for its move from Wix to WordPress. See `vivify/README.md` (16 Nov 2026).
+
 ## Ground rules (from Matteo)
 
 - **Never lose SEO, only improve it.** Keep these exactly as they are:
