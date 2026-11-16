@@ -395,9 +395,11 @@ add_filter('cc_ath_coach_links', function ($html) {
     $w = 0; foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => 'cc_user']) as $p)
         if (($uid = (int) get_post_meta($p, 'cc_user', true)) && !cc_f_open($uid)) $w++;
     $base = home_url('/' . CC_ATH_SLUG . '/');
-    return $html . ' <a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'forms', $base)) . '">Rider forms' . ($w ? ' <span class="av-badge rf-wait">' . $w . ' waiting</span>' : '') . '</a>'
-         . ' <a class="av-boardlink" href="' . esc_url(add_query_arg(['board' => 'form-preview', 'kind' => 'full'], $base)) . '">Preview the form</a>';
+    return $html . '<a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'forms', $base)) . '">Rider forms' . ($w ? ' <span class="av-badge rf-wait">' . $w . ' waiting</span>' : '') . '</a>';
 }, 5);
+add_filter('cc_ath_coach_links', function ($html) {
+    return $html . '<a class="av-boardlink" href="' . esc_url(add_query_arg(['board' => 'form-preview', 'kind' => 'full'], home_url('/' . CC_ATH_SLUG . '/'))) . '">Preview the athlete form</a>';
+}, 30);
 add_filter('cc_ath_board', function ($html, $board) {
     if (!cc_ath_is_coach()) return $html;
     if ($board === 'form-preview') return '<div class="ath-coach"><p><b>Preview.</b> This is what a new athlete sees: <a href="' . esc_url(add_query_arg(['board' => 'form-preview', 'kind' => 'full'])) . '">full form</a> · '

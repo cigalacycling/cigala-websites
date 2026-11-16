@@ -241,7 +241,7 @@ add_filter('cc_ath_coach_links', function ($html) {
     $n = 0; $seen = (int) get_user_meta(get_current_user_id(), 'cc_avail_seen', true);
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => 'cc_avail_updated']) as $p)
         if ((int) get_post_meta($p, 'cc_avail_updated', true) > $seen) $n++;
-    return $html . '<a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'availability', home_url('/' . CC_ATH_SLUG . '/'))) . '">All athletes’ availability'
+    return $html . '<a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'availability', home_url('/' . CC_ATH_SLUG . '/'))) . '">Availability'
          . ($n ? ' <span class="av-badge">' . $n . ' changed</span>' : '') . '</a>';
 });
 add_filter('cc_ath_board', function ($html, $board) {

@@ -94,7 +94,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
 }, 20, 3);
 
 /* ---------- Matteo's board: /athletes/?board=goals ---------- */
-add_filter('cc_ath_coach_links', function ($html) { return $html . ' <a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '">Goals &amp; events</a>'; }, 15);
+add_filter('cc_ath_coach_links', function ($html) { return $html . '<a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '">Goals &amp; events</a>'; }, 15);
 add_filter('cc_ath_board', function ($html, $board) {
     if ($board !== 'goals' || !cc_ath_is_coach()) return $html;
     $today = current_time('Y-m-d'); $rows = [];

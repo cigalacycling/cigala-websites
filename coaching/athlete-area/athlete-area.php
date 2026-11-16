@@ -301,7 +301,7 @@ function cc_ath_inner() {
         $o .= '<div class="ath-coach"><p><b>Coach view.</b> You see what every athlete sees. Choose an athlete to see their own reports, or add one in WordPress: Users &gt; Add New (role Subscriber).</p><p class="ath-list">';
         foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . esc_html($p->post_title)
             . (($lc = cc_ath_lang_code((int) get_post_meta($p->ID, 'cc_user', true))) !== 'en' ? ' · ' . strtoupper($lc) : '') . '</a>';
-        $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . apply_filters('cc_ath_coach_links', '') . '</div>';
+        $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . (($tl = apply_filters('cc_ath_coach_links', '')) !== '' ? '<div class="ath-coach-tools"><span class="ath-coach-tl">Your coach tools</span>' . $tl . '</div>' : '') . '</div>';
         // coach-only pages (e.g. ?board=availability, from availability.php); empty unless a module adds one
         $board = isset($_GET['board']) ? sanitize_key($_GET['board']) : '';
         if ($board !== '' && ($b = apply_filters('cc_ath_board', '', $board)) !== '') return $o . $b . '</div>' . cc_ath_js();
@@ -334,7 +334,8 @@ add_shortcode('cc_latest_posts', function ($at) {
     $ps = get_posts($q); usort($ps, function ($a, $b) { return strcmp($b->post_date, $a->post_date); });
     $li = '';
     foreach (array_slice($ps, 0, max(1, min(8, (int) $at['n']))) as $p) $li .= '<li><a href="' . esc_url(get_permalink($p)) . '">' . esc_html(get_the_title($p)) . '</a></li>';
-    return $li ? '<ul class="wp-block-list">' . $li . '</ul>' : '';
+    if (!$li) return '';
+    return '<ul class="wp-block-list">' . $li . '</ul><p class="ath-allposts"><a href="' . esc_url(home_url('/blog/')) . '">' . esc_html($at['lang'] === 'it' ? 'Tutti gli articoli del blog →' : 'All blog posts →') . '</a></p>';
 });
 
 /* ---------- the dashboard look ---------- */
@@ -614,6 +615,11 @@ html .cc .ath-coach p { margin: 0 0 8px; }
 html .cc .ath-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 !important; }
 html .cc .ath-list a { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.08); color: #fff; text-decoration: none; font-size: 13px; }
 html .cc .ath-list a[aria-current] { background: #12a150; }
+html .cc .ath-coach-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.1); }
+html .cc .ath-coach-tl { flex-basis: 100%; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
+html .cc .ath-coach-tools .av-boardlink { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 9px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.05); color: #fff; font-size: 13.5px; font-weight: 600; text-decoration: none; }
+html .cc .ath-coach-tools .av-boardlink:hover { border-color: #009a44; }
+html .cc .ath-allposts { margin: 4px 0 18px; font-size: 14px; } html .cc .ath-allposts a { color: var(--green-text, #34c46a); }
 html .cc .ath-jump { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 0 18px; padding: 2px; }
 html .cc .ath-jump::-webkit-scrollbar { display: none; }
 html .cc .ath-jump a { flex: none; padding: 9px 15px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); background: rgba(12,14,16,.85); color: var(--text-2); font-size: 13px; font-weight: 600; text-decoration: none; transition: border-color .2s, color .2s; }
