@@ -194,6 +194,11 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Emails go to **tours@cigalacycling.com** (Matteo 15 Nov; the per-site inboxes are in `shared/BUSINESS.md`). Subjects: "New message from the Tours website" (Contact) and "New custom tour enquiry from the Tours website" (Custom tours). Content: [all-fields].
   - Before-change backups: `stg-tours/backup/page-461-before-form.json`, `page-1576-before-form.json`.
   - When these pages get the new design, keep the same form widget.
+- **SEO and error audit, 16 Nov (Matteo via Coaching: "for every website, if you find improvement ... change"):** `python3 -I tools/tours_audit.py` (adapted from coaching_audit.py) checks all 92 published pages and guides; results in `stg-tours/audit-<date>.json`. Fixed on staging:
+  - 22 guide posts: links to old addresses (/home/<x>/, /italian-alps/) now go straight to /destinations/<x>/ and /trips/italian-alps/; seven links to guide addresses that never existed (404 on live too) now go to the real guides.
+  - 13 guide images had empty alt in the post text: now the media library alt, or a new descriptive alt where that was empty or generic.
+  - Puglia destination: its share image (featured image) was a Girona photo; now the trulli at sunset (WebP 1600, media 10781).
+  - Left for Matteo's OK: the Cyprus gravel guide meta description is 289 chars; the Italy guide title is 72 chars.
 - **Maratona target markets, 16 Nov:** the Official Tour Operator box on the Maratona page says the tour is only for riders resident in our target markets (Ireland, UK, Northern European countries, USA, Canada, Australia), as listed for Cigala on maratona.it. Set in `OP_NOTE` in `tools/build_tours_trips.py`.
 - **Terms (564) and Privacy Policy (new, 9347, /privacy-policy/), 15 Nov:** built in the cigalacycling.com Terms style by `tools/build_tours_legal.py`, pushed with `push_tours_list.py terms` and `push_tours_list.py privacy-policy`.
   - The terms text is the live page word for word, with the same H1, and title, meta, robots, OG and schema are unchanged.
