@@ -41,6 +41,52 @@ add_filter('wp_insert_post_data', function ($d) {
     return $d;
 });
 
+/* ---------- language (Matteo 16 Nov): Italian athletes get the hub in Italian ----------
+   Set per athlete on their WordPress user page ("Hub language"). The login page follows the phone's language. */
+add_action('init', function () {
+    register_meta('user', 'cc_lang', ['type' => 'string', 'single' => true, 'show_in_rest' => true, 'auth_callback' => function () { return current_user_can('edit_users'); }]);
+    register_post_meta('cc_athlete', 'cc_lang', ['type' => 'string', 'single' => true, 'show_in_rest' => true, 'auth_callback' => function () { return current_user_can('edit_pages'); }]);
+});
+function cc_ath_user_lang($uid) { return get_user_meta((int) $uid, 'cc_lang', true) === 'it' ? 'it' : 'en'; }
+function cc_ath_lang_field($user = null) {
+    $v = ($user instanceof WP_User) ? cc_ath_user_lang($user->ID) : 'en';
+    echo '<h2>Athlete hub</h2><table class="form-table" role="presentation"><tr><th><label for="cc_lang">Hub language</label></th><td><select name="cc_lang" id="cc_lang">'
+       . '<option value="en"' . selected($v, 'en', false) . '>English</option><option value="it"' . selected($v, 'it', false) . '>Italiano</option></select>'
+       . '<p class="description">The language of this athlete\'s hub (/athletes/).</p></td></tr></table>';
+}
+add_action('user_new_form', function ($type) { if ($type === 'add-new-user') cc_ath_lang_field(); });
+add_action('show_user_profile', 'cc_ath_lang_field');
+add_action('edit_user_profile', 'cc_ath_lang_field');
+function cc_ath_lang_save($uid) {
+    if (!isset($_POST['cc_lang']) || !current_user_can('edit_users')) return;
+    update_user_meta($uid, 'cc_lang', $_POST['cc_lang'] === 'it' ? 'it' : 'en');
+}
+add_action('user_register', 'cc_ath_lang_save', 5);
+add_action('edit_user_profile_update', 'cc_ath_lang_save');
+add_action('personal_options_update', 'cc_ath_lang_save');
+$GLOBALS['cc_ath_lang'] = 'en';
+function cc_t($s) {
+    static $IT = [
+        'Coached athletes' => 'Atleti seguiti', 'Athlete login' => 'Accesso atleti',
+        'Your training guides, links and your own reports, all in one place.' => 'Le tue guide di allenamento, i link e i tuoi report personali, tutto in un unico posto.',
+        'That username or password is not right. Try again, or message me and I will reset it.' => 'Nome utente o password non corretti. Riprova, oppure scrivimi e te la reimposto.',
+        'Username or email' => 'Nome utente o email', 'Password' => 'Password', 'Keep me logged in' => 'Resta collegato', 'Log in' => 'Accedi',
+        'Athlete area' => 'Area atleta', ' · coach view' => ' · vista coach', 'Welcome' => 'Ciao', 'Log out' => 'Esci',
+        'Everything for your coaching in one place. Train smarter. Ride faster.' => 'Tutto il tuo coaching in un unico posto. Train smarter. Ride faster.',
+        'report in your folder' => 'report nella tua cartella', 'reports in your folder' => 'report nella tua cartella',
+        'Your reports' => 'I tuoi report', 'Sections' => 'Sezioni',
+        'Your first assessment, reviews and progress reports will appear here. I will let you know when there is something new.' => 'Qui troverai la tua valutazione iniziale, le revisioni e i report sui tuoi progressi. Ti avviso io quando c’è qualcosa di nuovo.',
+        'This area is for athletes I coach. If you are one of them, message me and I will set up your login.' => 'Quest’area è per gli atleti che seguo. Se sei uno di loro, scrivimi e ti creo l’accesso.',
+        'Pick a time that suits you' => 'Scegli l’orario che preferisci',
+        'Your one-off consult with Marine Lenehan, sports nutritionist' => 'La tua consulenza una tantum con Marine Lenehan, nutrizionista sportiva',
+        'I usually reply within a few hours' => 'Di solito rispondo entro poche ore', 'Free for coaching clients' => 'Gratis per gli atleti seguiti',
+        'Your plan, workouts and analysis' => 'Il tuo piano, gli allenamenti e le analisi', 'Your plan and workouts' => 'Il tuo piano e gli allenamenti',
+        'PDF · opens in a new tab' => 'PDF · si apre in una nuova scheda', 'Open' => 'Apri', 'min read' => 'min di lettura', 'Document' => 'Documento',
+        'Matteo Cigala, your coach, in the white Cigala Cycling jersey' => 'Matteo Cigala, il tuo coach, con la maglia bianca Cigala Cycling',
+    ];
+    return ($GLOBALS['cc_ath_lang'] === 'it' && isset($IT[$s])) ? $IT[$s] : $s;
+}
+
 /* ---------- who is who ---------- */
 function cc_ath_page_of($uid, $create = false) {
     $q = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_user', 'meta_value' => (int) $uid, 'numberposts' => 1, 'fields' => 'ids']);
@@ -53,9 +99,15 @@ function cc_ath_page_of($uid, $create = false) {
     $id = wp_insert_post(['post_type' => 'cc_athlete', 'post_status' => 'private', 'post_title' => $name, 'post_content' => '', 'meta_input' => ['cc_user' => (int) $uid]]);
     return is_wp_error($id) ? 0 : (int) $id;
 }
-function cc_ath_shared_page() {
-    $q = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_shared', 'meta_value' => '1', 'numberposts' => 1, 'fields' => 'ids']);
-    return $q ? (int) $q[0] : 0;
+function cc_ath_shared_page($lang = 'en') {   // the shared hub in the athlete's language (English when there is no Italian one)
+    $q = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_shared', 'meta_value' => '1', 'numberposts' => -1, 'fields' => 'ids', 'orderby' => 'ID', 'order' => 'ASC']);
+    $en = 0;
+    foreach ($q as $id) {
+        $l = get_post_meta($id, 'cc_lang', true) ?: 'en';
+        if ($l === $lang) return (int) $id;
+        if ($l === 'en' && !$en) $en = (int) $id;
+    }
+    return $en;
 }
 function cc_ath_is_coach() { return current_user_can('edit_pages'); }
 function cc_ath_can_see($pid) {
@@ -83,7 +135,7 @@ add_action('manage_cc_athlete_posts_custom_column', function ($col, $pid) {
     if ($col !== 'cc_user') return;
     if (get_post_meta($pid, 'cc_shared', true)) { echo 'All athletes'; return; }
     $u = get_userdata((int) get_post_meta($pid, 'cc_user', true));
-    echo $u ? esc_html($u->user_login . ' (' . $u->user_email . ')') : '—';
+    echo $u ? esc_html($u->user_login . ' (' . $u->user_email . ')' . (cc_ath_user_lang($u->ID) === 'it' ? ' · Italiano' : '')) : '—';
 }, 10, 2);
 
 /* ---------- private files: uploads made inside an athlete page go to uploads/cc-private ---------- */
@@ -174,27 +226,38 @@ function cc_ath_inner() {
     $url = home_url('/' . CC_ATH_SLUG . '/');
     $o = '<div class="ath">';
     if (!is_user_logged_in()) {
+        $al = strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '');
+        $GLOBALS['cc_ath_lang'] = (($_GET['lang'] ?? '') === 'it' || (($_GET['lang'] ?? '') !== 'en' && strpos($al, 'it') === 0)) ? 'it' : 'en';
+        $it = $GLOBALS['cc_ath_lang'] === 'it';
         $next = isset($_GET['next']) ? add_query_arg('cc_file', (int) $_GET['next'], $url) : $url;
-        $o .= '<div class="ath-login"><p class="eyebrow">Coached athletes</p><h1>Athlete login</h1>'
-            . '<p class="ath-lede">Your training guides, links and your own reports, all in one place.</p>';
-        if (isset($_GET['login'])) $o .= '<p class="ath-err" role="alert">That username or password is not right. Try again, or message me and I will reset it.</p>';
+        $o .= '<div class="ath-login"><p class="eyebrow">' . cc_t('Coached athletes') . '</p><h1>' . cc_t('Athlete login') . '</h1>'
+            . '<p class="ath-lede">' . cc_t('Your training guides, links and your own reports, all in one place.') . '</p>';
+        if (isset($_GET['login'])) $o .= '<p class="ath-err" role="alert">' . cc_t('That username or password is not right. Try again, or message me and I will reset it.') . '</p>';
         $o .= '<form method="post" action="' . esc_url(site_url('wp-login.php', 'login_post')) . '">'
-            . '<label for="ath-u">Username or email</label><input id="ath-u" name="log" type="text" autocomplete="username" autocapitalize="none" required>'
-            . '<label for="ath-p">Password</label><input id="ath-p" name="pwd" type="password" autocomplete="current-password" required>'
-            . '<label class="ath-rem"><input name="rememberme" type="checkbox" value="forever" checked> Keep me logged in</label>'
+            . '<label for="ath-u">' . cc_t('Username or email') . '</label><input id="ath-u" name="log" type="text" autocomplete="username" autocapitalize="none" required>'
+            . '<label for="ath-p">' . cc_t('Password') . '</label><input id="ath-p" name="pwd" type="password" autocomplete="current-password" required>'
+            . '<label class="ath-rem"><input name="rememberme" type="checkbox" value="forever" checked> ' . cc_t('Keep me logged in') . '</label>'
             . '<input type="hidden" name="redirect_to" value="' . esc_url($next) . '">'
-            . '<button type="submit" class="btn btn-go">Log in</button></form>'
-            . '<p class="ath-help">Forgot your password? <a href="https://wa.me/message/WVBRO6XAMQMCH1" target="_blank" rel="noopener">WhatsApp me</a> or <a href="mailto:info@cigalacycling.com">email me</a> and I will send you a new one.</p>'
-            . '<p class="ath-help">Not coached yet? <a href="' . esc_url(home_url('/individual-packages/')) . '">See the coaching packages</a>.</p></div>';
+            . '<button type="submit" class="btn btn-go">' . cc_t('Log in') . '</button></form>'
+            . ($it ? '<p class="ath-help">Password dimenticata? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">Scrivimi su WhatsApp</a> o <a href="mailto:matteo@cigalacycling.com">mandami un’email</a> e te ne invio una nuova.</p>'
+                   . '<p class="ath-help">Non sei ancora seguito? <a href="' . esc_url(home_url('/preparatore-di-ciclismo-italia/')) . '">Scopri il coaching</a>.</p>'
+                   : '<p class="ath-help">Forgot your password? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a> or <a href="mailto:matteo@cigalacycling.com">email me</a> and I will send you a new one.</p>'
+                   . '<p class="ath-help">Not coached yet? <a href="' . esc_url(home_url('/individual-packages/')) . '">See the coaching packages</a>.</p>')
+            . '</div>';
         return $o . '</div>';
     }
     $me = wp_get_current_user(); $mine = cc_ath_page_of($me->ID); $coach = cc_ath_is_coach();
+    $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($me->ID);
     if (!$mine && !$coach) {
-        return $o . '<h1>Athlete area</h1><p>This area is for athletes I coach. If you are one of them, message me and I will set up your login.</p>'
-             . '<p><a class="btn btn-ghost" href="' . esc_url(wp_logout_url($url)) . '">Log out</a></p></div>';
+        return $o . '<h1>' . cc_t('Athlete area') . '</h1><p>' . cc_t('This area is for athletes I coach. If you are one of them, message me and I will set up your login.') . '</p>'
+             . '<p><a class="btn btn-ghost" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a></p></div>';
     }
     $view = $mine;
     if ($coach && isset($_GET['view']) && get_post_type((int) $_GET['view']) === 'cc_athlete') $view = (int) $_GET['view'];
+    // the coach sees each athlete's page in that athlete's language; ?lang=it|en previews either hub
+    if ($coach) $GLOBALS['cc_ath_lang'] = ($v = (int) get_post_meta($view, 'cc_user', true)) ? cc_ath_user_lang($v) : 'en';
+    if ($coach && in_array($_GET['lang'] ?? '', ['it', 'en'], true)) $GLOBALS['cc_ath_lang'] = $_GET['lang'];
+    $lang = $GLOBALS['cc_ath_lang'];
     $first = $me->first_name ?: $me->display_name;
     // personal numbers: days since the login was made, and reports in their page
     $vu = $view ? get_userdata((int) get_post_meta($view, 'cc_user', true)) : null;
@@ -202,31 +265,32 @@ function cc_ath_inner() {
     $days = max(1, (int) floor((time() - strtotime($since . ' UTC')) / DAY_IN_SECONDS) + 1);
     $mineHtml = $view ? cc_ath_dress(trim(cc_ath_content($view))) : '';
     $nrep = substr_count($mineHtml, 'class="ath-file"');
-    $o .= '<header class="ath-hero"><div class="ath-hero-txt"><p class="eyebrow">Athlete area' . ($coach ? ' · coach view' : '') . '</p>'
-        . '<h1><span class="ath-greet">Welcome</span>, ' . esc_html($first) . '</h1>'
-        . '<p class="ath-lede">Everything for your coaching in one place. Train smarter. Ride faster.</p>'
-        . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . ($nrep === 1 ? 'report' : 'reports') . ' in your folder</span></div>' : '')
-        . '<a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">Log out</a></div>'
+    $o .= '<header class="ath-hero"><div class="ath-hero-txt"><p class="eyebrow">' . cc_t('Athlete area') . ($coach ? cc_t(' · coach view') : '') . '</p>'
+        . '<h1><span class="ath-greet" data-l="' . $lang . '">' . cc_t('Welcome') . '</span>, ' . esc_html($first) . '</h1>'
+        . '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>'
+        . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . cc_t($nrep === 1 ? 'report in your folder' : 'reports in your folder') . '</span></div>' : '')
+        . '<a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a></div>'
         . '<div class="ath-hero-me">' . cc_ath_sig_photo() . '</div></header>';
     if ($coach) {
         $list = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'meta_key' => 'cc_user']);
         $o .= '<div class="ath-coach"><p><b>Coach view.</b> You see what every athlete sees. Choose an athlete to see their own reports, or add one in WordPress: Users &gt; Add New (role Subscriber).</p><p class="ath-list">';
-        foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . esc_html($p->post_title) . '</a>';
+        foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . esc_html($p->post_title)
+            . (cc_ath_user_lang((int) get_post_meta($p->ID, 'cc_user', true)) === 'it' ? ' · IT' : '') . '</a>';
         $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . apply_filters('cc_ath_coach_links', '') . '</div>';
         // coach-only pages (e.g. ?board=availability, from availability.php); empty unless a module adds one
         $board = isset($_GET['board']) ? sanitize_key($_GET['board']) : '';
         if ($board !== '' && ($b = apply_filters('cc_ath_board', '', $board)) !== '') return $o . $b . '</div>' . cc_ath_js();
     }
-    $hub = ($shared = cc_ath_shared_page()) ? cc_ath_sections(cc_ath_dress(cc_ath_content($shared))) : ['', []];
-    $nav = [['reports', 'Your reports']];
+    $hub = ($shared = cc_ath_shared_page($lang)) ? cc_ath_sections(cc_ath_dress(cc_ath_content($shared))) : ['', []];
+    $nav = [['reports', cc_t('Your reports')]];
     foreach ($hub[1] as $s) $nav[] = $s;
     $nav = apply_filters('cc_ath_nav', $nav, $view, $coach);   // modules add their own sections (availability.php)
-    $o .= '<nav class="ath-jump" aria-label="Sections">';
+    $o .= '<nav class="ath-jump" aria-label="' . cc_t('Sections') . '">';
     foreach ($nav as $n) $o .= '<a href="#' . esc_attr($n[0]) . '">' . esc_html($n[1]) . '</a>';
     $o .= '</nav>';
-    $o .= '<section class="ath-s ath-mine" id="reports"><h2>' . cc_ath_icon('reports', 'ath-hic') . 'Your reports</h2>'
+    $o .= '<section class="ath-s ath-mine" id="reports"><h2>' . cc_ath_icon('reports', 'ath-hic') . cc_t('Your reports') . '</h2>'
         . ($mineHtml !== '' ? '<div class="ath-body">' . $mineHtml . '</div>'
-           : '<div class="ath-empty">' . cc_ath_icon('doc') . '<p>Your first assessment, reviews and progress reports will appear here. I will let you know when there is something new.</p></div>')
+           : '<div class="ath-empty">' . cc_ath_icon('doc') . '<p>' . cc_t('Your first assessment, reviews and progress reports will appear here. I will let you know when there is something new.') . '</p></div>')
         . '</section>';
     $o .= apply_filters('cc_ath_after_reports', '', $view, $coach);
     $o .= $hub[0];
@@ -266,7 +330,7 @@ function cc_ath_kind($href) {
           ['vekta', 'bolt', 'Your plan, workouts and analysis'], ['trainingpeaks', 'peaks', 'Your plan and workouts'],
           ['training-zones', 'zones', ''], ['carbs-per-hour', 'carbs', ''], ['critical-power', 'cp', ''], ['ftp-test', 'ftp', ''],
           ['sweat-rate', 'sweat', ''], ['climb-time', 'climb', ''], ['gear-speed', 'gear', ''], ['swim-pace', 'swim', ''], ['.pdf', 'doc', '']];
-    foreach ($m as $x) if (stripos($href, $x[0]) !== false) return [$x[1], $x[2]];
+    foreach ($m as $x) if (stripos($href, $x[0]) !== false) return [$x[1], $x[2] === '' ? '' : cc_t($x[2])];
     return ['link', ''];
 }
 function cc_ath_attr($attrs, $name) { return preg_match('/\b' . $name . '="([^"]*)"/', $attrs, $m) ? html_entity_decode($m[1]) : ''; }
@@ -282,9 +346,9 @@ function cc_ath_dress($html) {
     // file blocks (PDFs) -> download cards
     $html = preg_replace_callback('#<div class="wp-block-file"[^>]*>(.*?)</div>#s', function ($m) {
         if (!preg_match('#<a ([^>]*)>(.*?)</a>#s', $m[1], $a)) return $m[0];
-        $href = cc_ath_attr($a[1], 'href'); $name = trim(wp_strip_all_tags($a[2])) ?: 'Document';
+        $href = cc_ath_attr($a[1], 'href'); $name = trim(wp_strip_all_tags($a[2])) ?: cc_t('Document');
         return '<a class="ath-file" href="' . esc_url($href) . '" target="_blank" rel="noopener">' . cc_ath_icon('doc')
-             . '<span class="ath-tt"><b>' . esc_html($name) . '</b><small>PDF · opens in a new tab</small></span><span class="ath-dl">Open</span></a>';
+             . '<span class="ath-tt"><b>' . esc_html($name) . '</b><small>' . cc_t('PDF · opens in a new tab') . '</small></span><span class="ath-dl">' . cc_t('Open') . '</span></a>';
     }, $html);
     // lists of blog links -> photo cards
     $html = preg_replace_callback('#<ul class="wp-block-list">(.*?)</ul>#s', function ($m) {
@@ -297,7 +361,7 @@ function cc_ath_dress($html) {
             $img = $pid ? get_the_post_thumbnail_url($pid, 'medium_large') : '';
             $min = $pid ? max(2, (int) round(str_word_count(wp_strip_all_tags(get_post_field('post_content', $pid))) / 220)) : 0;
             $out .= '<a class="ath-read" href="' . esc_url($href) . '"><span class="ath-read-img"' . ($img ? ' style="background-image:url(' . esc_url($img) . ')"' : '') . '></span>'
-                  . '<span class="ath-read-t">' . wp_strip_all_tags($x[2]) . '</span>' . ($min ? '<small>' . $min . ' min read</small>' : '') . '</a>';
+                  . '<span class="ath-read-t">' . wp_strip_all_tags($x[2]) . '</span>' . ($min ? '<small>' . $min . ' ' . cc_t('min read') . '</small>' : '') . '</a>';
         }
         return '<div class="ath-reads">' . $out . '</div>';
     }, $html);
@@ -307,7 +371,7 @@ function cc_ath_dress($html) {
 function cc_ath_sections($html) {
     $parts = preg_split('#(<h2[^>]*>.*?</h2>)#s', $html, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
     $out = ''; $nav = []; $open = false;
-    $icons = [['quick', 'bolt'], ['app', 'phone'], ['guide', 'doc'], ['pdf', 'doc'], ['tool', 'gauge'], ['read', 'book'], ['blog', 'book']];
+    $icons = [['quick', 'bolt'], ['rapid', 'bolt'], ['app', 'phone'], ['guide', 'doc'], ['guida', 'doc'], ['pdf', 'doc'], ['tool', 'gauge'], ['strument', 'gauge'], ['read', 'book'], ['lettur', 'book'], ['legg', 'book'], ['blog', 'book']];
     foreach ($parts as $p) {
         if (preg_match('#^<h2[^>]*>(.*?)</h2>$#s', $p, $h)) {
             if ($open) $out .= '</div></section>';
@@ -324,13 +388,13 @@ function cc_ath_sections($html) {
 }
 function cc_ath_sig_photo() {
     $u = content_url('/uploads/2026/11/');
-    return '<span class="sigph"><img src="' . esc_url($u . 'cigala-coaching-about-hero-matteo-photo.webp') . '" alt="Matteo Cigala, your coach, in the white Cigala Cycling jersey" width="720" height="933">'
+    return '<span class="sigph"><img src="' . esc_url($u . 'cigala-coaching-about-hero-matteo-photo.webp') . '" alt="' . esc_attr(cc_t('Matteo Cigala, your coach, in the white Cigala Cycling jersey')) . '" width="720" height="933">'
          . '<img class="signature" src="' . esc_url($u . 'cigala-coaching-matteo-cigala-signature.webp') . '" alt="" aria-hidden="true" width="720" height="933"><span class="sig-anchor" aria-hidden="true"></span></span>';
 }
 function cc_ath_js() {
     return <<<'JS'
 <script>(function(){
-var g=document.querySelector('.ath-greet');if(g){var h=new Date().getHours();g.textContent=h<5?'Good evening':h<12?'Good morning':h<18?'Good afternoon':'Good evening';}
+var g=document.querySelector('.ath-greet');if(g){var h=new Date().getHours(),it=g.getAttribute('data-l')==='it';g.textContent=it?(h>=5&&h<13?'Buongiorno':h>=13&&h<18?'Buon pomeriggio':'Buonasera'):(h<5?'Good evening':h<12?'Good morning':h<18?'Good afternoon':'Good evening');}
 try{localStorage.setItem('cc_tools_ok','1');}catch(e){}   /* coached athletes skip the newsletter step on the free tools */
 var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,io='IntersectionObserver' in window;
 document.querySelectorAll('.ath-n').forEach(function(el){var n=+el.getAttribute('data-n');if(rm||!n)return;var s=0;el.textContent='0';
@@ -343,7 +407,8 @@ if(!rm&&io){document.documentElement.classList.add('ath-anim');var o=new Interse
 JS;
 }
 function cc_ath_shortcode() {   // in the site design: the .cc wrapper picks up the Coaching kit styles
-    return '<div class="cc cc-page"><section class="ath-sec"><div class="in">' . cc_ath_inner() . '</div></section></div>';
+    $inner = cc_ath_inner();
+    return '<div class="cc cc-page" lang="' . ($GLOBALS['cc_ath_lang'] === 'it' ? 'it' : 'en') . '"><section class="ath-sec"><div class="in">' . $inner . '</div></section></div>';
 }
 add_shortcode('cc_athletes', 'cc_ath_shortcode');
 add_action('wp_head', function () {

@@ -428,7 +428,15 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Matteo's feedback 16 Nov, done: the logo is on the email (dark band, site header logo) and the mock-up; changes can be "Gym only" or "Indoor only", limited to some weekdays (e.g. Tuesdays only) and open-ended ("from 1 Dec onwards"; Vekta gets those for the next 8 weeks); the note's placeholder suggests things like "gym only on Tuesdays for 10 weeks"; the weekly total no longer says "Great, I can work with that".
   - Open: Vekta key location and calendar item type; whether the privacy policy draft should mention voice notes.
 
-### Athlete area: Italian athletes (planned, after launch, Matteo 16 Nov)
+### Athlete area: Italian athletes (Matteo 16 Nov)
+- **Done 16 Nov (staging):**
+  - "Hub language" (English or Italiano) on each WordPress user, under Add New and the profile; user meta `cc_lang`.
+  - Italian athletes get the whole hub in Italian: strings via `cc_t()` in athlete-area.php, and the shared hub "Shared hub (Italian athletes)" (post meta `cc_lang=it`, built from `HUB_IT` in tools/coaching_athlete_area.py).
+  - The login page is in Italian on phones set to Italian (Accept-Language, or `?lang=it`).
+  - The coach view shows each athlete in their language and marks Italian athletes with "IT"; `?lang=it` previews the Italian hub.
+  - The PDFs show the English files marked "(in inglese)" until `<name>-IT.pdf` files exist, are uploaded and listed in athlete-hub-files.json. The PDF session was asked for them on 16 Nov; the Marine ones need her approval.
+  - The site header and footer stay English (they're the site's own).
+- **Still planned:**
 - **Per-athlete language:** use the WordPress user Language setting (locale). Matteo sets it when he creates the login.
 - **Order (recommended):**
   1. The hub interface and the notification emails in Italian (greeting, sections, buttons, login page, empty states).

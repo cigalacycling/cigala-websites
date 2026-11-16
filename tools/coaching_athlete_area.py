@@ -90,6 +90,47 @@ HUB = lambda: (h2('Quick links')
        + ''.join(f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{g}</h3><!-- /wp:heading -->' + links(items) for g, items in READ))
 
 
+# ---------- the Italian hub (Matteo 16 Nov: Italian athletes see everything in Italian) ----------
+# Same sections. The PDFs are the English ones, marked "(in inglese)", until the Italian versions are ready (their paths go in
+# GUIDES_IT; the two co-branded with Marine need her approval first). The tools pages are in English, with Italian labels here.
+GUIDES_IT = [('Forza e core', [('Stretching e Core', 'coaching/training-sheets/Cigala-Cycling-Stretches-and-Core.pdf'),
+                               ('Circuito palestra: inverno, primo mese', 'coaching/training-sheets/Cigala-Cycling-Gym-Circuit-Winter-First-Month.pdf'),
+                               ('Circuito palestra: inverno, secondo e terzo mese', 'coaching/training-sheets/Cigala-Cycling-Gym-Circuit-Winter-Second-Third-Month.pdf'),
+                               ('Circuito palestra: in stagione', 'coaching/training-sheets/Cigala-Cycling-Gym-Circuit-In-Season.pdf')]),
+             ('Alimentazione, con Marine Lenehan', [('Guida nutrizionale', 'coaching/nutrition-guide/Cigala-Cycling-x-Vivify-Sports-Nutritional-Guide.pdf'),
+                                                    ('Lista integratori', 'coaching/supplement-list/Cigala-Cycling-x-Vivify-Sports-Supplement-List.pdf')])]
+def guides_html_it():
+    ids = json.load(open(FILES)) if os.path.exists(FILES) else {}
+    out = ''
+    for g, items in GUIDES_IT:
+        blocks = ''
+        for t, f in items:
+            it = f[:-4] + '-IT.pdf'   # the Italian file once it exists and is uploaded; until then the English one
+            if it in ids: blocks += file_block(ids[it]['id'], ids[it]['url'], t)
+            elif f in ids: blocks += file_block(ids[f]['id'], ids[f]['url'], t + ' (in inglese)')
+        if blocks: out += f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{g}</h3><!-- /wp:heading -->' + blocks
+    return out or para('Core, esercizi e palestra: i PDF arriveranno qui a breve.')
+TOOLS_IT = [('Zone di allenamento', '/tools/training-zones-calculator/'), ('Carboidrati per ora', '/tools/carbs-per-hour-calculator/'),
+            ('Critical Power', '/tools/critical-power-calculator/'), ('Test FTP', '/tools/ftp-test-calculator/'),
+            ('Tasso di sudorazione', '/tools/sweat-rate-calculator/'), ('Tempo in salita', '/tools/climb-time-calculator/'),
+            ('Rapporti e velocità', '/tools/gear-speed-calculator/'), ('Passo nuoto (CSS)', '/tools/swim-pace-calculator/')]
+READ_IT = [('In italiano', [('Come prepararsi alla Gran Fondo Strade Bianche', '/blog/preparazione-gran-fondo-strade-bianche/'),
+                            ('Come allenarsi per la Maratona dles Dolomites', '/blog/preparazione-maratona-dles-dolomites/')])] + \
+          [({'Training': 'Allenamento', 'Fuelling': 'Alimentazione', 'Recovery': 'Recupero', 'Race week': 'Settimana di gara'}[g] + ' (in inglese)', items) for g, items in READ]
+HUB_IT = lambda: (h2('Link rapidi')
+       + buttons(btn('Prenota una call di aggiornamento', 'https://cal.com/matteocigala/15min'), btn('Consulenza nutrizionale con Marine', 'https://www.vivifysports.com/nutritionalcoaching'),
+                 btn('WhatsApp Matteo', 'https://wa.me/353834777697', True), btn('Community su Skool', 'https://www.skool.com/cigala-cycling-collective-1115', True))
+       + para('La community su Skool è gratuita per gli atleti che seguo. Non hai ancora ricevuto l’invito? <a href="mailto:matteo@cigalacycling.com?subject=Invito%20Skool">Scrivimi</a> e te lo mando (controlla anche lo spam, a volte finisce lì).')
+       + h2('Le tue app di allenamento')
+       + para('Il tuo piano è su Vekta e si sincronizza con Garmin, Wahoo o Zwift.')
+       + buttons(btn('Apri Vekta', 'https://joinvekta.com/', True))
+       + h2('Guide di allenamento')
+       + guides_html_it()
+       + h2('Strumenti di allenamento')
+       + buttons(*[btn(t, u, True, False) for t, u in TOOLS_IT], cls='ath-tools')
+       + h2('Da leggere')
+       + ''.join(f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{g}</h3><!-- /wp:heading -->' + links(items) for g, items in READ_IT))
+
 if __name__ == '__main__':
     print('code snippets', req(f'{B}/wp/v2/plugins/code-snippets/code-snippets?_fields=plugin,status', {'status': 'active'}, 'POST'))
     code = open(ROOT + 'coaching/athlete-area/athlete-area.php').read()
@@ -112,10 +153,17 @@ if __name__ == '__main__':
                                          'content': '<!-- wp:shortcode -->[cc_athletes]<!-- /wp:shortcode -->',
                                          'meta': {}}, 'POST')]
     print('page', pg[0].get('id'), pg[0].get('link'))
-    hub = [p for p in (req(f'{B}/wp/v2/cc_athlete?status=private&per_page=100&context=edit&_fields=id,title,meta') or []) if isinstance(p, dict) and (p.get('meta') or {}).get('cc_shared')]
+    shared = [p for p in (req(f'{B}/wp/v2/cc_athlete?status=private&per_page=100&context=edit&_fields=id,title,meta') or []) if isinstance(p, dict) and (p.get('meta') or {}).get('cc_shared')]
+    hub = [p for p in shared if (p['meta'].get('cc_lang') or 'en') == 'en']
+    hub_it = [p for p in shared if p['meta'].get('cc_lang') == 'it']
     if not hub:
         hub = [req(f'{B}/wp/v2/cc_athlete', {'title': 'Shared hub (all athletes)', 'status': 'private', 'content': HUB(), 'meta': {'cc_shared': True}}, 'POST')]
     elif '--hub' in sys.argv:   # upload the guides, then rewrite the shared hub from HUB above (overwrites edits made in WordPress)
         upload_guides(hub[0]['id'])
         req(f'{B}/wp/v2/cc_athlete/{hub[0]["id"]}', {'content': HUB()}, 'POST')
     print('hub', hub[0].get('id'), hub[0].get('message', ''))
+    if not hub_it:
+        hub_it = [req(f'{B}/wp/v2/cc_athlete', {'title': 'Shared hub (Italian athletes)', 'status': 'private', 'content': HUB_IT(), 'meta': {'cc_shared': True, 'cc_lang': 'it'}}, 'POST')]
+    elif '--hub' in sys.argv:
+        req(f'{B}/wp/v2/cc_athlete/{hub_it[0]["id"]}', {'content': HUB_IT()}, 'POST')
+    print('hub it', hub_it[0].get('id'), hub_it[0].get('message', ''))
