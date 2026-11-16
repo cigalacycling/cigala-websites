@@ -194,6 +194,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Emails go to **tours@cigalacycling.com** (Matteo 15 Nov; the per-site inboxes are in `shared/BUSINESS.md`). Subjects: "New message from the Tours website" (Contact) and "New custom tour enquiry from the Tours website" (Custom tours). Content: [all-fields].
   - Before-change backups: `stg-tours/backup/page-461-before-form.json`, `page-1576-before-form.json`.
   - When these pages get the new design, keep the same form widget.
+- **Tour films, 16 Nov (Matteo):** `TRIP_SHORTS` in build_tours_trips.py: YouTube Shorts per tour (team or clients), section "Watch the trip / <tour> on film" after the overview. Upright cards, our own photo as the cover, YouTube only after a tap (youtube-nocookie); a swipe row on phones. Strade Bianche: jYGwgkZ9CDM, 3hmbEQFiTHY. More to come for other tours.
 - **Round 4, 16 Nov (Matteo):**
   - Section menu: while pinned, header and menu are one solid bar (no line, no see-through strip); the section you are in turns red (scroll spy).
   - Hero: days and nights, then distance and climbing, on two rows. Homepage cards: no description on the busiest cards (event badge + availability). Distance and climbing chip on homepage, destination and list cards.

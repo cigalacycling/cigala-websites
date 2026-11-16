@@ -104,6 +104,7 @@ HOTEL_TEXT = {'Hotel Soleil': '<p>Located in the heart of La Villa, at the foot 
 HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629, 8631]), ('Hotel Soleil', 4, False, 8709, [8707, 8708, 10952])]}
 DYN = set(IDS)   # the dynamic trip page on every tour (Matteo 16 Nov, after the Algarve pilot): count-up numbers, animated map badge, route drawn day by day, days sliding in
 HOTEL_PIC_ORDER_IDS = {'discover-the-algarve-granfondo': [2572, 2563, 2565, 2564, 2566, 2561, 2567, 2562, 2573]}   # Vilar do Golf: the resort and pool first, not the gym
+TRIP_SHORTS = {'chianti-gran-fondo-strade-bianche': [('jYGwgkZ9CDM', 3196), ('3hmbEQFiTHY', 4871)]}   # YouTube Shorts from Matteo (team or clients), upright, after the overview; cover = our own photo (Matteo 16 Nov)
 TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, cover photo (our own: no YouTube request until the visitor taps play) - Matteo 16 Nov
 HERO_TALL = {'tuscany-epic-gravel'}   # about 2 cm taller (Matteo 16 Nov)
 HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 3719,   # Dolomites: wide drone photo of the towers and the pass road, not a Maratona photo (Matteo 16 Nov)
@@ -396,6 +397,12 @@ def trip(slug):
                    f'<div class="panel vcard tvid"><button type="button" class="yt" data-id="{vid}" aria-label="Play the {E(re.sub(r"\s*\|\s*Gravel$", "", tr["name"]))} video">'
                    f'{img_tag(cover, 1600, alt=f"{tr["name"]} gravel cycling tour video - Cigala Cycling Tours")}<span class="play" aria-hidden="true"></span></button></div></div></section>')
         nav.append(('video', 'Video'))
+    if slug in TRIP_SHORTS:   # short films from the tour: load only on tap (YT_JS, youtube-nocookie)
+        nm_ = re.sub(r"\s*\|\s*Gravel$", "", tr["name"])
+        cards_ = ''.join(f'<div class="vcard panel shortv"><button type="button" class="yt" data-id="{v}" aria-label="Play a video from the {E(nm_)} tour">'
+                         f'{img_tag(c, 700, alt=f"{nm_} bike tour video - Cigala Cycling Tours")}<span class="play" aria-hidden="true"></span></button></div>' for v, c in TRIP_SHORTS[slug])
+        out.append(f'<section id="films" style="padding-top:28px"><div class="in"><div class="head"><div><div class="eyebrow">Watch the trip</div>'
+                   f'<p class="band-title">{E(nm_)} on film</p><div class="bar"></div></div></div><div class="shorts">{cards_}</div></div></section>')
     op = one('operator')
     if op:
         logo = next((v for k, v, s in op['items'] if k == 'img'), None)
@@ -807,6 +814,10 @@ html .cl .tolfe .tolfe-tx { grid-column: 1 / -1; }
 html .cl .tolfe p { color: var(--text-2); line-height: 1.65; max-width: 80ch; }
 html .cl .tolfe .tnote a { color: var(--green-text, #2bd47a); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 700px) { html .cl .tolfe .tolfe-in { grid-template-columns: 1fr; } html .cl .tolfe .tolfe-vid { max-width: 280px; margin: 0 auto; width: 100%; } html .cl .tolfe .tolfe-ph { height: auto; min-height: 0; aspect-ratio: 4 / 3; } }
+html .cl .shorts { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 260px)); gap: 16px; }
+html .cl .shorts .vcard { border-radius: 12px; }
+html .cl .shorts .vcard .yt, html .cl .shorts .vcard iframe { aspect-ratio: 9 / 16; }
+@media (max-width: 600px) { html .cl .shorts { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 72%; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 16px; margin: 0 -16px !important; padding: 0 16px 6px !important; scrollbar-width: none; } html .cl .shorts .vcard { scroll-snap-align: start; } }
 html .cl .opbox .opnote a { color: var(--green-text, #2bd47a); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
 html .cl .hotel h3, html .cl .hotel h2 { font-size: 22px; }
