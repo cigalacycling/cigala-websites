@@ -77,6 +77,13 @@ EXTRA_FAQ = {   # Matteo 16 Nov: these tours had no FAQ live; answers only use f
    ('Should I specifically train for a trip like this?', TRAIN),
    ('What should I pack for this trip?', PACK.replace('WHY', 'April is mild by the sea, but the mountains around Mount Olympus are much cooler.'))],
 }
+EVENT_DAY = {   # itinerary day -> (title, official courses); 2026 editions, checked 16 Nov (Matteo: list the options, "from" the shortest)
+ 'chianti-gran-fondo-strade-bianche': {5: ('GRAN FONDO STRADE BIANCHE', [('Gran Fondo', '137 km'), ('Medio Fondo', '87 km')])},
+ 'discover-the-algarve-granfondo': {4: ('GRAN FONDO ALGARVE', [('Granfondo', '130 km'), ('Mediofondo', '90 km')])},
+ 'maratona-dles-dolomites': {5: ('MARATONA DLES DOLOMITES', [('Maratona', '138 km, 4,230 m'), ('Medio', '106 km, 3,130 m'), ('Sellaronda', '55 km, 1,780 m')])},
+ 'lake-como-gran-fondo-il-lombardia': {5: ('GRANFONDO IL LOMBARDIA', [('Gran Fondo', '110 km, start and finish in Bergamo')])},
+ 'tour-of-flanders-experience': {3: ('WE RIDE FLANDERS SPORTIVE', [('Short', '79 km'), ('Medium', '133 km'), ('Long', '163 km'), ('Full Ronde', '247 km from Antwerp')])},
+}
 HOTEL_TEXT = {'Hotel Soleil': '<p>Located in the heart of La Villa, at the foot of the famous Gran Risa, Soleil Alpine Lifestyle Hotel blends contemporary Alpine design with the character of South Tyrol. Modern rooms, excellent dining, an indoor pool, sauna and steam bath, and dedicated cycling services make it an ideal base for the Sellaronda and the Maratona climbs.</p>'}   # shorter, in line with Rezia (Matteo 16 Nov)
 HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629, 8631]), ('Hotel Soleil', 4, False, 8709, [8707, 8708])]}
 DYN = set(IDS)   # the dynamic trip page on every tour (Matteo 16 Nov, after the Algarve pilot): count-up numbers, animated map badge, route drawn day by day, days sliding in
@@ -410,6 +417,7 @@ def trip(slug):
         for n, d in enumerate(S('day'), 1):
             if str(n) not in dmeta: continue
             t, km, up = km_m(text_of(d['h']))
+            if n in EVENT_DAY.get(slug, {}): t, opts_ = EVENT_DAY[slug][n]; km = (f"from {min(int(re.search(r'(\d+)', o[1]).group(1)) for o in opts_)} km" if len(opts_) > 1 else f"{re.search(r'(\d+)', opts_[0][1]).group(1)} km")
             kmv = km or re.search(r'(\d+)\s*km', text_of(''.join(v for k, v, s_ in d['items'] if k == 'text'))) and f"{re.search(r'(\d+)\s*km', text_of(''.join(v for k, v, s_ in d['items'] if k == 'text'))).group(1)} km"
             dl_.append(f'<li><button type="button" data-d="{n}"><span class="sw" style="background:{dmeta[str(n)]["color"]}">{n}</span>'
                        f'<span class="dt">{E(t)}</span>{f"<span class=dk>{E(kmv)}</span>" if kmv else ""}</button></li>')
@@ -426,11 +434,16 @@ def trip(slug):
         lis = []
         for n, d in enumerate(days, 1):
             t, km, up = km_m(text_of(d['h']))
+            evo = ''
+            if n in EVENT_DAY.get(slug, {}):   # an event day: the official courses, "from" the shortest (Matteo 16 Nov)
+                t, opts_ = EVENT_DAY[slug][n]; up = None
+                km = (f"from {min(int(re.search(r'(\d+)', o[1]).group(1)) for o in opts_)} km" if len(opts_) > 1 else f"{re.search(r'(\d+)', opts_[0][1]).group(1)} km")
+                evo = f'<p class="evopts"><span>{"Choose your course:" if len(opts_) > 1 else "The course:"}</span> ' + ' · '.join(f'<b>{E(a)}</b> {E(b)}' for a, b in opts_) + '</p>'
             chips = (f'<span class="chip km">{km}</span>' if km else '') + (f'<span class="chip up">{up}</span>' if up else '')
             body = ''.join(clean(v) for k, v, s in d['items'] if k in ('text',)) + ''.join(f'<p>{clean(v)}</p>' for k, v, s in d['items'] if k in ('h4', 'h5', 'h6'))
             tg = d['tag'] if d['tag'] in ('h2', 'h3') else 'h3'
             lis.append(f'<li class="day"><div class="num"><span><small>DAY</small>{n}</span></div><div class="panel box"><{tg}>{E(t)}</{tg}>'
-                       f'{f"<div class=meta>{chips}</div>" if chips else ""}<div class="prose">{body}</div></div></li>')
+                       f'{f"<div class=meta>{chips}</div>" if chips else ""}{evo}<div class="prose">{body}</div></div></li>')
         head = H(d2d, 'Itinerary') if d2d else '<div class="head"><div><div class="eyebrow">Itinerary</div><p class="band-title">Day by day</p><div class="bar"></div></div></div>'
         if slug in DYN: lis = [x.replace('<li class="day">', '<li class="day dyn-in">', 1) for x in lis]
         out.append(f'<section id="itinerary"><div class="in">{head}{gpx}<ol class="days">{"".join(lis)}</ol></div></section>')
@@ -801,6 +814,9 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
+html .cl .day .evopts { margin: 0 0 12px; font-size: 14px; color: var(--text-2); line-height: 1.7; }
+html .cl .day .evopts span { color: var(--text-3); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-right: 4px; }
+html .cl .day .evopts b { color: var(--green-text, #2bd47a); font-weight: 700; }
 html .cl .day .num { position: relative; z-index: 1; }   /* the timeline line runs behind the day circle, not into it (Matteo 16 Nov) */
 /* ---- dynamic trip page (pilot: Algarve), only when JS runs and motion is welcome ---- */
 html .cl .cardimg.pdyn { position: relative; overflow: hidden; }

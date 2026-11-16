@@ -75,17 +75,17 @@ G = {   # (lat, lon), approximate: town centres, pass summits
  'Coral Bay': (34.856, 32.364),
  # Flanders
  'Waregem': (50.888, 3.426), 'Oude Kwaremont': (50.784, 3.531), 'Paterberg': (50.781, 3.573), 'Oudenaarde': (50.845, 3.605), 'Koppenberg': (50.816, 3.600),
- 'Muur van Geraardsbergen': (50.773, 3.882), 'Bosberg': (50.761, 3.900),
+ 'Muur van Geraardsbergen': (50.773, 3.882), 'Bosberg': (50.761, 3.900), 'Taaienberg': (50.808, 3.638), 'Molenberg': (50.835, 3.740), 'Berendries': (50.807, 3.752), 'Valkenberg': (50.795, 3.716), 'Kruisberg': (50.776, 3.526),
  # Algarve
  'Quinta do Lago': (37.028, -8.018), 'Sao Bras de Alportel': (37.152, -7.888), 'Loule': (37.138, -8.020), 'Alto do Malhao': (37.214, -7.940), 'Salir': (37.240, -8.050),
  'Alte': (37.236, -8.174), 'Boliqueime': (37.135, -8.162), 'Querenca': (37.198, -7.989), 'Barranco do Velho': (37.234, -7.937), 'Tavira': (37.127, -7.649),
- 'Olhao': (37.026, -7.841), 'Sao Bartolomeu de Messines': (37.258, -8.287), 'Silves': (37.189, -8.438), 'Lagos': (37.102, -8.673), 'Monchique': (37.318, -8.556), 'Santa Catarina da Fonte do Bispo': (37.150, -7.780), 'Faro': (37.019, -7.931), 'Almancil': (37.084, -8.032), 'Vale do Lobo': (37.054, -8.069),
+ 'Olhao': (37.026, -7.841), 'Sao Bartolomeu de Messines': (37.258, -8.287), 'Silves': (37.189, -8.438), 'Lagos': (37.102, -8.673), 'Monchique': (37.318, -8.556), 'Bensafrim': (37.155, -8.735), 'Marmelete': (37.312, -8.665), 'Foia': (37.314, -8.594), 'Portimao': (37.138, -8.537), 'Santa Catarina da Fonte do Bispo': (37.150, -7.780), 'Faro': (37.019, -7.931), 'Almancil': (37.084, -8.032), 'Vale do Lobo': (37.054, -8.069),
  # Lake Como
  'Como': (45.808, 9.085), 'Civiglio': (45.826, 9.110), 'Brunate': (45.818, 9.098), 'Erba': (45.811, 9.226), 'Canzo': (45.848, 9.272), 'Sormano': (45.878, 9.247),
  'Colma di Sormano': (45.893, 9.231), 'Nesso': (45.913, 9.159), 'Bellagio': (45.987, 9.262), 'Ghisallo': (45.923, 9.268), 'Asso': (45.861, 9.270),
  'Varenna': (46.010, 9.284), 'Lecco': (45.853, 9.390), 'Cernobbio': (45.842, 9.073), 'Menaggio': (46.021, 9.238), 'Gravedona': (46.145, 9.307),
  'Colico': (46.134, 9.371), 'Onno': (45.926, 9.348), 'Bergamo': (45.698, 9.677), 'Almenno San Salvatore': (45.750, 9.590),
- "Sant'Omobono Terme": (45.806, 9.536), 'Costa Valle Imagna': (45.832, 9.497), 'Brembilla': (45.818, 9.596), 'Zogno': (45.794, 9.664), 'Selvino': (45.781, 9.751), 'Nembro': (45.744, 9.759),
+ "Sant'Omobono Terme": (45.806, 9.536), 'Costa Valle Imagna': (45.832, 9.497), 'Brembilla': (45.818, 9.596), 'Zogno': (45.794, 9.664), 'Selvino': (45.781, 9.751), 'Albino': (45.762, 9.796), 'Colle Gallo': (45.734, 9.836), 'Trescore Balneario': (45.695, 9.844), 'Nembro': (45.744, 9.759),
 }
 
 R, GR = 'fastbike', 'gravel'
@@ -170,8 +170,8 @@ DAYS = {
  'tour-of-flanders-experience': (R, {
     1: ['Waregem', 'Oude Kwaremont', 'Paterberg', 'Oudenaarde', 'Waregem'],
     2: ['Waregem', 'Oudenaarde', 'Koppenberg', 'Paterberg', 'Waregem'],
-    3: ['Oudenaarde', 'Muur van Geraardsbergen', 'Bosberg', 'Oude Kwaremont', 'Paterberg', 'Oudenaarde']},
-    ['Waregem'], ['Oude Kwaremont', 'Paterberg', 'Koppenberg', 'Muur van Geraardsbergen']),
+    3: ['Oudenaarde', 'Molenberg', 'Berendries', 'Valkenberg', 'Taaienberg', 'Koppenberg', 'Oude Kwaremont', 'Paterberg', 'Oudenaarde']},   # the short We Ride Flanders course (79 km in 2026): the Ronde finale climbs, no Muur (Matteo 16 Nov)
+    ['Waregem'], ['Oude Kwaremont', 'Paterberg', 'Koppenberg', 'Taaienberg']),
  'chianti-gran-fondo-strade-bianche': (R, {
     1: ['Radda in Chianti', 'Gaiole in Chianti', 'Radda in Chianti'],
     2: ['Radda in Chianti', 'Castelnuovo Berardenga', 'Monteaperti', 'Colle Pinzuto', 'Tolfe', 'Siena', 'Castellina in Chianti', 'Radda in Chianti'],
@@ -183,17 +183,17 @@ DAYS = {
     1: ['Quinta do Lago', 'Loule', 'Sao Bras de Alportel', 'Faro', 'Quinta do Lago'],
     2: ['Quinta do Lago', 'Loule', 'Alto do Malhao', 'Salir', 'Alte', 'Boliqueime', 'Quinta do Lago'],
     3: ['Quinta do Lago', 'Loule', 'Querenca', 'Loule', 'Quinta do Lago'],
-    4: ['Loule', 'Salir', 'Alte', 'Sao Bartolomeu de Messines', 'Silves', 'Monchique', 'Lagos'],   # the Gran Fondo goes west all the way to Lagos (Matteo 16 Nov); exact course to come from Komoot
+    4: ['Lagos', 'Bensafrim', 'Marmelete', 'Monchique', 'Foia', 'Monchique', 'Portimao', 'Lagos'],   # the Algarve Granfondo: start and finish in Lagos, over Monchique and the Foia (Matteo 16 Nov)   # the Gran Fondo goes west all the way to Lagos (Matteo 16 Nov); exact course to come from Komoot
     5: ['Quinta do Lago', 'Santa Catarina da Fonte do Bispo', 'Tavira', 'Olhao', 'Quinta do Lago'],
     6: ['Quinta do Lago', 'Almancil', 'Vale do Lobo', 'Quinta do Lago']},
-    ['Quinta do Lago'], ['Alto do Malhao', 'Querenca', 'Tavira', 'Alte', 'Monchique', 'Lagos']),
+    ['Quinta do Lago'], ['Alto do Malhao', 'Querenca', 'Tavira', 'Alte', 'Foia', 'Lagos']),
  'lake-como-gran-fondo-il-lombardia': (R, {
     1: ['Como', 'Civiglio', 'Brunate', 'Como'],
     2: ['Como', 'Erba', 'Canzo', 'Sormano', 'Colma di Sormano', 'Nesso', 'Bellagio', 'Ghisallo', 'Asso', 'Erba', 'Como'],
     3: [['Como', 'Erba', 'Asso', 'Ghisallo', 'Bellagio'], ['Varenna', 'Lecco', 'Erba', 'Como']],   # ferry Bellagio - Varenna
     4: ['Como', 'Erba', 'Lecco'],
-    5: ['Bergamo', 'Almenno San Salvatore', "Sant'Omobono Terme", 'Costa Valle Imagna', 'Brembilla', 'Zogno', 'Selvino', 'Nembro', 'Bergamo']},   # the Gran Fondo now starts and ends in Bergamo (Matteo 16 Nov); approximate course until the GPX
-    ['Como'], ['Civiglio', 'Colma di Sormano', 'Ghisallo', 'Bellagio', 'Varenna', 'Lecco', 'Bergamo', 'Selvino']),
+    5: ['Bergamo', 'Almenno San Salvatore', "Sant'Omobono Terme", 'Brembilla', 'Zogno', 'Selvino', 'Albino', 'Colle Gallo', 'Trescore Balneario', 'Bergamo']},   # one loop, no dead end (Matteo 16 Nov); official course 109.5 km, start and finish in Bergamo   # the Gran Fondo now starts and ends in Bergamo (Matteo 16 Nov); approximate course until the GPX
+    ['Como'], ['Civiglio', 'Colma di Sormano', 'Ghisallo', 'Bellagio', 'Varenna', 'Lecco', 'Bergamo', 'Selvino', 'Colle Gallo']),
  'italys-coast-to-coast': (R, {
     2: ['Viareggio', 'Pisa', 'Peccioli'],
     3: ['Peccioli', 'San Gimignano', 'Monteriggioni', 'Siena'],
@@ -207,7 +207,7 @@ COUNTRY_LABELS = {'italian-alps': [('SWITZERLAND', 46.33, 10.06), ('ITALY', 46.4
 INSET = {'lake-garda-and-stelvio': {'3': 'Day trip by van: Passo dello Stelvio'}}   # days far from the rest: a small map in the corner (Matteo 16 Nov)
 LABEL = {'Monetier-les-Bains': 'Monêtier-les-Bains', 'Col du Telegraphe': 'Col du Télégraphe', 'Briancon': 'Briançon', 'Ajdovscina': 'Ajdovščina', 'Ziri': 'Žiri',
          'Skofja Loka': 'Škofja Loka', 'Zelezniki': 'Železniki', 'Vrsic': 'Vršič Pass', 'Bled': 'Lake Bled', 'Salo': 'Salò', 'Loule': 'Loulé', 'Querenca': 'Querença',
-         'Alto do Malhao': 'Alto do Malhão', 'Sao Bras de Alportel': 'São Brás de Alportel', 'Olhao': 'Olhão', 'Stelvio': 'Passo dello Stelvio', 'Gavia': 'Passo Gavia',
+         'Alto do Malhao': 'Alto do Malhão', 'Sao Bras de Alportel': 'São Brás de Alportel', 'Olhao': 'Olhão', 'Foia': 'Fóia', 'Portimao': 'Portimão', 'Stelvio': 'Passo dello Stelvio', 'Gavia': 'Passo Gavia',
          'Mortirolo': 'Passo del Mortirolo', 'Foscagno': 'Passo Foscagno', 'Pordoi': 'Passo Pordoi', 'Sella': 'Passo Sella', 'Gardena': 'Passo Gardena',
          'Giau': 'Passo Giau', 'Falzarego': 'Passo Falzarego', 'Valparola': 'Passo Valparola', 'Campolongo': 'Passo Campolongo', 'Fedaia': 'Passo Fedaia',
          'San Pellegrino': 'Passo San Pellegrino', 'Tre Croci': 'Passo Tre Croci', 'Rifugio Auronzo': 'Tre Cime di Lavaredo', 'Ghisallo': 'Madonna del Ghisallo',

@@ -279,6 +279,19 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
     - Strade Bianche day 3 is a loop back to Radda (Castellina, Panzano, Greve, Lamole, Volpaia).
     - Algarve day 4 is the Gran Fondo to Lagos via Monchique (approximate, until Matteo sends the Komoot GPX).
     - Rivers are off the day maps.
+- **Event courses and SEO year, 16 Nov:**
+  - **Event days** list the official courses, "from" the shortest (`EVENT_DAY` in `build_tours_trips.py`, 2026 editions checked 16 Nov):
+    - Strade Bianche: 137 / 87 km;
+    - Algarve: 130 / 90 km;
+    - Maratona: 138 / 106 / 55 km;
+    - We Ride Flanders: 79 / 133 / 163 / 247 km (247 km from Antwerp);
+    - Il Lombardia: one course, 110 km from Bergamo.
+  - **Event maps:**
+    - Lombardia: a loop from Bergamo, no dead end.
+    - Algarve Gran Fondo: a Lagos loop over Monchique and the Fóia.
+    - We Ride Flanders: the Ronde finale climbs from Oudenaarde, no Muur.
+    - All three are approximate (no GPX).
+  - **SEO year:** 24 Tours guides had "2026" in their Rank Math title, now 2027 (`tools/tours_seo_year.py`); "Alpe dhuez" is now "Alpe d'Huez". The Coaching, main-site and Retail sessions were asked to do the same.
 - **Last checks, 16 Nov:**
   - **Level filters** (homepage finder and tour lists) now go by the tour's level: the easiest level it suits, the same as the card's bar meter. Expert means expert-only tours (Cyprus, Tuscany Epic, Alpine Gravel). Before, every tour suited an expert, so Expert showed all 15.
   - **Coast to Coast** is open to beginners (`tours/trips-2027.json`, `LEVEL_FROM_DATA`, FAQ).
