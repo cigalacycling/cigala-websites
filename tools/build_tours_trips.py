@@ -104,7 +104,7 @@ HOTEL_TEXT = {'Hotel Soleil': '<p>Located in the heart of La Villa, at the foot 
 HOTELS = {'maratona-dles-dolomites': [('Hotel Rezia', 3, True, 8626, [8627, 8629, 8631]), ('Hotel Soleil', 4, False, 8709, [8707, 8708, 10952])]}
 DYN = set(IDS)   # the dynamic trip page on every tour (Matteo 16 Nov, after the Algarve pilot): count-up numbers, animated map badge, route drawn day by day, days sliding in
 HOTEL_PIC_ORDER_IDS = {'discover-the-algarve-granfondo': [2572, 2563, 2565, 2564, 2566, 2561, 2567, 2562, 2573]}   # Vilar do Golf: the resort and pool first, not the gym
-TRIP_SHORTS = {'chianti-gran-fondo-strade-bianche': [('jYGwgkZ9CDM', 3196), ('3hmbEQFiTHY', 4871)]}   # YouTube Shorts from Matteo (team or clients), upright, after the overview; cover = our own photo (Matteo 16 Nov)
+TRIP_SHORTS = {}   # e.g. {'slug': [(youtube_id, cover_media_id)]}; the two Shorts Matteo sent (jYGwgkZ9CDM, 3hmbEQFiTHY) are not about Strade Bianche: off that page (16 Nov)   # YouTube Shorts from Matteo (team or clients), upright, after the overview; cover = our own photo (Matteo 16 Nov)
 TRIP_VIDEO = {'cyprus-crossing-gravel': ('jrRjn70pquM', 3353)}   # YouTube id, cover photo (our own: no YouTube request until the visitor taps play) - Matteo 16 Nov
 HERO_TALL = {'tuscany-epic-gravel'}   # about 2 cm taller (Matteo 16 Nov)
 HERO_PHOTO = {'discover-the-algarve-granfondo': 710, 'dolomites': 3719,   # Dolomites: wide drone photo of the towers and the pass road, not a Maratona photo (Matteo 16 Nov)
@@ -577,7 +577,7 @@ def trip(slug):
                           + '<div class="tolfe-tx">'
                           '<p>The day before your Gran Fondo, watch the Strade Bianche pros from a private covered terrace on the Le Tolfe climb, the final gravel sector just after Colle Pinzuto, where the race breaks apart. '
                           'You see the women\'s and men\'s races pass twice, with a Tuscan buffet lunch, an espresso bar, wine, beer and soft drinks all day, and the race live on big screens.</p>'
-                          f'<p class="tnote">Available to tour guests as a supplement. Ask us when you book, and we also send you all the details before the tour. <a href="{L}/contact/" {EXT}>Get in touch</a></p></div></div></div>')
+                          f'<p class="tnote">Available to tour guests as a supplement. Ask us when you book, and we also send you all the details before the tour.</p></div><a class="btn btn-go tolfe-go" href="{L}/contact/" {EXT}>Get in touch about the VIP day →</a></div></div>')
         out.append(f'<section id="included"><div class="in">{H(inc, "The details")}<div class="inc2"><div class="panel yes"><p class="inh">Included in the price</p><ul>{inc_li}</ul></div>{no_html}</div>'
                    f'{bands}</div></section>')
         nav.append(('included', "What's included"))
@@ -747,7 +747,8 @@ function c(){f.hidden=false;f.style.display='';if(window.innerWidth>900&&f.getBo
 addEventListener('load',c);addEventListener('resize',c);c();})();</script>""")
     # laptops: the section menu stays under the header for the whole page (sticky alone let go at the end of its block); phones: not sticky (Matteo 16 Nov)
     out.append("""<script>(function(){var t=document.querySelector('.cl .tabs');if(!t)return;var ph=document.createElement('div');t.parentNode.insertBefore(ph,t);
-function f(){var pin=window.innerWidth>900&&ph.getBoundingClientRect().top<=79;if(pin!==t.classList.contains('pinned')){t.classList.toggle('pinned',pin);ph.style.height=pin?t.offsetHeight+'px':'';}}
+var hd=document.querySelector('header.nav, header');function hb(){return hd?Math.floor(hd.getBoundingClientRect().bottom)-1:78;}   /* the header's real bottom edge, 1px overlap: no hairline gap on any screen (Matteo 16 Nov) */
+function f(){var h=hb(),pin=window.innerWidth>900&&ph.getBoundingClientRect().top<=h+1;if(pin!==t.classList.contains('pinned')){t.classList.toggle('pinned',pin);ph.style.height=pin?t.offsetHeight+'px':'';}t.style.top=pin?h+'px':'';}
 addEventListener('scroll',f,{passive:true});addEventListener('resize',f);f();
 var ls=[].slice.call(t.querySelectorAll('a[href^="#"]')),ss=ls.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
 function spy(){var y=160,cur=-1;ss.forEach(function(s,i){if(s&&s.getBoundingClientRect().top<=y)cur=i;});ls.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
@@ -813,7 +814,13 @@ html .cl .tolfe .tolfe-ph { width: 100%; height: 0; min-height: 100%; object-fit
 html .cl .tolfe .tolfe-tx { grid-column: 1 / -1; }
 html .cl .tolfe p { color: var(--text-2); line-height: 1.65; max-width: 80ch; }
 html .cl .tolfe .tnote a { color: var(--green-text, #2bd47a); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
-@media (max-width: 700px) { html .cl .tolfe .tolfe-in { grid-template-columns: 1fr; } html .cl .tolfe .tolfe-vid { max-width: 280px; margin: 0 auto; width: 100%; } html .cl .tolfe .tolfe-ph { height: auto; min-height: 0; aspect-ratio: 4 / 3; } }
+html .cl .tolfe .tolfe-go { grid-column: 1 / -1; justify-self: start; margin-top: -4px; }
+@media (max-width: 700px) {   /* phones: text first, then video and photo side by side, then a full-width button (Matteo 16 Nov) */
+  html .cl .tolfe .tolfe-in { grid-template-columns: 42% minmax(0, 1fr); gap: 10px; }
+  html .cl .tolfe .tolfe-tx { order: -1; }
+  html .cl .tolfe .tolfe-tx p { max-width: none; }
+  html .cl .tolfe .tolfe-go { display: flex; justify-content: center; width: 100%; justify-self: stretch; margin-top: 4px; order: 2; }
+}
 html .cl .shorts { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 260px)); gap: 16px; }
 html .cl .shorts .vcard { border-radius: 12px; }
 html .cl .shorts .vcard .yt, html .cl .shorts .vcard iframe { aspect-ratio: 9 / 16; }
@@ -898,7 +905,7 @@ html .cl .cc.tstats { margin-top: 32px; }
 html .cl .tabs .tbook { transition: opacity .25s, visibility .25s; }
 html .cl .tabs.pinned { position: fixed !important; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + 79px); background: #08090a !important; }
 body:has(.cl .tabs.pinned) header.nav { background: #08090a !important; border-bottom-color: transparent !important; }   /* header and menu read as one solid bar: no line or see-through strip between them (Matteo 16 Nov) */
-html .cl .tabs a.on { color: var(--red, #e10600) !important; box-shadow: inset 0 -2px 0 var(--red, #e10600) !important; }   /* the section you are in, in red (Matteo 16 Nov) */
+html .cl .tabs a.on { color: var(--green-text, #2bd47a) !important; box-shadow: inset 0 -2px 0 var(--green-text, #2bd47a) !important; }   /* the section you are in, in green (Matteo 16 Nov: red was too strong) */
 @media (max-width: 900px) { html .cl .tabs { position: relative !important; top: auto !important; } }
 html .cl .tabs.nobook .tbook { opacity: 0; visibility: hidden; }
 html .cl .final .fspots { justify-content: center; margin: -6px 0 20px; }
