@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<title>Supplement List | Cigala Cycling × Vivify Sports</title>
+<link rel="stylesheet" href="../nutrition-guide/assets/fonts.css">
+<style>
+:root{
+  --bg:#08090a; --panel:rgba(15,16,17,.92); --panel-solid:#0f1011;
+  --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14);
+  --text:#f7f8f8; --text-2:#d0d6e0; --text-3:#8a8f98;
+  --green:#009a44; --green-text:#34c46a; --red:#E10600; --red-text:#ff3d33;
+  /* Vivify Sports (partner) */
+  --vivify:#19444b;
+  /* topic colours: one per nutrient, used through the whole guide */
+  --c-carb:#f28c38; --c-pro:#e8606a; --c-fat:#f2cf4a; --c-mic:#34c46a; --c-hyd:#4aa8e8; --topic:#d0d6e0; --vivify-2:#2f6f7a; --vivify-text:#7fc3cc;
+}
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:Montserrat,sans-serif;color:var(--text-2);font-size:12.5px;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+b,strong{color:var(--text);font-weight:600}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;padding:13mm 15mm 22mm;
+  background:#08090a url(../nutrition-guide/assets/topo-a4.jpg) center/100% 100% no-repeat;
+  page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto}
+/* running header + footer */
+.run{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);font-weight:600;padding-bottom:9px;border-bottom:1px solid var(--border);margin-bottom:18px}
+.run img{height:22px;width:auto}
+.run .logos{display:flex;align-items:center;gap:9px}
+.run .logos span{color:var(--text-3);font-weight:400}
+.foot{position:absolute;left:15mm;right:15mm;bottom:9mm;display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600;border-top:1px solid var(--border);padding-top:9px}
+.foot .n{color:var(--text);font-family:Anton,sans-serif;font-size:15px;letter-spacing:.04em}
+/* type */
+h1,h2,h3,.anton{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:var(--text);letter-spacing:.01em;line-height:1.02}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--red-text)}
+.bar{width:40px;height:3px;background:var(--green);border-radius:2px}
+h3{font-size:19px;margin:18px 0 4px}
+h3+.bar{margin:10px 0 12px}
+p{margin:0 0 10px}
+.lead{font-size:13.5px;color:var(--text-2)}
+.note{font-size:10.5px;color:var(--text-3);margin-top:6px}
+/* section header */
+.sec{position:relative;padding:4px 0 0;margin-bottom:14px}
+.sec .eyebrow{margin-bottom:10px}
+.sec h2{font-size:42px;max-width:78%}
+.sec .bar{margin:14px 0 12px}
+.sec .sub{font-size:14px;color:var(--text-2);max-width:72%}
+.sec .big{position:absolute;right:-2mm;top:-8px;font-family:Anton,sans-serif;font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--topic);opacity:.55}
+.topic{display:inline-flex;align-items:center;gap:7px;margin-left:10px;padding:0 10px 0 8px;line-height:17px;vertical-align:1px;border-radius:999px;border:1px solid var(--border-strong);color:var(--text);font-size:9.5px;letter-spacing:.16em}
+.topic i{width:8px;height:8px;border-radius:50%;background:var(--topic);display:inline-block}
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.dots{list-style:none;display:grid;gap:7px 22px}
+.dots li{position:relative;padding-left:16px}
+.dots li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--green)}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:1fr 1fr 1fr}
+.callout{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:12px;padding:12px 18px;margin-top:12px}
+.callout .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green-text);margin-bottom:4px}
+.callout.viv{border-left-color:var(--vivify-2)}
+.callout.viv .k{color:var(--vivify-text)}
+.callout p{margin:0}
+/* stat tiles */
+.tiles{display:grid;gap:8px}
+.tile{border-radius:12px;padding:11px 8px 10px;text-align:center;border:1px solid var(--border);background:var(--panel-solid)}
+.tile .v{font-family:Anton,sans-serif;font-size:27px;color:var(--text);line-height:1.1}
+.tile .u{font-size:10.5px;color:var(--text-2);margin-top:2px}
+.tile .l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-top:7px;line-height:1.35}
+.m{display:flex;gap:3px;justify-content:center;margin-top:10px}.m i{width:14px;height:4px;border-radius:2px;background:rgba(255,255,255,.14)}.m i.on{background:var(--topic)}
+.tile.wide{padding:16px;border-top:3px solid var(--topic)}.tile.wide .v{font-size:40px;color:var(--topic)}
+.tiles.plain .tile,.tiles.scale .tile{border-top:3px solid var(--topic)}
+/* tables */
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:11.5px}
+.tbl{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+th{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);text-align:left;padding:10px 12px;background:#17191b;border-bottom:1px solid var(--border-strong)}
+td{padding:5px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td small{color:var(--text-3);font-size:10px}
+th .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.d-green{background:var(--green)}.d-viv{background:var(--vivify-text)}.d-red{background:var(--red)}.d-grey{background:var(--text-3)}.d-white{background:var(--text)}
+th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;color:var(--red-text);font-size:9.5px;margin-top:1px}
+.avoid td:nth-child(2){color:var(--text-3)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+/* fats cards */
+.fat{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:11px}
+.fat .hd{padding:11px 12px 10px;border-bottom:1px solid var(--border-strong)}
+.fat .hd .anton{font-size:17px;display:flex;align-items:center;gap:7px}
+.fat .hd .anton i{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.fat .hd .tag{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-top:4px}
+.fat .ds{padding:10px 12px 4px;color:var(--text-3);font-style:italic;font-size:10.5px;line-height:1.45}
+.fat ul{list-style:none;padding:4px 12px 12px}
+.fat li{padding:2.5px 0 2.5px 13px;position:relative;line-height:1.35}
+.fat li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--text-3)}
+.fat.mono li::before{background:var(--green)}.fat.poly li::before{background:var(--green)}.fat.trans li::before{background:var(--red)}
+.fat.trans{border-color:rgba(225,6,0,.35)}
+/* micronutrients */
+.micro td{font-size:10.5px;line-height:1.45;padding:8px 10px}
+.micro td:first-child{font-weight:600;color:var(--text);width:24%;border-left:3px solid var(--green)}
+.micro td:last-child{width:33%}
+.micro b{font-weight:600}
+/* food sources */
+.foods td{padding:7px 14px;font-size:11.5px}
+.foods td:first-child{width:32%;font-weight:600;color:var(--text)}
+.foods td em{color:var(--text-3)}
+/* timing */
+.row{display:grid;grid-template-columns:150px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:9px;background:var(--panel)}
+.row .lab{padding:14px;display:flex;align-items:center;font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);background:#151719;border-right:3px solid var(--green);line-height:1.1}
+.row.v .lab{border-right-color:var(--vivify-2)}
+.row .bd{padding:11px 16px;font-size:11.5px}
+.row .bd .dots{gap:4px}
+.row .bd .k{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green-text);margin:7px 0 4px}
+.row .bd em{color:var(--text-3);font-size:10.5px}
+/* hydration cards */
+.hc{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.hc .hd{padding:10px 14px;font-family:Anton,sans-serif;text-transform:uppercase;font-size:16px;color:var(--text);background:#151719;border-bottom:1px solid var(--border-strong)}
+.hc .dots{padding:12px 14px;gap:6px;font-size:11.2px}
+/* plates */
+.plates{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.plate{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 10px 18px;text-align:center}
+.plate .t{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-bottom:10px;min-height:2.6em}
+.plate svg{width:196px;height:196px;display:block;margin:0 auto 10px}
+.plate .x{font-size:11.5px;color:var(--text-3);line-height:1.6}
+.legend{display:flex;gap:18px;justify-content:center;margin-top:12px;font-size:10.5px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+/* contents */
+.toc{list-style:none;margin-top:4px}
+.toc li{display:grid;grid-template-columns:62px 1fr 40px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.toc .no{font-family:Anton,sans-serif;font-size:28px;color:transparent;-webkit-text-stroke:1px var(--topic)}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:8px;font-size:11px;color:var(--text)}
+.key span{display:flex;align-items:center;gap:7px}.key i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.toc .tt{font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);line-height:1.1}
+.toc .ds{font-size:11px;color:var(--text-3);margin-top:2px}
+.toc .pg{text-align:right;font-weight:600;color:var(--text)}
+/* cover */
+.cover{padding:0}
+.cover .in{position:absolute;inset:0;padding:18mm 16mm}
+.cover .logos{display:flex;align-items:center;gap:16px}
+.cover .logos .cc{width:30mm;height:30mm}
+.cover .logos .x{font-size:28px;color:var(--text-3);font-weight:300}
+.cover .logos .vv{height:30mm}
+.cover h1{font-size:104px;line-height:.92;margin-top:22mm}
+.cover .eyebrow{margin-top:20mm}
+.cover .bar{margin:18px 0 16px;width:56px;height:4px}
+.cover .tag{font-size:17px;color:var(--text-2);max-width:120mm;line-height:1.45}
+.cover .photo{position:absolute;left:16mm;right:16mm;bottom:44mm;height:74mm;border-radius:12px;overflow:hidden;border:1px solid var(--border-strong)}
+.cover .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
+.cover .by{position:absolute;left:16mm;right:16mm;bottom:16mm;display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--border-strong);padding-top:12px}
+.cover .by .who{font-family:Anton,sans-serif;text-transform:uppercase;font-size:22px;color:var(--text);line-height:1.1}
+.cover .by .role{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600;margin-top:4px}
+.cover .by .r{text-align:right}
+/* consultation */
+.consult{display:grid;grid-template-columns:1.05fr 1fr;gap:0;border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;background:var(--panel)}
+.consult .l{padding:20px 22px}
+.consult .r{padding:20px 22px;background:linear-gradient(160deg,rgba(25,68,75,.85),rgba(15,16,17,.95));border-left:1px solid var(--border-strong)}
+.consult .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:8px}
+.consult .r .k{color:var(--vivify-text)}
+.person{margin-bottom:16px}
+.person .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:19px;color:var(--text)}
+.person .rl{font-size:10.5px;color:var(--text-3);margin-bottom:6px}
+.person a,.person div.c{display:block;color:var(--text);font-size:11.5px;font-weight:500;text-decoration:none;line-height:1.6}
+.btn{display:inline-block;background:var(--green);color:#fff;font-weight:600;font-size:13px;padding:11px 18px;border-radius:8px;text-decoration:none;margin-top:14px}
+.mphoto{height:86mm;border-radius:12px;overflow:hidden;border:1px solid var(--border-strong);margin-bottom:16px;position:relative}
+.mphoto img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.pill{position:absolute;left:14px;bottom:14px;background:rgba(15,16,17,.92);border:1px solid var(--border-strong);border-radius:999px;color:#fff;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 13px 7px 11px;display:flex;align-items:center;gap:8px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block}
+.coach{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:12px;padding:14px 18px;margin-top:14px}
+.coach img{width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid var(--green)}
+.av{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--green);flex:none;display:block}
+.av.viv{border-color:var(--vivify-text)}
+.avrow{display:flex;gap:12px;align-items:center}.avrow.rev{flex-direction:row-reverse}
+.coach .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:3px}
+.coach p{margin:0}
+.ratio td{text-align:center;font-size:12.5px;padding:8px 10px}.ratio td:first-child{text-align:left}.ratio th{text-align:center}.ratio th:first-child{text-align:left}
+.ratio td b{color:var(--green-text)}
+.pk td{font-size:11.5px;padding:8px 12px}.pk td:not(:first-child),.pk th:not(:first-child){text-align:center;width:18%}
+.ok{color:var(--green-text);font-weight:700}.no{color:var(--text-3)}
+.tool{display:block;text-decoration:none;color:var(--text-2);background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.tool .anton{font-size:17px;margin-bottom:4px}.tool .go{color:var(--green-text);font-weight:600;font-size:11.5px;margin-top:6px;display:block}
+/* foundations */
+.fd{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.fd .card{grid-column:span 3;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--topic);border-radius:12px;padding:16px;text-align:center}
+.fd .card.s2{grid-column:span 2}
+.fd .ic{width:44px;height:44px;border-radius:50%;background:var(--topic);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.fd .ic svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fd .card .anton{font-size:18px;margin-bottom:6px}
+.fd .card p{font-size:11px;margin:0}
+.hub{display:flex;justify-content:center;margin:16px 0}
+.hub span{font-family:Anton,sans-serif;font-size:24px;letter-spacing:.06em;color:#fff;background:var(--green);padding:9px 28px;border-radius:999px}
+.tl{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr;align-items:center;gap:8px;margin-top:6px}
+.tl .st{display:flex;gap:11px;align-items:center}
+.tl .st .ic{width:40px;height:40px;border-radius:50%;background:var(--green);flex:none;display:flex;align-items:center;justify-content:center}
+.tl .st .ic svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tl .anton{font-size:16px}
+.tl p{font-size:10.5px;margin:0;line-height:1.4}
+.tl .ar{color:var(--green-text);font-size:20px;text-align:center}
+.quote{text-align:center;margin-top:18px;padding:18px;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong)}
+.quote .anton{font-size:22px}
+.quote p{margin:6px 0 0;font-size:13px}
+
+/* supplement list: one colour per moment, matching the Nutritional Guide key */
+:root{--c-daily:#34c46a;--c-before:#4aa8e8;--c-proto:#f2cf4a;--c-during:#f28c38;--c-after:#e8606a}
+.sup td{font-size:11.5px;padding:7px 12px}
+.sup td:first-child{font-weight:600;color:var(--text);width:30%}
+.sup td:nth-child(2){font-weight:600;color:var(--text);width:24%}
+.sup td.e{color:var(--text-3);font-weight:400}
+.sup th{border-bottom:2px solid var(--topic)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{display:inline-block;border-radius:999px;padding:5px 12px;font-size:11px;font-weight:600;color:#08090a;background:var(--topic)}
+.chip.o{background:transparent;color:var(--text);border:1px solid var(--border-strong)}
+.ph{background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--topic);border-radius:12px;padding:14px 16px}
+.ph .hd{display:flex;align-items:center;gap:8px}
+.ph .hd i{width:9px;height:9px;border-radius:50%;background:var(--topic);display:inline-block}
+.ph .anton{font-size:20px}
+.ph .sb{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);margin:2px 0 10px}
+.ph .dots li::before{background:var(--topic)}
+.flow{display:grid;grid-template-columns:1fr 18px 1fr 18px 1fr;align-items:stretch;gap:6px}
+.flow .ar{display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:16px}
+.down{text-align:center;color:var(--text-3);font-size:18px;margin:6px 0}
+.mantra{text-align:center;margin-top:14px;padding:12px;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong);font-family:Anton,sans-serif;text-transform:uppercase;font-size:19px;color:var(--text);letter-spacing:.03em}
+.mantra span{color:var(--green-text);margin:0 10px}
+.sport .dots{gap:9px}
+.sport .dots li::before{background:var(--text-2)}
+.italic{font-style:italic;color:var(--text-3);font-size:11px;margin-top:8px}
+.buy p{margin:0 0 8px}.buy p:last-child{margin:0}
+.dc{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;margin-top:18px;padding:22px 24px;border:1px solid var(--border-strong);border-radius:12px;background:linear-gradient(120deg,rgba(15,16,17,.95) 40%,rgba(25,68,75,.85))}
+.dc .av{width:96px;height:96px}
+.dc .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--vivify-text);margin-bottom:6px}
+.dc .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:24px;color:var(--text);line-height:1.1}
+.dc .rl{font-size:12px;color:var(--text-2);margin-top:3px}
+.dc-c{font-size:11.5px;color:var(--text);margin-top:10px;display:flex;flex-direction:column;gap:2px;line-height:1.5}
+.dc-c a,.dc-c span{color:var(--text);text-decoration:none}
+.dc .btn{margin:0;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<!-- page 1 -->
+<section class="page cover">
+  <div class="in">
+    <div class="logos">
+      <img class="cc" src="../nutrition-guide/assets/cigala-cycling-coaching-logo.png" alt="Cigala Cycling Coaching logo">
+      <span class="x">×</span>
+      <img class="vv" src="../nutrition-guide/assets/vivify-sports-logo-white-print.png" alt="Vivify Sports logo">
+    </div>
+    <div class="eyebrow">Cigala Cycling × Vivify Sports</div>
+    <h1 style="margin-top:12px">Supplement<br>List</h1>
+    <div class="bar"></div>
+    <p class="tag">Evidence-based support for cyclists and triathletes.</p>
+  </div>
+  <div class="photo" style="height:92mm"><img src="../nutrition-guide/assets/matteo-cigala-gravel-worlds-silver.jpg" alt="Matteo Cigala, silver at the World Championship Gravel 19-34" style="object-position:0% 26%"></div>
+  <div class="by">
+    <div class="avrow"><img class="av viv" src="../nutrition-guide/assets/avatar-marine-lenehan.jpg" alt="Marine Lenehan"><div><div class="who">Marine Lenehan</div><div class="role">Sports Nutritionist · Vivify Sports</div></div></div>
+  </div>
+</section>
+
+<!-- page 2 -->
+<section class="page">
+  <div class="run"><span>Supplements are here to support your training, not replace a healthy diet</span></div>
+  <div class="sec">
+    <div class="eyebrow">The essentials</div>
+    <h2>The essentials at a glance</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="ph" style="--topic:var(--c-daily)">
+    <div class="hd"><i></i><span class="anton">Every day</span></div>
+    <div class="chips" style="margin-top:10px"><span class="chip">Multivitamin A–Z</span><span class="chip">Vitamin D3</span><span class="chip">Omega-3</span><span class="chip">Zinc (men) / Evening primrose (women)</span></div>
+    <p style="margin:12px 0 7px;font-size:11px;color:var(--text-3)">Useful, but not daily essentials:</p>
+    <div class="chips"><span class="chip o">Vitamin C</span><span class="chip o">B complex</span><span class="chip o">Creatine</span><span class="chip o">Probiotics</span><span class="chip o">Ashwagandha (advice first)</span></div>
+  </div>
+  <div class="down">↓</div>
+  <div class="flow">
+    <div class="ph" style="--topic:var(--c-before)"><div class="hd"><i></i><span class="anton">Before</span></div><div class="sb">Hard and long sessions</div>
+      <ul class="dots"><li>Caffeine 100 mg, 1 hour before</li><li>Beetroot juice: threshold or VO2 sessions only, 90 min before</li><li>Arginine 3 g</li><li>Electrolyte drink in heat or indoors</li></ul></div>
+    <div class="ar">→</div>
+    <div class="ph" style="--topic:var(--c-during)"><div class="hd"><i></i><span class="anton">During</span></div><div class="sb">Races and long sessions</div>
+      <ul class="dots"><li>Carbohydrate 60–120 g per hour for long training and races</li><li>Gels with 40 g of carbs each</li><li>Electrolytes</li><li>Caffeine: max 420 mg per race</li></ul></div>
+    <div class="ar">→</div>
+    <div class="ph" style="--topic:var(--c-after)"><div class="hd"><i></i><span class="anton">After</span></div><div class="sb">Races and hard sessions</div>
+      <ul class="dots"><li>Whey protein 25–30 g (ALWAYS)</li><li>Carbohydrate if next session is within 8 h</li><li>Magnesium bisglycinate 400 mg</li><li>Collagen 20 g with vitamin C: specific training blocks only</li><li>Electrolytes</li></ul></div>
+  </div>
+  <div class="ph" style="--topic:var(--c-proto);margin-top:14px">
+    <div class="hd"><i></i><span class="anton">Race day only</span></div><div class="sb" style="color:var(--c-proto)">Specific protocol required</div>
+    <div class="chips"><span class="chip">Beta-alanine</span><span class="chip">Creatine</span><span class="chip">Glycerol</span><span class="chip">Sodium bicarbonate</span></div>
+  </div>
+  <div class="mantra">Food first<span>•</span>Test, don’t guess<span>•</span>Trial everything in training</div>
+  <div class="panel" style="margin-top:14px;padding:11px 16px"><div class="eyebrow" style="margin-bottom:6px">Colour key</div>
+    <div class="key"><span><i style="background:var(--c-daily)"></i>Every day</span><span><i style="background:var(--c-before)"></i>Before</span><span><i style="background:var(--c-during)"></i>During (fuel)</span><span><i style="background:var(--c-after)"></i>After (recovery)</span><span><i style="background:var(--c-proto)"></i>Specific protocol</span></div>
+    <p style="margin:6px 0 0;font-size:10.5px;color:var(--text-3)">The same colours as the Nutritional Guide: green for vitamins and minerals, orange for carbohydrate fuel, rose for protein and recovery.</p></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Supplement List</span><span class="n">2</span></div>
+</section>
+
+<!-- page 3 -->
+<section class="page">
+  <div class="run"><span>Supplements are here to support your training, not replace a healthy diet</span></div>
+  <div class="sec">
+    <div class="eyebrow">By discipline</div>
+    <h2>Quick guide by sport</h2>
+    <div class="bar"></div>
+    <p class="sub">A general starting point by discipline and event length. The right choices depend on your event, your blood results and what you tolerate. Practise everything in training.</p>
+  </div>
+  <div class="g2 sport" style="align-items:start">
+    <div class="hc"><div class="hd">Cyclists</div><ul class="dots">
+      <li><b>Road races and long rides:</b> 60–120 g of carbs per hour from a glucose + fructose drink mix and gels (40 g each). Add electrolytes, and sodium capsules in the heat.</li>
+      <li><b>Time trials, threshold and VO2 sessions:</b> beetroot juice (500 mg nitrates) at least 90 minutes before, and caffeine 100 mg 1 hour before.</li>
+      <li><b>Late in a race:</b> a carbohydrate &amp; caffeine gel. Stay under 420 mg of caffeine per race.</li>
+      <li><b>Sprint and track:</b> creatine 3–5 g/day if used. Trial any sodium bicarbonate protocol in training.</li>
+      <li><b>Indoor training:</b> an electrolyte drink, as sweat rates are higher without airflow.</li>
+      <li><b>Recovery:</b> whey protein 25–30 g, plus a carbohydrate recovery drink if the next session is within 8 hours.</li></ul></div>
+    <div class="hc"><div class="hd">Triathletes</div><ul class="dots">
+      <li><b>Sprint and Olympic (1–2.5 h):</b> 30–60 g of carbs per hour, mostly on the bike. Caffeine chews or gum before the run.</li>
+      <li><b>Half distance (4–6 h):</b> 60–90 g of carbs per hour from a glucose + fructose mix on the bike, with electrolytes. Sodium capsules in the heat.</li>
+      <li><b>Full distance (8 h +):</b> 90 g of carbs per hour or more with gut training. Spread caffeine across the race, max 420 mg.</li>
+      <li><b>Training blocks:</b> omega-3 and vitamin D, and magnesium bisglycinate 400 mg/day after sessions.</li>
+      <li><b>Brick and indoor sessions:</b> an electrolyte drink and a gel or chews to practise race fuelling.</li>
+      <li><b>Recovery:</b> whey protein 25–30 g after every hard session. Collagen 20 g with vitamin C during specific training blocks only.</li></ul></div>
+  </div>
+  <div class="mphoto" style="height:78mm;margin-top:16px"><img src="../nutrition-guide/assets/cigala-cycling-jersey-wicklow.jpg" alt="Cigala Cycling rider in team kit looking over the Wicklow mountains, Ireland" style="object-position:50% 40%"></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Supplement List</span><span class="n">3</span></div>
+</section>
+
+<!-- page 4 -->
+<section class="page" style="--topic:var(--c-daily)">
+  <div class="run"><span>Supplements are here to support your training, not replace a healthy diet</span></div>
+  <div class="sec">
+    <span class="big">01</span>
+    <div class="eyebrow">Section 01<span class="topic"><i></i>Every day</span></div>
+    <h2>Daily</h2>
+    <div class="bar"></div>
+    <p class="sub">The everyday foundation, ideally guided by a blood panel</p>
+  </div>
+<div class="tbl sup"><table>
+    <tr><th>Supplement</th><th>Dose / detail</th><th>Notes</th></tr>
+    <tr><td>Multivitamin A–Z</td><td class="e">–</td><td>Broad cover for gaps in the diet.</td></tr>
+    <tr><td>Vitamin D (D3)</td><td class="e">–</td><td>Bone health and immune function. Check levels, especially in low-sunlight months.</td></tr>
+    <tr><td>Omega-3</td><td class="e">–</td><td>Specifically during high training loads, or if the diet is low in fish.</td></tr>
+    <tr><td>Zinc</td><td class="e">–</td><td>Immune system and men’s health.</td></tr>
+    <tr><td>Evening primrose</td><td class="e">–</td><td>Women’s health.</td></tr>
+    <tr><td>Iron</td><td>Only if deficient</td><td>Common in female and endurance athletes. Supplement only after a blood test.</td></tr>
+    <tr><td>Vitamin B12</td><td class="e">–</td><td>For vegan and plant-based athletes.</td></tr>
+  </table></div>
+  <h3>Useful, but not daily essentials</h3><div class="bar"></div>
+<div class="tbl sup"><table>
+    <tr><th>Supplement</th><th>Dose / detail</th><th>Notes</th></tr>
+    <tr><td>Vitamin C</td><td class="e">–</td><td>Prefer natural sources like acerola, or directly from food. Useful, not a daily essential.</td></tr>
+    <tr><td>B complex</td><td class="e">–</td><td>For specific cases only. Useful, not a daily essential.</td></tr>
+    <tr><td>Creatine monohydrate</td><td>3–5 g / day when used</td><td>Strength, power and recovery. Useful, not a daily essential. May add around 1 kg of water weight.</td></tr>
+    <tr><td>Probiotics</td><td class="e">–</td><td>Gut health and travel. Useful, not a daily essential. Effects are strain-specific.</td></tr>
+    <tr><td>Ashwagandha</td><td class="e">–</td><td>Attention to thyroid conditions. <b>Do not supplement without advice.</b></td></tr>
+  </table></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Supplement List</span><span class="n">4</span></div>
+</section>
+
+<!-- page 5 -->
+<section class="page">
+  <div class="run"><span>Supplements are here to support your training, not replace a healthy diet</span></div>
+<div style="--topic:var(--c-before)">  <div class="sec">
+    <span class="big">02</span>
+    <div class="eyebrow">Section 02<span class="topic"><i></i>Before</span></div>
+    <h2>Before training</h2>
+    <div class="bar"></div>
+    <p class="sub">Before hard and long sessions</p>
+  </div>
+<div class="tbl sup"><table>
+    <tr><th>Supplement</th><th>Dose / detail</th><th>Notes</th></tr>
+    <tr><td>Arginine</td><td>3 g</td><td class="e">–</td></tr>
+    <tr><td>Caffeine</td><td>100 mg</td><td>1 hour before.</td></tr>
+    <tr><td>Beetroot juice</td><td>Delivering 500 mg nitrates</td><td>Only before threshold or VO2 sessions, at least 90 minutes before.</td></tr>
+    <tr><td>Electrolyte drink</td><td>With pre-session fluids</td><td>Useful in the heat, for heavy sweaters and for indoor training.</td></tr>
+  </table></div>
+</div><div style="--topic:var(--c-proto);margin-top:22px">  <div class="sec">
+    <span class="big">03</span>
+    <div class="eyebrow">Section 03<span class="topic"><i></i>Specific protocol</span></div>
+    <h2>Before races</h2>
+    <div class="bar"></div>
+    <p class="sub">Specific protocol required</p>
+  </div>
+<div class="tbl sup"><table>
+    <tr><th>Supplement</th><th>Dose / detail</th><th>Notes</th></tr>
+    <tr><td>Beta-alanine</td><td class="e">–</td><td>Taken over several weeks. Can cause harmless tingling.</td></tr>
+    <tr><td>Creatine</td><td class="e">–</td><td>Loading or daily maintenance, depending on the plan.</td></tr>
+    <tr><td>Glycerol</td><td class="e">–</td><td>Hyperhydration for hot races. Trial in training.</td></tr>
+    <tr><td>Sodium bicarbonate</td><td class="e">–</td><td>Buffers acidity in high-intensity efforts. Can upset the stomach, so trial in training.</td></tr>
+    <tr><td>Caffeine</td><td class="e">–</td><td>Typically 3–6 mg/kg about 60 minutes before. Trial in training.</td></tr>
+    <tr><td>Beetroot juice</td><td class="e">–</td><td>Nitrate loading ahead of the event.</td></tr>
+    <tr><td>Electrolytes</td><td>Potassium, chloride, calcium, magnesium, sodium</td><td class="e">–</td></tr>
+  </table></div>
+<p class="italic">Each of these needs an individual protocol covering dose, timing and loading. Trial everything in training, never for the first time on race day.</p></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Supplement List</span><span class="n">5</span></div>
+</section>
+
+<!-- page 6 -->
+<section class="page" style="--topic:var(--c-during)">
+  <div class="run"><span>Supplements are here to support your training, not replace a healthy diet</span></div>
+  <div class="sec">
+    <span class="big">04</span>
+    <div class="eyebrow">Section 04<span class="topic"><i></i>During</span></div>
+    <h2>During races</h2>
+    <div class="bar"></div>
+    <p class="sub">Fuel, fluids and electrolytes</p>
+  </div>
+<div class="tbl sup"><table>
+    <tr><th>Supplement</th><th>Dose / detail</th><th>Notes</th></tr>
+    <tr><td>Gels</td><td class="e">–</td><td>Prefer gels with 40 g of carbs per gel.</td></tr>
+    <tr><td>Carbohydrate bars</td><td class="e">–</td><td>A minimum of 20 g of carbs per bar.</td></tr>
+    <tr><td>Carbohydrate &amp; caffeine gels</td><td class="e">–</td><td>Don’t take more than 420 mg of caffeine per race.</td></tr>
+    <tr><td>Carbohydrate jellies</td><td class="e">–</td><td class="e">–</td></tr>
+    <tr><td>Pickle juice</td><td class="e">–</td><td>Cramp prevention.</td></tr>
+    <tr><td>Quinine</td><td class="e">–</td><td>Perception of effort.</td></tr>
+    <tr><td>Electrolytes</td><td class="e">–</td><td class="e">–</td></tr>
+    <tr><td>Carbohydrate drink mix</td><td>60–120 g carbs / hour</td><td>Glucose plus fructose for long training and races. Practise in training.</td></tr>
+    <tr><td>Caffeine chews or gum</td><td class="e">–</td><td>Fast-acting option when gels are impractical, such as the run leg of a triathlon.</td></tr>
+    <tr><td>Sodium capsules or salt tablets</td><td class="e">–</td><td>Hot conditions and heavy sweaters. Trial in training.</td></tr>
+  </table></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Supplement List</span><span class="n">6</span></div>
+</section>
+
+<!-- page 7 -->
+<section class="page" style="--topic:var(--c-after)">
+  <div class="run"><span>Supplements are here to support your training, not replace a healthy diet</span></div>
+  <div class="sec">
+    <span class="big">05</span>
+    <div class="eyebrow">Section 05<span class="topic"><i></i>After</span></div>
+    <h2>After races &amp; training</h2>
+    <div class="bar"></div>
+    <p class="sub">After races and hard or long training</p>
+  </div>
+<div class="tbl sup"><table>
+    <tr><th>Supplement</th><th>Dose / detail</th><th>Notes</th></tr>
+    <tr><td>Whey protein (ALWAYS)</td><td>25–30 g</td><td class="e">–</td></tr>
+    <tr><td>L-Leucine</td><td>4 g</td><td>If using a vegan protein powder.</td></tr>
+    <tr><td>Cherry juice</td><td>30 ml</td><td>Stage races or altitude camps.</td></tr>
+    <tr><td>BCAA</td><td>1000 mg (500 mg L-Leucine, 250 mg L-Isoleucine, 250 mg L-Valine)</td><td>If using a vegan protein powder or unable to have a protein shake.</td></tr>
+    <tr><td>Magnesium bisglycinate</td><td>400 mg / day</td><td class="e">–</td></tr>
+    <tr><td>Electrolytes</td><td>Potassium, chloride, calcium, magnesium, sodium</td><td class="e">–</td></tr>
+    <tr><td>Food polyphenols</td><td class="e">–</td><td>NZ blackcurrants, cherry juice, grape juice, blueberries, mixed berries, quercetin.</td></tr>
+    <tr><td>Collagen</td><td>20 g with vitamin C</td><td>Specific training blocks only, not after every recovery ride.</td></tr>
+    <tr><td>Carbohydrate recovery drink</td><td>1–1.2 g/kg per hour for the first 4 hours</td><td>When the next hard session is within 8 hours.</td></tr>
+    <tr><td>Casein protein</td><td>30–40 g before sleep</td><td>Supports overnight recovery.</td></tr>
+  </table></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Supplement List</span><span class="n">7</span></div>
+</section>
+
+<!-- page 8 -->
+<section class="page">
+  <div class="run"><span>Supplements are here to support your training, not replace a healthy diet</span></div>
+  <div class="sec">
+    <div class="eyebrow">Checklist</div>
+    <h2>Before you buy</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="callout buy" style="margin-top:0">
+    <p><b>Test first.</b> The best way to know if you need supplements is a <b>full blood panel</b>.</p>
+    <p><b>Choose batch-tested products.</b> Look for independent testing such as Informed Sport, especially if you are subject to anti-doping rules.</p>
+    <p><b>Trial in training.</b> Never try a new supplement or dose for the first time on race day.</p>
+    <p><b>Check with a professional</b> if you have a medical condition or take medication.</p>
+  </div>
+  <h3 style="font-size:26px;margin-top:24px">The bottom line</h3><div class="bar"></div>
+  <p>A healthy diet is always the 1st option. Healthy foods provide many substances, including vitamins and minerals, to keep us strong and healthy.</p>
+  <p>You can’t just eat an orange or pop in a vitamin pill and expect one quick burst of vitamin C to prevent a cold and boost the immune system, for example. Also, it’s best for some vitamins and minerals to come from our foods rather than pill form.</p>
+  <div class="anton" style="font-size:19px;margin:14px 0 10px">A balanced diet is the key to a healthy and performing body.</div>
+  <p>If you would like more tailored advice on food supplements, VIVIFY SPORTS can provide you with a complete nutritional assessment. Supplements are here to support your training. If taken wrong they can actually be detrimental and decrease performance.</p>
+  <div class="dc">
+    <img class="av viv" src="../nutrition-guide/assets/avatar-marine-lenehan.jpg" alt="Marine Lenehan">
+    <div class="dc-who">
+      <div class="k">Book a discovery call with Marine</div>
+      <div class="nm">Marine Lenehan</div>
+      <div class="rl">Sports Nutritionist &amp; World Tour Cyclist</div>
+      <div class="dc-c"><a href="https://vivifysports.com">vivifysports.com</a><a href="mailto:marine@vivifysports.com">marine@vivifysports.com</a><span>+353 87 224 7402</span></div>
+    </div>
+    <a class="btn" href="https://www.vivifysports.com/nutritionalcoaching">Book a discovery call</a>
+  </div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Supplement List</span><span class="n">8</span></div>
+</section>
+
+</body>
+</html>

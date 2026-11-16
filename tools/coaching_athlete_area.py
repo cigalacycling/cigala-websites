@@ -45,18 +45,49 @@ READ = [('Training', [('The power of Zone 2 training', '/blog/zone-2-training/')
                       ('Heart rate variability (HRV)', '/blog/heart-rate-variability-hrv/')]),
         ('Race week', [('Tapering', '/blog/tapering/'), ('Potentiation in warm-ups', '/blog/the-importance-of-potentiation-in-warm-ups/'),
                        ('Tips for not getting dropped', '/blog/tips-for-not-getting-dropped-cigala-cycling-coaching/'), ('Tips for gravel racing', '/blog/tips-for-gravel-racing/')])]
-HUB = (h2('Quick links')
+# the PDFs every athlete gets (made in the "New session" chat, Matteo-approved). Uploaded once into the shared hub's private folder;
+# the media IDs are kept in stg-coaching/athlete-hub-files.json. (title shown on the card, file in the repo)
+GUIDES = [('Strength and core', [('Stretches &amp; Core', 'coaching/training-sheets/Cigala-Cycling-Stretches-and-Core.pdf'),
+                                 ('Gym Circuit: Winter, first month', 'coaching/training-sheets/Cigala-Cycling-Gym-Circuit-Winter-First-Month.pdf'),
+                                 ('Gym Circuit: Winter, second and third month', 'coaching/training-sheets/Cigala-Cycling-Gym-Circuit-Winter-Second-Third-Month.pdf'),
+                                 ('Gym Circuit: In season', 'coaching/training-sheets/Cigala-Cycling-Gym-Circuit-In-Season.pdf')]),
+          ('Nutrition, with Marine Lenehan', [('Nutritional Guide', 'coaching/nutrition-guide/Cigala-Cycling-x-Vivify-Sports-Nutritional-Guide.pdf'),
+                                              ('Supplement List', 'coaching/supplement-list/Cigala-Cycling-x-Vivify-Sports-Supplement-List.pdf')])]
+FILES = ROOT + 'stg-coaching/athlete-hub-files.json'
+def file_block(mid, url, title):
+    return (f'<!-- wp:file {{"id":{mid},"href":"{url}"}} --><div class="wp-block-file"><a href="{url}">{title}</a>'
+            f'<a href="{url}" class="wp-block-file__button wp-element-button" download>Download</a></div><!-- /wp:file -->')
+def guides_html():
+    ids = json.load(open(FILES)) if os.path.exists(FILES) else {}
+    out = ''
+    for g, items in GUIDES:
+        blocks = ''.join(file_block(ids[f]['id'], ids[f]['url'], t) for t, f in items if f in ids)
+        if blocks: out += f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{g}</h3><!-- /wp:heading -->' + blocks
+    return out or para('Core routine, exercises and gym sessions: the PDFs will be here soon.')
+def upload_guides(hub_id):
+    ids = json.load(open(FILES)) if os.path.exists(FILES) else {}
+    for _, items in GUIDES:
+        for t, f in items:
+            if f in ids: continue
+            r = subprocess.run(['curl', '-sS', '-m', '300', '-X', 'POST', f'{B}/wp/v2/media', '-F', f'file=@{ROOT + f};type=application/pdf',
+                                '-F', f'post={hub_id}', '-F', 'title=' + t.replace('&amp;', '&')], capture_output=True, text=True)
+            d = json.loads(r.stdout); assert d.get('id'), r.stdout[:300]
+            assert '/athletes/?cc_file=' in d['source_url'], 'not in the private folder: ' + d['source_url']
+            ids[f] = {'id': d['id'], 'url': d['source_url']}; print('uploaded', f, d['id'])
+            json.dump(ids, open(FILES, 'w'), indent=1)
+HUB = lambda: (h2('Quick links')
        + buttons(btn('Book a catch-up call', 'https://calendly.com/cigalacycling'), btn('Nutrition consult with Marine', 'https://www.vivifysports.com/nutritionalcoaching'),
                  btn('WhatsApp Matteo', 'https://wa.me/message/WVBRO6XAMQMCH1', True), btn('Community on Skool', 'https://www.skool.com/cigala-cycling-collective-1115', True))
        + h2('Your training apps')
        + para('Your plan is in Vekta or TrainingPeaks and syncs to your Garmin, Wahoo or Zwift.')
        + buttons(btn('Open Vekta', 'https://joinvekta.com/', True), btn('Open TrainingPeaks', 'https://app.trainingpeaks.com/', True))
        + h2('Training guides')
-       + para('Core routine, exercises and gym sessions: the PDFs will be here soon.')
+       + guides_html()
        + h2('Training tools')
        + buttons(*[btn(t, u, True, False) for t, u in TOOLS], cls='ath-tools')
        + h2('Worth reading')
        + ''.join(f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{g}</h3><!-- /wp:heading -->' + links(items) for g, items in READ))
+
 
 if __name__ == '__main__':
     print('code snippets', req(f'{B}/wp/v2/plugins/code-snippets/code-snippets?_fields=plugin,status', {'status': 'active'}, 'POST'))
@@ -79,7 +110,8 @@ if __name__ == '__main__':
     print('page', pg[0].get('id'), pg[0].get('link'))
     hub = [p for p in (req(f'{B}/wp/v2/cc_athlete?status=private&per_page=100&context=edit&_fields=id,title,meta') or []) if isinstance(p, dict) and (p.get('meta') or {}).get('cc_shared')]
     if not hub:
-        hub = [req(f'{B}/wp/v2/cc_athlete', {'title': 'Shared hub (all athletes)', 'status': 'private', 'content': HUB, 'meta': {'cc_shared': True}}, 'POST')]
-    elif '--hub' in sys.argv:   # rewrite the shared hub from HUB above (overwrites edits made in WordPress)
-        req(f'{B}/wp/v2/cc_athlete/{hub[0]["id"]}', {'content': HUB}, 'POST')
+        hub = [req(f'{B}/wp/v2/cc_athlete', {'title': 'Shared hub (all athletes)', 'status': 'private', 'content': HUB(), 'meta': {'cc_shared': True}}, 'POST')]
+    elif '--hub' in sys.argv:   # upload the guides, then rewrite the shared hub from HUB above (overwrites edits made in WordPress)
+        upload_guides(hub[0]['id'])
+        req(f'{B}/wp/v2/cc_athlete/{hub[0]["id"]}', {'content': HUB()}, 'POST')
     print('hub', hub[0].get('id'), hub[0].get('message', ''))
