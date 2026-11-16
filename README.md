@@ -561,3 +561,48 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **16 Nov 2026, 22:20: 35 athletes created on LIVE** (Matteo's list via the availability session; user IDs 20–54, Subscribers, hub pages created, cc_lang 28 en / 5 it / 1 pt / 1 sl). The names and emails are not in the repo (personal data); they are in WordPress.
   - **No welcome emails sent:** Matteo announces the hub once the rider-form and availability parts are tested (availability session).
   - athlete-area.php is shared with the availability session. It is building the rider-form lock on staging. Don't push athlete-area.php until it says it's done.
+
+### Athlete area: new parts BUILT on staging (16–17 Nov 2026, Matteo's go). Not live.
+- **Files** (all in `coaching/athlete-area/`, pushed only with `python3 -I tools/coaching_athlete_area.py --availability`, staging only):
+  - `availability-i18n.php` + `availability.php`: My availability.
+  - `form-legal.php`: legal texts, from the approved mock-up.
+  - `onboarding.php`: rider form, "Update your details", hub lock, signed PDF, coach pages, API.
+  - `goals.php`: My goals & events.
+  - `passwords.php`: forgot / change password.
+  - `onboarding-i18n.php`: form and goals words in it/pt/sl (drafts, for a native speaker to check). Tested in Italian 16 Nov. Other languages fall back to English, and the legal texts stay English with a note.
+
+  `athlete-area.php` has no-op hooks for them: `cc_ath_gate`, `cc_ath_can_see`, `cc_ath_nav`, `cc_ath_after_reports`, `cc_ath_coach_links`, `cc_ath_board`, `cc_ath_forgot_page`, `cc_ath_forgot_link`, `cc_ath_hero_links`. The snippet is about 250 KB, so the push script sends it through stdin.
+- **Hub lock:** an athlete whose form isn't done sees only the form.
+  - The form opens when user meta `cc_form_done` or `cc_form_unlock` is set.
+  - `cc_form_kind=update` means paper form on file: the short update step instead of the full form.
+  - Private files are refused until then (`cc_ath_can_see`).
+- **Data:** draft in user meta `cc_form_draft` (autosave). Answers in athlete-page meta `cc_profile`. Signature and PDF are cc-private attachments; their ids are in `cc_form_signed`, along with time, IP and guardian. `cc_profile_prefill` holds an imported old form (pre-fills the form). `cc_goals` holds goals and events.
+- **Matteo's pages (coach view links):**
+  - `?board=forms`: status per athlete; one athlete's answers; buttons to unlock/lock, mark paper form on file, ask for the full form again, countersign under-18s; the signed PDF.
+  - `?board=form-preview&kind=full|update&flang=it`: preview, nothing saved.
+  - `?board=goals` and `?board=availability`.
+- **API for the PC tools** (application password, editor or above):
+  - `GET /wp-json/cc/v1/profile[?email=]`, `GET /wp-json/cc/v1/goals[?email=]` and `GET /wp-json/cc/v1/availability[?email=]`.
+  - `POST /wp-json/cc/v1/form-admin {email|page, action: prefill|paper|full|unlock|lock|reopen|countersign, data}` for importing old forms.
+- **Emails:**
+  - Matteo gets one on every signed form or update (health "yes" answers listed, PDF attached), and on every availability or goals change.
+  - The athlete gets their signed PDF.
+  - **Staging never emails Matteo:** it sends only to the option `cc_staging_notify` (empty by default).
+- **Tested on staging 16 Nov** with a temporary test athlete and test editor. Both were deleted afterwards, with the test page and files:
+  - login shows the form only;
+  - autosave survives a reload;
+  - age and under-18 logic, and yes-details;
+  - the missing-fields message;
+  - signing opens the hub, and availability and goals are pre-filled;
+  - goals event saved with countdown;
+  - change password form;
+  - signed PDF (5 pages, text, signature);
+  - REST profile and goals;
+  - coach pages at 390/820/1440 with no sideways scroll.
+  - the update step in Italian: pre-filled from earlier answers, saves and opens the hub, hub and goals in Italian.
+- **To do before live:**
+  - Marine's test with Matteo (needs his OK to send her the welcome email);
+  - import the 32 paper forms (`cc_profile_prefill` + paper);
+  - the Italian legal text if Matteo sends his Italian form ("SCHEDA INFORMATIVA DEL CICLISTA");
+  - then push to live with Matteo.
+

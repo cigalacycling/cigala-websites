@@ -74,12 +74,13 @@ function cc_g_list(WP_REST_Request $r) {
 }
 
 /* ---------- the athlete's box ---------- */
-add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view) array_splice($nav, 2, 0, [['goals', cc_f('My goals & events')]]); return $nav; }, 20, 3);
+add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view) { cc_f_set_lang((int) get_post_meta($view, 'cc_user', true)); array_splice($nav, 2, 0, [['goals', cc_f('My goals & events')]]); } return $nav; }, 20, 3);
 add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     if (!$view) return $html;
     $g = cc_g_get($view) ?: ['short' => '', 'long' => '', 'events' => [], 'from_form' => ''];
     $today = current_time('Y-m-d'); $g['events'] = array_values(array_filter($g['events'], function ($e) use ($today) { return $e['date'] >= $today; }));
     $ro = $coach && cc_ath_page_of(get_current_user_id()) !== $view;
+    cc_f_set_lang((int) get_post_meta($view, 'cc_user', true));
     $W = []; foreach (['My goals & events', 'Short-term goal (1 year)', 'Long-term goal (more than 1 year)', 'Events coming up', 'No events yet. Add your races, sportives and camps: I plan your training around them.',
         'Event', 'Date', 'Type', 'Priority', 'A = your main goal, B = important, C = for training or fun', 'Distance (km)', 'Climbing (m)', 'Note', 'Remove', '+ Add an event', 'Save my goals & events', 'Saving…',
         'Saved. Thanks, I will plan around it.', 'Nothing new to save.', 'That did not save. Please try again.', 'days to go', 'Today!', 'Tomorrow', 'From your form', 'optional',
@@ -161,7 +162,7 @@ add_action('wp_head', function () {
     if (!is_page(CC_ATH_SLUG)) return;
     echo <<<'CSS'
 <style id="cc-goals">
-html .cc .gl-goals2 { display: grid; gap: 6px; } html .cc .gl-goals2 label, html .cc .gl-ev label, html .cc .gl-ev legend { display: grid; gap: 5px; margin: 8px 0 0; font-size: 12.5px; color: var(--text-3); font-weight: 600; padding: 0; }
+html .cc .gl .av-sub { margin-top: 24px; } html .cc .gl-goals2 { display: grid; gap: 6px; } html .cc .gl-goals2 label, html .cc .gl-ev label, html .cc .gl-ev legend { display: grid; gap: 5px; margin: 8px 0 0; font-size: 12.5px; color: var(--text-3); font-weight: 600; padding: 0; }
 html .cc .gl-goals2 label { color: var(--text); font-size: 13.5px; } html .cc .gl-ev fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
 html .cc .ath :is(.gl-goals2 textarea, .gl-ev input, .gl-ev select) { width: 100%; box-sizing: border-box; font: 16px var(--body); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,.18); background: #0b0d0f; color: #fff; color-scheme: dark; min-width: 0; }
 html .cc .gl-ff { margin: 12px 0 0; font-size: 14px; color: var(--text-2); } html .cc .gl-ff small { display: block; color: var(--text-3); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }

@@ -15,7 +15,9 @@
 if (!defined('ABSPATH')) return;
 
 /* ---------- the questions, defined once (page, checks, PDF, coach view, API) ---------- */
-function cc_f($s) { return function_exists('cc_f_tr') ? cc_f_tr($s) : $s; }   // translations: onboarding-i18n.php (later)
+// the athlete's own language (their "Athlete language"), from onboarding-i18n.php; anything missing stays English
+function cc_f($s) { $l = $GLOBALS['cc_f_lang'] ?? 'en'; if ($l === 'en' || !function_exists('cc_f_dict')) return $s; $d = cc_f_dict($l); return isset($d[$s]) && $d[$s] !== '' ? $d[$s] : $s; }
+function cc_f_set_lang($uid) { $GLOBALS['cc_f_lang'] = $uid && function_exists('cc_ath_lang_code') ? cc_ath_lang_code($uid) : 'en'; }
 const CC_F_YN = ['Frequent or severe headaches', 'Dizziness or fainting spells', 'Heart or vascular problems', 'High or low blood pressure', 'Asthma or lung disease',
     'Epilepsy or seizures', 'Diabetes', 'Stroke', 'Muscular disorders or complaints', 'Chest pains', 'Back pains', 'Lower limb or joint problems',
     '(Women only) Are you or have you been pregnant in the past year?'];
@@ -180,9 +182,12 @@ add_filter('cc_ath_can_see', function ($ok, $pid, $uid) { return ($ok && !cc_ath
 /* ---------- the page ---------- */
 function cc_f_page($uid, $pid, $preview, $kind = null) {
     $u = get_userdata($uid); $kind = $kind ?: cc_f_kind($uid);
+    cc_f_set_lang($preview ? 0 : $uid);
+    if ($preview && isset($_GET['flang']) && preg_match('/^[a-z]{2}$/', $_GET['flang'])) $GLOBALS['cc_f_lang'] = $_GET['flang'];   // Matteo previews a language
     $draft = $preview ? [] : (json_decode((string) get_user_meta($uid, 'cc_form_draft', true), true) ?: []);
     $pre = $preview ? [] : (json_decode((string) get_post_meta($pid, 'cc_profile_prefill', true), true) ?: []);
-    $vals = array_merge(['first' => $u ? $u->first_name : '', 'last' => $u ? $u->last_name : '', 'email' => $u ? $u->user_email : ''], $pre, $draft);
+    $prof = $preview ? [] : (json_decode((string) get_post_meta($pid, 'cc_profile', true), true) ?: []);   // earlier answers, when asked again
+    $vals = array_merge(['first' => $u ? $u->first_name : '', 'last' => $u ? $u->last_name : '', 'email' => $u ? $u->user_email : ''], $prof, $pre, $draft);
     if (!$preview && ($av = cc_av_get($pid)) && empty($draft['week'])) $vals['week'] = $av['week'];
     $steps = array_values(array_filter(cc_f_steps(), function ($s) use ($kind) { return $s[2] === 'both' || $s[2] === $kind; }));
     $n = count($steps);
@@ -197,6 +202,7 @@ function cc_f_page($uid, $pid, $preview, $kind = null) {
        . '<div class="rf-steps"><ol aria-hidden="true">' . str_repeat('<li></li>', $n) . '</ol><p>' . esc_html(cc_f('Step')) . ' <b class="rf-sn">1</b> / ' . $n . ' · <b class="rf-st"></b></p></div><form novalidate>';
     foreach ($steps as $i => $st) {
         $o .= '<section class="rf-step' . ($i ? '' : ' on') . '" data-t="' . esc_attr(cc_f($st[1])) . '" data-k="' . $st[0] . '">';
+        if ($st[0] === 'agree' && ($GLOBALS['cc_f_lang'] ?? 'en') !== 'en') $o .= '<div class="rf-note">' . esc_html(cc_f('The agreements are in English: that is the version you sign. Message me if anything is unclear.')) . '</div>';
         foreach ($st[3] as $pn) {
             if ($pn[0] === 'note') { $o .= '<div class="rf-note">' . esc_html(cc_f($pn[1])) . '</div>'; continue; }
             if (isset($pn['only']) && $pn['only'] !== $kind) continue;
@@ -316,6 +322,7 @@ function cc_f_mail($uid, $pid, $a, $meta, $pdf) {
     if ($u && is_email($u->user_email)) $hd[] = 'Reply-To: ' . $name . ' <' . $u->user_email . '>';
     if (cc_av_notify_to()) wp_mail(cc_av_notify_to(), ($full ? 'Rider form signed: ' : 'Details updated: ') . $name, $h, $hd, $tmp ? [$tmp] : []);
     if ($full && $u && is_email($u->user_email)) {   // the athlete's own copy
+        cc_f_set_lang($uid);
         $first = esc_html($u->first_name ?: $name);
         wp_mail($u->user_email, cc_f('Your signed Rider Information Form'), '<div style="font:15px/1.6 Montserrat,Arial,sans-serif;color:#111;max-width:560px"><p>' . sprintf(esc_html(cc_f('Hi %s,')), $first) . '</p><p>'
             . esc_html(cc_f('Thank you! Your Rider Information Form is in, and your signed copy is attached. Your athlete hub is now open.')) . '</p><p><a href="' . esc_url(home_url('/' . CC_ATH_SLUG . '/')) . '" style="color:#009a44;font-weight:600">'
@@ -354,9 +361,9 @@ function cc_f_admin($pid, $act, $data = null) {
     switch ($act) {
         case 'unlock': update_user_meta($uid, 'cc_form_unlock', time()); break;
         case 'lock': delete_user_meta($uid, 'cc_form_unlock'); break;
-        case 'paper': update_user_meta($uid, 'cc_form_kind', 'update'); break;          // paper form on file: short update instead
-        case 'full': delete_user_meta($uid, 'cc_form_kind'); break;
-        case 'reopen': delete_user_meta($uid, 'cc_form_done'); break;                    // ask them to fill it in again
+        case 'paper': update_user_meta($uid, 'cc_form_kind', 'update'); delete_user_meta($uid, 'cc_form_draft'); break;   // paper form on file: short update instead
+        case 'full': delete_user_meta($uid, 'cc_form_kind'); delete_user_meta($uid, 'cc_form_draft'); break;
+        case 'reopen': delete_user_meta($uid, 'cc_form_done'); delete_user_meta($uid, 'cc_form_draft'); break;   // ask them to fill it in again (earlier answers pre-filled)
         case 'prefill': update_post_meta($pid, 'cc_profile_prefill', wp_slash(wp_json_encode(is_array($data) ? $data : []))); break;
         case 'countersign':
             $m = json_decode((string) get_post_meta($pid, 'cc_form_signed', true), true) ?: [];
@@ -394,7 +401,8 @@ add_filter('cc_ath_coach_links', function ($html) {
 add_filter('cc_ath_board', function ($html, $board) {
     if (!cc_ath_is_coach()) return $html;
     if ($board === 'form-preview') return '<div class="ath-coach"><p><b>Preview.</b> This is what a new athlete sees: <a href="' . esc_url(add_query_arg(['board' => 'form-preview', 'kind' => 'full'])) . '">full form</a> · '
-        . '<a href="' . esc_url(add_query_arg(['board' => 'form-preview', 'kind' => 'update'])) . '">update (paper form on file)</a>. Nothing is saved.</p></div>'
+        . '<a href="' . esc_url(add_query_arg(['board' => 'form-preview', 'kind' => 'update'])) . '">update (paper form on file)</a>. Nothing is saved. Language: '
+        . implode(' · ', array_map(function ($l) { return '<a href="' . esc_url(add_query_arg('flang', $l)) . '">' . strtoupper($l) . '</a>'; }, ['en', 'it', 'pt', 'sl'])) . '</p></div>'
         . cc_f_page(get_current_user_id(), 0, true, ($_GET['kind'] ?? '') === 'update' ? 'update' : 'full');
     if ($board !== 'forms') return $html;
     $base = add_query_arg('board', 'forms', home_url('/' . CC_ATH_SLUG . '/'));
@@ -619,10 +627,11 @@ html .cc .rf-tick input { flex: none; width: 22px; height: 22px; margin: 1px 0 0
 html .cc .rf-group { margin: 6px 0 0; font-weight: 600; color: var(--text); font-size: 14px; } html .cc .rf-group-t p { margin: 8px 0 0; font-size: 14px; }
 html .cc .rf-week { display: grid; gap: 8px; }
 html .cc .rf-sig { position: relative; border-radius: 12px; border: 1px dashed rgba(255,255,255,.3); overflow: hidden; } html .cc .rf-sig canvas { display: block; width: 100%; height: 160px; touch-action: none; cursor: crosshair; background: #fff; }
-html .cc .rf-sig-ph { position: absolute; inset: auto 0 12px; text-align: center; font-size: 12.5px; color: #8a8f98; pointer-events: none; } html .cc .rf-clr { position: absolute; top: 8px; right: 8px; padding: 6px 12px !important; font-size: 12.5px !important; }
+html .cc .rf-sig-ph { position: absolute; inset: auto 0 12px; text-align: center; font-size: 12.5px; color: #8a8f98; pointer-events: none; } html .cc .ath form .rf-clr { position: absolute; top: 8px; right: 8px; width: auto; margin: 0; padding: 6px 12px !important; font-size: 12.5px !important; background: rgba(8,9,10,.75); color: #fff; }
+html .cc .rf-step[data-k=sign] .rf-panel { margin-bottom: 70px; }   /* room for the chat bubble */
 html .cc .rf-date { font-size: 13px; color: var(--text-3); margin: 10px 0 0; } html .cc .rf-date b { color: var(--text); }
 html .cc .rf-note { padding: 12px 14px; border-radius: 10px; background: rgba(0,154,68,.1); border: 1px solid rgba(52,196,106,.3); font-size: 13.5px; color: var(--text-2); margin: 0 0 16px; }
-html .cc .rf-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; } html .cc .rf-saved { font-size: 12.5px; color: var(--text-3); text-align: center; margin: 14px 0 0; }
+html .cc .rf-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; } html .cc .ath form .rf-nav .btn { width: auto; flex: 1; margin: 0; } html .cc .rf-saved { font-size: 12.5px; color: var(--text-3); text-align: center; margin: 14px 0 0; }
 html .cc .rf-err { margin: 0 0 12px; }
 /* coach page */
 html .cc .rf-list { display: grid; gap: 6px; } html .cc .rf-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 14px; padding: 11px 14px; border-radius: 10px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.08); color: #fff; text-decoration: none; }
