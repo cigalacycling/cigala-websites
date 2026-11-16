@@ -45,11 +45,15 @@ The Coaching website (`coaching.cigalacycling.com`, athlete area `/athletes/`) h
 - The website writes them into Vekta.
 - So the PC tools should read them from the website API above, not from Vekta events.
 
-## Periodization plan: one place for events (Matteo 16 Nov)
-- Athletes add and change their goals and events only in their athlete hub: "My goals & events" at https://coaching.cigalacycling.com/athletes/#goals. Matteo gets an email on every change.
-- The periodization plan must not have its own "add event" form for athletes. It reads the events from `GET /wp-json/cc/v1/goals?email=` (name, date, type, priority A/B/C, distance, climbing, note) and builds the plan around them.
-- Where the plan now says something like "some events are missing, please add them here", replace it with a link: "Missing an event? Add it in your athlete hub" → https://coaching.cigalacycling.com/athletes/#goals.
-- If the plan shows "From the form" text (`goals.from_form`), those are races an athlete typed on an old paper form. Matteo turns them into proper events.
+## Periodization plan / "Your season" page: one place for events (Matteo 16 Nov)
+The athlete's "Your season" page (e.g. Marco's) currently ends with a "Please add any event here" form ("What / Date / Name / How important is it to you? / Send to Matteo"). That form is a preview only and sends nothing. Matteo wants everything connected, so:
+1. **Remove that form** ("Please add any event here" and "Send to Matteo") from the season page template.
+2. **Read events from the website** each time you build or update a season page: `GET https://coaching.cigalacycling.com/wp-json/cc/v1/goals?email=<athlete email>` returns the goals (`short`, `long`) and `events`. Each event has name, date (YYYY-MM-DD), type (race, sportive, camp, other), prio (A/B/C), dist (km), elev (m) and note. Put them on the chart: races are coloured by priority (A = main goal), and `goals.short` / `goals.long` go in the goals area. Also `GET /wp-json/cc/v1/availability?email=` for the usual week and dated changes (away, gym only, less time…) when planning the blocks.
+3. **In place of the form,** add a small "Your races and goals" box: list the athlete's events from step 2 (date, A/B/C, name), plus one button, "Add or change in your athlete hub", linking to `https://coaching.cigalacycling.com/athletes/#goals`. For notes there's the note box in "My availability" (`/athletes/#availability`).
+4. **Old forms:** `goals.from_form` holds races an athlete typed on an old paper form, as plain text. Show it to Matteo (not the athlete) so he can turn them into real events.
+5. **Later (agreed plan):** the season page is delivered into the athlete's hub, like the reports (see the README section "Athlete area: reports from Matteo's PC tools"). Then season plan, availability and goals & events all sit in one place for the athlete.
+
+Authentication is the application password on Matteo's PC (see above), never in chat. The website endpoints go live when Matteo puts the new athlete area live. Until then they exist only on staging (`staging.coaching.cigalacycling.com`), which has no real athlete data.
 
 ## Vekta calendar (Matteo 16 Nov: use his existing Claude–Vekta connection)
 - **The website does not hold a Vekta key and does not write to Vekta.** Matteo's existing Claude–Vekta connection does the writing.
