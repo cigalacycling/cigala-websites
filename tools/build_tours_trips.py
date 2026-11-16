@@ -565,10 +565,12 @@ def trip(slug):
             if slug == 'chianti-gran-fondo-strade-bianche':   # the VIP terrace on the pro race day, under the Gran Fondo prices (Matteo 16 Nov); no price: a supplement, ask us
                 bands += ('<div class="panel tband tolfe"><p class="inh">VIP day at the pro race: Terrazza Le Tolfe</p>'
                           '<div class="tolfe-in"><div class="vcard tolfe-vid"><button type="button" class="yt" data-id="' + TOLFE[0] + '" aria-label="Play the Terrazza Le Tolfe video">'
-                          + img_tag(TOLFE[1], 900, alt='Strade Bianche finish in Siena - Cigala Cycling Tours') + '<span class="play" aria-hidden="true"></span></button></div><div>'
+                          + img_tag(TOLFE[1], 900, alt='Strade Bianche finish in Siena - Cigala Cycling Tours') + '<span class="play" aria-hidden="true"></span></button></div>'
+                          + f'<img class="tolfe-ph" src="{M["tolfe-photo"]["url"]}" alt="{E(M["tolfe-photo"]["alt"])}" loading="lazy" width="2000" height="1500">'   # Matteo's own photo at Le Tolfe (16 Nov)
+                          + '<div class="tolfe-tx">'
                           '<p>The day before your Gran Fondo, watch the Strade Bianche pros from a private covered terrace on the Le Tolfe climb, the final gravel sector just after Colle Pinzuto, where the race breaks apart. '
                           'You see the women\'s and men\'s races pass twice, with a Tuscan buffet lunch, an espresso bar, wine, beer and soft drinks all day, and the race live on big screens.</p>'
-                          f'<p class="tnote">Available to tour guests as a supplement. Ask us when you book. <a href="{L}/contact/" {EXT}>Get in touch</a></p></div></div></div>')
+                          f'<p class="tnote">Available to tour guests as a supplement. Ask us when you book, and we also send you all the details before the tour. <a href="{L}/contact/" {EXT}>Get in touch</a></p></div></div></div>')
         out.append(f'<section id="included"><div class="in">{H(inc, "The details")}<div class="inc2"><div class="panel yes"><p class="inh">Included in the price</p><ul>{inc_li}</ul></div>{no_html}</div>'
                    f'{bands}</div></section>')
         nav.append(('included', "What's included"))
@@ -797,12 +799,14 @@ html .cl .opbox .opnote { margin: 14px 0 0; max-width: 62ch; font-size: 15px; li
 html .cl .evbox .evchip { display: inline-flex; align-items: center; gap: 7px; margin: 14px 0 0; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(43,212,122,.4); background: rgba(0,154,68,.12); color: var(--green-text, #2bd47a); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
 html .cl .evbox .evchip svg { width: 16px; height: 16px; }
 html .cl .evbox .evopts { margin-top: 14px; }
-html .cl .tolfe .tolfe-in { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px; align-items: center; margin-top: 6px; }
+html .cl .tolfe .tolfe-in { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px 20px; margin-top: 6px; }
 html .cl .tolfe .tolfe-vid { border-radius: 12px; }
 html .cl .tolfe .tolfe-vid .yt, html .cl .tolfe .tolfe-vid iframe { aspect-ratio: 9 / 16; }   /* a YouTube Short: upright */
+html .cl .tolfe .tolfe-ph { width: 100%; height: 0; min-height: 100%; object-fit: cover; border-radius: 12px; display: block; aspect-ratio: auto; }
+html .cl .tolfe .tolfe-tx { grid-column: 1 / -1; }
 html .cl .tolfe p { color: var(--text-2); line-height: 1.65; max-width: 80ch; }
 html .cl .tolfe .tnote a { color: var(--green-text, #2bd47a); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
-@media (max-width: 700px) { html .cl .tolfe .tolfe-in { grid-template-columns: 1fr; } html .cl .tolfe .tolfe-vid { max-width: 280px; margin: 0 auto; width: 100%; } }
+@media (max-width: 700px) { html .cl .tolfe .tolfe-in { grid-template-columns: 1fr; } html .cl .tolfe .tolfe-vid { max-width: 280px; margin: 0 auto; width: 100%; } html .cl .tolfe .tolfe-ph { height: auto; min-height: 0; aspect-ratio: 4 / 3; } }
 html .cl .opbox .opnote a { color: var(--green-text, #2bd47a); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
 html .cl .hotel h3, html .cl .hotel h2 { font-size: 22px; }
