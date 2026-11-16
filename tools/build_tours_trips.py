@@ -44,8 +44,10 @@ SUPP = 'You enter directly with the organisers; we look after everything else. O
 _LIB = {x['id']: x for x in json.load(open(ROOT + 'stg-tours/media-library.json'))}
 lib_url = lambda i: _LIB[i]['source_url']
 lib_alt = lambda i: re.sub(r'\s*-\s*Cigala Cycling Tours$', '', _LIB[i].get('alt_text') or '')
-EVENT_LOGO = {'chianti-gran-fondo-strade-bianche': 9333, 'lake-como-gran-fondo-il-lombardia': 9326, 'discover-the-algarve-granfondo': 9324, 'tour-of-flanders-experience': 9340}   # the event's own logo on the right of its box (Matteo 16 Nov: the box looked like it was missing it)
-DAY_MEDIA = {'chianti-gran-fondo-strade-bianche': {1: ('4tBZpWAVnrc', 4446), 2: ('4dBK7nxR2nI', 11033), 3: ('jYGwgkZ9CDM', 4872), 4: ('vKw83m2nUh0', 4871),
+EVENT_LOGO = {'chianti-gran-fondo-strade-bianche': 9333, 'lake-como-gran-fondo-il-lombardia': 9326, 'discover-the-algarve-granfondo': 9255, 'tour-of-flanders-experience': 9340}   # the event's own logo on the right of its box (Matteo 16 Nov: the box looked like it was missing it)
+DAY_MEDIA = {'discover-the-algarve-granfondo': {1: ('Ew-QIRa8C_8', 2503), 2: ('3hmbEQFiTHY', 7419), 3: ('img', 11042), 4: ('DPPZt7TXcg4', 4955),
+                                              5: ('img', 2527, 'wide'), 6: ('img', 11041)},   # Matteo 16 Nov; day 5 = Matteo on the podium with the pros (from the old site)
+             'chianti-gran-fondo-strade-bianche': {1: ('4tBZpWAVnrc', 4446), 2: ('4dBK7nxR2nI', 11033), 3: ('jYGwgkZ9CDM', 4872), 4: ('vKw83m2nUh0', 4871),
                                                   5: ('img', 3196), 6: ('0Kw39ByYQGg', 3164)}}   # covers match the day (Matteo 16 Nov): Chianti hills, white road, cypress avenue, Siena crowd (pro race), Siena   # Matteo 16 Nov: a Short per day, day 5 = his photo winning with the bike up   # a YouTube Short in a day's box (Matteo 16 Nov): (video, our own cover photo); loads on tap
 EVENT_BOX = {'chianti-gran-fondo-strade-bianche': ('Gran Fondo Strade Bianche', 'Entry guaranteed', GUAR),
              'lake-como-gran-fondo-il-lombardia': ('Gran Fondo Il Lombardia', 'Entry guaranteed', GUAR),
@@ -493,11 +495,11 @@ def trip(slug):
             body = ''.join(clean(v) for k, v, s in d['items'] if k in ('text',)) + ''.join(f'<p>{clean(v)}</p>' for k, v, s in d['items'] if k in ('h4', 'h5', 'h6'))
             tg = d['tag'] if d['tag'] in ('h2', 'h3') else 'h3'
             dm = DAY_MEDIA.get(slug, {}).get(n)
-            if dm and dm[0] == 'img':   # a photo instead of a video
-                dmh = f'<figure class="dvid dimg">{img_tag(dm[1], 900, alt="Matteo Cigala celebrates with his bike above his head at the Strade Bianche finish in Siena" if dm[1] == 3196 else None)}</figure>'
+            if dm and dm[0] == 'img':   # a photo instead of a video ('wide': a landscape photo, shown whole)
+                dmh = f'<figure class="dvid dimg{" wide" if len(dm) > 2 else ""}">{img_tag(dm[1], 900, alt="Matteo Cigala celebrates with his bike above his head at the Strade Bianche finish in Siena" if dm[1] == 3196 else None)}</figure>'
             else:
                 dmh = (f'<div class="vcard dvid"><button type="button" class="yt" data-id="{dm[0]}" aria-label="Play the day {n} video">{img_tag(dm[1], 600, alt=f"Day {n} of the {text_of(h1).title()} tour - Cigala Cycling Tours")}<span class="play" aria-hidden="true"></span></button></div>') if dm else ''
-            lis.append(f'<li class="day"><div class="num"><span><small>DAY</small>{n}</span></div><div class="panel box{" hasmedia" if dm else ""}"><div class="dtx"><{tg}>{E(t)}</{tg}>'
+            lis.append(f'<li class="day"><div class="num"><span><small>DAY</small>{n}</span></div><div class="panel box{(" hasmedia" + (" mwide" if len(dm) > 2 else "")) if dm else ""}"><div class="dtx"><{tg}>{E(t)}</{tg}>'
                        f'{f"<div class=meta>{chips}</div>" if chips else ""}{evo}<div class="prose">{body}</div></div>{dmh}</div></li>')
         head = H(d2d, 'Itinerary') if d2d else '<div class="head"><div><div class="eyebrow">Itinerary</div><p class="band-title">Day by day</p><div class="bar"></div></div></div>'
         if slug in DYN: lis = [x.replace('<li class="day">', '<li class="day dyn-in">', 1) for x in lis]
@@ -840,8 +842,10 @@ html .cl .shorts .vcard .yt, html .cl .shorts .vcard iframe { aspect-ratio: 9 / 
 html .cl .day .box.hasmedia { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 22px; align-items: start; }
 html .cl .day .dvid { border-radius: 12px; }
 html .cl .day .dvid .yt, html .cl .day .dvid iframe { aspect-ratio: 9 / 16; }
+html .cl .day .box.hasmedia.mwide { grid-template-columns: minmax(0, 1fr) 320px; }
+html .cl .day .dimg.wide img { aspect-ratio: auto; }
 html .cl .day .dimg { margin: 0; overflow: hidden; } html .cl .day .dimg img { width: 100%; aspect-ratio: 9 / 16; object-fit: cover; display: block; border-radius: 12px; }   /* a photo in the same frame as the videos */
-@media (max-width: 700px) { html .cl .day .box.hasmedia { grid-template-columns: 1fr; } html .cl .day .dvid { width: 100%; max-width: none; } }   /* phones: the video as wide as the day box (Matteo 16 Nov) */
+@media (max-width: 700px) { html .cl .day .box.hasmedia, html .cl .day .box.hasmedia.mwide { grid-template-columns: minmax(0, 1fr); } html .cl .day .dvid { width: 100%; max-width: none; } }   /* phones: the video as wide as the day box (Matteo 16 Nov) */
 html .cl .opbox .opnote a { color: var(--green-text, #2bd47a); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
 html .cl .evbox .oplogo { width: 190px; padding: 14px; border-radius: 14px; flex: none; }   /* event logos bigger (Matteo 16 Nov) */
