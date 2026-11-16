@@ -40,6 +40,11 @@ The Coaching website (`coaching.cigalacycling.com`, athlete area `/athletes/`) h
   The usual week from the form fills the availability above. The form is locked once signed.
 - **Goals & events** (planned, same API): `GET /wp-json/cc/v1/goals?email=` will return the athlete's current goals and events list. Each event has a name, date, type, priority (A/B/C) and a note. The athlete keeps it up to date, and it starts from the form's answers. Use it for periodization.
 
+## Where athletes enter things (Matteo 16 Nov)
+- Athletes enter availability, goals and events only in their Cigala area, never in Vekta.
+- The website writes them into Vekta.
+- So the PC tools should read them from the website API above, not from Vekta events.
+
 ## Vekta calendar
 When an athlete saves availability, the website writes notes into their Vekta calendar.
 - **Which days:**
