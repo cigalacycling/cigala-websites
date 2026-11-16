@@ -580,8 +580,7 @@ def trip(slug):
             grid_ = [re.match(r'^\s*(Grid \d+)\s*\(([^)]*)\)\s*:?\s*(.*)$', text_of(x)) for x in ls_]
             tiles = ''.join(f'<div class="ptile"><span>{E(m.group(1))}</span><b>{E(m.group(3))}</b><small>Places {E(m.group(2))}</small></div>' for m in grid_ if m)
             nts = ''.join(f'<p class="tnote">{x}</p>' for x, m in zip(ls_, grid_) if not m)
-            bands += f'<div class="panel tband"><p class="inh">{E(text_of(ent["h"]).rstrip("*"))}</p><div class="prow">{tiles}</div>{nts}</div>'
-            if slug == 'chianti-gran-fondo-strade-bianche':   # the VIP terrace on the pro race day, under the Gran Fondo prices (Matteo 16 Nov); no price: a supplement, ask us
+            if slug == 'chianti-gran-fondo-strade-bianche':   # the VIP terrace on the pro race day: after the airport transfers, before the Gran Fondo prices (Matteo 16 Nov: less text in one place); no price: a supplement, ask us
                 bands += ('<div class="panel tband tolfe"><p class="inh">VIP day at the pro race: Terrazza Le Tolfe</p>'
                           '<div class="tolfe-in"><div class="vcard tolfe-vid"><button type="button" class="yt" data-id="' + TOLFE[0] + '" aria-label="Play the Terrazza Le Tolfe video">'
                           + img_tag(TOLFE[1], 900, alt='Strade Bianche finish in Siena - Cigala Cycling Tours') + '<span class="play" aria-hidden="true"></span></button></div>'
@@ -590,6 +589,7 @@ def trip(slug):
                           '<p>The day before your Gran Fondo, watch the Strade Bianche pros from a private covered terrace on the Le Tolfe climb, the final gravel sector just after Colle Pinzuto, where the race breaks apart. '
                           'You see the women\'s and men\'s races pass twice, with a Tuscan buffet lunch, an espresso bar, wine, beer and soft drinks all day, and the race live on big screens.</p>'
                           f'<p class="tnote">Available to tour guests as a supplement. Ask us when you book, and we also send you all the details before the tour.</p></div><a class="btn btn-go tolfe-go" href="{L}/contact/" {EXT}>Get in touch about the VIP day →</a></div></div>')
+            bands += f'<div class="panel tband"><p class="inh">{E(text_of(ent["h"]).rstrip("*"))}</p><div class="prow">{tiles}</div>{nts}</div>'
         out.append(f'<section id="included"><div class="in">{H(inc, "The details")}<div class="inc2"><div class="panel yes"><p class="inh">Included in the price</p><ul>{inc_li}</ul></div>{no_html}</div>'
                    f'{bands}</div></section>')
         nav.append(('included', "What's included"))
