@@ -46,7 +46,9 @@ _LIB = {x['id']: x for x in json.load(open(ROOT + 'stg-tours/media-library.json'
 lib_url = lambda i: _LIB[i]['source_url']
 lib_alt = lambda i: re.sub(r'\s*-\s*Cigala Cycling Tours$', '', _LIB[i].get('alt_text') or '')
 EVENT_LOGO = {'chianti-gran-fondo-strade-bianche': 9333, 'lake-como-gran-fondo-il-lombardia': 9326, 'discover-the-algarve-granfondo': 9255, 'tour-of-flanders-experience': 9340}   # the event's own logo on the right of its box (Matteo 16 Nov: the box looked like it was missing it)
-DAY_MEDIA = {'discover-the-algarve-granfondo': {1: ('Ew-QIRa8C_8', 4515), 2: ('3hmbEQFiTHY', 2523), 3: ('img', 2499), 4: ('DPPZt7TXcg4', 4955),
+DAY_MEDIA = {'cyprus-crossing-gravel': {1: ('5wzpNhqEBR0', 3322), 2: ('6dCFozS_3aU', 6725), 3: ('MtAVyHtkKY8', 6752), 4: ('-RcfggqFlVQ', 7264),
+                                       6: ('CRHb2_UW908', 3326), 7: ('ejhAFqD612A', 7261)},   # Matteo 16 Nov; day 5 video and the last-day photo to come
+             'discover-the-algarve-granfondo': {1: ('Ew-QIRa8C_8', 4515), 2: ('3hmbEQFiTHY', 2523), 3: ('img', 2499), 4: ('DPPZt7TXcg4', 4955),
                                               5: ('img', 2518), 6: ('img', 4602)},   # Matteo 16 Nov, round 2: all from the old Algarve page, upright frames; the podium with the pros moved to the gallery
              'chianti-gran-fondo-strade-bianche': {1: ('4tBZpWAVnrc', 4446), 2: ('4dBK7nxR2nI', 11033), 3: ('jYGwgkZ9CDM', 4872), 4: ('vKw83m2nUh0', 4871),
                                                   5: ('img', 3196), 6: ('0Kw39ByYQGg', 3164)}}   # covers match the day (Matteo 16 Nov): Chianti hills, white road, cypress avenue, Siena crowd (pro race), Siena   # Matteo 16 Nov: a Short per day, day 5 = his photo winning with the bike up   # a YouTube Short in a day's box (Matteo 16 Nov): (video, our own cover photo); loads on tap
