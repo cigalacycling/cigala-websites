@@ -438,3 +438,10 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
   - New posts automatically get a lower number (that plugin's behaviour), so they appear on top, newest first. Matteo can drag posts in Posts.
   - Old order: stg-coaching/backup/posts-menu-order-before-mix.json.
   - Side effect: saving the order through the API set every post's "last modified" date to 16 Nov 2026. Content and publish dates are unchanged.
+
+## 16 Nov: year 2027 and share previews (Matteo, via the Tours session, confirmed by him here)
+- /blog/cycling-coach-ireland/: SEO title "…Choose the Right Coach (2026)" became "(2027)". Social title "…(2026 Guide)" became "(2027 Guide)". Only the year changed; it was the only Coaching title or description with 2026.
+- Nine posts were copies of that post and shared its social title, description and image, on the live site too: What is FTP, Fred Whitton, Maratona dles Dolomites, Strade Bianche, Lactate gels, W200, Belgian Waffle Ride, Whistler, AI coaching.
+  - Their Yoast opengraph fields were cleared, so a shared link now shows the post's own SEO title, meta description and featured image.
+  - Their SEO titles and meta descriptions (what Google shows) are unchanged.
+- Old values: stg-coaching/backup/social-fields-before.json; script: tools/coaching_social_titles.py.
