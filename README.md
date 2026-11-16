@@ -279,6 +279,12 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
     - Strade Bianche day 3 is a loop back to Radda (Castellina, Panzano, Greve, Lamole, Volpaia).
     - Algarve day 4 is the Gran Fondo to Lagos via Monchique (approximate, until Matteo sends the Komoot GPX).
     - Rivers are off the day maps.
+- **Last checks, 16 Nov:**
+  - **Level filters** (homepage finder and tour lists) now go by the tour's level: the easiest level it suits, the same as the card's bar meter. Expert means expert-only tours (Cyprus, Tuscany Epic, Alpine Gravel). Before, every tour suited an expert, so Expert showed all 15.
+  - **Coast to Coast** is open to beginners (`tours/trips-2027.json`, `LEVEL_FROM_DATA`, FAQ).
+  - **Availability:** Flanders and Maratona are "Filling up fast" (amber). Only red and amber pulse; green "Spots available" is a still dot.
+  - **Expert links** (level note under Book now, FAQs) go to the terms' Rider Eligibility section (`/terms-conditions/#rider-eligibility`). The terms contents list scrolls on its own when it is taller than the window.
+  - **Tuscany Epic:** the hero is about 2 cm taller (`HERO_TALL`), and day 3 goes through Volterra and out east.
 - **Final trip-page round, 16 Nov:**
   - **Guides:** every guide on every tour now has a bio of about the same length (`STD_GUIDE`, `TEAM`). Bios for Antonio, Marco, JP and Bone use Matteo's own facts. Names show with nicknames, as on About. Amedeo is off Maratona.
   - **FAQs:**
