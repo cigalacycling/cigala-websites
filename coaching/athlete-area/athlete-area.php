@@ -479,7 +479,7 @@ function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
     $key = get_password_reset_key($u); if (is_wp_error($key)) return $key;
     $link = add_query_arg(['cc_set' => $key, 'u' => rawurlencode($u->user_login)], home_url('/' . CC_ATH_SLUG . '/'));
     $it = cc_ath_user_lang($u->ID) === 'it'; $first = esc_html($u->first_name ?: $u->display_name);
-    $logo = esc_url(get_option('cc_mail_logo', ''));
+    $logo = esc_url(get_option('cc_mail_logo', '')); $topo = esc_url(get_option('cc_mail_topo', '')); $head = esc_url(get_option($it ? 'cc_mail_header_it' : 'cc_mail_header_en', ''));
     $T = $it ? ['subj' => 'La tua area atleta Cigala Coaching è pronta', 'hi' => "Ciao $first,",
                 'p1' => 'la tua area atleta personale è pronta. Qui trovi i tuoi report, le guide di allenamento, gli strumenti gratuiti senza registrazione e un contatto diretto con me, tutto in un unico posto.',
                 'btn' => 'Scegli la tua password', 'p2' => 'Per entrare usi la tua email, <strong>' . esc_html($u->user_email) . '</strong>. Il pulsante vale 7 giorni: se è scaduto, scrivimi e te ne mando uno nuovo.',
@@ -489,11 +489,12 @@ function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
                 'btn' => 'Choose your password', 'p2' => 'You log in with your email, <strong>' . esc_html($u->user_email) . '</strong>. The button works for 7 days: if it has expired, just message me and I will send you a new one.',
                 'p3' => 'Once you are in, bookmark the page on your phone so it is always one tap away.', 'bye' => 'See you on the road,', 'eb' => 'Athlete hub'];
     $f = "font-family:Montserrat,Helvetica,Arial,sans-serif";
-    $h = '<!doctype html><html><body style="margin:0;padding:0;background:#eef0f2"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef0f2"><tr><td align="center" style="padding:28px 12px">'
-       . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:14px;overflow:hidden">'
-       . '<tr><td style="background:#07080a;padding:26px 30px">' . ($logo ? '<img src="' . $logo . '" width="70" height="70" alt="Cigala Cycling Coaching" style="display:block;border:2px solid #fff">' : '<span style="color:#fff;' . $f . ';font-weight:700;font-size:18px">Cigala Cycling Coaching</span>') . '</td></tr>'
+    // Matteo 16 Nov: topographic background (an image, so it works in email apps; Outlook shows the plain dark colour)
+    $h = '<!doctype html><html><body style="margin:0;padding:0;background:#07080a"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#07080a"><tr><td align="center"' . ($topo ? ' background="' . $topo . '"' : '') . ' style="padding:34px 12px;background-color:#07080a;' . ($topo ? 'background-image:url(' . $topo . ');background-size:1200px auto;background-position:center top;' : '') . '">'
+       . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.45)">'
+       . ($head ? '<tr><td style="background:#07080a;padding:0"><img src="' . $head . '" width="560" alt="Cigala Cycling Coaching, ' . $T['eb'] . '" style="display:block;width:100%;max-width:560px;height:auto;border:0"></td></tr>' : '<tr><td style="background:#07080a;padding:26px 30px">' . ($logo ? '<img src="' . $logo . '" width="70" height="70" alt="Cigala Cycling Coaching" style="display:block;border:2px solid #fff">' : '<span style="color:#fff;' . $f . ';font-weight:700;font-size:18px">Cigala Cycling Coaching</span>') . '</td></tr>')
        . '<tr><td style="padding:30px 30px 8px;' . $f . ';color:#16181b;font-size:16px;line-height:1.6">'
-       . '<p style="margin:0 0 6px;color:#d62d30;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase">' . $T['eb'] . '</p>'
+       . ($head ? '' : '<p style="margin:0 0 6px;color:#d62d30;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase">' . $T['eb'] . '</p>')
        . '<p style="margin:0 0 14px;font-size:18px;font-weight:700">' . $T['hi'] . '</p><p style="margin:0 0 22px">' . $T['p1'] . '</p>'
        . '<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:10px;background:#12a150"><a href="' . esc_url($link) . '" style="display:inline-block;padding:15px 26px;' . $f . ';font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px">' . $T['btn'] . '</a></td></tr></table>'
        . '<p style="margin:22px 0 10px;font-size:14px;color:#454a52">' . $T['p2'] . '</p><p style="margin:0 0 22px;font-size:14px;color:#454a52">' . $T['p3'] . '</p>'
