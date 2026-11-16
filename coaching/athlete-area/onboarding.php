@@ -30,22 +30,22 @@ function cc_f_steps() {
       ['about', 'About you', 'both', [
         ['p', 'About you', null, 'fields' => [
           ['first', 'text', 'First name', 'req' => 1, 'half' => 1, 'ac' => 'given-name'], ['last', 'text', 'Surname', 'req' => 1, 'half' => 1, 'ac' => 'family-name'],
-          ['dob', 'date', 'Date of birth', 'req' => 'full', 'half' => 1, 'only' => 'full'], ['gender', 'radio', 'Gender', 'opts' => ['f' => 'Female', 'm' => 'Male'], 'half' => 1, 'only' => 'full'],
+          ['dob', 'date', 'Date of birth', 'req' => 'full', 'half' => 1, 'only' => 'full'], ['gender', 'radio', 'Gender', 'opts' => ['f' => 'Female', 'm' => 'Male'], 'half' => 1, 'only' => 'full', 'req' => 1],
           ['phone', 'tel', 'Mobile', 'req' => 1, 'half' => 1, 'ac' => 'tel'], ['phone_home', 'tel', 'Home telephone', 'opt' => 1, 'half' => 1],
           ['email', 'email', 'Email', 'req' => 1, 'ac' => 'email'],
           ['address', 'text', 'Address', 'opt' => 'adult', 'req' => 'u18', 'ac' => 'street-address', 'only' => 'full'], ['postcode', 'text', 'Postcode / Eircode', 'opt' => 'adult', 'req' => 'u18', 'half' => 1, 'ac' => 'postal-code', 'only' => 'full'],
-          ['team', 'text', 'Cycling club, group or team', 'ph' => 'or N/A', 'half' => 1],
-          ['sport', 'checks', 'Sport', 'opts' => ['cycling' => 'Cycling', 'triathlon' => 'Triathlon', 'running' => 'Running', 'swimming' => 'Swimming', 'other' => 'Other'], 'only' => 'full'],
+          ['team', 'text', 'Cycling club, group or team', 'ph' => 'or N/A', 'half' => 1, 'req' => 1],
+          ['sport', 'checks', 'Sport', 'opts' => ['cycling' => 'Cycling', 'triathlon' => 'Triathlon', 'running' => 'Running', 'swimming' => 'Swimming', 'other' => 'Other'], 'only' => 'full', 'req' => 1],
           ['sport_other', 'text', 'Which other sport?', 'if' => 'has:sport=other', 'only' => 'full'],
         ]],
         ['p', 'Emergency contact', 'Someone I can call in an emergency.', 'fields' => [
           ['ec_first', 'text', 'First name', 'req' => 1, 'half' => 1], ['ec_last', 'text', 'Surname', 'req' => 1, 'half' => 1],
-          ['ec_rel', 'text', 'Relationship to you', 'ph' => 'e.g. partner, parent', 'half' => 1], ['ec_mobile', 'tel', 'Mobile', 'req' => 1, 'half' => 1],
+          ['ec_rel', 'text', 'Relationship to you', 'ph' => 'e.g. partner, parent', 'half' => 1, 'req' => 1], ['ec_mobile', 'tel', 'Mobile', 'req' => 1, 'half' => 1],
           ['ec_home', 'tel', 'Home telephone', 'opt' => 1, 'half' => 1], ['ec_work', 'tel', 'Work telephone', 'opt' => 1, 'half' => 1],
         ]]]],
       ['numbers', 'Your numbers', 'both', [
         ['p', 'Your numbers', 'Only what you know. Leave anything else empty: we will test it together.', 'fields' => [
-          ['height', 'number', 'Height (cm)', 'half' => 1], ['weight', 'number', 'Weight (kg)', 'half' => 1], ['weight_goal', 'number', 'Ideal race weight (kg)', 'opt' => 1],
+          ['height', 'number', 'Height (cm)', 'half' => 1, 'req' => 1], ['weight', 'number', 'Weight (kg)', 'half' => 1, 'req' => 1], ['weight_goal', 'number', 'Ideal race weight (kg)', 'opt' => 1],
           ['ftp', 'number', 'Threshold power, FTP or CP (W)', 'opt' => 1, 'half' => 1], ['ftp_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1],
           ['thr', 'number', 'Threshold heart rate (bpm)', 'opt' => 1, 'half' => 1], ['thr_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1],
           ['pace', 'text', 'Running threshold pace (min/km)', 'opt' => 1, 'ph' => 'e.g. 4:30', 'half' => 1, 'if' => 'run'], ['pace_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1, 'if' => 'run'],
@@ -56,18 +56,18 @@ function cc_f_steps() {
       ['week', 'Your week', 'both', [
         ['p', 'Your usual week', 'Day of the week and hours available. This fills in “My availability” in your hub, so you only do it once.', 'fields' => [
           ['weekhint', 'group', 'If any time of day suits you, leave morning, lunch and evening off. Two slots on the same day? Tap both.'],
-          ['week', 'week', ''],
+          ['week', 'week', '', 'req' => 1],
           ['rest', 'checks', 'Day or days you would prefer to have as REST', 'opts' => 'days'],
-          ['hours_week', 'text', 'How many hours a week do you normally train?', 'ph' => 'e.g. 6h', 'half' => 1],
-          ['hours_day', 'text', 'How many hours a day do you normally train?', 'ph' => 'e.g. 1h, 1h 30', 'half' => 1],
+          ['hours_week', 'text', 'How many hours a week do you normally train?', 'ph' => 'e.g. 6h', 'half' => 1, 'req' => 1],
+          ['hours_day', 'text', 'How many hours a day do you normally train?', 'ph' => 'e.g. 1h, 1h 30', 'half' => 1, 'req' => 1],
           ['recent', 'textarea', 'Any notes about your normal training week?', 'opt' => 1, 'ph' => 'e.g. 1h turbo Tue and Thu, club spin Sunday 100 km'],
-          ['with', 'checks', 'Do you train alone or with someone?', 'opts' => ['alone' => 'Alone', 'club' => 'Club spins', 'friends' => 'With friends', 'indoor' => 'Indoor (Zwift etc.)'], 'only' => 'full'],
-          ['winter', 'checks', 'What other sports could you do in the winter?', 'opts' => ['gym' => 'Gym', 'running' => 'Running', 'swimming' => 'Swimming', 'hiking' => 'Hiking', 'mtb' => 'MTB', 'cx' => 'Cyclocross'], 'only' => 'full'],
+          ['with', 'checks', 'Do you train alone or with someone?', 'opts' => ['alone' => 'Alone', 'club' => 'Club spins', 'friends' => 'With friends', 'indoor' => 'Indoor (Zwift etc.)'], 'only' => 'full', 'req' => 1],
+          ['winter', 'checks', 'What other sports could you do in the winter?', 'opts' => ['gym' => 'Gym', 'running' => 'Running', 'swimming' => 'Swimming', 'hiking' => 'Hiking', 'mtb' => 'MTB', 'cx' => 'Cyclocross'], 'only' => 'full', 'req' => 1],
           ['with_more', 'text', 'Anything else about training with others or winter sports?', 'opt' => 1, 'only' => 'full'],
         ]]]],
       ['goals', 'Your goals', 'both', [
         ['p', 'Your goals', null, 'fields' => [
-          ['goal_short', 'textarea', 'Short-term goal (1 year)'], ['goal_long', 'textarea', 'Long-term goal (more than 1 year)'],
+          ['goal_short', 'textarea', 'Short-term goal (1 year)', 'req' => 1], ['goal_long', 'textarea', 'Long-term goal (more than 1 year)', 'req' => 1],
           ['events', 'events', 'If you race or do any events, list them here with their priority: A = your main goal, B = important, C = for training or fun. League and club races too.'],
         ]],
         ['p', 'You as a rider', null, 'only' => 'full', 'fields' => [
@@ -95,9 +95,9 @@ function cc_f_steps() {
           ['yn_details', 'textarea', 'If you have answered yes to any of the questions above, please give details:', 'if' => 'yes:yn0,yn1,yn2,yn3,yn4,yn5,yn6,yn7,yn8,yn9,yn10,yn11,yn12', 'req' => 'shown'],
         ])],
         ['p', 'Food and diet', null, 'fields' => [
-          ['diet_plan', 'textarea', 'Do you currently follow a diet plan?'], ['diet_req', 'text', 'Have you any dietary requirements?'],
-          ['diet_score', 'select', 'How would you rate your diet from 1 to 10?', 'opts' => array_combine(range(1, 10), range(1, 10))],
-          ['lose', 'yn', 'Do you feel you need to lose weight to improve your cycling performance?'], ['lose_more', 'text', 'Tell me more', 'opt' => 1],
+          ['diet_plan', 'textarea', 'Do you currently follow a diet plan?', 'req' => 1], ['diet_req', 'text', 'Have you any dietary requirements?', 'req' => 1],
+          ['diet_score', 'select', 'How would you rate your diet from 1 to 10?', 'opts' => array_combine(range(1, 10), range(1, 10)), 'req' => 1],
+          ['lose', 'yn', 'Do you feel you need to lose weight to improve your cycling performance?', 'req' => 1], ['lose_more', 'text', 'Tell me more', 'opt' => 1],
           ['supps_any', 'yn', 'Are you currently taking tablets to aid immune function, such as multivitamins or supplements?', 'req' => 1],
           ['supps', 'textarea', 'Please list them:', 'if' => 'yes:supps_any', 'req' => 'shown'],
         ]]]],
@@ -186,7 +186,8 @@ function cc_f_missing($a, $kind, $sig_ok) {
         if (!cc_f_cond($f['if'] ?? null, $a, $u18)) continue;   // hidden questions are never required
         $need = $r === 1 || $r === 'shown' || ($r === 'full' && $kind === 'full') || ($r === 'u18' && $u18);
         if ($f['_panel_if'] === 'u18' && !$u18) $need = false;
-        if ($need && ($a[$k] === '' || $a[$k] === 0 || $a[$k] === [] || $a[$k] === null)) $miss[] = $f[2];
+        $empty = $f[1] === 'week' ? in_array('', array_map(function ($d) { return (string) ($d['h'] ?? ''); }, (array) $a[$k]), true) : ($a[$k] === '' || $a[$k] === 0 || $a[$k] === [] || $a[$k] === null);
+        if ($need && $empty) $miss[] = $f[2] !== '' ? $f[2] : 'Your usual week';
     }
     if ($kind === 'full' && !$sig_ok) $miss[] = 'Signature';
     return $miss;
@@ -251,6 +252,7 @@ function cc_f_page($uid, $pid, $preview, $kind = null) {
 function cc_f_field($f, $v, $kind) {
     [$k, $t, $label] = $f; $label = $label !== '' ? esc_html(cc_f($label)) : '';
     $opt = ($f['opt'] ?? 0) === 1 ? ' <small>' . esc_html(cc_f('(optional)')) . '</small>' : (($f['opt'] ?? 0) === 'adult' ? ' <small class="rf-opt">' . esc_html(cc_f('(optional)')) . '</small>' : '');
+    if ($t === 'week' && $label === '') $f[2] = 'Your usual week: a time or “Rest day” for every day';
     $rq = $f['req'] ?? 0; $rq = ($rq === 1 || $rq === 'shown' || ($rq === 'full' && $kind === 'full')) ? '1' : ($rq === 'u18' ? 'u18' : '');
     $wrap = function ($inner, $cls = '') use ($f, $rq) { return '<div class="rf-f' . (!empty($f['half']) ? ' half' : '') . $cls . '"' . ($rq ? ' data-req="' . $rq . '" data-label="' . esc_attr(cc_f($f[2])) . '"' : '')
         . (!empty($f['if']) ? ' data-if="' . esc_attr($f['if']) . '" hidden' : '') . '>' . $inner . '</div>'; };
@@ -631,10 +633,10 @@ if(c){var pt=function(e){var r=c.getBoundingClientRect();return[e.clientX-r.left
  ['pointerup','pointercancel'].forEach(function(t){c.addEventListener(t,function(){down=false;});});R.querySelector('.rf-clr').onclick=pad;}
 /* every required question on this step must be answered before "Next" (hidden ones never count) */
 function check(st){var miss=[],a=age(),u18=a!==null&&a<18;st.querySelectorAll('.rf-f[data-req]').forEach(function(w){w.classList.remove('rf-miss');if(w.closest('[hidden]')||(w.dataset.req==='u18'&&!u18))return;var ok;
-  var tk=w.querySelector('.rf-tick input');if(tk)ok=tk.checked;else{var rs=w.querySelectorAll('input[type=radio],input[type=checkbox]');
+  var tk=w.querySelector('.rf-tick input'),wk=w.querySelector('.rf-week');if(wk){ok=true;wk.querySelectorAll('select').forEach(function(x){var d=x.closest('.av-day');d.classList.toggle('rf-dmiss',x.value==='');if(x.value==='')ok=false;});}else if(tk)ok=tk.checked;else{var rs=w.querySelectorAll('input[type=radio],input[type=checkbox]');
    if(rs.length)ok=[].some.call(rs,function(x){return x.checked;});else{var f=w.querySelector('input,select,textarea');ok=!f||f.value.trim()!=='';}}
   if(!ok){w.classList.add('rf-miss');miss.push(w.dataset.label);}});return miss;}
-F.addEventListener('change',function(e){var w=e.target.closest('.rf-miss');if(w)w.classList.remove('rf-miss');});
+F.addEventListener('change',function(e){var w=e.target.closest('.rf-miss');if(w)w.classList.remove('rf-miss');var d=e.target.closest('.rf-dmiss');if(d&&e.target.value!=='')d.classList.remove('rf-dmiss');});
 F.addEventListener('input',function(e){var w=e.target.closest('.rf-miss');if(w)w.classList.remove('rf-miss');});
 /* agreements: each tick opens once its text has been scrolled to the end */
 R.querySelectorAll('.rf-legal').forEach(function(L){var w=L.closest('.rf-f'),n=w.nextElementSibling,t=n&&n.querySelector('.rf-tick input');if(!t)return;
@@ -688,6 +690,7 @@ html .cc .rf-tick input:disabled { opacity: .35; cursor: not-allowed; } html .cc
 html .cc .rf-tick span { padding-top: 3px; } html .cc .rf-scrollhint { margin: 8px 0 0; font-size: 12.5px; color: #ff3d33; font-weight: 600; } html .cc .rf-scrollhint[hidden] { display: none; }
 html .cc .rf-miss :is(input:not([type=radio]):not([type=checkbox]), select, textarea, .rf-seg, .rf-tick input) { border-color: #ff3d33 !important; box-shadow: 0 0 0 1px #ff3d33; }
 html .cc .rf-miss :is(label, legend, .rf-tick span) { color: #ff3d33 !important; } html .cc .rf-miss .rf-chips { outline: 2px solid #ff3d33; outline-offset: 4px; border-radius: 8px; }
+html .cc .rf-dmiss select { border-color: #ff3d33 !important; box-shadow: 0 0 0 1px #ff3d33; } html .cc .rf-dmiss .av-dn { color: #ff3d33; }
 html .cc .rf-pv { border-color: rgba(240,191,0,.5); background: rgba(240,191,0,.08); }
 html .cc .rf-group { margin: 6px 0 0; font-weight: 600; color: var(--text); font-size: 14px; } html .cc .rf-group-t p { margin: 8px 0 0; font-size: 14px; }
 html .cc .rf-week { display: grid; gap: 8px; }

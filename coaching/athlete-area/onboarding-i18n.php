@@ -258,7 +258,8 @@ function cc_f_dict($l) {
 "Coach preview.": "Anteprima coach.",
 "This is only to look at the form: answers are not saved and it cannot be submitted. To try it for real, log in as a test athlete.": "Serve solo a vedere il modulo: le risposte non vengono salvate e non si può inviare. Per provarlo davvero, accedi come atleta di prova.",
 "This is the coach preview, so nothing is saved or sent. Everything else is ready: an athlete would now sign and submit.": "Questa è l’anteprima coach, quindi niente viene salvato o inviato. Tutto il resto è pronto: un atleta ora firmerebbe e invierebbe.",
-"Please answer the questions marked in red:": "Rispondi alle domande segnate in rosso:"
+"Please answer the questions marked in red:": "Rispondi alle domande segnate in rosso:",
+"Your usual week: a time or “Rest day” for every day": "La tua settimana tipo: un orario o “Riposo” per ogni giorno"
 },
 "pt": {
 "About you": "Sobre ti",
@@ -511,7 +512,8 @@ function cc_f_dict($l) {
 "Coach preview.": "Pré-visualização do treinador.",
 "This is only to look at the form: answers are not saved and it cannot be submitted. To try it for real, log in as a test athlete.": "Serve só para ver o formulário: as respostas não são guardadas e não pode ser enviado. Para experimentar a sério, entra como atleta de teste.",
 "This is the coach preview, so nothing is saved or sent. Everything else is ready: an athlete would now sign and submit.": "Isto é a pré-visualização do treinador, por isso nada é guardado nem enviado. O resto está pronto: um atleta assinaria e enviaria agora.",
-"Please answer the questions marked in red:": "Responde às perguntas assinaladas a vermelho:"
+"Please answer the questions marked in red:": "Responde às perguntas assinaladas a vermelho:",
+"Your usual week: a time or “Rest day” for every day": "A tua semana habitual: um horário ou “Descanso” para cada dia"
 },
 "sl": {
 "About you": "O tebi",
@@ -764,7 +766,8 @@ function cc_f_dict($l) {
 "Coach preview.": "Predogled za trenerja.",
 "This is only to look at the form: answers are not saved and it cannot be submitted. To try it for real, log in as a test athlete.": "To je le za ogled obrazca: odgovori se ne shranijo in ga ni mogoče oddati. Za pravi preizkus se prijavi kot testni športnik.",
 "This is the coach preview, so nothing is saved or sent. Everything else is ready: an athlete would now sign and submit.": "To je predogled za trenerja, zato se nič ne shrani ali pošlje. Vse ostalo je pripravljeno: športnik bi zdaj podpisal in oddal.",
-"Please answer the questions marked in red:": "Odgovori na vprašanja, označena z rdečo:"
+"Please answer the questions marked in red:": "Odgovori na vprašanja, označena z rdečo:",
+"Your usual week: a time or “Rest day” for every day": "Tvoj običajni teden: čas ali »Počitek« za vsak dan"
 }
 }
 JSON, true);
