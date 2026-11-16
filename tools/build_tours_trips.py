@@ -27,13 +27,13 @@ _SPJ = json.load(open(ROOT + 'tours/spots.json'))
 SPOTS = {k: v for k, v in _SPJ.items() if not k.startswith('_')}
 GUIDE_NICK = {'Giampietro': 'Giampi'}   # first name -> nickname (About page: Giampietro 'Giampi')
 # guides from the About page team (photo, role; no bio there): added to a tour, or replacing a guide (Matteo 16 Nov)
-TEAM = {'Giampi': ('Guide', 2658, ''), 'Antonio': ('Guide', 4665, ''),
+TEAM = {'Giampi': ('Guide', 2658, ''), 'Antonio': ('Guide', 4665, ''), 'Bone': ('Support & Mechanic', 10683, ''),   # Bone: Alessio, photo from Matteo 16 Nov
         'Amedeo': ('Tour Guide Leader', 2214, 'A former pro cyclist, Amedeo is a cycling tour guide & massage therapist for a decade. It is one of the most experience guides that you will ever find, counting almost over 1000 days on tours.'),
         'Piero': ('Guide & Gravel Expert', 3455, 'Piero is a passionate cyclist and architect, whose eye for detail carries into his riding. He started out in downhill mountain biking before finding his true love: gravel.')}   # bios as on the live tour pages
 GUIDES_SET = {'lake-garda-and-stelvio': ['Piero', 'Amedeo', 'Giampi'], 'lake-garda-gravel': ['Piero', 'Amedeo', 'Giampi']}   # the whole guide line-up for a tour (Matteo 16 Nov)
 GALLERY_PHOTOS = {'lake-garda-and-stelvio': [2211, 2212, 2209, 434, 780, 650, 898, 2235, 2233]}   # Garda & Stelvio: the live gallery photos are 450-800px wide (soft); sharper Garda photos (Matteo 16 Nov)
-GUIDES_ADD = {'maratona-dles-dolomites': ['Giampi'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio']}   # Coast to Coast: Marco too, once Matteo says which Marco
-GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Antonio'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'Giampi'}}   # French Alps: Alessio once Matteo sends his photo
+GUIDES_ADD = {'maratona-dles-dolomites': ['Giampi', 'Bone'], 'dolomites': ['Bone'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio']}   # Coast to Coast: Marco too, once Matteo says which Marco
+GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Bone'}, 'wonderful-slovenia': {'AMEDEO': 'Bone'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'Giampi'}}   # French Alps and Slovenia: Alessio 'Bone' in Amedeo's place (Matteo 16 Nov)
 HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
 EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 2225,   # gravel photo on the road tour, Stelvio photo on the gravel tour
                'lake-garda-and-stelvio': {'GRAVEL': 7766, 'STELVIO': 2225}, 'lake-garda-gravel': 434}   # by a word of the section title when a page has several   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
@@ -758,6 +758,7 @@ html.dyn-ok .cl .days .day.dyn-in.go::before { transform: scaleY(1); transition:
 html .cl #guides .gl { margin: 4px 0 26px; }   /* more room between the intro line and the guide cards (Matteo 16 Nov) */
 html .cl #guides .guide .tx { padding: 22px 22px 24px; }
 html .cl #guides .guide .role { margin: 8px 0 12px; }
+html .cl #guides .guide .tx { align-self: start; align-content: start; }   /* cards without a bio: name and role at the top, like the others */
 html .cl .bk2 .bk-top { gap: 8px; }
 html .cl .bk2 .bk-top .price { margin-bottom: 4px; }
 html .cl .bk2 .bk-top .price small { padding-left: 0; margin-left: 0; }

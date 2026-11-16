@@ -296,7 +296,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - **Homepage:** section titles and tour cards rise in as you scroll (`HOME_DYN` in `build_tours_wp.py`).
   - **Spacing:** one gap under the hero on every page (44px). The day timeline line no longer runs into the circles. The Contact social icons start under the text column.
   - **Guides on tours:** per-tour line-ups in `GUIDES_SET`, `GUIDES_ADD` and `GUIDES_SWAP`; team members' photos and roles in `TEAM`. Still to come:
-    - **Alessio "Bone"** (Support & Mechanic): waiting for his photo; then add him to About, Maratona, Dolomites, Slovenia (in place of Amedeo) and French Alps (in place of Antonio).
+    - **Alessio "Bone"** (Support & Mechanic, photo `tours/team/alessio-bone.jpg`, media 10683): done on 16 Nov. He is on About, Maratona and Dolomites, and on Slovenia and French Alps in place of Amedeo.
     - **Marco on Coast to Coast:** which of the two Marcos.
   - **Photos:** heroes in `HERO_PHOTO`, with focus points in `HERO_DPOS` and `HERO_MPOS`. Italian Alps cards use the Stelvio photo. The Garda & Stelvio gallery is rebuilt from sharper photos (`GALLERY_PHOTOS`).
   - **Maps:**

@@ -110,6 +110,9 @@ def about():
         if k == 'bg': team.append([v])
         elif k == 'text' and team and len(team[-1]) < 3: team[-1].append(text_of(v))
     assert team and all(len(m) == 3 for m in team), team
+    # Matteo 16 Nov: Alessio "Bone", support & mechanic (photo from Matteo, media 10683), with the support crew after the second Marco
+    i_ = max(i for i, (src, n, r) in enumerate(team) if n.upper().startswith('MARCO')) + 1
+    team.insert(i_, (10683, 'ALESSIO "BONE"', 'Support & Mechanic'))
     def disp(n):   # live names are typed in capitals; the card shows them in capitals too (CSS), keep the words
         return n.replace("'", '’').replace('"', '“', 1).replace('"', '”', 1)
     th = ''.join(f'<div class="panel member">{img_tag(src, 600)}<div class="tx"><h3>{E(disp(n))}</h3><p>{E(r)}</p></div></div>' for src, n, r in team)
