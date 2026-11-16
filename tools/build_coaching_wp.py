@@ -188,6 +188,11 @@ html .cc .blog-hero > img { object-position: 50% 58%; }
 /* Marine Lenehan's articles (tag "By Marine Lenehan", tools/coaching_vivify_posts.py): her name on the card instead of Matteo's */
 .cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title { font-size: 0 !important; }
 .cc-blog .e-loop-item.tag-by-marine-lenehan .elementor-element-f9f544d .elementor-heading-title::after { content: "By Sports Nutritionist, Marine Lenehan"; display: block; font: 600 11px/1.4 Montserrat, system-ui, sans-serif !important; letter-spacing: .08em !important; text-transform: uppercase; color: #ff3d33 !important; }
+/* Matteo 16 Nov: the opening line of a post (the excerpt) at exactly the article's text size, and hidden when it only repeats
+   the article's first words (body.cc-no-lead from coaching/seo/blog-lead.php) */
+body.single-post .elementor-4028 .elementor-widget-theme-post-excerpt, body.single-post .elementor-4028 .elementor-widget-theme-post-excerpt * { font: 400 17px/1.75 Montserrat, system-ui, sans-serif !important; color: #d0d6e0 !important; letter-spacing: normal !important; text-transform: none !important; }
+body.single-post .elementor-4028 .elementor-widget-theme-post-excerpt { margin-bottom: 18px !important; }
+body.single-post.cc-no-lead .elementor-4028 .elementor-widget-theme-post-excerpt { display: none !important; }
 /* Matteo 16 Nov: the author's name in red, on the blog cards and under the post title, on every screen size */
 body .cc-blog .e-loop-item .elementor-widget-heading.elementor-element.elementor-element-f9f544d .elementor-heading-title { color: #ff3d33 !important; }
 body.single-post .elementor-4028 .elementor-widget-heading.elementor-element.elementor-element-2a7c116 .elementor-heading-title { color: #ff3d33 !important; }
