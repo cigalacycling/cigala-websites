@@ -1,0 +1,1789 @@
+[
+ {
+  "title": "BLUETTI AC180P Portable Power Station",
+  "handle": "bluetti-ac180p-portable-power-station",
+  "vendor": "BLUETTI",
+  "productType": "Portable Power Station",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Power Stations"
+  ],
+  "descriptionHtml": "<p>The BLUETTI AC180P is a portable power station for home backup, campervans, camping and outdoor events. Charge it from the mains, a car or BLUETTI solar panels, and power laptops, lights, small appliances and bike gear wherever you are.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649945350468",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PAC180PUKGYBL010",
+    "barcodes": [
+     {
+      "value": "6970991292903"
+     }
+    ],
+    "price": "949",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "617.24"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI AC200PL Portable Power Station",
+  "handle": "bluetti-ac200pl-portable-power-station",
+  "vendor": "BLUETTI",
+  "productType": "Portable Power Station",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Power Stations"
+  ],
+  "descriptionHtml": "<p>The BLUETTI AC200PL is a portable power station for home backup, campervans, camping and outdoor events. Charge it from the mains, a car or BLUETTI solar panels, and power laptops, lights, small appliances and bike gear wherever you are.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649945350468",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PAC200PLUKGYBL010",
+    "barcodes": [
+     {
+      "value": "6970991294761"
+     }
+    ],
+    "price": "1499",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "974.96"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI AC50P Portable Power Station",
+  "handle": "bluetti-ac50p-portable-power-station",
+  "vendor": "BLUETTI",
+  "productType": "Portable Power Station",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Power Stations"
+  ],
+  "descriptionHtml": "<p>The BLUETTI AC50P is a portable power station for home backup, campervans, camping and outdoor events. Charge it from the mains, a car or BLUETTI solar panels, and power laptops, lights, small appliances and bike gear wherever you are.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649945350468",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PAC50PUKGYBL010",
+    "barcodes": [
+     {
+      "value": "6970991296543"
+     }
+    ],
+    "price": "399",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "243.29"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI AC70P Portable Power Station",
+  "handle": "bluetti-ac70p-portable-power-station",
+  "vendor": "BLUETTI",
+  "productType": "Portable Power Station",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Power Stations"
+  ],
+  "descriptionHtml": "<p>The BLUETTI AC70P is a portable power station for home backup, campervans, camping and outdoor events. Charge it from the mains, a car or BLUETTI solar panels, and power laptops, lights, small appliances and bike gear wherever you are.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649945350468",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PAC70PUKGYBL010",
+    "barcodes": [
+     {
+      "value": "6970991294242"
+     }
+    ],
+    "price": "599",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "389.59"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI Apex 300 Portable Power Station",
+  "handle": "bluetti-apex-300-portable-power-station",
+  "vendor": "BLUETTI",
+  "productType": "Portable Power Station",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Power Stations"
+  ],
+  "descriptionHtml": "<p>The BLUETTI Apex 300 is a portable power station for home backup, campervans, camping and outdoor events. Charge it from the mains, a car or BLUETTI solar panels, and power laptops, lights, small appliances and bike gear wherever you are.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649945350468",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PAPEX300UKGYBL010",
+    "barcodes": [
+     {
+      "value": "6978341873666"
+     }
+    ],
+    "price": "1899",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "1235.12"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI Elite 320 Portable Power Station",
+  "handle": "bluetti-elite-320-portable-power-station",
+  "vendor": "BLUETTI",
+  "productType": "Portable Power Station",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Power Stations"
+  ],
+  "descriptionHtml": "<p>The BLUETTI Elite 320 is a portable power station for home backup, campervans, camping and outdoor events. Charge it from the mains, a car or BLUETTI solar panels, and power laptops, lights, small appliances and bike gear wherever you are.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649945350468",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PEL320UKGYS10",
+    "barcodes": [
+     {
+      "value": "6978341872607"
+     }
+    ],
+    "price": "1699",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "1105.04"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI Premium 100 V2 Portable Power Station",
+  "handle": "bluetti-premium-100-v2-portable-power-station",
+  "vendor": "BLUETTI",
+  "productType": "Portable Power Station",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Power Stations"
+  ],
+  "descriptionHtml": "<p>The BLUETTI Premium 100 V2 is a portable power station for home backup, campervans, camping and outdoor events. Charge it from the mains, a car or BLUETTI solar panels, and power laptops, lights, small appliances and bike gear wherever you are.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649945350468",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PPR100V2UKGYBL010",
+    "barcodes": [
+     {
+      "value": "6978341872577"
+     }
+    ],
+    "price": "719",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "467.64"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI Premium 200 V2 Portable Power Station",
+  "handle": "bluetti-premium-200-v2-portable-power-station",
+  "vendor": "BLUETTI",
+  "productType": "Portable Power Station",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Power Stations"
+  ],
+  "descriptionHtml": "<p>The BLUETTI Premium 200 V2 is a portable power station for home backup, campervans, camping and outdoor events. Charge it from the mains, a car or BLUETTI solar panels, and power laptops, lights, small appliances and bike gear wherever you are.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649945350468",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PPR200V2UKGYBL010",
+    "barcodes": [
+     {
+      "value": "6978341871594"
+     }
+    ],
+    "price": "1339",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "870.89"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI Premium 30 V2 Portable Power Station",
+  "handle": "bluetti-premium-30-v2-portable-power-station",
+  "vendor": "BLUETTI",
+  "productType": "Portable Power Station",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Power Stations"
+  ],
+  "descriptionHtml": "<p>The BLUETTI Premium 30 V2 is a portable power station for home backup, campervans, camping and outdoor events. Charge it from the mains, a car or BLUETTI solar panels, and power laptops, lights, small appliances and bike gear wherever you are.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649945350468",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PPR30V2UKGYBL010",
+    "barcodes": [
+     {
+      "value": "6978341870351"
+     }
+    ],
+    "price": "319",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "207.48"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI B300K Expansion Battery",
+  "handle": "bluetti-b300k-expansion-battery",
+  "vendor": "BLUETTI",
+  "productType": "Expansion Battery",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Power Stations"
+  ],
+  "descriptionHtml": "<p>The BLUETTI B300K expansion battery adds extra capacity to compatible BLUETTI power stations, so you can run your essentials for longer during outages or off-grid trips.</p><p>Check compatibility with your BLUETTI power station before ordering. All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649945350468",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PB300K2EUGYBL010",
+    "barcodes": [
+     {
+      "value": "6970991298202"
+     }
+    ],
+    "price": "1399",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "909.92"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI SORA 60W Solar Panel",
+  "handle": "bluetti-sora-60w-solar-panel",
+  "vendor": "BLUETTI",
+  "productType": "Solar Panel",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Solar Panels"
+  ],
+  "descriptionHtml": "<p>The BLUETTI SORA 60W portable solar panel recharges your BLUETTI power station from the sun: ideal for camping, campervans and off-grid power.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649961472324",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PSORA60UGBKLS10",
+    "barcodes": [
+     {
+      "value": "6978341870559"
+     }
+    ],
+    "price": "129",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "83.9"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI SORA 130W Solar Panel",
+  "handle": "bluetti-sora-130w-solar-panel",
+  "vendor": "BLUETTI",
+  "productType": "Solar Panel",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Solar Panels"
+  ],
+  "descriptionHtml": "<p>The BLUETTI SORA 130W portable solar panel recharges your BLUETTI power station from the sun: ideal for camping, campervans and off-grid power.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649961472324",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PSORA130UGBKMD10",
+    "barcodes": [
+     {
+      "value": "6978341872157"
+     }
+    ],
+    "price": "349",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "226.99"
+    }
+   }
+  ]
+ },
+ {
+  "title": "BLUETTI SORA 220W Solar Panel",
+  "handle": "bluetti-sora-220w-solar-panel",
+  "vendor": "BLUETTI",
+  "productType": "Solar Panel",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "BLUETTI",
+   "Solar Panels"
+  ],
+  "descriptionHtml": "<p>The BLUETTI SORA 220W portable solar panel recharges your BLUETTI power station from the sun: ideal for camping, campervans and off-grid power.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/649961472324",
+   "gid://shopify/Collection/669135176004"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "281-PSORA220UGBKMD10",
+    "barcodes": [
+     {
+      "value": "6978341872164"
+     }
+    ],
+    "price": "449",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "292.03"
+    }
+   }
+  ]
+ },
+ {
+  "title": "Aquapix W3027 Wave Waterproof Camera",
+  "handle": "aquapix-w3027-wave-waterproof-camera",
+  "vendor": "Easypix",
+  "productType": "Underwater Camera",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "Aquapix",
+   "Cameras"
+  ],
+  "descriptionHtml": "<p>The Aquapix W3027 Wave is a compact waterproof camera for swimming, snorkelling and the beach: take photos and videos in and around the water without a housing.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/171689377838",
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Colour",
+    "values": [
+     {
+      "name": "Wave Marine Blue"
+     },
+     {
+      "name": "Ice Blue"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Colour",
+      "name": "Wave Marine Blue"
+     }
+    ],
+    "sku": "267-10034",
+    "barcodes": [
+     {
+      "value": "4260041686458"
+     }
+    ],
+    "price": "94.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "50.2"
+    }
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Colour",
+      "name": "Ice Blue"
+     }
+    ],
+    "sku": "267-10035",
+    "barcodes": [
+     {
+      "value": "4260041686779"
+     }
+    ],
+    "price": "94.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "54.06"
+    }
+   }
+  ]
+ },
+ {
+  "title": "Aquapix W3048-I Edge Waterproof Camera",
+  "handle": "aquapix-w3048-i-edge-waterproof-camera",
+  "vendor": "Easypix",
+  "productType": "Underwater Camera",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "Aquapix",
+   "Cameras"
+  ],
+  "descriptionHtml": "<p>The Aquapix W3048-I Edge is a rugged waterproof camera for open-water swimming, snorkelling and family holidays, with simple controls you can use with wet hands.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/171689377838",
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Colour",
+    "values": [
+     {
+      "name": "Ice Blue"
+     },
+     {
+      "name": "Yellow"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Colour",
+      "name": "Ice Blue"
+     }
+    ],
+    "sku": "267-10075",
+    "barcodes": [
+     {
+      "value": "4260041686090"
+     }
+    ],
+    "price": "134.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "76.82"
+    }
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Colour",
+      "name": "Yellow"
+     }
+    ],
+    "sku": "267-10076",
+    "barcodes": [
+     {
+      "value": "4260041686106"
+     }
+    ],
+    "price": "134.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "76.82"
+    }
+   }
+  ]
+ },
+ {
+  "title": "Easypix Birdycam Bird Feeder Camera",
+  "handle": "easypix-birdycam-bird-feeder-camera",
+  "vendor": "Easypix",
+  "productType": "Camera",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "Cameras"
+  ],
+  "descriptionHtml": "<p>The Easypix Birdycam is a bird feeder with a built-in camera: watch and record the birds visiting your garden.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "267-10123",
+    "barcodes": [
+     {
+      "value": "4260041686533"
+     }
+    ],
+    "price": "89.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "51.21"
+    }
+   }
+  ]
+ },
+ {
+  "title": "Easypix Mini Pro XS1 Camera",
+  "handle": "easypix-mini-pro-xs1-camera",
+  "vendor": "Easypix",
+  "productType": "Camera",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "Cameras"
+  ],
+  "descriptionHtml": "<p>The Easypix Mini Pro XS1 is a small, easy-to-use camera for everyday photos and videos.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "267-12012",
+    "barcodes": [
+     {
+      "value": "4260041686854"
+     }
+    ],
+    "price": "34.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "19.91"
+    }
+   }
+  ]
+ },
+ {
+  "title": "Easypix V64 Flip Camcorder",
+  "handle": "easypix-v64-flip-camcorder",
+  "vendor": "Easypix",
+  "productType": "Camera",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "Cameras"
+  ],
+  "descriptionHtml": "<p>The Easypix V64 Flip is a compact camcorder with a flip-out screen for vlogging, family videos and filming your adventures.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "267-20203",
+    "barcodes": [
+     {
+      "value": "4260041686632"
+     }
+    ],
+    "price": "119.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "68.29"
+    }
+   }
+  ]
+ },
+ {
+  "title": "Easypix V48 Pocket Camcorder",
+  "handle": "easypix-v48-pocket-camcorder",
+  "vendor": "Easypix",
+  "productType": "Camera",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "Cameras"
+  ],
+  "descriptionHtml": "<p>The Easypix V48 Pocket is a pocket-sized camcorder for quick, easy videos wherever you go.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "267-20212",
+    "barcodes": [
+     {
+      "value": "4260041686649"
+     }
+    ],
+    "price": "69.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "39.83"
+    }
+   }
+  ]
+ },
+ {
+  "title": "GoXtreme Enduro Action Camera",
+  "handle": "goxtreme-enduro-action-camera",
+  "vendor": "Easypix",
+  "productType": "Action Camera",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "GoXtreme",
+   "Cameras"
+  ],
+  "descriptionHtml": "<p>The GoXtreme Enduro is an action camera to film your rides, runs and adventures, with a waterproof case and mounts included for bikes and helmets.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/171689377838",
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Colour",
+    "values": [
+     {
+      "name": "Black"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Colour",
+      "name": "Black"
+     }
+    ],
+    "sku": "267-20148",
+    "barcodes": [
+     {
+      "value": "4260041685529"
+     }
+    ],
+    "price": "76.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "43.82"
+    }
+   }
+  ]
+ },
+ {
+  "title": "GoXtreme Reef Action Camera",
+  "handle": "goxtreme-reef-action-camera",
+  "vendor": "Easypix",
+  "productType": "Action Camera",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "GoXtreme",
+   "Cameras"
+  ],
+  "descriptionHtml": "<p>The GoXtreme Reef is a waterproof action camera for swimming, snorkelling, cycling and outdoor sports.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/171689377838",
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Colour",
+    "values": [
+     {
+      "name": "Yellow"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Colour",
+      "name": "Yellow"
+     }
+    ],
+    "sku": "267-20150",
+    "barcodes": [
+     {
+      "value": "4260041685710"
+     }
+    ],
+    "price": "114.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "65.44"
+    }
+   }
+  ]
+ },
+ {
+  "title": "GoXtreme Vision Duo Action Camera",
+  "handle": "goxtreme-vision-duo-action-camera",
+  "vendor": "Easypix",
+  "productType": "Action Camera",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "GoXtreme",
+   "Cameras"
+  ],
+  "descriptionHtml": "<p>The GoXtreme Vision Duo is an action camera with two screens, so you can frame your shot from the front or back: great for rides and vlogging.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/171689377838",
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "267-20161",
+    "barcodes": [
+     {
+      "value": "4260041686311"
+     }
+    ],
+    "price": "144.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "82.51"
+    }
+   }
+  ]
+ },
+ {
+  "title": "GoXtreme GS1 Smartphone Gimbal",
+  "handle": "goxtreme-gs1-smartphone-gimbal",
+  "vendor": "Easypix",
+  "productType": "Camera Accessory",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "GoXtreme",
+   "Camera Accessories"
+  ],
+  "descriptionHtml": "<p>The GoXtreme GS1 gimbal keeps your smartphone steady for smooth, shake-free videos.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/171689377838",
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "267-55239",
+    "barcodes": [
+     {
+      "value": "4260041686236"
+     }
+    ],
+    "price": "44.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "21.95"
+    }
+   }
+  ]
+ },
+ {
+  "title": "GoXtreme Floating Grip",
+  "handle": "goxtreme-floating-grip",
+  "vendor": "Easypix",
+  "productType": "Camera Accessory",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "Easypix",
+   "GoXtreme",
+   "Camera Accessories"
+  ],
+  "descriptionHtml": "<p>The GoXtreme floating grip keeps your action camera afloat when filming in the water, so it never sinks if you let go.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/171689377838",
+   "gid://shopify/Collection/669135208772"
+  ],
+  "productOptions": [
+   {
+    "name": "Colour",
+    "values": [
+     {
+      "name": "Black"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Colour",
+      "name": "Black"
+     }
+    ],
+    "sku": "267-55241",
+    "barcodes": [
+     {
+      "value": "4260041685901"
+     }
+    ],
+    "price": "19.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "9.75"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook Verse Lite E-Reader",
+  "handle": "pocketbook-verse-lite-e-reader",
+  "vendor": "PocketBook",
+  "productType": "E-Reader",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>The PocketBook Verse Lite is an e-reader with a glare-free E Ink screen that is easy on the eyes and readable in sunlight, with long battery life for weeks of reading.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "253-PB619-T-WW",
+    "barcodes": [
+     {
+      "value": "7640152097584"
+     }
+    ],
+    "price": "129.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "84.55"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook Verse E-Reader",
+  "handle": "pocketbook-verse-e-reader",
+  "vendor": "PocketBook",
+  "productType": "E-Reader",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>The PocketBook Verse is an e-reader with a glare-free E Ink screen that is easy on the eyes and readable in sunlight, with long battery life for weeks of reading.</p><p>Colour: Mist Grey.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "253-PB629-M-WW",
+    "barcodes": [
+     {
+      "value": "7640152097041"
+     }
+    ],
+    "price": "139.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "93.33"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook Verse Pro E-Reader",
+  "handle": "pocketbook-verse-pro-e-reader",
+  "vendor": "PocketBook",
+  "productType": "E-Reader",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>The PocketBook Verse Pro is an e-reader with a glare-free E Ink screen that is easy on the eyes and readable in sunlight, with long battery life for weeks of reading.</p><p>Colour: Azure.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "253-PB634-A-WW",
+    "barcodes": [
+     {
+      "value": "7640152094965"
+     }
+    ],
+    "price": "179.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "119.99"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook Verse Pro Color E-Reader",
+  "handle": "pocketbook-verse-pro-color-e-reader",
+  "vendor": "PocketBook",
+  "productType": "E-Reader",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>The PocketBook Verse Pro Color is an e-reader with a glare-free E Ink screen that is easy on the eyes and readable in sunlight, with long battery life for weeks of reading.</p><p>With a colour E Ink screen for comics, magazines and illustrated books.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "253-PB634K3-1-WW",
+    "barcodes": [
+     {
+      "value": "7640152097270"
+     }
+    ],
+    "price": "179.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "120.73"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook Era Color E-Reader",
+  "handle": "pocketbook-era-color-e-reader",
+  "vendor": "PocketBook",
+  "productType": "E-Reader",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>The PocketBook Era Color is an e-reader with a glare-free E Ink screen that is easy on the eyes and readable in sunlight, with long battery life for weeks of reading.</p><p>With a colour E Ink screen for comics, magazines and illustrated books.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "253-PB700K3-1-WW",
+    "barcodes": [
+     {
+      "value": "7640152097294"
+     }
+    ],
+    "price": "279.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "182.11"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook Era Lite E-Reader",
+  "handle": "pocketbook-era-lite-e-reader",
+  "vendor": "PocketBook",
+  "productType": "E-Reader",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>The PocketBook Era Lite is an e-reader with a glare-free E Ink screen that is easy on the eyes and readable in sunlight, with long battery life for weeks of reading.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "253-PB710-9-WW",
+    "barcodes": [
+     {
+      "value": "7640152098277"
+     }
+    ],
+    "price": "209.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "139.99"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook InkPad One E-Reader",
+  "handle": "pocketbook-inkpad-one-e-reader",
+  "vendor": "PocketBook",
+  "productType": "E-Reader",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>The PocketBook InkPad One is an e-reader with a glare-free E Ink screen that is easy on the eyes and readable in sunlight, with long battery life for weeks of reading.</p><p>A large screen for comfortable reading of books and documents.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "253-PB1030-8-WW",
+    "barcodes": [
+     {
+      "value": "7640152098116"
+     }
+    ],
+    "price": "299",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "189.61"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook InkPad Color 3 E-Reader",
+  "handle": "pocketbook-inkpad-color-3-e-reader",
+  "vendor": "PocketBook",
+  "productType": "E-Reader",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>The PocketBook InkPad Color 3 is an e-reader with a glare-free E Ink screen that is easy on the eyes and readable in sunlight, with long battery life for weeks of reading.</p><p>A large colour E Ink screen for comics, magazines and illustrated books.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "253-PB743K3-1-WW",
+    "barcodes": [
+     {
+      "value": "7640152093937"
+     }
+    ],
+    "price": "339.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "226.66"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook InkPad Eo E-Reader",
+  "handle": "pocketbook-inkpad-eo-e-reader",
+  "vendor": "PocketBook",
+  "productType": "E-Reader",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>The PocketBook InkPad Eo is an e-reader with a glare-free E Ink screen that is easy on the eyes and readable in sunlight, with long battery life for weeks of reading.</p><p>A large-screen e-reader and notepad.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Title",
+    "values": [
+     {
+      "name": "Default Title"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Title",
+      "name": "Default Title"
+     }
+    ],
+    "sku": "253-PB1042-M-WW",
+    "barcodes": [
+     {
+      "value": "7640152097379"
+     }
+    ],
+    "price": "589.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "383.73"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook Verse and Verse Pro Shell Cover",
+  "handle": "pocketbook-verse-and-verse-pro-shell-cover",
+  "vendor": "PocketBook",
+  "productType": "E-Reader Cover",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>A slim shell cover that protects your PocketBook Verse or Verse Pro e-reader.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Colour",
+    "values": [
+     {
+      "name": "Black"
+     },
+     {
+      "name": "Flower Print"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Colour",
+      "name": "Black"
+     }
+    ],
+    "sku": "253-H-S-634-K-WW",
+    "barcodes": [
+     {
+      "value": "7640152097164"
+     }
+    ],
+    "price": "24.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "14.22"
+    }
+   },
+   {
+    "optionValues": [
+     {
+      "optionName": "Colour",
+      "name": "Flower Print"
+     }
+    ],
+    "sku": "253-H-S-634-F-WW",
+    "barcodes": [
+     {
+      "value": "7640152097201"
+     }
+    ],
+    "price": "24.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "14.22"
+    }
+   }
+  ]
+ },
+ {
+  "title": "PocketBook Era and Era Lite Lightweight Flip Cover",
+  "handle": "pocketbook-era-and-era-lite-lightweight-flip-cover",
+  "vendor": "PocketBook",
+  "productType": "E-Reader Cover",
+  "status": "DRAFT",
+  "tags": [
+   "JDM Products",
+   "PocketBook",
+   "E-Readers"
+  ],
+  "descriptionHtml": "<p>A lightweight flip cover in black that protects your PocketBook Era or Era Lite e-reader.</p><p>All prices include VAT for EU customers.</p>",
+  "collections": [
+   "gid://shopify/Collection/669135143236",
+   "gid://shopify/Collection/669135241540"
+  ],
+  "productOptions": [
+   {
+    "name": "Colour",
+    "values": [
+     {
+      "name": "Black"
+     }
+    ]
+   }
+  ],
+  "variants": [
+   {
+    "optionValues": [
+     {
+      "optionName": "Colour",
+      "name": "Black"
+     }
+    ],
+    "sku": "253-HNFPPU700GG",
+    "barcodes": [
+     {
+      "value": "7640152096778"
+     }
+    ],
+    "price": "24.99",
+    "inventoryPolicy": "DENY",
+    "inventoryItem": {
+     "tracked": true,
+     "cost": "15.24"
+    }
+   }
+  ]
+ }
+]
