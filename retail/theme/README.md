@@ -194,3 +194,19 @@ Changes are made on an unpublished copy of the live theme. They go live only tog
   - A product whose first three title words match one already shown (same model, another colour) is skipped.
   - Results: Powermeters → Assioma UNO, 4iiii Ultegra, InPeak; Helmets → Sweet Protection Outrider, Kask Valegro, Falconer Aero; Indoor trainers → KICKR CORE 2, Feedback Omnium, CYCPLUS R200.
   - The UNO drops out by itself once it's archived.
+
+**AI search / structured data (16 Nov)**
+
+Added to the brand theme 193220739396 and to the new sale copy "Black Friday + Cyber Monday v3 (Cigala)" `193248887108`:
+
+- **`snippets/cigala-product-ld.liquid`:** Shopify's product data plus `aggregateRating` from the Judge.me `reviews.rating` / `reviews.rating_count` metafields. It is only added when the product has reviews. Used from `sections/product-information.liquid`.
+- **`snippets/cigala-org-ld.liquid`:** replaces Horizon's thin Organization block in `sections/header.liquid`. It is an OnlineStore with:
+  - legal name, email, VAT ID, country only (no address)
+  - parentOrganization cigalacycling.com
+  - 7 sameAs links (6 socials + Trustpilot)
+  - a 30-day MerchantReturnPolicy for IE and the EU (return shipping paid by the customer, full refund)
+
+  The url is now the shop root; Horizon used the page URL.
+- **Shipping schema left out on purpose:** bulky items are priced at checkout, so fixed rates in the schema would be wrong for trainers and bikes.
+- **Collection texts:** drafts are in `retail/COLLECTION-TEXTS.md`, waiting for approval.
+- **v3:** Matteo publishes it, and the 1 Dec reminder should then refer to v3. The banner is NOT in v3 (it's in the brand theme only, for 1 Dec).
