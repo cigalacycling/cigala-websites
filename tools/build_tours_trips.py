@@ -868,6 +868,7 @@ html .cl .dtour .by { font-size: 11px; font-weight: 600; letter-spacing: .12em; 
 html .cl .dtour h3 { font-size: 22px; line-height: 1.14; }
 /* ---- Matteo 16 Nov: second review ---- */
 html .cl .thero .dates { color: var(--green-text, #2bd47a); }
+@media (max-width: 900px) { html .cl .thero .crumbs { display: none; } }   /* phones: no breadcrumb floating on the hero photo (Matteo 16 Nov); laptops keep it */
 html .cl .thero .book.bk2 { padding: 0; gap: 0; background: rgba(12,14,16,.95); border: 1px solid rgba(255,255,255,.16); border-radius: 16px; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,.5); }
 html .cl .bk2 .bk-top { padding: 22px 24px 18px; display: grid; gap: 10px; justify-items: start; }
 html .cl .bk2 .bk-top .price { margin: 0; }
