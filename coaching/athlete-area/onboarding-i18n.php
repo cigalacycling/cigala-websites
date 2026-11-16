@@ -513,7 +513,7 @@ function cc_f_dict($l) {
 "This is only to look at the form: answers are not saved and it cannot be submitted. To try it for real, log in as a test athlete.": "Serve só para ver o formulário: as respostas não são guardadas e não pode ser enviado. Para experimentar a sério, entra como atleta de teste.",
 "This is the coach preview, so nothing is saved or sent. Everything else is ready: an athlete would now sign and submit.": "Isto é a pré-visualização do treinador, por isso nada é guardado nem enviado. O resto está pronto: um atleta assinaria e enviaria agora.",
 "Please answer the questions marked in red:": "Responde às perguntas assinaladas a vermelho:",
-"Your usual week: a time or “Rest day” for every day": "A tua semana habitual: um horário ou “Descanso” para cada dia"
+"Your usual week: a time or “Rest day” for every day": "A tua semana habitual: um horário ou “Dia de descanso” para cada dia"
 },
 "sl": {
 "About you": "O tebi",
@@ -767,7 +767,7 @@ function cc_f_dict($l) {
 "This is only to look at the form: answers are not saved and it cannot be submitted. To try it for real, log in as a test athlete.": "To je le za ogled obrazca: odgovori se ne shranijo in ga ni mogoče oddati. Za pravi preizkus se prijavi kot testni športnik.",
 "This is the coach preview, so nothing is saved or sent. Everything else is ready: an athlete would now sign and submit.": "To je predogled za trenerja, zato se nič ne shrani ali pošlje. Vse ostalo je pripravljeno: športnik bi zdaj podpisal in oddal.",
 "Please answer the questions marked in red:": "Odgovori na vprašanja, označena z rdečo:",
-"Your usual week: a time or “Rest day” for every day": "Tvoj običajni teden: čas ali »Počitek« za vsak dan"
+"Your usual week: a time or “Rest day” for every day": "Tvoj običajni teden: čas ali »Dan počitka« za vsak dan"
 }
 }
 JSON, true);
