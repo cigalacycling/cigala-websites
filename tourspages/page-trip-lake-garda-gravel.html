@@ -238,7 +238,8 @@ html .cl .day .dimg { margin: 0; overflow: hidden; } html .cl .day .dimg img { w
 html .cl .opbox .opnote a { color: var(--green-text, #2bd47a); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
 html .cl .evbox .oplogo { width: 190px; padding: 14px; border-radius: 14px; flex: none; }   /* event logos bigger (Matteo 16 Nov) */
-html .cl .evbox .opnote { max-width: 78ch; }   /* the text runs wider: less empty space before the logo */
+html .cl .evbox .opnote { max-width: 78ch; }
+html .cl .evbox .oplogo.bleed { background: none; padding: 0; width: 220px; border-radius: 14px; }   /* the We Ride Flanders logo is a yellow square: no white frame, bigger (Matteo 16 Nov) */   /* the text runs wider: less empty space before the logo */
 @media (max-width: 600px) { html .cl .evbox .oplogo { width: 150px; } }
 html .cl .hotel h3, html .cl .hotel h2 { font-size: 22px; }
 html .cl .stars .sup { font-size: 11px; letter-spacing: 0; vertical-align: 2px; margin-left: 4px; }

@@ -34,7 +34,8 @@ TEAM = {'JP': ('Guide', 2658, 'Giampietro, JP to everyone, is retired and lives 
         'Amedeo': ('Tour Guide Leader', 2214, 'A former pro cyclist, Amedeo has been a cycling tour guide and massage therapist for a decade, with almost 1,000 days on tours: one of the most experienced guides you will find.'),
         'Piero': ('Guide & Gravel Expert', 3455, 'Piero is a passionate cyclist and architect, whose eye for detail carries into his riding. He started out in downhill mountain biking before finding his true love: gravel.')}   # bios as on the live tour pages
 GUIDES_SET = {'lake-garda-and-stelvio': ['Piero', 'Amedeo', 'JP'], 'lake-garda-gravel': ['Piero', 'Amedeo', 'JP']}   # the whole guide line-up for a tour (Matteo 16 Nov)
-GALLERY_PHOTOS = {'chianti-gran-fondo-strade-bianche': [11034, 3160, 3156, 3157, 3158, 3161, 3162, 3163, 3164],   # first photo: Matteo's vineyard descent (the old one was low quality, 16 Nov)
+GALLERY_PHOTOS = {'discover-the-algarve-granfondo': [2527, 2528, 2526, 2525, 2524, 2530, 2522, 2531, 2529],   # podium with the pros in the gallery (Matteo 16 Nov); no repeat of the day photos
+                  'chianti-gran-fondo-strade-bianche': [11034, 3160, 3156, 3157, 3158, 3161, 3162, 3163, 3164],   # first photo: Matteo's vineyard descent (the old one was low quality, 16 Nov)
                   'lake-garda-and-stelvio': [2211, 2212, 2209, 434, 780, 650, 898, 2235, 2233]}   # Garda & Stelvio: the live gallery photos are 450-800px wide (soft); sharper Garda photos (Matteo 16 Nov)
 GUIDES_ADD = {'maratona-dles-dolomites': ['JP', 'Bone'], 'dolomites': ['Bone'], 'italian-alps': ['Antonio'], 'alpine-gravel-escape': ['Antonio'], 'italys-coast-to-coast': ['Antonio', 'Marco']}   # Coast to Coast: Marco = the younger support & mechanic, not Marco "DS" (Matteo 16 Nov)
 # the event each event tour is built around (Matteo 16 Nov): no event logo and no "official" (we are not their tour operator);
@@ -45,8 +46,8 @@ _LIB = {x['id']: x for x in json.load(open(ROOT + 'stg-tours/media-library.json'
 lib_url = lambda i: _LIB[i]['source_url']
 lib_alt = lambda i: re.sub(r'\s*-\s*Cigala Cycling Tours$', '', _LIB[i].get('alt_text') or '')
 EVENT_LOGO = {'chianti-gran-fondo-strade-bianche': 9333, 'lake-como-gran-fondo-il-lombardia': 9326, 'discover-the-algarve-granfondo': 9255, 'tour-of-flanders-experience': 9340}   # the event's own logo on the right of its box (Matteo 16 Nov: the box looked like it was missing it)
-DAY_MEDIA = {'discover-the-algarve-granfondo': {1: ('Ew-QIRa8C_8', 2503), 2: ('3hmbEQFiTHY', 7419), 3: ('img', 11042), 4: ('DPPZt7TXcg4', 4955),
-                                              5: ('img', 2527, 'wide'), 6: ('img', 11041)},   # Matteo 16 Nov; day 5 = Matteo on the podium with the pros (from the old site)
+DAY_MEDIA = {'discover-the-algarve-granfondo': {1: ('Ew-QIRa8C_8', 4515), 2: ('3hmbEQFiTHY', 2523), 3: ('img', 2499), 4: ('DPPZt7TXcg4', 4955),
+                                              5: ('img', 2518), 6: ('img', 4602)},   # Matteo 16 Nov, round 2: all from the old Algarve page, upright frames; the podium with the pros moved to the gallery
              'chianti-gran-fondo-strade-bianche': {1: ('4tBZpWAVnrc', 4446), 2: ('4dBK7nxR2nI', 11033), 3: ('jYGwgkZ9CDM', 4872), 4: ('vKw83m2nUh0', 4871),
                                                   5: ('img', 3196), 6: ('0Kw39ByYQGg', 3164)}}   # covers match the day (Matteo 16 Nov): Chianti hills, white road, cypress avenue, Siena crowd (pro race), Siena   # Matteo 16 Nov: a Short per day, day 5 = his photo winning with the bike up   # a YouTube Short in a day's box (Matteo 16 Nov): (video, our own cover photo); loads on tap
 EVENT_BOX = {'chianti-gran-fondo-strade-bianche': ('Gran Fondo Strade Bianche', 'Entry guaranteed', GUAR),
@@ -62,7 +63,7 @@ OP_NOTE = {'maratona-dles-dolomites': 'As an Official Tour Operator, we offer th
 GUIDES_DROP = {'italys-coast-to-coast': {'AMEDEO'}, 'maratona-dles-dolomites': {'AMEDEO'}}   # Matteo 16 Nov
 GUIDES_SWAP = {'dolomites': {'AMEDEO': 'Antonio'}, 'french-alps': {'AMEDEO': 'Bone'}, 'wonderful-slovenia': {'AMEDEO': 'Bone'}, 'lake-como-gran-fondo-il-lombardia': {'MARINE': 'JP'}}   # French Alps and Slovenia: Alessio 'Bone' in Amedeo's place (Matteo 16 Nov)
 HOTEL_PIC_ORDER = {'dolomites': [1, 0]}   # live has the Andreas and Rezia photos the wrong way round (Matteo 16 Nov)
-FACT_PHOTO = {'chianti-gran-fondo-strade-bianche': 1408, 'lake-garda-and-stelvio': 4856, 'wonderful-slovenia': 6280}   # the photo in Trip at a glance (Matteo 16 Nov: Garda's was soft, Slovenia's was a map)
+FACT_PHOTO = {'discover-the-algarve-granfondo': 4514, 'chianti-gran-fondo-strade-bianche': 1408, 'lake-garda-and-stelvio': 4856, 'wonderful-slovenia': 6280}   # the photo in Trip at a glance (Matteo 16 Nov: Garda's was soft, Slovenia's was a map)
 EXTRA_PHOTO = {'italian-alps': 6102, 'alpine-gravel-escape': 6143,   # Alpine Gravel: two riders on the Stelvio road, not the hairpins already on the poster (Matteo 16 Nov)
                  # gravel photo on the road tour, Stelvio photo on the gravel tour
                'lake-garda-and-stelvio': {'GRAVEL': 7766, 'STELVIO': 2225}, 'lake-garda-gravel': 434}   # by a word of the section title when a page has several   # a photo beside "Fancy a few days on the gravel?" (Matteo 16 Nov)
@@ -427,7 +428,7 @@ def trip(slug):
         out.append(f'<section style="padding-top:28px"><div class="in"><div class="panel opbox evbox"><div class="optext"><div class="head"><div><div class="eyebrow">The event</div>'
                    f'<p class="band-title">{E(ev_name)}</p><div class="bar"></div></div></div><span class="evchip">{ICON["flag"]}{E(ev_chip)}</span>'
                    f'<p class="opnote">{E(ev_txt)}</p>{f"<div class=evopts><span>The courses:</span> {ev_pills}</div>" if ev_pills else ""}</div>'
-                   + (f'<img class="oplogo" src="{lib_url(EVENT_LOGO[slug])}" alt="{E(lib_alt(EVENT_LOGO[slug]))}" loading="lazy">' if EVENT_LOGO.get(slug) else '') + '</div></div></section>')
+                   + (f'<img class="oplogo{" bleed" if EVENT_LOGO[slug] == 9340 else ""}" src="{lib_url(EVENT_LOGO[slug])}" alt="{E(lib_alt(EVENT_LOGO[slug]))}" loading="lazy">' if EVENT_LOGO.get(slug) else '') + '</div></div></section>')
     route = one('route')
     # our own route map (tools/tours_route_maps.py, Cigala style) for every trip; the live map image only as a fallback
     mp = ROOT + f'tourspages/maps/day-{slug}.svg'   # day-by-day routes on real roads (tools/tours_day_routes.py, Matteo 16 Nov)
@@ -849,7 +850,8 @@ html .cl .day .dimg { margin: 0; overflow: hidden; } html .cl .day .dimg img { w
 html .cl .opbox .opnote a { color: var(--green-text, #2bd47a); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
 html .cl .evbox .oplogo { width: 190px; padding: 14px; border-radius: 14px; flex: none; }   /* event logos bigger (Matteo 16 Nov) */
-html .cl .evbox .opnote { max-width: 78ch; }   /* the text runs wider: less empty space before the logo */
+html .cl .evbox .opnote { max-width: 78ch; }
+html .cl .evbox .oplogo.bleed { background: none; padding: 0; width: 220px; border-radius: 14px; }   /* the We Ride Flanders logo is a yellow square: no white frame, bigger (Matteo 16 Nov) */   /* the text runs wider: less empty space before the logo */
 @media (max-width: 600px) { html .cl .evbox .oplogo { width: 150px; } }
 html .cl .hotel h3, html .cl .hotel h2 { font-size: 22px; }
 html .cl .stars .sup { font-size: 11px; letter-spacing: 0; vertical-align: 2px; margin-left: 4px; }
