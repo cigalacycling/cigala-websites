@@ -56,6 +56,7 @@ def fix_img(m):
 def fix(s):
     s = re.sub(r'<img [^>]*>', fix_img, s)
     s = re.sub(r'href="(\.\./coaching/webp/[^"]+)"', lambda m: f'href="{M[m.group(1)]["url"]}"', s)   # gallery full-size links
+    s = re.sub(r'href="(img/[^"]+\.webp)"', lambda m: f'href="{M[m.group(1)]["url"]}"', s)   # full-size links to preview images (Testing INSCYD infographics: 404 found after go-live 16 Nov)
     s = re.sub(r'href="' + re.escape(C) + r'(/[^"]*)" target="_blank" rel="noopener"', r'href="\1"', s)   # internal links stay on this site
     return re.sub(r'href="' + re.escape(C) + r'(/[^"]*)"', r'href="\1"', s)
 

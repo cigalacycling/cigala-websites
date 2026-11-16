@@ -487,3 +487,25 @@ New H2s (logged here): 1-to-1 "FROM PURCHASE TO YOUR FIRST SESSION"; Bike fit "P
 - The blog loop shows all posts on one page (posts_per_page 100, no pagination), sorted by menu_order. Paginated /blog/page/N/ URLs no longer have content of their own; every post is still linked from /blog/.
 - Cards: Tours look (bigger title, border overlay, hover zoom, round flag on Italian posts).
 - Post template 4028: the author byline is a red eyebrow above the H1, and the excerpt and content sit in one boxed panel (`tools/coaching_post_template.py`, backup stg-coaching/backup/lib-4028-before-tours-style.json). Headings, copy and alt text are unchanged; still one H1.
+
+## 16 Nov 2026: go-live checks (Coaching staging published to live by Matteo, Hostinger full sync)
+- robots.txt allows Google and lists sitemap_index.xml. The sitemaps hold 93 URLs and none are staging.
+- Live crawl (`coaching/crawl-live-2026-11-16.json`) = pre-launch staging crawl (`stg-coaching/crawl-prelaunch-2026-11-16.json`) on all 106 URLs: titles, metas, H1/H2, robots, canonicals and schema are identical. No staging address in any link or image.
+- Against `coaching/baseline.json`, the list of differences is the same as the reviewed staging list (approved redesign changes only).
+- Consent:
+  - nothing is sent before a choice;
+  - Accept sends consent update granted, and the Pixel loads;
+  - Reject means no Pixel;
+  - the chat button works before any choice.
+  - GA collect could not be observed from the sandbox, because googletagmanager is blocked by the proxy (same on every site). Matteo checks GA Realtime.
+- 10 key pages at 390 and 1440 px: 1 H1, no sideways scroll, no broken images.
+- /athletes/: noindex and no-store. cc-private returns 403. Tag archives are noindex.
+- Forms (12 pages) send to matteo@. Brevo returns ACAO for the live origin.
+- Found: the 4 INSCYD infographic zoom links on /testing/ pointed to relative img/*.webp (404). Fixed in the build and on staging. Live needs the same fix (small Elementor edit or the next publish).
+- Still for Matteo on live:
+  - 301 Redirects plugin: /dummy-page/ → / and /group-club-packages2/ → /group-club-packages/;
+  - upload coaching/llms.txt to the site root (404 now);
+  - LiteSpeed on, then Purge All;
+  - Elementor Regenerate;
+  - revoke the Claude app passwords (copied from staging by the sync);
+  - Search Console sitemap.
