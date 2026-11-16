@@ -385,5 +385,6 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - **Reports:** upload the PDF inside the athlete's page. It goes to `uploads/cc-private/`, which can't be opened directly (403), and opens only for that athlete or Matteo.
   - **Shared hub:** "Shared hub (all athletes)", page 7365.
   - **Athlete finishes:** delete the user. The login stops at once and the page stays as "Former athlete: …".
+- Logged-in athletes: the free tools open without the newsletter step on any device, and the newsletter and exit pop-ups stay away. Matteo logged in still sees the site as a visitor.
 - Tested 16 Nov on staging: login and wrong password, 1-year login cookie, file open/refused/direct-download blocked, a deleted athlete can't log in, wp-admin redirects athletes. 390/820/1440 widths, 16px fields, one H1. Test users removed.
 - After go-live: open /athletes/ logged out on live and check that LiteSpeed doesn't cache it, and that `/wp-content/uploads/cc-private/` answers 403.

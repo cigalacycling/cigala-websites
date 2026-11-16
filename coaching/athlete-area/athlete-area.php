@@ -130,6 +130,14 @@ add_filter('wpseo_exclude_from_sitemap_by_post_ids', function ($ids) {
     $p = get_page_by_path(CC_ATH_SLUG); if ($p) $ids[] = $p->ID; return $ids;
 });
 
+/* ---------- logged-in athletes use the site as members (Matteo 16 Nov): the free tools open without the newsletter step,
+   and the sales pop-ups stay away (newsletter pop-up snoozed, exit pop-up off). Runs first in <head>, before the page scripts.
+   Only for athletes: Matteo logged in still sees the site as a visitor does. Logged-in pages are never cached. ---------- */
+add_action('wp_head', function () {
+    if (!is_user_logged_in() || cc_ath_is_coach() || !cc_ath_page_of(get_current_user_id())) return;
+    echo "<script>try{localStorage.setItem('cc_tools_ok','1');var n=JSON.parse(localStorage.getItem('cc_nl')||'{}');if(!n.s){n.c=Date.now();localStorage.setItem('cc_nl',JSON.stringify(n));}sessionStorage.setItem('cc_exit','1');}catch(e){}</script>\n";
+}, 1);
+
 /* ---------- logins: athletes never see wp-admin and stay logged in for a year ---------- */
 add_filter('show_admin_bar', function ($s) { return current_user_can('edit_posts') ? $s : false; });
 add_action('admin_init', function () {
