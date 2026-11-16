@@ -1,0 +1,52 @@
+{
+ "/destinations/": {
+  "id": null,
+  "og_image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-cycling-tours-share.jpg",
+  "new": 11106
+ },
+ "/trips/": {
+  "id": null,
+  "og_image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-hero-1024x984.webp",
+  "new": 11107
+ },
+ "/guides/": {
+  "id": 5030,
+  "og_image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/07/01119885-1024x984.jpg",
+  "new": 11108
+ },
+ "/trips/gravel-trips/": {
+  "id": 2821,
+  "og_image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/07/01119885-1024x984.jpg",
+  "new": 11109
+ },
+ "/guides/corsica-cycling-guide/": {
+  "id": 4994,
+  "og_image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/07/maxandre-brunet-yXN-ffcDdLQ-unsplash-576x1024.jpg",
+  "new": 11110
+ },
+ "/guides/the-tuscany-gravel-tour-riding-the-tuscany-trail/": {
+  "id": 4923,
+  "og_image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/07/dji_fly_20260527_111402_340_1779902064881_photo_optimized-576x1024.jpg",
+  "new": 11111
+ },
+ "/guides/road-vs-gravel-bike-holiday/": {
+  "id": 4895,
+  "og_image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/07/Screenshot-2026-05-06-002341.png",
+  "new": 11116
+ },
+ "/guides/gravel-cycling-cyprus/": {
+  "id": 4879,
+  "og_image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/07/dji_fly_20260429_103132_194_1777494608756_photo_optimized-576x1024.jpg",
+  "new": 11113
+ },
+ "/guides/stelvio-pass-cycling-guide/": {
+  "id": 4853,
+  "og_image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/07/dji_fly_20250911_124034_646_1757587284218_photo_optimized-576x1024.jpg",
+  "new": 11114
+ },
+ "/trips/lake-garda-gravel/": {
+  "id": 7749,
+  "og_image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/08/dji_fly_20260807_100234_823_1786133236060_photo_optimized-576x1024.jpg",
+  "new": 11115
+ }
+}
