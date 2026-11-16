@@ -211,11 +211,12 @@ html .cl .opbox .opnote { margin: 14px 0 0; max-width: 62ch; font-size: 15px; li
 html .cl .evbox .evchip { display: inline-flex; align-items: center; gap: 7px; margin: 14px 0 0; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(43,212,122,.4); background: rgba(0,154,68,.12); color: var(--green-text, #2bd47a); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
 html .cl .evbox .evchip svg { width: 16px; height: 16px; }
 html .cl .evbox .evopts { margin-top: 14px; }
-html .cl .tolfe .tolfe-ph { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin: 6px 0 16px; }
-html .cl .tolfe .tolfe-ph img { width: 100%; height: 220px; object-fit: cover; border-radius: 10px; display: block; }
+html .cl .tolfe .tolfe-in { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px; align-items: center; margin-top: 6px; }
+html .cl .tolfe .tolfe-vid { border-radius: 12px; }
+html .cl .tolfe .tolfe-vid .yt, html .cl .tolfe .tolfe-vid iframe { aspect-ratio: 9 / 16; }   /* a YouTube Short: upright */
 html .cl .tolfe p { color: var(--text-2); line-height: 1.65; max-width: 80ch; }
 html .cl .tolfe .tnote a { color: var(--green-text, #2bd47a); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
-@media (max-width: 600px) { html .cl .tolfe .tolfe-ph { grid-template-columns: 1fr 1fr; } html .cl .tolfe .tolfe-ph img:first-child { grid-column: 1 / -1; } html .cl .tolfe .tolfe-ph img { height: 170px; } }
+@media (max-width: 700px) { html .cl .tolfe .tolfe-in { grid-template-columns: 1fr; } html .cl .tolfe .tolfe-vid { max-width: 280px; margin: 0 auto; width: 100%; } }
 html .cl .opbox .opnote a { color: var(--green-text, #2bd47a); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
 html .cl .opbox .oplogo { width: 120px; height: auto; background: #fff; border-radius: 10px; padding: 10px; }
 html .cl .hotel h3, html .cl .hotel h2 { font-size: 22px; }
