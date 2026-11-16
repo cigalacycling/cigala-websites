@@ -46,8 +46,7 @@ _LIB = {x['id']: x for x in json.load(open(ROOT + 'stg-tours/media-library.json'
 lib_url = lambda i: _LIB[i]['source_url']
 lib_alt = lambda i: re.sub(r'\s*-\s*Cigala Cycling Tours$', '', _LIB[i].get('alt_text') or '')
 EVENT_LOGO = {'chianti-gran-fondo-strade-bianche': 9333, 'lake-como-gran-fondo-il-lombardia': 9326, 'discover-the-algarve-granfondo': 9255, 'tour-of-flanders-experience': 9340}   # the event's own logo on the right of its box (Matteo 16 Nov: the box looked like it was missing it)
-DAY_MEDIA = {'tour-of-flanders-experience': {2: ('img', 11127), 4: ('img', 11126)},   # CC0 photos from Wikimedia Commons (Ronde van Vlaanderen 2025), Matteo 16 Nov: no own photos yet
-             'cyprus-crossing-gravel': {1: ('5wzpNhqEBR0', 3322), 2: ('6dCFozS_3aU', 6725), 3: ('MtAVyHtkKY8', 6752), 4: ('ieLjUSSES6I', 7264),
+DAY_MEDIA = {'cyprus-crossing-gravel': {1: ('5wzpNhqEBR0', 3322), 2: ('6dCFozS_3aU', 6725), 3: ('MtAVyHtkKY8', 6752), 4: ('ieLjUSSES6I', 7264),
                                        5: ('-RcfggqFlVQ', 7261), 6: ('CRHb2_UW908', 3324), 7: ('img', 11121), 8: ('ejhAFqD612A', 3326)},   # Matteo 16 Nov (final order); day 8 = his group photo under the big cloud
              'discover-the-algarve-granfondo': {1: ('3hmbEQFiTHY', 4515), 2: ('Ew-QIRa8C_8', 2529), 3: ('img', 2499), 4: ('DPPZt7TXcg4', 4955),
                                               5: ('img', 2518), 6: ('img', 4514)},   # Matteo 16 Nov, round 2: all from the old Algarve page, upright frames; the podium with the pros moved to the gallery
