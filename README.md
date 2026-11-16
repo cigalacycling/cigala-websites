@@ -410,5 +410,12 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - **Changes:** dated exceptions ("12–19 Dec away", "next week 4h total"), plus a free note. Expired changes drop off by themselves.
 - **When an athlete saves:** Matteo gets an email every time, plus an optional phone push (ntfy app on a private topic, or Telegram, his choice).
 - **Coach page:** all athletes' availability on one screen, with a "changed since you last looked" badge.
+- **Voice (Matteo 16 Nov):** a microphone button in the availability box (browser recording, iPhone and Android, no app).
+  - Speech is written into the box as text while they speak (browser speech recognition), so the athlete can correct it before saving.
+  - The audio is kept privately (cc-private, like the reports) for Matteo to listen to. His notification has the text and a "listen" link.
+- **Vekta calendar (Matteo 16 Nov, wanted):** every saved change is also written to the athlete's Vekta calendar as notes on those days.
+  - Preferred: from the website, so it works with the PC off. That needs Matteo's Vekta key in the server config, never in chat.
+  - Alternative: the PC session syncs while the PC is on.
+- **Notifications:** email is fine for Matteo; a phone push app is not needed for now.
 - **Read access:** the PC availability session (mdv workspace) can read it through the same secure API as the report delivery.
 - Each athlete sees only their own. 16px fields.
