@@ -306,7 +306,7 @@ function draw(){var h='<h3 class="av-sub av-first"><span class="av-n" aria-hidde
  if(!ro)h+='<div class="av-save"><button type="button" class="btn btn-go av-go" disabled>'+esc(W.save)+'</button><span class="av-msg" role="status"></span></div>';
  app.innerHTML=h;drawChanges();total();msg(saved?t_('last',{d:new Date(saved*1000).toLocaleDateString(L,{day:'numeric',month:'short'})}):'');}
 function drawChanges(){var w=app.querySelector('.av-chs'),h='';
- if(!D.changes.length)h='<p class="av-none">'+esc(W.none)+'</p>';
+ if(!D.changes.length)h=ro?'<p class="av-none av-none-ro">No changes added yet: the athlete hasn’t told you about any trips or busier weeks.</p>':'<p class="av-none">'+esc(W.none)+'</p>';   /* Matteo 17 Nov: his read-only view looked like a missing box */
  D.changes.forEach(function(c,i){var t='';for(var k in C.types)t+='<option value="'+k+'"'+(k===c.type?' selected':'')+'>'+esc(C.types[k])+'</option>';
   h+='<div class="av-ch av-'+c.type+'" data-i="'+i+'">'
    +'<div class="av-chr av-chw"><label>'+esc(W.what)+'<select class="av-ty"'+(ro?' disabled':'')+'>'+t+'</select></label>'
@@ -388,6 +388,7 @@ html .cc .av-n { flex: none; display: grid; place-items: center; width: 26px; he
 html .cc .av-subp { margin: 0 0 14px 36px; color: var(--text-3); font-size: 14px; }
 html .cc .av-part { margin-top: 30px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.1); }
 html .cc .av-none { color: var(--text-3); font-size: 14px; margin: 0 0 12px; }
+html .cc .av-none-ro { background: rgba(255,255,255,.035); border: 1px dashed rgba(255,255,255,.18); border-radius: 12px; padding: 14px 16px; }
 html .cc .av-ch { display: grid; gap: 10px; padding: 14px; margin: 0 0 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); border-left: 3px solid #8a8f98; background: rgba(255,255,255,.03); }
 html .cc .av-ch.av-away { border-left-color: #E10600; } html .cc .av-ch.av-less { border-left-color: #b9895a; } html .cc .av-ch.av-more { border-left-color: #009a44; } html .cc .av-ch:is(.av-gym, .av-indoor) { border-left-color: #d0d6e0; }
 html .cc .av-chr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }

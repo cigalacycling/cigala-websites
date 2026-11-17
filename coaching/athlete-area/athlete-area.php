@@ -499,8 +499,7 @@ try{localStorage.setItem('cc_tools_ok','1');}catch(e){}   /* coached athletes sk
 var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,io='IntersectionObserver' in window;
 document.querySelectorAll('.ath-n').forEach(function(el){var n=+el.getAttribute('data-n');if(rm||!n)return;var s=0;el.textContent='0';
  function f(t){if(!s)s=t;var p=Math.min(1,(t-s)/1400);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f);}setTimeout(function(){requestAnimationFrame(f);},350);});
-if(!rm&&io){document.documentElement.classList.add('ath-anim');var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');o.unobserve(e.target);}});},{threshold:.06,rootMargin:'0px 0px -40px 0px'});
- document.querySelectorAll('.ath-s,.ath-hero').forEach(function(s){o.observe(s);});
+if(!rm&&io){   /* Matteo 17 Nov: no fade-in on scroll; every block is there straight away (the ath-anim CSS stays unused) */
  var sig=document.querySelectorAll('img.signature');if(sig.length){document.documentElement.classList.add('sig-ok');var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){so.unobserve(e.target);e.target._sig.classList.add('go');}});},{threshold:.5});
  sig.forEach(function(x){var t=x.nextElementSibling||x.parentElement;t._sig=x;so.observe(t);});}}
 })();</script>
