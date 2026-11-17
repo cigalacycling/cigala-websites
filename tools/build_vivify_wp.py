@@ -93,7 +93,7 @@ def page_data(f):
     first = first.replace('<main id="main"></main>', '<span id="main"></span>')
     def widget(b):
         # the contact form is a Contact Form 7 shortcode: the Text Editor widget runs shortcodes, the HTML widget does not
-        if '[trustindex' in b:   # Google reviews shortcode: Text Editor widget runs shortcodes
+        if '[trustindex' in b or '[contact-form-7' in b:   # Google reviews shortcode: Text Editor widget runs shortcodes
             b = re.sub(r'>\s+<', '><', b.replace('\n', ' '))
             return {"id": rid(), "elType": "widget", "widgetType": "text-editor", "settings": {"editor": b}, "elements": [], "isInner": False}
         if '<form class="form panel"' in b:
