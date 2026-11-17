@@ -350,7 +350,6 @@ function cc_ath_inner() {
     if ($coach && in_array($_GET['lang'] ?? '', ['it', 'en'], true)) $GLOBALS['cc_ath_lang'] = $_GET['lang'];
     $lang = $GLOBALS['cc_ath_lang'];
     $first = $me->first_name ?: $me->display_name;
-    if ($coach) $first = trim($me->first_name . ' ' . $me->last_name) ?: $me->display_name;   // Matteo 17 Nov: "Matteo Cigala" in full
     // personal numbers: days since the login was made, and reports in their page
     $vu = $view ? get_userdata((int) get_post_meta($view, 'cc_user', true)) : null;
     $since = $vu ? $vu->user_registered : $me->user_registered;
@@ -358,7 +357,7 @@ function cc_ath_inner() {
     $mineHtml = $view ? cc_ath_dress(trim(cc_ath_content($view))) : '';
     $nrep = substr_count($mineHtml, 'class="ath-file"');
     $o .= '<header class="ath-hero"><div class="ath-hero-txt"><p class="eyebrow">' . cc_t('Athlete area') . ($coach ? cc_t(' · coach view') : '') . '</p>'
-        . '<h1' . ($coach ? ' class="is-coach"' : '') . '><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>, <span class="ath-nm">' . ($coach ? '<span class="ath-coach-tag">Coach</span>' : '') . esc_html($first) . '</span></h1>'
+        . '<h1><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>, ' . esc_html($first) . '</h1>'
         . '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>'
         . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . esc_html(cc_Ln($nrep, 'report in your folder', 'report nella tua cartella', 'reports in your folder', 'report nella tua cartella')) . '</span></div>' : '')
         . '<a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a>' . apply_filters('cc_ath_hero_links', '', $coach) . '</div>'
@@ -905,12 +904,6 @@ html .cc .ath-hero { position: relative; display: grid; grid-template-columns: 1
 html .cc .ath-hero-txt { padding-bottom: 34px; min-width: 0; }
 html .cc .ath-hero h1 { font-size: clamp(36px, 6.4vw, 66px); line-height: 1; margin: 8px 0 12px; }
 html .cc h1 .ath-greet { color: var(--green-text, #2bd47a); font-family: var(--head); }
-html .cc h1 .ath-nm { white-space: nowrap; }   /* Matteo 17 Nov: the name on one line */
-/* Matteo 17 Nov: "Good evening, Coach Matteo Cigala" on one line, all in the heading font; "Coach" smaller. The line scales to the box. */
-html .cc h1 .ath-coach-tag { font-size: .55em; margin-right: .18em; color: #d0d6e0; }
-html .cc .ath-hero-txt:has(h1.is-coach) { container-type: inline-size; min-width: 0; }
-html .cc .ath-hero h1.is-coach { white-space: nowrap; font-size: clamp(20px, 6.8cqi, 56px); }
-@media (max-width: 760px) { html .cc .ath-hero:has(h1.is-coach) { grid-template-columns: 1fr; } html .cc .ath-hero:has(h1.is-coach) .ath-hero-me { display: none; } }   /* Matteo 17 Nov: "Good evening, Coach Matteo Cigala" on one line, name as big as the greeting */
 html .cc .ath-lede { color: var(--text-2); font-size: 16px; margin: 0 0 18px; max-width: 520px; }
 html .cc .ath-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px; }
 html .cc .ath-chip { display: inline-flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text-2); font-size: 13.5px; }
