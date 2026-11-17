@@ -83,6 +83,7 @@ function cc_r_create(WP_REST_Request $r) {
     }
     foreach (cc_r_same_key($rid, 'draft') as $old) { cc_r_delete($old); $replaced[] = $old; }   // same key: one draft
     $auto = in_array($type, CC_R_AUTO, true) && cc_r_auto($pid, $type);
+    if (in_array($type, ['race-sim', 'race-plan'], true) && get_option('cc_r_race_auto')) $auto = true;   // Matteo 17 Nov: his switch "Publish race plans automatically" (no draft step, no email)
     if ($auto) cc_r_go_live($rid);   // Matteo switched on automatic updates for this athlete and kind
     return ['ok' => true, 'id' => $rid, 'status' => $auto ? 'published' : 'draft', 'auto' => $auto, 'replaced_drafts' => $replaced, 'preview' => add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')),
             'review' => add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))];
@@ -209,6 +210,8 @@ add_filter('cc_ath_board', function ($html, $board) {
     cc_r_sweep();
     $o = '<section class="ath-s"><h2>' . cc_ath_icon('reports', 'ath-hic') . 'Reports</h2><p class="av-lede">Reports your PC tools send arrive here as drafts. Nothing reaches an athlete until you publish it. '
        . 'Preview, then publish (tick “Email the athlete” if you want them told by email) or delete. To add a PDF by hand, upload it inside the athlete’s page, as before.</p>';
+    $o .= '<form class="rp-set" method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_report_settings">' . wp_nonce_field('cc_report_settings', '_wpnonce', false, false)
+        . '<label class="rp-mail"><input type="checkbox" name="race_auto" value="1"' . (get_option('cc_r_race_auto') ? ' checked' : '') . ' onchange="this.form.submit()"> <b>Publish race plans automatically</b>: race day plans go straight into the athlete’s hub, the first one too, without waiting here (no email). Untick to review them first.</label></form>';
     $drafts = get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'numberposts' => -1, 'orderby' => 'date', 'order' => 'DESC']);
     $pub = get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'numberposts' => 60, 'orderby' => 'meta_value_num', 'meta_key' => 'cc_published', 'order' => 'DESC']);
     if ($drafts || $pub) $o .= '<form id="rp-bulk" class="rp-bulk" method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_report_bulk">' . wp_nonce_field('cc_report_bulk', '_wpnonce', false, false)
@@ -249,6 +252,11 @@ add_action('admin_post_cc_report_admin', function () {
     } elseif ($act === 'testmail') { $me = wp_get_current_user(); if (is_email($me->user_email)) cc_r_mail($rid, $me->user_email);
     } elseif ($act === 'unpublish') { wp_update_post(['ID' => $rid, 'post_status' => 'draft']);
     } elseif ($act === 'delete') { cc_r_delete($rid); }
+    wp_safe_redirect(add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))); exit;
+});
+add_action('admin_post_cc_report_settings', function () {   // Matteo 17 Nov: his switch, only he changes it
+    if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_report_settings')) wp_die('Not allowed');
+    update_option('cc_r_race_auto', empty($_POST['race_auto']) ? 0 : 1, false);
     wp_safe_redirect(add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
 add_action('admin_post_cc_report_bulk', function () {   // Matteo 17 Nov: tick several, then Publish, Unpublish or Delete them together

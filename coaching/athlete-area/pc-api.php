@@ -64,7 +64,10 @@ function cc_pc_one($p, $since) {
         'nationality_name' => $nat !== '' && defined('CC_F_COUNTRIES') ? (CC_F_COUNTRIES[$nat] ?? null) : null,
         'form' => ['status' => $u && function_exists('cc_f_status') ? cc_f_status($uid) : null, 'signed_at' => $signed['at'] ?? null, 'kind' => $signed['kind'] ?? null],
         'availability' => $av ? ['data' => $av, 'updated' => $avu ?: null, 'status' => $avu > $avseen ? 'new' : 'seen'] : null,
-        'goals' => $g ? ['short' => $g['short'] ?? '', 'long' => $g['long'] ?? '', 'events' => $g['events'] ?? [], 'from_form' => $g['from_form'] ?? '',
+        'goals' => $g ? ['short' => $g['short'] ?? '', 'long' => $g['long'] ?? '', 'events' => array_map(function ($e) {   // Matteo 17 Nov: route for the race day simulation (file: GET /cc/v1/route?id=route_id; link: route_link)
+                             if (($e['route_type'] ?? '') === 'link') $e['route_url'] = $e['route_link'] ?? null;
+                             elseif (!empty($e['route_id'])) { $e['route_url'] = wp_get_attachment_url((int) $e['route_id']); $e['route_file_api'] = rest_url('cc/v1/route?id=' . (int) $e['route_id']); }
+                             return $e; }, $g['events'] ?? []), 'from_form' => $g['from_form'] ?? '',
                          'updated' => $gu ?: null, 'changed_by' => !empty($g['by_coach']) && (int) $g['by_coach'] === $gu ? 'matteo' : 'athlete', 'status' => $gu > $gseen ? 'new' : 'seen'] : null,
         'season_published' => $season, 'live_pages' => $live,   // live_pages: season / prediction / snapshot, latest published + whether new versions go live automatically
     ];

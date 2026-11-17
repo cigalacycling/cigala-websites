@@ -83,6 +83,16 @@ Answer to the Vekta "Season Plan" chat brief (HUB-REQUEST.md, 17 Nov 2026), from
   - `from_form`: races typed on an old paper form, plain text, for Matteo to turn into events.
   - Goals have no date field: the short-term goal is "1 year"; a dated target belongs in an event.
 
+- **Race routes (17 Nov):** `goals.events[]` may also have the following fields:
+  - `start` (`"HH:MM"`);
+  - `route_type` (gpx/fit/tcx/link), `route_name`, `route_link`, `route_id`;
+  - `route_url` (a private hub link, or the link itself);
+  - `route_file_api` (`GET /cc/v1/route?id=` returns `{id, name, type, size, base64}`, coach only);
+  - `route_at` (time the route was added or changed).
+
+  Athletes upload the route in Goals & events (`POST /cc/v1/goals/route`, `.gpx`/`.fit`/`.tcx` up to 15 MB, content checked).
+  Matteo's Reports-board switch "Publish race plans automatically" (option `cc_r_race_auto`) publishes `race-sim`/`race-plan` reports straight away.
+
 ### POST /cc/v1/athlete-meta
 ```json
 {"email": "…", "set": {"vekta_id": "12345", "nationality": "IE"}}

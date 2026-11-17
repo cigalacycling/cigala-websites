@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) return;
 
 const CC_G_TYPES = ['race' => 'Race', 'sportive' => 'Sportive / Gran Fondo', 'camp' => 'Camp or trip', 'other' => 'Other'];
 function cc_g_get($pid) { $g = json_decode((string) get_post_meta($pid, 'cc_goals', true), true); return is_array($g) ? $g : null; }
-function cc_g_clean($in) {
+function cc_g_clean($in, $pid = 0) {
     $in = is_array($in) ? $in : [];
     $out = ['short' => cc_av_note($in['short'] ?? '', 1500), 'long' => cc_av_note($in['long'] ?? '', 1500), 'events' => []];
     foreach (array_slice((array) ($in['events'] ?? []), 0, 40) as $e) {
@@ -15,14 +15,32 @@ function cc_g_clean($in) {
         if ($name === '' || !$date) continue;
         $out['events'][] = ['name' => $name, 'date' => $date, 'type' => isset(CC_G_TYPES[$e['type'] ?? '']) ? $e['type'] : 'race',
             'prio' => in_array($e['prio'] ?? '', ['A', 'B', 'C'], true) ? $e['prio'] : 'B',
-            'dist' => is_numeric($e['dist'] ?? '') ? 0 + $e['dist'] : '', 'elev' => is_numeric($e['elev'] ?? '') ? 0 + $e['elev'] : '', 'note' => cc_av_str($e['note'] ?? '', 300)];
+            'dist' => is_numeric($e['dist'] ?? '') ? 0 + $e['dist'] : '', 'elev' => is_numeric($e['elev'] ?? '') ? 0 + $e['elev'] : '', 'note' => cc_av_str($e['note'] ?? '', 300)]
+            + cc_g_route_clean($e, $pid);
     }
     usort($out['events'], function ($a, $b) { return strcmp($a['date'], $b['date']); });
     return $out;
 }
+/* Matteo 17 Nov: each race can carry its route (an uploaded .gpx/.fit/.tcx, kept private, or a link) and a start time, so the laptop can
+ * build the race day simulation. Fields: start "HH:MM", route_type gpx|fit|tcx|link, route_id (private file), route_name, route_link, route_at. */
+const CC_G_ROUTE_EXT = ['gpx' => 'application/gpx+xml', 'fit' => 'application/vnd.ant.fit', 'tcx' => 'application/vnd.garmin.tcx+xml'];
+function cc_g_route_clean($e, $pid) {
+    $o = [];
+    if (preg_match('/^([01]\d|2[0-3]):[0-5]\d$/', (string) ($e['start'] ?? ''))) $o['start'] = $e['start'];
+    $id = (int) ($e['route_id'] ?? 0);
+    if ($id && $pid && get_post_type($id) === 'attachment' && (int) get_post_field('post_parent', $id) === (int) $pid && function_exists('cc_ath_is_private_file') && cc_ath_is_private_file($id)) {
+        $ext = strtolower(pathinfo((string) get_attached_file($id), PATHINFO_EXTENSION));
+        if (isset(CC_G_ROUTE_EXT[$ext])) $o += ['route_type' => $ext, 'route_id' => $id, 'route_name' => cc_av_str($e['route_name'] ?? get_the_title($id), 120)];
+    } elseif (($l = esc_url_raw(trim((string) ($e['route_link'] ?? '')), ['https', 'http'])) !== '') {
+        $o += ['route_type' => 'link', 'route_link' => substr($l, 0, 500), 'route_name' => cc_av_str(wp_parse_url($l, PHP_URL_HOST) ?: 'link', 120)];
+    }
+    if (!empty($o['route_type'])) $o['route_at'] = (int) ($e['route_at'] ?? 0) ?: time();
+    return $o;
+}
 function cc_g_event_text($e) {
     return $e['name'] . ' · ' . date_i18n('D j M Y', strtotime($e['date'] . ' 12:00')) . ' · ' . $e['prio'] . ' ' . strtolower(CC_G_TYPES[$e['type']])
-         . ($e['dist'] !== '' ? ' · ' . $e['dist'] . ' km' : '') . ($e['elev'] !== '' ? ' · ' . $e['elev'] . ' m' : '') . ($e['note'] !== '' ? ' · ' . $e['note'] : '');
+         . ($e['dist'] !== '' ? ' · ' . $e['dist'] . ' km' : '') . ($e['elev'] !== '' ? ' · ' . $e['elev'] . ' m' : '') . ($e['note'] !== '' ? ' · ' . $e['note'] : '')
+         . (!empty($e['start']) ? ' · start ' . $e['start'] : '') . (!empty($e['route_type']) ? ' · route: ' . ($e['route_type'] === 'link' ? ($e['route_link'] ?? '') : ($e['route_name'] ?? '') . ' (' . $e['route_type'] . ')') : '');
 }
 function cc_g_diff($old, $new) {
     $d = [];
@@ -42,6 +60,13 @@ function cc_g_from_form($pid, $a) {
 }
 
 add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/goals/route', ['methods' => 'POST', 'callback' => 'cc_g_route_upload',
+        'permission_callback' => function () { return is_user_logged_in() && (cc_ath_is_coach() || (bool) cc_ath_page_of(get_current_user_id())); }]);
+    register_rest_route('cc/v1', '/route', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {   // the laptop: the file itself, base64
+        $id = (int) $r->get_param('id'); $f = get_attached_file($id, true);
+        if (get_post_type($id) !== 'attachment' || !$f || !is_readable($f) || !cc_ath_is_private_file($id)) return new WP_Error('cc_none', 'No such route file', ['status' => 404]);
+        return ['id' => $id, 'name' => get_the_title($id), 'type' => strtolower(pathinfo($f, PATHINFO_EXTENSION)), 'size' => filesize($f), 'base64' => base64_encode(file_get_contents($f))];
+    }]);
     register_rest_route('cc/v1', '/goals', [
         ['methods' => 'POST', 'callback' => 'cc_g_save', 'permission_callback' => function () { return is_user_logged_in() && (cc_ath_is_coach() || (bool) cc_ath_page_of(get_current_user_id())); }],   // Matteo can edit an athlete's (?page=)
         ['methods' => 'GET', 'callback' => 'cc_g_list', 'permission_callback' => 'cc_ath_is_coach'],
@@ -51,7 +76,11 @@ function cc_g_save(WP_REST_Request $r) {
     $coach = cc_ath_is_coach();
     if ($coach) { $pid = (int) $r->get_param('page'); if (get_post_type($pid) !== 'cc_athlete' || !get_post_meta($pid, 'cc_user', true)) return new WP_Error('cc_none', 'No such athlete', ['status' => 404]); $uid = (int) get_post_meta($pid, 'cc_user', true); }
     else { $uid = get_current_user_id(); $pid = cc_ath_page_of($uid); }
-    $old = cc_g_get($pid) ?: []; $new = cc_g_clean($r->get_json_params()['goals'] ?? null);
+    $old = cc_g_get($pid) ?: []; $new = cc_g_clean($r->get_json_params()['goals'] ?? null, $pid);
+    $rk = function ($e) { return ($e['route_id'] ?? 0) . '|' . ($e['route_link'] ?? ''); };
+    foreach ($new['events'] as &$ne) { if (empty($ne['route_type'])) continue; $ne['route_at'] = time();
+        foreach ($old['events'] ?? [] as $oe) if ($rk($oe) === $rk($ne) && !empty($oe['route_at'])) { $ne['route_at'] = (int) $oe['route_at']; break; } }
+    unset($ne);
     $new['from_form'] = $old['from_form'] ?? '';
     $diff = cc_g_diff($old, $new);
     if (!$diff) return ['ok' => true, 'unchanged' => true];
@@ -68,6 +97,19 @@ function cc_g_save(WP_REST_Request $r) {
     if (function_exists('cc_ath_coach_wrap')) $h = cc_ath_coach_wrap($h);
     if (cc_av_notify_to()) wp_mail(cc_av_notify_to(), 'Goals & events: ' . $name . ' – ' . $diff[0], $h, $hd);
     return ['ok' => true, 'updated' => $new['updated']];
+}
+function cc_g_route_upload(WP_REST_Request $r) {
+    if (cc_ath_is_coach()) { $pid = (int) $r->get_param('page'); if (get_post_type($pid) !== 'cc_athlete') return new WP_Error('cc_none', 'No such athlete', ['status' => 404]); }
+    else $pid = cc_ath_page_of(get_current_user_id());
+    $f = ($r->get_file_params())['file'] ?? null;
+    if (!$f || ($f['error'] ?? 1) !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp_name'])) return new WP_Error('cc_route', 'upload', ['status' => 400]);
+    if ($f['size'] > 15 * 1024 * 1024) return new WP_Error('cc_route', 'size', ['status' => 413]);
+    $ext = strtolower(pathinfo((string) $f['name'], PATHINFO_EXTENSION)); $head = (string) file_get_contents($f['tmp_name'], false, null, 0, 4096);
+    $ok = ($ext === 'gpx' && stripos($head, '<gpx') !== false) || ($ext === 'tcx' && stripos($head, 'TrainingCenterDatabase') !== false) || ($ext === 'fit' && substr($head, 8, 4) === '.FIT');
+    if (!isset(CC_G_ROUTE_EXT[$ext]) || !$ok) return new WP_Error('cc_route', 'type', ['status' => 415]);
+    $name = cc_av_str(pathinfo((string) $f['name'], PATHINFO_FILENAME), 100) ?: 'route';
+    $id = cc_f_store($pid, file_get_contents($f['tmp_name']), 'route', $ext, CC_G_ROUTE_EXT[$ext], $name . '.' . $ext);
+    return $id ? ['ok' => true, 'route_id' => $id, 'route_name' => $name . '.' . $ext, 'route_type' => $ext] : new WP_Error('cc_route', 'save', ['status' => 500]);
 }
 function cc_g_list(WP_REST_Request $r) {
     $out = [];
@@ -97,6 +139,10 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     } else $o .= '<p>' . esc_html(cc_ath_w('gl_none', $lang)) . '</p>';
     if (($g['short'] ?? '') !== '') $o .= '<small>' . esc_html(cc_f('Short-term goal (1 year)')) . ': ' . esc_html(wp_trim_words($g['short'], 18)) . '</small>';
     $o .= '</div><a class="btn btn-ghost" href="' . esc_url(add_query_arg('my', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html(cc_ath_w('gl_change', $lang)) . '</a></div></section>';
+    // Matteo 17 Nov: tell athletes the race day simulator exists; it starts from a race with its route in Goals & events
+    $o .= '<section class="ath-s gl-racecard" id="raceplan"><h2>' . cc_ath_icon('bolt', 'ath-hic') . esc_html(cc_ath_w('rc_title', $lang)) . '</h2>'
+        . '<div class="av-sumbox"><p class="av-sumt">' . esc_html(cc_ath_w('rc_text', $lang)) . '</p>'
+        . '<a class="btn btn-go" href="' . esc_url(add_query_arg('my', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html(cc_ath_w('rc_btn', $lang)) . '</a></div></section>';
     return $html . $o;
 }, 20, 3);
 add_filter('cc_ath_subpage', function ($html, $sub, $view) { return $sub === 'goals' ? cc_g_section($view, false) : $html; }, 10, 3);
@@ -111,12 +157,15 @@ function cc_g_section($view, $coach) {
         'Event', 'Date', 'Type', 'Priority', 'A = your main goal, B = important, C = for training or fun', 'Distance (km)', 'Climbing (m)', 'Note', 'Remove', '+ Add an event', 'Save my goals & events', 'Saving…',
         'Saved. Thanks, I will plan around it.', 'Nothing new to save.', 'That did not save. Please try again.', 'days to go', 'Today!', 'Tomorrow', 'From your form', 'optional',
         'Where you want to get to, and the events on the way. Keep them up to date: your plan is built around them.'] as $s) $W[$s] = cc_f($s);
+    $lang = function_exists('cc_av_lang') ? cc_av_lang($view) : 'en';
+    foreach (['rt_ask', 'rt_upload', 'rt_link', 'rt_start', 'rt_remove', 'rt_up', 'rt_bad', 'rt_ok'] as $k) $W[$k] = cc_ath_w($k, $lang);   // Matteo 17 Nov: the route question in each race
     $types = []; foreach (CC_G_TYPES as $k => $v) $types[$k] = cc_f($v);
-    $speech = function_exists('cc_av_lang') ? (CC_AV_SPEECH[cc_av_lang($view)] ?? 'en-GB') : 'en-GB';
+    $speech = CC_AV_SPEECH[$lang] ?? 'en-GB';
+    $route_api = $ed ? add_query_arg('page', $view, rest_url('cc/v1/goals/route')) : rest_url('cc/v1/goals/route');
     return $html . '<section class="ath-s gl" id="goals" lang="' . esc_attr($speech) . '"><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html($W['My goals & events']) . '</h2>'
         . '<p class="av-lede">' . esc_html($W['Where you want to get to, and the events on the way. Keep them up to date: your plan is built around them.']) . '</p>'
         . ($ed ? '<p class="rf-note"><b>Coach view.</b> You can change these for the athlete (for example a race they told you about on WhatsApp). They see your changes in their hub; you get no email for your own changes.</p>' : '')
-        . '<div id="gl-app" data-ro="' . ($ro ? 1 : 0) . '" data-today="' . esc_attr($today) . '" data-api="' . esc_url($ed ? add_query_arg('page', $view, rest_url('cc/v1/goals')) : rest_url('cc/v1/goals')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"></div>'
+        . '<div id="gl-app" data-ro="' . ($ro ? 1 : 0) . '" data-today="' . esc_attr($today) . '" data-api="' . esc_url($ed ? add_query_arg('page', $view, rest_url('cc/v1/goals')) : rest_url('cc/v1/goals')) . '" data-route="' . esc_url($route_api) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"></div>'
         . '<script type="application/json" id="gl-data">' . wp_json_encode(['g' => $g, 'w' => $W, 'types' => $types, 'L' => $speech]) . '</script></section>' . cc_g_js();
 }
 
@@ -164,19 +213,37 @@ function draw(){var h='<div class="gl-goals2"><label for="gl-s">'+esc(W['Short-t
    +'<div class="gl-r"><label>'+esc(W['Distance (km)'])+' <small>('+esc(W.optional)+')</small><input type="number" inputmode="decimal" class="gl-km" value="'+esc(e.dist)+'"'+(ro?' readonly':'')+'></label>'
    +'<label>'+esc(W['Climbing (m)'])+' <small>('+esc(W.optional)+')</small><input type="number" inputmode="numeric" class="gl-m" value="'+esc(e.elev)+'"'+(ro?' readonly':'')+'></label></div>'
    +'<label>'+esc(W.Note)+' <small>('+esc(W.optional)+')</small><input type="text" class="gl-no" maxlength="300" value="'+esc(e.note)+'"'+(ro?' readonly':'')+'></label>'
+   +((e.type==='race'||e.type==='sportive')?route(e):'')
    +(ro?'':'<button type="button" class="av-del gl-del">'+esc(W.Remove)+'</button>')+'</div>';});
  h+='</div><p class="gl-hint">'+esc(W['A = your main goal, B = important, C = for training or fun'])+'</p>';
  if(!ro)h+='<button type="button" class="btn btn-ghost gl-add">'+esc(W['+ Add an event'])+'</button><div class="av-save"><button type="button" class="btn btn-go gl-go" disabled>'+esc(W['Save my goals & events'])+'</button><span class="av-msg gl-msg" role="status"></span></div>';
  A.innerHTML=h;}
+/* Matteo 17 Nov: the route question inside each race (file or link + start time) for the race day simulation */
+function route(e){var f=e.route_type&&e.route_type!=='link';
+ return '<div class="gl-route"><p class="gl-rq">'+esc(W.rt_ask)+'</p>'
+  +(f?'<p class="gl-rf"><span>📍 '+esc(e.route_name||'')+'</span>'+(ro?'':' <button type="button" class="av-del gl-rx">'+esc(W.rt_remove)+'</button>')+'</p>'
+     :(ro?'':'<label class="btn btn-ghost gl-up">'+esc(W.rt_upload)+'<input type="file" class="gl-file" accept=".gpx,.fit,.tcx" hidden></label>')
+      +'<label>'+esc(W.rt_link)+'<input type="url" class="gl-ln" inputmode="url" placeholder="https://" value="'+esc(e.route_link||'')+'"'+(ro?' readonly':'')+'></label>')
+  +'<label>'+esc(W.rt_start)+' <small>('+esc(W.optional)+')</small><input type="time" class="gl-st" value="'+esc(e.start||'')+'"'+(ro?' readonly':'')+'></label>'
+  +'<span class="gl-rmsg" role="status"></span></div>';}
+function upload(inp){var x=ev(inp),box=inp.closest('.gl-route'),m=box.querySelector('.gl-rmsg'),f=inp.files[0];if(!f)return;
+ m.textContent=W.rt_up;m.classList.remove('bad');var fd=new FormData();fd.append('file',f);
+ fetch(A.dataset.route,{method:'POST',credentials:'same-origin',headers:{'X-WP-Nonce':A.dataset.nonce},body:fd})
+ .then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){x.route_id=j.route_id;x.route_name=j.route_name;x.route_type=j.route_type;delete x.route_link;delete x.route_at;draw();touch();
+   var s=A.querySelector('.gl-go');if(x.name&&x.date&&s)s.click();})   /* saved straight away when the race already has a name and a date */
+ .catch(function(){m.textContent=W.rt_bad;m.classList.add('bad');inp.value='';});}
 function touch(){dirty=true;var b=A.querySelector('.gl-go');if(b)b.disabled=false;var m=A.querySelector('.gl-msg');if(m)m.textContent='';}
 function ev(t){return G.events[+t.closest('.gl-ev').dataset.i];}
 A.addEventListener('input',function(e){var t=e.target;if(t.id==='gl-s')G.short=t.value;else if(t.id==='gl-l')G.long=t.value;else if(t.closest('.gl-ev')){var x=ev(t);
+ if(t.classList.contains('gl-ln')){x.route_link=t.value.trim();if(x.route_link){x.route_type='link';}else{delete x.route_type;}delete x.route_at;}
  if(t.classList.contains('gl-n'))x.name=t.value;if(t.classList.contains('gl-km'))x.dist=t.value;if(t.classList.contains('gl-m'))x.elev=t.value;if(t.classList.contains('gl-no'))x.note=t.value;}touch();});
 A.addEventListener('change',function(e){var t=e.target;if(!t.closest('.gl-ev'))return;var x=ev(t);if(t.classList.contains('gl-d')){x.date=t.value;var c=t.closest('.gl-ev').querySelector('.gl-top');c.innerHTML=x.date?'<span class="gl-cd">'+cd(x.date)+'</span>':'';}
- if(t.classList.contains('gl-t'))x.type=t.value;touch();});
+ if(t.classList.contains('gl-st'))x.start=t.value;if(t.classList.contains('gl-file')){upload(t);return;}
+ if(t.classList.contains('gl-t')){x.type=t.value;draw();}touch();});
 A.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||ro)return;
  if(b.classList.contains('gl-pb')){var x=ev(b);x.prio=b.dataset.p;var r=b.closest('.gl-ev');r.className='gl-ev gl-'+x.prio;r.querySelectorAll('.gl-pb').forEach(function(y){y.setAttribute('aria-pressed',y===b);});touch();}
  if(b.classList.contains('gl-add')){G.events.push({name:'',date:'',type:'race',prio:'B',dist:'',elev:'',note:''});draw();touch();var l=A.querySelectorAll('.gl-n');l[l.length-1].focus();}
+ if(b.classList.contains('gl-rx')){var y=ev(b);delete y.route_id;delete y.route_name;delete y.route_type;delete y.route_at;draw();touch();}
  if(b.classList.contains('gl-del')){G.events.splice(+b.closest('.gl-ev').dataset.i,1);draw();touch();}
  if(b.classList.contains('gl-go')){b.disabled=true;var m=A.querySelector('.gl-msg');m.textContent=W['Saving…'];m.classList.remove('bad');
   fetch(A.dataset.api,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-WP-Nonce':A.dataset.nonce},body:JSON.stringify({goals:G})})
@@ -217,6 +284,13 @@ html .cc .gl-pb[data-p=C][aria-pressed=true] { background: linear-gradient(135de
 html .cc .gl-prio.A { background: linear-gradient(135deg, #F3D774, #D4AF37 55%, #A8841F) !important; color: #1a1406 !important; }
 html .cc .gl-prio.B { background: linear-gradient(135deg, #F2F3F5, #C0C4CC 55%, #8E939C) !important; color: #15171a !important; }
 html .cc .gl-prio.C { background: linear-gradient(135deg, #E9A86B, #CD7F32 55%, #9A5A1F) !important; color: #1c1006 !important; }
+/* Matteo 17 Nov: the route question inside each race */
+html .cc .gl-route { margin: 12px 0 4px; padding: 14px; border-radius: 12px; border: 1px dashed rgba(52,196,106,.45); background: rgba(1,138,68,.07); display: grid; gap: 8px; }
+html .cc .gl-rq { margin: 0; color: #fff; font-weight: 600; font-size: 15px; line-height: 1.45; }
+html .cc .gl-up { justify-self: start; cursor: pointer; margin: 0; max-width: 100%; white-space: normal; height: auto; text-align: center; }
+html .cc .gl-rf { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: #34c46a; font-weight: 600; font-size: 15px; } html .cc .gl-rf span { overflow-wrap: anywhere; }
+html .cc .gl-rmsg { font-size: 14px; color: var(--text-2); } html .cc .gl-rmsg.bad { color: #ff4a3d; } html .cc .gl-rmsg:empty { display: none; }
+html .cc .gl-racecard .btn { margin: 0; }
 @media (max-width: 640px) { html .cc .gl-row { grid-template-columns: 1fr; } html .cc .gl-goals { grid-column: 1; } }
 </style>
 CSS;
