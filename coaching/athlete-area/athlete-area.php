@@ -948,7 +948,7 @@ html .cc .ath-links { display: flex; flex-wrap: wrap; align-items: center; gap: 
 html .cc .ath-links .ath-out { font-size: 15px; margin: 0 !important; } html .cc .ath-links form.ath-lang { margin: 0 !important; }
 html .cc .ath-hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 290px; align-items: end; gap: 40px; padding: 46px 52px 0; margin: 0 0 18px; border-radius: 20px; overflow: hidden;
   background: radial-gradient(120% 140% at 100% 100%, rgba(18,161,80,.28), transparent 55%), radial-gradient(90% 120% at 0% 0%, rgba(255,61,51,.14), transparent 60%), rgba(12,14,16,.92); border: 1px solid rgba(43,212,122,.3); box-shadow: 0 30px 80px rgba(0,0,0,.45); }
-html .cc .ath-hero-txt { padding-bottom: 44px; min-width: 0; }
+html .cc .ath-hero-txt { padding-bottom: 44px; min-width: 0; align-self: center; }   /* Matteo 17 Nov: the text centred in the header (the photo still stands on the bottom) */
 html .cc .ath-hero h1 { font-size: clamp(36px, 6.4vw, 66px); line-height: 1; margin: 8px 0 12px; }
 html .cc h1 .ath-greet { color: var(--green-text, #2bd47a); font-family: var(--head); }
 html .cc h1 .ath-coach-tag { font-size: .45em; color: #b8bec8; letter-spacing: .04em; vertical-align: text-top; margin-right: .15em; }   /* raised, on the left of the name */   /* Matteo 17 Nov: a small "Coach" before his name, nothing else changed */

@@ -56,6 +56,8 @@ function cc_nw_for($pid) {   // the news this athlete should see (audience match
     $tp = function_exists('cc_ath_tp') && cc_ath_tp($pid); $uid = (int) get_post_meta($pid, 'cc_user', true); $l = $uid ? cc_ath_lang_code($uid) : 'en';
     $out = [];
     foreach (array_reverse(cc_nw_all()) as $n) {
+        // Matteo 17 Nov: news ends by itself: 2 hours after its event time, or 14 days after posting when it has none
+        if (!empty($n['when']) ? (int) $n['when'] < time() - 2 * HOUR_IN_SECONDS : (int) $n['at'] < time() - 14 * DAY_IN_SECONDS) continue;
         $aud = $n['aud'] ?? 'all';
         if ($aud === 'vekta' && $tp) continue; if ($aud === 'tp' && !$tp) continue; if (strpos($aud, 'lang:') === 0 && substr($aud, 5) !== $l) continue;
         if (strpos($aud, 'page:') === 0 && (int) substr($aud, 5) !== (int) $pid) continue;   // one athlete (e.g. a test)
@@ -82,7 +84,9 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
                 . esc_html(cc_nw_when($n['when'], 0, $l)) . '</p>' : '')
             . (($t['body'] ?? '') !== '' ? '<p>' . nl2br(esc_html($t['body'])) . '</p>' : '')
             . '<span class="nw-acts">' . (!empty($n['url']) ? '<a class="btn btn-go" href="' . esc_url($n['url']) . '" target="_blank" rel="noopener">' . esc_html(($t['btn'] ?? '') !== '' ? $t['btn'] : cc_nw_w('more')) . '</a>' : '')
-            . '<button type="button" class="btn btn-ghost nw-got">' . esc_html(cc_nw_w('got')) . '</button></span></div></div>';
+            . '<button type="button" class="btn btn-ghost nw-got">' . esc_html(cc_nw_w('got')) . '</button></span></div></div>'
+            // after "Got it": a slim one-line reminder that opens it again (Matteo 17 Nov: keep reminding until it is over)
+            . '<button type="button" class="nw-mini" data-id="' . esc_attr($n['id']) . '" hidden>📣 <b>' . esc_html($t['title'] ?? '') . '</b>' . (!empty($n['when']) ? ' <span class="nw-when nw-when-mini" data-utc="' . (int) $n['when'] . '" data-loc="' . esc_attr(['en' => 'en-GB', 'it' => 'it-IT', 'pt' => 'pt-PT', 'sl' => 'sl-SI'][$l] ?? 'en-GB') . '" data-mine="' . esc_attr(['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas'][$l] ?? 'your time') . '"></span>' : '') . '<i aria-hidden="true">›</i></button>';
     }
     return $html . $o
         . '<style>html .cc .nw-guide{margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}html .cc .nw-guide summary{cursor:pointer;font-weight:700;font-size:16px;color:#fff;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}'
@@ -92,13 +96,18 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
         . 'html .cc .nw-card{display:flex;gap:14px;align-items:flex-start;margin:0 0 14px;padding:14px 16px;border-radius:14px;border:1px solid rgba(43,212,122,.45);background:linear-gradient(135deg,rgba(18,161,80,.16),rgba(18,161,80,.04))}html .cc .nw-card[hidden]{display:none!important}'
         . 'html .cc .nw-card img{width:84px;height:84px;border-radius:12px;object-fit:cover;flex:none}html .cc .nw-eb{margin:0 0 4px;font-size:14px;color:#2bd47a;font-weight:700;letter-spacing:.04em;text-transform:uppercase}'
         . 'html .cc .nw-card b{display:block;font-size:18px;color:#fff}html .cc .nw-card p{margin:6px 0 0;font-size:16px;color:var(--text-2)}html .cc .nw-acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}html .cc .nw-acts .btn{width:auto;margin:0}'
+        . 'html .cc .nw-mini{display:flex;align-items:center;gap:8px;width:100%;margin:0 0 14px;padding:10px 14px;min-height:0;border-radius:12px;border:1px solid rgba(43,212,122,.45);background:rgba(18,161,80,.10);color:var(--text-2);font:500 15px var(--body);text-align:left;cursor:pointer}'
+        . 'html .cc .nw-mini[hidden]{display:none!important}html .cc .nw-mini b{color:#fff;font-weight:700}html .cc .nw-mini i{margin-left:auto;font-style:normal;color:#2bd47a;font-size:22px;line-height:1}'
         . '@media (max-width:560px){html .cc .nw-card{flex-direction:column}html .cc .nw-card img{width:100%;height:160px}}</style>'
         . '<script>(function(){function g(k){try{return localStorage.getItem(k);}catch(e){return null;}}function s(k,v){try{localStorage.setItem(k,v);}catch(e){}}'
         // Matteo 17 Nov: open on the first visit only; afterwards folded (tap the title to open it again)
         . 'var d=document.getElementById("nw-guide");if(d){if(g("cc_guide_seen"))d.open=false;else s("cc_guide_seen","1");}'
-        . 'document.querySelectorAll(".nw-card").forEach(function(c){if(g("cc_news_"+c.dataset.id))return;c.hidden=false;c.querySelector(".nw-got").addEventListener("click",function(){s("cc_news_"+c.dataset.id,"1");c.hidden=true;});});'
+        . 'document.querySelectorAll(".nw-card").forEach(function(c){var mini=document.querySelector(".nw-mini[data-id=\'"+c.dataset.id+"\']");'
+        . 'function fold(){c.hidden=true;if(mini)mini.hidden=false;}if(g("cc_news_"+c.dataset.id))fold();else c.hidden=false;'
+        . 'c.querySelector(".nw-got").addEventListener("click",function(){s("cc_news_"+c.dataset.id,"1");fold();});'
+        . 'if(mini)mini.addEventListener("click",function(){mini.hidden=true;c.hidden=false;});});'
         // event times in the viewer's own time zone; and the hub remembers that zone for emails / notifications
-        . 'document.querySelectorAll(".nw-when").forEach(function(p){try{var d=new Date(1000*p.dataset.utc);p.textContent="🕗 "+d.toLocaleString(p.dataset.loc,{weekday:"long",day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})+" ("+p.dataset.mine+")";}catch(e){}});'
+        . 'document.querySelectorAll(".nw-when").forEach(function(p){try{var d=new Date(1000*p.dataset.utc);if(p.classList.contains("nw-when-mini")){p.textContent="· "+d.toLocaleString(p.dataset.loc,{weekday:"short",hour:"2-digit",minute:"2-digit"});return;}p.textContent="🕗 "+d.toLocaleString(p.dataset.loc,{weekday:"long",day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})+" ("+p.dataset.mine+")";}catch(e){}});'
         . 'try{var tz=Intl.DateTimeFormat().resolvedOptions().timeZone;if(tz&&g("cc_tz")!==tz){fetch("' . esc_url(rest_url('cc/v1/tz')) . '",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":"' . esc_attr(wp_create_nonce('wp_rest')) . '"},body:JSON.stringify({tz:tz})}).then(function(r){if(r.ok)s("cc_tz",tz);});}}catch(e){}'
         . '})();</script>';
 }, 3, 3);
