@@ -77,7 +77,10 @@ function cc_nt_item($n, $forCoach, $pid = 0) {
     foreach (array_values((array) ($n['replies'] ?? [])) as $ri => $r) {
         $mine = ($r['from'] ?? 'coach') === 'coach';   // Matteo's reply, or the athlete answering in the thread
         $label = $mine ? ($forCoach ? 'Your reply' : cc_nt_w('reply')) : ($forCoach ? $who : cc_nt_w('you'));
-        $o .= '<div class="nt-rep' . ($mine ? '' : ' nt-rep-a') . '">' . ($mine && !$forCoach ? '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">' : '')
+        // Matteo's photo by his replies (athlete view); the athlete's own photo (or initials) by theirs (both views)
+        $face = $mine ? (!$forCoach ? '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">' : '')
+                      : ($pid && function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '');
+        $o .= '<div class="nt-rep' . ($mine ? '' : ' nt-rep-a') . '">' . $face
             . '<b>' . esc_html($label) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small>'
             . ($pid && ($forCoach || !$mine) ? cc_nt_delbtn($pid, $n['at'], $ri) : '');
         if (($u = cc_nt_url($r['audio'] ?? 0))) $o .= cc_nt_player($u);
@@ -123,6 +126,7 @@ function cc_nt_css() {
         . 'html .cc .nt-replyd{margin-top:10px}html .cc .nt-replyd summary{cursor:pointer;color:#34c46a;font-weight:600;font-size:15px;margin-bottom:10px}'
         . 'html .cc .nt-del{float:right;background:none;border:0;padding:2px 0;margin:0 0 0 10px;min-height:0;font:600 14px var(--body);color:#b8bec8;text-decoration:underline;cursor:pointer}html .cc .nt-del:hover{color:#ff7a73}'
         . 'html .cc .nt-rep-a{border-left-color:#b8bec8;background:rgba(255,255,255,.05);margin-left:28px}html .cc .nt-rep-a b{color:#fff!important}'
+        . 'html .cc .nt-rep .nt-me-a{display:inline-grid;vertical-align:middle;margin:0 8px 0 0;border-width:2px;box-shadow:none}html .cc .nt-rep .nt-me-a .ph-ini{font-size:12px}'
         . 'html .cc .nt-me{width:30px;height:30px;border-radius:50%;object-fit:cover;vertical-align:middle;margin:0 8px 0 0;border:2px solid #12a150}'
         . 'html .cc .nt-box textarea[hidden]{display:none}html .cc .nt .nt-yours{margin-top:30px}'
         // the player
@@ -166,7 +170,9 @@ go.addEventListener('click',function(){if(rec){rec.stop();setTimeout(function(){
  go.disabled=true;msg(W.sending);var f=new FormData(),ex=JSON.parse(A.dataset.extra||'{}');Object.keys(ex).forEach(function(k){f.append(k,ex[k]);});
  f.append('text',txt);if(dy&&dy.value)f.append('day',dy.value);if(blob){f.append('audio',blob,'voice.'+(/mp4/.test(blob.type)?'m4a':'webm'));f.append('transcript',tr);}
  fetch(A.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':A.dataset.nonce}}).then(function(r){return r.json().then(function(j){return[r.ok,j];});})
- .then(function(x){if(!x[0])throw new Error();ta.value='';blob=null;tr='';st.textContent='';voice(false);if(dy)dy.value='';msg(W.sent);go.disabled=false;})
+ .then(function(x){if(!x[0])throw new Error();ta.value='';blob=null;tr='';st.textContent='';voice(false);if(dy)dy.value='';msg(W.sent);go.disabled=false;
+  /* Matteo 17 Nov: show it straight away: reload and come back to the notes */
+  setTimeout(function(){var u=location.href.split('#')[0];location.replace(u+(u.indexOf('?')>-1?'&':'?')+'nt='+Date.now()+'#notes');},900);})
  .catch(function(){go.disabled=false;msg(W.err,true);});});
 });
 /* delete a note or a reply (asks first) */
