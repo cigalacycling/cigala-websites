@@ -906,7 +906,7 @@ html .cc .ath-hero-txt { padding-bottom: 34px; min-width: 0; }
 html .cc .ath-hero h1 { font-size: clamp(36px, 6.4vw, 66px); line-height: 1; margin: 8px 0 12px; }
 html .cc h1 .ath-greet { color: var(--green-text, #2bd47a); font-family: var(--head); }
 html .cc h1 .ath-nm { white-space: nowrap; }   /* Matteo 17 Nov: the name on one line */
-html .cc h1 .ath-nm.is-coach { display: inline-block; font-size: min(.8em, 7.4vw); }
+html .cc h1 .ath-nm.is-coach { display: block; font-size: min(1em, 9.4vw); }   /* full size, its own line, like the athletes' names */
 html .cc .ath-lede { color: var(--text-2); font-size: 16px; margin: 0 0 18px; max-width: 520px; }
 html .cc .ath-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px; }
 html .cc .ath-chip { display: inline-flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text-2); font-size: 13.5px; }
