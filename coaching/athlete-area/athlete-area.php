@@ -559,6 +559,30 @@ function cc_ath_setpw_html() {
         . '<label for="ath-p2">' . (cc_L('Repeat the password', 'Ripeti la password')) . '</label><input id="ath-p2" name="cc_pw2" type="password" autocomplete="new-password" minlength="8" required>'
         . '<button type="submit" class="btn btn-go">' . (cc_L('Save and open my hub', 'Salva e apri la mia area')) . '</button></form>' . $help . '</div>';
 }
+/* The branded athlete email (Matteo 16-17 Nov): header picture, white card, green button, footer. Used by the welcome, report and password emails.
+ * $small: HTML under the button (small grey paragraphs). The language is the athlete's (set $GLOBALS['cc_ath_lang'] before). */
+function cc_ath_mail_shell($hi, $p1, $btn, $link, $small = '', $bye = null, $eb = null) {
+    if ($small === '') $small = '<div style="height:24px;line-height:24px;font-size:1px">&nbsp;</div>';   // space between the button and the sign-off
+    $it = ($GLOBALS['cc_ath_lang'] ?? 'en') === 'it'; $bye = $bye ?? cc_L('See you on the road,', 'A presto in bici,'); $eb = $eb ?? cc_L('Athlete hub', 'Area atleta');
+    $logo = esc_url(get_option('cc_mail_logo', '')); $head = esc_url(get_option($it ? 'cc_mail_header_it' : 'cc_mail_header_en', ''));
+    $f = "font-family:Montserrat,Helvetica,Arial,sans-serif";
+    $h = '<!doctype html><html><body style="margin:0;padding:0;background:#07080a"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#07080a"><tr><td align="center" style="padding:30px 12px;background-color:#07080a">'
+       . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px">'
+       // Matteo 16 Nov: one topographic layer, inside the header picture (logo + "Athlete hub" + lines). Phone mail apps in dark mode
+       // recolour text and backgrounds but never pictures, so the header always looks the same. Around the card: plain black.
+       . '<tr><td style="background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.45)"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+       . ($head ? '<tr><td style="padding:0;background:#07080a"><img src="' . $head . '" width="560" alt="Cigala Cycling Coaching, ' . $eb . '" style="display:block;width:100%;max-width:560px;height:auto;border:0"></td></tr>'
+                : '<tr><td style="background:#07080a;padding:22px 30px">' . ($logo ? '<img src="' . $logo . '" width="64" height="64" alt="Cigala Cycling Coaching" style="display:block;border:2px solid #fff">' : '') . '</td></tr>')
+       . '<tr><td style="padding:30px 30px 8px;' . $f . ';color:#16181b;font-size:16px;line-height:1.6">'
+       . '<p style="margin:0 0 14px;font-size:18px;font-weight:700">' . $hi . '</p><p style="margin:0 0 22px">' . $p1 . '</p>'
+       . '<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:10px;background:#12a150"><a href="' . esc_url($link) . '" style="display:inline-block;padding:15px 26px;' . $f . ';font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px">' . $btn . '</a></td></tr></table>'
+       . $small
+       . '<p style="margin:0">' . $bye . '<br><strong>Matteo</strong></p></td></tr>'
+       . '<tr><td style="padding:18px 30px 26px;' . $f . ';font-size:12px;color:#7a808a;border-top:1px solid #eceef1">Matteo Cigala · Head Coach, Cigala Cycling Coaching · <a href="https://wa.me/353834777697" style="color:#12a150">WhatsApp</a> · <a href="mailto:matteo@cigalacycling.com" style="color:#12a150">matteo@cigalacycling.com</a></td></tr>'
+       . '</table></td></tr></table></td></tr></table></body></html>';
+    return $h;
+}
+function cc_ath_mail_small($html) { return '<p style="margin:22px 0 10px;font-size:14px;color:#454a52">' . $html . '</p>'; }
 function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
     $u = get_userdata((int) $uid); if (!$u) return new WP_Error('nouser', 'No such user');
     $key = get_password_reset_key($u); if (is_wp_error($key)) return $key;
@@ -572,21 +596,7 @@ function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
                 . (cc_ath_selfpw() ? cc_L('if it has expired, tap “Forgot your password?” on the login page and a new one comes straight away.', 'se è scaduto, tocca “Password dimenticata?” nella pagina di accesso e te ne arriva subito uno nuovo.') : cc_L('if it has expired, just message me and I will send you a new one.', 'se è scaduto, scrivimi e te ne mando uno nuovo.')),
           'p3' => cc_L('Once you are in, bookmark the page on your phone so it is always one tap away.', 'Una volta dentro, salva la pagina tra i preferiti del telefono: così è sempre a un tocco.'),
           'bye' => cc_L('See you on the road,', 'A presto in bici,'), 'eb' => cc_L('Athlete hub', 'Area atleta')];
-    $f = "font-family:Montserrat,Helvetica,Arial,sans-serif";
-    $h = '<!doctype html><html><body style="margin:0;padding:0;background:#07080a"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#07080a"><tr><td align="center" style="padding:30px 12px;background-color:#07080a">'
-       . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px">'
-       // Matteo 16 Nov: one topographic layer, inside the header picture (logo + "Athlete hub" + lines). Phone mail apps in dark mode
-       // recolour text and backgrounds but never pictures, so the header always looks the same. Around the card: plain black.
-       . '<tr><td style="background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.45)"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
-       . ($head ? '<tr><td style="padding:0;background:#07080a"><img src="' . $head . '" width="560" alt="Cigala Cycling Coaching, ' . $T['eb'] . '" style="display:block;width:100%;max-width:560px;height:auto;border:0"></td></tr>'
-                : '<tr><td style="background:#07080a;padding:22px 30px">' . ($logo ? '<img src="' . $logo . '" width="64" height="64" alt="Cigala Cycling Coaching" style="display:block;border:2px solid #fff">' : '') . '</td></tr>')
-       . '<tr><td style="padding:30px 30px 8px;' . $f . ';color:#16181b;font-size:16px;line-height:1.6">'
-       . '<p style="margin:0 0 14px;font-size:18px;font-weight:700">' . $T['hi'] . '</p><p style="margin:0 0 22px">' . $T['p1'] . '</p>'
-       . '<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:10px;background:#12a150"><a href="' . esc_url($link) . '" style="display:inline-block;padding:15px 26px;' . $f . ';font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px">' . $T['btn'] . '</a></td></tr></table>'
-       . '<p style="margin:22px 0 10px;font-size:14px;color:#454a52">' . $T['p2'] . '</p><p style="margin:0 0 22px;font-size:14px;color:#454a52">' . $T['p3'] . '</p>'
-       . '<p style="margin:0">' . $T['bye'] . '<br><strong>Matteo</strong></p></td></tr>'
-       . '<tr><td style="padding:18px 30px 26px;' . $f . ';font-size:12px;color:#7a808a;border-top:1px solid #eceef1">Matteo Cigala · Head Coach, Cigala Cycling Coaching · <a href="https://wa.me/353834777697" style="color:#12a150">WhatsApp</a> · <a href="mailto:matteo@cigalacycling.com" style="color:#12a150">matteo@cigalacycling.com</a></td></tr>'
-       . '</table></td></tr></table></td></tr></table></body></html>';
+    $h = cc_ath_mail_shell($T['hi'], $T['p1'], $T['btn'], $link, '<p style="margin:22px 0 10px;font-size:14px;color:#454a52">' . $T['p2'] . '</p><p style="margin:0 0 22px;font-size:14px;color:#454a52">' . $T['p3'] . '</p>', $T['bye'], $T['eb']);
     if ($dry) return ['to' => $to ?: $u->user_email, 'subject' => $T['subj'], 'link' => $link, 'html' => $h];
     $ok = wp_mail($to ?: $u->user_email, $T['subj'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <noreply@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
     if ($ok && !$to) update_user_meta($u->ID, 'cc_welcome_sent', current_time('mysql'));

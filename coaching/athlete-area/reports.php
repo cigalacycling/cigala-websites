@@ -30,6 +30,7 @@ add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/report-testmail', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
         $rid = (int) $r->get_param('id'); $me = wp_get_current_user();
         if (get_post_type($rid) !== 'cc_report' || !is_email($me->user_email)) return new WP_Error('cc_none', 'No such report', ['status' => 404]);
+        if ($r->get_param('dry')) return cc_r_mail($rid, $me->user_email, true);   // preview, nothing sent
         cc_r_mail($rid, $me->user_email); return ['ok' => true, 'sent_to_yourself' => true];
     }]);
     register_rest_route('cc/v1', '/reports', ['methods' => 'GET', 'callback' => 'cc_r_list_rest', 'permission_callback' => 'cc_ath_is_coach']);
@@ -213,15 +214,16 @@ add_action('admin_post_cc_report_bulk', function () {   // Matteo 17 Nov: tick s
     wp_safe_redirect(add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
 function cc_r_delete($rid) { $fid = (int) get_post_meta($rid, 'cc_file', true); if ($fid) wp_delete_attachment($fid, true); wp_delete_post($rid, true); }
-function cc_r_mail($rid, $test_to = null) {   // $test_to: Matteo's "Send me a test email" (goes only to him)   // "your new report is ready", in the hub language (English or Italian)
+function cc_r_mail($rid, $test_to = null, $dry = false) {   // "your new report is ready": the branded email in the athlete's language; $test_to: Matteo's "Send me a test email" (only to him)
     $p = get_post($rid); $u = get_userdata((int) get_post_meta($p->post_parent, 'cc_user', true)); if (!$u || !is_email($u->user_email)) return;
     $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($u->ID); $it = $GLOBALS['cc_ath_lang'] === 'it'; $first = esc_html($u->first_name ?: $u->display_name); $t = get_post_meta($rid, 'cc_type', true);
     $link = home_url('/' . CC_ATH_SLUG . '/') . ($t === 'season' ? '#season' : '#reports');
-    $h = '<div style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#16181b;max-width:520px"><p style="font-weight:700">' . (sprintf(cc_L('Hi %s,', 'Ciao %s,'), $first)) . '</p>'
-       . '<p>' . (cc_L('There is something new for you in your athlete hub:', 'nella tua area atleta c’è qualcosa di nuovo per te:')) . '</p>'
-       . '<p style="padding:12px 16px;border-left:3px solid #12a150;background:#f2f4f3"><b style="color:#111">' . esc_html(cc_r_title($p)) . '</b><br><span style="font-size:14px;color:#454a52">' . esc_html(cc_r_label($t)) . '</span></p>'
-       . '<p style="margin:22px 0"><a href="' . esc_url($link) . '" style="display:inline-block;padding:14px 24px;border-radius:10px;background:#12a150;color:#fff;font-weight:700;text-decoration:none">' . (cc_L('Open it in my hub', 'Aprilo nella mia area')) . '</a></p>'
-       . '<p>' . (cc_L('See you on the road,', 'A presto in bici,')) . '<br><strong>Matteo</strong></p></div>';
+    $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), $first),
+        cc_L('There is something new for you in your athlete hub:', 'nella tua area atleta c’è qualcosa di nuovo per te:')
+          . '</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px"><tr><td style="padding:14px 18px;border-left:3px solid #12a150;background:#f2f4f3;font-family:Montserrat,Helvetica,Arial,sans-serif">'
+          . '<b style="color:#111;font-size:16px">' . esc_html(cc_r_title($p)) . '</b><br><span style="font-size:14px;color:#454a52">' . esc_html(get_post_meta($rid, 'cc_autotitle', true) ? cc_r_date((int) get_post_meta($rid, 'cc_published', true) ?: time()) : cc_r_label($t)) . '</span></td></tr></table><p style="margin:0">',
+        cc_L('Open it in my hub', 'Aprilo nella mia area'), $link);
+    if ($dry) return ['subject' => cc_L('Your new report is ready: ', 'È pronto il tuo nuovo report: ') . cc_r_title($p), 'html' => $h];
     $to = $test_to ?: (strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email);   // staging: never an athlete
     if (!is_email($to)) return;
     wp_mail($to, cc_L('Your new report is ready: ', 'È pronto il tuo nuovo report: ') . cc_r_title($p), $h,

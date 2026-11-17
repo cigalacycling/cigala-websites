@@ -39,12 +39,10 @@ function cc_pw_mail($u) {
     $key = get_password_reset_key($u); if (is_wp_error($key)) return;
     $link = add_query_arg(['cc_set' => $key, 'u' => rawurlencode($u->user_login)], home_url('/' . CC_ATH_SLUG . '/'));
     $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($u->ID); $it = $GLOBALS['cc_ath_lang'] === 'it'; $first = esc_html($u->first_name ?: $u->display_name);
-    $f = 'font-family:Montserrat,Helvetica,Arial,sans-serif';
-    $h = '<div style="' . $f . ';font-size:16px;line-height:1.6;color:#16181b;max-width:520px"><p style="font-weight:700">' . (sprintf(cc_L('Hi %s,', 'Ciao %s,'), $first)) . '</p>'
-       . '<p>' . (cc_L('Here is your link to choose a new password for your athlete hub. It works once and lasts 7 days.', 'ecco il link per scegliere una nuova password per la tua area atleta. Vale 7 giorni e si usa una volta sola.')) . '</p>'
-       . '<p style="margin:22px 0"><a href="' . esc_url($link) . '" style="display:inline-block;padding:14px 24px;border-radius:10px;background:#12a150;color:#fff;font-weight:700;text-decoration:none">' . (cc_L('Choose a new password', 'Scegli una nuova password')) . '</a></p>'
-       . '<p style="font-size:14px;color:#454a52">' . (cc_L('Didn’t ask for this? Just ignore this email: your password stays the same.', 'Non l’hai chiesto tu? Ignora questa email: la tua password non cambia.')) . '</p>'
-       . '<p>' . (cc_L('See you on the road,', 'A presto in bici,')) . '<br><strong>Matteo</strong></p></div>';
+    $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), $first),
+        cc_L('Here is your link to choose a new password for your athlete hub. It works once and lasts 7 days.', 'ecco il link per scegliere una nuova password per la tua area atleta. Vale 7 giorni e si usa una volta sola.'),
+        cc_L('Choose a new password', 'Scegli una nuova password'), $link,
+        cc_ath_mail_small(cc_L('Didn’t ask for this? Just ignore this email: your password stays the same.', 'Non l’hai chiesto tu? Ignora questa email: la tua password non cambia.')));
     wp_mail($u->user_email, cc_L('Your new Cigala Coaching password', 'La tua nuova password Cigala Coaching'), $h,
         ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <noreply@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
 }
