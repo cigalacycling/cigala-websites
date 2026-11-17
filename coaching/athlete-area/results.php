@@ -50,19 +50,25 @@ function cc_rs_card($pid, $r, $forCoach) {
        . ($r['text'] !== '' ? '<p>' . nl2br(esc_html($r['text'])) . '</p>' : '')
        . ($forCoach ? '<p class="rs-ok">' . ($r['consent'] ? '✅ OK to share on social media / Skool' : '🔒 Private: not for social media') . '</p>' : '');
     if (!empty($r['react'])) $o .= '<p class="rs-react">' . esc_html(CC_RS_REACTS[$r['react']] ?? '') . ' <small>' . esc_html($forCoach ? 'your reaction' : 'Matteo') . '</small></p>';
-    if (!empty($r['reply'])) $o .= '<div class="nt-rep">' . ($forCoach ? '' : '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">') . '<b>' . esc_html($forCoach ? 'Your reply' : cc_rs_w('replied')) . '</b><p>' . nl2br(esc_html($r['reply'])) . '</p></div>';
+    $rp = !empty($r['reply_photo']) ? wp_get_attachment_url((int) $r['reply_photo']) : '';
+    if (!empty($r['reply']) || $rp) $o .= '<div class="nt-rep">' . ($forCoach ? '' : '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">') . '<b>' . esc_html($forCoach ? 'Your reply' : cc_rs_w('replied')) . '</b>'
+        . (!empty($r['reply']) ? '<p>' . nl2br(esc_html($r['reply'])) . '</p>' : '') . ($rp ? '<a href="' . esc_url($rp) . '" target="_blank" rel="noopener"><img class="rs-rimg" src="' . esc_url($rp) . '" alt="" loading="lazy"></a>' : '') . '</div>';
     if ($forCoach) {
         $act = esc_url(rest_url('cc/v1/result-react')); $n = esc_attr(wp_create_nonce('wp_rest'));
         $o .= '<div class="rs-acts" data-api="' . $act . '" data-nonce="' . $n . '" data-page="' . (int) $pid . '" data-at="' . (int) $r['at'] . '">';
         foreach (CC_RS_REACTS as $k => $e) $o .= '<button type="button" class="rs-rx' . (($r['react'] ?? '') === $k ? ' on' : '') . '" data-r="' . $k . '" aria-label="' . $k . '">' . $e . '</button>';
-        $o .= '<input type="text" class="rs-rep" maxlength="600" placeholder="Reply…" value=""><button type="button" class="btn btn-go rs-send">Send</button></div>';
+        // Matteo 17 Nov: a photo in the reply too (📷)
+        $o .= '<input type="text" class="rs-rep" maxlength="600" placeholder="Reply…" value=""><button type="button" class="rs-cam" aria-label="Add a photo">📷</button><input type="file" accept="image/*" class="rs-cfile" hidden>'
+            . '<img class="rs-cprev" alt="" hidden><button type="button" class="btn btn-go rs-send">Send</button></div>';
     }
     $o .= '<button type="button" class="nt-del rs-del" data-api="' . esc_url(rest_url('cc/v1/result-delete')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-page="' . (int) $pid . '" data-at="' . (int) $r['at'] . '" data-q="' . esc_attr(cc_rs_w('delq')) . '">' . esc_html(cc_rs_w('del')) . '</button>';
     return $o . '</div></div>';
 }
 function cc_rs_css() {
     static $d = false; if ($d) return ''; $d = true;
-    return '<style>html .cc .rs-dbl{position:relative;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation}html .cc .rs-full{position:absolute;right:6px;bottom:6px;width:28px;height:28px;border-radius:8px;background:rgba(0,0,0,.6);color:#fff;display:grid;place-items:center;text-decoration:none;font-size:15px}'
+    return '<style>html .cc .rs-cam{width:42px;height:42px;min-height:0;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;font-size:19px;cursor:pointer}'
+        . 'html .cc .rs-cprev{width:48px;height:48px;border-radius:8px;object-fit:cover;border:2px solid #2bd47a;cursor:pointer}html .cc .rs-cprev[hidden]{display:none}html .cc .rs-rimg{display:block;max-width:260px;width:100%;border-radius:10px;margin-top:8px}'
+        . 'html .cc .rs-dbl{position:relative;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation}html .cc .rs-full{position:absolute;right:6px;bottom:6px;width:28px;height:28px;border-radius:8px;background:rgba(0,0,0,.6);color:#fff;display:grid;place-items:center;text-decoration:none;font-size:15px}'
         . 'html .cc .rs-heart{position:absolute;left:50%;top:50%;font-size:56px;font-style:normal;transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none}html .cc .rs-heart.go{animation:rsheart .9s ease-out}'
         . '@keyframes rsheart{0%{transform:translate(-50%,-50%) scale(0);opacity:0}25%{transform:translate(-50%,-50%) scale(1.25);opacity:1}55%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.1);opacity:0}}'
         . 'html .cc .rs-pw{position:relative;display:inline-block}html .cc .rs-x{position:absolute;top:-8px;right:-8px;width:30px;height:30px;min-height:0;padding:0;margin:0;border-radius:50%;border:2px solid #0b0d0f;background:#E10600;color:#fff;font:700 15px/1 var(--body);cursor:pointer}html .cc .rs-x[hidden]{display:none}'
@@ -103,7 +109,12 @@ document.querySelectorAll('.rs-dbl').forEach(function(P){var last=0,A=P.closest(
 document.querySelectorAll('.rs-acts').forEach(function(A){function post(d){var fd=new FormData();fd.append('page',A.dataset.page);fd.append('at',A.dataset.at);Object.keys(d).forEach(function(k){fd.append(k,d[k]);});
   return fetch(A.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':A.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;});}
  A.querySelectorAll('.rs-rx').forEach(function(x){x.addEventListener('click',function(){post({react:x.dataset.r}).then(function(){A.querySelectorAll('.rs-rx').forEach(function(y){y.classList.toggle('on',y===x);});});});});
- A.querySelector('.rs-send').addEventListener('click',function(){var i=A.querySelector('.rs-rep');if(!i.value.trim())return;post({reply:i.value.trim()}).then(function(){location.reload();});});});
+ var pic=null,cf=A.querySelector('.rs-cfile'),cp=A.querySelector('.rs-cprev');
+ A.querySelector('.rs-cam').addEventListener('click',function(){cf.click();});
+ cf.addEventListener('change',function(){var f=cf.files&&cf.files[0];if(!f)return;var i=new Image(),u=URL.createObjectURL(f);i.onload=function(){var s=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(i.naturalWidth*s);c.height=Math.round(i.naturalHeight*s);
+  c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);pic=c.toDataURL('image/jpeg',.85);cp.src=pic;cp.hidden=false;};i.src=u;cf.value='';});
+ cp.addEventListener('click',function(){pic=null;cp.hidden=true;});
+ A.querySelector('.rs-send').addEventListener('click',function(){var i=A.querySelector('.rs-rep'),d={};if(i.value.trim())d.reply=i.value.trim();if(pic)d.img=pic;if(!d.reply&&!d.img)return;this.disabled=true;post(d).then(function(){location.reload();});});});
 document.addEventListener('click',function(e){var d=e.target.closest('.rs-del');if(!d||!confirm(d.dataset.q))return;var f=new FormData();f.append('page',d.dataset.page);f.append('at',d.dataset.at);
  fetch(d.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':d.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;var c=d.closest('.rs-card');if(c){var w=c.previousElementSibling;if(w&&w.classList.contains('nt-who'))w.remove();c.remove();}});});
 })();</script>
@@ -145,7 +156,7 @@ add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/result-react', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => 'cc_rs_react']);
     register_rest_route('cc/v1', '/result-delete', ['methods' => 'POST', 'permission_callback' => $own, 'callback' => function (WP_REST_Request $r) {
         $pid = (int) $r->get_param('page'); $at = (int) $r->get_param('at'); $a = cc_rs_get($pid);
-        foreach ($a as $k => $x) if ((int) $x['at'] === $at) { if (!empty($x['photo'])) wp_delete_attachment((int) $x['photo'], true); unset($a[$k]); cc_rs_put($pid, $a); return ['ok' => true]; }
+        foreach ($a as $k => $x) if ((int) $x['at'] === $at) { if (!empty($x['photo'])) wp_delete_attachment((int) $x['photo'], true); if (!empty($x['reply_photo'])) wp_delete_attachment((int) $x['reply_photo'], true); unset($a[$k]); cc_rs_put($pid, $a); return ['ok' => true]; }
         return new WP_Error('cc_none', 'No such result', ['status' => 404]);
     }]);
     register_rest_route('cc/v1', '/results', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {   // Matteo's tools (e.g. social posts): consent included
@@ -192,11 +203,18 @@ function cc_rs_react(WP_REST_Request $r) {   // Matteo: a reaction and/or a shor
         $react = (string) $r->get_param('react'); $reply = cc_av_note((string) $r->get_param('reply'), 600);
         if (isset(CC_RS_REACTS[$react])) $a[$k]['react'] = $react;
         if ($reply !== '') $a[$k]['reply'] = $reply;
+        $pic = false;
+        if (preg_match('#^data:image/jpeg;base64,([A-Za-z0-9+/=]+)$#', (string) $r->get_param('img'), $m)) {   // Matteo's photo in the reply
+            $bytes = base64_decode($m[1], true); $sz = $bytes ? @getimagesizefromstring($bytes) : false;
+            if (!$bytes || strlen($bytes) > 3000000 || !$sz || $sz[2] !== IMAGETYPE_JPEG) return new WP_Error('cc_bad', 'Photo not accepted', ['status' => 400]);
+            if (!empty($x['reply_photo'])) wp_delete_attachment((int) $x['reply_photo'], true);
+            $a[$k]['reply_photo'] = (int) cc_f_store($pid, $bytes, 'result-reply', 'jpg', 'image/jpeg', 'Reply photo'); $pic = true;
+        }
         cc_rs_put($pid, $a);
         $uid = (int) get_post_meta($pid, 'cc_user', true);
         if ($uid && function_exists('cc_push_user')) {
             $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($uid);
-            cc_push_user($uid, $reply !== '' ? cc_rs_w('replied') : cc_rs_w('reacted') . ' ' . (CC_RS_REACTS[$react] ?? ''), $reply !== '' ? wp_trim_words($reply, 18) : '', home_url('/' . CC_ATH_SLUG . '/') . '#results', 'cc-result-' . $at);
+            cc_push_user($uid, ($reply !== '' || $pic) ? cc_rs_w('replied') : cc_rs_w('reacted') . ' ' . (CC_RS_REACTS[$react] ?? ''), $reply !== '' ? wp_trim_words($reply, 18) : ($pic ? '📷' : ''), home_url('/' . CC_ATH_SLUG . '/') . '#results', 'cc-result-' . $at);
             $GLOBALS['cc_ath_lang'] = $keep;
         }
         return ['ok' => true];

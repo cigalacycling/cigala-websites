@@ -151,6 +151,7 @@ add_filter('cc_ath_hero_links', function ($html, $coach) {
         . 'html body .bell-it.new{background:rgba(18,161,80,.12)}html body .bell-it b{color:#fff;font-size:15px}html body .bell-it span{font-size:14px}html body .bell-it small{font-size:13px;color:#8a8f98}html body .bell-e{margin:6px 8px 10px;font-size:15px;color:var(--text-2)}</style>'
         . '<script>(function(){var b=document.querySelector(".ath-bell");if(!b||b.dataset.on)return;b.dataset.on=1;var p=b.parentNode.querySelector(".bell-p");'
         . 'document.body.appendChild(p);'   // out of the header, so nothing clips it
+        . 'var hero=b.closest(".ath-hero");if(hero&&b.parentNode.parentNode!==hero)hero.appendChild(b.parentNode);'   // the bell sits in the header's own top-right corner (not the text column's)
         . 'function place(){var r=b.getBoundingClientRect(),w=p.offsetWidth||340;p.style.top=Math.round(r.bottom+8)+"px";p.style.left=Math.max(16,Math.min(window.innerWidth-w-16,Math.round(r.right-w)))+"px";}'
         . 'addEventListener("resize",function(){if(!p.hidden)place();});addEventListener("scroll",function(){if(!p.hidden)place();},{passive:true});'
         . 'b.addEventListener("click",function(e){e.stopPropagation();p.hidden=!p.hidden;if(!p.hidden)place();b.setAttribute("aria-expanded",!p.hidden);if(!p.hidden){var i=b.querySelector("i");if(i){i.remove();fetch(b.dataset.api,{method:"POST",credentials:"same-origin",headers:{"X-WP-Nonce":b.dataset.nonce}});}try{if(navigator.clearAppBadge)navigator.clearAppBadge();}catch(x){}}});'
