@@ -66,7 +66,8 @@ function cc_nt_item($n, $forCoach, $pid = 0) {
     if (($n['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($n['text'])) . '</p>';
     if ($forCoach && ($n['tr'] ?? '') !== '') $o .= '<p class="nt-tr"><i>Written out from the voice note:</i> ' . esc_html($n['tr']) . '</p>';
     foreach ((array) ($n['replies'] ?? []) as $r) {
-        $o .= '<div class="nt-rep"><b>' . esc_html($forCoach ? 'Your reply' : cc_nt_w('reply')) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small>';
+        $o .= '<div class="nt-rep">' . ($forCoach ? '' : '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">')   // Matteo 17 Nov: his small photo by his replies
+            . '<b>' . esc_html($forCoach ? 'Your reply' : cc_nt_w('reply')) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small>';
         if (($u = cc_nt_url($r['audio'] ?? 0))) $o .= cc_nt_player($u);
         if (($r['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($r['text'])) . '</p>';
         $o .= '</div>';
@@ -104,6 +105,7 @@ function cc_nt_css() {
         . 'html .cc .nt-item{padding:14px 0;border-top:1px solid rgba(255,255,255,.1)}html .cc .nt-item small{color:#b8bec8;font-size:15px}html .cc .nt-item audio{display:block;width:100%;max-width:420px;margin:8px 0}html .cc .nt-item p{margin:6px 0 0;font-size:16px;color:#e6e9ee}'
         . 'html .cc .nt-tr{color:#b8bec8!important;font-size:15px!important}html .cc .nt-rep{margin:10px 0 0 14px;padding:10px 12px;border-left:3px solid #12a150;background:rgba(18,161,80,.08);border-radius:0 10px 10px 0}html .cc .nt-rep b{color:#34c46a}'
         . 'html .cc .nt-replyd{margin-top:10px}html .cc .nt-replyd summary{cursor:pointer;color:#34c46a;font-weight:600;font-size:15px;margin-bottom:10px}'
+        . 'html .cc .nt-me{width:30px;height:30px;border-radius:50%;object-fit:cover;vertical-align:middle;margin:0 8px 0 0;border:2px solid #12a150}'
         . 'html .cc .nt-box textarea[hidden]{display:none}html .cc .nt .nt-yours{margin-top:30px}'
         // the player
         . 'html .cc .nt-pl{display:flex;align-items:center;gap:12px;max-width:440px;margin:10px 0;padding:8px 14px 8px 8px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)}'
