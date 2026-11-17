@@ -174,12 +174,25 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     if (!$season && $cards !== '') $html .= '<section class="ath-s rp-season" id="season"><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html(cc_L('Your training', 'Il tuo allenamento')) . '</h2><div class="ath-body rp-list">' . $cards . '</div></section>';
     if ($season) {   // Vekta brief 17 Nov: the season page shown in the hub, scripts on (zoom, hover), in a sandbox with no access to the login
         $when = (int) get_post_meta($season->ID, 'cc_published', true); $url = cc_r_url($season->ID); $fid = (int) get_post_meta($season->ID, 'cc_file', true);
-        $html .= '<section class="ath-s rp-season" id="season"><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html(cc_L('Your season', 'La tua stagione')) . '</h2>'
+        // Matteo 17 Nov: the season folds open/closed with an arrow (it is long; the blocks below were a long scroll away).
+        // Open when it was just updated; otherwise each device remembers the athlete's last choice (folded the first time).
+        $fresh = $uid && cc_r_unseen($uid, $season->ID);
+        $html .= '<section class="ath-s rp-season" id="season"><details class="rp-fold"' . ($fresh ? ' open data-fresh="1"' : '') . '><summary><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html(cc_L('Your season', 'La tua stagione')) . '</h2>'
+            . '<span class="rp-fold-when">' . esc_html(cc_L('Updated ', 'Aggiornato il ') . cc_r_date($when)) . '</span></summary>'
             . '<p class="av-lede">' . esc_html(cc_L('Your season plan: the blocks, your races and your goals. I update it whenever the plan changes; your day-to-day sessions stay in Vekta.', 'Il tuo piano di stagione: blocchi, gare e obiettivi. Lo aggiorno ogni volta che il piano cambia; gli allenamenti di ogni giorno restano su Vekta.')) . '</p>'
             . ($fid && get_post_mime_type($fid) === 'text/html' ? '<div class="rp-frame"><iframe src="' . esc_url($url) . '" title="' . esc_attr(cc_L('Your season plan', 'Il tuo piano di stagione')) . '" loading="lazy" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerpolicy="same-origin"></iframe></div>' : '')
             . '<div class="rp-season-row"><a class="btn btn-go" href="' . esc_url($url) . '" target="_blank" rel="noopener">' . esc_html($fid && get_post_mime_type($fid) === 'text/html' ? cc_L('Open full screen', 'Apri a schermo intero') : cc_L('Open my season plan', 'Apri il mio piano di stagione')) . '</a>'
             . '<span class="rp-when">' . esc_html(cc_L('Updated ', 'Aggiornato il ') . cc_r_date($when)) . ($uid && cc_r_unseen($uid, $season->ID) ? ' <span class="rp-badge">' . esc_html(cc_L('Updated', 'Aggiornato')) . '</span>' : '') . '</span></div>'
-            . ($cards !== '' ? '<h3 class="av-sub" style="margin-top:20px">' . esc_html(cc_L('Always up to date', 'Sempre aggiornati')) . '</h3><div class="ath-body rp-list">' . $cards . '</div>' : '') . '</section>';
+            . ($cards !== '' ? '<h3 class="av-sub" style="margin-top:20px">' . esc_html(cc_L('Always up to date', 'Sempre aggiornati')) . '</h3><div class="ath-body rp-list">' . $cards . '</div>' : '') . '</details></section>'
+            . '<style>html .cc .rp-fold>summary{list-style:none;cursor:pointer;display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px;position:relative;padding-right:44px}html .cc .rp-fold>summary::-webkit-details-marker{display:none}'
+            . 'html .cc .rp-fold>summary h2{margin:0}html .cc .rp-fold-when{font-size:15px;color:#b8bec8}html .cc .rp-fold[open] .rp-fold-when{display:none}html .cc .rp-fold[open]>summary{margin-bottom:14px}'
+            . 'html .cc .rp-fold>summary::after{content:"";position:absolute;right:8px;top:50%;width:12px;height:12px;margin-top:-9px;border-right:3px solid #2bd47a;border-bottom:3px solid #2bd47a;transform:rotate(45deg);transition:transform .2s}'
+            . 'html .cc .rp-fold[open]>summary::after{transform:rotate(-135deg);margin-top:-2px}html .cc .rp-fold>summary:hover::after{border-color:#5ee69b}</style>'
+            . '<script>(function(){var d=document.querySelector(".rp-fold");if(!d)return;var k="cc_season_open";'
+            . 'try{if(!d.dataset.fresh){var v=localStorage.getItem(k);d.open=v==="1";}}catch(e){}'
+            . 'd.addEventListener("toggle",function(){try{localStorage.setItem(k,d.open?"1":"0");}catch(e){}});'
+            // the menu link "Your season" opens it
+            . 'document.addEventListener("click",function(e){var a=e.target.closest("a[href=\'#season\']");if(a)d.open=true;});})();</script>';
     }
     return $html;
 }, 10, 3);
