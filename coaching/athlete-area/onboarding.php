@@ -805,6 +805,16 @@ html .cc .rf-evs { display: grid; gap: 10px; margin: 4px 0 10px; } html .cc .rf-
 html .cc .rf-ev label { font-size: 12.5px !important; color: var(--text-3) !important; display: grid !important; gap: 5px; margin: 0 !important; min-width: 0; }
 html .cc .rf .rf-ev input { min-width: 0; width: 100%; } html .cc .rf-ev .gl-r { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
 html .cc .rf-ev-b { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; } html .cc .rf-ev-pl { font-size: 12.5px; font-weight: 600; color: var(--text-3); } html .cc .rf-ev-b .gl-p { flex: 1; max-width: 220px; }
+/* Race priority colours (Matteo 17 Nov, everywhere in Cigala + Vekta): A gold, B silver, C bronze */
+html .cc .gl-ev.gl-A { border-left-color: #D4AF37 !important; background: linear-gradient(90deg, rgba(212,175,55,.14), rgba(255,255,255,.03) 50%) !important; }
+html .cc .gl-ev.gl-B { border-left-color: #C0C4CC !important; background: linear-gradient(90deg, rgba(192,196,204,.10), rgba(255,255,255,.03) 50%) !important; }
+html .cc .gl-ev.gl-C { border-left-color: #CD7F32 !important; background: linear-gradient(90deg, rgba(205,127,50,.12), rgba(255,255,255,.03) 50%) !important; }
+html .cc .gl-pb[data-p=A][aria-pressed=true] { background: linear-gradient(135deg, #F3D774, #D4AF37 55%, #A8841F); border-color: #D4AF37; color: #1a1406; }
+html .cc .gl-pb[data-p=B][aria-pressed=true] { background: linear-gradient(135deg, #F2F3F5, #C0C4CC 55%, #8E939C); border-color: #C0C4CC; color: #15171a; }
+html .cc .gl-pb[data-p=C][aria-pressed=true] { background: linear-gradient(135deg, #E9A86B, #CD7F32 55%, #9A5A1F); border-color: #CD7F32; color: #1c1006; }
+html .cc .gl-prio.A { background: linear-gradient(135deg, #F3D774, #D4AF37 55%, #A8841F) !important; color: #1a1406 !important; }
+html .cc .gl-prio.B { background: linear-gradient(135deg, #F2F3F5, #C0C4CC 55%, #8E939C) !important; color: #15171a !important; }
+html .cc .gl-prio.C { background: linear-gradient(135deg, #E9A86B, #CD7F32 55%, #9A5A1F) !important; color: #1c1006 !important; }
 html .cc .ath form .rf-ev-add { width: auto; justify-self: start; margin: 0; }
 html .cc .rf-sig { position: relative; border-radius: 12px; border: 1px dashed rgba(255,255,255,.3); overflow: hidden; } html .cc .rf-sig canvas { display: block; width: 100%; height: 160px; touch-action: none; cursor: crosshair; background: #fff; }
 html .cc .rf-sig-ph { position: absolute; inset: auto 0 12px; text-align: center; font-size: 12.5px; color: #8a8f98; pointer-events: none; } html .cc .ath form .rf-clr { position: absolute; top: 8px; right: 8px; width: auto; margin: 0; padding: 6px 12px !important; font-size: 12.5px !important; background: rgba(8,9,10,.75); color: #fff; }

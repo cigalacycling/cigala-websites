@@ -188,6 +188,16 @@ html .cc .gl-who { display: grid; gap: 2px; align-content: start; } html .cc .gl
 html .cc .gl-a { color: #fff; } html .cc .gl-a b { color: #34c46a; } html .cc .gl-none { color: var(--text-3); }
 html .cc .gl-goals { grid-column: 2; color: var(--text-2); } html .cc .gl-goals p { margin: 4px 0; } html .cc .gl-goals small { color: var(--text-3); margin-right: 6px; } html .cc .gl-goals ul { margin: 6px 0 0; padding: 0; list-style: none; display: grid; gap: 3px; }
 html .cc .gl-prio { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; background: rgba(255,255,255,.12); font: 700 11px var(--body); color: #fff; } html .cc .gl-prio.A { background: #009a44; }
+/* Race priority colours (Matteo 17 Nov, everywhere in Cigala + Vekta): A gold, B silver, C bronze */
+html .cc .gl-ev.gl-A { border-left-color: #D4AF37 !important; background: linear-gradient(90deg, rgba(212,175,55,.14), rgba(255,255,255,.03) 50%) !important; }
+html .cc .gl-ev.gl-B { border-left-color: #C0C4CC !important; background: linear-gradient(90deg, rgba(192,196,204,.10), rgba(255,255,255,.03) 50%) !important; }
+html .cc .gl-ev.gl-C { border-left-color: #CD7F32 !important; background: linear-gradient(90deg, rgba(205,127,50,.12), rgba(255,255,255,.03) 50%) !important; }
+html .cc .gl-pb[data-p=A][aria-pressed=true] { background: linear-gradient(135deg, #F3D774, #D4AF37 55%, #A8841F); border-color: #D4AF37; color: #1a1406; }
+html .cc .gl-pb[data-p=B][aria-pressed=true] { background: linear-gradient(135deg, #F2F3F5, #C0C4CC 55%, #8E939C); border-color: #C0C4CC; color: #15171a; }
+html .cc .gl-pb[data-p=C][aria-pressed=true] { background: linear-gradient(135deg, #E9A86B, #CD7F32 55%, #9A5A1F); border-color: #CD7F32; color: #1c1006; }
+html .cc .gl-prio.A { background: linear-gradient(135deg, #F3D774, #D4AF37 55%, #A8841F) !important; color: #1a1406 !important; }
+html .cc .gl-prio.B { background: linear-gradient(135deg, #F2F3F5, #C0C4CC 55%, #8E939C) !important; color: #15171a !important; }
+html .cc .gl-prio.C { background: linear-gradient(135deg, #E9A86B, #CD7F32 55%, #9A5A1F) !important; color: #1c1006 !important; }
 @media (max-width: 640px) { html .cc .gl-row { grid-template-columns: 1fr; } html .cc .gl-goals { grid-column: 1; } }
 </style>
 CSS;

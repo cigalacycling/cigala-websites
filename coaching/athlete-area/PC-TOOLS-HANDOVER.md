@@ -156,6 +156,14 @@ They're not the one-off reports: the assessment and the 6-month review stay norm
 
 **A link instead of a page:** send `"url": "https://…"` (no `html`/`pdf_base64`) if the page lives somewhere else. The athlete opens it from the hub after logging in. Prefer `html`: it stays private inside the hub, whereas a public link can be seen by anyone who has it.
 
+### Race priority colours (Matteo 17 Nov): A gold, B silver, C bronze
+On every page (season plan / periodisation chart, race prediction, race simulator, the "Your races and goals" box), colour races by priority:
+- **A** (main goal): gold `#D4AF37`;
+- **B** (important): silver `#C0C4CC`;
+- **C** (training race): bronze `#CD7F32`.
+
+Badges use a gradient: A `#F3D774 → #D4AF37 → #A8841F`, B `#F2F3F5 → #C0C4CC → #8E939C`, C `#E9A86B → #CD7F32 → #9A5A1F`, with dark text. Brand green is only for buttons. The hub already uses these; full table in `BRAND.md`.
+
 ### Every page in the athlete's language, with their flag (Matteo 17 Nov)
 - **Language:** write every page you send (season plan, prediction, snapshot, race simulator, race plan, reports, guides) in the athlete's `language` from `GET /cc/v1/athletes`.
   - The hub is fully translated for `en`, `it`, `pt`, `sl`; for any other code, write in English.

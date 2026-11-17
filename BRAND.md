@@ -111,3 +111,14 @@ Use `red-text` for the small uppercase label above a heading (the "eyebrow"). Ne
 ## Cookie banner
 
 All Cigala sites use one shared cookie banner (`shared/consent/` in the website repository): a dark bottom bar `#0f1011`, Montserrat 14px, an outlined Reject button and a green `#009a44` Accept button, plus the green "Chat with us" pill bottom right. Never restyle it per site. Only the tracking IDs change.
+
+## Race priority colours (Matteo, 17 Nov 2026)
+Used everywhere for A/B/C goals and events: the athlete hub, the rider form, the coach boards, the Vekta season plan / periodisation and every page made for an athlete.
+
+| Priority | Meaning | Colour | Gradient (badges, buttons) | Text on it |
+|---|---|---|---|---|
+| **A** | main goal | gold `#D4AF37` | `#F3D774 → #D4AF37 → #A8841F` | `#1a1406` |
+| **B** | important race | silver `#C0C4CC` | `#F2F3F5 → #C0C4CC → #8E939C` | `#15171a` |
+| **C** | training race | bronze `#CD7F32` | `#E9A86B → #CD7F32 → #9A5A1F` | `#1c1006` |
+
+Brand green stays for buttons and actions; gold, silver and bronze are only for race priority.
