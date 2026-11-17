@@ -788,6 +788,7 @@ html .cc .ath-tools .ath-ic { width: 40px; height: 40px; border-radius: 11px; }
 html .cc .ath-tools .ath-tt b { font-size: 14.5px; }
 html .cc .ath-tools .ath-go { position: absolute; top: 14px; right: 14px; font-size: 16px; }
 html .cc .ath-file { margin: 0 0 10px; }
+html .nl-band { display: none !important; }   /* Matteo 17 Nov: the site's English newsletter sign-up is not shown inside the athlete hub (clients, own language) */
 html .cc .ath-ic.ath-logo { background-repeat: no-repeat; background-position: center; background-size: 60%; }
 html .cc .ath-ic.logo-whatsapp { background-color: #25D366; border-color: #25D366; }
 html .cc .ath-ic.logo-vekta { background-color: #FFC20E; border-color: #FFC20E; background-size: 54%; }
