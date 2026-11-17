@@ -12,10 +12,10 @@ if (!defined('ABSPATH')) return;
 function cc_nt_w($k) {
     static $W = [
         'title' => ['en' => 'Leave me a note', 'it' => 'Lasciami un messaggio', 'pt' => 'Deixa-me uma mensagem', 'sl' => 'Pusti mi sporočilo'],
-        'lede' => ['en' => 'How is your week going? How you feel, your sleep, work, a niggle… Type it, or record a voice note (up to 5 minutes). I listen to every one.',
-                   'it' => 'Come va la settimana? Come ti senti, il sonno, il lavoro, un piccolo fastidio… Scrivilo, oppure registra un messaggio vocale (fino a 5 minuti). Li ascolto tutti.',
-                   'pt' => 'Como está a correr a tua semana? Como te sentes, o sono, o trabalho, uma pequena dor… Escreve, ou grava uma mensagem de voz (até 5 minutos). Ouço todas.',
-                   'sl' => 'Kako gre tvoj teden? Kako se počutiš, spanec, služba, kakšna bolečina… Napiši ali posnemi glasovno sporočilo (do 5 minut). Poslušam vsakega.'],
+        'lede' => ['en' => 'How is your week going? How you feel, your sleep, work, a niggle… Type it, or record a voice note (up to 5 minutes).',
+                   'it' => 'Come va la settimana? Come ti senti, il sonno, il lavoro, un piccolo fastidio… Scrivilo, oppure registra un messaggio vocale (fino a 5 minuti).',
+                   'pt' => 'Como está a correr a tua semana? Como te sentes, o sono, o trabalho, uma pequena dor… Escreve, ou grava uma mensagem de voz (até 5 minutos).',
+                   'sl' => 'Kako gre tvoj teden? Kako se počutiš, spanec, služba, kakšna bolečina… Napiši ali posnemi glasovno sporočilo (do 5 minut).'],
         'ph' => ['en' => 'Your note…', 'it' => 'Il tuo messaggio…', 'pt' => 'A tua mensagem…', 'sl' => 'Tvoje sporočilo…'],
         'rec' => ['en' => 'Record a voice note', 'it' => 'Registra un vocale', 'pt' => 'Gravar mensagem de voz', 'sl' => 'Posnemi glasovno sporočilo'],
         'stop' => ['en' => 'Stop recording', 'it' => 'Ferma la registrazione', 'pt' => 'Parar a gravação', 'sl' => 'Ustavi snemanje'],
@@ -54,14 +54,20 @@ function cc_nt_box($api, $extra, $ph, $send, $withDay = false, $lang = 'en-GB') 
         . ($withDay ? '<label class="nt-day">' . esc_html(cc_nt_w('day')) . '<input type="date" max="' . esc_attr(current_time('Y-m-d')) . '"></label>' : '')
         . '<button type="button" class="btn btn-go nt-send">' . esc_html($send) . '</button><p class="nt-msg" role="status"></p></div>';
 }
+// Matteo 17 Nov: a player in the hub's style (round green play button, green progress bar you can tap or drag, time) instead of the browser's
+function cc_nt_player($u) {
+    return '<div class="nt-pl" data-src="' . esc_url($u) . '"><button type="button" class="nt-pb" aria-label="Play"><svg viewBox="0 0 24 24" class="nt-play"><path d="M8 5.5v13l11-6.5z"/></svg>'
+         . '<svg viewBox="0 0 24 24" class="nt-pause"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg></button>'
+         . '<div class="nt-bar" role="slider" tabindex="0" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i><b></b></div><span class="nt-t">0:00</span></div>';
+}
 function cc_nt_item($n, $forCoach, $pid = 0) {
     $o = '<div class="nt-item"><small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at'])) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), date_i18n('j M', strtotime($n['day'] . ' 12:00')))) : '') . '</small>';
-    if (($u = cc_nt_url($n['audio'] ?? 0))) $o .= '<audio controls preload="none" src="' . esc_url($u) . '"></audio>';
+    if (($u = cc_nt_url($n['audio'] ?? 0))) $o .= cc_nt_player($u);
     if (($n['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($n['text'])) . '</p>';
     if ($forCoach && ($n['tr'] ?? '') !== '') $o .= '<p class="nt-tr"><i>Written out from the voice note:</i> ' . esc_html($n['tr']) . '</p>';
     foreach ((array) ($n['replies'] ?? []) as $r) {
         $o .= '<div class="nt-rep"><b>' . esc_html($forCoach ? 'Your reply' : cc_nt_w('reply')) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small>';
-        if (($u = cc_nt_url($r['audio'] ?? 0))) $o .= '<audio controls preload="none" src="' . esc_url($u) . '"></audio>';
+        if (($u = cc_nt_url($r['audio'] ?? 0))) $o .= cc_nt_player($u);
         if (($r['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($r['text'])) . '</p>';
         $o .= '</div>';
     }
@@ -82,7 +88,9 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     $speech = defined('CC_AV_SPEECH') ? (CC_AV_SPEECH[$GLOBALS['cc_ath_lang'] ?? 'en'] ?? 'en-GB') : 'en-GB';
     $o = '<section class="ath-s nt" id="notes"><h2>' . cc_ath_icon('mic', 'ath-hic') . esc_html(cc_nt_w('title')) . '</h2><p class="av-lede">' . esc_html(cc_nt_w('lede')) . '</p>'
        . cc_nt_box(rest_url('cc/v1/note'), new stdClass(), cc_nt_w('ph'), cc_nt_w('send'), true, $speech);
-    if ($ns) { $o .= '<h3 class="av-sub">' . esc_html(cc_nt_w('yours')) . '</h3>'; foreach (array_slice($ns, 0, 5) as $n) $o .= cc_nt_item($n, false); }
+    // Matteo 17 Nov: the hub shows their notes of the last 30 days (at most 5); everything stays on his Notes board
+    $recent = array_slice(array_values(array_filter($ns, function ($n) { return $n['at'] > time() - 30 * DAY_IN_SECONDS; })), 0, 5);
+    if ($recent) { $o .= '<h3 class="av-sub nt-yours">' . esc_html(cc_nt_w('yours')) . '</h3>'; foreach ($recent as $n) $o .= cc_nt_item($n, false); }
     return $html . $o . '</section>' . cc_nt_css() . cc_nt_js();
 }, 15, 3);
 function cc_nt_css() {
@@ -95,7 +103,16 @@ function cc_nt_css() {
         . 'html .cc .nt-send{justify-self:start}html .cc .nt-msg{margin:0;font-size:16px;font-weight:600;color:#34c46a}html .cc .nt-msg.err{color:#ff7a73}html .cc .nt-msg:empty{display:none}'
         . 'html .cc .nt-item{padding:14px 0;border-top:1px solid rgba(255,255,255,.1)}html .cc .nt-item small{color:#b8bec8;font-size:15px}html .cc .nt-item audio{display:block;width:100%;max-width:420px;margin:8px 0}html .cc .nt-item p{margin:6px 0 0;font-size:16px;color:#e6e9ee}'
         . 'html .cc .nt-tr{color:#b8bec8!important;font-size:15px!important}html .cc .nt-rep{margin:10px 0 0 14px;padding:10px 12px;border-left:3px solid #12a150;background:rgba(18,161,80,.08);border-radius:0 10px 10px 0}html .cc .nt-rep b{color:#34c46a}'
-        . 'html .cc .nt-replyd{margin-top:10px}html .cc .nt-replyd summary{cursor:pointer;color:#34c46a;font-weight:600;font-size:15px;margin-bottom:10px}</style>';
+        . 'html .cc .nt-replyd{margin-top:10px}html .cc .nt-replyd summary{cursor:pointer;color:#34c46a;font-weight:600;font-size:15px;margin-bottom:10px}'
+        . 'html .cc .nt-box textarea[hidden]{display:none}html .cc .nt .nt-yours{margin-top:30px}'
+        // the player
+        . 'html .cc .nt-pl{display:flex;align-items:center;gap:12px;max-width:440px;margin:10px 0;padding:8px 14px 8px 8px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)}'
+        . 'html .cc .nt-pb{flex:none;width:44px;height:44px;min-height:0;padding:0;margin:0;border:0;border-radius:50%;background:#12a150;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 14px rgba(18,161,80,.35);transition:transform .15s ease,background .15s ease}'
+        . 'html .cc .nt-pb:hover{transform:scale(1.06);background:#16b85c}html .cc .nt-pb svg{width:20px;height:20px;fill:#fff}html .cc .nt-pb .nt-pause,html .cc .nt-pl.on .nt-play{display:none}html .cc .nt-pl.on .nt-pause{display:block}'
+        . 'html .cc .nt-bar{position:relative;flex:1;height:6px;border-radius:999px;background:rgba(255,255,255,.15);cursor:pointer;touch-action:none}'
+        . 'html .cc .nt-bar i{position:absolute;inset:0 auto 0 0;width:0;border-radius:999px;background:linear-gradient(90deg,#12a150,#2bd47a)}'
+        . 'html .cc .nt-bar b{position:absolute;top:50%;left:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.5);opacity:0;transition:opacity .15s}'
+        . 'html .cc .nt-pl.on .nt-bar b,html .cc .nt-bar:hover b{opacity:1}html .cc .nt-t{flex:none;min-width:42px;text-align:right;font:600 14px var(--body);color:#d0d6e0;font-variant-numeric:tabular-nums}</style>';
 }
 function cc_nt_js() {
     static $done = false; if ($done) return ''; $done = true;
@@ -105,6 +122,8 @@ b=A.querySelector('.nt-rec'),st=A.querySelector('.nt-st'),go=A.querySelector('.n
 rec=null,sr=null,chunks=[],blob=null,tr='',t0=0,tick=null;
 function msg(t,e){m.textContent=t||'';m.classList.toggle('err',!!e);}
 function lab(t){b.querySelector('span').textContent=t;}
+/* Matteo 17 Nov: a voice note needs no text box: it hides while recording and while a recording waits to be sent */
+function voice(on){if(!ta.value.trim())ta.hidden=on;}
 b.addEventListener('click',function(){if(rec){rec.stop();return;}msg('');
  if(!navigator.mediaDevices||!window.MediaRecorder){msg(W.mic_no,true);return;}
  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
@@ -112,8 +131,8 @@ b.addEventListener('click',function(){if(rec){rec.stop();return;}msg('');
   rec=new MediaRecorder(s,type?{mimeType:type,audioBitsPerSecond:32000}:undefined);chunks=[];rec.ondataavailable=function(e){if(e.data.size)chunks.push(e.data);};
   rec.onstop=function(){s.getTracks().forEach(function(t){t.stop();});blob=new Blob(chunks,{type:rec.mimeType||'audio/mp4'});rec=null;if(sr)try{sr.stop();}catch(x){}
    clearInterval(tick);b.classList.remove('on');b.setAttribute('aria-pressed','false');lab(W.rec);
-   st.textContent=W.ready.replace('{s}',Math.round((Date.now()-t0)/1000));var x=document.createElement('button');x.type='button';x.textContent=W.del;x.onclick=function(){blob=null;tr='';st.textContent='';};st.appendChild(x);};
-  rec.start(1000);t0=Date.now();tr='';b.classList.add('on');b.setAttribute('aria-pressed','true');lab(W.stop);
+   st.textContent=W.ready.replace('{s}',Math.round((Date.now()-t0)/1000));var x=document.createElement('button');x.type='button';x.textContent=W.del;x.onclick=function(){blob=null;tr='';st.textContent='';voice(false);};st.appendChild(x);};
+  rec.start(1000);t0=Date.now();tr='';voice(true);b.classList.add('on');b.setAttribute('aria-pressed','true');lab(W.stop);
   tick=setInterval(function(){var n=Math.round((Date.now()-t0)/1000);st.textContent=W.listening.replace('{s}',n);if(n>=300&&rec)rec.stop();},500);
   /* the words are written out for Matteo only: nothing appears in the text box */
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition,done='';
@@ -125,9 +144,25 @@ go.addEventListener('click',function(){if(rec){rec.stop();setTimeout(function(){
  go.disabled=true;msg(W.sending);var f=new FormData(),ex=JSON.parse(A.dataset.extra||'{}');Object.keys(ex).forEach(function(k){f.append(k,ex[k]);});
  f.append('text',txt);if(dy&&dy.value)f.append('day',dy.value);if(blob){f.append('audio',blob,'voice.'+(/mp4/.test(blob.type)?'m4a':'webm'));f.append('transcript',tr);}
  fetch(A.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':A.dataset.nonce}}).then(function(r){return r.json().then(function(j){return[r.ok,j];});})
- .then(function(x){if(!x[0])throw new Error();ta.value='';blob=null;tr='';st.textContent='';if(dy)dy.value='';msg(W.sent);go.disabled=false;})
+ .then(function(x){if(!x[0])throw new Error();ta.value='';blob=null;tr='';st.textContent='';voice(false);if(dy)dy.value='';msg(W.sent);go.disabled=false;})
  .catch(function(){go.disabled=false;msg(W.err,true);});});
-});})();</script>
+});
+/* the player: one sound at a time; recordings from phones can report no length at first, so it is worked out on load */
+var cur=null;function fm(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
+document.querySelectorAll('.nt-pl').forEach(function(P){var a=null,bar=P.querySelector('.nt-bar'),fill=bar.querySelector('i'),dot=bar.querySelector('b'),t=P.querySelector('.nt-t');
+ function dur(){return a&&isFinite(a.duration)&&a.duration>0?a.duration:0;}
+ function draw(){if(!a)return;var d=dur(),p=d?Math.min(1,a.currentTime/d):0;fill.style.width=(p*100)+'%';dot.style.left=(p*100)+'%';bar.setAttribute('aria-valuenow',Math.round(p*100));t.textContent=a.paused&&!a.currentTime&&d?fm(d):fm(a.currentTime);}
+ function load(){if(a)return a;a=new Audio(P.dataset.src);a.preload='metadata';
+  a.addEventListener('loadedmetadata',function(){if(!isFinite(a.duration)){a.currentTime=1e7;a.addEventListener('timeupdate',function f(){a.removeEventListener('timeupdate',f);a.currentTime=0;draw();});}draw();});
+  a.addEventListener('timeupdate',draw);a.addEventListener('ended',function(){P.classList.remove('on');a.currentTime=0;draw();});return a;}
+ P.querySelector('.nt-pb').addEventListener('click',function(){load();if(a.paused){if(cur&&cur!==P)cur.dispatchEvent(new Event('ntstop'));cur=P;a.play();P.classList.add('on');}else{a.pause();P.classList.remove('on');}});
+ P.addEventListener('ntstop',function(){if(a){a.pause();P.classList.remove('on');}});
+ function seek(e){load();var r=bar.getBoundingClientRect(),x=(e.touches?e.touches[0].clientX:e.clientX)-r.left,d=dur();if(d){a.currentTime=Math.max(0,Math.min(1,x/r.width))*d;draw();}}
+ var drag=false;bar.addEventListener('pointerdown',function(e){drag=true;bar.setPointerCapture&&bar.setPointerCapture(e.pointerId);seek(e);});
+ bar.addEventListener('pointermove',function(e){if(drag)seek(e);});bar.addEventListener('pointerup',function(){drag=false;});
+ bar.addEventListener('keydown',function(e){load();var d=dur();if(!d)return;if(e.key==='ArrowRight')a.currentTime=Math.min(d,a.currentTime+5);if(e.key==='ArrowLeft')a.currentTime=Math.max(0,a.currentTime-5);draw();});
+});
+})();</script>
 JS;
 }
 
