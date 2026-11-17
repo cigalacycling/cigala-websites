@@ -661,7 +661,7 @@ def home():
         ('recipies.html', img('0e1488-8cee9e1e3ac743dd828b4bd69d89', 'Raspberry Chia Seed pudding', w=640, h=363), 'E-Book', 'Breakfasts to ignite your potential: 30 recipes.'),
         ('workshops.html', f'<span>{ICON["talk"]}</span>', 'Workshops & Talks', 'Nutrition talks for clubs, gyms and teams.'),
     ]
-    who = [('cycling-nutritionist.html', 'Cyclists', 'Road, gravel, track, MTB, cyclocross'), ('triathlon-nutritionist.html', 'Triathletes', 'Ironman, 70.3 and shorter races'),
+    who = [('cycling-nutritionist.html', 'Cyclists', 'Leisure to elite: road, gravel, track, MTB, CX'), ('triathlon-nutritionist.html', 'Triathletes', 'Ironman, 70.3 and shorter races'),
            ('race-fuelling-plan.html', 'Race day', 'A fuelling plan for your event'), ('online-sports-nutritionist.html', 'Worldwide', 'Online coaching, wherever you train')]
     WHO_I_HELP = ('<section style="padding-top:24px"><div class="wrap">' + head('Who Marine works with', 'Nutrition for endurance athletes', tag=None, center=True)
                   + '<div class="g4" style="margin-top:32px">' + ''.join(f'<a class="scard panel" href="{h}"><div class="tx"><span class="eyebrow">{e(d)}</span><span class="h3">{e(t)}</span><span class="go">Learn more {ICON["arrow"]}</span></div></a>' for h, t, d in who)

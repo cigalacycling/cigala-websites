@@ -85,6 +85,8 @@ def build(b):
             '<p>Yes. Marine is the Amateur Gravel World Champion (2024) and Irish National Gravel Champion (2026), and has coached riders for ultra-endurance gravel races.</p>'),
            ('Can you help me prepare for a Gran Fondo or sportive?',
             '<p>Yes. Marine is the European Gran Fondo Champion (2023). She builds your daily nutrition around your training and a race-day plan for your event, whether that is the Wicklow 200, L’Étape du Tour, the Marmotte or a UCI Gran Fondo World Series race.</p>'),
+           ('Do you work with elite and professional riders?',
+            '<p>Yes. Marine races in the WorldTour with LIDL-TREK and works with riders up to elite level: race calendars and stage races, high-carbohydrate race fuelling, safe body composition, training camps and batch-tested supplements.</p>'),
            ('Do I need to be in Ireland?',
             '<p>No. Coaching is online. Marine currently coaches athletes in the USA, Canada, Ireland and Finland, and has coached athletes in France, Italy and the Netherlands. Plans are priced in euro and US dollars.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Cycling nutrition', 'Common questions')
@@ -109,6 +111,17 @@ def build(b):
   <div class="pcard panel"><span class="h3">Cyclocross</span><p style="margin:0">Short, all-out winter races: timing your pre-race meal, warm-up fuel and recovering between back-to-back race weekends.</p></div>
   <div class="pcard panel"><span class="h3">Sportives &amp; leisure</span><p style="margin:0">More energy on long rides, no more cramping or bonking, and healthy habits that fit around work and family.</p></div>
  </div></div></section>
+<section style="padding-top:8px"><div class="wrap g2" style="align-items:start">
+ <div>{head('Elite &amp; pro riders', 'Elite and professional riders')}
+  <p>Marine races in the WorldTour with LIDL-TREK, so she knows the demands of elite cycling from the inside: a full race calendar, stage races, travel and the fine margins that decide results. Elite and development riders get the same evidence-based approach she uses for her own racing.</p>
+  <p>Food first, always. Where supplements help, Marine recommends batch-tested products only, which matters for any rider subject to anti-doping rules.</p></div>
+ <div class="g2" style="gap:14px">
+  <div class="pcard panel"><span class="h3">Race calendar &amp; stage races</span><p style="margin:0">Fuelling and recovery between stages, back-to-back race days and a full season.</p></div>
+  <div class="pcard panel"><span class="h3">Race-day fuelling at the top level</span><p style="margin:0">High carbohydrate intakes (90–120 g/h) with gut training, so you can absorb what the race demands.</p></div>
+  <div class="pcard panel"><span class="h3">Body composition, safely</span><p style="margin:0">Power-to-weight without under-fuelling: protecting health, hormones, bones and performance.</p></div>
+  <div class="pcard panel"><span class="h3">Travel, camps &amp; altitude</span><p style="margin:0">Eating well at training camps, at altitude and on the road between races.</p></div>
+ </div>
+</div></section>
 <section class="section-tight" style="padding-top:0"><div class="wrap center"><a class="btn btn-secondary" href="womens-cycling-nutrition.html">Women's cycling nutrition {ICON['arrow']}</a></div></section>
 <section style="padding-top:8px"><div class="wrap">
  {head('Gran Fondos, sportives, gravel and more', 'Fuel for your target event', center=True, lead='Whatever you are training for, your nutrition is built around the event: its distance, terrain, climbing, weather and feed stations. From the Wicklow 200 to the Marmotte, the Traka or the Cape Epic.')}
