@@ -1052,5 +1052,15 @@
    "sports-nutritionist-ireland"
   ],
   "webp": "webp/vekta-logo.webp"
+ },
+ "vivify-logo-white.webp": {
+  "orig": "tools/vivify_logo.py from the master logo (teal square removed)",
+  "alts": [
+   "vivify sports logo "
+  ],
+  "pages": [
+   "all"
+  ],
+  "webp": "webp/vivify-logo-white.webp"
  }
 }

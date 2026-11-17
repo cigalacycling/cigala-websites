@@ -37,6 +37,7 @@ def img(prefix, alt, cls='', lazy=True, w=None, h=None, style=''):
 
 LOGO = '0e1488-f038fcb12444476fab18be6dc4bf'      # 909x855 teal square, white V + VIVIFY SPORTS
 LOGO_ALT = 'vivify sports logo '                    # live alt, kept
+LOGO_T = 'vivify-logo-white'   # transparent version for header and footer (Marine 17 Nov, tools/vivify_logo.py)
 
 # ---------------------------------------------------------------- pages / nav
 PAGES = {  # file -> live path
@@ -169,15 +170,15 @@ header.site{position:sticky;top:0;z-index:50;background:rgba(12,34,38,.86);backd
 header.site .hdr{display:flex;align-items:center;gap:16px;height:78px;max-width:1360px;transition:height .25s}
 header.site.scrolled{box-shadow:0 10px 30px rgba(0,0,0,.35)}
 header.site.scrolled .hdr{height:64px}
-header.site.scrolled .logo img{width:46px;height:46px}
-.logo img{transition:width .25s,height .25s}
+header.site.scrolled .logo img{height:44px;width:auto}
+.logo img{transition:height .25s}
 .logo{flex-shrink:0}
 .topbar{background:linear-gradient(90deg,#123a40,#19444B 50%,#123a40);border-bottom:1px solid var(--border);font:500 12.5px/1 Montserrat,sans-serif;color:var(--text-2);overflow:hidden;max-height:40px;transition:max-height .25s}
 .topbar .wrap{display:flex;gap:10px;align-items:center;justify-content:center;height:36px;flex-wrap:wrap}
 .topbar a{color:var(--lime-text);font-weight:700;text-decoration:none;margin-left:6px}
 header.site.scrolled .topbar{max-height:0}
 @media (max-width:640px){.topbar .tb-sep,.topbar span:nth-of-type(3){display:none}}
-.logo img{width:58px;height:58px;object-fit:cover}
+.logo img{height:54px;width:auto}
 nav.main{margin-left:auto}
 nav.main > ul{gap:0!important}
 nav.main ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
@@ -326,11 +327,11 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .plan.feat::before,.plan.soldout::before{display:none}
 .plan.feat{border:1.5px solid var(--aqua);box-shadow:0 0 0 1px rgba(177,216,221,.15),0 24px 60px rgba(177,216,221,.12);background:linear-gradient(170deg,rgba(25,68,75,.85),rgba(18,51,56,.6))}
 .plan.soldout{opacity:.88}
-.plan h2.pt{display:flex;flex-direction:column;align-items:flex-start;gap:0;margin:0 0 4px;font-size:30px;line-height:1.05}
+.plan h2.pt{display:flex;flex-direction:column;align-items:flex-start;gap:0;margin:0 0 4px;font-size:27px;line-height:1.05}
 .plan h2.pt .pd{order:-1;font:700 11.5px/1.3 Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--lime-text);margin-bottom:10px}
 .plan h2.pt .pn{display:block}
-.plan h2.pt .pp{display:flex;align-items:baseline;gap:4px;margin-top:16px;font:400 54px/1 Anton,sans-serif;color:var(--text)}
-.plan h2.pt .pp small{font:600 15px/1 Montserrat,sans-serif;color:var(--text-3)}
+.plan h2.pt .pp{display:flex;align-items:baseline;gap:4px;margin-top:14px;font:400 36px/1 Anton,sans-serif;color:var(--text)}
+.plan h2.pt .pp small{font:600 13px/1 Montserrat,sans-serif;color:var(--text-3)}
 .plan h2.pt .pp small.m{text-transform:lowercase}
 .plan .usd{font-size:12.5px;color:var(--text-3);margin:2px 0 14px}
 .plan h2.psub{font-size:15px;color:var(--aqua);margin:6px 0 8px}
@@ -343,6 +344,11 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .plan .notsure:hover{text-decoration:underline}
 .plan .wyg{font:700 11.5px/1 Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);border-top:1px solid var(--border);padding-top:18px;margin:0 0 6px}
 .plan .ticks li{font-size:14px;padding:5px 0}
+.plan details.more{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+.plan details.more summary{cursor:pointer;font:700 12px/1.4 Montserrat,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--aqua);list-style:none}
+.plan details.more summary::-webkit-details-marker{display:none}
+.plan details.more summary::after{content:" +"}.plan details.more[open] summary::after{content:" –"}
+.plan details.more p{font-size:14px;margin:10px 0 0}
 .cmp th.hl,.cmp td.hl{background:rgba(177,216,221,.07)}
 .cmp thead th.hl{background:#21545c;color:var(--aqua)}
 /* massage rows */
@@ -437,7 +443,7 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 /* footer */
 footer.site{margin-top:40px;background:linear-gradient(180deg,rgba(25,68,75,.35),rgba(25,68,75,.7));border-top:1px solid var(--border)}
 footer.site .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:40px;padding:64px 24px 40px}
-footer.site .logo img{width:76px;height:76px}
+footer.site .logo img{height:76px;width:auto}
 footer.site .tag{font:400 24px/1.1 Anton,sans-serif;text-transform:uppercase;color:var(--text);margin:20px 0 0;max-width:300px}
 footer.site .fh{font:600 12px/1.4 Montserrat,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-text);margin:6px 0 14px}
 footer.site ul{list-style:none;margin:0;padding:0}
@@ -515,7 +521,7 @@ def shell(file, body, schema=None):
 <a class="skip" href="#main">Skip to Main Content</a>
 <header class="site"><div class="topbar"><div class="wrap"><span>Free 30-minute discovery call</span><span class="tb-sep">·</span><span>Online coaching in English, French &amp; Italian</span><a href="{DISCOVERY}">Book now →</a></div></div>
 <div class="wrap hdr">
- <a class="logo" href="index.html" aria-label="Vivify Sports home">{img(LOGO, LOGO_ALT, lazy=False, w=58, h=55)}</a>
+ <a class="logo" href="index.html" aria-label="Vivify Sports home">{img(LOGO_T, LOGO_ALT, lazy=False, w=44, h=54)}</a>
  <input type="checkbox" id="menu-t" aria-label="Menu">
  <label class="burger" for="menu-t" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></label>
  <nav class="main" aria-label="Main"><ul>{navh}{lang_switch(file)}</ul></nav>
@@ -527,7 +533,7 @@ def shell(file, body, schema=None):
 </main>
 <footer class="site">
  <div class="wrap top">
-  <div><a class="logo" href="index.html">{img(LOGO, LOGO_ALT, w=76, h=72)}</a>
+  <div><a class="logo" href="index.html">{img(LOGO_T, LOGO_ALT, w=62, h=76)}</a>
    <p class="tag">Healthy habits to ignite your potential</p></div>
   <div><p class="fh">Explore</p><ul>
    <li><a href="about.html">About Marine</a></li><li><a href="nutrition-nutrition-philosophy.html">Sports Nutrition Philosophy</a></li>
@@ -749,7 +755,7 @@ def coaching():
 <thead><tr><th scope="col"><span class="skip">Feature</span>{img(LOGO, LOGO_ALT, w=56, h=53, style='margin:auto')}</th><th scope="col">Nutritional Assessment</th><th scope="col">Follow-up Consultation</th><th scope="col">The Healthy Body Plan</th><th scope="col" class="hl">The Happy Body Plan<br><small style="font:700 11px Montserrat,sans-serif;letter-spacing:.12em;color:var(--lime-text)">MOST POPULAR</small></th><th scope="col">The Performing Body Plan<br><small style="font:600 11px Montserrat,sans-serif;letter-spacing:.12em;color:var(--text-3)">SOLD OUT</small></th></tr></thead>
 <tbody>{trs}</tbody></table></div>"""
 
-    def plan(name, price, dur, intro, inc, btn, href, usd='', feat=False, extra='', sold_out=False, big=None):
+    def plan(name, price, dur, intro, inc, btn, href, usd='', feat=False, extra='', sold_out=False, big=None, more=''):
         """Cigala Coaching style card. The H2 text stays the live Wix wording, e.g. "THE HEALTHY BODY PLAN - 99€/MONTH 3 months";
         CSS lays it out as duration label, plan name, big price."""
         ext = ' target="_blank" rel="noopener"' if href.startswith('http') else ''
@@ -771,9 +777,18 @@ def coaching():
         return (f'<article class="plan panel{" feat" if feat else ""}{" soldout" if sold_out else ""}">{badge}{h2}'
                 + (f'<p class="usd">{usd}</p>' if usd else '') + extra + f'<p class="pdesc">{intro}</p>{cta_}'
                 + f'<a class="notsure" href="{DISCOVERY}">Not sure? Book a free discovery call →</a>'
-                + f'<p class="wyg">What you get</p>{ticks(inc)}</article>')
-    one = plan('NUTRITIONAL ASSESEMENT', '50mn 100€ / 120 US$', '', 'A complete evaluation to understand your current nutrition, goals, and needs.',
-               ['Personalized advice on healthy habits and food preferences', 'Vitamin &amp; mineral recommendations', 'Supplement guidance', 'Sports-specific nutrition'], 'Book now', ASSESSMENT_PAY)
+                + f'<p class="wyg">What you get</p>{ticks(inc)}{more}</article>')
+    # Marine 17 Nov: "improve the description like other competitors". Only what the live page already promises;
+    # the three live paragraphs about the assessment (missing from the first rebuild) are back, word for word.
+    one = plan('NUTRITIONAL ASSESEMENT', '50mn 100€ / 120 US$', '',
+               'A complete evaluation to understand your current nutrition, goals, and needs. The ideal first step: one private session with Marine and a full written report you can keep.',
+               ['A 50-minute private online consultation with Marine', 'A review of your eating habits, training and goals',
+                'Personalized advice on healthy habits and food preferences', 'Vitamin &amp; mineral recommendations', 'Supplement guidance',
+                'Sports-specific nutrition', 'Your Full Nutritional Assessment Report'], 'Book now', ASSESSMENT_PAY,
+               more=('<details class="more"><summary>How the assessment works</summary>'
+                     '<p>This private online meeting with Marine will study your eating habits and how to improve them, whatever your goals.</p>'
+                     '<p>From general health, gut health to weight loss or to sports performance, Marine will develop a nutrition strategy that suits you whether it’s nutritional advice for a sedentary population, general recreational exercise, or competitive sport.</p>'
+                     '<p>You will learn the basics of nutrition and advice to lose weight permanently or solve your nutritional problems with a FULL NUTRITIONAL ASSESSMENT REPORT.</p></details>'))
     two = plan('FOLLOW-UP CONSULTATION', '30mn 50€ / 60 US$', '', 'A session to review your progress, fine-tune your plan, and stay on track.',
                ['1 follow-up call', 'Updated nutritional and supplement advice'], 'Book now', FOLLOWUP_PAY)
     p1 = plan('THE HEALTHY BODY PLAN', '99€/MONTH', '3 months', 'Build sustainable, healthy eating habits that energize your everyday life.',
