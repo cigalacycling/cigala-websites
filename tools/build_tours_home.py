@@ -440,10 +440,7 @@ s, n = re.subn(r'<li><a href="' + re.escape(L) + r'/trips/" ' + re.escape(EXT) +
 assert n == 1
 
 # where our guests come from (Matteo 17 Nov: under the reviews, not high up). Only countries guests really came from.
-GUEST_FROM = [('ie', 'Ireland'), ('gb', 'United Kingdom'), ('it', 'Italy'), ('fr', 'France'), ('es', 'Spain'), ('pt', 'Portugal'), ('nl', 'Netherlands'),
-              ('be', 'Belgium'), ('de', 'Germany'), ('dk', 'Denmark'), ('fi', 'Finland'), ('us', 'United States'), ('ca', 'Canada'), ('mx', 'Mexico'),
-              ('co', 'Colombia'), ('br', 'Brazil'), ('ar', 'Argentina'), ('za', 'South Africa'), ('ae', 'United Arab Emirates'), ('tr', 'Turkey'),
-              ('au', 'Australia'), ('nz', 'New Zealand'), ('sg', 'Singapore'), ('cn', 'China'), ('kr', 'South Korea')]   # China and South Korea added by Matteo 17 Nov
+GUEST_FROM = [(x['cc'], x['name']) for x in json.load(open(ROOT + 'tours/guest-countries.json'))]   # one list for the homepage and About (Matteo 17 Nov); add a country there
 gf = ('<div class="guests"><p class="gtitle">Riders from <b>' + str(len(GUEST_FROM)) + ' countries</b> have joined us so far</p><ul class="gflags">'
       + ''.join(f'<li><img src="img/flag-{c}.webp" alt="Flag of {n}" title="{n}" width="40" height="40" loading="lazy"><span>{n}</span></li>' for c, n in GUEST_FROM) + '</ul></div>')
 s, n = re.subn(r'(<div class="reviews">.*?</article>\s*</div>)', lambda m: m.group(1) + '\n    ' + gf, s, count=1, flags=re.S)

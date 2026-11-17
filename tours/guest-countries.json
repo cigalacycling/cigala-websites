@@ -1,0 +1,102 @@
+[
+ {
+  "cc": "ie",
+  "name": "Ireland"
+ },
+ {
+  "cc": "gb",
+  "name": "United Kingdom"
+ },
+ {
+  "cc": "it",
+  "name": "Italy"
+ },
+ {
+  "cc": "fr",
+  "name": "France"
+ },
+ {
+  "cc": "es",
+  "name": "Spain"
+ },
+ {
+  "cc": "pt",
+  "name": "Portugal"
+ },
+ {
+  "cc": "nl",
+  "name": "Netherlands"
+ },
+ {
+  "cc": "be",
+  "name": "Belgium"
+ },
+ {
+  "cc": "de",
+  "name": "Germany"
+ },
+ {
+  "cc": "dk",
+  "name": "Denmark"
+ },
+ {
+  "cc": "fi",
+  "name": "Finland"
+ },
+ {
+  "cc": "us",
+  "name": "United States"
+ },
+ {
+  "cc": "ca",
+  "name": "Canada"
+ },
+ {
+  "cc": "mx",
+  "name": "Mexico"
+ },
+ {
+  "cc": "co",
+  "name": "Colombia"
+ },
+ {
+  "cc": "br",
+  "name": "Brazil"
+ },
+ {
+  "cc": "ar",
+  "name": "Argentina"
+ },
+ {
+  "cc": "za",
+  "name": "South Africa"
+ },
+ {
+  "cc": "ae",
+  "name": "United Arab Emirates"
+ },
+ {
+  "cc": "tr",
+  "name": "Turkey"
+ },
+ {
+  "cc": "au",
+  "name": "Australia"
+ },
+ {
+  "cc": "nz",
+  "name": "New Zealand"
+ },
+ {
+  "cc": "sg",
+  "name": "Singapore"
+ },
+ {
+  "cc": "cn",
+  "name": "China"
+ },
+ {
+  "cc": "kr",
+  "name": "South Korea"
+ }
+]

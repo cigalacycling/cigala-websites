@@ -91,6 +91,21 @@ WHY_ICONS = [   # Why riders choose us, in the live order (Matteo 15 Nov: own ic
  '<path d="M3 16V8a1 1 0 0 1 1-1h11l4 4h1a1 1 0 0 1 1 1v4H3z"/><circle cx="7.5" cy="16.5" r="1.8"/><circle cx="16.5" cy="16.5" r="1.8"/>',   # support vehicle
  '<path d="M12 4v16M5 8h14M5 8l-2.5 6a2.5 2.5 0 0 0 5 0zM19 8l-2.5 6a2.5 2.5 0 0 0 5 0zM8 20h8"/>',          # balance
  '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20a6 6 0 0 1 12 0M14.5 20a4.5 4.5 0 0 1 7-3.7"/>']   # all levels: people
+def guests_html():   # riders' countries, the same list and look as the homepage (tours/guest-countries.json), Matteo 17 Nov
+    gs = json.load(open(ROOT + 'tours/guest-countries.json'))
+    return ('<div class="guests"><p class="gtitle">Riders from <b>' + str(len(gs)) + ' countries</b> have joined us so far</p><ul class="gflags">'
+            + ''.join(f'<li><img src="img/flag-{g["cc"]}.webp" alt="Flag of {g["name"]}" title="{g["name"]}" width="40" height="40" loading="lazy"><span>{g["name"]}</span></li>' for g in gs) + '</ul></div>')
+GUESTS_CSS = '''html .cl .guests { margin-top: 34px; padding: 22px 24px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255,255,255,.025); text-align: center; }
+html .cl .guests .gtitle { margin: 0 0 16px; font-size: 15px; color: var(--text-2); letter-spacing: .02em; }
+html .cl .guests .gtitle b { color: var(--text); font-weight: 700; }
+html .cl .gflags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+html .cl .gflags li { position: relative; }
+html .cl .gflags img { display: block; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); transition: transform .2s; }
+html .cl .gflags li:hover img { transform: translateY(-3px) scale(1.08); }
+html .cl .gflags span { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; font-size: 12px; font-weight: 600; color: #fff; background: rgba(8,9,10,.92); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+html .cl .gflags li:hover span { opacity: 1; }
+@media (min-width: 1100px) { html .cl .gflags { flex-wrap: nowrap; gap: 9px; } }   /* laptops: all flags on one line */
+@media (max-width: 600px) { html .cl .gflags { display: grid; grid-template-columns: repeat(5, 44px); justify-content: center; gap: 12px 16px; } html .cl .gflags img { width: 44px; height: 44px; } html .cl .guests { padding: 18px 14px; } html .cl .gflags span { display: none; } }   /* phones: 5 x 5, no lone flag on the last row (Matteo 17 Nov) */'''
 def about():
     it = items(elementor(271))
     h1 = next(v for k, v, s in it if k == 'h1')
@@ -156,6 +171,9 @@ def about():
     {head_block('Who rides with you', it[team_i][1])}
     <div class="team">{th}</div>
   </div>
+</section>
+<section style="padding-top:0">
+  <div class="in"><style>{GUESTS_CSS}</style>{guests_html()}</div>
 </section>
 <section>
   <div class="in">
