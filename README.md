@@ -443,7 +443,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 
 **LIVE since 17 Nov 2026** (the whole athlete area, see `coaching/athlete-area/GO-LIVE.md`). No welcome emails sent yet. Every change: staging first, then live (back up snippet 8 first).
 - **Owner from 17 Nov 2026 (Matteo's choice): the "Athlete Hub" chat on Matteo's laptop** (clone in `C:\Users\matte\vekta\athlete-hub\cigala-websites`). Other chats, cloud ones included, don't change the hub. On the laptop `tools/coaching_athlete_area.py` reads the application password from `vekta\.env` (`CC_STG_USER`/`CC_STG_APP_PASSWORD` for staging, `CC_HUB_USER`/`CC_HUB_APP_PASSWORD` with `--live`) and sends through Windows curl; staging backups go in `stg-coaching/backup/`.
-- **`key` on `POST /cc/v1/report` (17 Nov, staging):** one current report per athlete + type + key (race slug for race plans, `training-report` for the Training Response Report). See `PC-TOOLS-HANDOVER.md`.
+- **`key` on `POST /cc/v1/report` (17 Nov, staging + live; live backup in `live-coaching/backup/`):** one current report per athlete + type + key (race slug for race plans, `training-report` for the Training Response Report). See `PC-TOOLS-HANDOVER.md`.
 - One login per coached athlete at `/athletes/` (footer link "Athlete login"). noindex, not in the sitemap, never cached.
 - Code: `coaching/athlete-area/athlete-area.php`, pushed as Code Snippets snippet 8 by `python3 -I tools/coaching_athlete_area.py`. **Code Snippets must stay active** (it was off before; snippets 5–7 stay off).
 - Matteo's steps:
