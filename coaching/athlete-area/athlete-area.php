@@ -569,7 +569,7 @@ const CC_SMTP = ['host' => 'smtp.reg365.net', 'port' => 587, 'user' => 'cigalacy
 add_action('phpmailer_init', function ($m) {
     $pw = (string) get_option('cc_smtp_pass', ''); if ($pw === '') return;
     if (!get_option('cc_smtp_ok') && empty($GLOBALS['cc_smtp_testing'])) return;   // only after a test succeeded: a wrong login must never stop the hub's emails
-    $m->isSMTP(); $m->Host = CC_SMTP['host']; $m->Port = CC_SMTP['port']; $m->SMTPSecure = 'tls'; $m->SMTPAuth = true;
+    $m->isSMTP(); $m->Host = CC_SMTP['host']; $m->Port = CC_SMTP['port']; $m->SMTPSecure = CC_SMTP['port'] === 465 ? 'ssl' : 'tls';   // Matteo 17 Nov (on the phone with Register365): 465 with SSL $m->SMTPAuth = true;
     $m->Username = (string) get_option('cc_smtp_user', '') ?: CC_SMTP['user'];   // Matteo 17 Nov: the login is email-style (Gmail uses amedeo@cigalacycling.com) $m->Password = $pw; $m->Timeout = 20;
     // keep only the SERVER's replies (never what we send, so the login never ends up in the log), for the reason shown when a send fails
     $GLOBALS['cc_smtp_srv'] = []; $m->SMTPDebug = 2;
@@ -583,6 +583,11 @@ add_action('wp_mail_failed', function ($e) { $msg = is_wp_error($e) ? $e->get_er
     if ($pw !== '') $msg = str_replace($pw, '***', $msg);
     $srv = array_slice((array) ($GLOBALS['cc_smtp_srv'] ?? []), -6); if ($pw !== '') $srv = array_map(function ($l) use ($pw) { return str_replace($pw, '***', $l); }, $srv);
     update_option('cc_smtp_err', ['at' => time(), 'msg' => substr($msg, 0, 500), 'server' => $srv], false); });
+add_action('rest_api_init', function () { register_rest_route('cc/v1', '/smtp-test', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
+    $me = wp_get_current_user(); $GLOBALS['cc_smtp_testing'] = 1;   // the hub chat's test: always to the coach himself
+    $ok = is_email($me->user_email) && wp_mail($me->user_email, 'Test: Cigala Cycling Coaching emails', '<p>Test from your athlete hub, sent through Register365 as coaching@cigalacycling.com.</p>', ['Content-Type: text/html; charset=UTF-8']);
+    update_option('cc_smtp_ok', $ok ? time() : 0, false); return ['ok' => (bool) $ok, 'to' => $me->user_email, 'error' => $ok ? null : get_option('cc_smtp_err')];
+}]); });
 add_action('rest_api_init', function () { register_rest_route('cc/v1', '/smtp-status', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
     return ['active' => (int) get_option('cc_smtp_ok', 0) ?: null, 'user' => get_option('cc_smtp_user', '') ?: CC_SMTP['user'], 'password_set' => (bool) get_option('cc_smtp_pass', ''), 'set_at' => (int) get_option('cc_smtp_set', 0) ?: null, 'last_error' => get_option('cc_smtp_err', null),
             'openssl' => extension_loaded('openssl'), 'can_reach_587' => (function () { $s = @fsockopen('smtp.reg365.net', 587, $no, $str, 6); if ($s) { $l = fgets($s, 200); fclose($s); return trim((string) $l); } return "no: $no $str"; })()];
