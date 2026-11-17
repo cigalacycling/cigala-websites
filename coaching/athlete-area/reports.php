@@ -26,7 +26,7 @@ const CC_R_ONTOP = ['race-plan', 'race-sim', 'race-recap'];
  * with "Keep it updated automatically" (one current per athlete + key; no email). Shown where they always were (Your reports). */
 const CC_R_AUTO = ['season', 'snapshot', 'prediction', 'progress', 'race-sim', 'race-plan', 'race-recap', 'milestones'];
 /* Matteo 17 Nov: pages made by automatic processes that need no review from him: they publish themselves when his switch is on */
-const CC_R_SELF = ['race-sim', 'race-plan', 'race-recap', 'milestones'];   // one per race: all stay on top
+const CC_R_SELF = ['race-sim', 'race-plan', 'race-recap', 'milestones', 'progress'];   // Matteo 17 Nov: he approves only reviews, assessments and season plans   // one per race: all stay on top
 function cc_r_auto($pid, $type = null) { $a = (array) get_post_meta($pid, 'cc_auto', true); return $type === null ? $a : in_array($type, $a, true); }
 function cc_r_set_auto($pid, $type, $on) { $a = array_values(array_diff(cc_r_auto($pid), [$type])); if ($on) $a[] = $type; update_post_meta($pid, 'cc_auto', $a); }
 function cc_r_go_live($rid) {   // publish; a live kind replaces the athlete's previous one (season plans are kept as history)
@@ -221,7 +221,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     $o = '<section class="ath-s"><h2>' . cc_ath_icon('reports', 'ath-hic') . 'Reports</h2><p class="av-lede">Reports your PC tools send arrive here as drafts. Nothing reaches an athlete until you publish it. '
        . 'Preview, then publish (tick “Email the athlete” if you want them told by email) or delete. To add a PDF by hand, upload it inside the athlete’s page, as before.</p>';
     $o .= '<form class="rp-set" method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_report_settings">' . wp_nonce_field('cc_report_settings', '_wpnonce', false, false)
-        . '<label class="rp-mail"><input type="checkbox" name="race_auto" value="1"' . (get_option('cc_r_race_auto') ? ' checked' : '') . ' onchange="this.form.submit()"> <b>Publish automatic pages automatically</b>: race day plans, race recaps and “Since you joined” milestones go straight into the athlete’s hub, the first one too, without waiting here (no email). Reviews, assessments, season plans and training reports always wait for you. Untick to review everything first.</label></form>';
+        . '<label class="rp-mail"><input type="checkbox" name="race_auto" value="1"' . (get_option('cc_r_race_auto') ? ' checked' : '') . ' onchange="this.form.submit()"> <b>Publish automatic pages automatically</b>: training reports, race day plans, race recaps and “Since you joined” milestones go straight into the athlete’s hub, the first one too, without waiting here (no email). Reviews, assessments and season plans always wait for you. Untick to review everything first.</label></form>';
     $drafts = get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'numberposts' => -1, 'orderby' => 'date', 'order' => 'DESC']);
     $pub = get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'numberposts' => 60, 'orderby' => 'meta_value_num', 'meta_key' => 'cc_published', 'order' => 'DESC']);
     if ($drafts || $pub) $o .= '<form id="rp-bulk" class="rp-bulk" method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_report_bulk">' . wp_nonce_field('cc_report_bulk', '_wpnonce', false, false)
