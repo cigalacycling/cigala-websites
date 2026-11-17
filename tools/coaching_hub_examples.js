@@ -5,7 +5,7 @@ const { chromium } = require('playwright'); const path = require('path');
 const D = path.resolve(__dirname, '..', 'coaching/athlete-area/examples') + '/';
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1100, height: 800 }, deviceScaleFactor: 2 });
-  for (const f of ['season-plan', 'progress-report', 'race-plan']) {
+  for (const f of ['season-plan', 'progress-report', 'race-plan', 'it-season-plan', 'it-progress-report', 'it-race-plan']) {
     await p.goto('file://' + D + f + '.html', { waitUntil: 'networkidle' }); await p.evaluate(() => document.fonts.ready);
     await p.screenshot({ path: D + f + '.png', fullPage: true }); console.log('made', f);
   }

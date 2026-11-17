@@ -143,30 +143,51 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
 # example reports: coaching/athlete-area/examples/*.html (made-up athlete "Alex Doyle"), rendered by tools/coaching_hub_examples.js.
 _HX = 'coaching/athlete-area/examples/'
 def _hic(d): return f'<svg viewBox="0 0 24 24" aria-hidden="true">{d}</svg>'
-HUB_POINTS = [
-    (_hic('<path d="m3 20 6-10 4 6 3-4 5 8z"/>'), 'Your season plan', 'The blocks, your races and your goals on one page, updated whenever the plan changes.'),
-    (_hic('<path d="M4 19V5m0 14h16M8 15l4-4 3 3 5-6"/>'), 'Personal reports', 'Progress reports, race-day plans and reviews, with a "New" badge when I publish one.'),
-    (_hic('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/>'), 'Your week &amp; your events', 'Tell me your availability and your goals in a few taps, so the plan fits your life.'),
-    (_hic('<path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6"/>'), 'Guides &amp; tools', 'Training and nutrition guides plus the free calculators, all in one place, no sign-up.'),
-]
-HUB_EXAMPLES = [('season-plan', 'Season plan', 'Periodisation from base to race day, with every block and race.'),
-                ('progress-report', 'Progress report', 'Twelve weeks in numbers: Critical Power, bests and highlights.'),
-                ('race-plan', 'Race-day plan', 'Pacing climb by climb, fuelling and a predicted finish time.')]
-def hub_section():
-    pts = ''.join(f'<li><span class="hb-ic">{ic}</span><span><b>{t}</b>{d}</span></li>' for ic, t, d in HUB_POINTS)
-    ex = ''.join(f'<a class="hb-ex" href="{conv(_HX + f + ".png", "hub-report-v3-" + f)}" target="_blank" rel="noopener">'
-                 f'<span class="hb-shot"><img src="{conv(_HX + f + ".png", "hub-report-v3-" + f + "-thumb", 900)}" alt="Example {t.lower()} in the Cigala Athlete Hub (made-up athlete)" loading="lazy" width="900" height="760"></span>'
-                 f'<b>{t}</b><small>{d}</small><i>View example →</i></a>' for f, t, d in HUB_EXAMPLES)
+HUB_T = {
+ 'en': dict(eb='Included in Advanced &amp; Premium', h='YOUR PERSONAL ATHLETE HUB',
+    p='Every Advanced and Premium athlete gets a private online area, on the phone and on the laptop: your season plan, your reports and everything you need from me, in one place.',
+    pts=[('Your season plan', 'The blocks, your races and your goals on one page, updated whenever the plan changes.'),
+         ('Personal reports', 'Progress reports, race-day plans and reviews, with a "New" badge when I publish one.'),
+         ('Your week &amp; your events', 'Tell me your availability and your goals in a few taps, so the plan fits your life.'),
+         ('Guides &amp; tools', 'Training and nutrition guides plus the free calculators, all in one place, no sign-up.')],
+    ex=[('Season plan', 'Periodisation from base to race day, with every block and race.'),
+        ('Progress report', 'Twelve weeks in numbers: Critical Power, bests and highlights.'),
+        ('Race-day plan', 'Pacing climb by climb, fuelling and a predicted finish time.')],
+    view='View example →', alt_ex='Example {t} in the Cigala Athlete Hub (made-up athlete)',
+    alt_desk='The Cigala Athlete Hub on a laptop: welcome, season plan and reports', alt_phone='The Cigala Athlete Hub on a phone: new reports from the coach',
+    note='Examples with a made-up athlete. Your own hub shows your own plan and reports.'),
+ 'it': dict(eb='Incluso in Avanzato e Premium', h='LA TUA AREA ATLETA PERSONALE',
+    p='Ogni atleta Avanzato e Premium ha un’area online privata, sul telefono e sul computer: il tuo piano di stagione, i tuoi report e tutto ciò che ti serve da me, in un unico posto.',
+    pts=[('Il tuo piano di stagione', 'I blocchi, le tue gare e i tuoi obiettivi in una sola pagina, aggiornati ogni volta che il piano cambia.'),
+         ('Report personali', 'Report sui progressi, piani gara e revisioni, con il badge “Nuovo” quando ne pubblico uno.'),
+         ('La tua settimana e le tue gare', 'Indicami disponibilità e obiettivi in pochi tocchi, così il piano si adatta alla tua vita.'),
+         ('Guide e strumenti', 'Guide di allenamento e nutrizione e i calcolatori gratuiti, tutto in un unico posto, senza registrazione.')],
+    ex=[('Piano di stagione', 'La periodizzazione dalla base al giorno della gara, con ogni blocco e ogni gara.'),
+        ('Report dei progressi', 'Dodici settimane in numeri: Critical Power, record e momenti migliori.'),
+        ('Piano gara', 'Ritmo salita per salita, alimentazione e tempo finale previsto.')],
+    view='Vedi l’esempio →', alt_ex='Esempio di {t} nell’area atleta Cigala (atleta inventato)',
+    alt_desk='L’area atleta Cigala sul computer: benvenuto, piano di stagione e report', alt_phone='L’area atleta Cigala sul telefono: nuovi report dal coach',
+    note='Esempi con un atleta inventato. Nella tua area trovi il tuo piano e i tuoi report.'),
+}
+HUB_ICONS = [_hic('<path d="m3 20 6-10 4 6 3-4 5 8z"/>'), _hic('<path d="M4 19V5m0 14h16M8 15l4-4 3 3 5-6"/>'),
+             _hic('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/>'), _hic('<path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6"/>')]
+HUB_FILES = ['season-plan', 'progress-report', 'race-plan']
+def hub_section(lang='en'):
+    T = HUB_T[lang]; pre = '' if lang == 'en' else lang + '-'
+    pts = ''.join(f'<li><span class="hb-ic">{ic}</span><span><b>{t}</b>{d}</span></li>' for ic, (t, d) in zip(HUB_ICONS, T['pts']))
+    ex = ''.join(f'<a class="hb-ex" href="{conv(_HX + pre + f + ".png", "hub-report-v3-" + pre + f)}" target="_blank" rel="noopener">'
+                 f'<span class="hb-shot"><img src="{conv(_HX + pre + f + ".png", "hub-report-v3-" + pre + f + "-thumb", 900)}" alt="{T["alt_ex"].format(t=t.lower())}" loading="lazy" width="900" height="760"></span>'
+                 f'<b>{t}</b><small>{d}</small><i>{T["view"]}</i></a>' for f, (t, d) in zip(HUB_FILES, T['ex']))
     return f'''<div class="hb">
-      <div class="hb-head"><div class="eyebrow">Included in Advanced &amp; Premium</div><h3 class="hb-h">YOUR PERSONAL ATHLETE HUB</h3><div class="bar"></div>
-        <p>Every Advanced and Premium athlete gets a private online area, on the phone and on the laptop: your season plan, your reports and everything you need from me, in one place.</p></div>
+      <div class="hb-head"><div class="eyebrow">{T['eb']}</div><h3 class="hb-h">{T['h']}</h3><div class="bar"></div>
+        <p>{T['p']}</p></div>
       <div class="hb-grid">
-        <div class="hb-devices"><img class="hb-desk" src="{conv(_HX + 'hub-desktop.png', 'hub-screen-desktop', 1600)}" alt="The Cigala Athlete Hub on a laptop: welcome, season plan and reports" loading="lazy" width="1600" height="1094">
-          <img class="hb-phone" src="{conv(_HX + 'hub-phone.png', 'hub-screen-phone', 900)}" alt="The Cigala Athlete Hub on a phone: new reports from the coach" loading="lazy" width="601" height="900"></div>
+        <div class="hb-devices"><img class="hb-desk" src="{conv(_HX + pre + 'hub-desktop.png', 'hub-screen-' + pre + 'desktop', 1600)}" alt="{T['alt_desk']}" loading="lazy" width="1600" height="1094">
+          <img class="hb-phone" src="{conv(_HX + pre + 'hub-phone.png', 'hub-screen-' + pre + 'phone', 900)}" alt="{T['alt_phone']}" loading="lazy" width="601" height="900"></div>
         <ul class="hb-pts">{pts}</ul>
       </div>
       <div class="hb-exs">{ex}</div>
-      <p class="hb-note">Examples with a made-up athlete. Your own hub shows your own plan and reports.</p>
+      <p class="hb-note">{T['note']}</p>
     </div>'''
 HUBSEC = hub_section()
 

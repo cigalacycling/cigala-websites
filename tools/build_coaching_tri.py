@@ -141,6 +141,7 @@ MAIN = f'''<div class="hero hero-sm">
     </div>
     {compare}
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="{C}/terms-conditions/" {EXT}>HERE</a></b></p>
+    {P.hub_section('en')}
   </div>
 </section>
 

@@ -557,3 +557,15 @@ Matteo created a "Claude live" application password on coaching.cigalacycling.co
 - Under the package comparison: eyebrow "Included in Advanced & Premium", heading "Your personal Athlete Hub". It is an **H3** styled like the section H2s, so the page's H2 set is unchanged. Then 4 points, a laptop and phone screen of the hub, and 3 example reports (season plan, progress report, race-day plan) that open full size.
 - All examples use a made-up athlete, "Alex Doyle", with made-up numbers (coaching/athlete-area/examples/, tools/coaching_hub_examples.js). The hub screens come from a demo athlete on staging, deleted afterwards.
 - New copy is additive; nothing existing changed. STAGING only (page 3338). Live and the other packages pages wait for Matteo's OK.
+
+## 17 Nov 2026: Athlete Hub section LIVE on 6 pages (Matteo: "I'm happy ... go ahead on the rest")
+- Pages: Individual (3338), Triathlon (3795), UK (6098), USA (6100), Canada (6102) in English; Italia (6106) in Italian. The Italian version has its own example reports with the made-up athlete "Luca Ferri", hub screens in Italian, and "Avanzato e Premium" as on that page.
+- The example reports carry the Coaching logo on top, a branded footer with Matteo's signature, and the topographic background.
+- Live process:
+  1. Backups in live-coaching/backup/hub-section/.
+  2. Before the push, each live page was compared with its staging build widget by widget: the hub block was the only difference.
+  3. 16 images uploaded to live under the same file names (live-coaching/hub-media.json).
+  4. The .hb CSS was appended to the live kit.
+  5. The pages were pushed from the staging build, with the domain swapped.
+- Checked on live: 6 pages × 390/820/1440 px, no sideways scrolling, 1 H1, no broken images. Title, meta, canonical, robots, H1/H2 and alt texts are unchanged against crawl-live-2026-11-16. The only schema change is the BreadcrumbList added on 16 Nov.
+- Page order of Individual Packages reviewed; no change needed.

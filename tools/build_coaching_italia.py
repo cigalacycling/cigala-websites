@@ -225,6 +225,7 @@ MAIN = f'''<div class="hero hero-sm">
     <div class="head"><div><div class="eyebrow">Scegli il tuo pacchetto</div><h2>PACCHETTI DI PREPARAZIONE</h2><div class="bar"></div></div></div>
     <div class="pkgs">{cards}</div>
     <p class="terms"><b>Iscrivendoti a uno dei nostri pacchetti, accetti i nostri Termini e Condizioni. Consulta i Termini e Condizioni <a href="{C}/terms-conditions/" {EXT}>QUI</a></b></p>
+    {P.hub_section('it')}
     <div class="vk-logos cn-tp">
       <a class="vk-lock" href="https://joinvekta.com/partnerships" {EXT} aria-label="{E(live_alt('SDFASDFASDF'))}"><img src="{LOGO}" alt="" loading="lazy" width="64" height="64"><svg class="vk-x" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg><img src="{P.VKLOGO}" alt="{E(live_alt('SDFASDFASDF'))}" loading="lazy" width="531" height="139"></a>
       <span><img src="{P.TPLOGO}" alt="{E(live_alt('PfNJBaCPkS_eSn5J'))}" loading="lazy"></span>

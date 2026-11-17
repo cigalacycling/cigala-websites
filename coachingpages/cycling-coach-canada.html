@@ -644,7 +644,48 @@ h4.gn-sub, h5.gn-sub, h6.gn-sub { font: 700 15px/1.4 var(--body); text-transform
   .vk-lock img:last-child { height: 30px; max-width: none; }
   .vk-logos > span img { max-height: 84px; }
 }
+/* Athlete Hub showcase (Matteo 17 Nov) */
+.hb { margin: 64px 0 8px; }
+.hb-head { max-width: 760px; }
+.hb-h { margin: 6px 0 0; font: 400 clamp(32px, 5vw, 52px)/1.02 var(--head); color: var(--text); letter-spacing: .01em; text-transform: uppercase; }   /* an h3 that looks like the section h2s: the page's H2 set stays unchanged */
+.hb-head p { margin: 14px 0 0; color: var(--text-2); }
+.hb-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 40px; align-items: center; margin-top: 30px; }
+.hb-devices { position: relative; padding: 0 70px 40px 0; }
+.hb-desk { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border-strong); box-shadow: 0 30px 70px rgba(0,0,0,.55); }
+.hb-phone { position: absolute; right: 0; bottom: 0; width: 34%; height: auto; border-radius: 22px; border: 6px solid #1b1e22; box-shadow: 0 24px 60px rgba(0,0,0,.6); }
+.hb-pts { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.hb-pts li { display: flex; gap: 14px; align-items: flex-start; }
+.hb-pts li > span:last-child { display: grid; gap: 3px; color: var(--text-2); font-size: 15px; }
+.hb-pts b { color: var(--text); font-size: 16px; }
+.hb-ic { flex: none; width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; background: var(--green-wash); }
+.hb-ic svg { width: 21px; height: 21px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.hb-exs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
+.hb-ex { display: grid; gap: 4px; padding: 12px 12px 16px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255,255,255,.03); text-decoration: none; transition: border-color .2s, transform .2s; }
+.hb-ex:hover { border-color: rgba(0,154,68,.6); transform: translateY(-3px); }
+.hb-shot { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 9px; margin-bottom: 10px; background: #08090a; }
+.hb-shot img { display: block; width: 100%; height: auto; transition: transform .4s; }
+.hb-ex:hover .hb-shot img { transform: scale(1.03); }
+.hb-ex b { color: var(--text); font-size: 16px; padding: 0 4px; }
+.hb-ex small { color: var(--text-3); font-size: 14px; padding: 0 4px; }
+.hb-ex i { font-style: normal; color: var(--green-text); font-weight: 600; font-size: 14px; padding: 4px 4px 0; }
+.hb-note { margin: 14px 0 0; color: var(--text-3); font-size: 13px; }
+@media (max-width: 900px) { .hb-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } .hb-exs { grid-template-columns: minmax(0, 1fr); } .hb-devices { padding: 0 40px 30px 0; } }
 </style><style>
+.nav-login { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border-strong); color: var(--text-2); transition: border-color .2s, color .2s; }   /* Matteo 16 Nov: athlete login in the header */
+.nav-login svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.nav-login:hover { border-color: var(--green); color: var(--green-text); }
+.burger .mob-ctas { display: grid; gap: 12px; padding: 18px 0 6px; }
+.burger .mob-ctas .btn { display: flex !important; justify-content: center; width: 100%; text-transform: none !important; letter-spacing: .02em !important; font-size: 15px !important; padding: 14px 16px; color: #fff !important; box-shadow: none !important; }
+.burger .mob-ctas .mob-login { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid var(--border-strong); border-radius: 8px; color: var(--text) !important; }
+.burger .mob-ctas .mob-login svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+@media (max-width: 1080px) {   /* Matteo 16 Nov: the consultation button stays in the phone header, next to Menu */
+  .nav .in { gap: 10px; }
+  .nav .in > .nav-login { margin-left: auto; width: 34px; height: 34px; }   /* Matteo 16 Nov: athlete login icon also in the phone header */
+  .nav .in > .btn { display: inline-flex; padding: 8px 12px; font-size: 12.5px; }
+  .nav .in > .burger { margin-left: -6px; }   /* sit right next to the button */
+}
+@media (max-width: 360px) { .nav .in > .btn { padding: 8px 9px; font-size: 11.5px; } .nav .in > .nav-login { width: 32px; height: 32px; } }
+@media (max-width: 340px) { .nav .in > .nav-login { display: none; } .nav .in > .btn { margin-left: auto; } }   /* very small phones: the login stays in the menu */
 .ticks .pk-new { display: inline-block; margin-left: 6px; padding: 2px 8px; border-radius: 999px; background: #12a150; color: #fff; font-size: 10.5px; font-weight: 700; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; vertical-align: 2px; }   /* Matteo 16 Nov: athlete hub line */
 .sigph { position: relative; display: block; }
 .sigph img { display: block; width: 100%; height: auto; }
@@ -853,6 +894,7 @@ html.sig-ok .sigph img.signature.go { animation: sig-write 2.2s cubic-bezier(.55
       <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a>
       <a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
     </nav>
+    <a class="nav-login" href="https://coaching.cigalacycling.com/athletes/" target="_blank" rel="noopener" aria-label="Athlete login" title="Athlete login"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></a>
     <a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book Consultation</a>
     <details class="burger" id="menu-mobile">
       <summary>Menu</summary>
@@ -863,6 +905,7 @@ html.sig-ok .sigph img.signature.go { animation: sig-write 2.2s cubic-bezier(.55
         <details class="sub"><summary>Services</summary><div class="sub-links"><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a><a href="https://coaching.cigalacycling.com/bike-fitting/" target="_blank" rel="noopener">Bike Fit</a><a href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener">Talent Programme</a><a href="https://coaching.cigalacycling.com/club-talk/" target="_blank" rel="noopener">Workshops</a><a href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">Free Training Tools</a></div></details>
         <details class="sub"><summary>Results</summary><div class="sub-links"><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a><a href="https://coaching.cigalacycling.com/case-studies/" target="_blank" rel="noopener">Case Studies</a></div></details>
         <a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
+        <div class="mob-ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book a free consultation</a><a class="mob-login" href="https://coaching.cigalacycling.com/athletes/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>Athlete login</a></div>
       </nav>
     </details>
   </div>
@@ -950,6 +993,17 @@ s.forEach(function(x){var t=x.nextElementSibling||x.parentElement;t._sig=x;o.obs
         <div class="pkg-buy2"><a class="btn btn-go pay pay2" href="#contact" data-waitlist="Premium">Join the waiting list</a></div>
       </article></div>
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">HERE</a></b></p>
+    <div class="hb">
+      <div class="hb-head"><div class="eyebrow">Included in Advanced &amp; Premium</div><h3 class="hb-h">YOUR PERSONAL ATHLETE HUB</h3><div class="bar"></div>
+        <p>Every Advanced and Premium athlete gets a private online area, on the phone and on the laptop: your season plan, your reports and everything you need from me, in one place.</p></div>
+      <div class="hb-grid">
+        <div class="hb-devices"><img class="hb-desk" src="img/hub-screen-desktop.webp" alt="The Cigala Athlete Hub on a laptop: welcome, season plan and reports" loading="lazy" width="1600" height="1094">
+          <img class="hb-phone" src="img/hub-screen-phone.webp" alt="The Cigala Athlete Hub on a phone: new reports from the coach" loading="lazy" width="601" height="900"></div>
+        <ul class="hb-pts"><li><span class="hb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 20 6-10 4 6 3-4 5 8z"/></svg></span><span><b>Your season plan</b>The blocks, your races and your goals on one page, updated whenever the plan changes.</span></li><li><span class="hb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5m0 14h16M8 15l4-4 3 3 5-6"/></svg></span><span><b>Personal reports</b>Progress reports, race-day plans and reviews, with a "New" badge when I publish one.</span></li><li><span class="hb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/></svg></span><span><b>Your week &amp; your events</b>Tell me your availability and your goals in a few taps, so the plan fits your life.</span></li><li><span class="hb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6"/></svg></span><span><b>Guides &amp; tools</b>Training and nutrition guides plus the free calculators, all in one place, no sign-up.</span></li></ul>
+      </div>
+      <div class="hb-exs"><a class="hb-ex" href="img/hub-report-v3-season-plan.webp" target="_blank" rel="noopener"><span class="hb-shot"><img src="img/hub-report-v3-season-plan-thumb.webp" alt="Example season plan in the Cigala Athlete Hub (made-up athlete)" loading="lazy" width="900" height="760"></span><b>Season plan</b><small>Periodisation from base to race day, with every block and race.</small><i>View example →</i></a><a class="hb-ex" href="img/hub-report-v3-progress-report.webp" target="_blank" rel="noopener"><span class="hb-shot"><img src="img/hub-report-v3-progress-report-thumb.webp" alt="Example progress report in the Cigala Athlete Hub (made-up athlete)" loading="lazy" width="900" height="760"></span><b>Progress report</b><small>Twelve weeks in numbers: Critical Power, bests and highlights.</small><i>View example →</i></a><a class="hb-ex" href="img/hub-report-v3-race-plan.webp" target="_blank" rel="noopener"><span class="hb-shot"><img src="img/hub-report-v3-race-plan-thumb.webp" alt="Example race-day plan in the Cigala Athlete Hub (made-up athlete)" loading="lazy" width="900" height="760"></span><b>Race-day plan</b><small>Pacing climb by climb, fuelling and a predicted finish time.</small><i>View example →</i></a></div>
+      <p class="hb-note">Examples with a made-up athlete. Your own hub shows your own plan and reports.</p>
+    </div>
     <div class="vk-logos cn-tp">
       <a class="vk-lock" href="https://joinvekta.com/partnerships" target="_blank" rel="noopener" aria-label="Cigala Cycling x Vekta logo | Cigala Cycling Coaching"><img src="img/logo-v2.webp" alt="" loading="lazy" width="64" height="64"><svg class="vk-x" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg><img src="img/vekta-white-v2.webp" alt="Cigala Cycling x Vekta logo | Cigala Cycling Coaching" loading="lazy" width="531" height="139"></a>
       <span><img src="img/trainingpeaks-levels-dark-v2.webp" alt="TrainingPeaks Level 1 &amp; 2 logos | Cigala Cycling Coaching" loading="lazy"></span>

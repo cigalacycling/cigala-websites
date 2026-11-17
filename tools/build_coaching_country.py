@@ -241,6 +241,7 @@ def build_country(key):
     {cad_note}
     <div class="pkgs">{cards}</div>
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="{C}/terms-conditions/" {EXT}>HERE</a></b></p>
+    {P.hub_section('en')}
     <div class="vk-logos cn-tp">
       <a class="vk-lock" href="https://joinvekta.com/partnerships" {EXT} aria-label="{E(live_alt('SDFASDFASDF'))}"><img src="{LOGO}" alt="" loading="lazy" width="64" height="64"><svg class="vk-x" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg><img src="{P.VKLOGO}" alt="{E(live_alt('SDFASDFASDF'))}" loading="lazy" width="531" height="139"></a>
       <span><img src="{TP_LEVELS}" alt="{E(live_alt('PfNJBaCPkS_eSn5J'))}" loading="lazy"></span>
