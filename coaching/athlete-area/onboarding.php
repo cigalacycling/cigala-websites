@@ -352,10 +352,11 @@ function cc_f_mail($uid, $pid, $a, $meta, $pdf) {
        . ($meta['u18'] ? '<p style="padding:10px 12px;background:#fff4e5;border-left:3px solid #E10600"><b style="color:#111">Under 18.</b> Guardian: ' . esc_html($meta['guardian']) . '. Please countersign on your coach page.</p>' : '')
        . ($flags ? '<p style="margin:0 0 6px"><b style="color:#111">Health answers marked yes</b></p><ul>' . implode('', array_map(function ($x) { return '<li>' . esc_html($x) . '</li>'; }, $flags)) . '</ul>' : '<p>No health flags marked yes.</p>')
        . '<p>' . esc_html(cc_f_line($a)) . '</p>'
-       . '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open their answers</a></p>'
-       . ($full ? '<p style="font-size:13px;color:#555">The signed PDF is attached and saved in their private area.</p>' : '') . '</div>';
+       . ($full ? '<p style="font-size:13px;color:#555">The signed PDF is attached and saved in their private area.</p>' : '')
+       . '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open their answers</a></p></div>';
     $hd = ['Content-Type: text/html; charset=UTF-8'];
     if ($u && is_email($u->user_email)) $hd[] = 'Reply-To: ' . $name . ' <' . $u->user_email . '>';
+    if (function_exists('cc_ath_coach_wrap')) $h = cc_ath_coach_wrap($h);
     if (cc_av_notify_to()) wp_mail(cc_av_notify_to(), ($full ? 'Rider form signed: ' : 'Details updated: ') . $name, $h, $hd, $tmp ? [$tmp] : []);
     if ($full && $u && is_email($u->user_email)) {   // the athlete's own copy
         cc_f_set_lang($uid);

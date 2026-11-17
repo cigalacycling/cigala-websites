@@ -65,6 +65,7 @@ function cc_g_save(WP_REST_Request $r) {
        . ($new['events'] ? '<p style="margin:16px 0 6px"><b style="color:#111">All their events</b></p><ul>' . implode('', array_map(function ($e) { return '<li>' . esc_html(cc_g_event_text($e)) . '</li>'; }, $new['events'])) . '</ul>' : '')
        . '<p style="margin:20px 0 0"><a href="' . esc_url(add_query_arg('board', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open all athletes’ goals</a></p></div>';
     $hd = ['Content-Type: text/html; charset=UTF-8']; if ($u && is_email($u->user_email)) $hd[] = 'Reply-To: ' . $name . ' <' . $u->user_email . '>';
+    if (function_exists('cc_ath_coach_wrap')) $h = cc_ath_coach_wrap($h);
     if (cc_av_notify_to()) wp_mail(cc_av_notify_to(), 'Goals & events: ' . $name . ' – ' . $diff[0], $h, $hd);
     return ['ok' => true, 'updated' => $new['updated']];
 }

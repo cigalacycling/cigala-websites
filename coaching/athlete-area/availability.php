@@ -209,6 +209,7 @@ function cc_av_email($pid, $uid, $diff, $a, $vid) {
     $h .= '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open all athletes’ availability</a></p></div>';
     $headers = ['Content-Type: text/html; charset=UTF-8'];
     if ($u && is_email($u->user_email)) $headers[] = 'Reply-To: ' . $name . ' <' . $u->user_email . '>';   // reply goes straight to the athlete
+    if (function_exists('cc_ath_coach_wrap')) $h = cc_ath_coach_wrap($h);   // the branded design (athlete-area.php)
     if (cc_av_notify_to()) wp_mail(cc_av_notify_to(), 'Availability: ' . $name . ($diff ? ' – ' . $diff[0] : ' – voice note'), $h, $headers);
 }
 

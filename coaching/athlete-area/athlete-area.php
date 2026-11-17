@@ -561,7 +561,7 @@ function cc_ath_setpw_html() {
 }
 /* The branded athlete email (Matteo 16-17 Nov): header picture, white card, green button, footer. Used by the welcome, report and password emails.
  * $small: HTML under the button (small grey paragraphs). The language is the athlete's (set $GLOBALS['cc_ath_lang'] before). */
-function cc_ath_mail_shell($hi, $p1, $btn, $link, $small = '', $bye = null, $eb = null) {
+function cc_ath_mail_shell($hi, $p1, $btn, $link, $small = '', $bye = null, $eb = null, $foot = null) {   // $bye false: no sign-off (Matteo's own notices)
     if ($small === '') $small = '<div style="height:24px;line-height:24px;font-size:1px">&nbsp;</div>';   // space between the button and the sign-off
     $it = ($GLOBALS['cc_ath_lang'] ?? 'en') === 'it'; $bye = $bye ?? cc_L('See you on the road,', 'A presto in bici,'); $eb = $eb ?? cc_L('Athlete hub', 'Area atleta');
     $logo = esc_url(get_option('cc_mail_logo', '')); $head = esc_url(get_option($it ? 'cc_mail_header_it' : 'cc_mail_header_en', ''));
@@ -578,10 +578,25 @@ function cc_ath_mail_shell($hi, $p1, $btn, $link, $small = '', $bye = null, $eb 
        . '<p style="margin:0 0 14px;font-size:18px;font-weight:700">' . $hi . '</p><p style="margin:0 0 22px">' . $p1 . '</p>'
        . '<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:10px;background:#12a150"><a href="' . esc_url($link) . '" style="display:inline-block;padding:15px 26px;' . $f . ';font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px">' . $btn . '</a></td></tr></table>'
        . $small
-       . '<p style="margin:0">' . $bye . '<br><strong>Matteo</strong></p></td></tr>'
-       . '<tr><td style="padding:18px 30px 26px;' . $f . ';font-size:12px;color:#7a808a;border-top:1px solid #eceef1">Matteo Cigala · Head Coach, Cigala Cycling Coaching · <a href="https://wa.me/353834777697" style="color:#12a150">WhatsApp</a> · <a href="mailto:matteo@cigalacycling.com" style="color:#12a150">matteo@cigalacycling.com</a></td></tr>'
+       . ($bye === false ? '' : '<p style="margin:0">' . $bye . '<br><strong>Matteo</strong></p>') . '</td></tr>'
+       . '<tr><td style="padding:18px 30px 26px;' . $f . ';font-size:12px;color:#7a808a;border-top:1px solid #eceef1">' . ($foot ?? 'Matteo Cigala · Head Coach, Cigala Cycling Coaching · <a href="https://wa.me/353834777697" style="color:#12a150">WhatsApp</a> · <a href="mailto:matteo@cigalacycling.com" style="color:#12a150">matteo@cigalacycling.com</a>') . '</td></tr>'
        . '</table></td></tr></table></td></tr></table></body></html>';
     return $h;
+}
+/* Matteo's own notices (availability, goals & events, rider form): the same branded design, in English, no sign-off.
+ * Takes the notice HTML as the modules build it (eyebrow, h2 title, content, one green button) and puts it in the shell. */
+function cc_ath_coach_wrap($html) {
+    $html = preg_replace('~^<div[^>]*>|</div>$~', '', trim($html));
+    $title = preg_match('~<h2[^>]*>(.*?)</h2>~s', $html, $m) ? $m[1] : ''; $html = str_replace($m[0] ?? '', '', $html);
+    $eb = preg_match('~^<p style="margin:0 0 4px;[^"]*">(.*?)</p>~s', $html, $m2) ? $m2[1] : 'Athlete hub'; if (!empty($m2[0])) $html = substr($html, strlen($m2[0]));
+    $btn = ''; $link = home_url('/' . CC_ATH_SLUG . '/');
+    if (preg_match('~<p style="margin:20px 0 0"><a href="([^"]+)"[^>]*>(.*?)</a></p>~s', $html, $m3)) { $link = html_entity_decode($m3[1]); $btn = $m3[2]; $html = str_replace($m3[0], '', $html); }
+    $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = 'en';
+    $out = cc_ath_mail_shell('<span style="display:block;margin:0 0 6px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E10600;font-weight:600">' . $eb . '</span>' . $title,
+        '</p><div style="font-size:15px;line-height:1.55;color:#16181b">' . $html . '</div><p style="margin:0">', $btn ?: 'Open the athlete hub', $link, '', false, 'Athlete hub',
+        'Notice for Matteo from the Cigala Coaching athlete hub. Reply to answer the athlete directly.');
+    $GLOBALS['cc_ath_lang'] = $keep;
+    return $out;
 }
 function cc_ath_mail_small($html) { return '<p style="margin:22px 0 10px;font-size:14px;color:#454a52">' . $html . '</p>'; }
 function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
