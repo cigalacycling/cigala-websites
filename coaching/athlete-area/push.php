@@ -223,8 +223,10 @@ add_action('rest_api_init', function () {
         return ['sent' => cc_push_user($uid, 'Cigala Cycling', 'Test: notifications work on this phone 🎉', home_url('/' . CC_ATH_SLUG . '/'), 'cc-test')];
     }]);
     register_rest_route('cc/v1', '/push-status', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
-        $n = 0; $who = []; foreach (get_users(['meta_key' => 'cc_push', 'fields' => ['ID', 'display_name']]) as $u) { $c = count((array) get_user_meta($u->ID, 'cc_push', true)); if ($c) { $n += $c; $who[] = $u->display_name; } }
-        return ['openssl' => function_exists('openssl_pkey_derive'), 'key' => (bool) cc_push_vapid(), 'phones' => $n, 'people' => $who, 'log' => array_slice((array) get_option('cc_push_log', []), 0, 5)];
+        $n = 0; $who = []; $hosts = [];
+        foreach (get_users(['meta_key' => 'cc_push', 'fields' => ['ID', 'display_name']]) as $u) { $s = (array) get_user_meta($u->ID, 'cc_push', true); if ($s) { $n += count($s); $who[] = $u->display_name;
+            foreach ($s as $x) $hosts[] = $u->display_name . ': ' . wp_parse_url((string) ($x['endpoint'] ?? ''), PHP_URL_HOST); } }   // which push service each phone uses (Apple, Google, Mozilla…), no keys
+        return ['hosts' => $hosts, 'openssl' => function_exists('openssl_pkey_derive'), 'key' => (bool) cc_push_vapid(), 'phones' => $n, 'people' => $who, 'log' => array_slice((array) get_option('cc_push_log', []), 0, 5)];
     }]);
     register_rest_route('cc/v1', '/push-selftest', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {   // encryption round trip check (no sending)
         $ua = openssl_pkey_new(['curve_name' => 'prime256v1', 'private_key_type' => OPENSSL_KEYTYPE_EC]); $auth = random_bytes(16);
