@@ -119,7 +119,7 @@ def build(b):
            ('Is a fuelling plan included in the coaching plans?',
             '<p>A competition nutrition plan is part of The Performing Body Plan (sold out for now). You can also buy a fuelling plan on its own for a single event, for 70€.</p>'),
            ('How much does a fuelling plan cost?',
-            '<p>70€. It includes a 30-minute call with Marine to understand your event, followed by your personal fuelling plan as a PDF. You pay online when you buy it.</p>'),
+            '<p>70€. It includes a 30-minute call with Marine to understand your event, followed by your personal fuelling plan as a PDF. You pay online, then choose your call time in Marine’s calendar.</p>'),
            ('Which events do you plan for?',
             '<p>Endurance events of any length: road races, sportives, gravel and ultra-distance rides, triathlon from sprint to Ironman, and running races.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Fuelling plans', 'Common questions')
@@ -132,7 +132,7 @@ def build(b):
   <p>Fuelling for an event can be quite a headache. Marine builds a plan around your event, your body and what your gut can handle. It tells you what to eat and drink, how much and when, from the days before the start to the finish line.</p>
   <p>It uses the same approach Marine uses for her own racing in the WorldTour, and for clients like Colum. He took 30 minutes off his Ironman 70.3 time with the right nutrition plan.</p>
   <div class="panel" style="padding:24px 26px;margin-top:22px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between">
-   <div><span class="h2" style="font-size:44px">70€</span><p class="muted" style="margin:4px 0 0;text-align:left">30-minute call + your fuelling plan in PDF</p></div>
+   <div><span class="h2" style="font-size:44px">70€</span><p class="muted" style="margin:4px 0 0;text-align:left">30-minute call + your fuelling plan in PDF</p><p class="muted" style="margin:2px 0 0;font-size:12.5px;text-align:left">Pay online, then choose your call time in Marine’s calendar.</p></div>
    <a class="btn btn-primary" href="{b.FUELLING_PAY}" target="_blank" rel="noopener">Buy your fuelling plan {ICON['arrow']}</a></div></div>
  <div class="panel" style="padding:32px"><span class="eyebrow">Tailored to your goals and your event</span>
   {ticks(['Nutrition for the day before and race day', 'Macros or practical recipes, whichever you prefer', 'Carbohydrate intake per hour', 'Supplements', 'Hydration strategy', 'Recovery strategy'])}</div>

@@ -338,6 +338,7 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .plan .pbtn{width:100%;justify-content:center;margin-top:6px}
 .btn-outline{background:transparent;color:var(--text);border-color:var(--border-strong)}
 .btn-outline:hover{border-color:var(--aqua);color:var(--aqua)}
+.plan .after{font-size:12px;color:var(--text-3);text-align:center;margin:8px 0 0}
 .plan .notsure{display:block;text-align:center;font-size:12.5px;font-weight:600;color:var(--lime-text);text-decoration:none;margin:12px 0 18px}
 .plan .notsure:hover{text-decoration:underline}
 .plan .wyg{font:700 11.5px/1 Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);border-top:1px solid var(--border);padding-top:18px;margin:0 0 6px}
@@ -765,6 +766,8 @@ def coaching():
             cta_ = '<span class="btn btn-secondary pbtn" aria-disabled="true" style="cursor:default">Sold out for now</span>'
         else:
             cta_ = f'<a class="btn {"btn-primary" if feat else "btn-outline"} pbtn" href="{href}"{ext}>{btn}</a>'
+            if href.startswith('https://buy.stripe.com'):   # Marine 17 Nov: Stripe confirmation links to her Cal.com calendar
+                cta_ += '<p class="after">Pay online, then choose your time in Marine’s calendar.</p>'
         return (f'<article class="plan panel{" feat" if feat else ""}{" soldout" if sold_out else ""}">{badge}{h2}'
                 + (f'<p class="usd">{usd}</p>' if usd else '') + extra + f'<p class="pdesc">{intro}</p>{cta_}'
                 + f'<a class="notsure" href="{DISCOVERY}">Not sure? Book a free discovery call →</a>'

@@ -356,6 +356,7 @@ TR = {
  'MOST POPULAR': ('LE PLUS CHOISI', 'IL PIÙ SCELTO'),
  '119 US$ a month': ('119 US$ par mois', '119 US$ al mese'), '180 US$ a month': ('180 US$ par mois', '180 US$ al mese'), '240 US$ a month': ('240 US$ par mois', '240 US$ al mese'),
  'Not sure? Book a free discovery call →': ('Vous hésitez ? Réservez un appel découverte gratuit →', 'Non sei sicuro? Prenota una chiamata gratuita →'),
+ 'Pay online, then choose your time in Marine’s calendar.': ('Payez en ligne, puis choisissez votre créneau dans l’agenda de Marine.', 'Paga online, poi scegli l’orario nel calendario di Marine.'),
  'What you get': ('Ce qui est inclus', 'Cosa include'),
  '/MONTH': ('/MOIS', '/MESE'),
  'Single sessions': ('Séances à l’unité', 'Sessioni singole'),

@@ -26,21 +26,21 @@ forms = json.load(open(FORMS)) if os.path.exists(FORMS) else {'en': 349}
 CF7 = W.SITE + '/wp-json/contact-form-7/v1/contact-forms'
 
 def tr_text(h, i):
-    out, skip = [], 0
-    for tok in re.split(r'(<[^>]+>)', h):
-        if tok.startswith('<'):
-            t = tok.lower()
-            if t.startswith(('<script', '<style')): skip += 1
-            elif t.startswith(('</script', '</style')): skip -= 1
-            out.append(tok); continue
-        if skip or not tok.strip():
-            out.append(tok); continue
-        key = re.sub(r'\s+', ' ', html.unescape(tok)).strip()
-        if key in i18n.TR:
-            lead = tok[:len(tok) - len(tok.lstrip())]; trail = tok[len(tok.rstrip()):]
-            out.append(lead + html.escape(i18n.TR[key][i], quote=False) + trail)
-        else:
-            out.append(tok)
+    """translate text nodes; <script> and <style> blocks are left untouched (their code can contain "<")"""
+    parts = re.split(r'(<script\b.*?</script>|<style\b.*?</style>)', h, flags=re.S | re.I)
+    out = []
+    for n, part in enumerate(parts):
+        if n % 2:
+            out.append(part); continue
+        for tok in re.split(r'(<[^>]+>)', part):
+            if tok.startswith('<') or not tok.strip():
+                out.append(tok); continue
+            key = re.sub(r'\s+', ' ', html.unescape(tok)).strip()
+            if key in i18n.TR:
+                lead = tok[:len(tok) - len(tok.lstrip())]; trail = tok[len(tok.rstrip()):]
+                out.append(lead + html.escape(i18n.TR[key][i], quote=False) + trail)
+            else:
+                out.append(tok)
     return ''.join(out)
 
 def path(lang, f):
