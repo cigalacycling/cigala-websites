@@ -212,7 +212,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     $drafts = get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'numberposts' => -1, 'orderby' => 'date', 'order' => 'DESC']);
     $pub = get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'numberposts' => 60, 'orderby' => 'meta_value_num', 'meta_key' => 'cc_published', 'order' => 'DESC']);
     if ($drafts || $pub) $o .= '<form id="rp-bulk" class="rp-bulk" method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_report_bulk">' . wp_nonce_field('cc_report_bulk', '_wpnonce', false, false)
-        . '<label class="rp-mail"><input type="checkbox" id="rp-all"> Select all</label><span class="rp-acts"><button class="btn btn-ghost" name="act" value="unpublish">Unpublish selected</button>'
+        . '<label class="rp-mail"><input type="checkbox" id="rp-all"> Select all</label><span class="rp-acts"><button class="btn btn-go" name="act" value="publish" title="Publishes the ticked drafts, kept updated automatically, without emailing the athletes">Publish selected</button><button class="btn btn-ghost" name="act" value="unpublish">Unpublish selected</button>'
         . '<button class="btn btn-ghost rp-del" name="act" value="delete">Delete selected</button></span></form>'
         . '<script>(function(){var f=document.getElementById("rp-bulk"),a=document.getElementById("rp-all");if(!f)return;function p(){return document.querySelectorAll("input.rp-pick")}'
         . 'a.addEventListener("change",function(){p().forEach(function(c){c.checked=a.checked})});'
@@ -251,12 +251,16 @@ add_action('admin_post_cc_report_admin', function () {
     } elseif ($act === 'delete') { cc_r_delete($rid); }
     wp_safe_redirect(add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
-add_action('admin_post_cc_report_bulk', function () {   // Matteo 17 Nov: tick several, then Delete or Unpublish them together
+add_action('admin_post_cc_report_bulk', function () {   // Matteo 17 Nov: tick several, then Publish, Unpublish or Delete them together
     if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_report_bulk')) wp_die('Not allowed');
     $act = sanitize_key($_POST['act'] ?? '');
     foreach (array_map('intval', (array) ($_POST['rids'] ?? [])) as $rid) {
         if (get_post_type($rid) !== 'cc_report') continue;
         if ($act === 'delete') { cc_r_delete($rid); } elseif ($act === 'unpublish') { wp_update_post(['ID' => $rid, 'post_status' => 'draft']); }
+        elseif ($act === 'publish' && get_post_status($rid) === 'draft') {   // Matteo 17 Nov: publish many at once (no email; pages that change keep themselves updated)
+            cc_r_go_live($rid); $t = get_post_meta($rid, 'cc_type', true);
+            if (in_array($t, CC_R_AUTO, true)) cc_r_set_auto(get_post($rid)->post_parent, $t, true);
+        }
     }
     wp_safe_redirect(add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
