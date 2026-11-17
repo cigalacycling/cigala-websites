@@ -88,7 +88,7 @@ def build(b):
     faq_html, faq_schema = faq_block(qas, 'Cycling nutrition', 'Common questions')
     body = f"""
 {hero('Sports Nutritionist · Ireland & Online', 'Cycling Nutritionist',
-      'Nutrition coaching for road, gravel and sportive riders from Marine Lenehan: MSc sports nutritionist and LIDL-TREK WorldTour professional cyclist.',
+      'Nutrition coaching for cyclists of every discipline (road, gravel, track, mountain bike and cyclocross) from Marine Lenehan: MSc sports nutritionist and LIDL-TREK WorldTour professional cyclist.',
       '0e1488-26eed664485245b6b26c855875ee', 'Road cyclist riding through a forest')}
 <section><div class="wrap g2" style="align-items:start">
  <div>{head('Fuel like a pro', 'A cycling nutritionist who races at the top')}
@@ -98,10 +98,13 @@ def build(b):
   {chips(['Carbs per hour on the bike', 'Gut training', 'Hydration &amp; sweat rate', 'Race-day fuelling', 'Recovery nutrition', 'Weight management', 'Avoiding the bonk', 'Supplements', 'Iron &amp; energy levels', 'Winter training fuel'])}</div>
 </div></section>
 <section style="padding-top:8px"><div class="wrap">
- {head('Every kind of rider', 'Road, gravel, sportive', tag='h2', center=True)}
+ {head('Every discipline', 'Road, gravel, track, MTB, cyclocross', tag='h2', center=True)}
  <div class="g3" style="margin-top:28px">
   <div class="pcard panel"><span class="h3">Road racing</span><p style="margin:0">Fuel for repeated hard efforts, race-day carbohydrate targets and recovery between stage or weekend races.</p></div>
   <div class="pcard panel"><span class="h3">Gravel &amp; ultra</span><p style="margin:0">Long days with little support: what to carry, how much to eat each hour and how to train your gut to take it.</p></div>
+  <div class="pcard panel"><span class="h3">Track</span><p style="margin:0">Short, explosive efforts and long competition days: fuelling between rounds, fast recovery and power-to-weight.</p></div>
+  <div class="pcard panel"><span class="h3">Mountain bike</span><p style="margin:0">Hard, technical efforts where it is hard to eat: what to use in the feed zone and carbs you can actually get down on the trail.</p></div>
+  <div class="pcard panel"><span class="h3">Cyclocross</span><p style="margin:0">Short, all-out winter races: timing your pre-race meal, warm-up fuel and recovering between back-to-back race weekends.</p></div>
   <div class="pcard panel"><span class="h3">Sportives &amp; leisure</span><p style="margin:0">More energy on long rides, no more cramping or bonking, and healthy habits that fit around work and family.</p></div>
  </div></div></section>
 <section class="section-tight" style="padding-top:0"><div class="wrap center"><a class="btn btn-secondary" href="womens-cycling-nutrition.html">Women's cycling nutrition {ICON['arrow']}</a></div></section>

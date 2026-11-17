@@ -51,7 +51,7 @@ PAGES = {  # file -> live path
 # New SEO pages (16 Nov 2026, not on the live site): file -> (path, Yoast title, meta description). Copy in vivify_seo_pages.py.
 NEW = {
     'cycling-nutritionist.html': ('/cycling-nutritionist', 'Cycling Nutritionist Ireland & Online | Vivify Sports',
-        'Cycling nutrition coaching from Marine Lenehan, MSc sports nutritionist and LIDL-TREK WorldTour rider. Road, gravel and sportive fuelling, Ireland and online.'),
+        'Cycling nutrition coaching from Marine Lenehan, MSc sports nutritionist and LIDL-TREK WorldTour rider. Road, gravel, track, MTB and cyclocross, Ireland and online.'),
     'race-fuelling-plan.html': ('/race-fuelling-plan', 'Race Fuelling Plan for Cyclists & Triathletes | Vivify Sports',
         'A race fuelling plan for your event: race day and the day before, carbs per hour, supplements, hydration and recovery, by a WorldTour cyclist and MSc nutritionist.'),
     'triathlon-nutritionist.html': ('/triathlon-nutritionist', 'Triathlon Nutritionist | Ironman & 70.3 Nutrition | Vivify Sports',
@@ -614,7 +614,7 @@ def home():
         ('recipies.html', img('0e1488-8cee9e1e3ac743dd828b4bd69d89', 'Raspberry Chia Seed pudding', w=640, h=363), 'E-Book', 'Breakfasts to ignite your potential: 30 recipes.'),
         ('workshops.html', f'<span>{ICON["talk"]}</span>', 'Workshops & Talks', 'Nutrition talks for clubs, gyms and teams.'),
     ]
-    who = [('cycling-nutritionist.html', 'Cyclists', 'Road, gravel and sportive riders'), ('triathlon-nutritionist.html', 'Triathletes', 'Ironman, 70.3 and shorter races'),
+    who = [('cycling-nutritionist.html', 'Cyclists', 'Road, gravel, track, MTB, cyclocross'), ('triathlon-nutritionist.html', 'Triathletes', 'Ironman, 70.3 and shorter races'),
            ('race-fuelling-plan.html', 'Race day', 'A fuelling plan for your event'), ('online-sports-nutritionist.html', 'Worldwide', 'Online coaching, wherever you train')]
     WHO_I_HELP = ('<section style="padding-top:24px"><div class="wrap">' + head('Who Marine works with', 'Nutrition for endurance athletes', tag=None, center=True)
                   + '<div class="g4" style="margin-top:32px">' + ''.join(f'<a class="scard panel" href="{h}"><div class="tx"><span class="eyebrow">{e(d)}</span><span class="h3">{e(t)}</span><span class="go">Learn more {ICON["arrow"]}</span></div></a>' for h, t, d in who)
