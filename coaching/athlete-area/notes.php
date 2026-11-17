@@ -36,6 +36,9 @@ function cc_nt_w($k) {
         'reply' => ['en' => 'Matteo replied', 'it' => 'Matteo ha risposto', 'pt' => 'O Matteo respondeu', 'sl' => 'Matteo je odgovoril'],
         'mail_subj' => ['en' => 'Matteo replied to your note', 'it' => 'Matteo ha risposto al tuo messaggio', 'pt' => 'O Matteo respondeu à tua mensagem', 'sl' => 'Matteo je odgovoril na tvoje sporočilo'],
         'mail_p' => ['en' => 'I replied to your note in your athlete hub.', 'it' => 'ho risposto al tuo messaggio nella tua area atleta.', 'pt' => 'respondi à tua mensagem na tua área de atleta.', 'sl' => 'odgovoril sem na tvoje sporočilo v tvojem središču za športnike.'],
+        'you' => ['en' => 'You', 'it' => 'Tu', 'pt' => 'Tu', 'sl' => 'Ti'],
+        'answer' => ['en' => 'Answer Matteo', 'it' => 'Rispondi a Matteo', 'pt' => 'Responder ao Matteo', 'sl' => 'Odgovori Matteu'],
+        'delq' => ['en' => 'Delete this? It cannot be undone.', 'it' => 'Eliminarlo? Non si può annullare.', 'pt' => 'Apagar? Não é possível desfazer.', 'sl' => 'Izbrišem? Tega ni mogoče razveljaviti.'],
         'mail_btn' => ['en' => 'Open my hub', 'it' => 'Apri la mia area', 'pt' => 'Abrir a minha área', 'sl' => 'Odpri moje središče'],
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en';
@@ -60,19 +63,32 @@ function cc_nt_player($u) {
          . '<svg viewBox="0 0 24 24" class="nt-pause"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg></button>'
          . '<div class="nt-bar" role="slider" tabindex="0" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i><b></b></div><span class="nt-t">0:00</span></div>';
 }
+// a delete button (Matteo 17 Nov: the athlete for their own note or reply, Matteo for anything)
+function cc_nt_delbtn($pid, $at, $ri = -1) {
+    return '<button type="button" class="nt-del" data-api="' . esc_url(rest_url('cc/v1/note-delete')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-page="' . (int) $pid . '" data-at="' . (int) $at . '" data-ri="' . (int) $ri . '" data-q="' . esc_attr(cc_nt_w('delq')) . '">' . esc_html(cc_nt_w('del')) . '</button>';
+}
 function cc_nt_item($n, $forCoach, $pid = 0) {
-    $o = '<div class="nt-item"><small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at'])) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), date_i18n('j M', strtotime($n['day'] . ' 12:00')))) : '') . '</small>';
+    $who = $forCoach && $pid ? get_the_title($pid) : '';
+    $o = '<div class="nt-item"><small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at'])) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), date_i18n('j M', strtotime($n['day'] . ' 12:00')))) : '') . '</small>'
+       . ($pid ? cc_nt_delbtn($pid, $n['at']) : '');
     if (($u = cc_nt_url($n['audio'] ?? 0))) $o .= cc_nt_player($u);
     if (($n['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($n['text'])) . '</p>';
     if ($forCoach && ($n['tr'] ?? '') !== '') $o .= '<p class="nt-tr"><i>Written out from the voice note:</i> ' . esc_html($n['tr']) . '</p>';
-    foreach ((array) ($n['replies'] ?? []) as $r) {
-        $o .= '<div class="nt-rep">' . ($forCoach ? '' : '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">')   // Matteo 17 Nov: his small photo by his replies
-            . '<b>' . esc_html($forCoach ? 'Your reply' : cc_nt_w('reply')) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small>';
+    foreach (array_values((array) ($n['replies'] ?? [])) as $ri => $r) {
+        $mine = ($r['from'] ?? 'coach') === 'coach';   // Matteo's reply, or the athlete answering in the thread
+        $label = $mine ? ($forCoach ? 'Your reply' : cc_nt_w('reply')) : ($forCoach ? $who : cc_nt_w('you'));
+        $o .= '<div class="nt-rep' . ($mine ? '' : ' nt-rep-a') . '">' . ($mine && !$forCoach ? '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">' : '')
+            . '<b>' . esc_html($label) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small>'
+            . ($pid && ($forCoach || !$mine) ? cc_nt_delbtn($pid, $n['at'], $ri) : '');
         if (($u = cc_nt_url($r['audio'] ?? 0))) $o .= cc_nt_player($u);
         if (($r['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($r['text'])) . '</p>';
         $o .= '</div>';
     }
-    if ($forCoach && $pid) $o .= '<details class="nt-replyd"><summary>Reply</summary>' . cc_nt_box(rest_url('cc/v1/note-reply'), ['page' => $pid, 'at' => (int) $n['at']], 'Your reply…', 'Send reply') . '</details>';
+    if ($pid && $forCoach) $o .= '<details class="nt-replyd"><summary>Reply</summary>' . cc_nt_box(rest_url('cc/v1/note-reply'), ['page' => $pid, 'at' => (int) $n['at']], 'Your reply…', 'Send reply') . '</details>';
+    elseif ($pid && !empty($n['replies'])) {   // the athlete answers in the same thread once Matteo has replied
+        $speech = defined('CC_AV_SPEECH') ? (CC_AV_SPEECH[$GLOBALS['cc_ath_lang'] ?? 'en'] ?? 'en-GB') : 'en-GB';
+        $o .= '<details class="nt-replyd"><summary>' . esc_html(cc_nt_w('answer')) . '</summary>' . cc_nt_box(rest_url('cc/v1/note-reply'), ['page' => $pid, 'at' => (int) $n['at']], cc_nt_w('ph'), cc_nt_w('send'), false, $speech) . '</details>';
+    }
     return $o . '</div>';
 }
 
@@ -91,7 +107,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
        . cc_nt_box(rest_url('cc/v1/note'), new stdClass(), cc_nt_w('ph'), cc_nt_w('send'), true, $speech);
     // Matteo 17 Nov: the hub shows their notes of the last 30 days (at most 5); everything stays on his Notes board
     $recent = array_slice(array_values(array_filter($ns, function ($n) { return $n['at'] > time() - 30 * DAY_IN_SECONDS; })), 0, 5);
-    if ($recent) { $o .= '<h3 class="av-sub nt-yours">' . esc_html(cc_nt_w('yours')) . '</h3>'; foreach ($recent as $n) $o .= cc_nt_item($n, false); }
+    if ($recent) { $o .= '<h3 class="av-sub nt-yours">' . esc_html(cc_nt_w('yours')) . '</h3>'; foreach ($recent as $n) $o .= cc_nt_item($n, false, $view); }
     return $html . $o . '</section>' . cc_nt_css() . cc_nt_js();
 }, 15, 3);
 function cc_nt_css() {
@@ -105,6 +121,8 @@ function cc_nt_css() {
         . 'html .cc .nt-item{padding:14px 0;border-top:1px solid rgba(255,255,255,.1)}html .cc .nt-item small{color:#b8bec8;font-size:15px}html .cc .nt-item audio{display:block;width:100%;max-width:420px;margin:8px 0}html .cc .nt-item p{margin:6px 0 0;font-size:16px;color:#e6e9ee}'
         . 'html .cc .nt-tr{color:#b8bec8!important;font-size:15px!important}html .cc .nt-rep{margin:10px 0 0 14px;padding:10px 12px;border-left:3px solid #12a150;background:rgba(18,161,80,.08);border-radius:0 10px 10px 0}html .cc .nt-rep b{color:#34c46a}'
         . 'html .cc .nt-replyd{margin-top:10px}html .cc .nt-replyd summary{cursor:pointer;color:#34c46a;font-weight:600;font-size:15px;margin-bottom:10px}'
+        . 'html .cc .nt-del{float:right;background:none;border:0;padding:2px 0;margin:0 0 0 10px;min-height:0;font:600 14px var(--body);color:#b8bec8;text-decoration:underline;cursor:pointer}html .cc .nt-del:hover{color:#ff7a73}'
+        . 'html .cc .nt-rep-a{border-left-color:#b8bec8;background:rgba(255,255,255,.05);margin-left:28px}html .cc .nt-rep-a b{color:#fff!important}'
         . 'html .cc .nt-me{width:30px;height:30px;border-radius:50%;object-fit:cover;vertical-align:middle;margin:0 8px 0 0;border:2px solid #12a150}'
         . 'html .cc .nt-box textarea[hidden]{display:none}html .cc .nt .nt-yours{margin-top:30px}'
         // the player
@@ -149,6 +167,9 @@ go.addEventListener('click',function(){if(rec){rec.stop();setTimeout(function(){
  .then(function(x){if(!x[0])throw new Error();ta.value='';blob=null;tr='';st.textContent='';voice(false);if(dy)dy.value='';msg(W.sent);go.disabled=false;})
  .catch(function(){go.disabled=false;msg(W.err,true);});});
 });
+/* delete a note or a reply (asks first) */
+document.addEventListener('click',function(e){var d=e.target.closest('.nt-del');if(!d||!confirm(d.dataset.q))return;var f=new FormData();f.append('page',d.dataset.page);f.append('at',d.dataset.at);f.append('ri',d.dataset.ri);
+ fetch(d.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':d.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;var el=d.dataset.ri==='-1'?d.closest('.nt-item'):d.closest('.nt-rep');if(el){if(d.dataset.ri==='-1'){var w=el.previousElementSibling;if(w&&w.classList.contains('nt-who'))w.remove();}el.remove();}}).catch(function(){alert('Not deleted. Please try again.');});});
 /* the player: one sound at a time; recordings from phones can report no length at first, so it is worked out on load */
 var cur=null;function fm(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
 document.querySelectorAll('.nt-pl').forEach(function(P){var a=null,bar=P.querySelector('.nt-bar'),fill=bar.querySelector('i'),dot=bar.querySelector('b'),t=P.querySelector('.nt-t');
@@ -171,7 +192,10 @@ JS;
 /* ---------- saving ---------- */
 add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/note', ['methods' => 'POST', 'callback' => 'cc_nt_save', 'permission_callback' => function () { return is_user_logged_in() && (bool) cc_ath_page_of(get_current_user_id()) && !cc_ath_is_coach(); }]);
-    register_rest_route('cc/v1', '/note-reply', ['methods' => 'POST', 'callback' => 'cc_nt_reply', 'permission_callback' => 'cc_ath_is_coach']);
+    // Matteo, or the athlete in a thread on their own page
+    $own = function (WP_REST_Request $r) { return cc_ath_is_coach() || (is_user_logged_in() && (int) $r->get_param('page') === cc_ath_page_of(get_current_user_id())); };
+    register_rest_route('cc/v1', '/note-reply', ['methods' => 'POST', 'callback' => 'cc_nt_reply', 'permission_callback' => $own]);
+    register_rest_route('cc/v1', '/note-delete', ['methods' => 'POST', 'callback' => 'cc_nt_delete', 'permission_callback' => $own]);
     register_rest_route('cc/v1', '/notes', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {   // the laptop (Vekta sync) and Matteo's tools
         $out = []; foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_notes']) as $p) {
             $uid = (int) get_post_meta($p->ID, 'cc_user', true); $vid = $uid ? (string) get_user_meta($uid, 'cc_vekta_id', true) : '';
@@ -199,14 +223,36 @@ function cc_nt_save(WP_REST_Request $r) {
     if (function_exists('cc_push_coaches')) cc_push_coaches('Note from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : ($tr !== '' ? '🎙 ' . wp_trim_words($tr, 18) : '🎙 Voice note'), add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')), 'cc-note');
     return ['ok' => true];
 }
-function cc_nt_reply(WP_REST_Request $r) {   // Matteo answers: text and/or voice, shown under the note in the athlete's hub, and an email to them
+function cc_nt_delete(WP_REST_Request $r) {   // a note (ri -1) or one reply; athletes only their own, Matteo anything; the recordings go too
+    $pid = (int) $r->get_param('page'); $at = (int) $r->get_param('at'); $ri = (int) $r->get_param('ri'); $coach = cc_ath_is_coach(); $ns = cc_nt_get($pid);
+    foreach ($ns as $k => $n) {
+        if ((int) $n['at'] !== $at) continue;
+        if ($ri < 0) { foreach (array_merge([$n], (array) ($n['replies'] ?? [])) as $x) if (!empty($x['audio'])) wp_delete_attachment((int) $x['audio'], true); unset($ns[$k]); }
+        else {
+            $reps = array_values((array) ($n['replies'] ?? [])); if (!isset($reps[$ri])) return new WP_Error('cc_none', 'No such reply', ['status' => 404]);
+            if (!$coach && ($reps[$ri]['from'] ?? 'coach') !== 'athlete') return new WP_Error('cc_no', 'Not yours', ['status' => 403]);
+            if (!empty($reps[$ri]['audio'])) wp_delete_attachment((int) $reps[$ri]['audio'], true);
+            array_splice($reps, $ri, 1); $ns[$k]['replies'] = $reps;
+        }
+        cc_nt_put($pid, $ns); return ['ok' => true];
+    }
+    return new WP_Error('cc_none', 'No such note', ['status' => 404]);
+}
+function cc_nt_reply(WP_REST_Request $r) {   // a reply in the thread: Matteo (shown in the athlete's hub + email/phone to them) or the athlete (email/phone to Matteo)
     $pid = (int) $r->get_param('page'); $at = (int) $r->get_param('at'); $ns = cc_nt_get($pid);
     $i = null; foreach ($ns as $k => $n) if ((int) $n['at'] === $at) $i = $k;
     if ($i === null) return new WP_Error('cc_none', 'No such note', ['status' => 404]);
     $text = cc_av_note((string) $r->get_param('text'), 3000);
-    $aid = cc_nt_audio($r, $pid, ''); if (is_wp_error($aid)) return $aid;
+    $aid = cc_nt_audio($r, $pid, cc_av_str($r->get_param('transcript'), 2000)); if (is_wp_error($aid)) return $aid;
     if ($text === '' && !$aid) return new WP_Error('cc_empty', 'Empty reply', ['status' => 400]);
-    $ns[$i]['replies'][] = ['at' => time(), 'text' => $text, 'audio' => (int) $aid]; cc_nt_put($pid, $ns);
+    if (!cc_ath_is_coach()) {   // the athlete answering Matteo
+        $tr = cc_av_str($r->get_param('transcript'), 2000);
+        $ns[$i]['replies'][] = ['at' => time(), 'text' => $text, 'audio' => (int) $aid, 'from' => 'athlete', 'tr' => $aid ? $tr : '']; cc_nt_put($pid, $ns); update_post_meta($pid, 'cc_notes_updated', time());
+        cc_nt_mail($pid, get_current_user_id(), ['text' => $text, 'tr' => $aid ? $tr : '', 'audio' => (int) $aid, 'day' => null], true);
+        if (function_exists('cc_push_coaches')) cc_push_coaches('Reply from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : '🎙 Voice note', add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')), 'cc-note');
+        return ['ok' => true];
+    }
+    $ns[$i]['replies'][] = ['at' => time(), 'text' => $text, 'audio' => (int) $aid, 'from' => 'coach']; cc_nt_put($pid, $ns);
     $uid = (int) get_post_meta($pid, 'cc_user', true); $u = $uid ? get_userdata($uid) : null;
     if ($u && is_email($u->user_email) && function_exists('cc_ath_mail_shell')) {
         $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($uid);
@@ -219,10 +265,10 @@ function cc_nt_reply(WP_REST_Request $r) {   // Matteo answers: text and/or voic
     }
     return ['ok' => true];
 }
-function cc_nt_mail($pid, $uid, $n) {
+function cc_nt_mail($pid, $uid, $n, $isReply = false) {
     if (!function_exists('cc_av_notify_to') || !cc_av_notify_to()) return;
     $u = get_userdata($uid); $name = get_the_title($pid); $board = add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/'));
-    $h = '<div style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;color:#222"><h2>Note from ' . esc_html($name) . '</h2>'
+    $h = '<div style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;color:#222"><h2>' . ($isReply ? 'Reply from ' : 'Note from ') . esc_html($name) . '</h2>'
        . (!empty($n['day']) ? '<p style="margin:0 0 10px">About the session on <b>' . esc_html(date_i18n('j M Y', strtotime($n['day'] . ' 12:00'))) . '</b> (it goes into their Vekta calendar on that day).</p>' : '')
        . ($n['audio'] ? '<p style="margin:0 0 10px"><b>🎙 Voice note attached</b>: open the attachment to listen.</p>' : '')
        . ($n['text'] !== '' ? '<blockquote style="margin:0 0 16px;padding:10px 14px;background:#f2f4f3;border-left:3px solid #009a44;white-space:pre-line">' . esc_html($n['text']) . '</blockquote>' : '')
@@ -230,7 +276,7 @@ function cc_nt_mail($pid, $uid, $n) {
        . '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Reply in the hub</a></p></div>';
     $hd = ['Content-Type: text/html; charset=UTF-8']; if ($u && is_email($u->user_email)) $hd[] = 'Reply-To: ' . $name . ' <' . $u->user_email . '>';
     if (function_exists('cc_ath_coach_wrap')) $h = cc_ath_coach_wrap($h);
-    wp_mail(cc_av_notify_to(), 'Note from ' . $name . ($n['audio'] ? ' (voice)' : ''), $h, $hd, array_filter($n['audio'] ? [get_attached_file((int) $n['audio'])] : []));
+    wp_mail(cc_av_notify_to(), ($isReply ? 'Reply from ' : 'Note from ') . $name . ($n['audio'] ? ' (voice)' : ''), $h, $hd, array_filter($n['audio'] ? [get_attached_file((int) $n['audio'])] : []));
 }
 
 /* ---------- Matteo's board: /athletes/?board=notes ---------- */

@@ -1102,6 +1102,7 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {   // a sma
         . '<script>(function(){var b=document.querySelector(".ath-a2hs");if(!b)return;var k="cc_a2hs_no",ev=null;'
         . 'function no(){try{return localStorage.getItem(k)}catch(e){return null}}'
         . 'if(no()||matchMedia("(display-mode: standalone)").matches||navigator.standalone||!matchMedia("(max-width: 900px)").matches)return;'
+        . 'if(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)return;'   // Matteo 17 Nov: already on the home screen: no "add to home screen" card
         . 'var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);if(ios){b.querySelector(".a2hs-ios").hidden=false;b.hidden=false;}'
         . 'addEventListener("beforeinstallprompt",function(e){e.preventDefault();ev=e;b.querySelector(".a2hs-go").hidden=false;b.hidden=false;});'
         . 'b.querySelector(".a2hs-go").addEventListener("click",function(){if(ev){ev.prompt();ev.userChoice.then(function(){b.hidden=true;});}});'

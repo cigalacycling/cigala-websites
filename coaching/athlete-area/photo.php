@@ -84,6 +84,14 @@ add_action('rest_api_init', function () {
         return ['ok' => true, 'url' => wp_get_attachment_url($id)];
     }]);
 });
+// Matteo 17 Nov: logged in, the person icon in the site header (next to Book Consultation) becomes their round photo; Matteo's for him
+add_action('wp_footer', function () {
+    if (!is_user_logged_in()) return;
+    $u = cc_ath_is_coach() ? 'https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg' : cc_ph_url(cc_ath_page_of(get_current_user_id()));
+    if (!$u) return;
+    echo '<style>a.nav-login.has-me{padding:0!important;width:36px;height:36px;border-radius:50%;overflow:hidden;border:2px solid #2bd47a;display:inline-flex!important;box-shadow:0 2px 10px rgba(0,0,0,.4)}a.nav-login.has-me img{width:100%;height:100%;object-fit:cover;display:block}</style>'
+       . '<script>document.querySelectorAll("a.nav-login").forEach(function(a){a.classList.add("has-me");a.innerHTML=\'<img src="' . esc_url($u) . '" alt="">\';a.setAttribute("aria-label","My athlete hub");});</script>';
+}, 50);
 // coaching ended (login removed): the photo goes too
 add_action('delete_user', function ($uid) {
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_user', 'meta_value' => (int) $uid, 'numberposts' => -1, 'fields' => 'ids']) as $pid) {

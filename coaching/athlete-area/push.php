@@ -106,10 +106,13 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
         . 'if(Notification.permission==="denied")return;'
         . 'navigator.serviceWorker.ready.then(function(r){return r.pushManager&&r.pushManager.getSubscription();}).then(function(s){if(!s||Notification.permission!=="granted")c.hidden=false;});'
         . 'function key(b){var p="=".repeat((4-b.length%4)%4),s=atob((b+p).replace(/-/g,"+").replace(/_/g,"/")),a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return a;}'
-        . 'c.querySelector(".push-on").addEventListener("click",function(){Notification.requestPermission().then(function(p){if(p!=="granted"){m.textContent=W.denied;return;}'
-        . 'return navigator.serviceWorker.ready.then(function(r){return r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key(c.dataset.key)});}).then(function(s){'
-        . 'return fetch(c.dataset.api,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":c.dataset.nonce},body:JSON.stringify(s)});}).then(function(){m.textContent=W.done;c.querySelector(".push-on").hidden=true;c.querySelector(".push-no").hidden=true;setTimeout(function(){c.hidden=true;},4000);});'
-        . '}).catch(function(){m.textContent=W.denied;});});'
+        // Matteo 17 Nov: each step shows on screen and any error is reported to the hub (GET /cc/v1/push-status shows the last ones)
+        . 'function rep(step,e){m.textContent=W.denied+" ("+step+(e?": "+(e.message||e):"")+")";try{fetch(c.dataset.api.replace("push-sub","push-log"),{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":c.dataset.nonce},body:JSON.stringify({step:step,err:String(e&&(e.message||e)||""),ua:navigator.userAgent,sa:!!(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone),perm:Notification.permission})});}catch(x){}}'
+        . 'c.querySelector(".push-on").addEventListener("click",function(){m.textContent="…";var pr;try{pr=Notification.requestPermission();}catch(e){rep("permission",e);return;}'
+        . 'Promise.resolve(pr).then(function(p){p=p||Notification.permission;if(p!=="granted"){rep("permission "+p);return;}m.textContent="… 1/3";'
+        . 'return Promise.race([navigator.serviceWorker.ready,new Promise(function(_,no){setTimeout(function(){no(new Error("service worker not ready"));},10000);})]).then(function(r){m.textContent="… 2/3";return r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key(c.dataset.key)});}).catch(function(e){rep("subscribe",e);throw e;}).then(function(s){m.textContent="… 3/3";'
+        . 'return fetch(c.dataset.api,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":c.dataset.nonce},body:JSON.stringify(s)});}).then(function(r){if(!r.ok){rep("save "+r.status);return;}m.textContent=W.done;c.querySelector(".push-on").hidden=true;c.querySelector(".push-no").hidden=true;setTimeout(function(){c.hidden=true;},4000);});'
+        . '}).catch(function(e){if(m.textContent.indexOf("(")<0)rep("other",e);});});'
         . 'c.querySelector(".push-no").addEventListener("click",function(){try{localStorage.setItem(k,"1");}catch(e){}c.hidden=true;});})();</script>';
 }, 2, 3);
 add_action('rest_api_init', function () {
@@ -120,12 +123,17 @@ add_action('rest_api_init', function () {
         $subs[md5($ep)] = ['endpoint' => $ep, 'keys' => ['p256dh' => sanitize_text_field($s['keys']['p256dh']), 'auth' => sanitize_text_field($s['keys']['auth'])], 'at' => time()];
         update_user_meta($uid, 'cc_push', array_slice($subs, -5, null, true)); return ['ok' => true];
     }]);
+    register_rest_route('cc/v1', '/push-log', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {   // what went wrong on a phone
+        $l = get_option('cc_push_log', []); $l = is_array($l) ? $l : [];
+        array_unshift($l, ['at' => time(), 'user' => wp_get_current_user()->display_name] + array_map(function ($x) { return substr(sanitize_text_field((string) $x), 0, 300); }, (array) $r->get_json_params()));
+        update_option('cc_push_log', array_slice($l, 0, 20), false); return ['ok' => true];
+    }]);
     register_rest_route('cc/v1', '/push-test', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {   // Matteo: a test to his own phones
         return ['sent' => cc_push_user(get_current_user_id(), 'Cigala Cycling', 'Test: notifications work on this phone.', home_url('/' . CC_ATH_SLUG . '/'), 'cc-test')];
     }]);
     register_rest_route('cc/v1', '/push-status', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
         $n = 0; $who = []; foreach (get_users(['meta_key' => 'cc_push', 'fields' => ['ID', 'display_name']]) as $u) { $c = count((array) get_user_meta($u->ID, 'cc_push', true)); if ($c) { $n += $c; $who[] = $u->display_name; } }
-        return ['openssl' => function_exists('openssl_pkey_derive'), 'key' => (bool) cc_push_vapid(), 'phones' => $n, 'people' => $who];
+        return ['openssl' => function_exists('openssl_pkey_derive'), 'key' => (bool) cc_push_vapid(), 'phones' => $n, 'people' => $who, 'log' => array_slice((array) get_option('cc_push_log', []), 0, 5)];
     }]);
     register_rest_route('cc/v1', '/push-selftest', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {   // encryption round trip check (no sending)
         $ua = openssl_pkey_new(['curve_name' => 'prime256v1', 'private_key_type' => OPENSSL_KEYTYPE_EC]); $auth = random_bytes(16);
