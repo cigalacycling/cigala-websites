@@ -840,6 +840,7 @@ def coaching():
  <div class="panel" style="padding:32px"><span class="eyebrow">What we look at</span>
   {chips(['Macronutrients requirements', 'Vitamins &amp; Minerals requirements', 'Supplements requirements', 'Sports specific requirements', 'Lifestyle advice', 'Healthy recipes', 'Craving control guidelines', 'IBS or gastro-intestinal issues', 'Immune health'])}</div>
 </div></section>
+{EX.section(head, DISCOVERY)}
 <section id="plans" style="padding-top:24px"><div class="wrap">
  {head('3-month coaching', 'Find the right plan', tag=None, center=True)}
  <div class="notes">{notes}</div>
@@ -849,7 +850,6 @@ def coaching():
  <div style="margin-top:64px">{head('Side by side', 'Compare plans', tag=None)}</div>
  <div style="margin-top:6px">{table}</div>
 </div></section>
-{EX.section(head, DISCOVERY)}
 <section style="padding-top:8px"><div class="wrap"><div class="cta">
  <div><span class="eyebrow">Race day</span><h2>FUELLING PLAN</h2><span class="bar"></span>
   <p>As an athlete, you want to train hard, compete and be successful. Nutrition is almost as important as your training load to bring your performance to the next level. Fuelling for an event can be quite a headache. Remember bonking out half way through your event ?</p>
