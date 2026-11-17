@@ -43,6 +43,7 @@ function cc_f_steps_all() {
           ['nat', 'select', 'Nationality', 'opts' => CC_F_COUNTRIES, 'req' => 1, 'half' => 1, 'ac' => 'country'],   // Matteo 17 Nov: the flag in his coach list
           ['phone', 'tel', 'Mobile', 'req' => 1, 'half' => 1, 'ac' => 'tel'], ['phone_home', 'tel', 'Home telephone', 'opt' => 1, 'half' => 1],
           ['email', 'email', 'Email', 'req' => 1, 'ac' => 'email'],
+          ['photo', 'photo', 'A photo of you', 'only' => 'full'],   // optional, photo.php
           ['address', 'text', 'Address', 'opt' => 'adult', 'req' => 'u18', 'ac' => 'street-address', 'only' => 'full'], ['postcode', 'text', 'Postcode / Eircode', 'opt' => 'adult', 'req' => 'u18', 'half' => 1, 'ac' => 'postal-code', 'only' => 'full'],
           ['team', 'text', 'Cycling club, group or team', 'ph' => 'or N/A', 'half' => 1, 'req' => 1],
           ['sport', 'checks', 'Sport', 'opts' => ['cycling' => 'Cycling', 'triathlon' => 'Triathlon', 'running' => 'Running', 'swimming' => 'Swimming', 'other' => 'Other'], 'only' => 'full', 'req' => 1],
@@ -149,7 +150,7 @@ function cc_f_fields($kind) {
             if (($pn[0] ?? '') !== 'p' || (isset($pn['only']) && $pn['only'] !== $kind)) continue;
             foreach ($pn['fields'] as $f) {
                 if (isset($f['only']) && $f['only'] !== $kind) continue;
-                if (in_array($f[1], ['group', 'legal', 'sig'], true)) continue;
+                if (in_array($f[1], ['group', 'legal', 'sig', 'photo'], true)) continue;
                 $f['_panel_if'] = $pn['if'] ?? null; $out[$f[0]] = $f;
             }
         }
@@ -220,6 +221,7 @@ function cc_f_page($uid, $pid, $preview, $kind = null) {
     $u = get_userdata($uid); $kind = $kind ?: cc_f_kind($uid);
     cc_f_set_lang($preview ? 0 : $uid);
     if ($preview) $GLOBALS['cc_f_askapp'] = true; else cc_f_askapp($uid, $pid);
+    $GLOBALS['cc_f_pid'] = $preview ? 0 : (int) $pid;   // the photo field saves to this page
     if ($preview && isset($_GET['flang']) && preg_match('/^[a-z]{2}$/', $_GET['flang'])) $GLOBALS['cc_f_lang'] = $_GET['flang'];   // Matteo previews a language
     $draft = $preview ? [] : (json_decode((string) get_user_meta($uid, 'cc_form_draft', true), true) ?: []);
     $pre = $preview ? [] : (json_decode((string) get_post_meta($pid, 'cc_profile_prefill', true), true) ?: []);
@@ -305,6 +307,10 @@ function cc_f_field($f, $v, $kind) {
             $ev = is_array($v) ? array_values($v) : [];
             return $wrap('<fieldset><legend>' . $label . '</legend><div class="rf-evs" data-words="' . esc_attr(wp_json_encode(['ev' => cc_f('Event'), 'date' => cc_f('Date'), 'prio' => cc_f('Priority'), 'rm' => cc_f('Remove')])) . '">'
                 . '<script type="application/json" class="rf-ev-data">' . wp_json_encode($ev) . '</script></div><button type="button" class="btn btn-ghost rf-ev-add">' . esc_html(cc_f('+ Add an event')) . '</button></fieldset>', ' full');
+        case 'photo':   // Matteo 17 Nov: optional photo, saved straight away (photo.php), not part of the form answers
+            if (!function_exists('cc_ph_widget')) return '';
+            $pp = (int) ($GLOBALS['cc_f_pid'] ?? 0);
+            return $wrap('<div class="rf-photo">' . ($pp ? cc_ph_widget($pp, 96, true) : '') . '<div><p class="rf-photo-t">' . esc_html(cc_ph_w('form')) . '</p><p class="rf-photo-h">' . esc_html(cc_ph_w('form_hint')) . '</p></div></div>' . cc_ph_assets(), ' full');
         case 'sig': return $wrap('<div class="rf-sig"><canvas aria-label="' . esc_attr(cc_f('Signature pad: sign with your finger')) . '"></canvas><span class="rf-sig-ph">' . esc_html(cc_f('Sign here')) . '</span>'
             . '<button type="button" class="btn btn-ghost rf-clr">' . esc_html(cc_f('Clear')) . '</button></div><p class="rf-date">' . esc_html(cc_f('Date')) . ': <b>' . esc_html(date_i18n('j F Y')) . '</b></p>', ' full');
     }

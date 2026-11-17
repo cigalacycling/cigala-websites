@@ -272,7 +272,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     foreach (cc_gc_contracts() as $k) {
         $soon = $k['days_left'] !== null && $k['days_left'] >= 0 && $k['days_left'] <= CC_GC_REMIND_DAYS; $past = $k['days_left'] !== null && $k['days_left'] < 0;
         $hasHub = (bool) get_post_meta($k['page'], 'cc_user', true);
-        $o .= '<tr' . ($soon ? ' class="soon"' : '') . '><td>' . ($hasHub ? '<a href="' . esc_url(add_query_arg('view', $k['page'], home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($k['name']) . '</a>' : esc_html($k['name']))
+        $o .= '<tr' . ($soon ? ' class="soon"' : '') . '><td>' . (function_exists('cc_ph_face') ? cc_ph_face($k['page'], 26) . ' ' : '') . ($hasHub ? '<a href="' . esc_url(add_query_arg('view', $k['page'], home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($k['name']) . '</a>' : esc_html($k['name']))
             . ($k['basic'] ? ' <small>Basic 12 weeks' . ($hasHub ? '' : ' · no hub') . '</small>' : '') . '</td><td>' . ($k['fee'] !== null ? esc_html(number_format((float) $k['fee'], 2) . ' ' . $k['currency']) : '—') . '</td><td>' . $f($k['signup']) . '</td><td>' . $f($k['end'])
             . ($soon ? ' <span class="av-badge">' . (int) $k['days_left'] . ' days</span>' : ($past ? ' <small>past: rolling monthly</small>' : '')) . '</td>'
             . '<td><form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="gc-ed"><input type="hidden" name="action" value="cc_gc_end"><input type="hidden" name="page" value="' . (int) $k['page'] . '">' . wp_nonce_field('cc_gc_end', '_wpnonce', false, false)

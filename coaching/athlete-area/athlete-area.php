@@ -366,7 +366,10 @@ function cc_ath_inner() {
     $mineHtml = $view ? cc_ath_dress(trim(cc_ath_content($view))) : '';
     $nrep = substr_count($mineHtml, 'class="ath-file"');
     $o .= '<header class="ath-hero"><div class="ath-hero-txt"><p class="eyebrow">' . cc_t('Athlete area') . ($coach ? cc_t(' · coach view') : '') . '</p>'
+        // Matteo 17 Nov: the athlete's own round photo by the greeting (initials + camera until they add one; tap to add or change)
+        . (!$coach && $view && function_exists('cc_ph_widget') ? '<div class="ath-hello">' . cc_ph_widget($view, 72, true, 'ath-me-ph') : '')
         . '<h1><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>, ' . ($coach ? '<span class="ath-coach-tag">Coach</span>&nbsp;' : '') . esc_html($first) . '</h1>'
+        . (!$coach && $view && function_exists('cc_ph_widget') ? '</div>' . cc_ph_assets() : '')
         . '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>'
         . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . esc_html(cc_Ln($nrep, 'report in your folder', 'report nella tua cartella', 'reports in your folder', 'report nella tua cartella')) . '</span></div>' : '')
         . '<a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a>' . apply_filters('cc_ath_hero_links', '', $coach) . '</div>'
@@ -380,9 +383,9 @@ function cc_ath_inner() {
         // Matteo 17 Nov: his own demo page (no login, his own Vekta data), first in the list
         $list = array_merge(get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_demo', 'meta_value' => '1']), $list);
         $o .= '<div class="ath-coach"><p><b>Coach view.</b> You see what every athlete sees. Choose an athlete to see their own reports, or add one in WordPress: Users &gt; Add New (role Subscriber).</p><p class="ath-list">';
-        foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . esc_html($p->post_title)
+        foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 22) : '') . esc_html($p->post_title)
             . cc_ath_flag_for($p->ID) . (get_post_meta($p->ID, 'cc_demo', true) ? ' <small style="opacity:.75">demo</small>' : '') . '</a>';
-        $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . (($tl = apply_filters('cc_ath_coach_links', '')) !== '' ? '<div class="ath-coach-tools"><span class="ath-coach-tl">Your coach tools</span>' . $tl . '</div>' : '') . '</div>';
+        $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . (function_exists('cc_ph_assets') ? cc_ph_assets() : '') . (($tl = apply_filters('cc_ath_coach_links', '')) !== '' ? '<div class="ath-coach-tools"><span class="ath-coach-tl">Your coach tools</span>' . $tl . '</div>' : '') . '</div>';
         // coach-only pages (e.g. ?board=availability, from availability.php); empty unless a module adds one
         $board = isset($_GET['board']) ? sanitize_key($_GET['board']) : '';
         if ($board !== '' && ($b = apply_filters('cc_ath_board', '', $board)) !== '') return $o . cc_ath_find() . $b . '</div>' . cc_ath_js();
@@ -407,6 +410,10 @@ function cc_ath_inner() {
     $o .= '<nav class="ath-jump" aria-label="' . cc_t('Sections') . '">';
     foreach ($nav as $n) $o .= '<a href="#' . esc_attr($n[0]) . '">' . esc_html($n[1]) . '</a>';
     $o .= '</nav>';
+    // Matteo 17 Nov: each menu link gets a small copy of its section's icon (taken from the section, so they always match)
+    $o .= '<script>addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".ath-jump a[href^=\'#\']").forEach(function(a){var s=document.getElementById(a.getAttribute("href").slice(1)),i=s&&s.querySelector("h2 .ath-hic");if(!i)return;var c=i.cloneNode(true);c.classList.remove("ath-hic");c.classList.add("ath-jic");c.removeAttribute("id");a.insertBefore(c,a.firstChild);});});</script>'
+        . '<style>html .cc .ath-jump a{display:inline-flex;align-items:center;gap:7px}html .cc .ath-jump .ath-jic{flex:none;width:22px;height:22px;border-radius:7px;display:inline-grid;place-items:center;background:rgba(18,161,80,.15);border:1px solid rgba(43,212,122,.35)}'
+        . 'html .cc .ath-jump .ath-jic svg{width:13px;height:13px;fill:none;stroke:var(--green-text,#2bd47a);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}html .cc .ath-jump .ath-jic.ath-logo{background-size:62%;background-repeat:no-repeat;background-position:center}</style>';
     $o .= apply_filters('cc_ath_before_reports', '', $view, $coach);   // reports.php: "Your season" card, "N new reports"
     $rx = apply_filters('cc_ath_reports_html', '', $view, $coach);      // reports.php: reports sent from Matteo's PC tools
     $o .= '<section class="ath-s ath-mine" id="reports"><h2>' . cc_ath_icon('reports', 'ath-hic') . cc_t('Your reports') . '</h2>'
@@ -1074,17 +1081,17 @@ CSS;
 add_action('init', function () {
     if (!isset($_GET['cc_manifest'])) return;
     // Matteo 17 Nov: the app icon is the square Cigala Cycling Coaching logo, edge to edge (was the small site icon)
-    $icons = []; foreach ([192, 512] as $s) $icons[] = ['src' => 'https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-icon-' . $s . '.png', 'sizes' => $s . 'x' . $s, 'type' => 'image/png', 'purpose' => 'any'];
+    $icons = []; foreach ([192, 512] as $s) $icons[] = ['src' => 'https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-app-' . $s . '.png', 'sizes' => $s . 'x' . $s, 'type' => 'image/png', 'purpose' => 'any'];
     header('Content-Type: application/manifest+json; charset=utf-8'); header('Cache-Control: public, max-age=86400');
-    echo wp_json_encode(['name' => 'Cigala Cycling Coaching: athlete hub', 'short_name' => 'Cigala Hub', 'start_url' => '/' . CC_ATH_SLUG . '/?source=app', 'scope' => '/' . CC_ATH_SLUG . '/',
+    echo wp_json_encode(['name' => 'Cigala Cycling Coaching: athlete hub', 'short_name' => 'Cigala Cycling', 'start_url' => '/' . CC_ATH_SLUG . '/?source=app', 'scope' => '/' . CC_ATH_SLUG . '/',
         'display' => 'standalone', 'background_color' => '#08090a', 'theme_color' => '#08090a', 'icons' => $icons], JSON_UNESCAPED_SLASHES);
     exit;
 });
 add_action('wp_head', function () {
     if (!is_page(CC_ATH_SLUG)) return;
-    echo '<link rel="manifest" href="' . esc_url(add_query_arg('cc_manifest', 1, home_url('/'))) . '"><meta name="apple-mobile-web-app-title" content="Cigala Hub"><meta name="mobile-web-app-capable" content="yes">'
+    echo '<link rel="manifest" href="' . esc_url(add_query_arg('cc_manifest', 1, home_url('/'))) . '"><meta name="apple-mobile-web-app-title" content="Cigala Cycling"><meta name="mobile-web-app-capable" content="yes">'
        . '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="theme-color" content="#08090a">'
-       . '<link rel="apple-touch-icon" sizes="180x180" href="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-icon-180.png">' . "\n";   // iPhone home-screen icon
+       . '<link rel="apple-touch-icon" sizes="180x180" href="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-app-180.png">' . "\n";   // iPhone home-screen icon
 });
 add_filter('cc_ath_before_reports', function ($html, $view, $coach) {   // a small tip on phones, until they add it or tap "Not now"
     if ($coach || !$view) return $html;

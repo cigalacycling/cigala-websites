@@ -245,6 +245,6 @@ add_filter('cc_ath_board', function ($html, $board) {
     usort($all, function ($a, $b) { return $b[1]['at'] <=> $a[1]['at']; });
     $o = '<section class="ath-s nt"><h2>' . cc_ath_icon('mic', 'ath-hic') . 'Notes</h2><p class="av-lede">Notes and voice notes from your athletes, newest first. Tap Reply to answer by typing or with a voice note: they see it in their hub and get an email.</p>';
     if (!$all) return $o . '<p class="av-lede">No notes yet.</p></section>' . cc_nt_css();
-    foreach (array_slice($all, 0, 80) as [$p, $n]) $o .= '<div class="nt-who"><b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($p->post_title) . '</a></b>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($p->ID) : '') . '</div>' . cc_nt_item($n, true, $p->ID);
+    foreach (array_slice($all, 0, 80) as [$p, $n]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 28) . ' ' : '') . '<b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($p->post_title) . '</a></b>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($p->ID) : '') . '</div>' . cc_nt_item($n, true, $p->ID);
     return $o . '</section>' . cc_nt_css() . cc_nt_js();
 }, 10, 2);
