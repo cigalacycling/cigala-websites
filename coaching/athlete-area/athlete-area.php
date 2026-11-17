@@ -801,6 +801,9 @@ function cc_ath_js() {
     return <<<'JS'
 <script>(function(){
 var g=document.querySelector('.ath-greet');if(g){var h=new Date().getHours(),it=g.getAttribute('data-l')==='it',w=JSON.parse(g.getAttribute('data-g')||'[]');if(w.length===3)g.textContent=(h>=5&&h<(it?13:12))?w[0]:(h>=5&&h<18)?w[1]:w[2];}
+(function(){var L=document.querySelector('.ath-hero-txt .ath-lede'),P=document.querySelector('.ath-hero-me img');if(!L||!P)return;
+ function fit(){L.classList.remove('ath-lede-narrow');var l=L.getBoundingClientRect(),p=P.getBoundingClientRect();if(l.bottom>p.top+6&&l.right>p.left+20)L.classList.add('ath-lede-narrow');}
+ fit();addEventListener('load',fit);addEventListener('resize',fit);})();
 document.querySelectorAll('.ath-chip-bell').forEach(function(c){c.addEventListener('click',function(e){e.preventDefault();var b=document.querySelector('.ath-bell');if(b){e.stopPropagation();b.click();c.remove();}});});
 try{localStorage.setItem('cc_tools_ok','1');}catch(e){}   /* coached athletes skip the newsletter step on the free tools */
 var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,io='IntersectionObserver' in window;
@@ -1193,6 +1196,9 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
   html .cc .ath-hero-txt .ath-hello h1 { margin-top: 6px !important; }
   html .cc .ath-hero-txt .ath-hello .ath-me-ph { margin-top: 8px; }   /* Matteo 17 Nov: the photo (and "Remove photo") ~2 mm lower on phones */
   html .cc .ath-hello ~ .ath-lede { margin-top: 18px; }
+  /* Matteo 17 Nov: on phones the line under the greeting runs across the header (it was squeezed into the left column; the photo sits lower) */
+  html .cc .ath-hero-txt .ath-lede { margin-right: -130px; max-width: none; }
+  html .cc .ath-hero-txt .ath-lede.ath-lede-narrow { margin-right: 0; }   /* only if it would touch the photo (short header, long language) */
   html .cc .ath-s { padding: 22px 16px 24px; }
   html .cc .ath-body .ath-tools { grid-template-columns: 1fr 1fr; gap: 10px; }
   html .cc .ath-tools .ath-tile { padding: 14px 12px; }
