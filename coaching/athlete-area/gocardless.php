@@ -65,7 +65,7 @@ function cc_gc_subscription($sid) {   // fetch subscription → mandate → cust
 }
 
 /* the decision, shared by the webhook and the staging simulator. Returns what happened. */
-function cc_gc_handle($s, $c, $sim = false) {
+function cc_gc_handle($s, $c, $sim = false, $force = false) {   // $force: Matteo asked for this existing client (skips the "new" and test-mode checks only)
     $since = (int) get_option('cc_gc_since', 0); $sid = (string) ($s['id'] ?? ''); $cid = (string) ($c['id'] ?? '');
     $email = sanitize_email((string) ($c['email'] ?? '')); $first = sanitize_text_field((string) ($c['given_name'] ?? '')); $last = sanitize_text_field((string) ($c['family_name'] ?? ''));
     $name = trim("$first $last") ?: ($email ?: $cid);
@@ -76,14 +76,14 @@ function cc_gc_handle($s, $c, $sim = false) {
     // done before (GoCardless retries, two events for one subscription)
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => 'cc_gc_sub', 'meta_value' => $sid]) as $p) { cc_gc_log('already done', $info); return ['result' => 'already done'] + $info; }
     $why = '';
-    if (!$since) $why = 'no cut-off date set';
-    elseif (strtotime((string) ($s['created_at'] ?? '')) <= $since) $why = 'subscription created before the cut-off';
-    elseif (strtotime((string) ($c['created_at'] ?? '')) <= $since) $why = 'existing GoCardless customer starting another subscription';
+    if (!$force && !$since) $why = 'no cut-off date set';
+    elseif (!$force && strtotime((string) ($s['created_at'] ?? '')) <= $since) $why = 'subscription created before the cut-off';
+    elseif (!$force && strtotime((string) ($c['created_at'] ?? '')) <= $since) $why = 'existing GoCardless customer starting another subscription';
     elseif (($s['status'] ?? '') !== 'active') $why = 'subscription status is ' . ($s['status'] ?? 'unknown');
     elseif (!is_email($email)) $why = 'no email address on the customer';
     elseif (($u = get_user_by('email', $email))) $why = 'this email already has a hub login (' . $u->display_name . ')';
     if ($why !== '') { cc_gc_log('skipped', $info + ['why' => $why]); cc_gc_tell($info, 'skipped', $why, $sim); return ['result' => 'skipped', 'why' => $why] + $info; }
-    if (cc_gc_mode() !== 'live' && !$sim) { cc_gc_log('test', $info); cc_gc_tell($info, 'test', '', $sim); return ['result' => 'test'] + $info; }
+    if (cc_gc_mode() !== 'live' && !$sim && !$force) { cc_gc_log('test', $info); cc_gc_tell($info, 'test', '', $sim); return ['result' => 'test'] + $info; }
     // LIVE: the login, their page, the contract, the welcome email
     $login = sanitize_user(strtolower(strtok($email, '@')), true) ?: 'athlete'; $base = $login; $n = 1; while (username_exists($login)) $login = $base . (++$n);
     $uid = wp_insert_user(['user_login' => $login, 'user_email' => $email, 'user_pass' => wp_generate_password(24), 'first_name' => $first, 'last_name' => $last, 'display_name' => $name, 'role' => 'subscriber']);
@@ -183,6 +183,32 @@ add_action('rest_api_init', function () {
         $GLOBALS['cc_gc_last_mail'] = null;
         $res = cc_gc_handle((array) $r->get_param('subscription'), (array) $r->get_param('customer'), true);
         return $res + ['matteo_email' => $GLOBALS['cc_gc_last_mail']];
+    }]);
+    // read-only: subscriptions created after a date, with their customer and whether they already have a hub login (gap check)
+    register_rest_route('cc/v1', '/gc-recent', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $after = preg_match('~^\d{4}-\d{2}-\d{2}~', (string) $r['after']) ? substr($r['after'], 0, 10) . 'T00:00:00.000Z' : gmdate('Y-m-d\TH:i:s.000\Z', time() - 30 * DAY_IN_SECONDS);
+        $out = []; $cur = '';
+        for ($i = 0; $i < 10; $i++) {
+            $j = cc_gc_get('/subscriptions?limit=100&created_at%5Bgt%5D=' . rawurlencode($after) . ($cur ? '&after=' . rawurlencode($cur) : '')); if (is_wp_error($j)) return $j;
+            foreach ((array) ($j['subscriptions'] ?? []) as $s) {
+                $m = cc_gc_get('/mandates/' . rawurlencode((string) ($s['links']['mandate'] ?? ''))); $c = is_wp_error($m) ? [] : cc_gc_get('/customers/' . rawurlencode((string) ($m['mandates']['links']['customer'] ?? '')));
+                $c = is_wp_error($c) ? [] : ($c['customers'] ?? []); $u = !empty($c['email']) ? get_user_by('email', $c['email']) : null;
+                $out[] = ['sub' => $s['id'], 'sub_name' => $s['name'] ?? '', 'status' => $s['status'] ?? '', 'created' => $s['created_at'] ?? '', 'amount' => isset($s['amount']) ? $s['amount'] / 100 : null,
+                          'customer' => trim(($c['given_name'] ?? '') . ' ' . ($c['family_name'] ?? '')), 'customer_created' => $c['created_at'] ?? '', 'country' => $c['country_code'] ?? '', 'in_hub' => $u ? $u->display_name : null];
+            }
+            $cur = (string) ($j['meta']['cursors']['after'] ?? ''); if ($cur === '') break;
+        }
+        return $out;
+    }]);
+    // Matteo's yes for an existing paying client without a hub login: create it from their GoCardless subscription (login, page, contract, welcome email)
+    register_rest_route('cc/v1', '/gc-create', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $sid = (string) $r['sub'];
+        $s = cc_gc_get('/subscriptions/' . rawurlencode($sid)); if (is_wp_error($s)) return $s; $s = $s['subscriptions'] ?? [];
+        $m = cc_gc_get('/mandates/' . rawurlencode((string) ($s['links']['mandate'] ?? ''))); if (is_wp_error($m)) return $m;
+        $c = cc_gc_get('/customers/' . rawurlencode((string) ($m['mandates']['links']['customer'] ?? ''))); if (is_wp_error($c)) return $c;
+        if ($r['any_status']) $s['status'] = 'active';   // e.g. coaching extended outside GoCardless (Brian McDonnell, 17 Nov 2026)
+        $res = cc_gc_handle($s, $c['customers'] ?? [], (bool) $r['dry'] && strpos(home_url(), '//staging.') !== false, true);
+        unset($res['email']); return $res;   // the email stays in the hub
     }]);
     register_rest_route('cc/v1', '/gc-end', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) { return ['signup' => $r['d'], 'end' => cc_gc_end((string) $r['d'])]; }]);
     register_rest_route('cc/v1', '/gc-status', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
