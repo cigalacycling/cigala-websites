@@ -548,3 +548,7 @@ Matteo created a "Claude live" application password on coaching.cigalacycling.co
 - Checked on live: all of the above work. 10 pages at 390/1440 px are clean, consent is unchanged, and the exit pop-up timing passes.
 - LiteSpeed Cache plugin: not installed on live Coaching. The server is LiteSpeed (Hostinger), with no plugin. Nothing to purge.
 - From now on, Coaching changes go to LIVE directly, with a backup first. Never publish staging over live again: that would wipe athlete logins and form entries.
+
+## 17 Nov 2026: SOLD OUT stamp in English (Matteo)
+- The Italian page's "ESAURITO" rule sat in the site-wide kit CSS, so every packages page showed ESAURITO. It is now limited to html[lang="it-IT"] (the Italian page). The scoper in tools/build_coaching_wp.py now also handles html[...] selectors.
+- Staging and live (kit lib-6; backup live-coaching/backup/lib-6-before-esaurito-fix.json). Checked: Individual, Tri and UK show SOLD OUT; Italia shows ESAURITO.

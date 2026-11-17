@@ -71,7 +71,7 @@ def scope_sel(sel):
     sel = sel.strip()
     if sel in (':root', 'html', 'body', 'html, body'): return P
     if sel == '*': return P + ' *'
-    if sel.startswith('html.'):   # a class on <html> set by script, e.g. html.sig-ok .sigph ...
+    if sel.startswith(('html.', 'html[')):   # a class or attribute on <html>, e.g. html.sig-ok .sigph ..., html[lang="it-IT"] ...
         h, _, rest = sel.partition(' '); return f'{h} .cc {rest}'
     return P + ' ' + sel
 def scope(block):
