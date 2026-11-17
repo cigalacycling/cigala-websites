@@ -235,6 +235,9 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .qa summary::after{content:"+";position:absolute;right:22px;top:50%;transform:translateY(-50%);font:400 26px/1 Montserrat,sans-serif;color:var(--aqua)}
 .qa[open] summary::after{content:"–"}
 .qa>div{padding:0 24px 8px;color:var(--text-2)}
+/* Marine 17 Nov: justified text inside boxes (as on her Wix site); hyphens keep phone lines even */
+.panel p,.pcard p,.plan p,.mrow .tx p,.cta p,.scard p,.bcard p,.author p,.qa>div p,.tcard blockquote,.intro p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
+.center p,.panel.center p,p.center,.facts p{text-align:center;-webkit-hyphens:manual;hyphens:manual}
 /* footer */
 footer.site{margin-top:40px;background:linear-gradient(180deg,rgba(25,68,75,.35),rgba(25,68,75,.7));border-top:1px solid var(--border)}
 footer.site .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:40px;padding:64px 24px 40px}
