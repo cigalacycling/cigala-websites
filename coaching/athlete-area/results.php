@@ -59,7 +59,8 @@ function cc_rs_card($pid, $r, $forCoach) {
 }
 function cc_rs_css() {
     static $d = false; if ($d) return ''; $d = true;
-    return '<style>html .cc .rs-form{display:grid;gap:12px}html .cc .rs-pick{display:flex;align-items:center;gap:14px}html .cc .rs-prev{width:96px;height:96px;border-radius:14px;object-fit:cover;border:2px solid #2bd47a;display:none}html .cc .rs-prev.on{display:block}'
+    return '<style>html .cc .rs-pw{position:relative;display:inline-block}html .cc .rs-x{position:absolute;top:-8px;right:-8px;width:30px;height:30px;min-height:0;padding:0;margin:0;border-radius:50%;border:2px solid #0b0d0f;background:#E10600;color:#fff;font:700 15px/1 var(--body);cursor:pointer}html .cc .rs-x[hidden]{display:none}'
+        . 'html .cc .rs-form{display:grid;gap:12px}html .cc .rs-pick{display:flex;align-items:center;gap:14px}html .cc .rs-prev{width:96px;height:96px;border-radius:14px;object-fit:cover;border:2px solid #2bd47a;display:none}html .cc .rs-prev.on{display:block}'
         . 'html .cc .rs-form textarea,html .cc .rs-form select,html .cc .rs-form input[type=date]{width:100%;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
         // Matteo 17 Nov: the date box stayed wider than the card on iPhones (native date inputs keep their own width)
         . 'html .cc .rs-form input[type=date]{display:block;max-width:100%;min-width:0;-webkit-appearance:none;appearance:none;min-height:48px;line-height:1.2}html .cc .rs-form input[type=date]::-webkit-date-and-time-value{text-align:left}'
@@ -81,7 +82,9 @@ function cc_rs_js() {
  function msg(t,e){m.textContent=t||'';m.classList.toggle('err',!!e);}
  pb.addEventListener('click',function(){file.click();});
  file.addEventListener('change',function(){var f=file.files&&file.files[0];if(!f)return;var i=new Image(),u=URL.createObjectURL(f);i.onload=function(){var s=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(i.naturalWidth*s);c.height=Math.round(i.naturalHeight*s);
-  c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);img=c.toDataURL('image/jpeg',.85);pv.src=img;pv.classList.add('on');pb.textContent=W.change;};i.src=u;file.value='';});
+  c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);img=c.toDataURL('image/jpeg',.85);pv.src=img;pv.classList.add('on');pb.textContent=W.change;F.querySelector('.rs-x').hidden=false;};i.src=u;file.value='';});
+ /* Matteo 17 Nov: take the picked photo away again before sending */
+ F.querySelector('.rs-x').addEventListener('click',function(){img=null;pv.removeAttribute('src');pv.classList.remove('on');this.hidden=true;pb.textContent=W.photo;});
  F.querySelector('.rs-go').addEventListener('click',function(){var b=this,t=F.querySelector('textarea').value.trim();if(!t&&!img){msg(W.empty,true);return;}b.disabled=true;msg(W.sending);
   var fd=new FormData();fd.append('text',t);fd.append('race',F.querySelector('select').value);fd.append('date',F.querySelector('input[type=date]').value);fd.append('consent',F.querySelector('.rs-tick input').checked?1:0);if(img)fd.append('img',img);
   fetch(F.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':F.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;msg(W.sent);setTimeout(function(){var u=location.href.split('#')[0];location.replace(u+(u.indexOf('?')>-1?'&':'?')+'rs='+Date.now()+'#results');},1000);})
@@ -109,10 +112,10 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     $g = function_exists('cc_g_get') ? (cc_g_get($view) ?: []) : []; $opts = '<option value="">' . esc_html(cc_rs_w('none')) . '</option>';
     $ev = (array) ($g['events'] ?? []); usort($ev, function ($a, $b) { return strcmp($b['date'], $a['date']); });
     foreach ($ev as $e) if ($e['date'] <= current_time('Y-m-d', false) || $e['date'] <= date('Y-m-d', strtotime('+3 days'))) $opts .= '<option value="' . esc_attr($e['name']) . '" data-d="' . esc_attr($e['date']) . '">' . esc_html($e['name'] . ' · ' . date_i18n('j M Y', strtotime($e['date'] . ' 12:00'))) . '</option>';
-    $W = []; foreach (['change', 'sending', 'sent', 'empty', 'err'] as $k) $W[$k] = cc_rs_w($k);
+    $W = []; foreach (['change', 'photo', 'sending', 'sent', 'empty', 'err'] as $k) $W[$k] = cc_rs_w($k);
     $o = '<section class="ath-s" id="results"><h2>' . cc_ath_icon('trophy', 'ath-hic') . esc_html(cc_rs_w('title')) . '</h2><p class="av-lede">' . esc_html(cc_rs_w('lede')) . '</p>'
        . '<div class="rs-form" data-api="' . esc_url(rest_url('cc/v1/result')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-w="' . esc_attr(wp_json_encode($W)) . '">'
-       . '<div class="rs-pick"><img class="rs-prev" alt=""><button type="button" class="btn btn-ghost rs-pickb">' . esc_html(cc_rs_w('photo')) . '</button><input type="file" accept="image/*" class="rs-file" hidden></div>'
+       . '<div class="rs-pick"><span class="rs-pw"><img class="rs-prev" alt=""><button type="button" class="rs-x" hidden aria-label="' . esc_attr(cc_rs_w('del')) . '">✕</button></span><button type="button" class="btn btn-ghost rs-pickb">' . esc_html(cc_rs_w('photo')) . '</button><input type="file" accept="image/*" class="rs-file" hidden></div>'
        . '<textarea rows="3" maxlength="1500" placeholder="' . esc_attr(cc_rs_w('ph')) . '" aria-label="' . esc_attr(cc_rs_w('title')) . '"></textarea>'
        . '<label>' . esc_html(cc_rs_w('race')) . '<select>' . $opts . '</select></label>'
        . '<input type="date" max="' . esc_attr(current_time('Y-m-d')) . '" value="' . esc_attr(current_time('Y-m-d')) . '" aria-label="Date">'

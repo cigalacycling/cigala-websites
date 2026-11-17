@@ -14,6 +14,8 @@ function cc_ph_w($k) {
         'form_hint' => ['en' => 'It shows in your hub, and helps me put a face to your name.', 'it' => 'Compare nella tua area e mi aiuta ad associare un volto al tuo nome.', 'pt' => 'Aparece na tua área e ajuda-me a associar um rosto ao teu nome.', 'sl' => 'Prikaže se v tvojem središču in mi pomaga, da imenu dodam obraz.'],
         'up' => ['en' => 'Uploading…', 'it' => 'Caricamento…', 'pt' => 'A carregar…', 'sl' => 'Nalagam…'],
         'ok' => ['en' => 'Photo saved', 'it' => 'Foto salvata', 'pt' => 'Foto guardada', 'sl' => 'Fotografija shranjena'],
+        'remove' => ['en' => 'Remove photo', 'it' => 'Rimuovi la foto', 'pt' => 'Remover a foto', 'sl' => 'Odstrani fotografijo'],
+        'removed' => ['en' => 'Photo removed', 'it' => 'Foto rimossa', 'pt' => 'Foto removida', 'sl' => 'Fotografija odstranjena'],
         'bad' => ['en' => 'That photo did not upload. Please try another one.', 'it' => 'La foto non è stata caricata. Prova con un’altra.', 'pt' => 'A foto não foi carregada. Tenta outra.', 'sl' => 'Fotografija se ni naložila. Poskusi z drugo.'],
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en';
@@ -35,11 +37,11 @@ function cc_ph_widget($pid, $size, $edit, $cls = '') {
     $u = cc_ph_url($pid);
     $face = $u ? '<img src="' . esc_url($u) . '" alt="">' : '<span class="ph-ini">' . esc_html(cc_ph_initials($pid)) . '</span>';
     if (!$edit) return '<span class="ph-av ph-av-p' . (int) $pid . ' ' . esc_attr($cls) . '" style="--ph:' . (int) $size . 'px">' . $face . '</span>';
-    $W = ['up' => cc_ph_w('up'), 'ok' => cc_ph_w('ok'), 'bad' => cc_ph_w('bad')];
+    $W = ['up' => cc_ph_w('up'), 'ok' => cc_ph_w('ok'), 'bad' => cc_ph_w('bad'), 'removed' => cc_ph_w('removed'), 'ini' => cc_ph_initials($pid)];
     return '<span class="ph-wrap ' . esc_attr($cls) . '"><button type="button" class="ph-av ph-edit" style="--ph:' . (int) $size . 'px" aria-label="' . esc_attr(cc_ph_w($u ? 'change' : 'add')) . '" title="' . esc_attr(cc_ph_w($u ? 'change' : 'add')) . '"'
          . ' data-api="' . esc_url(rest_url('cc/v1/photo')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-page="' . (int) $pid . '" data-w="' . esc_attr(wp_json_encode($W)) . '">'
          . $face . '<span class="ph-cam" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span></button>'
-         . '<input type="file" accept="image/*" class="ph-file" hidden><span class="ph-msg" role="status"></span></span>';
+         . '<input type="file" accept="image/*" class="ph-file" hidden><button type="button" class="ph-rm"' . ($u ? '' : ' hidden') . '>' . esc_html(cc_ph_w('remove')) . '</button><span class="ph-msg" role="status"></span></span>';
 }
 function cc_ph_assets() {
     static $done = false; if ($done) return ''; $done = true;
@@ -49,6 +51,7 @@ function cc_ph_assets() {
         . 'html .cc .ph-edit{cursor:pointer;transition:transform .15s ease}html .cc .ph-edit:hover{transform:scale(1.04)}'
         . 'html .cc .ph-cam{position:absolute;right:-2px;bottom:-2px;width:calc(var(--ph)*.36);height:calc(var(--ph)*.36);min-width:22px;min-height:22px;border-radius:50%;background:#0b0d0f;border:2px solid #2bd47a;display:grid;place-items:center}'
         . 'html .cc .ph-cam svg{width:62%;height:62%;fill:none;stroke:#fff;stroke-width:2}html .cc .ph-wrap{display:inline-flex;flex-direction:column;align-items:center;gap:6px}html .cc .ph-msg{font-size:14px;color:#d0d6e0;min-height:0}html .cc .ph-msg:empty{display:none}'
+        . 'html .cc .ph-rm{background:none;border:0;padding:0;margin:0;min-height:0;font:600 13px var(--body);color:#b8bec8;text-decoration:underline;cursor:pointer}html .cc .ph-rm[hidden]{display:none}'
         . 'html .cc .cc-face{border-radius:50%;object-fit:cover;vertical-align:middle;border:1.5px solid rgba(43,212,122,.6);flex:none}'
         . 'html .cc .ath-hero-txt .ath-hello{display:flex;align-items:center;gap:16px}html .cc .ath-hero-txt .ath-hello h1{margin:8px 0 12px}'
         . 'html .cc .rf-photo{display:flex;align-items:center;gap:16px;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}'
@@ -62,9 +65,13 @@ f.addEventListener('change',function(){var file=f.files&&f.files[0];if(!file)ret
   c.getContext('2d').drawImage(img,(img.naturalWidth-s)/2,(img.naturalHeight-s)/2,s,s,0,0,n,n);URL.revokeObjectURL(url);var data=c.toDataURL('image/jpeg',.86);
   var fd=new FormData();fd.append('img',data);fd.append('page',b.dataset.page);
   fetch(b.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':b.dataset.nonce}}).then(function(r){return r.json().then(function(j){return[r.ok,j];});})
-  .then(function(x){if(!x[0])throw 0;document.querySelectorAll('.ph-av[data-page="'+b.dataset.page+'"], .ph-av-p'+b.dataset.page).forEach(function(a){var i=a.querySelector('img'),t=a.querySelector('.ph-ini');if(!i){i=document.createElement('img');i.alt='';a.insertBefore(i,a.firstChild);}if(t)t.remove();i.src=data;});m.textContent=W.ok;setTimeout(function(){m.textContent='';},2500);})
+  .then(function(x){if(!x[0])throw 0;document.querySelectorAll('.ph-av[data-page="'+b.dataset.page+'"], .ph-av-p'+b.dataset.page).forEach(function(a){var i=a.querySelector('img'),t=a.querySelector('.ph-ini');if(!i){i=document.createElement('img');i.alt='';a.insertBefore(i,a.firstChild);}if(t)t.remove();i.src=data;});var rm=w.querySelector('.ph-rm');if(rm)rm.hidden=false;m.textContent=W.ok;setTimeout(function(){m.textContent='';},2500);})
   .catch(function(){m.textContent=W.bad;});};
- img.onerror=function(){m.textContent=W.bad;};img.src=url;f.value='';});});})();</script>
+ img.onerror=function(){m.textContent=W.bad;};img.src=url;f.value='';});
+var rm=w.querySelector('.ph-rm');if(rm)rm.addEventListener('click',function(){var fd=new FormData();fd.append('remove','1');fd.append('page',b.dataset.page);
+ fetch(b.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':b.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;
+  document.querySelectorAll('.ph-av[data-page="'+b.dataset.page+'"], .ph-av-p'+b.dataset.page).forEach(function(a){var i=a.querySelector('img');if(i)i.remove();if(!a.querySelector('.ph-ini')){var s=document.createElement('span');s.className='ph-ini';s.textContent=W.ini;a.insertBefore(s,a.firstChild);}});
+  rm.hidden=true;m.textContent=W.removed;setTimeout(function(){m.textContent='';},2500);}).catch(function(){m.textContent=W.bad;});});});})();</script>
 JS;
 }
 
@@ -74,6 +81,9 @@ add_action('rest_api_init', function () {
         $pid = (int) $r->get_param('page'); $me = get_current_user_id();
         if (!cc_ath_is_coach() && $pid !== cc_ath_page_of($me)) return new WP_Error('cc_no', 'Not your page', ['status' => 403]);
         if (get_post_type($pid) !== 'cc_athlete') return new WP_Error('cc_no', 'No such athlete', ['status' => 404]);
+        if ($r->get_param('remove')) {   // Matteo 17 Nov: remove the photo (back to the initials)
+            $old = (int) get_post_meta($pid, 'cc_photo', true); if ($old) wp_delete_attachment($old, true); delete_post_meta($pid, 'cc_photo'); return ['ok' => true, 'removed' => true];
+        }
         if (!preg_match('#^data:image/jpeg;base64,([A-Za-z0-9+/=]+)$#', (string) $r->get_param('img'), $m)) return new WP_Error('cc_bad', 'Not a JPEG', ['status' => 400]);
         $bytes = base64_decode($m[1], true); $sz = $bytes ? @getimagesizefromstring($bytes) : false;
         if (!$bytes || strlen($bytes) > 600000 || !$sz || $sz[2] !== IMAGETYPE_JPEG || $sz[0] > 1200 || $sz[1] > 1200) return new WP_Error('cc_bad', 'Photo not accepted', ['status' => 400]);

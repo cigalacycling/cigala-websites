@@ -74,8 +74,11 @@ add_action('init', function () {
     echo "self.addEventListener('install',function(){self.skipWaiting();});self.addEventListener('activate',function(e){e.waitUntil(self.clients.claim());});\n"
        . "self.addEventListener('push',function(e){var d={};try{d=e.data?e.data.json():{};}catch(x){}var w=[self.registration.showNotification(d.title||'Cigala Cycling',{body:d.body||'',icon:'$icon',badge:'$icon',tag:d.tag,data:{url:d.url||'/" . CC_ATH_SLUG . "/'}})];"
        . "if(self.navigator&&self.navigator.setAppBadge)w.push(self.navigator.setAppBadge(1).catch(function(){}));e.waitUntil(Promise.all(w));});\n"
-       . "self.addEventListener('notificationclick',function(e){e.notification.close();var u=(e.notification.data&&e.notification.data.url)||'/" . CC_ATH_SLUG . "/';"
-       . "e.waitUntil(self.clients.matchAll({type:'window',includeUncontrolled:true}).then(function(cs){for(var i=0;i<cs.length;i++){if('focus' in cs[i]){cs[i].navigate(u);return cs[i].focus();}}return self.clients.openWindow(u);}));});\n";
+       // Matteo 17 Nov: tapping a notification always opens the hub (focus an open hub window and go to the page, else open a new one)
+       . "self.addEventListener('notificationclick',function(e){e.notification.close();var u=new URL((e.notification.data&&e.notification.data.url)||'/" . CC_ATH_SLUG . "/',self.location.origin).href;"
+       . "e.waitUntil(self.clients.matchAll({type:'window',includeUncontrolled:true}).then(function(cs){var c=cs.filter(function(x){return x.url.indexOf('/" . CC_ATH_SLUG . "/')>-1;})[0];"
+       . "if(c&&'focus' in c){return c.focus().then(function(f){f=f||c;if(f.url!==u&&'navigate' in f)return f.navigate(u).catch(function(){return self.clients.openWindow(u);});});}"
+       . "return self.clients.openWindow(u);}).catch(function(){return self.clients.openWindow(u);}));});\n";
     exit;
 }, 1);
 function cc_push_w($k) {
@@ -140,13 +143,17 @@ add_filter('cc_ath_hero_links', function ($html, $coach) {
     return $html . ' <span class="bell-w"><button type="button" class="ath-bell" aria-label="' . esc_attr(cc_inbox_w('title')) . '" aria-expanded="false" data-api="' . esc_url(rest_url('cc/v1/inbox-read')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '">'
         . '<svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>' . ($unread ? '<i>' . min(99, $unread) . '</i>' : '') . '</button>'
         . '<div class="bell-p" hidden><p class="bell-h">' . esc_html(cc_inbox_w('title')) . '</p>' . ($items ?: '<p class="bell-e">' . esc_html(cc_inbox_w('empty')) . '</p>') . '</div></span>'
-        . '<style>html .cc .bell-w{position:relative;display:inline-block;vertical-align:middle;margin-left:12px}html .cc .ath-bell{position:relative;width:40px;height:40px;min-height:0;padding:0;margin:0;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(12,14,16,.85);display:grid;place-items:center;cursor:pointer}'
+        // Matteo 17 Nov: top-right corner of the header (like apps); the list opens on top of the page (the header clips what sticks out)
+        . '<style>html .cc .bell-w{position:absolute;top:14px;right:14px;z-index:5}html .cc .ath-bell{box-shadow:0 4px 14px rgba(0,0,0,.5);position:relative;width:40px;height:40px;min-height:0;padding:0;margin:0;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(12,14,16,.85);display:grid;place-items:center;cursor:pointer}'
         . 'html .cc .ath-bell svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linejoin:round}html .cc .ath-bell i{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#E10600;color:#fff;font:700 12px/20px var(--body);font-style:normal;text-align:center}'
-        . 'html .cc .bell-p{position:absolute;z-index:50;top:48px;left:0;width:min(340px,86vw);max-height:60vh;overflow:auto;padding:8px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:#0b0d0f;box-shadow:0 18px 40px rgba(0,0,0,.6)}html .cc .bell-p[hidden]{display:none}'
-        . 'html .cc .bell-h{margin:4px 8px 8px;font-weight:700;color:#fff;font-size:16px}html .cc .bell-it{display:grid;gap:2px;padding:10px;border-radius:10px;text-decoration:none;color:var(--text-2)}html .cc .bell-it:hover{background:rgba(255,255,255,.05)}'
-        . 'html .cc .bell-it.new{background:rgba(18,161,80,.12)}html .cc .bell-it b{color:#fff;font-size:15px}html .cc .bell-it span{font-size:14px}html .cc .bell-it small{font-size:13px;color:#8a8f98}html .cc .bell-e{margin:6px 8px 10px;font-size:15px;color:var(--text-2)}</style>'
+        . 'html body .bell-p{font-family:Montserrat,system-ui,sans-serif;position:fixed;z-index:99990;width:min(360px,calc(100vw - 32px));max-height:65vh;overflow:auto;padding:8px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:#0b0d0f;box-shadow:0 18px 40px rgba(0,0,0,.6)}html body .bell-p[hidden]{display:none}'
+        . 'html body .bell-h{margin:4px 8px 8px;font-weight:700;color:#fff;font-size:16px}html body .bell-it{display:grid;gap:2px;padding:10px;border-radius:10px;text-decoration:none;color:var(--text-2)}html body .bell-it:hover{background:rgba(255,255,255,.05)}'
+        . 'html body .bell-it.new{background:rgba(18,161,80,.12)}html body .bell-it b{color:#fff;font-size:15px}html body .bell-it span{font-size:14px}html body .bell-it small{font-size:13px;color:#8a8f98}html body .bell-e{margin:6px 8px 10px;font-size:15px;color:var(--text-2)}</style>'
         . '<script>(function(){var b=document.querySelector(".ath-bell");if(!b||b.dataset.on)return;b.dataset.on=1;var p=b.parentNode.querySelector(".bell-p");'
-        . 'b.addEventListener("click",function(e){e.stopPropagation();p.hidden=!p.hidden;b.setAttribute("aria-expanded",!p.hidden);if(!p.hidden){var i=b.querySelector("i");if(i){i.remove();fetch(b.dataset.api,{method:"POST",credentials:"same-origin",headers:{"X-WP-Nonce":b.dataset.nonce}});}try{if(navigator.clearAppBadge)navigator.clearAppBadge();}catch(x){}}});'
+        . 'document.body.appendChild(p);'   // out of the header, so nothing clips it
+        . 'function place(){var r=b.getBoundingClientRect(),w=p.offsetWidth||340;p.style.top=Math.round(r.bottom+8)+"px";p.style.left=Math.max(16,Math.min(window.innerWidth-w-16,Math.round(r.right-w)))+"px";}'
+        . 'addEventListener("resize",function(){if(!p.hidden)place();});addEventListener("scroll",function(){if(!p.hidden)place();},{passive:true});'
+        . 'b.addEventListener("click",function(e){e.stopPropagation();p.hidden=!p.hidden;if(!p.hidden)place();b.setAttribute("aria-expanded",!p.hidden);if(!p.hidden){var i=b.querySelector("i");if(i){i.remove();fetch(b.dataset.api,{method:"POST",credentials:"same-origin",headers:{"X-WP-Nonce":b.dataset.nonce}});}try{if(navigator.clearAppBadge)navigator.clearAppBadge();}catch(x){}}});'
         . 'document.addEventListener("click",function(e){if(!p.hidden&&!p.contains(e.target)){p.hidden=true;b.setAttribute("aria-expanded","false");}});})();</script>';
 }, 30, 2);
 add_action('rest_api_init', function () {
