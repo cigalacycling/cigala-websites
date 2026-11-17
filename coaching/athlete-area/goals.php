@@ -288,7 +288,7 @@ html .cc .gl-ev label.gl-up, html .cc .gl-up { justify-self: start; display: inl
 html .cc .gl-ev label.gl-up:hover, html .cc .gl-up:hover { background: #12a150; transform: translateY(-1px); } html .cc .gl-up svg { width: 20px; height: 20px; flex: none; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }   /* Matteo 17 Nov: the upload was hard to see */
 html .cc .gl-rf { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: #34c46a; font-weight: 600; font-size: 15px; } html .cc .gl-rf span { overflow-wrap: anywhere; }
 html .cc .gl-rmsg { font-size: 14px; color: var(--text-2); } html .cc .gl-rmsg.bad { color: #ff4a3d; } html .cc .gl-rmsg:empty { display: none; }
-html .cc .gl-racehint { display: flex; gap: 10px; align-items: flex-start; margin: 20px 0 0; padding: 12px 14px; border-radius: 10px; background: rgba(1,138,68,.10); border: 1px solid rgba(52,196,106,.35); color: #e8ebef; font-size: 15px; line-height: 1.45; }
+html .cc .gl-racehint { display: flex; gap: 10px; align-items: flex-start; margin: 28px 0 0; padding: 12px 14px; border-radius: 10px; background: rgba(1,138,68,.10); border: 1px solid rgba(52,196,106,.35); color: #e8ebef; font-size: 15px; line-height: 1.45; }
 html .cc .gl-racehint .gl-rhic svg { width: 20px; height: 20px; fill: none; stroke: #34c46a; stroke-width: 2; margin-top: 2px; } html .cc .gl-racehint .gl-rhic { flex: none; display: inline-flex; }
 @media (max-width: 640px) { html .cc .gl-row { grid-template-columns: 1fr; } html .cc .gl-goals { grid-column: 1; } }
 </style>

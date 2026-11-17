@@ -24,7 +24,7 @@ function cc_ideas() { $a = get_option('cc_ideas', []); return is_array($a) ? $a 
 add_filter('cc_ath_end', function ($html, $view, $coach) {
     if ($coach || !$view) return $html;
     $ok = isset($_GET['idea']);
-    return $html . '<section class="ath-s cc-idea" id="cc-idea"><h2>' . esc_html(cc_idea_w('title')) . '</h2>'
+    return $html . '<section class="ath-s cc-idea" id="cc-idea"><h2>' . cc_ath_icon('idea', 'ath-hic') . esc_html(cc_idea_w('title')) . '</h2>'
         . '<p class="av-lede">' . esc_html(cc_idea_w('lede')) . '</p>'
         . ($ok ? '<p class="cc-idea-ok" role="status">' . esc_html(cc_idea_w('thanks')) . '</p>' : '')
         . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_idea">' . wp_nonce_field('cc_idea', '_wpnonce', false, false)

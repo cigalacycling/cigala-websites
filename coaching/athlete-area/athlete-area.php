@@ -443,6 +443,7 @@ function cc_ath_icon($k, $cls = 'ath-ic') {
         'chat' => '<path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/>',
         'people' => '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15.5 14.6c2.8.2 5 2.2 5 5.4"/>',
         'bolt' => '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+        'idea' => '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.4 1.1 2.2h5c0-.8.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>',   // the ideas box
         'peaks' => '<path d="M2 20l6.5-10 4 5.5 3-4L22 20z"/><path d="M8.5 10l1.8 2.6"/>',
         'doc' => '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
         'link' => '<path d="M7 17L17 7M9 7h8v8"/>',
@@ -964,7 +965,7 @@ html .cc .ath-flag-e { display: inline-grid; place-items: center; width: 14px; h
 html .cc .ath-flag-e span { font-size: 20px; line-height: 1; }
 html .cc .ath form.ath-lang { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 0 14px; vertical-align: middle; }
 html .cc .ath-lang label { font-size: 13px; color: var(--text-3); margin: 0; }
-html .cc .ath-lang select { font-size: 16px; padding: 6px 30px 6px 10px; min-height: 40px; width: auto; border-radius: 8px; margin: 0; }
+html .cc .ath-lang select { font-size: 16px; padding: 2px 26px 2px 8px; min-height: 32px; height: 32px; line-height: 1.2; width: auto; border-radius: 8px; margin: 0; }   /* Matteo 17 Nov: a bit smaller (16px text stays: iPhones zoom on smaller) */
 html .cc img.ath-flag { width: 14px; height: 14px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 1px 4px rgba(0,0,0,.4); margin: 0; flex: none; }
 html .cc .ath-coach-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.1); }
 html .cc .ath-coach-tl { flex-basis: 100%; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
