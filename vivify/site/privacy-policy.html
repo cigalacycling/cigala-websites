@@ -34,6 +34,9 @@ d.addEventListener('DOMContentLoaded',function(){hdr();
  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{rootMargin:'0px 0px -8% 0px'});
  els.forEach(function(el){if(el.closest('header')||el.closest('.hero'))return;var r=el.getBoundingClientRect();if(r.top<innerHeight)return;
   var i=[].indexOf.call(el.parentNode.children,el)%4;el.style.transitionDelay=(i*80)+'ms';el.classList.add('rv');io.observe(el);});
+ // Google reviews: Trustindex's loader (cdn.trustindex.io) reveals the widget; if it is blocked, show the reviews anyway
+ setTimeout(function(){d.querySelectorAll('.ti-widget[data-css-url]').forEach(function(w){if(getComputedStyle(w).opacity!=='0')return;
+  var l=d.createElement('link');l.rel='stylesheet';l.href=w.getAttribute('data-css-url');d.head.appendChild(l);w.removeAttribute('style');w.classList.add('ti-fallback');});},4000);
  d.querySelectorAll('.ddt').forEach(function(b){b.addEventListener('click',function(){var li=b.parentNode;var open=li.classList.toggle('open');b.setAttribute('aria-expanded',open);});});
 });})();</script></header>
 <main id="main">

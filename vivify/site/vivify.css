@@ -320,6 +320,11 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .hero .wrap>*:nth-child(2){animation-delay:.12s}.hero .wrap>*:nth-child(3){animation-delay:.24s}.hero .wrap>*:nth-child(4){animation-delay:.36s}
 @keyframes vvup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.vv-js .rv{opacity:1;transform:none;transition:none}.hero>img,.hero .wrap>*{animation:none}*{transition:none!important}}
+/* Google reviews (Trustindex): site font; backup display (loader blocked) one review per row on phones */
+.greviews .ti-widget,.greviews .ti-widget *{font-family:Montserrat,system-ui,sans-serif!important}
+@media (max-width:700px){.greviews .ti-widget.ti-fallback .ti-reviews-container-wrapper{display:block!important;overflow:visible!important}
+ .greviews .ti-widget.ti-fallback .ti-review-item{width:100%!important;max-width:100%!important;flex:0 0 100%!important;margin-bottom:14px}
+ .greviews .ti-widget.ti-fallback .ti-controls,.greviews .ti-widget.ti-fallback .ti-controls-line{display:none!important}}
 /* footer */
 footer.site{margin-top:40px;background:linear-gradient(180deg,rgba(25,68,75,.35),rgba(25,68,75,.7));border-top:1px solid var(--border)}
 footer.site .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:40px;padding:64px 24px 40px}

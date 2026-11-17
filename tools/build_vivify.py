@@ -81,6 +81,9 @@ d.addEventListener('DOMContentLoaded',function(){hdr();
  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{rootMargin:'0px 0px -8% 0px'});
  els.forEach(function(el){if(el.closest('header')||el.closest('.hero'))return;var r=el.getBoundingClientRect();if(r.top<innerHeight)return;
   var i=[].indexOf.call(el.parentNode.children,el)%4;el.style.transitionDelay=(i*80)+'ms';el.classList.add('rv');io.observe(el);});
+ // Google reviews: Trustindex's loader (cdn.trustindex.io) reveals the widget; if it is blocked, show the reviews anyway
+ setTimeout(function(){d.querySelectorAll('.ti-widget[data-css-url]').forEach(function(w){if(getComputedStyle(w).opacity!=='0')return;
+  var l=d.createElement('link');l.rel='stylesheet';l.href=w.getAttribute('data-css-url');d.head.appendChild(l);w.removeAttribute('style');w.classList.add('ti-fallback');});},4000);
  d.querySelectorAll('.ddt').forEach(function(b){b.addEventListener('click',function(){var li=b.parentNode;var open=li.classList.toggle('open');b.setAttribute('aria-expanded',open);});});
 });})();"""
 
@@ -441,6 +444,11 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .hero .wrap>*:nth-child(2){animation-delay:.12s}.hero .wrap>*:nth-child(3){animation-delay:.24s}.hero .wrap>*:nth-child(4){animation-delay:.36s}
 @keyframes vvup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.vv-js .rv{opacity:1;transform:none;transition:none}.hero>img,.hero .wrap>*{animation:none}*{transition:none!important}}
+/* Google reviews (Trustindex): site font; backup display (loader blocked) one review per row on phones */
+.greviews .ti-widget,.greviews .ti-widget *{font-family:Montserrat,system-ui,sans-serif!important}
+@media (max-width:700px){.greviews .ti-widget.ti-fallback .ti-reviews-container-wrapper{display:block!important;overflow:visible!important}
+ .greviews .ti-widget.ti-fallback .ti-review-item{width:100%!important;max-width:100%!important;flex:0 0 100%!important;margin-bottom:14px}
+ .greviews .ti-widget.ti-fallback .ti-controls,.greviews .ti-widget.ti-fallback .ti-controls-line{display:none!important}}
 /* footer */
 footer.site{margin-top:40px;background:linear-gradient(180deg,rgba(25,68,75,.35),rgba(25,68,75,.7));border-top:1px solid var(--border)}
 footer.site .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:40px;padding:64px 24px 40px}
@@ -595,6 +603,15 @@ T = [
   "I have been working with Marine since the end of last year in preparation for the Traka gravel race. I can honestly say I have learned so much about food and performance over this time and through her nutrition plan I have lost over 13 kg so far with an increase in power and fitness . Marine is very dedicated and a pleasure to deal with I look forward to what we can achieve in the future"),
 ]
 
+def google_reviews():
+    """Marine's Google reviews (Trustindex 'Widgets for Google Reviews' plugin, free version). In WordPress the
+    shortcode runs in an Elementor Text Editor widget (tools/build_vivify_wp.py); the static preview shows a note."""
+    return f"""<section class="greviews"><div class="wrap">
+ {head('Google reviews', 'What clients say on Google', center=True)}
+ <div class="ti-box" style="margin-top:24px">[trustindex no-registration=google]</div>
+ <div class="center" style="margin-top:18px"><a class="btn btn-secondary" href="{GBP}" target="_blank" rel="noopener">{ICON['star']} Read all reviews on Google</a></div>
+</div></section>"""
+
 def testimonials(h2_names=True, names=None):
     tag = 'h2' if h2_names else 'p'
     names = names or {}
@@ -638,6 +655,7 @@ def home():
   {ticks(['MSc-qualified Sports Nutritionist', 'Professional WorldTour cycling experience', 'Individualised nutrition plans', 'Online coaching worldwide', 'Practical, science-based advice'])}</div>
 </div></section>
 {testimonials()}
+{google_reviews()}
 {WHO_I_HELP}
 <section style="padding-top:24px"><div class="wrap">
  {head('More from Vivify Sports', 'Support for the whole athlete', tag=None, center=True)}
@@ -846,6 +864,7 @@ def coaching():
  {head('Training Peaks · Vekta · MyFitnessPal', 'OUR PARTNERS', center=True)}
  <div class="partners" style="margin-top:24px">{pl}</div></div></section>
 {testimonials(names={'Matteo Cigala,Italy': 'Matteo Cigala, Italy', 'Road & Gravel cyclistMatteo Cigala,Italy': 'Road & Gravel Cyclist', 'Damian Maloney, Ireland': 'Damian Maloney,Ireland', 'Road cyclistIwan Harmsen, Netherlands': 'Road Cyclist'})}
+{google_reviews()}
 """
     schema = {"@context": "https://schema.org", "@type": "Service", "name": "Online Nutrition Coaching", "serviceType": "Sports nutrition coaching",
               "provider": {"@type": "Organization", "name": "Vivify Sports", "url": LIVE}, "areaServed": "Worldwide",

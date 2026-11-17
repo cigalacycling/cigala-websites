@@ -31,6 +31,8 @@ body{background-color:#0C2226}
 .filters button:hover,.filters button:focus{background:rgba(25,68,75,.9);color:var(--text)}
 .filters button[aria-pressed=true]:hover{background:var(--aqua);color:var(--on-aqua)}
 button.btn{border:1px solid transparent}
+/* Google reviews (Trustindex) on the dark site */
+.greviews .ti-widget .ti-review-item>.ti-inner{border-radius:12px!important}
 /* Contact Form 7 (contact page) */
 .wpcf7 form.form p{margin:0}
 .wpcf7 form.form{padding:36px}
@@ -91,6 +93,9 @@ def page_data(f):
     first = first.replace('<main id="main"></main>', '<span id="main"></span>')
     def widget(b):
         # the contact form is a Contact Form 7 shortcode: the Text Editor widget runs shortcodes, the HTML widget does not
+        if '[trustindex' in b:   # Google reviews shortcode: Text Editor widget runs shortcodes
+            b = re.sub(r'>\s+<', '><', b.replace('\n', ' '))
+            return {"id": rid(), "elType": "widget", "widgetType": "text-editor", "settings": {"editor": b}, "elements": [], "isInner": False}
         if '<form class="form panel"' in b:
             b = re.sub(r'<form class="form panel".*?</form>', '[contact-form-7 id="349" html_class="form panel" title="Contact"]', b, flags=re.S)
             b = re.sub(r'>\s+<', '><', b.replace('\n', ' '))   # one line, so wpautop adds no stray <p>/<br>
