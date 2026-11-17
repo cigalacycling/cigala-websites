@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) return;
 
 const CC_R_TYPES = ['season' => ['Season plan', 'Piano di stagione', 'peaks'], 'assessment' => ['Assessment', 'Valutazione', 'gauge'],
     'review' => ['Review', 'Revisione', 'reports'], 'race-plan' => ['Race plan', 'Piano gara', 'bolt'], 'progress' => ['Progress report', 'Report dei progressi', 'reports'],
-    'other' => ['Report', 'Report', 'doc']];
+    'guide' => ['Guide', 'Guida', 'book'], 'other' => ['Report', 'Report', 'doc']];   // guide: a resource for this athlete (Vekta brief 17 Nov)
 function cc_r_mail_default($type) { return $type !== 'season'; }   // season plan updates: no email unless Matteo ticks it
 function cc_r_label($type, $it = null) { $t = CC_R_TYPES[$type] ?? CC_R_TYPES['other']; return $it === false ? $t[0] : cc_L($t[0], $t[1]); }   // false: English (coach board)
 
@@ -30,9 +30,9 @@ add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/reports', ['methods' => 'GET', 'callback' => 'cc_r_list_rest', 'permission_callback' => 'cc_ath_is_coach']);
 });
 function cc_r_create(WP_REST_Request $r) {
-    $u = get_user_by('email', (string) $r->get_param('email'));
-    $pid = $u ? cc_ath_page_of($u->ID) : 0;
-    if (!$pid) return new WP_Error('cc_none', 'No athlete with that email', ['status' => 404]);
+    if (function_exists('cc_pc_page_from')) $pid = cc_pc_page_from($r);   // email, vekta_id or page (pc-api.php)
+    else { $u = get_user_by('email', (string) $r->get_param('email')); $pid = $u ? cc_ath_page_of($u->ID) : 0; }
+    if (!$pid || !get_post_meta($pid, 'cc_user', true)) return new WP_Error('cc_none', 'No active athlete with that email / vekta_id / page', ['status' => 404]);
     $type = isset(CC_R_TYPES[$r->get_param('type')]) ? $r->get_param('type') : 'other';
     $title = cc_av_str($r->get_param('title') ?: cc_r_label($type, false) . ' · ' . date_i18n('F Y'), 140);
     $html = (string) $r->get_param('html'); $pdf = (string) $r->get_param('pdf_base64');
@@ -44,7 +44,11 @@ function cc_r_create(WP_REST_Request $r) {
     if (is_wp_error($rid) || !$rid) return new WP_Error('cc_fail', 'Could not save the report', ['status' => 500]);
     $fid = cc_f_store($rid, $bytes, 'report-' . $type, $ext, $mime, $title);
     update_post_meta($rid, 'cc_file', $fid);
-    return ['ok' => true, 'id' => $rid, 'status' => 'draft', 'preview' => add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')),
+    $replaced = [];
+    if ($type === 'season') foreach (get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'post_parent' => $pid, 'numberposts' => -1, 'exclude' => [$rid], 'meta_key' => 'cc_type', 'meta_value' => 'season', 'fields' => 'ids']) as $old) {
+        cc_r_delete($old); $replaced[] = $old;   // one season draft per athlete: a newer one replaces an unpublished older one
+    }
+    return ['ok' => true, 'id' => $rid, 'status' => 'draft', 'replaced_drafts' => $replaced, 'preview' => add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')),
             'review' => add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))];
 }
 function cc_r_list_rest(WP_REST_Request $r) {
@@ -103,12 +107,13 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     $all = cc_r_published($view); $season = null; $new = 0;
     foreach ($all as $p) { $t = get_post_meta($p->ID, 'cc_type', true); if ($t === 'season') { if (!$season) $season = $p; } elseif ($uid && cc_r_unseen($uid, $p->ID)) $new++; }
     if ($new) $html .= '<p class="rp-new" role="status"><b>' . $new . '</b> ' . esc_html(cc_Ln($new, 'new report for you', 'nuovo report per te', 'new reports for you', 'nuovi report per te')) . ' <a href="#reports">' . esc_html(cc_L('See', 'Vedi')) . ' →</a></p>';
-    if ($season) {
-        $when = (int) get_post_meta($season->ID, 'cc_published', true);
+    if ($season) {   // Vekta brief 17 Nov: the season page shown in the hub, scripts on (zoom, hover), in a sandbox with no access to the login
+        $when = (int) get_post_meta($season->ID, 'cc_published', true); $url = cc_r_url($season->ID); $fid = (int) get_post_meta($season->ID, 'cc_file', true);
         $html .= '<section class="ath-s rp-season" id="season"><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html(cc_L('Your season', 'La tua stagione')) . '</h2>'
             . '<p class="av-lede">' . esc_html(cc_L('Your season plan: the blocks, your races and your goals. I update it whenever the plan changes; your day-to-day sessions stay in Vekta.', 'Il tuo piano di stagione: blocchi, gare e obiettivi. Lo aggiorno ogni volta che il piano cambia; gli allenamenti di ogni giorno restano su Vekta.')) . '</p>'
-            . '<div class="rp-season-row"><a class="btn btn-go" href="' . esc_url(cc_r_url($season->ID)) . '" target="_blank" rel="noopener">' . esc_html(cc_L('Open my season plan', 'Apri il mio piano di stagione')) . '</a>'
-            . '<span class="rp-when">' . esc_html((cc_L('Updated ', 'Aggiornato il ')) . cc_r_date($when)) . ($uid && cc_r_unseen($uid, $season->ID) ? ' <span class="rp-badge">' . esc_html(cc_L('Updated', 'Aggiornato')) . '</span>' : '') . '</span></div></section>';
+            . (get_post_mime_type($fid) === 'text/html' ? '<div class="rp-frame"><iframe src="' . esc_url($url) . '" title="' . esc_attr(cc_L('Your season plan', 'Il tuo piano di stagione')) . '" loading="lazy" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerpolicy="same-origin"></iframe></div>' : '')
+            . '<div class="rp-season-row"><a class="btn btn-go" href="' . esc_url($url) . '" target="_blank" rel="noopener">' . esc_html(get_post_mime_type($fid) === 'text/html' ? cc_L('Open full screen', 'Apri a schermo intero') : cc_L('Open my season plan', 'Apri il mio piano di stagione')) . '</a>'
+            . '<span class="rp-when">' . esc_html(cc_L('Updated ', 'Aggiornato il ') . cc_r_date($when)) . ($uid && cc_r_unseen($uid, $season->ID) ? ' <span class="rp-badge">' . esc_html(cc_L('Updated', 'Aggiornato')) . '</span>' : '') . '</span></div></section>';
     }
     return $html;
 }, 10, 3);
@@ -221,7 +226,7 @@ add_action('wp_head', function () {
     echo "<style id=\"cc-reports\">html .cc .rp-new{margin:0 0 14px;padding:12px 16px;border-radius:12px;background:rgba(0,154,68,.14);border:1px solid rgba(52,196,106,.45);color:#fff;font-size:14.5px}"
        . "html .cc .rp-new b{font:400 22px/1 var(--head);color:#34c46a;margin-right:4px}html .cc .rp-new a{color:#34c46a;font-weight:600;margin-left:6px}"
        . "html .cc .rp-season{border-color:rgba(43,212,122,.4);background:linear-gradient(180deg,rgba(18,161,80,.12),rgba(13,15,17,.9) 60%)}html .cc .rp-season-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}"
-       . "html .cc .rp-when{font-size:13.5px;color:var(--text-3)}html .cc .rp-badge{display:inline-block;padding:2px 9px;border-radius:999px;background:#E10600;color:#fff;font:700 11px/1.6 var(--body);letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}"
+       . "html .cc .rp-frame{margin:0 0 14px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:#08090a}html .cc .rp-frame iframe{display:block;width:100%;height:min(80vh,860px);min-height:520px;border:0}html .cc .rp-when{font-size:13.5px;color:var(--text-3)}html .cc .rp-badge{display:inline-block;padding:2px 9px;border-radius:999px;background:#E10600;color:#fff;font:700 11px/1.6 var(--body);letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}"
        . "html .cc .rp-list{margin:0 0 14px}html .cc .rp-card.is-new{border-color:rgba(52,196,106,.6)}"
        . "html .cc .rp-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:12px 14px;margin:0 0 8px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08)}"
        . "html .cc .rp-what{display:grid;gap:2px;min-width:0;flex:1 1 220px}html .cc .rp-pick{width:20px;height:20px;accent-color:#009a44;flex:none;margin:0}html .cc .ath form.rp-bulk{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:0 0 14px;padding:10px 14px;border-radius:12px;border:1px dashed rgba(255,255,255,.14)}html .cc .rp-old{margin:4px 0 14px}html .cc .rp-old summary{cursor:pointer;color:var(--text-2);font-weight:600;font-size:14px;padding:10px 0;min-height:44px}html .cc .rp-old[open] summary{color:#fff}html .cc .rp-what b{color:#fff}html .cc .rp-what small{color:var(--text-3);font-size:12.5px}"

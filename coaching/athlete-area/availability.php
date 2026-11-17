@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) return;
 const CC_AV_DAYS = ['mon' => 'Monday', 'tue' => 'Tuesday', 'wed' => 'Wednesday', 'thu' => 'Thursday', 'fri' => 'Friday', 'sat' => 'Saturday', 'sun' => 'Sunday'];
 const CC_AV_HOURS = ['' => 'Not set', '0' => 'Rest day', '0.5' => '30 min', '1' => '1h', '1.5' => '1h 30', '2' => '2h', '3' => '3h', '4' => '4h+'];
 const CC_AV_WHEN = ['am' => 'Morning', 'mid' => 'Lunch', 'pm' => 'Evening'];
-const CC_AV_TYPES = ['away' => 'Away, no riding', 'less' => 'Less time', 'more' => 'More time', 'gym' => 'Gym only', 'indoor' => 'Indoor only', 'other' => 'Other'];
+const CC_AV_TYPES = ['away' => 'Away, no riding', 'bike' => 'Away, bike with me', 'less' => 'Less time', 'more' => 'More time', 'gym' => 'Gym only', 'indoor' => 'Indoor only', 'other' => 'Other'];
 const CC_AV_MAX_AUDIO = 8 * 1024 * 1024;   // ~8 minutes of phone speech
 
 /* ---------- data: kept on the athlete's page (post meta cc_avail, JSON) ---------- */

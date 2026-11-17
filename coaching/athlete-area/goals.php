@@ -104,6 +104,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
 add_filter('cc_ath_coach_links', function ($html) { return $html . '<a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '">Goals &amp; events</a>'; }, 15);
 add_filter('cc_ath_board', function ($html, $board) {
     if ($board !== 'goals' || !cc_ath_is_coach()) return $html;
+    add_action('shutdown', function () { update_user_meta(get_current_user_id(), 'cc_goals_seen', time()); });   // "seen by Matteo" for the laptop route (pc-api.php)
     $today = current_time('Y-m-d'); $rows = [];
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'meta_key' => 'cc_user']) as $p) {
         $g = cc_g_get($p->ID) ?: ['short' => '', 'long' => '', 'events' => []];

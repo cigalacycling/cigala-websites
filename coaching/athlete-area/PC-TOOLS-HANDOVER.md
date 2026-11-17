@@ -1,84 +1,163 @@
-# Athlete data for Matteo's PC sessions (Vekta tools, availability scheduling, reviews, periodization)
+# Athlete hub ↔ Matteo's laptop (Vekta tools, season plan, availability inbox, reviews)
 
-Written 16 Nov 2026 by the availability chat. Paste this into a PC session (e.g. "Athlete Availability Scheduling", "Training Response Report") so it reads athletes from the Coaching website instead of asking Matteo.
+Answer to the Vekta "Season Plan" chat brief (HUB-REQUEST.md, 17 Nov 2026), from the cloud "athlete availability" chat, which builds and owns the hub.
 
-**Status:** planned. Nothing below is live until Matteo says go. It goes on staging first, then live together with him. The availability box and the rider form are designed and in mock-up only.
+**Status:** everything below is built and tested on **staging** (`https://staging.coaching.cigalacycling.com`), which only has test athletes. It goes live on `https://coaching.cigalacycling.com` when Matteo puts the new athlete area live, together with the cloud chat. Until then the live site does not have these routes: build and test against staging.
 
-## One place for every athlete
-The Coaching website (`coaching.cigalacycling.com`, athlete area `/athletes/`) holds each coached athlete's own data. Athletes are matched everywhere by **email**: the website login email must be the same as the athlete's Vekta email.
+## Auth (every route)
+- WordPress **application password** for Matteo's admin user (wp-admin > Users > Profile > Application Passwords). One for staging, one for live.
+- Kept on the laptop only (`vekta\.env`). Never in chat, never in a repository.
+- Sent as HTTP Basic auth: `user:application-password`.
+- All routes need an editor or admin. Athletes can't call them.
 
-## How a PC session reads it
-- **Authentication:** a WordPress application password for Matteo's admin user.
-  - Matteo creates it in wp-admin: Users > Profile > Application Passwords.
-  - Keep it on the PC only, in an environment variable or the OS keychain. Never in chat, never in a repository.
-  - Send it as HTTP Basic auth. Read-only use.
-- **Availability** (built, not live yet): `GET https://coaching.cigalacycling.com/wp-json/cc/v1/availability` returns all athletes, or one with `?email=athlete@example.com`.
-  ```json
-  [{"athlete": "Name", "email": "…", "updated": 1794830000,
-    "availability": {
-      "week": {"mon": {"h": "1", "w": ["pm"]}, "...": {}},
-      "changes": [{"from": "2026-11-24", "to": "2027-01-26", "days": ["tue"], "type": "gym", "h": "1", "text": "Strength block"}],
-      "note": "free text",
-      "voice": [{"text": "transcript", "at": 1794830000, "url": "private link, opens for Matteo"}]}}]
-  ```
-  - `h` is the time available a day: `""` = not set, `"0"` = rest day, `"0.5"` = 30 min, then `"1"`, `"1.5"`, `"2"`, `"3"`, `"4"` (4h+).
-  - `w` is when they can ride: `am` (morning), `mid` (lunch), `pm` (evening).
-  - Change `type` is one of: away, less, more, gym, indoor, other.
-  - `to: ""` means no end date. `days: []` means every day.
-  - Changes whose end date has passed are dropped automatically.
-- **Rider form / profile** (planned, same API): `GET /wp-json/cc/v1/profile?email=` will return the answers from the online Rider Information Form:
-  - contact details and emergency contact;
-  - date of birth, sport;
-  - numbers with test dates: FTP/CP, threshold HR, run pace, height, weight, target weight;
-  - equipment;
-  - training history and example week;
-  - goals (short-term, long-term), race calendar, the A race;
-  - motivation, strengths, weaknesses;
-  - health answers, diet;
-  - signed date.
+## Matching athletes (brief §5)
+- Every athlete has a hub account. Its email is the login.
+- Vekta has no email, so: match by full name once, Matteo confirms, then store the **Vekta user id** on the account with `POST /cc/v1/athlete-meta` (below). From then on, use `vekta_id` everywhere.
+- Matteo can also type it in wp-admin > Users > the athlete > "Vekta user id".
+- A Vekta id can be on only one account; a duplicate is refused (409).
+- Any route that takes an athlete accepts **one** of: `vekta_id`, `email`, or `page` (the hub's athlete page id, `page` in the read route).
 
-  The usual week from the form fills the availability above. The form is locked once signed.
-- **Goals & events** (planned, same API): `GET /wp-json/cc/v1/goals?email=` will return the athlete's current goals and events list. Each event has a name, date, type, priority (A/B/C) and a note. The athlete keeps it up to date, and it starts from the form's answers. Use it for periodization.
+## Routes
 
-## Where athletes enter things (Matteo 16 Nov)
-- Athletes enter availability, goals and events only in their Cigala area, never in Vekta.
-- The website writes them into Vekta.
-- So the PC tools should read them from the website API above, not from Vekta events.
+| Route | Method | What |
+|---|---|---|
+| `/wp-json/cc/v1/athletes` | GET | Everything per athlete (read only). |
+| `/wp-json/cc/v1/athlete-meta` | POST | Set `vekta_id` and/or `nationality` on an athlete, after Matteo confirms. |
+| `/wp-json/cc/v1/report` | POST | Send a season plan, report or guide. Always a **draft**. |
+| `/wp-json/cc/v1/reports` | GET | List drafts and published reports (`?email=` for one athlete). |
+| `/wp-json/cc/v1/availability` | GET | Availability only (older route, still there). |
+| `/wp-json/cc/v1/goals` | GET | Goals & events only (older route, still there). |
+| `/wp-json/cc/v1/profile` | GET | The rider form answers (`?email=`). Contains health answers: keep them on the laptop only, never in a report. |
 
-## Periodization plan / "Your season" page: one place for events (Matteo 16 Nov)
-The athlete's "Your season" page (e.g. Marco's) currently ends with a "Please add any event here" form ("What / Date / Name / How important is it to you? / Send to Matteo"). That form is a preview only and sends nothing. Matteo wants everything connected, so:
-1. **Remove that form** ("Please add any event here" and "Send to Matteo") from the season page template.
-2. **Read events from the website** each time you build or update a season page: `GET https://coaching.cigalacycling.com/wp-json/cc/v1/goals?email=<athlete email>` returns the goals (`short`, `long`) and `events`. Each event has name, date (YYYY-MM-DD), type (race, sportive, camp, other), prio (A/B/C), dist (km), elev (m) and note. Put them on the chart: races are coloured by priority (A = main goal), and `goals.short` / `goals.long` go in the goals area. Also `GET /wp-json/cc/v1/availability?email=` for the usual week and dated changes (away, gym only, less time…) when planning the blocks.
-3. **In place of the form,** add a small "Your races and goals" box (design: `coaching/athlete-area/mockup/season-races-box.html` in the cigala-websites repo; copy its `<section class="races">` block and CSS): list the athlete's events from step 2 (date, A/B/C, name), plus one button, "Add or change in your athlete hub", linking to `https://coaching.cigalacycling.com/athletes/#goals`. For notes there's the note box in "My availability" (`/athletes/#availability`).
-4. **Old forms:** `goals.from_form` holds races an athlete typed on an old paper form, as plain text. Show it to Matteo (not the athlete) so he can turn them into real events.
-5. **Later (agreed plan):** the season page is delivered into the athlete's hub, like the reports (see the README section "Athlete area: reports from Matteo's PC tools"). Then season plan, availability and goals & events all sit in one place for the athlete.
+### GET /cc/v1/athletes (brief §3, §4, §5)
+- Query (all optional):
+  - one athlete: `?vekta_id=` or `?email=` or `?page=`;
+  - `?since=<unix time>`: only athletes whose availability, goals or form changed after that;
+  - `&former=1`: also include former athletes (coaching ended).
+- Returns a list. Each item:
+```json
+{
+ "page": 7472, "status": "active", "ended": null,
+ "name": "Testa Prova", "first_name": "Testa", "last_name": "Prova", "email": "…",
+ "vekta_id": "12345", "language": "pt", "nationality": "IE", "nationality_name": "Ireland",
+ "form": {"status": "signed", "signed_at": 1794870000, "kind": "full"},
+ "availability": {"data": {"week": {…}, "changes": […], "note": "…", "voice": […]}, "updated": 1794870000, "status": "new"},
+ "goals": {"short": "…", "long": "…", "events": […], "from_form": "…", "updated": 1794870000, "changed_by": "athlete", "status": "seen"},
+ "season_published": {"id": 7502, "at": 1794880000}
+}
+```
+- `status: "new" | "seen"`: "seen" once Matteo has opened that board in the hub ("Availability" or "Goals & events") after the change. The route itself never marks anything as seen.
+- `changed_by: "matteo"` means Matteo edited the goals from his coach view.
+- `form.status`: `waiting` (not started), `started`, `signed` (full form), `updated` (short update, paper form on file), `unlocked` (Matteo opened the hub without the form).
+- Former athletes: `status: "former"`, `ended` (time); no email, language or Vekta id (the login is gone).
+- The health answers are deleted when coaching ends (privacy policy), and the whole record two years later.
 
-Authentication is the application password on Matteo's PC (see above), never in chat. The website endpoints go live when Matteo puts the new athlete area live. Until then they exist only on staging (`staging.coaching.cigalacycling.com`), which has no real athlete data.
+### Final field names (brief §3, §4)
+- **language**: one per athlete. Matteo picks it when he creates the login; the athlete can change it in the form and the hub. It's a 2-letter code; the hub is fully translated in `en`, `it`, `pt`, `sl`. Stored as user meta `cc_lang`. **The hub's language, reports and emails follow it.**
+- **nationality**: only for the small flag next to the name in Matteo's list.
+  - ISO 3166 code, upper case in the route (`IE`, `IT`), plus `GB-ENG`, `GB-SCT`, `GB-WLS`, `GB-NIR`.
+  - The athlete's own answer in the rider form wins (`nat` in the profile); otherwise the one set with `athlete-meta` (page meta `cc_nat`).
+- **vekta_id**: user meta `cc_vekta_id` (string).
+- **Availability** (`availability.data`):
+  - `week`: per day `mon`…`sun` → `{"h": hours, "w": windows}`.
+    - `h`: `""` = not set, `"0"` = rest day, `"0.5"` = 30 min, `"1"`, `"1.5"`, `"2"`, `"3"`, `"4"` (4h+).
+    - `w`: when they can ride, any of `am` (morning), `mid` (lunch), `pm` (evening).
+  - `changes`: trips and other dated changes `{"from","to","days","type","h","text"}`.
+    - `to: ""` means no end date; `days: []` means every day.
+    - `type` is one of:
+      - `away`: away, no bike;
+      - `bike`: away, bike with me;
+      - `indoor`: indoor trainer only;
+      - `gym`: gym only;
+      - `less`: less time;
+      - `more`: more time;
+      - `other`.
+    - `h` is the time a day for that change. Changes whose end date has passed are dropped.
+  - `note`: free text to Matteo.
+  - `voice`: `[{"text": transcript, "at": time, "url": private link (opens only for Matteo)}]`. This is the **notes to Matteo, with voice**.
+- **Goals & events** (`goals`):
+  - `short` (1 year) and `long` are free text.
+  - `events`: `[{"name","date":"YYYY-MM-DD","type":"race|sportive|camp|other","prio":"A|B|C","dist","elev","note"}]`.
+  - `prio` is **the athlete's** priority (A = main goal, B = important, C = training race). Athletes add events and change the priority of listed ones in the hub.
+  - Matteo's own priority lives in the season plan on the laptop. Keep using his until he agrees to the athlete's change.
+  - `from_form`: races typed on an old paper form, plain text, for Matteo to turn into events.
+  - Goals have no date field: the short-term goal is "1 year"; a dated target belongs in an event.
 
-## Vekta calendar (Matteo 16 Nov: use his existing Claude–Vekta connection)
-- **The website does not hold a Vekta key and does not write to Vekta.** Matteo's existing Claude–Vekta connection does the writing.
-- **Each run:**
-  1. Read availability (and later goals & events) from the website API above. Only athletes whose `updated` time is newer than the last sync.
-  2. Write notes into each athlete's Vekta calendar, matched by email.
+### POST /cc/v1/athlete-meta
+```json
+{"email": "…", "set": {"vekta_id": "12345", "nationality": "IE"}}
+```
+- Use `email`, `page` or `vekta_id` to pick the athlete.
+- Send only what changes. `""` clears a value.
+- Answer: the athlete, as in the read route.
+- Errors:
+  - 404: no such active athlete;
+  - 409: Vekta id already on another athlete;
+  - 400: unknown nationality code.
+- **Only after Matteo has said yes to the match.**
+
+### POST /cc/v1/report (brief §1, §2, §6)
+```json
+{"vekta_id": "12345", "type": "season", "title": "Season plan 2027", "html": "<!doctype html>…", "note": "optional, for Matteo"}
+```
+- **Athlete:** `vekta_id`, `email` or `page`.
+- **`type`:**
+  - `season`: the season plan / periodization;
+  - `assessment`: initial assessment;
+  - `review`: e.g. the 6-month review before renewal;
+  - `race-plan`;
+  - `progress`: progress report;
+  - `guide`: a resource for this one athlete;
+  - `other`.
+- **`title`:** optional. Without it the athlete sees the kind and month in their language, e.g. "Revisão · maio 2027".
+- **Content:** `html` (one self-contained page) **or** `pdf_base64`. Maximum 12 MB. Your 200 KB season page is fine.
+- **Answer:** `{"ok": true, "id": 7502, "status": "draft", "replaced_drafts": [7500], "preview": "…", "review": "…/athletes/?board=reports"}`.
+- **Always a draft.** Nothing reaches the athlete until Matteo presses Publish in the hub's Reports board. He can tick "Email the athlete": on by default for everything except season plans.
+- **Season plan, replace in place:**
+  - The athlete always sees **one** season plan, the latest published, in "Your season" at the top of their hub.
+  - It's shown full width in the page (an `<iframe>` with `sandbox="allow-scripts allow-popups"`, about 720px tall), so zoom, hover pop-ups and the race-priority picker work. There's also an "Open full screen" button.
+  - A new season draft deletes any older **unpublished** season draft for that athlete (`replaced_drafts`).
+  - When Matteo publishes it, it replaces the previous one; earlier published plans move to "Earlier reports" as history.
+- **Other reports:**
+  - The newest of each kind sits on top; every race plan stays on top.
+  - Older ones fold under "Earlier reports".
+  - "New" badges clear once the athlete opens a report.
+- **HTML rules:**
+  - The page runs sandboxed, with no access to the site or the athlete's login: no `fetch` to the hub, no cookies, no forms that post.
+  - Inline CSS/JS. Google Fonts and CDN images are fine.
+  - Links open in a new tab (`target="_blank"`).
+  - The race-priority picker in the season page can't save into the hub. Make it send the athlete to `https://coaching.cigalacycling.com/athletes/#goals` (open in a new tab), where they change it.
+
+### Resources (brief §6)
+What the hub has for athletes:
+- **Per athlete:**
+  - reports and guides sent with `/cc/v1/report` (`type: "guide"` for a resource), draft then published by Matteo;
+  - PDFs Matteo uploads into an athlete's page in wp-admin.
+- **For everyone (shared hub, one per language):**
+  - quick links (catch-up call, nutrition, WhatsApp, Skool), the Vekta calendar button, training guides (PDFs), training tools (calculators), and reading (latest blog posts plus chosen articles).
+  - These are built by the cloud chat from `tools/coaching_athlete_area.py`. **The laptop does not edit them.** To add a shared resource, Matteo tells the cloud chat (send it the file or link).
+
+## What the laptop must not do (brief "Send back" §4)
+- Don't write anything to an athlete without Matteo: reports are drafts by design; never publish them yourself.
+- Don't write into Vekta without Matteo's yes (unchanged).
+- Don't edit the hub's code, its Code Snippet, the shared hub pages, or athletes' WordPress accounts. The only writes allowed are `POST /cc/v1/report` (drafts) and `POST /cc/v1/athlete-meta` (after Matteo confirms).
+- Don't delete anything through the API. Ending coaching and deleting data are Matteo's buttons in the hub.
+- Don't put health answers (`/cc/v1/profile`) in any report or page an athlete or anyone else sees. Don't keep them after coaching ends.
+- Never put the application password in chat, a repository or a page.
+- Athletes only ever see motivating, athlete-friendly things: never the weekly plan, early warnings or compliance counts.
+
+## Vekta calendar sync (unchanged, Matteo 16 Nov)
+- Uses Matteo's existing Claude–Vekta connection. The website holds no Vekta key.
+- Twice a day (about 06:00 and 18:00 Irish time), read `GET /cc/v1/athletes?since=<last run>`, then write notes into each athlete's Vekta calendar (matched by `vekta_id`).
 - **Which days get a note:**
-  - each day a change covers, only on its chosen weekdays (`days`);
+  - each day a change covers (only its `days`);
   - for a change with no end date, the next 8 weeks;
-  - when the usual week changes, one note on the next Monday;
-  - for events, the event date.
-- **Removing:** when a change or event is removed or edited, remove or update the note written for it. Keep a record of what was written for which athlete and date.
-- **Question for this session:** which Vekta calendar item type fits each case? For example: away = unavailable day; gym only, indoor only, less or more time = note; race = event. Tell Matteo or the availability chat.
-- **Running it (Matteo 16 Nov):** a scheduled task twice a day, at about 06:00 and 18:00 Irish time. If the Vekta connection is a claude.ai connector, the task runs with the PC off; otherwise it runs whenever the PC session runs.
-- Matteo already gets an email the moment an athlete saves, so a delay in Vekta is fine.
+  - one note on the next Monday when the usual week changes;
+  - events on their date.
+- **Removing:** remove or update a note when its change or event is edited or removed. Keep a record of what was written where.
+- **Vekta item type for each case:** still open. Tell Matteo which Vekta calendar item fits (e.g. away = unavailable day, race = event).
 
-## Rules (Matteo)
-- Athletes only ever see motivating, athlete-friendly things.
-- Never shown to athletes: the weekly plan, early warnings, compliance counts.
-- Health answers are private: only the athlete and Matteo see them.
-
-## Sending a report into an athlete's hub (built on staging 17 Nov)
-- `POST https://coaching.cigalacycling.com/wp-json/cc/v1/report` (application password, Basic auth), JSON:
-  `{"email": "<athlete email>", "type": "season|assessment|review|race-plan|progress|other", "title": "…", "html": "<full page>"}` or `"pdf_base64": "…"` instead of `html`. Max 12 MB.
-- The answer gives `id`, `preview` and `review` links. It always lands as a **draft**: Matteo previews and publishes it at `/athletes/?board=reports`. Nothing reaches the athlete before that.
-- A new `season` report replaces the athlete's "Your season" card when published (the latest one is shown). Send the season page here instead of a public link.
-- HTML is shown sandboxed: one self-contained page (inline CSS/JS; Google Fonts and CDN images are fine). No logins or forms inside it.
-- Only motivating, athlete-friendly reports (rules below). Live only once Matteo puts the new athlete area live.
+## Season page: the old add-event form
+The season page's "Please add any event here / Send to Matteo" form goes. In its place, a read-only "Your races and goals" box:
+- the design is `coaching/athlete-area/mockup/season-races-box.html` in the cigala-websites repo;
+- it lists the athlete's events from the read route, with a button "Add or change in your athlete hub" → `https://coaching.cigalacycling.com/athletes/#goals`.
