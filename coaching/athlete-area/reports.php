@@ -60,6 +60,13 @@ add_action('rest_api_init', function () {
         cc_r_mail($rid, $me->user_email); return ['ok' => true, 'sent_to_yourself' => true];
     }]);
     register_rest_route('cc/v1', '/reports', ['methods' => 'GET', 'callback' => 'cc_r_list_rest', 'permission_callback' => 'cc_ath_is_coach']);
+    // Matteo 17 Nov: the hub chat can clear DRAFTS its tools made (e.g. the retired Training snapshot). Published reports are never deleted this way.
+    register_rest_route('cc/v1', '/report/(?P<id>\d+)', ['methods' => 'DELETE', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $id = (int) $r['id'];
+        if (get_post_type($id) !== 'cc_report') return new WP_Error('cc_none', 'No such report', ['status' => 404]);
+        if (get_post_status($id) !== 'draft') return new WP_Error('cc_published', 'Only drafts can be deleted here; published reports are Matteo’s to remove', ['status' => 409]);
+        cc_r_delete($id); return ['ok' => true, 'deleted' => $id];
+    }]);
 });
 function cc_r_create(WP_REST_Request $r) {
     if (function_exists('cc_pc_page_from')) $pid = cc_pc_page_from($r);   // email, vekta_id or page (pc-api.php)
