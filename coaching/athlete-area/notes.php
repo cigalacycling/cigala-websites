@@ -155,10 +155,12 @@ b.addEventListener('click',function(){if(rec){rec.stop();return;}msg('');
   rec.start(1000);t0=Date.now();tr='';voice(true);b.classList.add('on');b.setAttribute('aria-pressed','true');lab(W.stop);
   tick=setInterval(function(){var n=Math.round((Date.now()-t0)/1000);st.textContent=W.listening.replace('{s}',n);if(n>=300&&rec)rec.stop();},500);
   /* the words are written out for Matteo only: nothing appears in the text box */
-  var SR=window.SpeechRecognition||window.webkitSpeechRecognition,done='';
-  if(SR){sr=new SR();sr.lang=L;sr.continuous=true;sr.interimResults=true;
+  /* Matteo 17 Nov: on iPhone the speech-to-text fights the recording for the microphone and kept stopping; restarting it at once
+     looped and froze the phone. iPhone: no live writing-out (the recording is what counts); elsewhere: restarts spaced out and capped. */
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition,done='',tries=0,ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  if(SR&&!ios){sr=new SR();sr.lang=L;sr.continuous=true;sr.interimResults=true;
    sr.onresult=function(e){var t='';for(var i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;tr=(done+' '+t).trim();};
-   sr.onend=function(){done=tr;if(rec)try{sr.start();}catch(x){}};sr.onerror=function(){};try{sr.start();}catch(x){}}
+   sr.onend=function(){done=tr;if(rec&&tries++<8)setTimeout(function(){if(rec)try{sr.start();}catch(x){}},700);};sr.onerror=function(){};try{sr.start();}catch(x){}}
  }).catch(function(){msg(W.mic_denied,true);});});
 go.addEventListener('click',function(){if(rec){rec.stop();setTimeout(function(){go.click();},600);return;}var txt=ta.value.trim();if(!txt&&!blob){msg(W.empty,true);return;}
  go.disabled=true;msg(W.sending);var f=new FormData(),ex=JSON.parse(A.dataset.extra||'{}');Object.keys(ex).forEach(function(k){f.append(k,ex[k]);});

@@ -374,9 +374,11 @@ function mic(b){if(rec){rec.stop();return;}
   rec.start(1000);t0=Date.now();b.setAttribute('aria-pressed','true');b.classList.add('on');var r=app.querySelector('.av-rec');r.hidden=false;
   tick=setInterval(function(){var s=Math.round((Date.now()-t0)/1000);r.textContent=t_('listening',{s:s});if(s>=300)rec&&rec.stop();},500);
   var SR=window.SpeechRecognition||window.webkitSpeechRecognition,ta=document.getElementById('av-note');base=ta.value?ta.value.replace(/\s*$/,'')+'\n':'';
-  if(SR){sr=new SR();sr.lang=L;sr.continuous=true;sr.interimResults=true;
+  /* Matteo 17 Nov: no live writing-out on iPhone (it fought the recording and looped); elsewhere restarts spaced out and capped */
+  var ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),tries=0;
+  if(SR&&!ios){sr=new SR();sr.lang=L;sr.continuous=true;sr.interimResults=true;
    sr.onresult=function(e){var s='';for(var i=0;i<e.results.length;i++)s+=e.results[i][0].transcript;ta.value=base+s.trim();D.note=ta.value;};
-   sr.onend=function(){if(rec)try{sr.start();}catch(x){}};sr.onerror=function(){};try{sr.start();}catch(x){}}
+   sr.onend=function(){if(rec&&tries++<8)setTimeout(function(){if(rec)try{sr.start();}catch(x){}},700);};sr.onerror=function(){};try{sr.start();}catch(x){}}
  }).catch(function(){msg(W.mic_denied,true);});}
 function save(b){b.disabled=true;msg(W.saving);var f=new FormData(),txt=document.getElementById('av-note').value;
  f.append('data',JSON.stringify({week:D.week,changes:D.changes,note:D.note}));
