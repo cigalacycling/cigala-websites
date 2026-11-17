@@ -1,0 +1,149 @@
+<?php
+if (!defined('ABSPATH')) return;
+/* Matteo, 17 Nov 2026:
+ * 1. "How to use your hub": a short guide at the top of every athlete's hub (Vekta or TrainingPeaks version), foldable.
+ * 2. "News from Matteo": announcements (Q&A sessions, camps…) at the top of the hub, for everyone or a group, in each athlete's
+ *    language (all four texts are required, so nobody ever reads it in the wrong language), optional button and phone notification.
+ *    Posted on the News board, or by Claude with POST /wp-json/cc/v1/news. Athletes tap "Got it" to hide one.
+ * 3. A new blog post: a phone notification to athletes who turned them on (Italian posts to Italian readers, the others to the rest). */
+
+function cc_nw_w($k) {
+    static $W = [
+        'g_title' => ['en' => 'How to use your hub', 'it' => 'Come usare la tua area', 'pt' => 'Como usar a tua área', 'sl' => 'Kako uporabljati svoje središče'],
+        'g_train_v' => ['en' => '🚴 <b>Your training</b> (plan, workouts, comments on a ride): in <b>Vekta</b>', 'it' => '🚴 <b>Il tuo allenamento</b> (piano, allenamenti, commenti su un’uscita): su <b>Vekta</b>',
+                        'pt' => '🚴 <b>O teu treino</b> (plano, treinos, comentários sobre um treino): no <b>Vekta</b>', 'sl' => '🚴 <b>Tvoj trening</b> (načrt, treningi, komentarji k vožnji): v <b>Vekti</b>'],
+        'g_train_t' => ['en' => '🚴 <b>Your training</b> (plan, workouts, comments on a ride): in <b>TrainingPeaks</b>', 'it' => '🚴 <b>Il tuo allenamento</b> (piano, allenamenti, commenti su un’uscita): su <b>TrainingPeaks</b>',
+                        'pt' => '🚴 <b>O teu treino</b> (plano, treinos, comentários sobre um treino): no <b>TrainingPeaks</b>', 'sl' => '🚴 <b>Tvoj trening</b> (načrt, treningi, komentarji k vožnji): v <b>TrainingPeaks</b>'],
+        'g_note' => ['en' => '🎙 <b>How your week is going</b>: “Leave me a note” (text or voice)', 'it' => '🎙 <b>Come va la tua settimana</b>: “Lasciami un messaggio” (testo o vocale)',
+                     'pt' => '🎙 <b>Como está a correr a tua semana</b>: “Deixa-me uma mensagem” (texto ou voz)', 'sl' => '🎙 <b>Kako gre tvoj teden</b>: “Pusti mi sporočilo” (besedilo ali glas)'],
+        'g_res' => ['en' => '🏆 <b>A result you are proud of</b>: “Share a result”', 'it' => '🏆 <b>Un risultato di cui sei fiero</b>: “Condividi un risultato”',
+                    'pt' => '🏆 <b>Um resultado de que te orgulhas</b>: “Partilha um resultado”', 'sl' => '🏆 <b>Rezultat, na katerega si ponosen</b>: “Deli rezultat”'],
+        'g_av' => ['en' => '📅 <b>Your availability and races</b>: keep them up to date here', 'it' => '📅 <b>La tua disponibilità e le gare</b>: tienile aggiornate qui',
+                   'pt' => '📅 <b>A tua disponibilidade e as provas</b>: mantém-nas atualizadas aqui', 'sl' => '📅 <b>Tvoja razpoložljivost in tekme</b>: tu jih sproti posodabljaj'],
+        'g_rep' => ['en' => '📄 <b>Your reports and guides</b>: all here', 'it' => '📄 <b>I tuoi report e le guide</b>: tutto qui', 'pt' => '📄 <b>Os teus relatórios e guias</b>: tudo aqui', 'sl' => '📄 <b>Tvoja poročila in vodiči</b>: vse tukaj'],
+        'g_wa' => ['en' => '💬 <b>Something urgent</b>: WhatsApp me', 'it' => '💬 <b>Qualcosa di urgente</b>: scrivimi su WhatsApp', 'pt' => '💬 <b>Algo urgente</b>: envia-me WhatsApp', 'sl' => '💬 <b>Nekaj nujnega</b>: piši mi na WhatsApp'],
+        'news' => ['en' => 'News from Matteo', 'it' => 'Novità da Matteo', 'pt' => 'Novidades do Matteo', 'sl' => 'Novice od Mattea'],
+        'got' => ['en' => 'Got it', 'it' => 'Ok, letto', 'pt' => 'Entendido', 'sl' => 'Razumem'],
+        'more' => ['en' => 'Find out more', 'it' => 'Scopri di più', 'pt' => 'Saber mais', 'sl' => 'Več o tem'],
+        'blog' => ['en' => 'New on the blog', 'it' => 'Nuovo sul blog', 'pt' => 'Novo no blog', 'sl' => 'Novo na blogu'],
+    ];
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
+}
+const CC_NW_LANGS = ['en', 'it', 'pt', 'sl'];
+function cc_nw_all() { $a = get_option('cc_news', []); return is_array($a) ? $a : []; }
+function cc_nw_for($pid) {   // the news this athlete should see (audience match), newest first
+    $tp = function_exists('cc_ath_tp') && cc_ath_tp($pid); $uid = (int) get_post_meta($pid, 'cc_user', true); $l = $uid ? cc_ath_lang_code($uid) : 'en';
+    $out = [];
+    foreach (array_reverse(cc_nw_all()) as $n) {
+        $aud = $n['aud'] ?? 'all';
+        if ($aud === 'vekta' && $tp) continue; if ($aud === 'tp' && !$tp) continue; if (strpos($aud, 'lang:') === 0 && substr($aud, 5) !== $l) continue;
+        if (empty($n['t'][$l])) continue;   // never in the wrong language
+        $out[] = $n;
+    }
+    return $out;
+}
+
+// top of the hub (after the phone / home-screen cards): the guide, then the news
+add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
+    if (!$view) return $html;
+    $tp = function_exists('cc_ath_tp') && cc_ath_tp($view);
+    $lines = [cc_nw_w($tp ? 'g_train_t' : 'g_train_v'), cc_nw_w('g_note'), cc_nw_w('g_res')];
+    if (!$tp) $lines[] = cc_nw_w('g_av');
+    $lines[] = cc_nw_w('g_rep'); $lines[] = cc_nw_w('g_wa');
+    $o = '<details class="nw-guide" id="nw-guide" open><summary>' . esc_html(cc_nw_w('g_title')) . '</summary><ul>' . implode('', array_map(function ($x) { return '<li>' . wp_kses($x, ['b' => []]) . '</li>'; }, $lines)) . '</ul></details>';
+    foreach (array_slice(cc_nw_for($view), 0, 3) as $n) {
+        $l = $GLOBALS['cc_ath_lang'] ?? 'en'; $t = $n['t'][$l] ?? ($n['t']['en'] ?? []);
+        $o .= '<div class="nw-card" data-id="' . esc_attr($n['id']) . '" hidden>' . (!empty($n['img']) ? '<img src="' . esc_url($n['img']) . '" alt="">' : '')
+            . '<div><p class="nw-eb">📣 ' . esc_html(cc_nw_w('news')) . ' · ' . esc_html(date_i18n('j M', (int) $n['at'])) . '</p><b>' . esc_html($t['title'] ?? '') . '</b>'
+            . (($t['body'] ?? '') !== '' ? '<p>' . nl2br(esc_html($t['body'])) . '</p>' : '')
+            . '<span class="nw-acts">' . (!empty($n['url']) ? '<a class="btn btn-go" href="' . esc_url($n['url']) . '" target="_blank" rel="noopener">' . esc_html(($t['btn'] ?? '') !== '' ? $t['btn'] : cc_nw_w('more')) . '</a>' : '')
+            . '<button type="button" class="btn btn-ghost nw-got">' . esc_html(cc_nw_w('got')) . '</button></span></div></div>';
+    }
+    return $html . $o
+        . '<style>html .cc .nw-guide{margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}html .cc .nw-guide summary{cursor:pointer;font-weight:700;font-size:16px;color:#fff}'
+        . 'html .cc .nw-guide ul{margin:10px 0 2px;padding:0;list-style:none;display:grid;gap:8px}html .cc .nw-guide li{font-size:16px;color:var(--text-2);line-height:1.45}html .cc .nw-guide b{color:#fff}'
+        . 'html .cc .nw-card{display:flex;gap:14px;align-items:flex-start;margin:0 0 14px;padding:14px 16px;border-radius:14px;border:1px solid rgba(43,212,122,.45);background:linear-gradient(135deg,rgba(18,161,80,.16),rgba(18,161,80,.04))}html .cc .nw-card[hidden]{display:none!important}'
+        . 'html .cc .nw-card img{width:84px;height:84px;border-radius:12px;object-fit:cover;flex:none}html .cc .nw-eb{margin:0 0 4px;font-size:14px;color:#2bd47a;font-weight:700;letter-spacing:.04em;text-transform:uppercase}'
+        . 'html .cc .nw-card b{display:block;font-size:18px;color:#fff}html .cc .nw-card p{margin:6px 0 0;font-size:16px;color:var(--text-2)}html .cc .nw-acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}html .cc .nw-acts .btn{width:auto;margin:0}'
+        . '@media (max-width:560px){html .cc .nw-card{flex-direction:column}html .cc .nw-card img{width:100%;height:160px}}</style>'
+        . '<script>(function(){function g(k){try{return localStorage.getItem(k);}catch(e){return null;}}function s(k,v){try{localStorage.setItem(k,v);}catch(e){}}'
+        . 'var d=document.getElementById("nw-guide");if(d){if(g("cc_guide_closed"))d.open=false;d.addEventListener("toggle",function(){s("cc_guide_closed",d.open?"":"1");});}'
+        . 'document.querySelectorAll(".nw-card").forEach(function(c){if(g("cc_news_"+c.dataset.id))return;c.hidden=false;c.querySelector(".nw-got").addEventListener("click",function(){s("cc_news_"+c.dataset.id,"1");c.hidden=true;});});})();</script>';
+}, 3, 3);
+
+/* ---------- posting: News board and POST /wp-json/cc/v1/news ---------- */
+function cc_nw_post($in) {   // ['aud', 'url', 'img', 'push', 't' => [lang => [title, body, btn]]] -> the item, or WP_Error
+    $aud = (string) ($in['aud'] ?? 'all'); if (!in_array($aud, ['all', 'vekta', 'tp'], true) && !preg_match('/^lang:(en|it|pt|sl)$/', $aud)) $aud = 'all';
+    $need = strpos($aud, 'lang:') === 0 ? [substr($aud, 5)] : CC_NW_LANGS; $t = [];
+    foreach (CC_NW_LANGS as $l) { $x = (array) ($in['t'][$l] ?? []); $title = cc_av_str($x['title'] ?? '', 140); if ($title === '') continue;
+        $t[$l] = ['title' => $title, 'body' => cc_av_note($x['body'] ?? '', 1500), 'btn' => cc_av_str($x['btn'] ?? '', 40)]; }
+    foreach ($need as $l) if (empty($t[$l])) return new WP_Error('cc_lang', 'Missing the ' . strtoupper($l) . ' text: every athlete reads news in their own language', ['status' => 400]);
+    $n = ['id' => wp_generate_password(8, false, false), 'at' => time(), 'aud' => $aud, 'url' => esc_url_raw((string) ($in['url'] ?? '')), 'img' => esc_url_raw((string) ($in['img'] ?? '')), 't' => $t];
+    $all = cc_nw_all(); $all[] = $n; update_option('cc_news', array_slice($all, -30), false);
+    if (!empty($in['push']) && function_exists('cc_push_user')) {   // phones of athletes in the audience (only those who turned notifications on)
+        foreach (get_users(['meta_key' => 'cc_push', 'fields' => 'ID']) as $uid) {
+            if (user_can((int) $uid, 'edit_pages')) continue; $pid = cc_ath_page_of((int) $uid); if (!$pid) continue;
+            foreach (cc_nw_for($pid) as $x) if ($x['id'] === $n['id']) {
+                $l = cc_ath_lang_code((int) $uid); $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = $l;
+                cc_push_user((int) $uid, '📣 ' . $t[$l]['title'], wp_trim_words($t[$l]['body'], 18), home_url('/' . CC_ATH_SLUG . '/'), 'cc-news-' . $n['id']);
+                $GLOBALS['cc_ath_lang'] = $keep;
+            }
+        }
+    }
+    return $n;
+}
+add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/news', [
+        ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () { return array_reverse(cc_nw_all()); }],
+        ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) { $n = cc_nw_post($r->get_json_params() ?: $r->get_params()); return is_wp_error($n) ? $n : ['ok' => true, 'id' => $n['id']]; }],
+    ]);
+    register_rest_route('cc/v1', '/news/(?P<id>[A-Za-z0-9]+)', ['methods' => 'DELETE', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        update_option('cc_news', array_values(array_filter(cc_nw_all(), function ($n) use ($r) { return $n['id'] !== $r['id']; })), false); return ['ok' => true];
+    }]);
+});
+add_filter('cc_ath_coach_links', function ($html) { return $html . '<a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'news', home_url('/' . CC_ATH_SLUG . '/'))) . '">News</a>'; }, 14);
+add_filter('cc_ath_board', function ($html, $board) {
+    if ($board !== 'news' || !cc_ath_is_coach()) return $html;
+    $r = sanitize_key($_GET['nw'] ?? ''); $err = (string) get_transient('cc_nw_err');
+    $o = '<section class="ath-s"><h2>📣 News for your athletes</h2><p class="av-lede">An announcement at the top of their hub (a Q&amp;A, a camp, a change…), with an optional button and phone notification. '
+       . 'Every athlete reads it in their own language, so fill in all four (or tell Claude in chat “Announce: …” and it is translated and posted for you).</p>'
+       . ($r === 'ok' ? '<p class="rp-smtp-m">Posted.</p>' : '') . ($r === 'bad' ? '<p class="rp-smtp-m" style="color:#ff4a3d">' . esc_html($err) . '</p>' : '')
+       . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="nw-form"><input type="hidden" name="action" value="cc_news">' . wp_nonce_field('cc_news', '_wpnonce', false, false)
+       . '<label>Who sees it <select name="aud"><option value="all">Everyone</option><option value="vekta">Vekta athletes</option><option value="tp">TrainingPeaks athletes</option>'
+       . '<option value="lang:en">English readers</option><option value="lang:it">Italian readers</option><option value="lang:pt">Portuguese readers</option><option value="lang:sl">Slovenian readers</option></select></label>';
+    foreach (['en' => 'English', 'it' => 'Italiano', 'pt' => 'Português', 'sl' => 'Slovenščina'] as $l => $nm)
+        $o .= '<fieldset><legend>' . $nm . '</legend><input name="t[' . $l . '][title]" maxlength="140" placeholder="Title"><textarea name="t[' . $l . '][body]" rows="3" placeholder="Message"></textarea><input name="t[' . $l . '][btn]" maxlength="40" placeholder="Button text (optional)"></fieldset>';
+    $o .= '<label>Button link (optional) <input name="url" type="url" placeholder="https://"></label><label class="nw-tick"><input type="checkbox" name="push" value="1" checked> Also send a phone notification</label>'
+       . '<button class="btn btn-go" type="submit">Post the news</button></form>';
+    $all = array_reverse(cc_nw_all());
+    if ($all) { $o .= '<h3 class="av-sub">Posted</h3>'; foreach ($all as $n) $o .= '<div class="nt-item"><small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at']) . ' · ' . $n['aud']) . '</small><p><b>' . esc_html($n['t']['en']['title'] ?? reset($n['t'])['title']) . '</b></p>'
+        . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_news_del"><input type="hidden" name="id" value="' . esc_attr($n['id']) . '">' . wp_nonce_field('cc_news', '_wpnonce', false, false) . '<button class="btn btn-ghost" type="submit" onclick="return confirm(\'Remove this news from every hub?\')">Remove</button></form></div>'; }
+    return $o . '</section><style>html .cc .nw-form{display:grid;gap:12px;max-width:640px}html .cc .nw-form label{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}html .cc .nw-form fieldset{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 12px;display:grid;gap:8px}'
+        . 'html .cc .nw-form legend{font-weight:700;color:#fff;padding:0 6px}html .cc .nw-form :is(input,textarea,select){font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;width:100%;box-sizing:border-box}'
+        . 'html .cc .nw-form .nw-tick{display:flex!important;gap:10px;align-items:center}html .cc .nw-form .nw-tick input{width:22px;height:22px}html .cc .nw-form .btn{justify-self:start}</style>';
+}, 10, 2);
+add_action('admin_post_cc_news', function () {
+    if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_news')) wp_die('Not allowed');
+    $n = cc_nw_post(['aud' => $_POST['aud'] ?? 'all', 'url' => $_POST['url'] ?? '', 'push' => !empty($_POST['push']), 't' => wp_unslash((array) ($_POST['t'] ?? []))]);
+    if (is_wp_error($n)) set_transient('cc_nw_err', $n->get_error_message(), 120);
+    wp_safe_redirect(add_query_arg(['board' => 'news', 'nw' => is_wp_error($n) ? 'bad' : 'ok'], home_url('/' . CC_ATH_SLUG . '/'))); exit;
+});
+add_action('admin_post_cc_news_del', function () {
+    if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_news')) wp_die('Not allowed');
+    $id = sanitize_text_field($_POST['id'] ?? ''); update_option('cc_news', array_values(array_filter(cc_nw_all(), function ($n) use ($id) { return $n['id'] !== $id; })), false);
+    wp_safe_redirect(add_query_arg('board', 'news', home_url('/' . CC_ATH_SLUG . '/'))); exit;
+});
+
+/* ---------- a new blog post: a buzz on the phones that are turned on (Italian posts to Italian readers, the others to the rest) ---------- */
+add_action('transition_post_status', function ($new, $old, $post) {
+    if ($new !== 'publish' || $old === 'publish' || $post->post_type !== 'post' || !function_exists('cc_push_user')) return;
+    if (get_post_meta($post->ID, 'cc_blog_pushed', true)) return; update_post_meta($post->ID, 'cc_blog_pushed', time());
+    $it = has_category('Italiano', $post);
+    foreach (get_users(['meta_key' => 'cc_push', 'fields' => 'ID']) as $uid) {
+        if (user_can((int) $uid, 'edit_pages')) continue;
+        $l = cc_ath_lang_code((int) $uid); if (($l === 'it') !== $it) continue;
+        $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = $l;
+        cc_push_user((int) $uid, '📰 ' . cc_nw_w('blog'), wp_strip_all_tags(get_the_title($post)), get_permalink($post), 'cc-blog-' . $post->ID);
+        $GLOBALS['cc_ath_lang'] = $keep;
+    }
+}, 10, 3);
