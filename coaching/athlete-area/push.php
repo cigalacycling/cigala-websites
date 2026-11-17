@@ -128,8 +128,9 @@ add_action('rest_api_init', function () {
         array_unshift($l, ['at' => time(), 'user' => wp_get_current_user()->display_name] + array_map(function ($x) { return substr(sanitize_text_field((string) $x), 0, 300); }, (array) $r->get_json_params()));
         update_option('cc_push_log', array_slice($l, 0, 20), false); return ['ok' => true];
     }]);
-    register_rest_route('cc/v1', '/push-test', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {   // Matteo: a test to his own phones
-        return ['sent' => cc_push_user(get_current_user_id(), 'Cigala Cycling', 'Test: notifications work on this phone.', home_url('/' . CC_ATH_SLUG . '/'), 'cc-test')];
+    register_rest_route('cc/v1', '/push-test', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {   // Matteo: a test to his own phones, or to an athlete page's phones (page=)
+        $uid = $r->get_param('page') ? (int) get_post_meta((int) $r->get_param('page'), 'cc_user', true) : get_current_user_id();
+        return ['sent' => cc_push_user($uid, 'Cigala Cycling', 'Test: notifications work on this phone 🎉', home_url('/' . CC_ATH_SLUG . '/'), 'cc-test')];
     }]);
     register_rest_route('cc/v1', '/push-status', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
         $n = 0; $who = []; foreach (get_users(['meta_key' => 'cc_push', 'fields' => ['ID', 'display_name']]) as $u) { $c = count((array) get_user_meta($u->ID, 'cc_push', true)); if ($c) { $n += $c; $who[] = $u->display_name; } }
