@@ -519,6 +519,14 @@ add_action('wp_footer', function () {
     if (!is_page(CC_ATH_SLUG) || !is_user_logged_in()) return;
     $l = cc_ath_lang_code(get_current_user_id()); $speech = defined('CC_AV_SPEECH') ? (CC_AV_SPEECH[$l] ?? 'en-GB') : 'en-GB';
     $cfg = wp_json_encode(['lang' => $speech, 'w' => ['mic' => cc_ath_w('mic', $l), 'on' => cc_ath_w('mic_on', $l), 'denied' => cc_ath_w('mic_denied', $l), 'none' => cc_ath_w('mic_none', $l)]]);
+    // Matteo 17 Nov (Marine's phone test): answer boxes were small on phones; they start taller and grow with what is written or spoken
+    echo '<style id="cc-grow">#rf textarea,#gl-app textarea,#av-note{min-height:120px;line-height:1.5;resize:vertical;overflow:hidden}'
+       . '@media(max-width:640px){#rf textarea,#gl-app textarea,#av-note{min-height:150px}}</style>'
+       . '<script>(function(){function g(t){if(!t.offsetParent)return;t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px";}'
+       . 'function all(){document.querySelectorAll("#rf textarea,#gl-app textarea,#av-note").forEach(function(t){if(t.value)g(t);});}'
+       . 'document.addEventListener("input",function(e){var t=e.target;if(t.matches&&t.matches("#rf textarea,#gl-app textarea,#av-note"))g(t);},true);'
+       . 'all();document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".rf-next,.rf-back"))setTimeout(all,50);});'
+       . 'var q=0;new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;all();});}).observe(document.body,{childList:true,subtree:true});})();</script>';
     echo '<style id="cc-mic">.cc-micw{position:relative;display:block}.cc-micw textarea{padding-right:58px!important}.cc-micw input{padding-right:52px!important}'
        . '.cc-mic{position:absolute;right:8px;bottom:8px;width:42px;height:42px;min-height:0!important;padding:0!important;margin:0!important;border-radius:50%!important;border:0!important;background:#018a44!important;display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4)}'
        . '.cc-micw input~.cc-mic{top:50%;bottom:auto;transform:translateY(-50%);width:36px;height:36px}'
