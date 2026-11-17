@@ -13,6 +13,12 @@
 > - step 10: tell the laptop chats;
 > - step 11: clean staging.
 >
+> **Night of 17 Nov, also live:**
+> - daily pages from the laptop: season / prediction / snapshot, with automatic updates after Matteo's first publish; race day simulator;
+> - guides in Portuguese and Slovenian (12 PDFs, private, in their hubs);
+> - email headers in PT and SL;
+> - fixes found by a full language sweep (EN/IT/PT/SL at 390/820/1440, no leftovers except the legal texts, which stay English for PT/SL until Matteo approves a translation).
+>
 > **From now on, every hub change:** test on staging, then push live the same way (back up first).
 
 Everything since 16 Nov evening is built and tested **on staging only** (`staging.coaching.cigalacycling.com`). The live site still has the first, older hub. This is the checklist for putting it live. **Any session doing the go-live follows it, step by step, together with Matteo.**

@@ -218,7 +218,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
   </div>
   <div class="photo"><img src="assets/nutrition-hero-strawberries.jpg" alt="Roke s kupčkom svežih jagod"></div>
   <div class="by">
-    <div class="avrow"><img class="av viv" src="assets/avatar-marine-lenehan.jpg" alt="Marine Lenehan"><div><div class="who">Marine Lenehan</div><div class="role">Športna nutricionistka · Vivify Sports</div></div></div>
+    <div class="avrow"><img class="av viv" src="assets/avatar-marine-lenehan.jpg" alt="Marine Lenehan"><div><div class="who">Marine Lenehan</div><div class="role">Nutricionistka · Vivify Sports</div></div></div>
     <div class="avrow rev r"><img class="av" src="assets/avatar-matteo-cigala.jpg" alt="Matteo Cigala"><div><div class="who">Matteo Cigala</div><div class="role">Glavni trener · Cigala Cycling</div></div></div>
   </div>
 </section>
@@ -307,7 +307,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <tr><td>Proso</td><td>Športni napitki</td></tr>
     <tr><td>Polnozrnat kruh</td><td>Geli</td></tr>
     <tr><td>Oves &amp; ovsena kaša</td><td>Riževi kosmiči</td></tr>
-    <tr><td>Polnozrnati kosmiči</td><td>Rafinirani kosmiči <small>(koruzni kosmiči, napihnjen riž, pšenični zdrob)</small></td></tr>
+    <tr><td>Polnozrnati kosmiči</td><td>Rafinirani kosmiči <small>(koruzni kosmiči, napihnjen riž, zdrob)</small></td></tr>
     <tr><td>Jabolka, hruške &amp; jagodičevje</td><td>Banana &amp; suho sadje</td></tr>
     <tr><td>Krompir z lupino</td><td>Krompir brez lupine</td></tr>
     <tr><td>Brstični ohrovt</td><td>Marmelada &amp; želeji</td></tr>
@@ -418,10 +418,10 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
   </div>
   <p>Maščobe v prehrani dajejo energijo, podpirajo tvorbo hormonov, ohranjajo celične membrane in telesu pomagajo vsrkati vitamine <b>A, D, E in K</b>. Pomembne so tudi za normalno delovanje možganov, prenos živčnih signalov in zdravje imunskega sistema.</p>
   <div class="g4" style="align-items:start;margin-top:14px">
-    <div class="fat mono"><div class="hd"><div class="anton"><i style="background:var(--green)"></i>Enkrat nenasičene</div><div class="tag">Omega-9 · Zdravje srca</div></div>
+    <div class="fat mono"><div class="hd"><div class="anton"><i style="background:var(--green)"></i>Mononenasičene</div><div class="tag">Omega-9 · Zdravje srca</div></div>
       <div class="ds">Pomagajo znižati holesterol in izboljšati zdravje srca in ožilja.</div>
       <ul><li>Ekstra deviško oljčno olje</li><li>Olive</li><li>Avokado</li><li>Repično olje</li><li>Pistacije</li><li>Arašidi</li><li>Makadamija oreščki</li><li>Mandlji</li><li>Lešniki</li></ul></div>
-    <div class="fat poly"><div class="hd"><div class="anton"><i style="background:var(--green)"></i>Večkrat nenasičene</div><div class="tag">Omega-3 &amp; 6 · Protivnetne</div></div>
+    <div class="fat poly"><div class="hd"><div class="anton"><i style="background:var(--green)"></i>Polinenasičene</div><div class="tag">Omega-3 &amp; 6 · Protivnetne</div></div>
       <div class="ds">Izboljšajo delovanje živcev, imunskega sistema in možganov; zmanjšajo vnetja in bolečino.</div>
       <ul><li>Mastne ribe</li><li>Orehi</li><li>Lanena semena</li><li>Chia semena</li><li>Konopljina semena</li><li>Sončnično olje &amp; semena</li><li>Sezamova semena</li><li>Bučna semena</li><li>Arašidovo olje</li></ul></div>
     <div class="fat sat"><div class="hd"><div class="anton"><i style="background:var(--text-3)"></i>Nasičene</div><div class="tag">Energija · Zmeren vnos</div></div>
@@ -552,7 +552,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
     <li>Zaužij približno <b>20–40 g kakovostnih beljakovin</b> za spodbujanje sinteze mišičnih beljakovin.</li>
     <li>Vključi ogljikove hidrate za obnovo mišičnega glikogena.</li>
     <li>Po zahtevnih treningih daj prednost hitri prehrani za regeneracijo, zlasti ko je časa za regeneracijo malo.</li></ul></div></div>
-  <div class="row"><div class="lab">Prilagodi trenažni obremenitvi</div><div class="bd"><ul class="dots">
+  <div class="row"><div class="lab">Prilagodi obremenitvi</div><div class="bd"><ul class="dots">
     <li>Povečaj vnos ogljikovih hidratov skladno z obsegom in intenzivnostjo treninga.</li>
     <li>Ohranjaj enakomeren vnos beljakovin čez ves dan.</li>
     <li>Izogibaj se kroničnemu pomanjkanju energije, saj lahko poslabša regeneracijo, zmogljivost in splošno zdravje.</li></ul></div></div>
@@ -776,7 +776,7 @@ th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;
 // plate pies: data-pie = fruit&veg, grains, protein (percent), drawn clockwise from 12 o'clock
 document.querySelectorAll('.tiles.scale .tile').forEach(t=>{const l=+t.dataset.l,m=document.createElement('div');m.className='m';m.innerHTML=[1,2,3,4,5].map(i=>`<i class="${i<=l?'on':''}"></i>`).join('');t.appendChild(m)});
 document.querySelectorAll('svg[data-pie]').forEach(svg=>{
-  const v=svg.dataset.pie.split(',').map(Number), cols=['#34c46a','#f28c38','#e8606a'], labs=[['Fruit &','veg.'],['Grains'],['Protein']], txt=['#08090a','#08090a','#08090a'];
+  const v=svg.dataset.pie.split(',').map(Number), cols=['#34c46a','#f28c38','#e8606a'], labs=[['Sadje &','zelenjava'],['Žita'],['Beljakovine']], txt=['#08090a','#08090a','#08090a'];
   let a=0, out='';
   const pt=(ang,r)=>[50+r*Math.sin(ang*2*Math.PI/100),50-r*Math.cos(ang*2*Math.PI/100)];
   v.forEach((p,i)=>{
