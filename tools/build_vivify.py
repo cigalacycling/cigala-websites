@@ -51,7 +51,7 @@ PAGES = {  # file -> live path
 # New SEO pages (16 Nov 2026, not on the live site): file -> (path, Yoast title, meta description). Copy in vivify_seo_pages.py.
 NEW = {
     'cycling-nutritionist.html': ('/cycling-nutritionist', 'Cycling Nutritionist Ireland & Online | Vivify Sports',
-        'Cycling nutrition coaching from Marine Lenehan, MSc sports nutritionist and LIDL-TREK WorldTour rider. Road, gravel, track, MTB and cyclocross, Ireland and online.'),
+        'Cycling nutrition coaching with Marine Lenehan, MSc and LIDL-TREK WorldTour rider: Gran Fondo, sportive, gravel, track, MTB and cyclocross. Ireland and online.'),
     'race-fuelling-plan.html': ('/race-fuelling-plan', 'Race Fuelling Plan for Cyclists & Triathletes | Vivify Sports',
         'A race fuelling plan for your event: race day and the day before, carbs per hour, supplements, hydration and recovery, by a WorldTour cyclist and MSc nutritionist.'),
     'triathlon-nutritionist.html': ('/triathlon-nutritionist', 'Triathlon Nutritionist | Ironman & 70.3 Nutrition | Vivify Sports',

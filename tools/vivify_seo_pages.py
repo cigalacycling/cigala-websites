@@ -83,6 +83,8 @@ def build(b):
             '<p>Yes. Marine’s approach is “fuel for performance, not restriction”: enough energy and carbohydrate to support training, adequate protein, hydration and recovery, without extreme diets. One client lost over 13 kg while getting stronger for the Traka gravel race.</p>'),
            ('Do you work with gravel and ultra-distance riders?',
             '<p>Yes. Marine is the Amateur Gravel World Champion (2024) and Irish National Gravel Champion (2026), and has coached riders for ultra-endurance gravel races.</p>'),
+           ('Can you help me prepare for a Gran Fondo or sportive?',
+            '<p>Yes. Marine is the European Gran Fondo Champion (2023). She builds your daily nutrition around your training and a race-day plan for your event, whether that is the Wicklow 200, L’Étape du Tour, the Marmotte or a UCI Gran Fondo World Series race.</p>'),
            ('Do I need to be in Ireland?',
             '<p>No. Coaching is online. Marine currently coaches athletes in the USA, Canada, Ireland and Finland, and has coached athletes in France, Italy and the Netherlands. Plans are priced in euro and US dollars.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Cycling nutrition', 'Common questions')
@@ -108,6 +110,11 @@ def build(b):
   <div class="pcard panel"><span class="h3">Sportives &amp; leisure</span><p style="margin:0">More energy on long rides, no more cramping or bonking, and healthy habits that fit around work and family.</p></div>
  </div></div></section>
 <section class="section-tight" style="padding-top:0"><div class="wrap center"><a class="btn btn-secondary" href="womens-cycling-nutrition.html">Women's cycling nutrition {ICON['arrow']}</a></div></section>
+<section style="padding-top:8px"><div class="wrap">
+ {head('Gran Fondos, sportives, gravel and more', 'Fuel for your target event', center=True, lead='Whatever you are training for, your nutrition is built around the event: its distance, terrain, climbing, weather and feed stations. From the Wicklow 200 to the Marmotte, the Traka or the Cape Epic.')}
+ <div class="g3" style="margin-top:28px"><div class="pcard panel"><span class="h3">Gran Fondos &amp; sportives</span><ul class="chips" style="margin-top:12px"><li>UCI Gran Fondo World Championships</li><li>Gran Fondo World Tour</li><li>Wicklow 200</li><li>Ring of Kerry Charity Cycle</li><li>L’Étape du Tour</li><li>La Marmotte</li><li>Maratona dles Dolomites</li><li>Mallorca 312</li></ul></div><div class="pcard panel"><span class="h3">Gravel</span><ul class="chips" style="margin-top:12px"><li>UCI Gravel World Championships</li><li>The Traka</li><li>Unbound Gravel</li><li>Gravel Earth Series</li></ul></div><div class="pcard panel"><span class="h3">Mountain bike</span><ul class="chips" style="margin-top:12px"><li>XC and marathon (XCM) races</li><li>Absa Cape Epic</li><li>Enduro</li></ul></div><div class="pcard panel"><span class="h3">Cyclocross &amp; track</span><ul class="chips" style="margin-top:12px"><li>National cyclocross series</li><li>National championships</li><li>Track omnium and endurance events</li></ul></div><div class="pcard panel"><span class="h3">Multi-day &amp; ultra</span><ul class="chips" style="margin-top:12px"><li>Haute Route</li><li>Stage races</li><li>Ultra-distance and bikepacking events</li></ul></div></div>
+ <p class="center" style="margin-top:22px"><a class="btn btn-primary" href="race-fuelling-plan.html">Get a fuelling plan for your event {ICON['arrow']}</a></p>
+</div></section>
 {creds()}
 <section style="padding-top:24px"><div class="wrap">{head('Coaching options', 'Plans and prices', center=True)}<div style="margin-top:24px">{plans_strip()}</div></div></section>
 {quotes(['Francesco Pippa, Italy', 'Sean Goggin, Ireland', 'Matteo Cigala,Italy', 'James Makin, Ireland', 'Iwan Harmsen, Netherlands', 'Damian Maloney, Ireland'], 'Cyclists who fuel with Marine')}
