@@ -253,7 +253,9 @@ add_filter('cc_ath_board', function ($html, $board) {
             . '<td><form method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_gc_tp"><input type="hidden" name="page" value="' . (int) $k['page'] . '">' . wp_nonce_field('cc_gc_tp', '_wpnonce', false, false)
             . '<label class="gc-tp"><input type="checkbox" name="tp" value="1"' . ($k['tp'] ? ' checked' : '') . ' onchange="this.form.submit()" aria-label="' . esc_attr($k['name']) . ' trains in TrainingPeaks"> TP</label></form></td></tr>';
     }
-    $o .= '</tbody></table></div></section>';
+    // Matteo 17 Nov: the monthly total at the bottom (Basic counted per month: 12 weeks = 3 months)
+    $tot = 0.0; $n = 0; $nb = 0; foreach (cc_gc_contracts() as $k) if ($k['fee'] !== null && (float) $k['fee'] > 0) { $tot += (float) $k['fee']; $n++; if ($k['basic']) $nb++; }
+    $o .= '</tbody><tfoot><tr><td><b>Monthly total</b></td><td><b>' . esc_html(number_format($tot, 2)) . ' EUR</b></td><td colspan="4"><small>' . $n . ' athletes with a fee' . ($nb ? ', ' . $nb . ' on Basic' : '') . '</small></td></tr></tfoot></table></div></section>';
     // GoCardless connection
     $mode = cc_gc_mode(); $since = (int) get_option('cc_gc_since', 0); $sec = (bool) get_option('cc_gc_secret', ''); $tok = (bool) get_option('cc_gc_token', '');
     $msg = ['saved' => 'Saved.', 'live' => 'Live: new signups now get their login and welcome email automatically.', 'test' => 'Test mode: signups only send you an email.', 'ok' => 'Connected to GoCardless: ', 'bad' => 'GoCardless did not accept the token: '][$r] ?? '';
@@ -269,7 +271,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     $log = array_slice((array) get_option('cc_gc_log', []), 0, 10);
     if ($log) { $o .= '<h3 class="av-sub">Latest signups</h3><ul class="gc-log">'; foreach ($log as $l) $o .= '<li><small>' . esc_html(date_i18n('j M H:i', (int) $l['at'])) . '</small> <b>' . esc_html($l['what']) . '</b> ' . esc_html(($l['name'] ?? '') . (!empty($l['why']) ? ' · ' . $l['why'] : '') . (!empty($l['msg']) ? ' · ' . $l['msg'] : '')) . '</li>'; $o .= '</ul>'; }
     $o .= '</section><style>html .cc .gc-tw{overflow-x:auto}html .cc .gc-t{width:100%;border-collapse:collapse;font-size:16px}html .cc .gc-t th{text-align:left;font-size:14px;color:#b8bec8;font-weight:600;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.15)}'
-        . 'html .cc .gc-t td{padding:10px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:middle}html .cc .gc-t td a{color:#fff}html .cc .gc-t tr.soon td{background:rgba(240,180,41,.08)}html .cc .gc-t small{color:#b8bec8;font-size:14px}'
+        . 'html .cc .gc-t td{padding:10px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:middle}html .cc .gc-t td a{color:#fff}html .cc .gc-t tfoot td{border-top:2px solid rgba(255,255,255,.25);border-bottom:0;padding-top:14px}html .cc .gc-t tr.soon td{background:rgba(240,180,41,.08)}html .cc .gc-t small{color:#b8bec8;font-size:14px}'
         . 'html .cc .gc-ed{display:flex;gap:8px;align-items:center}html .cc .gc-ed input{font:16px var(--body);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff}'
         . 'html .cc .gc-tp{display:flex;gap:8px;align-items:center;font-size:15px;color:#d0d6e0;white-space:nowrap}html .cc .gc-tp input{width:20px;height:20px}html .cc .gc-log{margin:0;padding-left:18px;font-size:15px;color:#d0d6e0}html .cc .gc-log small{color:#b8bec8}html .cc .gc-set code{font-size:14px;word-break:break-all}</style>';
     return $o;
