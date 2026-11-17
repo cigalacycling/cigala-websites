@@ -163,6 +163,8 @@ def build(b):
     # ------------------------------------------------------------ TRIATHLON
     qas = [('Can you help me plan nutrition for an Ironman 70.3?',
             '<p>Yes. Marine builds the plan around your training and your race: daily fuelling for three sports, carbohydrate per hour on the bike and run, hydration, and gut training before race day. See her <a href="' + LIVE + '/post/ironman-70-3-nutrition-plan">Ironman 70.3 nutrition plan</a> article.</p>'),
+           ('Can you help me fuel for a full Ironman?',
+            '<p>Yes. Long-distance triathlon is where fuelling matters most. Marine plans your carbohydrate, fluid and sodium intake for the bike and the run, trains your gut to handle it in the months before, and builds your race-week and race-morning nutrition, whether you are racing Ironman Wales, Challenge Roth or Kona.</p>'),
            ('I get stomach problems on the run. Can nutrition help?',
             '<p>Often, yes. Gut health and gut training are part of the coaching: the aim is fewer gastrointestinal problems such as cramping, nausea and bloating, and better carbohydrate absorption.</p>'),
            ('Do you coach the training too?',
@@ -183,6 +185,11 @@ def build(b):
  <div><span class="eyebrow">Client result</span><div class="h2">A 30 minute PB at Ironman 70.3</div><span class="bar"></span>
   <p class="lead" style="margin:0">“The nutrition advice I received for my 70.3 Ironman training &amp; race day resulted in a 30 min PB &amp; I never felt so good on the run leg.” Colum Traynor, Ireland</p></div>
  <div><a class="btn btn-primary" href="race-fuelling-plan.html">Get a race fuelling plan {ICON['arrow']}</a></div></div></div></section>
+<section style="padding-top:8px"><div class="wrap">
+ {head('Ironman, 70.3, Olympic and sprint', 'Fuel for your target race', center=True, lead='Your plan is built around your race: distance, course, climate and the aid stations on the bike and run. From the Dublin City Triathlon to Ironman Wales, Challenge Roth or the Ironman World Championship.')}
+ <div class="g4" style="margin-top:28px"><div class="pcard panel"><span class="h3">Full distance (Ironman)</span><ul class="chips" style="margin-top:12px"><li>Ironman World Championship</li><li>Challenge Roth</li><li>Ironman Wales</li><li>Ironman Lanzarote</li><li>Ironman Frankfurt</li><li>Ironman Lake Placid</li><li>Ironman Mont-Tremblant</li></ul></div><div class="pcard panel"><span class="h3">Middle distance (70.3)</span><ul class="chips" style="margin-top:12px"><li>Ironman 70.3 World Championship</li><li>Ironman 70.3 races</li><li>Challenge middle-distance races</li></ul></div><div class="pcard panel"><span class="h3">Olympic &amp; sprint</span><ul class="chips" style="margin-top:12px"><li>Dublin City Triathlon</li><li>Hell of the West</li><li>Escape from Alcatraz Triathlon</li><li>National championships</li></ul></div><div class="pcard panel"><span class="h3">Off-road &amp; multisport</span><ul class="chips" style="margin-top:12px"><li>XTERRA</li><li>Duathlon</li><li>Aquathlon</li></ul></div></div>
+ <p class="center" style="margin-top:22px"><a class="btn btn-primary" href="race-fuelling-plan.html">Get a fuelling plan for your race {ICON['arrow']}</a></p>
+</div></section>
 {creds('A nutritionist who competes')}
 <section style="padding-top:24px"><div class="wrap">{head('Coaching options', 'Plans and prices', center=True)}<div style="margin-top:24px">{plans_strip()}</div></div></section>
 {posts(['ironman-70-3-nutrition-plan', 'carbohydrate-fueling-endurance-sports', 'fatigue-endurance-athletes', 'endurance-athlete-nutrition', 'water-vs-sports-drinks-what-is-the-best-choice', 'what-should-i-be-eating-for-breakfast-as-an-athlete'], 'Triathlon nutrition articles')}
@@ -209,7 +216,7 @@ def build(b):
   <p>Vivify Sports is based in Wicklow, Ireland, and works with athletes worldwide. Everything happens online: consultations by video call, your plan updated weekly from your training load, and support between calls.</p>
   <p>Marine races the WorldTour herself, so she understands travel and racing abroad, and fits your nutrition around them.</p></div>
  <div class="panel" style="padding:32px"><span class="eyebrow">How it works</span>
-  {ticks(['Free 30-minute discovery call', 'Nutritional assessment by video call', 'Weekly plan from your TrainingPeaks or Vekta training load', 'Food diary review in MyFitnessPal', 'WhatsApp support on The Performing Body Plan (sold out for now)', 'Prices in euro and US dollars'])}</div>
+  {ticks(['Free 30-minute discovery call', 'Nutritional assessment by video call', 'Weekly plan from your TrainingPeaks or Vekta training load', 'Food diary review in MyFitnessPal', 'WhatsApp support on every 3-month plan', 'Prices in euro and US dollars'])}</div>
 </div></section>
 <section style="padding-top:8px"><div class="wrap">
  {head('Where Marine coaches', 'Athletes on both sides of the Atlantic', tag='h2', center=True, lead='Currently coaching athletes in the USA, Canada, Ireland and Finland. Past clients in France, Italy and the Netherlands.')}

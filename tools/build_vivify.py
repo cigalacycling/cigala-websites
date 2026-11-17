@@ -55,7 +55,7 @@ NEW = {
     'race-fuelling-plan.html': ('/race-fuelling-plan', 'Race Fuelling Plan for Cyclists & Triathletes | Vivify Sports',
         'A race fuelling plan for your event: race day and the day before, carbs per hour, supplements, hydration and recovery, by a WorldTour cyclist and MSc nutritionist.'),
     'triathlon-nutritionist.html': ('/triathlon-nutritionist', 'Triathlon Nutritionist | Ironman & 70.3 Nutrition | Vivify Sports',
-        'Triathlon nutrition coaching for Ironman, 70.3 and sprint athletes: daily fuelling for swim, bike and run training and a race-day plan. Online, from Ireland.'),
+        'Triathlon nutrition coaching for Ironman, 70.3, Olympic and sprint: daily fuelling for swim, bike and run and a plan for race day. Online, from Ireland.'),
     'online-sports-nutritionist.html': ('/online-sports-nutritionist', 'Online Sports Nutritionist for Endurance Athletes | Vivify Sports',
         'Work with an MSc sports nutritionist from anywhere. Online nutrition coaching for cyclists, triathletes and runners, with plans priced in euro and US dollars.'),
     'sports-nutritionist-dublin.html': ('/sports-nutritionist-dublin', 'Sports Nutritionist Dublin & Wicklow | Vivify Sports',
@@ -756,7 +756,7 @@ def coaching():
     S, D = 'S', '-'
     rows = [('Dietary Monitoring', '', ['50 min', '30 min', '3 months', '3 months', '3 months']),
             ('Number of calls', '', ['1', '1', '3', '5', 'Unlimited']),
-            ('Daily contact via WhatsApp', '', [D, D, D, D, S]),
+            ('WhatsApp support', '', [D, D, S, S, 'Daily']),   # Marine 17 Nov: WhatsApp support on all 3 plans
             ('Weekly Meal Plan', 'based on your training load', [D, D, D, S, S]),
             ('Weekly Macro Plan', 'based on your training load', [D, D, S, D, S]),
             ('Advice on healthy nutritional habits', '', [S, S, S, S, S]),
@@ -812,9 +812,9 @@ def coaching():
     two = plan('FOLLOW-UP CONSULTATION', '30mn 50€ / 60 US$', '', 'A session to review your progress, fine-tune your plan, and stay on track.',
                ['1 follow-up call', 'Updated nutritional and supplement advice'], 'Book now', FOLLOWUP_PAY)
     p1 = plan('THE HEALTHY BODY PLAN', '99€/MONTH', '3 months', 'Build sustainable, healthy eating habits that energize your everyday life.',
-              ['3 calls over 3 months', 'Weekly macro plan based on your training load', 'Weekly food diary analysis', 'Advice on balanced nutrition'], 'Sign up', PAY['healthy'], usd='119 US$ a month')
+              ['3 calls over 3 months', 'WhatsApp support', 'Weekly macro plan based on your training load', 'Weekly food diary analysis', 'Advice on balanced nutrition'], 'Sign up', PAY['healthy'], usd='119 US$ a month')
     p2 = plan('THE HAPPY BODY PLAN', '149€/MONTH', '3 months', 'Create harmony between your nutrition, mood, and lifestyle to bring out the best of you.',
-              ['5 calls over 3 months', 'Weekly meal plan tailored to your training', 'Daily food diary analysis', 'Advice on balanced nutrition, vitamins and supplements', 'Daily Support &amp; Motivation'], 'Sign up', PAY['happy'], usd='180 US$ a month', feat=True)
+              ['5 calls over 3 months', 'WhatsApp support', 'Weekly meal plan tailored to your training', 'Daily food diary analysis', 'Advice on balanced nutrition, vitamins and supplements', 'Daily Support &amp; Motivation'], 'Sign up', PAY['happy'], usd='180 US$ a month', feat=True)
     p3 = plan('THE PERFORMING BODY PLAN', '199€/MONTH', '3 months', 'Maximize performance and recovery with a fully personalized approach.',
               ['Unlimited coaching calls', 'Daily WhatsApp support', 'Weekly meal &amp; macro plan', 'Daily food diary analysis', 'Vitamin, supplement &amp; sports-specific optimization', 'Exclusive ebook: "Breakfast to Ignite your potential"'],
               'Sign up', PAY['performing'], usd='240 US$ a month', sold_out=True, extra='<h2 class="psub">SPORTS SPECIFIC REQUIMENTS</h2>')

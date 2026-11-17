@@ -215,6 +215,7 @@ TR = {
  'Number of calls': ('Nombre d’appels', 'Numero di chiamate'),
  'Unlimited': ('Illimité', 'Illimitate'),
  'Daily contact via WhatsApp': ('Contact quotidien sur WhatsApp', 'Contatto quotidiano su WhatsApp'),
+ 'WhatsApp support': ('Suivi sur WhatsApp', 'Supporto su WhatsApp'),
  'Included': ('Inclus', 'Incluso'),
  'Weekly Meal Plan': ('Plan de repas hebdomadaire', 'Piano pasti settimanale'),
  '(based on your training load)': ('(selon votre charge d’entraînement)', '(in base al carico di allenamento)'),
