@@ -52,13 +52,17 @@ function cc_push_one($sub, $msg) {   // returns HTTP status (0 on local failure)
 }
 // one person's phones; gone phones (404/410) are forgotten
 function cc_push_user($uid, $title, $body, $url, $tag = '') {
+    // Matteo 17 Nov: every notification also goes to their notification centre (the bell in the hub), phone or not
+    $in = get_user_meta((int) $uid, 'cc_inbox', true); $in = is_array($in) ? $in : [];
+    array_unshift($in, ['at' => time(), 'title' => wp_strip_all_tags($title), 'body' => wp_strip_all_tags($body), 'url' => esc_url_raw($url), 'read' => 0]);
+    update_user_meta((int) $uid, 'cc_inbox', array_slice($in, 0, 40));
     $subs = get_user_meta((int) $uid, 'cc_push', true); if (!is_array($subs) || !$subs) return 0;
     $sent = 0; $msg = ['title' => $title, 'body' => wp_strip_all_tags($body), 'url' => $url, 'tag' => $tag ?: 'cc-' . time()];
     foreach ($subs as $k => $s) { $st = cc_push_one($s, $msg); if ($st >= 200 && $st < 300) $sent++; elseif (in_array($st, [404, 410], true)) unset($subs[$k]); }
     update_user_meta((int) $uid, 'cc_push', $subs); return $sent;
 }
 function cc_push_coaches($title, $body, $url, $tag = '') {   // Matteo (any coach account with a phone turned on)
-    foreach (get_users(['meta_key' => 'cc_push', 'fields' => 'ID']) as $uid) if (user_can((int) $uid, 'edit_pages')) cc_push_user((int) $uid, $title, $body, $url, $tag);
+    foreach (get_users(['capability' => 'edit_pages', 'fields' => 'ID']) as $uid) cc_push_user((int) $uid, $title, $body, $url, $tag);   // every coach account: bell always, phone if turned on
 }
 function cc_push_athlete_page($pid, $title, $body, $url, $tag = '') { $uid = (int) get_post_meta((int) $pid, 'cc_user', true); return $uid ? cc_push_user($uid, $title, $body, $url, $tag) : 0; }
 
@@ -119,7 +123,37 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
         . '}).catch(function(e){if(m.textContent.indexOf("(")<0)rep("other",e);});});'
         . 'c.querySelector(".push-no").addEventListener("click",function(){try{localStorage.setItem(k,"1");}catch(e){}c.hidden=true;});})();</script>';
 }, 2, 3);
+/* ---------- the notification centre: a bell next to "Log out", with the last 40 notifications ---------- */
+function cc_inbox_w($k) {
+    static $W = ['title' => ['en' => 'Notifications', 'it' => 'Notifiche', 'pt' => 'Notificações', 'sl' => 'Obvestila'],
+                 'empty' => ['en' => 'Nothing yet. My replies, your new reports and news show up here.', 'it' => 'Ancora niente. Qui compaiono le mie risposte, i tuoi nuovi report e le novità.',
+                             'pt' => 'Ainda nada. Aqui aparecem as minhas respostas, os teus novos relatórios e as novidades.', 'sl' => 'Še nič. Tu se pojavijo moji odgovori, tvoja nova poročila in novice.']];
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
+}
+add_filter('cc_ath_hero_links', function ($html, $coach) {
+    $uid = get_current_user_id(); if (!$uid) return $html;
+    $in = get_user_meta($uid, 'cc_inbox', true); $in = is_array($in) ? $in : [];
+    $unread = count(array_filter($in, function ($x) { return empty($x['read']); }));
+    $items = '';
+    foreach ($in as $x) $items .= '<a class="bell-it' . (empty($x['read']) ? ' new' : '') . '" href="' . esc_url($x['url'] ?: home_url('/' . CC_ATH_SLUG . '/')) . '"><b>' . esc_html($x['title']) . '</b>'
+        . ($x['body'] !== '' ? '<span>' . esc_html($x['body']) . '</span>' : '') . '<small>' . esc_html(human_time_diff((int) $x['at'], time())) . '</small></a>';
+    return $html . ' <span class="bell-w"><button type="button" class="ath-bell" aria-label="' . esc_attr(cc_inbox_w('title')) . '" aria-expanded="false" data-api="' . esc_url(rest_url('cc/v1/inbox-read')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '">'
+        . '<svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>' . ($unread ? '<i>' . min(99, $unread) . '</i>' : '') . '</button>'
+        . '<div class="bell-p" hidden><p class="bell-h">' . esc_html(cc_inbox_w('title')) . '</p>' . ($items ?: '<p class="bell-e">' . esc_html(cc_inbox_w('empty')) . '</p>') . '</div></span>'
+        . '<style>html .cc .bell-w{position:relative;display:inline-block;vertical-align:middle;margin-left:12px}html .cc .ath-bell{position:relative;width:40px;height:40px;min-height:0;padding:0;margin:0;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(12,14,16,.85);display:grid;place-items:center;cursor:pointer}'
+        . 'html .cc .ath-bell svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linejoin:round}html .cc .ath-bell i{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#E10600;color:#fff;font:700 12px/20px var(--body);font-style:normal;text-align:center}'
+        . 'html .cc .bell-p{position:absolute;z-index:50;top:48px;left:0;width:min(340px,86vw);max-height:60vh;overflow:auto;padding:8px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:#0b0d0f;box-shadow:0 18px 40px rgba(0,0,0,.6)}html .cc .bell-p[hidden]{display:none}'
+        . 'html .cc .bell-h{margin:4px 8px 8px;font-weight:700;color:#fff;font-size:16px}html .cc .bell-it{display:grid;gap:2px;padding:10px;border-radius:10px;text-decoration:none;color:var(--text-2)}html .cc .bell-it:hover{background:rgba(255,255,255,.05)}'
+        . 'html .cc .bell-it.new{background:rgba(18,161,80,.12)}html .cc .bell-it b{color:#fff;font-size:15px}html .cc .bell-it span{font-size:14px}html .cc .bell-it small{font-size:13px;color:#8a8f98}html .cc .bell-e{margin:6px 8px 10px;font-size:15px;color:var(--text-2)}</style>'
+        . '<script>(function(){var b=document.querySelector(".ath-bell");if(!b||b.dataset.on)return;b.dataset.on=1;var p=b.parentNode.querySelector(".bell-p");'
+        . 'b.addEventListener("click",function(e){e.stopPropagation();p.hidden=!p.hidden;b.setAttribute("aria-expanded",!p.hidden);if(!p.hidden){var i=b.querySelector("i");if(i){i.remove();fetch(b.dataset.api,{method:"POST",credentials:"same-origin",headers:{"X-WP-Nonce":b.dataset.nonce}});}try{if(navigator.clearAppBadge)navigator.clearAppBadge();}catch(x){}}});'
+        . 'document.addEventListener("click",function(e){if(!p.hidden&&!p.contains(e.target)){p.hidden=true;b.setAttribute("aria-expanded","false");}});})();</script>';
+}, 30, 2);
 add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/inbox-read', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function () {
+        $uid = get_current_user_id(); $in = get_user_meta($uid, 'cc_inbox', true); $in = is_array($in) ? $in : [];
+        foreach ($in as &$x) $x['read'] = 1; update_user_meta($uid, 'cc_inbox', $in); return ['ok' => true];
+    }]);
     register_rest_route('cc/v1', '/push-sub', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {
         $s = $r->get_json_params(); $ep = esc_url_raw((string) ($s['endpoint'] ?? ''), ['https']);
         if ($ep === '' || empty($s['keys']['p256dh']) || empty($s['keys']['auth'])) return new WP_Error('cc_bad', 'Bad subscription', ['status' => 400]);

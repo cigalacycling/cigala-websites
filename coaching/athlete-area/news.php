@@ -10,18 +10,19 @@ if (!defined('ABSPATH')) return;
 function cc_nw_w($k) {
     static $W = [
         'g_title' => ['en' => 'How to use your hub', 'it' => 'Come usare la tua area', 'pt' => 'Como usar a tua área', 'sl' => 'Kako uporabljati svoje središče'],
-        'g_train_v' => ['en' => '🚴 <b>Your training</b> (plan, workouts, comments on a ride): in <b>Vekta</b>', 'it' => '🚴 <b>Il tuo allenamento</b> (piano, allenamenti, commenti su un’uscita): su <b>Vekta</b>',
-                        'pt' => '🚴 <b>O teu treino</b> (plano, treinos, comentários sobre um treino): no <b>Vekta</b>', 'sl' => '🚴 <b>Tvoj trening</b> (načrt, treningi, komentarji k vožnji): v <b>Vekti</b>'],
-        'g_train_t' => ['en' => '🚴 <b>Your training</b> (plan, workouts, comments on a ride): in <b>TrainingPeaks</b>', 'it' => '🚴 <b>Il tuo allenamento</b> (piano, allenamenti, commenti su un’uscita): su <b>TrainingPeaks</b>',
-                        'pt' => '🚴 <b>O teu treino</b> (plano, treinos, comentários sobre um treino): no <b>TrainingPeaks</b>', 'sl' => '🚴 <b>Tvoj trening</b> (načrt, treningi, komentarji k vožnji): v <b>TrainingPeaks</b>'],
-        'g_note' => ['en' => '🎙 <b>How your week is going</b>: “Leave me a note” (text or voice)', 'it' => '🎙 <b>Come va la tua settimana</b>: “Lasciami un messaggio” (testo o vocale)',
-                     'pt' => '🎙 <b>Como está a correr a tua semana</b>: “Deixa-me uma mensagem” (texto ou voz)', 'sl' => '🎙 <b>Kako gre tvoj teden</b>: “Pusti mi sporočilo” (besedilo ali glas)'],
-        'g_res' => ['en' => '🏆 <b>A result you are proud of</b>: “Share a result”', 'it' => '🏆 <b>Un risultato di cui sei fiero</b>: “Condividi un risultato”',
-                    'pt' => '🏆 <b>Um resultado de que te orgulhas</b>: “Partilha um resultado”', 'sl' => '🏆 <b>Rezultat, na katerega si ponosen</b>: “Deli rezultat”'],
+        'g_train_v' => ['en' => '🚴 <b>Your training</b> (plan, workouts, comments on a specific ride): in <b>Vekta</b>', 'it' => '🚴 <b>Il tuo allenamento</b> (piano, allenamenti, commenti su un’uscita specifica): su <b>Vekta</b>',
+                        'pt' => '🚴 <b>O teu treino</b> (plano, treinos, comentários sobre um treino específico): no <b>Vekta</b>', 'sl' => '🚴 <b>Tvoj trening</b> (načrt, treningi, komentarji k določeni vožnji): v <b>Vekti</b>'],
+        'g_train_t' => ['en' => '🚴 <b>Your training</b> (plan, workouts, comments on a specific ride): in <b>TrainingPeaks</b>', 'it' => '🚴 <b>Il tuo allenamento</b> (piano, allenamenti, commenti su un’uscita specifica): su <b>TrainingPeaks</b>',
+                        'pt' => '🚴 <b>O teu treino</b> (plano, treinos, comentários sobre um treino específico): no <b>TrainingPeaks</b>', 'sl' => '🚴 <b>Tvoj trening</b> (načrt, treningi, komentarji k določeni vožnji): v <b>TrainingPeaks</b>'],
+        'g_note' => ['en' => '🎙 <b>How your week is going</b>: <a href="#notes">Leave me a note</a> (text or voice)', 'it' => '🎙 <b>Come va la tua settimana</b>: <a href="#notes">Lasciami un messaggio</a> (testo o vocale)',
+                     'pt' => '🎙 <b>Como está a correr a tua semana</b>: <a href="#notes">Deixa-me uma mensagem</a> (texto ou voz)', 'sl' => '🎙 <b>Kako gre tvoj teden</b>: <a href="#notes">Pusti mi sporočilo</a> (besedilo ali glas)'],
+        'g_res' => ['en' => '🏆 <b>A result you are proud of</b>: <a href="#results">Share a result</a>', 'it' => '🏆 <b>Un risultato di cui sei fiero</b>: <a href="#results">Condividi un risultato</a>',
+                    'pt' => '🏆 <b>Um resultado de que te orgulhas</b>: <a href="#results">Partilha um resultado</a>', 'sl' => '🏆 <b>Rezultat, na katerega si ponosen</b>: <a href="#results">Deli rezultat</a>'],
         'g_av' => ['en' => '📅 <b>Your availability and races</b>: keep them up to date here', 'it' => '📅 <b>La tua disponibilità e le gare</b>: tienile aggiornate qui',
                    'pt' => '📅 <b>A tua disponibilidade e as provas</b>: mantém-nas atualizadas aqui', 'sl' => '📅 <b>Tvoja razpoložljivost in tekme</b>: tu jih sproti posodabljaj'],
         'g_rep' => ['en' => '📄 <b>Your reports and guides</b>: all here', 'it' => '📄 <b>I tuoi report e le guide</b>: tutto qui', 'pt' => '📄 <b>Os teus relatórios e guias</b>: tudo aqui', 'sl' => '📄 <b>Tvoja poročila in vodiči</b>: vse tukaj'],
-        'g_wa' => ['en' => '💬 <b>Something urgent</b>: WhatsApp me', 'it' => '💬 <b>Qualcosa di urgente</b>: scrivimi su WhatsApp', 'pt' => '💬 <b>Algo urgente</b>: envia-me WhatsApp', 'sl' => '💬 <b>Nekaj nujnega</b>: piši mi na WhatsApp'],
+        'g_wa' => ['en' => '💬 <b>Something urgent</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a>', 'it' => '💬 <b>Qualcosa di urgente</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">scrivimi su WhatsApp</a>',
+                   'pt' => '💬 <b>Algo urgente</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">envia-me WhatsApp</a>', 'sl' => '💬 <b>Nekaj nujnega</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">piši mi na WhatsApp</a>'],
         'news' => ['en' => 'News from Matteo', 'it' => 'Novità da Matteo', 'pt' => 'Novidades do Matteo', 'sl' => 'Novice od Mattea'],
         'got' => ['en' => 'Got it', 'it' => 'Ok, letto', 'pt' => 'Entendido', 'sl' => 'Razumem'],
         'more' => ['en' => 'Find out more', 'it' => 'Scopri di più', 'pt' => 'Saber mais', 'sl' => 'Več o tem'],
@@ -37,6 +38,7 @@ function cc_nw_for($pid) {   // the news this athlete should see (audience match
     foreach (array_reverse(cc_nw_all()) as $n) {
         $aud = $n['aud'] ?? 'all';
         if ($aud === 'vekta' && $tp) continue; if ($aud === 'tp' && !$tp) continue; if (strpos($aud, 'lang:') === 0 && substr($aud, 5) !== $l) continue;
+        if (strpos($aud, 'page:') === 0 && (int) substr($aud, 5) !== (int) $pid) continue;   // one athlete (e.g. a test)
         if (empty($n['t'][$l])) continue;   // never in the wrong language
         $out[] = $n;
     }
@@ -50,7 +52,7 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     $lines = [cc_nw_w($tp ? 'g_train_t' : 'g_train_v'), cc_nw_w('g_note'), cc_nw_w('g_res')];
     if (!$tp) $lines[] = cc_nw_w('g_av');
     $lines[] = cc_nw_w('g_rep'); $lines[] = cc_nw_w('g_wa');
-    $o = '<details class="nw-guide" id="nw-guide" open><summary>' . esc_html(cc_nw_w('g_title')) . '</summary><ul>' . implode('', array_map(function ($x) { return '<li>' . wp_kses($x, ['b' => []]) . '</li>'; }, $lines)) . '</ul></details>';
+    $o = '<details class="nw-guide" id="nw-guide" open><summary>' . esc_html(cc_nw_w('g_title')) . '</summary><ul>' . implode('', array_map(function ($x) { return '<li>' . wp_kses($x, ['b' => [], 'a' => ['href' => [], 'target' => [], 'rel' => []]]) . '</li>'; }, $lines)) . '</ul></details>';
     foreach (array_slice(cc_nw_for($view), 0, 3) as $n) {
         $l = $GLOBALS['cc_ath_lang'] ?? 'en'; $t = $n['t'][$l] ?? ($n['t']['en'] ?? []);
         $o .= '<div class="nw-card" data-id="' . esc_attr($n['id']) . '" hidden>' . (!empty($n['img']) ? '<img src="' . esc_url($n['img']) . '" alt="">' : '')
@@ -61,7 +63,7 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     }
     return $html . $o
         . '<style>html .cc .nw-guide{margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}html .cc .nw-guide summary{cursor:pointer;font-weight:700;font-size:16px;color:#fff}'
-        . 'html .cc .nw-guide ul{margin:10px 0 2px;padding:0;list-style:none;display:grid;gap:8px}html .cc .nw-guide li{font-size:16px;color:var(--text-2);line-height:1.45}html .cc .nw-guide b{color:#fff}'
+        . 'html .cc .nw-guide ul{margin:10px 0 2px;padding:0;list-style:none;display:grid;gap:8px}html .cc .nw-guide li{font-size:16px;color:var(--text-2);line-height:1.45}html .cc .nw-guide b{color:#fff}html .cc .nw-guide a{color:#2bd47a;text-decoration:underline;text-underline-offset:3px;font-weight:600}'
         . 'html .cc .nw-card{display:flex;gap:14px;align-items:flex-start;margin:0 0 14px;padding:14px 16px;border-radius:14px;border:1px solid rgba(43,212,122,.45);background:linear-gradient(135deg,rgba(18,161,80,.16),rgba(18,161,80,.04))}html .cc .nw-card[hidden]{display:none!important}'
         . 'html .cc .nw-card img{width:84px;height:84px;border-radius:12px;object-fit:cover;flex:none}html .cc .nw-eb{margin:0 0 4px;font-size:14px;color:#2bd47a;font-weight:700;letter-spacing:.04em;text-transform:uppercase}'
         . 'html .cc .nw-card b{display:block;font-size:18px;color:#fff}html .cc .nw-card p{margin:6px 0 0;font-size:16px;color:var(--text-2)}html .cc .nw-acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}html .cc .nw-acts .btn{width:auto;margin:0}'
@@ -73,29 +75,38 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
 
 /* ---------- posting: News board and POST /wp-json/cc/v1/news ---------- */
 function cc_nw_post($in) {   // ['aud', 'url', 'img', 'push', 't' => [lang => [title, body, btn]]] -> the item, or WP_Error
-    $aud = (string) ($in['aud'] ?? 'all'); if (!in_array($aud, ['all', 'vekta', 'tp'], true) && !preg_match('/^lang:(en|it|pt|sl)$/', $aud)) $aud = 'all';
-    $need = strpos($aud, 'lang:') === 0 ? [substr($aud, 5)] : CC_NW_LANGS; $t = [];
+    $aud = (string) ($in['aud'] ?? 'all'); if (!in_array($aud, ['all', 'vekta', 'tp'], true) && !preg_match('/^(lang:(en|it|pt|sl)|page:\d+)$/', $aud)) $aud = 'all';
+    if (strpos($aud, 'page:') === 0) { $pu = (int) get_post_meta((int) substr($aud, 5), 'cc_user', true); $need = [$pu ? cc_ath_lang_code($pu) : 'en']; }
+    else $need = strpos($aud, 'lang:') === 0 ? [substr($aud, 5)] : CC_NW_LANGS;
+    $t = [];
     foreach (CC_NW_LANGS as $l) { $x = (array) ($in['t'][$l] ?? []); $title = cc_av_str($x['title'] ?? '', 140); if ($title === '') continue;
         $t[$l] = ['title' => $title, 'body' => cc_av_note($x['body'] ?? '', 1500), 'btn' => cc_av_str($x['btn'] ?? '', 40)]; }
     foreach ($need as $l) if (empty($t[$l])) return new WP_Error('cc_lang', 'Missing the ' . strtoupper($l) . ' text: every athlete reads news in their own language', ['status' => 400]);
     $n = ['id' => wp_generate_password(8, false, false), 'at' => time(), 'aud' => $aud, 'url' => esc_url_raw((string) ($in['url'] ?? '')), 'img' => esc_url_raw((string) ($in['img'] ?? '')), 't' => $t];
     $all = cc_nw_all(); $all[] = $n; update_option('cc_news', array_slice($all, -30), false);
-    if (!empty($in['push']) && function_exists('cc_push_user')) {   // phones of athletes in the audience (only those who turned notifications on)
-        foreach (get_users(['meta_key' => 'cc_push', 'fields' => 'ID']) as $uid) {
-            if (user_can((int) $uid, 'edit_pages')) continue; $pid = cc_ath_page_of((int) $uid); if (!$pid) continue;
-            foreach (cc_nw_for($pid) as $x) if ($x['id'] === $n['id']) {
-                $l = cc_ath_lang_code((int) $uid); $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = $l;
-                cc_push_user((int) $uid, '📣 ' . $t[$l]['title'], wp_trim_words($t[$l]['body'], 18), home_url('/' . CC_ATH_SLUG . '/'), 'cc-news-' . $n['id']);
-                $GLOBALS['cc_ath_lang'] = $keep;
-            }
+    // everyone in the audience: the notification centre (and their phone if they turned it on); an email only to athletes who
+    // already set their hub password (Matteo 17 Nov: athletes not invited to the hub yet never get an email)
+    $sent = 0;
+    foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_user', 'fields' => 'ids']) as $pid) {
+        $uid = (int) get_post_meta($pid, 'cc_user', true); $u = $uid ? get_userdata($uid) : null; if (!$u || user_can($uid, 'edit_pages')) continue;
+        $mine = false; foreach (cc_nw_for($pid) as $x) if ($x['id'] === $n['id']) $mine = true; if (!$mine) continue;
+        $l = cc_ath_lang_code($uid); $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = $l; $tt = $t[$l];
+        if (!empty($in['push']) && function_exists('cc_push_user')) cc_push_user($uid, '📣 ' . $tt['title'], wp_trim_words($tt['body'], 18), home_url('/' . CC_ATH_SLUG . '/'), 'cc-news-' . $n['id']);
+        if (!empty($in['email']) && get_user_meta($uid, 'cc_pw_set', true) && is_email($u->user_email) && function_exists('cc_ath_mail_shell')) {
+            $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email;
+            $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), esc_html($u->first_name ?: $u->display_name)), '<b>' . esc_html($tt['title']) . '</b><br>' . nl2br(esc_html($tt['body'])),
+                esc_html($tt['btn'] !== '' ? $tt['btn'] : cc_nw_w('more')), $n['url'] ?: home_url('/' . CC_ATH_SLUG . '/'));
+            if (is_email($to) && wp_mail($to, '📣 ' . $tt['title'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>'])) $sent++;
         }
+        $GLOBALS['cc_ath_lang'] = $keep;
     }
+    $n['emailed'] = $sent;
     return $n;
 }
 add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/news', [
         ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () { return array_reverse(cc_nw_all()); }],
-        ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) { $n = cc_nw_post($r->get_json_params() ?: $r->get_params()); return is_wp_error($n) ? $n : ['ok' => true, 'id' => $n['id']]; }],
+        ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) { $n = cc_nw_post($r->get_json_params() ?: $r->get_params()); return is_wp_error($n) ? $n : ['ok' => true, 'id' => $n['id'], 'emailed' => $n['emailed']]; }],
     ]);
     register_rest_route('cc/v1', '/news/(?P<id>[A-Za-z0-9]+)', ['methods' => 'DELETE', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
         update_option('cc_news', array_values(array_filter(cc_nw_all(), function ($n) use ($r) { return $n['id'] !== $r['id']; })), false); return ['ok' => true];
@@ -114,6 +125,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     foreach (['en' => 'English', 'it' => 'Italiano', 'pt' => 'Português', 'sl' => 'Slovenščina'] as $l => $nm)
         $o .= '<fieldset><legend>' . $nm . '</legend><input name="t[' . $l . '][title]" maxlength="140" placeholder="Title"><textarea name="t[' . $l . '][body]" rows="3" placeholder="Message"></textarea><input name="t[' . $l . '][btn]" maxlength="40" placeholder="Button text (optional)"></fieldset>';
     $o .= '<label>Button link (optional) <input name="url" type="url" placeholder="https://"></label><label class="nw-tick"><input type="checkbox" name="push" value="1" checked> Also send a phone notification</label>'
+       . '<label class="nw-tick"><input type="checkbox" name="email" value="1" checked> Also email it (only to athletes who already use the hub, i.e. set their password)</label>'
        . '<button class="btn btn-go" type="submit">Post the news</button></form>';
     $all = array_reverse(cc_nw_all());
     if ($all) { $o .= '<h3 class="av-sub">Posted</h3>'; foreach ($all as $n) $o .= '<div class="nt-item"><small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at']) . ' · ' . $n['aud']) . '</small><p><b>' . esc_html($n['t']['en']['title'] ?? reset($n['t'])['title']) . '</b></p>'
@@ -124,7 +136,7 @@ add_filter('cc_ath_board', function ($html, $board) {
 }, 10, 2);
 add_action('admin_post_cc_news', function () {
     if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_news')) wp_die('Not allowed');
-    $n = cc_nw_post(['aud' => $_POST['aud'] ?? 'all', 'url' => $_POST['url'] ?? '', 'push' => !empty($_POST['push']), 't' => wp_unslash((array) ($_POST['t'] ?? []))]);
+    $n = cc_nw_post(['aud' => $_POST['aud'] ?? 'all', 'url' => $_POST['url'] ?? '', 'push' => !empty($_POST['push']), 'email' => !empty($_POST['email']), 't' => wp_unslash((array) ($_POST['t'] ?? []))]);
     if (is_wp_error($n)) set_transient('cc_nw_err', $n->get_error_message(), 120);
     wp_safe_redirect(add_query_arg(['board' => 'news', 'nw' => is_wp_error($n) ? 'bad' : 'ok'], home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
