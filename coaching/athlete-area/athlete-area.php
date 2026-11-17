@@ -388,6 +388,7 @@ function cc_ath_inner() {
         . '</section>';
     $o .= apply_filters('cc_ath_after_reports', '', $view, $coach);
     $o .= $hub[0];
+    $o .= apply_filters('cc_ath_end', '', $view, $coach);   // ideas.php: "Ideas for your hub", the last box
     return $o . '</div>' . cc_ath_js();
 }
 
@@ -544,7 +545,7 @@ add_action('wp_footer', function () {
        . 'sr.onerror=function(e){msg(w,(e.error==="not-allowed"||e.error==="service-not-allowed")?C.w.denied:(e.error==="no-speech"||e.error==="aborted"?"":C.w.none));};'
        . 'sr.onend=function(){b.classList.remove("on");b.setAttribute("aria-pressed","false");if(cur&&cur.b===b)cur=null;var m=w.nextElementSibling;if(m&&m.textContent===C.w.on)msg(w,"");el.dispatchEvent(new Event("change",{bubbles:true}));};'
        . 'try{sr.start();}catch(x){msg(w,C.w.none);}}'
-       . 'function enhance(){document.querySelectorAll("#rf textarea, #gl-app textarea, #gl-app input.gl-no").forEach(function(el){if(el.dataset.mic||el.readOnly||el.disabled)return;el.dataset.mic="1";'
+       . 'function enhance(){document.querySelectorAll("#rf textarea, #gl-app textarea, #gl-app input.gl-no, #cc-idea textarea").forEach(function(el){if(el.dataset.mic||el.readOnly||el.disabled)return;el.dataset.mic="1";'
        . 'var w=document.createElement("span");w.className="cc-micw";el.parentNode.insertBefore(w,el);w.appendChild(el);var b=document.createElement("button");b.type="button";b.className="cc-mic";'
        . 'b.setAttribute("aria-label",C.w.mic);b.title=C.w.mic;b.setAttribute("aria-pressed","false");b.innerHTML=ico;w.appendChild(b);'
        . 'b.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();if(cur&&cur.b===b){stop();return;}start(b,el);});});}'
@@ -606,7 +607,7 @@ function cc_smtp_box() {   // on Matteo's Reports board
         . '<label>SMTP password <input type="password" name="pw" autocomplete="new-password" placeholder="' . ($set ? 'Type it again only to change it' : 'The same password Gmail uses for this username') . '"></label>'
         . '<input type="hidden" name="act" value="test"><span class="rp-acts"><button class="btn btn-go" type="submit">Save and send me a test email</button>' . ($set ? '<button class="btn btn-ghost" type="submit" onclick="this.form.act.value=\'clear\'">Remove</button>' : '') . '</span></form>' . ($okt && $r !== 'saved' ? '</details>' : '')
         . ($msg ? '<p class="rp-smtp-m">' . esc_html($msg) . '</p>' : '')
-        . (($r === 'fail' && ($er = get_option('cc_smtp_err')) && !empty($er['msg'])) ? '<p class="rp-smtp-m" style="color:#ff4a3d">Reason: ' . esc_html($er['msg']) . '</p>' : '') . '</section>'
+        . ((($er = get_option('cc_smtp_err')) && !empty($er['msg']) && ($r === 'fail' || (int) ($er['at'] ?? 0) > $okt)) ? '<p class="rp-smtp-m" style="color:#ff4a3d">' . ($r === 'fail' ? '' : 'An email failed on ' . esc_html(date_i18n('j M Y H:i', (int) $er['at'])) . '. ') . 'Reason: ' . esc_html($er['msg']) . '</p>' : '') . '</section>'
         . '<style>html .cc .rp-smtp{margin:0 0 18px}html .cc .rp-smtp-f{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:end}html .cc .rp-smtp-f label{display:grid;gap:6px;font-size:14px;color:#d0d6e0;font-weight:600;flex:1 1 260px}'
         . 'html .cc .rp-smtp-f input{font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff}html .cc .rp-smtp-m{margin:10px 0 0;color:#34c46a;font-weight:600}html .cc .rp-smtp-d summary{cursor:pointer;color:#b8bec8;font-size:15px;margin:0 0 10px}</style>';
 }

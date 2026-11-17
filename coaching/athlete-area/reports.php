@@ -220,7 +220,10 @@ add_filter('cc_ath_board', function ($html, $board) {
     cc_r_sweep();
     $o = '<section class="ath-s"><h2>' . cc_ath_icon('reports', 'ath-hic') . 'Reports</h2><p class="av-lede">Reports your PC tools send arrive here as drafts. Nothing reaches an athlete until you publish it. '
        . 'Preview, then publish (tick “Email the athlete” if you want them told by email) or delete. To add a PDF by hand, upload it inside the athlete’s page, as before.</p>';
-    if (function_exists('cc_smtp_box')) $o .= cc_smtp_box();   // Matteo 17 Nov: emails through Register365 so they don't land in spam
+    // Matteo 17 Nov: emails through Register365 so they don't land in spam. Once it works the box is hidden; it comes back only
+    // if a send fails after the last passing test, or he opens ?board=reports&smtp=show to change the login.
+    $okt = (int) get_option('cc_smtp_ok', 0); $er = get_option('cc_smtp_err'); $fail_after = is_array($er) && (int) ($er['at'] ?? 0) > $okt;
+    if (function_exists('cc_smtp_box') && (!$okt || $fail_after || isset($_GET['smtp']))) $o .= cc_smtp_box();
     $o .= '<form class="rp-set" method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_report_settings">' . wp_nonce_field('cc_report_settings', '_wpnonce', false, false)
         . '<label class="rp-mail"><input type="checkbox" name="race_auto" value="1"' . (get_option('cc_r_race_auto') ? ' checked' : '') . ' onchange="this.form.submit()"> <span style="flex:1;min-width:0"><b>Publish automatic pages automatically</b>: training reports, race day plans, race recaps and “Since you joined” milestones go straight into the athlete’s hub, the first one too, without waiting here (no email). Reviews, assessments and season plans always wait for you. Untick to review everything first.</span></label></form>';
     $drafts = get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'numberposts' => -1, 'orderby' => 'date', 'order' => 'DESC']);
