@@ -1,0 +1,100 @@
+"""Push the Vivify preview (vivify/site/*.html, from tools/build_vivify.py) into Marine's WordPress draft as Elementor pages.
+
+  python3 -I tools/build_vivify.py && python3 -I tools/build_vivify_wp.py [file.html ...]
+
+- Each page: Elementor Canvas template (no theme header), one container holding one HTML widget per section:
+  CSS + header first, footer last, so Marine can find each section in Elementor.
+- Images point at the WebP files already in the media library (vivify/wp-media.json, tools/vivify_media.py).
+- Links: x.html -> /x/, index.html -> /, live https://www.vivifysports.com/post/... -> /post/.../ (posts get imported).
+- Titles and meta descriptions are set in Yoast separately (tools/vivify_yoast.py). The preview's <head> is not pushed.
+State (file -> page id) in vivify/wp-pages.json, so re-running updates the same pages.
+"""
+import os, re, sys, json, subprocess, random, string
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
+V = ROOT + 'vivify/'
+SITE = 'https://basic-darkslategray-cod-55.hostingersite.com'
+API = SITE + '/wp-json/wp/v2/pages'
+LIVE = 'https://www.vivifysports.com'
+MEDIA = json.load(open(V + 'wp-media.json'))
+STATE = V + 'wp-pages.json'
+st = json.load(open(STATE)) if os.path.exists(STATE) else {}
+SKIP = {'post-carbohydrate-fueling-endurance-sports.html'}   # posts are imported as WordPress posts
+CSS = open(V + 'site/vivify.css').read() + r"""
+/* WordPress / Hello Elementor / Elementor overrides */
+.vv-root .e-con,.vv-root .e-con-inner{padding:0!important;gap:0!important;--padding-top:0;--padding-bottom:0}
+.elementor-widget:not(:last-child){margin-block-end:0!important}
+.elementor-element:has(> header.site),.elementor-element:has(> .elementor-widget-container > header.site){position:sticky;top:0;z-index:50}
+body.admin-bar .elementor-element:has(header.site){top:32px}
+body{background-color:#0C2226}
+.btn:hover,.btn:focus{text-decoration:none}
+.btn-primary:hover,.btn-primary:focus{background:var(--aqua-hover);color:var(--on-aqua)}
+.filters button:hover,.filters button:focus{background:rgba(25,68,75,.9);color:var(--text)}
+.filters button[aria-pressed=true]:hover{background:var(--aqua);color:var(--on-aqua)}
+button.btn{border:1px solid transparent}
+"""
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">'
+
+def rid():
+    return ''.join(random.choice(string.hexdigits[:16]) for _ in range(7))
+
+def html_widget(h):
+    return {"id": rid(), "elType": "widget", "widgetType": "html", "settings": {"html": h}, "elements": [], "isInner": False}
+
+def container(elements):
+    return {"id": rid(), "elType": "container", "settings": {"content_width": "full", "css_classes": "vv-root",
+            "padding": {"unit": "px", "top": "0", "right": "0", "bottom": "0", "left": "0", "isLinked": True},
+            "flex_gap": {"unit": "px", "size": 0, "column": "0", "row": "0"}}, "elements": elements, "isInner": False}
+
+def slug(f):
+    return 'home' if f == 'index.html' else f[:-5]
+
+def fix(h):
+    def img(m):
+        n = m.group(1)
+        assert n in MEDIA, n
+        return 'src="' + MEDIA[n]['url'] + '"'
+    h = re.sub(r'src="img/([^"]+)"', img, h)
+    h = re.sub(r'href="img/([^"]+)"', lambda m: 'href="' + MEDIA[m.group(1)]['url'] + '"', h)
+    h = re.sub(r'href="index\.html(#[^"]*)?"', lambda m: 'href="/' + (m.group(1) or '') + '"', h)
+    h = re.sub(r'href="post-carbohydrate-fueling-endurance-sports\.html"', 'href="/post/carbohydrate-fueling-endurance-sports/"', h)
+    h = re.sub(r'href="([a-z0-9-]+)\.html(#[^"]*)?"', lambda m: f'href="/{m.group(1)}/{m.group(2) or ""}"', h)
+    h = re.sub(r'href="' + re.escape(LIVE) + r'/post/([a-z0-9-]+)"', r'href="/post/\1/"', h)
+    h = re.sub(r'href="' + re.escape(LIVE) + r'/(recipies|about|contact)"', r'href="/\1/"', h)
+    return h
+
+def page_data(f):
+    s = open(V + 'site/' + f).read()
+    title = re.search(r'<title>(.*?)</title>', s, re.S).group(1)
+    ld = ''.join(re.findall(r'<script type="application/ld\+json">.*?</script>', s, re.S))
+    body = re.search(r'<body>(.*)</body>', s, re.S).group(1)
+    body = fix(body)
+    header = re.search(r'<a class="skip".*?</header>', body, re.S).group(0)
+    footer = re.search(r'<footer class="site">.*?</footer>', body, re.S).group(0)
+    main = re.search(r'<main id="main">(.*)</main>', body, re.S).group(1)
+    blocks = re.split(r'\n(?=<(?:section|style|script)[ >])', '\n' + main)
+    blocks = [b.strip() for b in blocks if b.strip()]
+    first = FONTS + '<style>' + CSS + '</style>' + ld + header + '<main id="main"></main>'
+    # main landmark: keep one <main> around content? Elementor wraps widgets, so mark the first section instead
+    first = first.replace('<main id="main"></main>', '<span id="main"></span>')
+    els = [html_widget(first)] + [html_widget(b) for b in blocks] + [html_widget(footer)]
+    return title, [container(els)], '\n'.join([header, main, footer])
+
+def push(f):
+    title, els, content = page_data(f)
+    name = re.sub(r'\s*\|.*$', '', re.sub(r'&amp;', '&', title)).strip()
+    if f == 'index.html': name = 'Home'
+    body = {'title': name, 'slug': slug(f), 'status': 'publish', 'template': 'elementor_canvas', 'content': content,
+            'meta': {'_elementor_data': json.dumps(els), '_elementor_edit_mode': 'builder', '_elementor_template_type': 'wp-page'}}
+    url = API + (f'/{st[f]}' if f in st else '')
+    r = subprocess.run(['curl', '-sS', '-m', '120', '-X', 'POST', url, '-H', 'Content-Type: application/json', '--data-binary', '@-'],
+                       input=json.dumps(body), capture_output=True, text=True)
+    try: j = json.loads(r.stdout)
+    except Exception: print('FAIL', f, r.stdout[:300]); return
+    if 'id' not in j: print('FAIL', f, j.get('code'), j.get('message')); return
+    st[f] = j['id']; json.dump(st, open(STATE, 'w'), indent=1)
+    print(j['id'], j['link'], j.get('template'))
+
+if __name__ == '__main__':
+    files = sys.argv[1:] or sorted(f for f in os.listdir(V + 'site') if f.endswith('.html') and f not in SKIP)
+    for f in files:
+        push(f)
