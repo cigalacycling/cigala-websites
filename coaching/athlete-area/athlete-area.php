@@ -384,10 +384,16 @@ function cc_ath_inner() {
         $list = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'meta_key' => 'cc_user']);
         // Matteo 17 Nov: his own demo page (no login, his own Vekta data), first in the list
         $list = array_merge(get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_demo', 'meta_value' => '1']), $list);
-        $o .= '<div class="ath-coach"><p><b>Coach view.</b> You see what every athlete sees. Choose an athlete to see their own reports, or add one in WordPress: Users &gt; Add New (role Subscriber).</p><p class="ath-list">';
-        foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 24) : '') . esc_html($p->post_title)
+        // Matteo 17 Nov: a calmer athlete list: one tidy grid (same-size rows, every face or initials), a search box, and folded away while he looks at one athlete
+        $cur = ($view && $view !== $mine) ? get_the_title($view) : '';
+        $o .= '<div class="ath-coach"><details class="ath-roster"' . ($cur === '' ? ' open' : '') . '><summary><span class="ath-ro-h">Your athletes <small>' . count($list) . '</small></span>'
+            . ($cur !== '' ? '<span class="ath-ro-cur">' . (function_exists('cc_ph_widget') ? cc_ph_widget($view, 26, false, 'ath-lf') : '') . esc_html($cur) . '</span><span class="ath-ro-ch">Change athlete</span>' : '') . '</summary>'
+            . '<input type="search" class="ath-ro-q" placeholder="Find an athlete…" aria-label="Find an athlete" autocomplete="off"><div class="ath-list">';
+        foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . ' data-q="' . esc_attr(strtolower(remove_accents($p->post_title))) . '">' . (function_exists('cc_ph_widget') ? cc_ph_widget($p->ID, 30, false, 'ath-lf') : '') . '<span class="ath-ln">' . esc_html($p->post_title) . '</span>'
             . cc_ath_flag_for($p->ID) . (get_post_meta($p->ID, 'cc_demo', true) ? ' <small style="opacity:.75">demo</small>' : '') . '</a>';
-        $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . (function_exists('cc_ph_assets') ? cc_ph_assets() : '') . (($tl = apply_filters('cc_ath_coach_links', '')) !== '' ? '<div class="ath-coach-tools"><span class="ath-coach-tl">Your coach tools</span>' . $tl . '</div>' : '') . '</div>';
+        $o .= ($list ? '</div>' : '<span>No athletes yet.</span></div>') . '</details>'
+            . '<script>(function(){var q=document.querySelector(".ath-ro-q");if(!q)return;q.addEventListener("input",function(){var v=q.value.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim();'
+            . 'document.querySelectorAll(".ath-roster .ath-list a").forEach(function(a){a.hidden=v!==""&&a.dataset.q.indexOf(v)<0;});});})();</script>' . (function_exists('cc_ph_assets') ? cc_ph_assets() : '') . (($tl = apply_filters('cc_ath_coach_links', '')) !== '' ? '<div class="ath-coach-tools"><span class="ath-coach-tl">Your coach tools</span>' . $tl . '</div>' : '') . '</div>';
         // coach-only pages (e.g. ?board=availability, from availability.php); empty unless a module adds one
         $board = isset($_GET['board']) ? sanitize_key($_GET['board']) : '';
         if ($board !== '' && ($b = apply_filters('cc_ath_board', '', $board)) !== '') return $o . cc_ath_find() . $b . '</div>' . cc_ath_js();
@@ -590,7 +596,7 @@ function cc_ath_live_chips($view, $coach, $nrep) {
         $d = (int) round((strtotime($e['date'] . ' 12:00') - strtotime($today . ' 12:00')) / DAY_IN_SECONDS); if ($d > 183) break;
         $p = strtolower($e['prio'] ?? 'b'); $pri = '<i class="ath-pri ath-pri-' . esc_attr($p) . '">' . esc_html(strtoupper($p)) . '</i>';
         $o .= '<a class="ath-chip ath-chip-race" href="#goals">' . $pri . ($d <= 1 ? '<b>' . esc_html(cc_ath_live_w($d ? 'tomorrow' : 'today')) . '</b> '
-            : '<b class="ath-n" data-n="' . $d . '">' . $d . '</b> ' . esc_html(cc_ath_live_w('day', $d)) . ' · ') . '<span class="ath-chip-nm">' . esc_html($e['name']) . '</span></a>';
+            : '<b class="ath-n" data-n="' . $d . '">' . $d . '</b> ' . esc_html(cc_ath_live_w('day', $d))) . ' <span class="ath-chip-nm">' . esc_html($e['name']) . '</span></a>';
         break;
     }
     if ($n = count($unread)) $o .= $chip($n, cc_ath_live_w('new', $n), '#', 'ath-chip-go ath-chip-bell');
@@ -998,7 +1004,7 @@ html .cc .ath-links .ath-out { font-size: 15px; margin: 0 !important; } html .cc
 html .cc .ath-hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 290px; align-items: end; gap: 40px; padding: 46px 52px 0; margin: 0 0 18px; border-radius: 20px; overflow: hidden;
   background: radial-gradient(120% 140% at 100% 100%, rgba(18,161,80,.28), transparent 55%), radial-gradient(90% 120% at 0% 0%, rgba(255,61,51,.14), transparent 60%), rgba(12,14,16,.92); border: 1px solid rgba(43,212,122,.3); box-shadow: 0 30px 80px rgba(0,0,0,.45); }
 html .cc .ath-hero-txt { padding-bottom: 44px; min-width: 0; align-self: center; }   /* Matteo 17 Nov: the text centred in the header (the photo still stands on the bottom) */
-html .cc .ath-hero-txt:has(.ath-coach-tag) { align-self: end; }   /* his own coach view: the text lower, at the bottom */
+html .cc .ath-hero-txt:has(.ath-coach-tag) { align-self: end; padding-bottom: 64px; }   /* his own coach view: the text lower, at the bottom (Matteo 17 Nov: then ~half a cm back up) */
 html .cc .ath-hero h1 { font-size: clamp(36px, 6.4vw, 66px); line-height: 1; margin: 8px 0 12px; }
 html .cc h1 .ath-greet { color: var(--green-text, #2bd47a); font-family: var(--head); }
 html .cc h1 .ath-coach-tag { font-size: .45em; color: #b8bec8; letter-spacing: .04em; vertical-align: text-top; margin-right: .15em; }   /* raised, on the left of the name */   /* Matteo 17 Nov: a small "Coach" before his name, nothing else changed */
@@ -1012,6 +1018,7 @@ html .cc .ath-live a.ath-chip:hover { transform: translateY(-1px); border-color:
 html .cc .ath-live .ath-chip-go { border-color: rgba(43,212,122,.45); background: rgba(18,161,80,.14); }
 html .cc .ath-live .ath-chip-go b { color: #2bd47a; }
 html .cc .ath-live .ath-chip-ok { color: #2bd47a; border-color: rgba(43,212,122,.35); font-weight: 600; }
+html .cc .ath-chip-race .ath-chip-nm::before { content: "· "; color: #b8bec8; font-weight: 400; }
 html .cc .ath-chip-nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 22ch; color: #fff; font-weight: 600; }
 html .cc .ath-pri { flex: none; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font: 700 12px/1 var(--body); font-style: normal; color: #1a1a1a; }
 html .cc .ath-pri-a { background: linear-gradient(135deg,#F3D774,#D4AF37,#A8841F); }
@@ -1043,6 +1050,27 @@ html .cc .ath-list a:hover, html .cc .ath-list a:focus-visible { transform: tran
 html .cc .ath-list a:hover > *, html .cc .ath-list a:focus-visible > * { transform: scale(1.18) rotate(-4deg); }
 html .cc .ath-list a[aria-current]:hover { background: #12a150; }
 @media (prefers-reduced-motion: reduce) { html .cc .ath-list a, html .cc .ath-list a > * { transition: none; } html .cc .ath-list a:hover, html .cc .ath-list a:hover > * { transform: none; } }
+/* Matteo 17 Nov: the calmer roster: a grid of same-size rows, a search box, folded while he looks at one athlete */
+html .cc .ath-coach { border-style: solid; border-color: rgba(255,255,255,.12); background: rgba(12,14,16,.6); }
+html .cc .ath-roster > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0; }
+html .cc .ath-roster > summary::-webkit-details-marker { display: none; }
+html .cc .ath-ro-h { font-family: var(--head); font-size: 22px; letter-spacing: .02em; text-transform: uppercase; color: #fff; }
+html .cc .ath-ro-h small { font-family: var(--body); font-size: 14px; font-weight: 700; color: #2bd47a; margin-left: 6px; vertical-align: middle; }
+html .cc .ath-ro-cur { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; color: #fff; }
+html .cc .ath-ro-ch { margin-left: auto; font-size: 15px; font-weight: 600; color: #2bd47a; }
+html .cc .ath-roster[open] .ath-ro-cur, html .cc .ath-roster[open] .ath-ro-ch { display: none; }
+html .cc .ath-ro-q { display: block; width: 100%; max-width: 360px; margin: 14px 0 12px; padding: 10px 14px; font-size: 16px; color: #fff; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16); border-radius: 10px; }
+html .cc .ath-ro-q:focus { outline: none; border-color: #12a150; }
+html .cc .ath-roster .ath-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 6px; }
+html .cc .ath-roster .ath-list a { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 7px 10px; border-radius: 10px; background: transparent; font-size: 15px; }
+html .cc .ath-roster .ath-list a:hover, html .cc .ath-roster .ath-list a:focus-visible { transform: none; box-shadow: none; background: rgba(18,161,80,.14); }
+html .cc .ath-roster .ath-list a:hover > *, html .cc .ath-roster .ath-list a:focus-visible > * { transform: none; }
+html .cc .ath-roster .ath-list a[aria-current] { background: rgba(18,161,80,.3); border-color: rgba(43,212,122,.6); }
+html .cc .ath-roster .ath-list a[hidden] { display: none; }
+html .cc .ath-ln { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+html .cc .ath-lf { border-width: 1.5px !important; box-shadow: none !important; }
+html .cc .ath-lf .ph-ini { font-size: 12px; }
+@media (max-width: 760px) { html .cc .ath-roster .ath-list { grid-template-columns: 1fr 1fr; } html .cc .ath-roster .ath-list a { padding: 6px 4px; font-size: 14px; gap: 8px; } html .cc .ath-ro-q { max-width: none; } }
 html .cc .ath-flag-e { display: inline-grid; place-items: center; width: 14px; height: 14px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 1px 4px rgba(0,0,0,.4); flex: none; }
 html .cc .ath-flag-e span { font-size: 20px; line-height: 1; }
 html .cc .ath form.ath-lang { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 0 14px; vertical-align: middle; }
@@ -1141,8 +1169,16 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
   html .cc .ath-chips { gap: 8px; }
   html .cc .ath-chip { padding: 7px 11px; font-size: 12.5px; gap: 6px; }
   html .cc .ath-chip b { font-size: 18px; }
-  html .cc .ath-live .ath-chip { font-size: 14px; padding: 7px 12px; }   /* 14px minimum (50+ readers) */
-  html .cc .ath-chip-nm { max-width: 14ch; }
+  html .cc .ath-live .ath-chip { font-size: 14px; padding: 7px 12px; white-space: nowrap; }   /* 14px minimum (50+ readers) */
+  /* the race chip on two tidy lines: badge + days, then the race name */
+  html .cc .ath-live .ath-chip-race { flex-wrap: wrap; row-gap: 2px; border-radius: 16px; }
+  html .cc .ath-live .ath-chip-race .ath-chip-nm { flex-basis: 100%; max-width: 100%; }
+  html .cc .ath-chip-race .ath-chip-nm::before { content: none; }
+  html .cc .ath-hero-txt:has(.ath-coach-tag) { padding-bottom: 34px; }
+  /* Matteo 17 Nov: the photo in line with "Good evening", and the line under it with some air */
+  html .cc .ath-hero-txt .ath-hello { align-items: flex-start; }
+  html .cc .ath-hero-txt .ath-hello h1 { margin-top: 6px !important; }
+  html .cc .ath-hello ~ .ath-lede { margin-top: 18px; }
   html .cc .ath-s { padding: 22px 16px 24px; }
   html .cc .ath-body .ath-tools { grid-template-columns: 1fr 1fr; gap: 10px; }
   html .cc .ath-tools .ath-tile { padding: 14px 12px; }

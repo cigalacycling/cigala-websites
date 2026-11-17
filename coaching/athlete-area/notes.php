@@ -83,10 +83,11 @@ function cc_nt_item($n, $forCoach, $pid = 0) {
         $mine = ($r['from'] ?? 'coach') === 'coach';   // Matteo's reply, or the athlete answering in the thread
         $label = $mine ? ($forCoach ? 'Your reply' : cc_nt_w('reply')) : ($forCoach ? $who : cc_nt_w('you'));
         // Matteo's photo by his replies (athlete view); the athlete's own photo (or initials) by theirs (both views)
-        $face = $mine ? (!$forCoach ? '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">' : '')
+        // Matteo 17 Nov: the face always beside the name (never on top), his own photo in his coach view too
+        $face = $mine ? '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">'
                       : ($pid && function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '');
-        $o .= '<div class="nt-rep' . ($mine ? '' : ' nt-rep-a') . '">' . $face
-            . '<b>' . esc_html($label) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small>'
+        $o .= '<div class="nt-rep' . ($mine ? '' : ' nt-rep-a') . '"><span class="nt-rh">' . $face
+            . '<b>' . esc_html($label) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small></span>'
             . ($pid && ($forCoach || !$mine) ? cc_nt_delbtn($pid, $n['at'], $ri) : '');
         if (($u = cc_nt_url($r['audio'] ?? 0))) $o .= cc_nt_player($u);
         if (($r['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($r['text'])) . '</p>';
@@ -136,6 +137,9 @@ function cc_nt_css() {
         . 'html .cc .nt-rep-a{border-left-color:#b8bec8;background:rgba(255,255,255,.05);margin-left:28px}html .cc .nt-rep-a b{color:#fff!important}'
         . 'html .cc .nt-rep .nt-me-a{display:inline-grid;vertical-align:middle;margin:0 8px 0 0;border-width:2px;box-shadow:none}html .cc .nt-rep .nt-me-a .ph-ini{font-size:12px}'
         . 'html .cc .nt-me{width:30px;height:30px;border-radius:50%;object-fit:cover;vertical-align:middle;margin:0 8px 0 0;border:2px solid #12a150}'
+        // the face beside the name, the name and time beside it on one line where they fit
+        . 'html .cc .nt-rh{display:flex;align-items:center;flex-wrap:nowrap;gap:8px;margin:0 0 4px}html .cc .nt-rh .nt-me,html .cc .nt-rh .nt-me-a{flex:none;margin:0!important}html .cc .nt-rh b{min-width:0;line-height:1.25}html .cc .nt-rh small{flex:none}'
+        . '@media (max-width:560px){html .cc .rs-card .nt-rep{margin-left:0}}'
         . 'html .cc .nt-box textarea[hidden]{display:none}html .cc .nt .nt-yours{margin-top:30px}'
         // the player
         . 'html .cc .nt-pl{display:flex;align-items:center;gap:12px;max-width:440px;margin:10px 0;padding:8px 14px 8px 8px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)}'

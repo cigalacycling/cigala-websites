@@ -70,7 +70,7 @@ function cc_rs_card($pid, $r, $forCoach) {
         $face = $coachSide ? $me : (function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '');
         $label = $coachSide ? ($forCoach ? 'You' : cc_rs_w('replied')) : ($forCoach ? get_the_title($pid) : cc_rs_w('you'));
         $ph = !empty($e['photo']) ? wp_get_attachment_url((int) $e['photo']) : ''; $au = !empty($e['audio']) ? wp_get_attachment_url((int) $e['audio']) : '';
-        $o .= '<div class="nt-rep' . ($coachSide ? '' : ' nt-rep-a') . '">' . $face . '<b>' . esc_html($label) . '</b>'
+        $o .= '<div class="nt-rep' . ($coachSide ? '' : ' nt-rep-a') . '"><span class="nt-rh">' . $face . '<b>' . esc_html($label) . '</b></span>'
             . ($au && function_exists('cc_nt_player') ? cc_nt_player($au) : '') . (($e['text'] ?? '') !== '' ? '<p>' . nl2br(esc_html($e['text'])) . '</p>' : '')
             . ($ph ? '<a href="' . esc_url($ph) . '" target="_blank" rel="noopener"><img class="rs-rimg" src="' . esc_url($ph) . '" alt="" loading="lazy"></a>' : '') . '</div>';
     }
@@ -111,7 +111,8 @@ function cc_rs_css() {
         . 'html .cc .rs-b{flex:1;min-width:0}html .cc .rs-b small{color:#b8bec8;font-size:15px}html .cc .rs-b p{margin:6px 0 0;font-size:16px;color:#e6e9ee}html .cc .rs-ok{font-size:15px!important;color:#d0d6e0!important}html .cc .rs-react{font-size:22px!important}'
         . 'html .cc .rs-acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}html .cc .rs-rx{width:42px;height:42px;min-height:0;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;font-size:20px;cursor:pointer}html .cc .rs-rx.on{border-color:#2bd47a;background:rgba(18,161,80,.25)}'
         . 'html .cc .rs-rep{flex:1 1 180px;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff}html .cc .rs-acts .btn{width:auto;margin:0}'
-        . '@media (max-width:560px){html .cc .rs-card{flex-direction:column}html .cc .rs-ph{width:100%;height:220px}}</style>';
+        // Matteo 17 Nov: the photo stays beside the text on phones too (not on top); tap opens it full size
+        . '@media (max-width:560px){html .cc .rs-card{gap:12px;padding:10px}html .cc .rs-ph{width:84px;height:84px;font-size:32px}}</style>';
 }
 function cc_rs_js() {
     static $d = false; if ($d) return ''; $d = true;
