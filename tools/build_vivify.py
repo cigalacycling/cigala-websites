@@ -762,8 +762,8 @@ def coaching():
             ('Advice on healthy nutritional habits', '', [S, S, S, S, S]),
             ('Food Diary Analysis', '', [D, D, 'Weekly', 'Daily', 'Daily']),
             ('Vitamins &amp; minerals requirements', '', [S, S, D, D, S]),
-            ('Supplements requirements', '', [S, S, D, S, S]),
-            ('Sports-specific requirements', '', [S, S, S, S, S]),
+            ('Supplements requirements', '', [S, S, S, S, S]),   # Marine 17 Nov: supplements on the Healthy Body Plan
+            ('Sports-specific requirements', '', [S, S, D, S, S]),   # Marine 17 Nov: not on the Healthy Body Plan
             ('“Breakfasts to ignite your potential” ebook', '', [D, D, D, D, S])]
     def cell(v, i=0):
         hl = ' class="hl"' if i == 3 else ''
@@ -810,7 +810,7 @@ def coaching():
     two = plan('FOLLOW-UP CONSULTATION', '30mn 50€ / 60 US$', '', 'A session to review your progress, fine-tune your plan, and stay on track.',
                ['1 follow-up call', 'Updated nutritional and supplement advice'], 'Book now', FOLLOWUP_PAY)
     p1 = plan('THE HEALTHY BODY PLAN', '99€/MONTH', '3 months', 'Build sustainable, healthy eating habits that energize your everyday life.',
-              ['3 calls over 3 months', 'WhatsApp support', 'Weekly macro plan based on your training load', 'Weekly food diary analysis', 'Advice on balanced nutrition'], 'Sign up', PAY['healthy'], usd='119 US$ a month')
+              ['3 calls over 3 months', 'WhatsApp support', 'Weekly macro plan based on your training load', 'Weekly food diary analysis', 'Advice on balanced nutrition', 'Supplement advice'], 'Sign up', PAY['healthy'], usd='119 US$ a month')
     p2 = plan('THE HAPPY BODY PLAN', '149€/MONTH', '3 months', 'Create harmony between your nutrition, mood, and lifestyle to bring out the best of you.',
               ['5 calls over 3 months', 'WhatsApp support', 'Weekly meal plan tailored to your training', 'Daily food diary analysis', 'Advice on balanced nutrition, vitamins and supplements', 'Daily Support &amp; Motivation'], 'Sign up', PAY['happy'], usd='180 US$ a month', feat=True)
     p3 = plan('THE PERFORMING BODY PLAN', '199€/MONTH', '3 months', 'Maximize performance and recovery with a fully personalized approach.',

@@ -216,6 +216,7 @@ TR = {
  'Unlimited': ('Illimité', 'Illimitate'),
  'Daily contact via WhatsApp': ('Contact quotidien sur WhatsApp', 'Contatto quotidiano su WhatsApp'),
  'WhatsApp support': ('Suivi sur WhatsApp', 'Supporto su WhatsApp'),
+ 'Supplement advice': ('Conseils en compléments alimentaires', 'Consigli sugli integratori'),
  'Included': ('Inclus', 'Incluso'),
  'Weekly Meal Plan': ('Plan de repas hebdomadaire', 'Piano pasti settimanale'),
  '(based on your training load)': ('(selon votre charge d’entraînement)', '(in base al carico di allenamento)'),
