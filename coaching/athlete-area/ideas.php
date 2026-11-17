@@ -30,7 +30,7 @@ add_filter('cc_ath_end', function ($html, $view, $coach) {
         . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_idea">' . wp_nonce_field('cc_idea', '_wpnonce', false, false)
         . '<textarea name="idea" rows="3" maxlength="2000" required placeholder="' . esc_attr(cc_idea_w('ph')) . '" aria-label="' . esc_attr(cc_idea_w('title')) . '"></textarea>'
         . '<button class="btn btn-go" type="submit">' . esc_html(cc_idea_w('send')) . '</button></form></section>'
-        . '<style>html .cc .cc-idea form{display:grid;gap:12px;justify-items:start}html .cc .cc-idea textarea{width:100%;min-height:110px;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
+        . '<style>html .cc .cc-idea form{display:grid;gap:12px;justify-items:stretch}html .cc .cc-idea form .btn{justify-self:start}html .cc .cc-idea .cc-micw{display:block;width:100%}html .cc .cc-idea textarea{width:100%;min-height:110px;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
         . 'html .cc .cc-idea-ok{color:#34c46a;font-weight:600;font-size:16px;margin:0 0 12px}</style>';
 }, 10, 3);
 
