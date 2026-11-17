@@ -135,8 +135,11 @@ add_action('rest_api_init', function () {
         return new WP_Error('cc_none', 'No such result', ['status' => 404]);
     }]);
     register_rest_route('cc/v1', '/results', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {   // Matteo's tools (e.g. social posts): consent included
-        $out = []; foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_results']) as $p) foreach (cc_rs_get($p->ID) as $x)
-            $out[] = ['page' => $p->ID, 'athlete' => $p->post_title, 'at' => $x['at'], 'date' => $x['date'], 'race' => $x['race'], 'text' => $x['text'], 'consent' => (bool) $x['consent'], 'photo' => !empty($x['photo']) ? wp_get_attachment_url((int) $x['photo']) : null];
+        $out = []; foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_results']) as $p) {
+            $uid = (int) get_post_meta($p->ID, 'cc_user', true); $vid = $uid ? (string) get_user_meta($uid, 'cc_vekta_id', true) : '';   // for the Vekta sync
+            foreach (cc_rs_get($p->ID) as $x)
+            $out[] = ['page' => $p->ID, 'athlete' => $p->post_title, 'vekta_id' => $vid ?: null, 'react' => $x['react'] ?? '', 'reply' => $x['reply'] ?? '', 'at' => $x['at'], 'date' => $x['date'], 'race' => $x['race'], 'text' => $x['text'], 'consent' => (bool) $x['consent'], 'photo' => !empty($x['photo']) ? wp_get_attachment_url((int) $x['photo']) : null];
+        }
         usort($out, function ($a, $b) { return $b['at'] <=> $a['at']; }); return $out;
     }]);
 });
