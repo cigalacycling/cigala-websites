@@ -104,8 +104,8 @@ EMAIL, PHONE, PHONE_TEL = 'marine@vivifysports.com', '+353 87 224 7402', '+35387
 IG = 'https://www.instagram.com/vivifysports/'
 EBOOK_PAY = 'https://buy.stripe.com/bJe7sN9augIR63nb6w8k800'   # Marine's Stripe payment link, 5.99 EUR (17 Nov)
 ASSESSMENT_PAY = 'https://cal.com/marine-lenehan/nutritional-assessment'   # Nutritional Assessment: Cal.com paid event, pay + book in one step (17 Nov; was Stripe aFa4gBbiC3W563nb6w8k801)
-FOLLOWUP_PAY = 'https://buy.stripe.com/aFa3cx72m9gp1N7gqQ8k802'     # Follow-up Consultation, Stripe (17 Nov)
-FUELLING_PAY = 'https://buy.stripe.com/aFa28t0DY5092RbdeE8k803'     # Race Fuelling Plan 70 EUR: 30 min call + PDF plan (17 Nov)
+FOLLOWUP_PAY = 'https://cal.com/marine-lenehan/30min'     # Follow-up Consultation: Cal.com paid event (17 Nov; was Stripe aFa3cx72m9gp1N7gqQ8k802)
+FUELLING_PAY = 'https://cal.com/marine-lenehan/fuelingplan'     # Race Fuelling Plan 70 EUR: Cal.com paid event, 30 min call + PDF plan (17 Nov; was Stripe aFa28t0DY5092RbdeE8k803)
 GBP = 'https://share.google/d4C3iwnzpSU1VDUqt'   # Marine's Google Business Profile (reviews), 17 Nov
 
 ICON = {

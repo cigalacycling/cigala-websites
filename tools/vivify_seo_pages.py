@@ -129,7 +129,7 @@ def build(b):
            ('Is a fuelling plan included in the coaching plans?',
             '<p>A competition nutrition plan is part of The Performing Body Plan (sold out for now). You can also buy a fuelling plan on its own for a single event, for 70€.</p>'),
            ('How much does a fuelling plan cost?',
-            '<p>70€. It includes a 30-minute call with Marine to understand your event, followed by your personal fuelling plan as a PDF. You pay online, then choose your call time in Marine’s calendar.</p>'),
+            '<p>70€. It includes a 30-minute call with Marine to understand your event, followed by your personal fuelling plan as a PDF. You choose your call time and pay online in one step.</p>'),
            ('Which events do you plan for?',
             '<p>Endurance events of any length: road races, sportives, gravel and ultra-distance rides, triathlon from sprint to Ironman, and running races.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Fuelling plans', 'Common questions')
@@ -142,7 +142,7 @@ def build(b):
   <p>Fuelling for an event can be quite a headache. Marine builds a plan around your event, your body and what your gut can handle. It tells you what to eat and drink, how much and when, from the days before the start to the finish line.</p>
   <p>It uses the same approach Marine uses for her own racing in the WorldTour, and for clients like Colum. He took 30 minutes off his Ironman 70.3 time with the right nutrition plan.</p>
   <div class="panel" style="padding:24px 26px;margin-top:22px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between">
-   <div><span class="h2" style="font-size:44px">70€</span><p class="muted" style="margin:4px 0 0;text-align:left">30-minute call + your fuelling plan in PDF</p><p class="muted" style="margin:2px 0 0;font-size:12.5px;text-align:left">Pay online, then choose your call time in Marine’s calendar.</p></div>
+   <div><span class="h2" style="font-size:44px">70€</span><p class="muted" style="margin:4px 0 0;text-align:left">30-minute call + your fuelling plan in PDF</p><p class="muted" style="margin:2px 0 0;font-size:12.5px;text-align:left">Choose your call time and pay in one step.</p></div>
    <a class="btn btn-primary" href="{b.FUELLING_PAY}" target="_blank" rel="noopener">Buy your fuelling plan {ICON['arrow']}</a></div></div>
  <div class="panel" style="padding:32px"><span class="eyebrow">Tailored to your goals and your event</span>
   {ticks(['Nutrition for the day before and race day', 'Macros or practical recipes, whichever you prefer', 'Carbohydrate intake per hour', 'Supplements', 'Hydration strategy', 'Recovery strategy'])}</div>
@@ -150,7 +150,7 @@ def build(b):
 <section style="padding-top:8px"><div class="wrap">
  {head('How it works', 'Three steps', center=True)}
  <div class="g3" style="margin-top:28px">
-  <div class="pcard panel"><span class="num">1.</span><span class="h3">Buy your plan</span><p style="margin:0">Pay online (70€). You then book your 30-minute call with Marine.</p></div>
+  <div class="pcard panel"><span class="num">1.</span><span class="h3">Buy your plan</span><p style="margin:0">Choose your 30-minute call time with Marine and pay online (70€) in one step.</p></div>
   <div class="pcard panel"><span class="num">2.</span><span class="h3">30-minute call</span><p style="margin:0">Tell Marine about your event: distance, course, expected time, weather, what you eat now and what has gone wrong before.</p></div>
   <div class="pcard panel"><span class="num">3.</span><span class="h3">Your plan in PDF</span><p style="margin:0">A clear plan for your sport, gender, weight and metabolism: grams of carbs per hour, fluids and what to carry. Practise it on long sessions before race day.</p></div>
  </div></div></section>
