@@ -228,6 +228,12 @@ add_action('rest_api_init', function () {
         unset($res['email']); return $res;   // the email stays in the hub
     }]);
     register_rest_route('cc/v1', '/gc-end', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) { return ['signup' => $r['d'], 'end' => cc_gc_end((string) $r['d'])]; }]);
+    // Matteo's switch from here too (17 Nov: "turn on the automation"): live or test; only when the connection is set up
+    register_rest_route('cc/v1', '/gc-mode', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $m = $r->get_param('mode') === 'live' ? 'live' : 'test';
+        if ($m === 'live' && !(get_option('cc_gc_secret') && get_option('cc_gc_token'))) return new WP_Error('cc_gc', 'Connect GoCardless first', ['status' => 409]);
+        update_option('cc_gc_mode', $m, false); cc_gc_log('mode ' . $m, ['name' => wp_get_current_user()->display_name]); return ['mode' => cc_gc_mode()];
+    }]);
     register_rest_route('cc/v1', '/gc-status', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
         return ['mode' => cc_gc_mode(), 'since' => (int) get_option('cc_gc_since', 0) ?: null, 'secret_set' => (bool) get_option('cc_gc_secret', ''), 'token_set' => (bool) get_option('cc_gc_token', ''),
                 'webhook_url' => rest_url('cc/v1/gocardless'), 'log' => array_slice((array) get_option('cc_gc_log', []), 0, 20)];
