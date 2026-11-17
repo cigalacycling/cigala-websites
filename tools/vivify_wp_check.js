@@ -11,7 +11,7 @@ for(const w of [390,820,1440]){const ctx=await b.newContext({viewport:{width:w,h
   const r=await pg.evaluate(()=>({sw:document.documentElement.scrollWidth,h1:document.querySelectorAll('h1').length,
    noalt:[...document.images].filter(i=>!i.hasAttribute('alt')||(!i.alt&&!i.closest('[aria-hidden]'))).map(i=>i.src.split('/').pop()).slice(0,3),
    broken:[...document.images].filter(i=>i.complete&&i.naturalWidth===0&&!i.src.includes('s.w.org/images/core/emoji')).map(i=>i.src.split('/').pop()).slice(0,3),
-   small:[...document.querySelectorAll('input:not([type=checkbox]):not([type=hidden]),textarea,select')].filter(i=>parseFloat(getComputedStyle(i).fontSize)<16).length}));
+   small:[...document.querySelectorAll('input:not([type=checkbox]):not([type=hidden]):not([type=submit]),textarea,select')].filter(i=>parseFloat(getComputedStyle(i).fontSize)<16).length}));
   if(r.sw>w||r.h1!==1||r.noalt.length||r.broken.length||r.small){bad++;console.log(w,p,JSON.stringify(r));}
   await pg.close();}
  await ctx.close();}

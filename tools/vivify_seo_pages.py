@@ -59,7 +59,7 @@ def build(b):
     def plans_strip():
         rows = [('Nutritional Assessment', '50 min', '100€ / 120 US$'), ('Follow-up Consultation', '30 min', '50€ / 60 US$'),
                 ('The Healthy Body Plan', '3 months', '99€ / 119 US$ a month'), ('The Happy Body Plan', '3 months', '149€ / 180 US$ a month'),
-                ('The Performing Body Plan', '3 months', '199€ / 240 US$ a month (sold out for now)')]
+                ('The Performing Body Plan', '3 months', '199€ / 240 US$ a month (sold out for now)'), ('Race Fuelling Plan', '30 min call + PDF plan', '70€')]
         tr = ''.join(f'<tr><th scope="row">{n}</th><td>{d}</td><td>{p}</td></tr>' for n, d, p in rows)
         return f"""<div class="tbl-wrap"><table class="cmp" style="min-width:520px"><thead><tr><th scope="col">Option</th><th scope="col">Length</th><th scope="col">Price</th></tr></thead><tbody>{tr}</tbody></table></div>
  <p class="center" style="margin-top:18px"><a href="sports-nutritionist-ireland.html#plans">Compare everything each plan includes {ICON['arrow']}</a></p>"""
@@ -117,32 +117,38 @@ def build(b):
     qas = [('When should I get my fuelling plan?',
             '<p>Ideally several weeks before your event, so you can practise it in training and train your gut to tolerate the carbohydrate you will need on the day.</p>'),
            ('Is a fuelling plan included in the coaching plans?',
-            '<p>A competition nutrition plan is part of The Performing Body Plan (sold out for now). You can also ask for a fuelling plan on its own for a single event.</p>'),
+            '<p>A competition nutrition plan is part of The Performing Body Plan (sold out for now). You can also buy a fuelling plan on its own for a single event, for 70€.</p>'),
+           ('How much does a fuelling plan cost?',
+            '<p>70€. It includes a 30-minute call with Marine to understand your event, followed by your personal fuelling plan as a PDF. You pay online when you buy it.</p>'),
            ('Which events do you plan for?',
             '<p>Endurance events of any length: road races, sportives, gravel and ultra-distance rides, triathlon from sprint to Ironman, and running races.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Fuelling plans', 'Common questions')
     body = f"""
 {hero('Cycling · Triathlon · Running', 'Race Fuelling Plan',
       'Remember bonking out half way through your event? A precise plan for race day, based on your sport, gender, weight and metabolism.',
-      'nsplsh-5aa897658f1e4fb8bd88bbd8b165', 'Ironman 70.3 Nutrition Plan: How to Fuel Your Training and Race Day', btn=('Ask for your fuelling plan', 'contact.html'))}
+      'nsplsh-5aa897658f1e4fb8bd88bbd8b165', 'Ironman 70.3 Nutrition Plan: How to Fuel Your Training and Race Day', btn=('Buy your fuelling plan · 70€', b.FUELLING_PAY))}
 <section><div class="wrap g2" style="align-items:start">
  <div>{head('Race day, planned', 'What your fuelling plan covers')}
   <p>Fuelling for an event can be quite a headache. Marine builds a plan around your event, your body and what your gut can handle. It tells you what to eat and drink, how much and when, from the days before the start to the finish line.</p>
-  <p>It uses the same approach Marine uses for her own racing in the WorldTour, and for clients like Colum. He took 30 minutes off his Ironman 70.3 time with the right nutrition plan.</p></div>
- <div class="panel" style="padding:32px">{ticks(['Carb loading in the days before', 'Pre-race breakfast', 'Carbohydrate per hour, by product and by food', 'Hydration and electrolytes from your sweat rate', 'Gut training plan for the weeks before', 'Recovery after the finish'])}</div>
+  <p>It uses the same approach Marine uses for her own racing in the WorldTour, and for clients like Colum. He took 30 minutes off his Ironman 70.3 time with the right nutrition plan.</p>
+  <div class="panel" style="padding:24px 26px;margin-top:22px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between">
+   <div><span class="h2" style="font-size:44px">70€</span><p class="muted" style="margin:4px 0 0;text-align:left">30-minute call + your fuelling plan in PDF</p></div>
+   <a class="btn btn-primary" href="{b.FUELLING_PAY}" target="_blank" rel="noopener">Buy your fuelling plan {ICON['arrow']}</a></div></div>
+ <div class="panel" style="padding:32px"><span class="eyebrow">Tailored to your goals and your event</span>
+  {ticks(['Nutrition for the day before and race day', 'Macros or practical recipes, whichever you prefer', 'Carbohydrate intake per hour', 'Supplements', 'Hydration strategy', 'Recovery strategy'])}</div>
 </div></section>
 <section style="padding-top:8px"><div class="wrap">
  {head('How it works', 'Three steps', center=True)}
  <div class="g3" style="margin-top:28px">
-  <div class="pcard panel"><span class="num">1.</span><span class="h3">Tell Marine about your event</span><p style="margin:0">Distance, course, expected time, weather, what you eat now and what has gone wrong before.</p></div>
-  <div class="pcard panel"><span class="num">2.</span><span class="h3">Get your plan</span><p style="margin:0">A clear plan for your sport, gender, weight and metabolism: grams of carbs per hour, fluids and what to carry.</p></div>
-  <div class="pcard panel"><span class="num">3.</span><span class="h3">Practise it</span><p style="margin:0">Test it on long sessions and adjust it before race day, so nothing on the day is new.</p></div>
+  <div class="pcard panel"><span class="num">1.</span><span class="h3">Buy your plan</span><p style="margin:0">Pay online (70€). You then book your 30-minute call with Marine.</p></div>
+  <div class="pcard panel"><span class="num">2.</span><span class="h3">30-minute call</span><p style="margin:0">Tell Marine about your event: distance, course, expected time, weather, what you eat now and what has gone wrong before.</p></div>
+  <div class="pcard panel"><span class="num">3.</span><span class="h3">Your plan in PDF</span><p style="margin:0">A clear plan for your sport, gender, weight and metabolism: grams of carbs per hour, fluids and what to carry. Practise it on long sessions before race day.</p></div>
  </div></div></section>
 {quotes(['Colum Traynor, Ireland', 'Matteo Cigala,Italy', 'Francesco Pippa, Italy'], 'Fuelled for race day')}
 {posts(['carbohydrate-fueling-endurance-sports', 'ironman-70-3-nutrition-plan', 'water-vs-sports-drinks-what-is-the-best-choice', 'do-lactate-gels-work', 'why-do-you-always-bonk-out-on-the-bike', 'cycling-nutrition-what-to-eat-and-drink-during-bike-rides-of-any-length'], 'Fuelling articles')}
 {faq_html}
-{cta('Got an event coming up?', 'Tell Marine the event and the date, and she will come back to you about your plan.', 'Book your fuelling plan here', 'contact.html')}"""
-    page('race-fuelling-plan.html', body, [SERVICE('Race fuelling plan', 'Event nutrition and fuelling plan', 'Worldwide'), faq_schema])
+{cta('Got an event coming up?', '70€: a 30-minute call about your event, then your personal fuelling plan in PDF.', 'Buy your fuelling plan', b.FUELLING_PAY, ext=True)}"""
+    page('race-fuelling-plan.html', body, [dict(SERVICE('Race fuelling plan', 'Event nutrition and fuelling plan', 'Worldwide'), offers={'@type': 'Offer', 'price': '70', 'priceCurrency': 'EUR', 'url': b.FUELLING_PAY}), faq_schema])
 
     # ------------------------------------------------------------ TRIATHLON
     qas = [('Can you help me plan nutrition for an Ironman 70.3?',
@@ -210,7 +216,7 @@ def build(b):
     qas = [('Do you see clients in person in Dublin?',
             '<p>Nutrition consultations are online by video call, so there is no travel and you can book from anywhere in Dublin. Workshops for clubs are in person in Co. Wicklow and Co. Dublin. Sports massage on call is currently sold out.</p>'),
            ('Do you give talks to Dublin and Wicklow clubs?',
-            '<p>Yes. Marine gives nutrition workshops and talks for cycling, running, swimming and athletic clubs, gyms and team sports. See <a href="workshops.html">Workshops &amp; Talks</a>.</p>')]
+            '<p>Yes. Marine gives nutrition workshops and talks for cycling, triathlon, running, swimming and athletic clubs, gyms and team sports. See <a href="workshops.html">Workshops &amp; Talks</a>.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Local', 'Common questions')
     body = f"""
 {hero('Wicklow · Dublin · Ireland', 'Sports Nutritionist in Dublin &amp; Wicklow',

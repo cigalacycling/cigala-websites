@@ -55,10 +55,16 @@ nav.main a{display:block;color:var(--text);text-decoration:none;font:600 13px/1 
 nav.main a::after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:transparent;transition:background .2s}
 nav.main a:hover{color:var(--aqua)}nav.main a:hover::after{background:var(--aqua)}
 nav.main a[aria-current=page]::after{background:var(--lime)}
+nav.main li.lang{display:flex;align-items:center;gap:2px;margin-left:8px;padding-left:10px;border-left:1px solid var(--border-strong)}
+nav.main li.lang a{padding:10px 6px;font-size:12px;letter-spacing:.08em;color:var(--text-3)}
+nav.main li.lang a[aria-current=true]{color:var(--text)}
+nav.main li.lang a::after{display:none}
 .hdr-cta{padding:13px 18px;font-size:13px}
 .burger{display:none}
 #menu-t{position:absolute;opacity:0;pointer-events:none}
 @media (max-width:1240px){
+ nav.main li.lang{margin:12px 0 0;padding:0;border:0}
+ nav.main li.lang a{font-size:15px;padding:10px 14px 10px 0;border:0}
  .burger{display:flex;margin-left:auto;width:46px;height:46px;border:1px solid var(--border-strong);border-radius:8px;align-items:center;justify-content:center;cursor:pointer;color:var(--text)}
  nav.main{position:fixed;inset:82px 0 auto 0;background:var(--bg);border-bottom:1px solid var(--border);display:none;margin:0;max-height:calc(100vh - 82px);overflow:auto}
  #menu-t:checked~nav.main{display:block}

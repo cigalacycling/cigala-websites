@@ -52,7 +52,7 @@ NEW = {
     'cycling-nutritionist.html': ('/cycling-nutritionist', 'Cycling Nutritionist Ireland & Online | Vivify Sports',
         'Cycling nutrition coaching from Marine Lenehan, MSc sports nutritionist and LIDL-TREK WorldTour rider. Road, gravel and sportive fuelling, Ireland and online.'),
     'race-fuelling-plan.html': ('/race-fuelling-plan', 'Race Fuelling Plan for Cyclists & Triathletes | Vivify Sports',
-        'A personal race fuelling plan for your event: carbs per hour, hydration and gut training, built by a WorldTour cyclist and MSc sports nutritionist.'),
+        'A race fuelling plan for your event: race day and the day before, carbs per hour, supplements, hydration and recovery, by a WorldTour cyclist and MSc nutritionist.'),
     'triathlon-nutritionist.html': ('/triathlon-nutritionist', 'Triathlon Nutritionist | Ironman & 70.3 Nutrition | Vivify Sports',
         'Triathlon nutrition coaching for Ironman, 70.3 and sprint athletes: daily fuelling for swim, bike and run training and a race-day plan. Online, from Ireland.'),
     'online-sports-nutritionist.html': ('/online-sports-nutritionist', 'Online Sports Nutritionist for Endurance Athletes | Vivify Sports',
@@ -78,6 +78,9 @@ PAY = {'healthy': 'https://pay.gocardless.com/BRT0004V6AWJMPG', 'happy': 'https:
 EMAIL, PHONE, PHONE_TEL = 'marine@vivifysports.com', '+353 87 224 7402', '+353872247402'
 IG = 'https://www.instagram.com/vivifysports/'
 EBOOK_PAY = 'https://buy.stripe.com/bJe7sN9augIR63nb6w8k800'   # Marine's Stripe payment link, 5.99 EUR (17 Nov)
+ASSESSMENT_PAY = 'https://buy.stripe.com/aFa4gBbiC3W563nb6w8k801'   # Nutritional Assessment, Stripe (17 Nov)
+FOLLOWUP_PAY = 'https://buy.stripe.com/aFa3cx72m9gp1N7gqQ8k802'     # Follow-up Consultation, Stripe (17 Nov)
+FUELLING_PAY = 'https://buy.stripe.com/aFa28t0DY5092RbdeE8k803'     # Race Fuelling Plan 70 EUR: 30 min call + PDF plan (17 Nov)
 GBP = 'https://share.google/d4C3iwnzpSU1VDUqt'   # Marine's Google Business Profile (reviews), 17 Nov
 
 ICON = {
@@ -151,10 +154,16 @@ nav.main a{display:block;color:var(--text);text-decoration:none;font:600 13px/1 
 nav.main a::after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:transparent;transition:background .2s}
 nav.main a:hover{color:var(--aqua)}nav.main a:hover::after{background:var(--aqua)}
 nav.main a[aria-current=page]::after{background:var(--lime)}
+nav.main li.lang{display:flex;align-items:center;gap:2px;margin-left:8px;padding-left:10px;border-left:1px solid var(--border-strong)}
+nav.main li.lang a{padding:10px 6px;font-size:12px;letter-spacing:.08em;color:var(--text-3)}
+nav.main li.lang a[aria-current=true]{color:var(--text)}
+nav.main li.lang a::after{display:none}
 .hdr-cta{padding:13px 18px;font-size:13px}
 .burger{display:none}
 #menu-t{position:absolute;opacity:0;pointer-events:none}
 @media (max-width:1240px){
+ nav.main li.lang{margin:12px 0 0;padding:0;border:0}
+ nav.main li.lang a{font-size:15px;padding:10px 14px 10px 0;border:0}
  .burger{display:flex;margin-left:auto;width:46px;height:46px;border:1px solid var(--border-strong);border-radius:8px;align-items:center;justify-content:center;cursor:pointer;color:var(--text)}
  nav.main{position:fixed;inset:82px 0 auto 0;background:var(--bg);border-bottom:1px solid var(--border);display:none;margin:0;max-height:calc(100vh - 82px);overflow:auto}
  #menu-t:checked~nav.main{display:block}
@@ -362,6 +371,19 @@ def fix_typos(s):
         s = s.replace(a, b)
     return s
 
+def lang_switch(file, current='en'):
+    """EN · FR · IT links: the translated version of this page if there is one (vivify/i18n.py), else that language's home"""
+    sys.path.insert(0, V)
+    import i18n
+    def href(lang):
+        if lang == 'en':
+            return file if not file.startswith(('fr/', 'it/')) else file.split('/', 1)[1]
+        k = file.split('/', 1)[1] if file.startswith(('fr/', 'it/')) else file
+        slug = i18n.PAGES.get(k, ('', ''))[0 if lang == 'fr' else 1]
+        return f'/{lang}/' + (slug + '/' if slug else '')
+    return ('<li class="lang" aria-label="Language">' + ''.join(
+        f'<a href="{href(l)}" hreflang="{l}" lang="{l}"' + (' aria-current="true"' if l == current else '') + f'>{l.upper()}</a>' for l in ('en', 'fr')) + '</li>')   # Marine 17 Nov: Italian site removed for now
+
 def shell(file, body, schema=None):
     path = PAGES[file]
     if file in NEW:
@@ -393,7 +415,7 @@ def shell(file, body, schema=None):
  <a class="logo" href="index.html" aria-label="Vivify Sports home">{img(LOGO, LOGO_ALT, lazy=False, w=58, h=55)}</a>
  <input type="checkbox" id="menu-t" aria-label="Menu">
  <label class="burger" for="menu-t" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></label>
- <nav class="main" aria-label="Main"><ul>{navh}</ul></nav>
+ <nav class="main" aria-label="Main"><ul>{navh}{lang_switch(file)}</ul></nav>
  <a class="btn btn-primary hdr-cta" href="{DISCOVERY}">Free Discovery Call</a>
 </div></header>
 <main id="main">
@@ -633,9 +655,9 @@ def coaching():
                 + (f' <span class="dur">{dur}</span>' if dur else '') + '</h2>' + extra + f'<p>{intro}</p><p class="inc">Includes:</p>{ticks(inc)}'
                 + f'<a class="btn {"btn-primary" if feat or href.startswith("http") else "btn-secondary"}" href="{href}"{ext}>{btn}</a></article>')
     one = plan('NUTRITIONAL ASSESEMENT', '50mn 100€ / 120 US$', '', 'A complete evaluation to understand your current nutrition, goals, and needs.',
-               ['Personalized advice on healthy habits and food preferences', 'Vitamin &amp; mineral recommendations', 'Supplement guidance', 'Sports-specific nutrition'], 'Book now', BOOK_CAL)
+               ['Personalized advice on healthy habits and food preferences', 'Vitamin &amp; mineral recommendations', 'Supplement guidance', 'Sports-specific nutrition'], 'Book now', ASSESSMENT_PAY)
     two = plan('FOLLOW-UP CONSULTATION', '30mn 50€ / 60 US$', '', 'A session to review your progress, fine-tune your plan, and stay on track.',
-               ['1 follow-up call', 'Updated nutritional and supplement advice'], 'Book now', BOOK_CAL)
+               ['1 follow-up call', 'Updated nutritional and supplement advice'], 'Book now', FOLLOWUP_PAY)
     p1 = plan('THE HEALTHY BODY PLAN', '99€/MONTH', '3 months', 'Build sustainable, healthy eating habits that energize your everyday life.',
               ['3 calls over 3 months', 'Weekly macro plan based on your training load', 'Weekly food diary analysis', 'Advice on balanced nutrition'], 'Sign up', PAY['healthy'])
     p2 = plan('THE HAPPY BODY PLAN', '149€/MONTH', '3 months', 'Create harmony between your nutrition, mood, and lifestyle to bring out the best of you.',
@@ -676,7 +698,7 @@ def coaching():
  <div><span class="eyebrow">Race day</span><h2>FUELLING PLAN</h2><span class="bar"></span>
   <p>As an athlete, you want to train hard, compete and be successful. Nutrition is almost as important as your training load to bring your performance to the next level. Fuelling for an event can be quite a headache. Remember bonking out half way through your event ?</p>
   <p style="margin:0">Let Marine help you to secure optimal performance by building a fuelling plan that is right for you giving you a precise plan to follow based on your sport, gender, weight &amp; metabolism.</p></div>
- <div><a class="btn btn-primary" href="contact.html">Book your fuelling plan here {ICON['arrow']}</a></div></div></div></section>
+ <div><a class="btn btn-primary" href="race-fuelling-plan.html">Book your fuelling plan here {ICON['arrow']}</a></div></div></div></section>
 <section class="section-tight"><div class="wrap center">
  {head('Training Peaks · Vekta · MyFitnessPal', 'OUR PARTNERS', center=True)}
  <div class="partners" style="margin-top:24px">{pl}</div></div></section>
@@ -766,7 +788,7 @@ def workshops():
   <p class="lead" style="margin-top:16px">Often this is a good way to help athletes improve on their sports performance as well as find out the latest guidelines on sports nutrition.</p>
   <p class="muted" style="margin:0">In person or online, for athletes, coaches and staff.</p></div>
  <div>{head('Who it is for', "Marine's area of expertise :", tag=None)}
-  {chips(['Cycling clubs', 'Running clubs', 'Swimming clubs', 'Athletic clubs', 'Gym members &amp; staff', 'Team Sports'])}</div>
+  {chips(['Cycling clubs', 'Triathlon clubs', 'Running clubs', 'Swimming clubs', 'Athletic clubs', 'Gym members &amp; staff', 'Team Sports'])}</div>
 </div></section>
 {cta('Book a talk for your club', 'Tell Marine about your club, your athletes and the topics you want covered.', 'Get in touch', 'contact.html')}"""
     return shell('workshops.html', body)
