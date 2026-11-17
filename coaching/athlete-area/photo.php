@@ -22,6 +22,9 @@ function cc_ph_w($k) {
     return $W[$k][$l] ?? $W[$k]['en'];
 }
 function cc_ph_url($pid) { $id = (int) get_post_meta((int) $pid, 'cc_photo', true); return $id && get_post($id) ? wp_get_attachment_url($id) : ''; }
+// Matteo 17 Nov: athlete pages are private, so WordPress put "Private: " before every athlete name (Alan Holland showed as "PH").
+// Athlete names never carry that prefix: initials, notifications, lists and boards.
+add_filter('private_title_format', function ($fmt, $post) { return ($post && get_post_type($post) === 'cc_athlete') ? '%s' : $fmt; }, 10, 2);
 function cc_ph_initials($pid) {
     $parts = preg_split('/\s+/', trim(wp_strip_all_tags(get_the_title((int) $pid)))) ?: [];
     $i = ''; foreach ([reset($parts), count($parts) > 1 ? end($parts) : ''] as $p) if ($p !== '' && $p !== false) $i .= mb_strtoupper(mb_substr($p, 0, 1));

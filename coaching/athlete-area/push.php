@@ -140,6 +140,7 @@ function cc_inbox_unread($uid) { return count(array_filter(cc_inbox_get($uid), f
 function cc_inbox_guess_from($title) {   // "🏆 Result from Laura X", "Note from …", "Rider form signed: …", "Hub idea: …" → that athlete's page
     static $by = null;
     if ($by === null) { $by = []; foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids']) as $id) $by[mb_strtolower(trim(get_the_title($id)))] = (int) $id; }
+    $title = preg_replace('/\b(?:Private|Privato|Privado|Zasebno):\s*/u', '', $title);   // older lines carried WordPress's "Private: " prefix
     if (!preg_match('/(?:\bfrom|:)\s+(.+)$/u', $title, $m)) return 0;
     return $by[mb_strtolower(trim($m[1]))] ?? 0;
 }
@@ -151,7 +152,7 @@ function cc_inbox_items($uid) {
         $from = (int) ($x['from'] ?? 0);
         if (!$from && $coach) $from = cc_inbox_guess_from((string) $x['title']);   // older lines: the athlete's name is in the title
         $face = !$coach ? $matteo : ($from && function_exists('cc_ph_widget') && get_post_type($from) === 'cc_athlete' ? cc_ph_widget($from, 40, false, 'bell-f') : $logo);
-        $items .= '<a class="bell-it' . (empty($x['read']) ? ' new' : '') . '" href="' . esc_url($x['url'] ?: home_url('/' . CC_ATH_SLUG . '/')) . '">' . $face . '<span class="bell-t"><b>' . esc_html($x['title']) . '</b>'
+        $items .= '<a class="bell-it' . (empty($x['read']) ? ' new' : '') . '" href="' . esc_url($x['url'] ?: home_url('/' . CC_ATH_SLUG . '/')) . '">' . $face . '<span class="bell-t"><b>' . esc_html(preg_replace('/\b(?:Private|Privato|Privado|Zasebno):\s*/u', '', (string) $x['title'])) . '</b>'
             . ($x['body'] !== '' ? '<span>' . esc_html($x['body']) . '</span>' : '') . '<small>' . esc_html(human_time_diff((int) $x['at'], time())) . '</small></span></a>';
     }
     return $items ?: '<p class="bell-e">' . esc_html(cc_inbox_w('empty')) . '</p>';
