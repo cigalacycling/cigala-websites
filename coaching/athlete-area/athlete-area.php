@@ -569,7 +569,7 @@ const CC_SMTP = ['host' => 'smtp.reg365.net', 'port' => 587, 'user' => 'cigalacy
 add_action('phpmailer_init', function ($m) {
     $pw = (string) get_option('cc_smtp_pass', ''); if ($pw === '') return;
     $m->isSMTP(); $m->Host = CC_SMTP['host']; $m->Port = CC_SMTP['port']; $m->SMTPSecure = 'tls'; $m->SMTPAuth = true;
-    $m->Username = CC_SMTP['user']; $m->Password = $pw; $m->Timeout = 20;
+    $m->Username = (string) get_option('cc_smtp_user', '') ?: CC_SMTP['user'];   // Matteo 17 Nov: the login is email-style (Gmail uses amedeo@cigalacycling.com) $m->Password = $pw; $m->Timeout = 20;
     // keep only the SERVER's replies (never what we send, so the login never ends up in the log), for the reason shown when a send fails
     $GLOBALS['cc_smtp_srv'] = []; $m->SMTPDebug = 2;
     $m->Debugoutput = function ($s) { if (strpos($s, 'SERVER -> CLIENT') !== false && count($GLOBALS['cc_smtp_srv']) < 40) $GLOBALS['cc_smtp_srv'][] = trim(substr($s, 0, 200)); };
@@ -583,16 +583,17 @@ add_action('wp_mail_failed', function ($e) { $msg = is_wp_error($e) ? $e->get_er
     $srv = array_slice((array) ($GLOBALS['cc_smtp_srv'] ?? []), -6); if ($pw !== '') $srv = array_map(function ($l) use ($pw) { return str_replace($pw, '***', $l); }, $srv);
     update_option('cc_smtp_err', ['at' => time(), 'msg' => substr($msg, 0, 500), 'server' => $srv], false); });
 add_action('rest_api_init', function () { register_rest_route('cc/v1', '/smtp-status', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
-    return ['password_set' => (bool) get_option('cc_smtp_pass', ''), 'set_at' => (int) get_option('cc_smtp_set', 0) ?: null, 'last_error' => get_option('cc_smtp_err', null),
+    return ['user' => get_option('cc_smtp_user', '') ?: CC_SMTP['user'], 'password_set' => (bool) get_option('cc_smtp_pass', ''), 'set_at' => (int) get_option('cc_smtp_set', 0) ?: null, 'last_error' => get_option('cc_smtp_err', null),
             'openssl' => extension_loaded('openssl'), 'can_reach_587' => (function () { $s = @fsockopen('smtp.reg365.net', 587, $no, $str, 6); if ($s) { $l = fgets($s, 200); fclose($s); return trim((string) $l); } return "no: $no $str"; })()];
 }]); });
 function cc_smtp_box() {   // on Matteo's Reports board
     $set = (int) get_option('cc_smtp_set', 0); $r = sanitize_key($_GET['smtp'] ?? '');
     $msg = ['saved' => 'Saved. Now send yourself a test email.', 'sent' => 'Test email sent to you: check your inbox (and spam, just this once).', 'fail' => 'The test email did not go out: the password may be wrong. Type it again.', 'cleared' => 'Removed: emails go out the old way.'][$r] ?? '';
-    return '<section class="ath-s rp-smtp"><h3 class="av-sub" style="margin-top:0">Email sending</h3><p class="av-lede" style="margin:0 0 10px">Emails to athletes go out through your Register365 Authenticated SMTP (smtp.reg365.net, user cigalacycling.com) from coaching@cigalacycling.com, so they don’t land in spam. '
+    return '<section class="ath-s rp-smtp"><h3 class="av-sub" style="margin-top:0">Email sending</h3><p class="av-lede" style="margin:0 0 10px">Emails to athletes go out through your Register365 Authenticated SMTP (smtp.reg365.net, the same login your Gmail “Send mail as” uses) from coaching@cigalacycling.com, so they don’t land in spam. '
         . ($set ? '<b style="color:#34c46a">Password set ' . esc_html(date_i18n('j M Y', $set)) . '.</b>' : '<b style="color:#ff4a3d">Password not set yet: emails still go the old way.</b>') . '</p>'
         . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="rp-smtp-f" autocomplete="off"><input type="hidden" name="action" value="cc_smtp">' . wp_nonce_field('cc_smtp', '_wpnonce', false, false)
-        . '<label>Authenticated SMTP password <input type="password" name="pw" autocomplete="new-password" placeholder="' . ($set ? 'Type it again only to change it' : 'The password from Register365') . '"></label>'
+        . '<label>SMTP username <input type="text" name="user" autocomplete="off" value="' . esc_attr((string) get_option('cc_smtp_user', '') ?: 'amedeo@cigalacycling.com') . '"></label>'
+        . '<label>SMTP password <input type="password" name="pw" autocomplete="new-password" placeholder="' . ($set ? 'Type it again only to change it' : 'The same password Gmail uses for this username') . '"></label>'
         . '<span class="rp-acts"><button class="btn btn-go" name="act" value="save">Save</button><button class="btn btn-ghost" name="act" value="test">Send me a test email</button>' . ($set ? '<button class="btn btn-ghost" name="act" value="clear">Remove</button>' : '') . '</span></form>'
         . ($msg ? '<p class="rp-smtp-m">' . esc_html($msg) . '</p>' : '')
         . (($r === 'fail' && ($er = get_option('cc_smtp_err')) && !empty($er['msg'])) ? '<p class="rp-smtp-m" style="color:#ff4a3d">Reason: ' . esc_html($er['msg']) . '</p>' : '') . '</section>'
@@ -602,6 +603,7 @@ function cc_smtp_box() {   // on Matteo's Reports board
 add_action('admin_post_cc_smtp', function () {
     if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_smtp')) wp_die('Not allowed');
     $act = sanitize_key($_POST['act'] ?? ''); $pw = trim(wp_unslash((string) ($_POST['pw'] ?? ''))); $r = '';
+    $user = sanitize_text_field(wp_unslash((string) ($_POST['user'] ?? ''))); if ($user !== '' && $act !== 'clear') update_option('cc_smtp_user', $user, false);
     if ($act === 'clear') { delete_option('cc_smtp_pass'); delete_option('cc_smtp_set'); $r = 'cleared'; }
     else {
         if ($pw !== '') { update_option('cc_smtp_pass', $pw, false); update_option('cc_smtp_set', time(), false); $r = 'saved'; }
