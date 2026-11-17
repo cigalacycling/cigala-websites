@@ -1090,6 +1090,8 @@ add_action('init', function () {
 });
 add_action('wp_head', function () {
     if (!is_page(CC_ATH_SLUG)) return;
+    // Matteo 17 Nov: no website chat bubble (Crisp) inside the hub: athletes have notes, voice notes and WhatsApp
+    echo '<style id="cc-hub-nochat">#cc-chat,.crisp-client,#crisp-chatbox{display:none!important}</style>';
     echo '<link rel="manifest" href="' . esc_url(add_query_arg('cc_manifest', 1, home_url('/'))) . '"><meta name="apple-mobile-web-app-title" content="Cigala Cycling"><meta name="mobile-web-app-capable" content="yes">'
        . '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="theme-color" content="#08090a">'
        . '<link rel="apple-touch-icon" sizes="180x180" href="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-app-180.png">' . "\n";   // iPhone home-screen icon

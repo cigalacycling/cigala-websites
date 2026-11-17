@@ -123,7 +123,9 @@ function cc_nt_css() {
         . 'html .cc .nt-send{justify-self:start}html .cc .nt-msg{margin:0;font-size:16px;font-weight:600;color:#34c46a}html .cc .nt-msg.err{color:#ff7a73}html .cc .nt-msg:empty{display:none}'
         . 'html .cc .nt-item{padding:14px 0;border-top:1px solid rgba(255,255,255,.1)}html .cc .nt-item small{color:#b8bec8;font-size:15px}html .cc .nt-item audio{display:block;width:100%;max-width:420px;margin:8px 0}html .cc .nt-item p{margin:6px 0 0;font-size:16px;color:#e6e9ee}'
         . 'html .cc .nt-tr{color:#b8bec8!important;font-size:15px!important}html .cc .nt-rep{margin:10px 0 0 14px;padding:10px 12px;border-left:3px solid #12a150;background:rgba(18,161,80,.08);border-radius:0 10px 10px 0}html .cc .nt-rep b{color:#34c46a}'
-        . 'html .cc .nt-replyd{margin-top:10px}html .cc .nt-replyd summary{cursor:pointer;color:#34c46a;font-weight:600;font-size:15px;margin-bottom:10px}'
+        // Matteo 17 Nov: less space under "Answer Matteo" / "Reply" while closed
+        . 'html .cc .nt-replyd{margin-top:8px}html .cc .nt-replyd summary{cursor:pointer;color:#34c46a;font-weight:600;font-size:15px;margin:0;padding:2px 0;line-height:1.3}html .cc .nt-replyd[open] summary{margin-bottom:10px}'
+        . '@media (max-width:760px){html .cc .nt-item{padding:10px 0}html .cc .nt-replyd{margin-top:6px}}'
         . 'html .cc .nt-del{float:right;background:none;border:0;padding:2px 0;margin:0 0 0 10px;min-height:0;font:600 14px var(--body);color:#b8bec8;text-decoration:underline;cursor:pointer}html .cc .nt-del:hover{color:#ff7a73}'
         . 'html .cc .nt-rep-a{border-left-color:#b8bec8;background:rgba(255,255,255,.05);margin-left:28px}html .cc .nt-rep-a b{color:#fff!important}'
         . 'html .cc .nt-rep .nt-me-a{display:inline-grid;vertical-align:middle;margin:0 8px 0 0;border-width:2px;box-shadow:none}html .cc .nt-rep .nt-me-a .ph-ini{font-size:12px}'
