@@ -1,4 +1,4 @@
-"""Athlete area on Coaching STAGING (Matteo, 16 Nov 2026): one login per athlete, removed when they finish.
+﻿"""Athlete area on Coaching STAGING (Matteo, 16 Nov 2026): one login per athlete, removed when they finish.
   python3 -I tools/coaching_athlete_area.py [--hub] [--availability] [--live]   (--availability adds the new athlete-area parts: availability, rider form + hub lock, goals & events, passwords; --hub rewrites the shared hub page; only before Matteo edits it himself)
 Switches Code Snippets on, pushes coaching/athlete-area/athlete-area.php as a snippet (ID kept in stg-coaching/athlete-snippet-id.txt),
 creates the /athletes/ page and the "Shared hub (all athletes)" page once. Re-running updates the snippet only.
@@ -138,7 +138,7 @@ def guides_html_it():
 TOOLS_IT = [('Carboidrati per ora', '/tools/carbs-per-hour-calculator/'),
             ('Critical Power', '/tools/critical-power-calculator/'),
             ('Tasso di sudorazione', '/tools/sweat-rate-calculator/'), ('Tempo in salita', '/tools/climb-time-calculator/'),
-            ('Rapporti e velocità', '/tools/gear-speed-calculator/'), ('Passo nuoto (CSS)', '/tools/swim-pace-calculator/')]
+            ('Rapporti e velocitÃ ', '/tools/gear-speed-calculator/'), ('Passo nuoto (CSS)', '/tools/swim-pace-calculator/')]
 READ_IT = [('Allenamento', [('Zone di potenza e Critical Power, spiegate semplici', '/blog/zone-di-potenza-critical-power-ciclismo/'),
                              ('Come migliorare in salita', '/blog/come-migliorare-in-salita-ciclismo/'),
                              ('Allenamento invernale: rulli, palestra e uscite', '/blog/allenamento-invernale-ciclismo-rulli/'),
@@ -162,9 +162,9 @@ def upload_guides_it(hub_it_id):   # the Italian PDFs (made in the "New session"
 HUB_IT = lambda: (h2('Link rapidi')
        + buttons(btn('Prenota una call di aggiornamento', 'https://cal.com/matteocigala/15min'), btn('Consulenza nutrizionale con Marine', 'https://www.vivifysports.com/nutritionalcoaching'),
                  btn('WhatsApp Matteo', 'https://wa.me/353834777697', True), btn('Community su Skool', 'https://www.skool.com/cigala-cycling-collective-1115', True))
-       + para('La community su Skool è gratuita per gli atleti che seguo. Non hai ancora ricevuto l’invito? <a href="mailto:matteo@cigalacycling.com?subject=Invito%20Skool">Scrivimi</a> e te lo mando (controlla anche lo spam, a volte finisce lì).')
+       + para('La community su Skool Ã¨ gratuita per gli atleti che seguo. Non hai ancora ricevuto lâ€™invito? <a href="mailto:matteo@cigalacycling.com?subject=Invito%20Skool">Scrivimi</a> e te lo mando (controlla anche lo spam, a volte finisce lÃ¬).')
        + h2('Le tue app di allenamento')
-       + para('Il tuo piano è su Vekta e si sincronizza con Garmin, Wahoo o Zwift.')
+       + para('Il tuo piano Ã¨ su Vekta e si sincronizza con Garmin, Wahoo o Zwift.')
        + buttons(btn('Apri il mio calendario Vekta', 'https://app.joinvekta.com/me/calendar', True))
        + h2('Biblioteca di allenamento')
        + guides_html_it()
@@ -179,27 +179,27 @@ HUB_IT = lambda: (h2('Link rapidi')
 # Same sections as the English hub. PDFs, blog articles and tool pages are in English, so they are marked as such.
 # Draft translations by Claude: a native speaker should glance at them.
 HUB_T = {
- 'pt': {'Quick links': 'Links rápidos', 'Book a catch-up call': 'Marcar uma chamada', 'Nutrition consult with Marine': 'Consulta de nutrição com a Marine',
+ 'pt': {'Quick links': 'Links rÃ¡pidos', 'Book a catch-up call': 'Marcar uma chamada', 'Nutrition consult with Marine': 'Consulta de nutriÃ§Ã£o com a Marine',
         'Community on Skool': 'Comunidade no Skool',
-        'skool': 'A comunidade no Skool é gratuita para os atletas que treino. Ainda não recebeste o convite? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">Envia-me um email</a> e eu mando-to (vê também a pasta de spam, às vezes vai parar lá).',
-        'Your training apps': 'As tuas apps de treino', 'vekta': 'O teu plano está no Vekta e sincroniza com o teu Garmin, Wahoo ou Zwift.', 'Open my Vekta calendar': 'Abrir o meu calendário Vekta',
-        'Training guides': 'Biblioteca de treino', 'Strength and core': 'Força e core', 'Nutrition, with Marine Lenehan': 'Nutrição, com a Marine Lenehan',
-        'Stretches &amp; Core': 'Alongamentos e core', 'Gym Circuit: Winter, first month': 'Circuito de ginásio: inverno, primeiro mês',
-        'Gym Circuit: Winter, second and third month': 'Circuito de ginásio: inverno, segundo e terceiro mês', 'Gym Circuit: In season': 'Circuito de ginásio: em época',
-        'Nutritional Guide': 'Guia de nutrição', 'Supplement List': 'Lista de suplementos', 'in English': 'em inglês',
+        'skool': 'A comunidade no Skool Ã© gratuita para os atletas que treino. Ainda nÃ£o recebeste o convite? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">Envia-me um email</a> e eu mando-to (vÃª tambÃ©m a pasta de spam, Ã s vezes vai parar lÃ¡).',
+        'Your training apps': 'As tuas apps de treino', 'vekta': 'O teu plano estÃ¡ no Vekta e sincroniza com o teu Garmin, Wahoo ou Zwift.', 'Open my Vekta calendar': 'Abrir o meu calendÃ¡rio Vekta',
+        'Training guides': 'Biblioteca de treino', 'Strength and core': 'ForÃ§a e core', 'Nutrition, with Marine Lenehan': 'NutriÃ§Ã£o, com a Marine Lenehan',
+        'Stretches &amp; Core': 'Alongamentos e core', 'Gym Circuit: Winter, first month': 'Circuito de ginÃ¡sio: inverno, primeiro mÃªs',
+        'Gym Circuit: Winter, second and third month': 'Circuito de ginÃ¡sio: inverno, segundo e terceiro mÃªs', 'Gym Circuit: In season': 'Circuito de ginÃ¡sio: em Ã©poca',
+        'Nutritional Guide': 'Guia de nutriÃ§Ã£o', 'Supplement List': 'Lista de suplementos', 'in English': 'em inglÃªs',
         'Training tools': 'Ferramentas de treino', 'Carbs per hour': 'Hidratos por hora', 'Critical Power': 'Critical Power', 'Sweat rate': 'Taxa de suor', 'Climb time': 'Tempo de subida',
-        'Gear &amp; speed': 'Mudanças e velocidade', 'Swim pace (CSS)': 'Ritmo de natação (CSS)',
-        'Worth reading': 'Vale a pena ler', 'New on the blog': 'Novo no blog', 'Training': 'Treino', 'Fuelling': 'Alimentação', 'Recovery': 'Recuperação', 'Race week': 'Semana de prova',
-        'soon': 'Core, exercícios e ginásio: os PDF vão estar aqui em breve.'},
+        'Gear &amp; speed': 'MudanÃ§as e velocidade', 'Swim pace (CSS)': 'Ritmo de nataÃ§Ã£o (CSS)',
+        'Worth reading': 'Vale a pena ler', 'New on the blog': 'Novo no blog', 'Training': 'Treino', 'Fuelling': 'AlimentaÃ§Ã£o', 'Recovery': 'RecuperaÃ§Ã£o', 'Race week': 'Semana de prova',
+        'soon': 'Core, exercÃ­cios e ginÃ¡sio: os PDF vÃ£o estar aqui em breve.'},
  'sl': {'Quick links': 'Hitre povezave', 'Book a catch-up call': 'Rezerviraj klic', 'Nutrition consult with Marine': 'Prehranski posvet z Marine',
         'Community on Skool': 'Skupnost na Skoolu',
-        'skool': 'Skupnost na Skoolu je za športnike, ki jih treniram, brezplačna. Povabila še nimaš? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">Pošlji mi email</a> in ti ga pošljem (preveri tudi mapo z neželeno pošto, včasih pristane tam).',
-        'Your training apps': 'Tvoje aplikacije za trening', 'vekta': 'Tvoj načrt je v Vekti in se sinhronizira z Garminom, Wahoojem ali Zwiftom.', 'Open my Vekta calendar': 'Odpri moj koledar v Vekti',
-        'Training guides': 'Knjižnica za trening', 'Strength and core': 'Moč in core', 'Nutrition, with Marine Lenehan': 'Prehrana, z Marine Lenehan',
-        'Stretches &amp; Core': 'Raztezanje in core', 'Gym Circuit: Winter, first month': 'Krožni trening v fitnesu: zima, prvi mesec',
-        'Gym Circuit: Winter, second and third month': 'Krožni trening v fitnesu: zima, drugi in tretji mesec', 'Gym Circuit: In season': 'Krožni trening v fitnesu: med sezono',
-        'Nutritional Guide': 'Prehranski vodnik', 'Supplement List': 'Seznam prehranskih dopolnil', 'in English': 'v angleščini',
-        'Training tools': 'Orodja za trening', 'Carbs per hour': 'Ogljikovi hidrati na uro', 'Critical Power': 'Critical Power', 'Sweat rate': 'Stopnja potenja', 'Climb time': 'Čas vzpona',
+        'skool': 'Skupnost na Skoolu je za Å¡portnike, ki jih treniram, brezplaÄna. Povabila Å¡e nimaÅ¡? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">PoÅ¡lji mi email</a> in ti ga poÅ¡ljem (preveri tudi mapo z neÅ¾eleno poÅ¡to, vÄasih pristane tam).',
+        'Your training apps': 'Tvoje aplikacije za trening', 'vekta': 'Tvoj naÄrt je v Vekti in se sinhronizira z Garminom, Wahoojem ali Zwiftom.', 'Open my Vekta calendar': 'Odpri moj koledar v Vekti',
+        'Training guides': 'KnjiÅ¾nica za trening', 'Strength and core': 'MoÄ in core', 'Nutrition, with Marine Lenehan': 'Prehrana, z Marine Lenehan',
+        'Stretches &amp; Core': 'Raztezanje in core', 'Gym Circuit: Winter, first month': 'KroÅ¾ni trening v fitnesu: zima, prvi mesec',
+        'Gym Circuit: Winter, second and third month': 'KroÅ¾ni trening v fitnesu: zima, drugi in tretji mesec', 'Gym Circuit: In season': 'KroÅ¾ni trening v fitnesu: med sezono',
+        'Nutritional Guide': 'Prehranski vodnik', 'Supplement List': 'Seznam prehranskih dopolnil', 'in English': 'v angleÅ¡Äini',
+        'Training tools': 'Orodja za trening', 'Carbs per hour': 'Ogljikovi hidrati na uro', 'Critical Power': 'Critical Power', 'Sweat rate': 'Stopnja potenja', 'Climb time': 'ÄŒas vzpona',
         'Gear &amp; speed': 'Prestave in hitrost', 'Swim pace (CSS)': 'Tempo plavanja (CSS)',
         'Worth reading': 'Vredno branja', 'New on the blog': 'Novo na blogu', 'Training': 'Trening', 'Fuelling': 'Prehrana', 'Recovery': 'Regeneracija', 'Race week': 'Teden tekme',
         'soon': 'Core, vaje in fitnes: PDF-ji bodo kmalu tukaj.'}}
@@ -244,7 +244,7 @@ if __name__ == '__main__':
     code = open(ROOT + 'coaching/athlete-area/athlete-area.php').read()
     assert code.startswith('<?php\n'); code = code[len('<?php\n'):]
     if '--availability' in sys.argv:   # the availability card (README "Athlete area: availability"); only once Matteo says go
-        for f in ('hub-i18n.php', 'availability-i18n.php', 'availability.php', 'form-legal.php', 'form-legal-it.php', 'onboarding-i18n.php', 'onboarding.php', 'goals.php', 'passwords.php', 'reports.php', 'pc-api.php', 'ideas.php'):
+        for f in ('hub-i18n.php', 'availability-i18n.php', 'availability.php', 'form-legal.php', 'form-legal-it.php', 'onboarding-i18n.php', 'onboarding.php', 'goals.php', 'passwords.php', 'reports.php', 'pc-api.php', 'ideas.php', 'gocardless.php'):
             extra = open(ROOT + 'coaching/athlete-area/' + f).read()
             assert extra.startswith('<?php\n'); code += '\n' + extra[len('<?php\n'):].replace("if (!defined('ABSPATH')) return;", '', 1)
     body = {'name': 'Cigala athlete area (one login per athlete)', 'desc': 'Built by tools/coaching_athlete_area.py from coaching/athlete-area/athlete-area.php in the cigala-websites repo. Do not edit here.',
