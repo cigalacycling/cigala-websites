@@ -21,3 +21,4 @@ Rules that always apply:
 - Check every page at 390, 820 and 1440 px wide: no sideways scrolling, one H1 per page.
 - Form fields use 16px text, so iPhones don't zoom in.
 - Commit finished work to this repository so the next session can carry on.
+- Coaching athlete hub: built on staging; it goes live only by following `coaching/athlete-area/GO-LIVE.md`, with Matteo.

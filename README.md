@@ -440,6 +440,8 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 
 
 ## Coaching athlete area (16 Nov 2026, staging)
+
+**Going live: follow `coaching/athlete-area/GO-LIVE.md` (checklist; everything since 16 Nov is on staging only).**
 - One login per coached athlete at `/athletes/` (footer link "Athlete login"). noindex, not in the sitemap, never cached.
 - Code: `coaching/athlete-area/athlete-area.php`, pushed as Code Snippets snippet 8 by `python3 -I tools/coaching_athlete_area.py`. **Code Snippets must stay active** (it was off before; snippets 5–7 stay off).
 - Matteo's steps:
