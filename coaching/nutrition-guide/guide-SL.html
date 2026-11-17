@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<title>Prehranski vodnik | Cigala Cycling × Vivify Sports</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<style>
+:root{
+  --bg:#08090a; --panel:rgba(15,16,17,.92); --panel-solid:#0f1011;
+  --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14);
+  --text:#f7f8f8; --text-2:#d0d6e0; --text-3:#8a8f98;
+  --green:#009a44; --green-text:#34c46a; --red:#E10600; --red-text:#ff3d33;
+  /* Vivify Sports (partner) */
+  --vivify:#19444b;
+  /* topic colours: one per nutrient, used through the whole guide */
+  --c-carb:#f28c38; --c-pro:#e8606a; --c-fat:#f2cf4a; --c-mic:#34c46a; --c-hyd:#4aa8e8; --topic:#d0d6e0; --vivify-2:#2f6f7a; --vivify-text:#7fc3cc;
+}
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:Montserrat,sans-serif;color:var(--text-2);font-size:12.5px;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+b,strong{color:var(--text);font-weight:600}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;padding:13mm 15mm 22mm;
+  background:#08090a url(assets/topo-a4.jpg) center/100% 100% no-repeat;
+  page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto}
+/* running header + footer */
+.run{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);font-weight:600;padding-bottom:9px;border-bottom:1px solid var(--border);margin-bottom:18px}
+.run img{height:22px;width:auto}
+.run .logos{display:flex;align-items:center;gap:9px}
+.run .logos span{color:var(--text-3);font-weight:400}
+.foot{position:absolute;left:15mm;right:15mm;bottom:9mm;display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600;border-top:1px solid var(--border);padding-top:9px}
+.foot .n{color:var(--text);font-family:Anton,sans-serif;font-size:15px;letter-spacing:.04em}
+/* type */
+h1,h2,h3,.anton{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:var(--text);letter-spacing:.01em;line-height:1.02}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--red-text)}
+.bar{width:40px;height:3px;background:var(--green);border-radius:2px}
+h3{font-size:19px;margin:18px 0 4px}
+h3+.bar{margin:10px 0 12px}
+p{margin:0 0 10px}
+.lead{font-size:13.5px;color:var(--text-2)}
+.note{font-size:10.5px;color:var(--text-3);margin-top:6px}
+/* section header */
+.sec{position:relative;padding:4px 0 0;margin-bottom:14px}
+.sec .eyebrow{margin-bottom:10px}
+.sec h2{font-size:42px;max-width:78%}
+.sec .bar{margin:14px 0 12px}
+.sec .sub{font-size:14px;color:var(--text-2);max-width:72%}
+.sec .big{position:absolute;right:-2mm;top:-8px;font-family:Anton,sans-serif;font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--topic);opacity:.55}
+.topic{display:inline-flex;align-items:center;gap:7px;margin-left:10px;padding:0 10px 0 8px;line-height:17px;vertical-align:1px;border-radius:999px;border:1px solid var(--border-strong);color:var(--text);font-size:9.5px;letter-spacing:.16em}
+.topic i{width:8px;height:8px;border-radius:50%;background:var(--topic);display:inline-block}
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.dots{list-style:none;display:grid;gap:7px 22px}
+.dots li{position:relative;padding-left:16px}
+.dots li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--green)}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:1fr 1fr 1fr}
+.callout{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:12px;padding:12px 18px;margin-top:12px}
+.callout .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green-text);margin-bottom:4px}
+.callout.viv{border-left-color:var(--vivify-2)}
+.callout.viv .k{color:var(--vivify-text)}
+.callout p{margin:0}
+/* stat tiles */
+.tiles{display:grid;gap:8px}
+.tile{border-radius:12px;padding:11px 8px 10px;text-align:center;border:1px solid var(--border);background:var(--panel-solid)}
+.tile .v{font-family:Anton,sans-serif;font-size:27px;color:var(--text);line-height:1.1}
+.tile .u{font-size:10.5px;color:var(--text-2);margin-top:2px}
+.tile .l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-top:7px;line-height:1.35}
+.m{display:flex;gap:3px;justify-content:center;margin-top:10px}.m i{width:14px;height:4px;border-radius:2px;background:rgba(255,255,255,.14)}.m i.on{background:var(--topic)}
+.tile.wide{padding:16px;border-top:3px solid var(--topic)}.tile.wide .v{font-size:40px;color:var(--topic)}
+.tiles.plain .tile,.tiles.scale .tile{border-top:3px solid var(--topic)}
+/* tables */
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:11.5px}
+.tbl{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+th{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);text-align:left;padding:10px 12px;background:#17191b;border-bottom:1px solid var(--border-strong)}
+td{padding:5px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td small{color:var(--text-3);font-size:10px}
+th .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.d-green{background:var(--green)}.d-viv{background:var(--vivify-text)}.d-red{background:var(--red)}.d-grey{background:var(--text-3)}.d-white{background:var(--text)}
+th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;color:var(--red-text);font-size:9.5px;margin-top:1px}
+.avoid td:nth-child(2){color:var(--text-3)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+/* fats cards */
+.fat{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:11px}
+.fat .hd{padding:11px 12px 10px;border-bottom:1px solid var(--border-strong)}
+.fat .hd .anton{font-size:17px;display:flex;align-items:center;gap:7px}
+.fat .hd .anton i{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.fat .hd .tag{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-top:4px}
+.fat .ds{padding:10px 12px 4px;color:var(--text-3);font-style:italic;font-size:10.5px;line-height:1.45}
+.fat ul{list-style:none;padding:4px 12px 12px}
+.fat li{padding:2.5px 0 2.5px 13px;position:relative;line-height:1.35}
+.fat li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--text-3)}
+.fat.mono li::before{background:var(--green)}.fat.poly li::before{background:var(--green)}.fat.trans li::before{background:var(--red)}
+.fat.trans{border-color:rgba(225,6,0,.35)}
+/* micronutrients */
+.micro td{font-size:10.5px;line-height:1.45;padding:8px 10px}
+.micro td:first-child{font-weight:600;color:var(--text);width:24%;border-left:3px solid var(--green)}
+.micro td:last-child{width:33%}
+.micro b{font-weight:600}
+/* food sources */
+.foods td{padding:7px 14px;font-size:11.5px}
+.foods td:first-child{width:32%;font-weight:600;color:var(--text)}
+.foods td em{color:var(--text-3)}
+/* timing */
+.row{display:grid;grid-template-columns:150px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:9px;background:var(--panel)}
+.row .lab{padding:14px;display:flex;align-items:center;font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);background:#151719;border-right:3px solid var(--green);line-height:1.1}
+.row.v .lab{border-right-color:var(--vivify-2)}
+.row .bd{padding:11px 16px;font-size:11.5px}
+.row .bd .dots{gap:4px}
+.row .bd .k{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green-text);margin:7px 0 4px}
+.row .bd em{color:var(--text-3);font-size:10.5px}
+/* hydration cards */
+.hc{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.hc .hd{padding:10px 14px;font-family:Anton,sans-serif;text-transform:uppercase;font-size:16px;color:var(--text);background:#151719;border-bottom:1px solid var(--border-strong)}
+.hc .dots{padding:12px 14px;gap:6px;font-size:11.2px}
+/* plates */
+.plates{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.plate{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 10px 18px;text-align:center}
+.plate .t{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-bottom:10px;min-height:2.6em}
+.plate svg{width:196px;height:196px;display:block;margin:0 auto 10px}
+.plate .x{font-size:11.5px;color:var(--text-3);line-height:1.6}
+.legend{display:flex;gap:18px;justify-content:center;margin-top:12px;font-size:10.5px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+/* contents */
+.toc{list-style:none;margin-top:4px}
+.toc li{display:grid;grid-template-columns:62px 1fr 40px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.toc .no{font-family:Anton,sans-serif;font-size:28px;color:transparent;-webkit-text-stroke:1px var(--topic)}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:8px;font-size:11px;color:var(--text)}
+.key span{display:flex;align-items:center;gap:7px}.key i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.toc .tt{font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);line-height:1.1}
+.toc .ds{font-size:11px;color:var(--text-3);margin-top:2px}
+.toc .pg{text-align:right;font-weight:600;color:var(--text)}
+/* cover */
+.cover{padding:0}
+.cover .in{position:absolute;inset:0;padding:18mm 16mm}
+.cover .logos{display:flex;align-items:center;gap:16px}
+.cover .logos .cc{width:30mm;height:30mm}
+.cover .logos .x{font-size:28px;color:var(--text-3);font-weight:300}
+.cover .logos .vv{height:30mm}
+.cover h1{font-size:104px;line-height:.92;margin-top:22mm}
+.cover .eyebrow{margin-top:20mm}
+.cover .bar{margin:18px 0 16px;width:56px;height:4px}
+.cover .tag{font-size:17px;color:var(--text-2);max-width:120mm;line-height:1.45}
+.cover .photo{position:absolute;left:16mm;right:16mm;bottom:44mm;height:74mm;border-radius:12px;overflow:hidden;border:1px solid var(--border-strong)}
+.cover .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
+.cover .by{position:absolute;left:16mm;right:16mm;bottom:16mm;display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--border-strong);padding-top:12px}
+.cover .by .who{font-family:Anton,sans-serif;text-transform:uppercase;font-size:22px;color:var(--text);line-height:1.1}
+.cover .by .role{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600;margin-top:4px}
+.cover .by .r{text-align:right}
+/* consultation */
+.consult{display:grid;grid-template-columns:1.05fr 1fr;gap:0;border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;background:var(--panel)}
+.consult .l{padding:20px 22px}
+.consult .r{padding:20px 22px;background:linear-gradient(160deg,rgba(25,68,75,.85),rgba(15,16,17,.95));border-left:1px solid var(--border-strong)}
+.consult .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:8px}
+.consult .r .k{color:var(--vivify-text)}
+.person{margin-bottom:16px}
+.person .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:19px;color:var(--text)}
+.person .rl{font-size:10.5px;color:var(--text-3);margin-bottom:6px}
+.person a,.person div.c{display:block;color:var(--text);font-size:11.5px;font-weight:500;text-decoration:none;line-height:1.6}
+.btn{display:inline-block;background:var(--green);color:#fff;font-weight:600;font-size:13px;padding:11px 18px;border-radius:8px;text-decoration:none;margin-top:14px}
+.mphoto{height:86mm;border-radius:12px;overflow:hidden;border:1px solid var(--border-strong);margin-bottom:16px;position:relative}
+.mphoto img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.pill{position:absolute;left:14px;bottom:14px;background:rgba(15,16,17,.92);border:1px solid var(--border-strong);border-radius:999px;color:#fff;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 13px 7px 11px;display:flex;align-items:center;gap:8px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block}
+.coach{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:12px;padding:14px 18px;margin-top:14px}
+.coach img{width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid var(--green)}
+.av{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--green);flex:none;display:block}
+.av.viv{border-color:var(--vivify-text)}
+.avrow{display:flex;gap:12px;align-items:center}.avrow.rev{flex-direction:row-reverse}
+.coach .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:3px}
+.coach p{margin:0}
+.ratio td{text-align:center;font-size:12.5px;padding:8px 10px}.ratio td:first-child{text-align:left}.ratio th{text-align:center}.ratio th:first-child{text-align:left}
+.ratio td b{color:var(--green-text)}
+.pk td{font-size:11.5px;padding:8px 12px}.pk td:not(:first-child),.pk th:not(:first-child){text-align:center;width:18%}
+.ok{color:var(--green-text);font-weight:700}.no{color:var(--text-3)}
+.tool{display:block;text-decoration:none;color:var(--text-2);background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.tool .anton{font-size:17px;margin-bottom:4px}.tool .go{color:var(--green-text);font-weight:600;font-size:11.5px;margin-top:6px;display:block}
+/* foundations */
+.fd{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.fd .card{grid-column:span 3;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--topic);border-radius:12px;padding:16px;text-align:center}
+.fd .card.s2{grid-column:span 2}
+.fd .ic{width:44px;height:44px;border-radius:50%;background:var(--topic);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.fd .ic svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fd .card .anton{font-size:18px;margin-bottom:6px}
+.fd .card p{font-size:11px;margin:0}
+.hub{display:flex;justify-content:center;margin:16px 0}
+.hub span{font-family:Anton,sans-serif;font-size:24px;letter-spacing:.06em;color:#fff;background:var(--green);padding:9px 28px;border-radius:999px}
+.tl{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr;align-items:center;gap:8px;margin-top:6px}
+.tl .st{display:flex;gap:11px;align-items:center}
+.tl .st .ic{width:40px;height:40px;border-radius:50%;background:var(--green);flex:none;display:flex;align-items:center;justify-content:center}
+.tl .st .ic svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tl .anton{font-size:16px}
+.tl p{font-size:10.5px;margin:0;line-height:1.4}
+.tl .ar{color:var(--green-text);font-size:20px;text-align:center}
+.quote{text-align:center;margin-top:18px;padding:18px;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong)}
+.quote .anton{font-size:22px}
+.quote p{margin:6px 0 0;font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- 1 COVER -->
+<section class="page cover">
+  <div class="in">
+    <div class="logos">
+      <img class="cc" src="assets/cigala-cycling-coaching-logo.png" alt="Logotip Cigala Cycling Coaching">
+      <span class="x">×</span>
+      <img class="vv" src="assets/vivify-sports-logo-white-print.png" alt="Logotip Vivify Sports">
+    </div>
+    <div class="eyebrow">Cigala Cycling × Vivify Sports</div>
+    <h1 style="margin-top:12px">Prehranski<br>vodnik</h1>
+    <div class="bar"></div>
+    <p class="tag">Praktični vodnik za zdrave navade, trening in zmogljivost.</p>
+  </div>
+  <div class="photo"><img src="assets/nutrition-hero-strawberries.jpg" alt="Roke s kupčkom svežih jagod"></div>
+  <div class="by">
+    <div class="avrow"><img class="av viv" src="assets/avatar-marine-lenehan.jpg" alt="Marine Lenehan"><div><div class="who">Marine Lenehan</div><div class="role">Športna nutricionistka · Vivify Sports</div></div></div>
+    <div class="avrow rev r"><img class="av" src="assets/avatar-matteo-cigala.jpg" alt="Matteo Cigala"><div><div class="who">Matteo Cigala</div><div class="role">Glavni trener · Cigala Cycling</div></div></div>
+  </div>
+</section>
+
+<!-- 2 CONTENTS -->
+<section class="page">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec">
+    <div class="eyebrow">V tem vodniku</div>
+    <h2>Vsebina</h2>
+    <div class="bar"></div>
+  </div>
+  <ol class="toc">
+    <li style="--topic:var(--c-carb)"><span class="no">01</span><div><div class="tt">Ogljikovi hidrati</div><div class="ds">Gorivo za trening in regeneracijo</div></div><span class="pg">3</span></li>
+    <li style="--topic:var(--c-pro)"><span class="no">02</span><div><div class="tt">Beljakovine</div><div class="ds">Obnova, regeneracija in prilagajanje</div></div><span class="pg">6</span></li>
+    <li style="--topic:var(--c-fat)"><span class="no">03</span><div><div class="tt">Maščobe</div><div class="ds">Energija, hormoni in zdravje</div></div><span class="pg">8</span></li>
+    <li style="--topic:var(--c-mic)"><span class="no">04</span><div><div class="tt">Mikrohranila</div><div class="ds">Vitamini in minerali</div></div><span class="pg">10</span></li>
+    <li><span class="no">05</span><div><div class="tt">Priporočeni viri hrane</div><div class="ds">Kaj dati v nakupovalno košarico</div></div><span class="pg">11</span></li>
+    <li><span class="no">06</span><div><div class="tt">Časovni razpored prehrane</div><div class="ds">Pred treningom, med njim in po njem</div></div><span class="pg">12</span></li>
+    <li><span class="no">07</span><div><div class="tt">Regeneracija &amp; dan tekme</div><div class="ds">Pravilo 3:1 in časovnica dneva tekme</div></div><span class="pg">13</span></li>
+    <li style="--topic:var(--c-hyd)"><span class="no">08</span><div><div class="tt">Hidracija</div><div class="ds">Tekočina, elektroliti in tvoja stopnja potenja</div></div><span class="pg">14</span></li>
+    <li><span class="no">09</span><div><div class="tt">Športnikov krožnik</div><div class="ds">Ravnovesje in energija za vsak trening dan</div></div><span class="pg">16</span></li>
+    <li><span class="no">10</span><div><div class="tt">Prilagojen prehranski načrt</div><div class="ds">Posvet, trening in brezplačna orodja</div></div><span class="pg">17</span></li>
+    <li><span class="no">11</span><div><div class="tt">Temelji športne prehrane</div><div class="ds">Celoten vodnik na eni strani</div></div><span class="pg">19</span></li>
+  </ol>
+  <div class="panel" style="margin-top:14px;padding:12px 18px"><div class="eyebrow" style="margin-bottom:2px">Barvni ključ</div><p style="margin:0;font-size:11px">Vsako hranilo ima svojo barvo, ki se uporablja v celotnem vodniku in na krožniku.</p>
+    <div class="key"><span><i style="background:var(--c-carb)"></i>Ogljikovi hidrati</span><span><i style="background:var(--c-pro)"></i>Beljakovine</span><span><i style="background:var(--c-fat)"></i>Maščobe</span><span><i style="background:var(--c-mic)"></i>Mikrohranila · sadje &amp; zelenjava</span><span><i style="background:var(--c-hyd)"></i>Hidracija</span></div>
+    <p style="margin:8px 0 0;font-size:11px;color:var(--text-3)">V seznamih živil: <b style="color:var(--green-text)">●</b> izbiraj pogosto · <b style="color:var(--text-3)">●</b> zmerno ali ob treningu · <b style="color:var(--red-text)">●</b> izogibaj se</p></div>
+  <div class="callout" style="margin-top:12px">
+    <div class="anton" style="font-size:20px;margin-bottom:4px">Gorivo • Regeneracija • Prilagoditev</div>
+    <p>Prava prehranska strategija je individualna. Vnos prilagodi trenažni obremenitvi, ciljem in potrebam po regeneraciji.</p>
+  </div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">2</span></div>
+</section>
+
+<!-- 3 CARBS -->
+<section class="page" style="--topic:var(--c-carb)">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec">
+    <span class="big">01</span>
+    <div class="eyebrow">Poglavje 01<span class="topic"><i></i>Ogljikovi hidrati</span></div>
+    <h2>Ogljikovi hidrati</h2>
+    <div class="bar"></div>
+    <p class="sub">Najljubši vir energije telesa pri zmerno in visoko intenzivni vadbi</p>
+  </div>
+  <p>Ogljikovi hidrati se v mišicah in jetrih shranjujejo kot <b>glikogen</b>, ki je pomemben vir goriva med treningom in tekmo.</p>
+  <h3>Zadosten vnos ogljikovih hidratov pomaga</h3><div class="bar"></div>
+  <div class="panel"><ul class="dots c2">
+    <li>Ohranjati intenzivnost treninga</li><li>Odložiti utrujenost</li>
+    <li>Podpirati zbranost in kognitivne funkcije</li><li>Obnoviti mišični glikogen</li>
+    <li>Izboljšati regeneracijo med treningi</li>
+  </ul></div>
+  <h3>Dnevni vnos – povprečen športnik</h3><div class="bar"></div>
+  <div class="tiles scale" style="grid-template-columns:repeat(5,1fr)">
+    <div class="tile" data-l="1"><div class="v">3–4</div><div class="u">g/kg telesne teže</div><div class="l">Počitek ali lahki dnevi</div></div>
+    <div class="tile" data-l="2"><div class="v">3–5</div><div class="u">g/kg telesne teže</div><div class="l">Lahek trening</div></div>
+    <div class="tile" data-l="3"><div class="v">5–7</div><div class="u">g/kg telesne teže</div><div class="l">Zmeren trening</div></div>
+    <div class="tile" data-l="4"><div class="v">6–10</div><div class="u">g/kg telesne teže</div><div class="l">Velik obseg</div></div>
+    <div class="tile" data-l="5"><div class="v">8–12</div><div class="u">g/kg telesne teže</div><div class="l">Zelo velik obseg in intenzivnost</div></div>
+  </div>
+  <p class="note">Splošne smernice. Individualne potrebe je treba prilagoditi zahtevam treninga, potrebam po regeneraciji in razpoložljivosti energije.</p>
+  <h3>Med treningom</h3><div class="bar"></div>
+  <div class="tiles scale" style="grid-template-columns:repeat(4,1fr)">
+    <div class="tile" data-l="1"><div class="v">Nič</div><div class="u">običajno ni potrebno</div><div class="l">Manj kot 60 minut</div></div>
+    <div class="tile" data-l="3"><div class="v">30–60 g</div><div class="u">na uro</div><div class="l">1 – 2.5 ure</div></div>
+    <div class="tile" data-l="4"><div class="v">60–90 g</div><div class="u">na uro</div><div class="l">2.5 – 4 ure</div></div>
+    <div class="tile" data-l="5"><div class="v">90 g +</div><div class="u">na uro</div><div class="l">4 ure in več</div></div>
+  </div>
+  <p style="margin-top:12px">Pri dolgotrajnih vzdržljivostnih tekmah lahko nekaterim športnikom koristi vnos blizu 90 g/uro ali več, pod strokovnim vodstvom. Pri večjih količinah ogljikovih hidratov lahko kombinacija <b>glukoze ali maltodekstrina s fruktozo</b> izboljša njihovo absorpcijo in izrabo.</p>
+  <div class="callout"><div class="k">Trening prebavil</div><p>Prebavni sistem se lahko prilagodi večjemu vnosu ogljikovih hidratov med vadbo. Strategijo prehrane za tekmo vadi na treningu, ne uvajaj je prvič na dan tekme. Priporočamo individualen trening prebavil.</p></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">3</span></div>
+</section>
+
+<!-- 4 CARBS 2 -->
+<section class="page" style="--topic:var(--c-carb)">
+  <div class="run"><span>01 · Ogljikovi hidrati</span></div>
+  <h3 style="margin-top:0">Ogljikovi hidrati z veliko in malo vlaknin</h3><div class="bar"></div>
+  <div class="tbl"><table>
+    <tr><th style="width:50%"><span class="dot d-green"></span>Viri z veliko vlaknin</th><th><span class="dot d-grey"></span>Viri z malo vlaknin</th></tr>
+    <tr><td>Rjavi basmati riž</td><td>Beli riž</td></tr>
+    <tr><td>Polnozrnate testenine <small>(pšenica, pira ali ajda)</small></td><td>Bele testenine</td></tr>
+    <tr><td>Bulgur</td><td>Melona</td></tr>
+    <tr><td>Leča</td><td>Riževi vaflji</td></tr>
+    <tr><td>Fižol</td><td>Dobro kuhano korenje</td></tr>
+    <tr><td>Kvinoja</td><td>Kuskus</td></tr>
+    <tr><td>Proso</td><td>Športni napitki</td></tr>
+    <tr><td>Polnozrnat kruh</td><td>Geli</td></tr>
+    <tr><td>Oves &amp; ovsena kaša</td><td>Riževi kosmiči</td></tr>
+    <tr><td>Polnozrnati kosmiči</td><td>Rafinirani kosmiči <small>(koruzni kosmiči, napihnjen riž, pšenični zdrob)</small></td></tr>
+    <tr><td>Jabolka, hruške &amp; jagodičevje</td><td>Banana &amp; suho sadje</td></tr>
+    <tr><td>Krompir z lupino</td><td>Krompir brez lupine</td></tr>
+    <tr><td>Brstični ohrovt</td><td>Marmelada &amp; želeji</td></tr>
+    <tr><td>Artičoke</td><td>Med, javorjev sirup &amp; namizni sladkor</td></tr>
+    <tr><td>Maslena buča</td><td>Sadje v pločevinki</td></tr>
+  </table></div>
+  <div class="callout" style="margin-top:12px"><p><b>Obe skupini imata mesto v športnikovi prehrani.</b> Ogljikovi hidrati z več vlakninami koristijo vsakodnevnemu zdravju, prebavi in sitosti. Možnosti z manj vlakninami so posebej uporabne pred vadbo in med njo, ker so pogosto lažje prebavljive.</p></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">4</span></div>
+</section>
+
+<!-- 5 CARBS 3 -->
+<section class="page" style="--topic:var(--c-carb)">
+  <div class="run"><span>01 · Ogljikovi hidrati</span></div>
+  <h3 style="margin-top:0">Porcije ogljikovih hidratov</h3><div class="bar"></div>
+  <div class="g2">
+    <div class="tbl"><table>
+      <tr><th>Obrok – 50 g OH</th></tr>
+      <tr><td>150 g testenin (125 g polnozrnatih)</td></tr><tr><td>300 g krompirja</td></tr><tr><td>130 g rjavega riža (160 g belega riža)</td></tr><tr><td>3 rezine črnega kruha</td></tr><tr><td>80 g kvinoje</td></tr><tr><td>75 g kuskusa</td></tr><tr><td>75 g ovsenih kosmičev</td></tr><tr><td>3–4 palačinke</td></tr>
+    </table></div>
+    <div class="tbl"><table>
+      <tr><th>Prigrizek – 30 g OH</th></tr>
+      <tr><td>1 banana</td></tr><tr><td>40 g suhega sadja</td></tr><tr><td>3 kiviji</td></tr><tr><td>2 srednji rezini kruha z drožmi</td></tr><tr><td>1 velika žitna ploščica</td></tr><tr><td>5 ovsenih krekerjev</td></tr><tr><td>45 g ovsenih kosmičev</td></tr><tr><td>1.5 angleške palačinke (crumpet)</td></tr>
+    </table></div>
+  </div>
+  <h3>Glikemični indeks (GI)</h3><div class="bar"></div>
+  <p>Glikemični indeks meri, kako hitro živila z ogljikovimi hidrati zvišajo raven glukoze v krvi v primerjavi z referenčnim živilom.</p>
+  <div class="g2">
+    <div class="panel" style="border-left:3px solid var(--green)"><div class="anton" style="font-size:17px">Nizek GI</div><p style="margin:4px 0 0">Praviloma povzroči <b>počasnejši</b> dvig glukoze v krvi.</p></div>
+    <div class="panel" style="border-left:3px solid var(--text-3)"><div class="anton" style="font-size:17px">Visok GI</div><p style="margin:4px 0 0">Praviloma povzroči <b>hitrejši</b> dvig glukoze v krvi.</p></div>
+  </div>
+  <p style="margin-top:12px"><b>Nobena skupina sama po sebi ni dobra ali slaba.</b> Živila z nizkim GI so primerna za vsakdanje obroke; živila z višjim GI so lahko praktična pred vadbo, med njo ali po njej, ko pomaga hiter dotok ogljikovih hidratov. Na odziv glukoze v krvi vplivajo tudi vlaknine, velikost porcije, priprava in sestava obroka.</p>
+  <div class="mphoto" style="height:84mm;margin-top:16px"><img src="assets/matteo-cigala-uci-finish-win.jpg" alt="Matteo Cigala, Gran Fondo Tre Valli Varesine" style="object-position:50% 60%"></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">5</span></div>
+</section>
+
+<!-- 5 PROTEIN -->
+<section class="page" style="--topic:var(--c-pro)">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec">
+    <span class="big">02</span>
+    <div class="eyebrow">Poglavje 02<span class="topic"><i></i>Beljakovine</span></div>
+    <h2>Beljakovine</h2>
+    <div class="bar"></div>
+    <p class="sub">Nujne za obnovo mišic, regeneracijo in prilagajanje na vadbo</p>
+  </div>
+  <p>Beljakovine zagotavljajo aminokisline, potrebne za gradnjo in ohranjanje mišičnega tkiva ter za številne fiziološke procese.</p>
+  <div class="g2" style="align-items:stretch">
+    <div><h3>Beljakovine sodelujejo tudi pri</h3><div class="bar"></div>
+    <div class="panel"><ul class="dots"><li>Tvorbi encimov</li><li>Sintezi hormonov</li><li>Delovanju imunskega sistema</li><li>Obnovi tkiv</li><li>Tvorbi rdečih krvničk</li></ul></div></div>
+    <div style="display:flex;flex-direction:column"><h3>Priporočen vnos – povprečen športnik</h3><div class="bar"></div>
+    <div class="tile wide" style="flex:1;display:flex;flex-direction:column;justify-content:center"><div class="v">1.6 – 2.3</div><div class="u">g na kg telesne teže</div><div class="l">Na dan</div></div></div>
+  </div>
+  <h3>Kje jih najdeš</h3><div class="bar"></div>
+  <div class="tbl"><table class="avoid">
+    <tr><th style="width:25%"><span class="dot d-green"></span>Živalski viri</th><th style="width:25%"><span class="dot d-red"></span>Živalski viri<small>Izogibaj se</small></th><th style="width:25%"><span class="dot d-green"></span>Rastlinski viri</th><th><span class="dot d-grey"></span>Izolirane oblike</th></tr>
+    <tr><td>Piščančji fileji</td><td>Predelano rdeče meso</td><td>Kvinoja</td><td>Sirotkine beljakovine</td></tr>
+    <tr><td>Puranji fileji</td><td>Klobase, hrenovke</td><td>Tofu</td><td>Kazeinske beljakovine</td></tr>
+    <tr><td>Rdeče meso živali s paše</td><td>Slanina</td><td>Seitan</td><td>Riževe beljakovine</td></tr>
+    <tr><td>Ribe &amp; morski sadeži</td><td>Narezki</td><td>Tempeh</td><td>Grahove beljakovine</td></tr>
+    <tr><td>Zrnati sir (cottage)</td><td>Kebab meso</td><td>Leča</td><td>Sojine beljakovine</td></tr>
+    <tr><td>Grški jogurt</td><td>Piščančji nugetsi</td><td>Fižol</td><td></td></tr>
+    <tr><td>Jajca iz proste reje</td><td>Panirane ribe</td><td>Čičerika</td><td></td></tr>
+    <tr><td>Jogurt skyr</td><td></td><td>Oreščna masla</td><td></td></tr>
+    <tr><td>Mleko</td><td></td><td>Sojino mleko</td><td></td></tr>
+    <tr><td></td><td></td><td>Edamame</td><td></td></tr>
+    <tr><td></td><td></td><td>Oreščki <small>(mandlji, indijski, orehi)</small></td><td></td></tr>
+    <tr><td></td><td></td><td>Semena <small>(bučna, lanena, chia, sezam)</small></td><td></td></tr>
+  </table></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">6</span></div>
+</section>
+
+<!-- 6 PROTEIN 2 -->
+<section class="page" style="--topic:var(--c-pro)">
+  <div class="run"><span>02 · Beljakovine</span></div>
+  <h3 style="margin-top:0">Porcije beljakovin</h3><div class="bar"></div>
+  <p class="note" style="margin:0 0 10px">Vsaka spodnja porcija vsebuje približno enako količino beljakovin.</p>
+  <div class="g2">
+    <div class="tbl"><table>
+      <tr><th>Obrok – 30 g beljakovin</th></tr>
+      <tr><td>95 g piščančjih prsi</td></tr><tr><td>105 g puste mlete govedine</td></tr><tr><td>100 g puranjih prsi</td></tr><tr><td>100 g govejega zrezka (sirloin)</td></tr><tr><td>125 g tune v pločevinki</td></tr><tr><td>100 g tunin zrezek</td></tr><tr><td>200 g tofuja</td></tr><tr><td>50–100 g seitana</td></tr><tr><td>300 g čičerike</td></tr><tr><td>130 g velikih kozic</td></tr><tr><td>125 g lososovega fileja</td></tr>
+    </table></div>
+    <div class="tbl"><table>
+      <tr><th>Prigrizek – 15 g beljakovin</th></tr>
+      <tr><td>2.5 trdo kuhanega jajca</td></tr><tr><td>130 g edamame fižola</td></tr><tr><td>125 g skute</td></tr><tr><td>150 g skyra ali grškega jogurta</td></tr><tr><td>½ merice sirotke v prahu</td></tr><tr><td>125 g posnetega zrnatega sira</td></tr><tr><td>200 g humusa</td></tr><tr><td>430 ml mleka</td></tr><tr><td>135 g rikote</td></tr><tr><td>420 ml kefirja</td></tr><tr><td>75 g skuše / sardin v pločevinki</td></tr>
+    </table></div>
+  </div>
+  <div class="callout"><div class="k">Rastlinske možnosti</div><p>Rastlinske beljakovine lahko povsem podpirajo športno zmogljivost. Raznoliki rastlinski viri beljakovin čez dan pomagajo zagotoviti vse esencialne aminokisline. Soja, tofu, tempeh in seitan so posebej uporabni koncentrirani viri beljakovin.</p></div>
+  <h3>Glavne točke</h3><div class="bar"></div>
+  <div class="panel"><ul class="dots">
+    <li>Beljakovine vključi v zajtrk, kosilo in večerjo.</li>
+    <li>Po potrebi vključi prigrizke, bogate z beljakovinami.</li>
+    <li>Prednost daj skupnemu dnevnemu vnosu beljakovin.</li>
+    <li>Beljakovine razporedi čez ves dan.</li>
+    <li>Dopolnila uporabljaj zaradi priročnosti, ne kot nadomestek uravnotežene prehrane.</li>
+  </ul></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">7</span></div>
+</section>
+
+<!-- 7 FATS -->
+<section class="page" style="--topic:var(--c-fat)">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec">
+    <span class="big">03</span>
+    <div class="eyebrow">Poglavje 03<span class="topic"><i></i>Maščobe</span></div>
+    <h2>Maščobe</h2>
+    <div class="bar"></div>
+    <p class="sub">Nujne za dobro zdravje in športno zmogljivost</p>
+  </div>
+  <p>Maščobe v prehrani dajejo energijo, podpirajo tvorbo hormonov, ohranjajo celične membrane in telesu pomagajo vsrkati vitamine <b>A, D, E in K</b>. Pomembne so tudi za normalno delovanje možganov, prenos živčnih signalov in zdravje imunskega sistema.</p>
+  <div class="g4" style="align-items:start;margin-top:14px">
+    <div class="fat mono"><div class="hd"><div class="anton"><i style="background:var(--green)"></i>Enkrat nenasičene</div><div class="tag">Omega-9 · Zdravje srca</div></div>
+      <div class="ds">Pomagajo znižati holesterol in izboljšati zdravje srca in ožilja.</div>
+      <ul><li>Ekstra deviško oljčno olje</li><li>Olive</li><li>Avokado</li><li>Repično olje</li><li>Pistacije</li><li>Arašidi</li><li>Makadamija oreščki</li><li>Mandlji</li><li>Lešniki</li></ul></div>
+    <div class="fat poly"><div class="hd"><div class="anton"><i style="background:var(--green)"></i>Večkrat nenasičene</div><div class="tag">Omega-3 &amp; 6 · Protivnetne</div></div>
+      <div class="ds">Izboljšajo delovanje živcev, imunskega sistema in možganov; zmanjšajo vnetja in bolečino.</div>
+      <ul><li>Mastne ribe</li><li>Orehi</li><li>Lanena semena</li><li>Chia semena</li><li>Konopljina semena</li><li>Sončnično olje &amp; semena</li><li>Sezamova semena</li><li>Bučna semena</li><li>Arašidovo olje</li></ul></div>
+    <div class="fat sat"><div class="hd"><div class="anton"><i style="background:var(--text-3)"></i>Nasičene</div><div class="tag">Energija · Zmeren vnos</div></div>
+      <div class="ds">Koristne za zdravje, če so iz dobrega vira: ekološko, prosta reja, paša.</div>
+      <ul><li>Kokosovo olje</li><li>Polnomastno mleko</li><li>Svinjina</li><li>Mlečni izdelki (maslo, sir, mleko, smetana)</li><li>Jajca iz proste reje</li><li>Mastno rdeče meso</li><li>Polnomastni grški jogurt (100%)</li><li>Temna čokolada</li><li>Brazilski &amp; makadamija oreščki</li></ul></div>
+    <div class="fat trans"><div class="hd"><div class="anton"><i style="background:var(--red)"></i>Predelane ali trans</div><div class="tag" style="color:var(--red-text)">Škodljive · Odsvetovano</div></div>
+      <div class="ds">Brez hranilne vrednosti, škodujejo zdravju.</div>
+      <ul><li>Ocvrta hitra hrana (pomfrit, ocvrta riba, ocvrt piščanec)</li><li>Rastlinska mast &amp; trda margarina</li><li>Kupljeno pecivo (rogljički, danski kolački, listnato testo)</li><li>Kupljene torte, krofi in mafini</li><li>Pakirani piškoti, keksi in napolitanke</li><li>Pokovka za mikrovalovno pečico (z okusom masla)</li><li>Nemlečni smetanovi dodatki za kavo &amp; stepeni prelivi</li><li>Zamrznjene pice &amp; pripravljeni obroki</li><li>Prelivi z okusom čokolade &amp; poceni slaščice</li><li>Ultra predelano meso (klobase, feferoni salama, piščančji nugetsi)</li></ul></div>
+  </div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">8</span></div>
+</section>
+
+<!-- 8 FATS 2 -->
+<section class="page" style="--topic:var(--c-fat)">
+  <div class="run"><span>03 · Maščobe</span></div>
+  <h3 style="margin-top:0">Priporočen vnos – povprečen športnik</h3><div class="bar"></div>
+  <div class="tile wide"><div class="v">20 – 35 %</div><div class="u">skupnega dnevnega energijskega vnosa</div><div class="l">Naj izvira iz maščob</div></div>
+  <h3>Porcije maščob</h3><div class="bar"></div>
+  <p class="note" style="margin:0 0 10px">Vsaka spodnja porcija vsebuje približno enako količino maščob.</p>
+  <div class="g2">
+    <div class="tbl"><table>
+      <tr><th>Velika – 20 g maščob</th></tr>
+      <tr><td>30 g orehov</td></tr><tr><td>20 ml oljčnega olja</td></tr><tr><td>145 g lososa</td></tr><tr><td>40 g mandljev</td></tr><tr><td>1 srednje velik avokado</td></tr><tr><td>45 g pistacij</td></tr><tr><td>100 g skuše</td></tr><tr><td>40 g arašidovega masla</td></tr>
+    </table></div>
+    <div class="tbl"><table>
+      <tr><th>Majhna – 10 g maščob</th></tr>
+      <tr><td>15 g orehov</td></tr><tr><td>Pest oliv</td></tr><tr><td>75 g dimljenega lososa</td></tr><tr><td>20 g mandljev</td></tr><tr><td>½ avokada</td></tr><tr><td>20 g bučnih semen</td></tr><tr><td>100 g humusa</td></tr><tr><td>20 g arašidovega masla</td></tr>
+    </table></div>
+  </div>
+  <h3>Glavne točke</h3><div class="bar"></div>
+  <div class="panel"><ul class="dots">
+    <li>Redno vključuj nenasičene maščobe.</li>
+    <li>Uživaj mastne ribe ali ustrezne vire omega-3.</li>
+    <li>Izogibaj se prehrani s premalo maščob.</li>
+    <li>Pazi na čas obrokov: veliki, mastni obroki tik pred vadbo lahko povzročijo prebavne težave.</li>
+  </ul></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">9</span></div>
+</section>
+
+<!-- 9 MICRO -->
+<section class="page" style="--topic:var(--c-mic)">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec">
+    <span class="big">04</span>
+    <div class="eyebrow">Poglavje 04<span class="topic"><i></i>Mikrohranila</span></div>
+    <h2>Mikrohranila</h2>
+    <div class="bar"></div>
+    <p class="sub">Vitamini in minerali so nujni za normalno delovanje telesa</p>
+  </div>
+  <p>Čeprav jih potrebujemo v manjših količinah kot makrohranila, imajo pomembno vlogo pri energijskem metabolizmu, prenosu kisika, imunskem sistemu, zdravju kosti in krčenju mišic. Športniki naj bodo še posebej pozorni na mikrohranila, ki jih je glede na prehrano in zahteve treninga težko zaužiti v zadostnih količinah.</p>
+  <div class="tbl micro" style="margin-top:12px"><table>
+    <tr><th>Funkcija</th><th>Hranilo &amp; najboljši viri</th><th>Kaj počne</th></tr>
+    <tr><td>Antioksidant</td><td><b>Vitamin A (beta-karoten):</b> korenje, sladki krompir, jetra<br><b>Vitamin C:</b> pomaranče, kivi, rdeča paprika, brokoli<br><b>Vitamin E:</b> oreščki, semena, polnozrnata žita</td><td>Nevtralizira proste radikale in preprečuje oksidativni stres ter poškodbe celic.</td></tr>
+    <tr><td>Energijski metabolizem</td><td><b>B1, B2, B3, B5, B6, B7:</b> polnozrnata žita, listnata zelenjava, jajca, drobovina</td><td>Delujejo kot koencimi, ki ogljikove hidrate, maščobe in beljakovine pretvarjajo v energijo.</td></tr>
+    <tr><td>Rdeče krvničke &amp; podpora tkivom</td><td><b>Folna kislina:</b> polnozrnata žita, špinača, leča, beluši, brokoli<br><b>Vitamin B12:</b> sardine, tuna, zrnati sir, puran, piščanec, prehranski kvas<br><b>Železo:</b> rdeče meso, bučna semena, mandlji, marelice, dateljni, špinača, leča<br><b>Baker:</b> jetra, školjke in raki, indijski oreščki, sezam, temna čokolada, čičerika</td><td>Železo tvori hemoglobin, ki prenaša kisik; folat in B12 tvorita nove rdeče krvničke. Baker pomaga telesu vsrkati in prenašati železo ter tvori kolagen za vezivno tkivo.</td></tr>
+    <tr><td>Prenos živčnih signalov &amp; krčenje mišic</td><td><b>Natrij:</b> olive, šunka, morska sol<br><b>Kalij:</b> banana, krompir, zelena, bučke<br><b>Magnezij:</b> mandlji, indijski oreščki, polnozrnata žita, temna čokolada<br><b>Kalcij:</b> mlečni izdelki, obogateno rastlinsko mleko, sardine</td><td>Prevaja električne živčne impulze, vzdržuje ravnovesje tekočin ter sproža krčenje in sproščanje mišic.</td></tr>
+    <tr><td>Sinteza beljakovin, encimi &amp; imunost</td><td><b>Cink:</b> školjke in raki, rdeče meso, bučna semena, čičerika<br><b>Selen:</b> brazilski oreščki, tuna, gobe, perutnina</td><td>Spodbuja sintezo novih beljakovin (obnova mišic), aktivira encime in krepi imunsko obrambo.</td></tr>
+    <tr><td>Zdravje kosti &amp; strjevanje krvi</td><td><b>Vitamin D:</b> mastne ribe, rumenjaki, obogateno mleko/kosmiči, sončna svetloba<br><b>Vitamin K:</b> ohrovt, špinača, brokoli, brstični ohrovt (K1); fermentirana živila, sir (K2)<br><b>Fosfor:</b> perutnina, ribe, mlečni izdelki, bučna semena, leča</td><td>Vitamin D omogoča vsrkavanje kalcija; fosfor gradi močne kosti in zobe (in energijo ATP); vitamin K veže kalcij na kosti in omogoča normalno strjevanje krvi.</td></tr>
+    <tr><td>Tvorba ščitničnih hormonov</td><td><b>Jod:</b> morska hrana, mlečni izdelki, jajca, jodirana sol</td><td>Jod tvori ščitnične hormone, ki uravnavajo hitrost presnove in porabo energije.</td></tr>
+  </table></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">10</span></div>
+</section>
+
+<!-- 10 FOODS -->
+<section class="page">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec">
+    <span class="big">05</span>
+    <div class="eyebrow">Poglavje 05</div>
+    <h2>Priporočeni viri hrane</h2>
+    <div class="bar"></div>
+    <p class="sub">Kakovostna izbira, okoli katere zgradiš vsak obrok</p>
+  </div>
+  <div class="tbl foods"><table>
+    <tr><td>Kruh</td><td>100% polnozrnat, črn, rženi, pirin, z drožmi</td></tr>
+    <tr><td>Ribe</td><td>Divje, ne iz gojišč</td></tr>
+    <tr><td>Govedina</td><td>Živali s paše</td></tr>
+    <tr><td>Piščanec / jajca / puran</td><td>Prosta reja</td></tr>
+    <tr><td>Mleko</td><td>Ekološko, polnomastno</td></tr>
+    <tr><td>Rastlinsko mleko</td><td>Nesladkano ovseno, konopljino, mandljevo, sojino</td></tr>
+    <tr><td>Jogurt</td><td>Navaden, polnomasten, grški jogurt, skyr</td></tr>
+    <tr><td>Druga žita</td><td>Kvinoja, bulgur, kuskus, ješprenj</td></tr>
+    <tr><td>Stročnice</td><td>Leča, čičerika, rdeči fižol, črni fižol</td></tr>
+    <tr><td>Maslo</td><td>Pravo maslo, brez namazov (uporabljaj surovo)</td></tr>
+    <tr><td>Oves</td><td>Debeli ali ovseni kosmiči za kašo (instant so bolj rafinirani)</td></tr>
+    <tr><td>Riž</td><td>Rjavi basmati riž</td></tr>
+    <tr><td>Testenine</td><td>Polnozrnate, pirine ali ajdove testenine</td></tr>
+    <tr><td>Sladila</td><td>Med, javorjev sirup, kokosov sladkor ali sladkor rapadura</td></tr>
+    <tr><td>Čokolada</td><td>Temna (višji kot je delež kakava, bolje je)</td></tr>
+    <tr><td>Olja</td><td>Oljčno, laneno, oreščno, kokosovo, repično</td></tr>
+    <tr><td>Sol</td><td>Morska sol Maldon ali himalajska sol</td></tr>
+    <tr><td>Ribe v pločevinki</td><td>Skuša, sardine, tuna</td></tr>
+    <tr><td>Oreščki</td><td>Mandlji, orehi, brazilski, pekan, indijski</td></tr>
+    <tr><td>Oreščna masla</td><td>Ekološko, brez dodanega sladkorja ali olja</td></tr>
+    <tr><td>Žitne ploščice</td><td>Nakd, Clif, Nature Valley <em>(najbolje domače)</em></td></tr>
+    <tr><td>Zelenjava</td><td>Sveža, lokalna, sezonska <em>(raje zelena zelenjava in krompir)</em></td></tr>
+    <tr><td>Sadje</td><td>Jagodičevje, citrusi, jabolka, banane, kivi, ananas</td></tr>
+  </table></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">11</span></div>
+</section>
+
+<!-- 11 TIMING -->
+<section class="page">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec">
+    <span class="big">06</span>
+    <div class="eyebrow">Poglavje 06</div>
+    <h2>Časovni razpored prehrane</h2>
+    <div class="bar"></div>
+    <p class="sub">Izboljšaj kakovost treninga, regeneracijo in zmogljivost</p>
+  </div>
+  <p>Cilj je zagotoviti <b>dovolj energije pred vadbo, gorivo za zahtevne treninge in obnovo hranil po njih.</b></p>
+  <div class="row"><div class="lab">Zajtrk</div><div class="bd">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 18px"><div>Obnovi energijo po nočnem postu. Vključi:
+    <ul class="dots" style="margin-top:4px"><li>Ogljikove hidrate za energijo</li><li>Beljakovine za ohranjanje mišic in regeneracijo</li><li>Zdrave maščobe</li><li>Sadje ali zelenjavo, kjer je primerno</li></ul>
+</div><div><div class="k" style="margin-top:0">Primeri</div>
+    <ul class="dots"><li>Ovsena kaša z banano, grškim jogurtom &amp; arašidovim maslom</li><li>Jajca na toastu s sadjem</li><li>Grški jogurt z ovsenimi kosmiči, jagodičevjem in oreščki</li><li>Smuti z mlekom, banano in beljakovinami v prahu</li></ul></div></div>
+    <em style="display:block;margin-top:6px">Potrebe so odvisne od časa in intenzivnosti naslednjega treninga.</em>
+  </div></div>
+  <div class="row"><div class="lab">Pred treningom</div><div class="bd"><ul class="dots">
+    <li><b>1.5–3 ure</b> pred treningom pojej obrok, bogat z ogljikovimi hidrati, za optimalno zalogo glikogena.</li>
+    <li>Po potrebi <b>30–60 minut</b> pred vadbo pojej lahko prebavljiv ogljikohidratni prigrizek.</li></ul></div></div>
+  <div class="row"><div class="lab">Med treningom</div><div class="bd"><ul class="dots">
+    <li>Vnos ogljikovih hidratov prilagodi trajanju in intenzivnosti vadbe.</li>
+    <li>Pri dolgih treningih uživaj ogljikove hidrate, da ohraniš glukozo v krvi in odložiš utrujenost.</li>
+    <li>Skrbi za zadosten vnos tekočine in elektrolitov.</li></ul></div></div>
+  <div class="row"><div class="lab">Po treningu</div><div class="bd"><ul class="dots">
+    <li>Zaužij približno <b>20–40 g kakovostnih beljakovin</b> za spodbujanje sinteze mišičnih beljakovin.</li>
+    <li>Vključi ogljikove hidrate za obnovo mišičnega glikogena.</li>
+    <li>Po zahtevnih treningih daj prednost hitri prehrani za regeneracijo, zlasti ko je časa za regeneracijo malo.</li></ul></div></div>
+  <div class="row"><div class="lab">Prilagodi trenažni obremenitvi</div><div class="bd"><ul class="dots">
+    <li>Povečaj vnos ogljikovih hidratov skladno z obsegom in intenzivnostjo treninga.</li>
+    <li>Ohranjaj enakomeren vnos beljakovin čez ves dan.</li>
+    <li>Izogibaj se kroničnemu pomanjkanju energije, saj lahko poslabša regeneracijo, zmogljivost in splošno zdravje.</li></ul></div></div>
+  <div class="callout" style="margin-top:12px"><div class="k">Zapomni si</div><p>Ustrezen vnos energije, razpoložljivost ogljikovih hidratov in razporeditev beljakovin so nujni za prilagoditve na trening, regeneracijo in dolgoročno zmogljivost.</p></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">12</span></div>
+</section>
+
+<!-- RECOVERY & RACE DAY -->
+<section class="page">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec">
+    <span class="big">07</span>
+    <div class="eyebrow">Poglavje 07</div>
+    <h2>Regeneracija &amp; dan tekme</h2>
+    <div class="bar"></div>
+    <p class="sub">Praktična pravila trenerske ekipe Cigala Cycling</p>
+  </div>
+  <p>Med regeneracijo se telo prilagodi na stres vadbe in nastane pravi učinek treninga. Tekočina, elektroliti, ogljikovi hidrati in beljakovine so temelj prehrane za regeneracijo.</p>
+  <h3>Pravilo regeneracije 3:1</h3><div class="bar"></div>
+  <div class="g2" style="align-items:stretch">
+    <div class="tbl ratio"><table>
+      <tr><th>Beljakovine po treningu</th><th>Ustrezni OH</th></tr>
+      <tr><td>20 g beljakovin</td><td><b>60 g</b> OH</td></tr>
+      <tr><td>25 g beljakovin</td><td><b>75 g</b> OH</td></tr>
+      <tr><td>30 g beljakovin</td><td><b>90 g</b> OH</td></tr>
+    </table></div>
+    <div class="panel"><ul class="dots">
+      <li>Jej v <b>30 minutah</b> po koncu zahtevnega treninga ali tekme, še toliko bolj na etapnih dirkah.</li>
+      <li>Vsaj <b>20 g beljakovin</b> takoj po treningu pospeši sintezo mišičnih beljakovin.</li>
+      <li>Ogljikovi hidrati in beljakovine skupaj obnovijo glikogen hitreje kot vsak zase.</li>
+    </ul></div>
+  </div>
+  <h3>Časovnica dneva tekme</h3><div class="bar"></div>
+  <div class="row"><div class="lab">Pred startom</div><div class="bd"><ul class="dots"><li>Obrok, bogat z ogljikovimi hidrati, <b>1.5–3 ure</b> prej (ovsena kaša, testenine, riž), po potrebi pa lahko prebavljiv prigrizek 30–60 minut prej.</li></ul></div></div>
+  <div class="row"><div class="lab">Na kolesu</div><div class="bd"><ul class="dots"><li>Ogljikovi hidrati na uro glede na dolžino tekme: glej »Med treningom« v poglavju 01 (30–60 g za 1–2.5 ure, 60–90 g za 2.5–4 ure).</li></ul></div></div>
+  <div class="row"><div class="lab">Cilj</div><div class="bd"><ul class="dots"><li>10–15 minut lahkega vrtenja, nato takoj napitek za regeneracijo in prigrizek.</li><li>Prha, noge gor in uro počitka pred večerjo, da gre kri v regeneracijo, ne v prebavo.</li></ul></div></div>
+  <div class="row"><div class="lab">Večerja &amp; noč</div><div class="bd"><ul class="dots"><li>Veliko ogljikovih hidratov, da napolniš rezervoar za jutri, beljakovine, sadje in zelenjava.</li><li>Na etapnih dirkah za večerjo izpusti rdeče meso: počasi se prebavlja. Spi <b>7+ ur</b>.</li></ul></div></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">13</span></div>
+</section>
+
+<!-- 12 HYDRATION -->
+<section class="page" style="--topic:var(--c-hyd)">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec">
+    <span class="big">08</span>
+    <div class="eyebrow">Poglavje 08<span class="topic"><i></i>Hidracija</span></div>
+    <h2>Hidracija</h2>
+    <div class="bar"></div>
+    <p class="sub">Voda je nujna za termoregulacijo, prenos hranil in krčenje mišic</p>
+  </div>
+  <p>Že blaga dehidracija lahko poveča obremenitev srca in ožilja ter poslabša zmogljivost, zlasti v vročini.</p>
+  <div class="tiles plain" style="grid-template-columns:repeat(3,1fr);margin-top:12px">
+    <div class="tile" data-l="2"><div class="v">5–7 ml</div><div class="u">na kg telesne teže</div><div class="l">2–4 ure prej</div></div>
+    <div class="tile" data-l="3"><div class="v">400–800 ml</div><div class="u">na uro</div><div class="l">Med treningom</div></div>
+    <div class="tile" data-l="5"><div class="v">125–150 %</div><div class="u">izgubljene tekočine</div><div class="l">Po treningu</div></div>
+  </div>
+  <div class="g2" style="margin-top:14px;align-items:start">
+    <div class="hc"><div class="hd">Dnevna hidracija</div><ul class="dots">
+      <li>Pij redno čez dan, ne zanašaj se le na žejo.</li>
+      <li>Vnos prilagodi velikosti telesa, aktivnosti, podnebju in izgubi z znojem.</li>
+      <li>V dnevni vnos tekočine vključi tudi živila z veliko vode.</li></ul></div>
+    <div class="hc"><div class="hd">Pred treningom</div><ul class="dots">
+      <li>Vadbo začni z dobro hidracijo.</li>
+      <li>Ciljaj na približno 5–7 ml tekočine na kg telesne teže, 2–4 ure pred vadbo.</li></ul></div>
+    <div class="hc"><div class="hd">Med treningom</div><ul class="dots">
+      <li>Potrebe po tekočini so običajno 400–800 ml na uro, odvisno od potenja, temperature in intenzivnosti.</li>
+      <li>Vnos prilagodi sebi: izgubo z znojem oceni s tehtanjem pred treningom in po njem.</li>
+      <li>Pri dolgi vadbi ali močnem potenju vključi elektrolite, zlasti natrij.</li>
+      <li>Ne pij preveč, saj prekomerna hidracija poveča tveganje za hiponatriemijo.</li></ul></div>
+    <div class="hc"><div class="hd">Po treningu</div><ul class="dots">
+      <li>Nadomesti približno 125–150% tekočine, izgubljene z znojem, za popolno rehidracijo.</li>
+      <li>Vključi natrij, da telo bolje zadrži tekočino.</li>
+      <li>Rehidriraj postopoma, zlasti če imaš naslednji trening v 24 urah.</li></ul></div>
+  </div>
+  <div class="callout"><div class="k">Zapomni si</div><p>Potrebe po hidraciji so individualne. Strategijo hidracije naj vodijo stopnja potenja, izguba natrija, intenzivnost vadbe in okoljske razmere.</p></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">14</span></div>
+</section>
+
+<!-- HYDRATION 2 -->
+<section class="page" style="--topic:var(--c-hyd)">
+  <div class="run"><span>08 · Hidracija</span></div>
+  <h3 style="margin-top:0">Zakaj je pomembno</h3><div class="bar"></div>
+  <div class="tiles plain" style="grid-template-columns:repeat(3,1fr)">
+    <div class="tile"><div class="v">2 % → 6 %</div><div class="u">izguba 2% telesne teže v tekočini</div><div class="l">Do 6% manjša zmogljivost</div></div>
+    <div class="tile"><div class="v">2 L</div><div class="u">vode na dan, poleg tega, kar spiješ na kolesu</div><div class="l">Dnevna osnova</div></div>
+    <div class="tile"><div class="v">2–3 g</div><div class="u">soli na liter vode</div><div class="l">V bolj vročih dneh</div></div>
+  </div>
+  <h3>Ugotovi svojo stopnjo potenja</h3><div class="bar"></div>
+  <p>Stehtaj se pred vožnjo in po njej, brez oblačil in po odhodu na stranišče. Vsak izgubljen kilogram je približno liter znoja.</p>
+  <div class="tbl ratio"><table>
+    <tr><th>Primer</th><th>Pred</th><th>Po</th><th>Popita tekočina</th><th>Izgubljen znoj</th><th>Popij za obnovo</th></tr>
+    <tr><td>2-urna vožnja</td><td>70.0 kg</td><td>69.0 kg</td><td>0.5 L</td><td><b>1.5 L</b> (0.75 L/h)</td><td><b>1.25–1.5 L</b></td></tr>
+  </table></div>
+  <p class="note">Izgubljen znoj = izgubljena teža + popita tekočina. Za obnovo nadomesti 125–150% izgubljene teže. Z znojem izgubljaš tudi kalij, magnezij, kalcij in železo, zato jih vključi v prehrano, zlasti poleti.</p>
+  <div class="g2" style="margin-top:12px">
+    <div class="panel"><div class="anton" style="font-size:17px;margin-bottom:6px">Pametne navade</div><ul class="dots">
+      <li>Namesto odmorov za kavo si vzemi »odmore za vodo«: vsako jutro napolni 2 L steklenico in jo do večera izprazni.</li>
+      <li>V vročih dneh dodaj ščepec soli ali elektrolitski napitek z dovolj natrija.</li>
+      <li>Ob treningu bodi zmeren s kofeinom in alkoholom: oba povzročata izgubo tekočine.</li></ul></div>
+    <a class="tool" href="https://coaching.cigalacycling.com/tools/sweat-rate-calculator/"><div class="eyebrow" style="margin-bottom:8px">Brezplačno orodje</div><div class="anton">Kalkulator potenja</div>Koliko se poti na uro in koliko piti na kolesu.<span class="go">Odpri kalkulator →</span></a>
+  </div>
+  <div class="coach" style="align-items:center"><img src="assets/avatar-matteo-cigala.jpg" alt="Matteo Cigala, glavni trener"><div><div class="k">Nasvet trenerja</div><p>Izguba več kot 10–12% telesne teže v tekočini je nevarna. Bidone načrtuj pred vožnjo, ne šele, ko te že žeja.</p></div></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">15</span></div>
+</section>
+
+<!-- 13 PLATE -->
+<section class="page">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec">
+    <span class="big">09</span>
+    <div class="eyebrow">Poglavje 09</div>
+    <h2>Športnikov krožnik</h2>
+    <div class="bar"></div>
+    <p class="sub">Bistvo: ključ je ravnovesje</p>
+  </div>
+  <p>Hrana, ki jo izbereš, resnično vpliva na tvojo energijo in zmogljivost: <b>si to, kar ješ.</b> Ne verjamemo v diete. Glavni cilj je, da je zdrava prehrana preprosta in vsak obrok užitek.</p>
+  <div class="plates">
+    <div class="plate"><div class="t">Lahek dan / uravnavanje teže</div><svg viewBox="0 0 100 100" data-pie="50,25,25"></svg><div class="x">+ Maščobe (1 čajna žlička)<br>+ Pijača<br>+ Okus</div></div>
+    <div class="plate"><div class="t">Dan z zmernim treningom</div><svg viewBox="0 0 100 100" data-pie="38,37,25"></svg><div class="x">+ Maščobe (1 jedilna žlica)<br>+ Pijača<br>+ Okus<br>+ Sadje (priloga)</div></div>
+    <div class="plate"><div class="t">Dan z zahtevnim treningom</div><svg viewBox="0 0 100 100" data-pie="25,50,25"></svg><div class="x">+ Maščobe (2 jedilni žlici)<br>+ Pijača<br>+ Okus<br>+ Sadje (priloga)</div></div>
+  </div>
+  <div class="legend"><span><i style="background:var(--c-mic)"></i>Sadje &amp; zelenjava (mikrohranila)</span><span><i style="background:var(--c-carb)"></i>Žita (ogljikovi hidrati)</span><span><i style="background:var(--c-pro)"></i>Puste beljakovine</span></div>
+  <p class="note" style="margin-top:12px">Krožnik napolni glede na zahteve dneva: več sadja in zelenjave ob lahkem treningu, več žit, ko se obseg in intenzivnost treninga povečata.</p>
+  <h3>Koliko energije?</h3><div class="bar"></div>
+  <div class="g2" style="align-items:stretch">
+    <div class="tile wide" style="display:flex;flex-direction:column;justify-content:center"><div class="v">1,500 – 8,000</div><div class="u">kcal na dan</div><div class="l">Odvisno od trenažne obremenitve</div></div>
+    <div class="panel"><p>S praznim rezervoarjem ne moreš s kombijem čez vso državo. Tvoje potrebe so odvisne od <b>trenažne obremenitve, spola, pripravljenosti in sestave telesa</b>.</p><p style="margin:0">Dodatne ogljikove hidrate zaužij pred visoko intenzivnimi treningi (cona 4 ali več), dolgimi vožnjami 3+ ure in na dan tekme. Beljakovine sodijo v vsak obrok.</p></div>
+  </div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">16</span></div>
+</section>
+
+<!-- 14 PERSONALISED -->
+<section class="page">
+  <div class="run"><span>Praktični vodnik za zdrave navade, trening in zmogljivost</span></div>
+  <div class="sec" style="min-height:158px">
+    <span class="big">10</span>
+    <div class="eyebrow">Poglavje 10</div>
+    <h2>Prilagojen prehranski načrt</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="mphoto" style="height:84mm"><img src="assets/marine-lenehan-gravel-win.jpg" alt="Marine Lenehan zmaga na gravel dirki v dresu Lidl-Trek, z dvignjenimi rokami v cilju" style="object-position:50% 30%"><span class="pill"><i></i>Marine Lenehan · Športna nutricionistka &amp; kolesarka World Tour</span></div>
+  <p class="lead">Ta vodnik daje splošne prehranske nasvete. Za bolj individualen pristop <b>Vivify Sports</b> ponuja prilagojeno prehransko podporo glede na tvoje cilje, življenjski slog in zahteve treninga. Z oceno tvojih prehranskih navad, vnosa hranil in individualnih potreb ti pomagamo razviti trajne strategije za boljše zdravje, zmogljivost in odnos do hrane.</p>
+  <div class="consult" style="margin-top:14px">
+    <div class="l">
+      <div class="k">Rezerviraj prehranski posvet</div>
+      <p style="color:var(--text);margin-bottom:6px">Tvoj prvi posvet vključuje:</p>
+      <ul class="dots"><li>Zasebno spletno prehransko oceno z Marine</li><li>Oceno tvojih prehranskih navad in potreb</li><li>Prilagojen akcijski načrt s praktičnimi priporočili</li></ul>
+      <p class="note" style="margin-top:10px">Na voljo so tudi nadaljnji posveti in prilagojeni načrti prehranskega svetovanja.</p>
+      <a class="btn" href="https://www.vivifysports.com/nutritionalcoaching">Rezerviraj uvodni klic</a>
+    </div>
+    <div class="r">
+      <div class="person"><div class="k">Vivify Sports</div><div class="avrow" style="margin-bottom:6px"><img class="av viv" style="width:46px;height:46px" src="assets/avatar-marine-lenehan.jpg" alt="Marine Lenehan"><div><div class="nm">Marine Lenehan</div><div class="rl" style="margin:0">Športna nutricionistka &amp; kolesarka World Tour</div></div></div>
+        <a href="https://vivifysports.com">vivifysports.com</a><a href="mailto:marine@vivifysports.com">marine@vivifysports.com</a><div class="c">087 224 7402</div></div>
+      <div class="person" style="margin-bottom:0"><div class="k" style="color:var(--red-text)">Cigala Cycling</div><div class="avrow" style="margin-bottom:6px"><img class="av" style="width:46px;height:46px" src="assets/avatar-matteo-cigala.jpg" alt="Matteo Cigala"><div><div class="nm">Matteo Cigala</div><div class="rl" style="margin:0">Ustanovitelj &amp; glavni trener</div></div></div>
+        <a href="https://cigalacycling.com">cigalacycling.com</a><a href="mailto:matteo@cigalacycling.com">matteo@cigalacycling.com</a><div class="c">+353 83 477 7697</div></div>
+    </div>
+  </div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">17</span></div>
+</section>
+
+<!-- NUTRITION IN COACHING -->
+<section class="page">
+  <div class="run"><span>10 · Prilagojen prehranski načrt</span></div>
+  <h3 style="margin-top:0">Kaj zajema posvet</h3><div class="bar"></div>
+  <p>Z oceno tvojih prehranskih vzorcev, odnosa do hrane ter ravnovesja makro- in mikrohranil ti Vivify Sports ponudi prilagojene rešitve za dosego ciljev, s poudarkom na:</p>
+  <div class="panel"><ul class="dots c2">
+    <li>Potrebah po makrohranilih</li><li>Potrebah po vitaminih &amp; mineralih</li><li>Potrebah po dopolnilih</li><li>Potrebah tvojega športa</li><li>Nasvetih za življenjski slog</li><li>Zdravih receptih</li><li>Smernicah za obvladovanje želje po hrani</li></ul></div>
+  <p style="margin-top:12px">Prejmeš celovito, poglobljeno poročilo in <b>Vital Hygiene Program</b> s prilagojenimi nasveti o prehrani, gibanju in orodjih za obvladovanje stresa. Rezerviraš lahko več srečanj za povratne informacije in spremljanje v daljšem obdobju.</p>
+  <h3>Prehrana v tvojem treningu s Cigala Cycling</h3><div class="bar"></div>
+  <p>Prehrana je del vsakega trenerskega paketa Cigala Cycling: trening in prehrano načrtujemo skupaj, da imaš energijo za pomembne treninge.</p>
+  <div class="tbl pk"><table>
+    <tr><th>Vključeno</th><th>Vsi paketi</th><th>Advanced &amp; Premium</th></tr>
+    <tr><td>Ta prehranski vodnik</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+    <tr><td>Pregled krvnih izvidov pri naši športni nutricionistki</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+    <tr><td>Individualno delo z našo nutricionistko &amp; mentalnim trenerjem</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+    <tr><td>Dnevno priporočilo ogljikovih hidratov za vsak trening</td><td class="no">–</td><td class="ok">✓</td></tr>
+    <tr><td>Prehranski posvet z našo športno nutricionistko</td><td class="no">–</td><td class="ok">✓</td></tr>
+  </table></div>
+  <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap"><a class="btn" style="margin-top:0" href="https://coaching.cigalacycling.com/individual-packages/">Oglej si trenerske pakete</a><a class="btn" style="margin-top:0;background:transparent;border:1px solid var(--border-strong)" href="https://calendly.com/cigalacycling">Brezplačen klic z Matteom</a></div>
+  <h3>Brezplačna prehranska orodja</h3><div class="bar"></div>
+  <div class="g2">
+    <a class="tool" href="https://coaching.cigalacycling.com/tools/carbs-per-hour-calculator/"><div class="anton">OH na uro</div>Tvoj načrt prehrane za vožnjo ali tekmo: grami ogljikovih hidratov na uro, v gelih in bidonih.<span class="go">Odpri kalkulator →</span></a>
+    <a class="tool" href="https://coaching.cigalacycling.com/tools/sweat-rate-calculator/"><div class="anton">Stopnja potenja</div>Koliko se poti na uro in koliko piti na kolesu.<span class="go">Odpri kalkulator →</span></a>
+  </div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">18</span></div>
+</section>
+
+<!-- 15 FOUNDATIONS -->
+<section class="page">
+  <div class="run"><div class="logos"><img src="assets/cigala-cycling-coaching-logo.png" alt="Logotip Cigala Cycling Coaching"><span>×</span><img src="assets/vivify-sports-logo-white-print.png" alt="Logotip Vivify Sports"></div><span>Na kratko</span></div>
+  <div class="sec">
+    <span class="big">11</span>
+    <div class="eyebrow">Poglavje 11</div>
+    <h2>Temelji športne prehrane</h2>
+    <div class="bar"></div>
+    <p class="sub">Praktični okvir za zdravje, zmogljivost &amp; regeneracijo</p>
+  </div>
+  <div class="fd">
+    <div style="--topic:var(--c-carb)" class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 21V8"/><path d="M12 12c-3 0-4.5-2-4.5-4.5C10.5 7.5 12 9.5 12 12z"/><path d="M12 12c3 0 4.5-2 4.5-4.5C13.5 7.5 12 9.5 12 12z"/><path d="M12 16.5c-3 0-4.5-2-4.5-4.5 3 0 4.5 2 4.5 4.5z"/><path d="M12 16.5c3 0 4.5-2 4.5-4.5-3 0-4.5 2-4.5 4.5z"/><path d="M12 8c-1-1.2-1-3 0-4.5 1 1.5 1 3.3 0 4.5z"/></svg></div><div class="anton">Ogljikovi hidrati</div><p>Tvoj glavni vir goriva. Vnos prilagodi trajanju in intenzivnosti treninga.</p></div>
+    <div style="--topic:var(--c-pro)" class="card v"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c3.5 0 6 5 6 9.5S15.3 21 12 21s-6-4-6-8.5S8.5 3 12 3z"/></svg></div><div class="anton">Beljakovine</div><p>Podpirajo obnovo mišic, regeneracijo in prilagajanje. Beljakovine uživaj redno čez dan.</p></div>
+    <div style="--topic:var(--c-fat)" class="card s2 v"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c4 3 6 7 6 11a6 6 0 0 1-12 0c0-4 2-8 6-11z"/><circle cx="12" cy="15" r="2.5"/></svg></div><div class="anton">Zdrave maščobe</div><p>Dajejo energijo in esencialne maščobne kisline za zdravje celic, hormonov ter srca in ožilja.</p></div>
+    <div style="--topic:var(--c-mic)" class="card s2"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z"/><path d="M5 19l8-8"/></svg></div><div class="anton">Mikrohranila</div><p>Vitamini in minerali podpirajo energijski metabolizem, prenos kisika, imunost in normalno delovanje telesa.</p></div>
+    <div style="--topic:var(--c-hyd)" class="card s2 v"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></div><div class="anton">Hidracija</div><p>Tekočino nadomeščaj glede na lastno izgubo z znojem. Pri dolgih ali vročih treningih pomisli na elektrolite.</p></div>
+  </div>
+  <div class="hub"><span>GORIVO • REGENERACIJA • PRILAGODITEV</span></div>
+  <div class="panel">
+    <div class="eyebrow" style="text-align:center;margin-bottom:12px">Tvoja prehranska časovnica</div>
+    <div class="tl">
+      <div class="st"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 3v8a2 2 0 0 0 2 2v8"/><path d="M5 3v5a2 2 0 0 0 2 2h0M11 3v5a2 2 0 0 1-2 2"/><path d="M17 21V3c-2 1-3 4-3 8h3"/></svg></span><div><div class="anton">Pred</div><p>Začni z gorivom in dobro hidracijo</p></div></div>
+      <div class="ar">→</div>
+      <div class="st"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="5.5" cy="16" r="3.5"/><circle cx="18.5" cy="16" r="3.5"/><path d="M5.5 16L9 9h7l2.5 7M9 9l3.5 7H5.5M12 6h3"/></svg></span><div><div class="anton">Med</div><p>Vnos OH in tekočine prilagodi treningu</p></div></div>
+      <div class="ar">→</div>
+      <div class="st"><span class="ic"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-14 5.3M4 12a8 8 0 0 1 14-5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></span><div><div class="anton">Po</div><p>Obnovi OH, dodaj beljakovine in rehidriraj</p></div></div>
+    </div>
+  </div>
+  <div class="quote"><div class="anton">Prava prehranska strategija je individualna.</div><p>Vnos prilagodi trenažni obremenitvi, ciljem in potrebam po regeneraciji.</p></div>
+  <div class="foot"><span>Cigala Cycling × Vivify Sports · Prehranski vodnik</span><span class="n">19</span></div>
+</section>
+
+<script>
+// plate pies: data-pie = fruit&veg, grains, protein (percent), drawn clockwise from 12 o'clock
+document.querySelectorAll('.tiles.scale .tile').forEach(t=>{const l=+t.dataset.l,m=document.createElement('div');m.className='m';m.innerHTML=[1,2,3,4,5].map(i=>`<i class="${i<=l?'on':''}"></i>`).join('');t.appendChild(m)});
+document.querySelectorAll('svg[data-pie]').forEach(svg=>{
+  const v=svg.dataset.pie.split(',').map(Number), cols=['#34c46a','#f28c38','#e8606a'], labs=[['Fruit &','veg.'],['Grains'],['Protein']], txt=['#08090a','#08090a','#08090a'];
+  let a=0, out='';
+  const pt=(ang,r)=>[50+r*Math.sin(ang*2*Math.PI/100),50-r*Math.cos(ang*2*Math.PI/100)];
+  v.forEach((p,i)=>{
+    const [x1,y1]=pt(a,46),[x2,y2]=pt(a+p,46);
+    out+=`<path d="M50 50L${x1.toFixed(2)} ${y1.toFixed(2)}A46 46 0 ${p>50?1:0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}Z" fill="${cols[i]}" stroke="#08090a" stroke-width="1.5"/>`;
+    a+=p;
+  });
+  svg.innerHTML=out;
+  // labels: try positions from the slice centre outwards; keep the first whose box sits fully inside the slice
+  a=0;
+  v.forEach((p,i)=>{
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('text-anchor','middle');t.setAttribute('font-family','Montserrat');t.setAttribute('font-weight','700');t.setAttribute('font-size','6');t.setAttribute('fill',txt[i]);
+    labs[i].forEach((ln,k)=>{const s=document.createElementNS('http://www.w3.org/2000/svg','tspan');s.setAttribute('x','0');s.setAttribute('dy',k?'7':'0');s.textContent=ln;t.appendChild(s)});
+    svg.appendChild(t);
+    const inside=(x,y)=>{const dx=x-50,dy=y-50,r=Math.hypot(dx,dy);let ang=Math.atan2(dx,-dy)/(2*Math.PI)*100;if(ang<0)ang+=100;return r<42&&ang>a+2&&ang<a+p-2;};
+    let best=null;
+    for(let r=26;r>=12&&!best;r-=1){for(let d=0;d<=p/2-3&&!best;d+=1){for(const sg of [1,-1]){
+      const [x,y]=pt(a+p/2+sg*d,r);
+      t.setAttribute('transform',`translate(${x.toFixed(2)},${y.toFixed(2)})`);t.querySelectorAll('tspan').forEach(s=>s.setAttribute('x','0'));
+      const b=t.getBBox();const ox=x,oy=y;const cy=b.height/2;
+      t.setAttribute('transform',`translate(${ox.toFixed(2)},${(oy-cy-b.y+ (0)).toFixed(2)})`);
+      const bb=t.getBBox(),m=t.getAttribute('transform').match(/translate\(([-\d.]+),([-\d.]+)\)/),tx=+m[1],ty=+m[2];
+      const c=[[bb.x+tx-1,bb.y+ty-1],[bb.x+bb.width+tx+1,bb.y+ty-1],[bb.x+tx-1,bb.y+bb.height+ty+1],[bb.x+bb.width+tx+1,bb.y+bb.height+ty+1]];
+      if(c.every(q=>inside(q[0],q[1]))){best=true;break;}
+    }}}
+    if(!best) console.log('pie label does not fit',labs[i].join(' '));
+    a+=p;
+  });
+});
+</script>
+</body>
+</html>
