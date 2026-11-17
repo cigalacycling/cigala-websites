@@ -24,7 +24,15 @@ const CC_F_COUNTRIES = ['af' => 'Afghanistan', 'ax' => 'Åland Islands', 'al' =>
 const CC_F_YN = ['Frequent or severe headaches', 'Dizziness or fainting spells', 'Heart or vascular problems', 'High or low blood pressure', 'Asthma or lung disease',
     'Epilepsy or seizures', 'Diabetes', 'Stroke', 'Muscular disorders or complaints', 'Chest pains', 'Back pains', 'Lower limb or joint problems',
     '(Women only) Are you or have you been pregnant in the past year?'];
+// the app question: only for an athlete not linked to Vekta and not on TrainingPeaks (set before the form is shown or checked)
+function cc_f_askapp($uid, $pid) { $GLOBALS['cc_f_askapp'] = $uid && $pid && !get_user_meta($uid, 'cc_vekta_id', true) && !(function_exists('cc_ath_tp') && cc_ath_tp($pid)); }
 function cc_f_steps() {
+    $s = cc_f_steps_all();
+    // not set (coach view, PDF): every field, so an answer given is shown
+    if (isset($GLOBALS['cc_f_askapp']) && !$GLOBALS['cc_f_askapp']) foreach ($s as &$st) foreach ($st[3] as &$pn) if (isset($pn['fields'])) $pn['fields'] = array_values(array_filter($pn['fields'], function ($f) { return empty($f['askapp']); }));
+    return $s;
+}
+function cc_f_steps_all() {
     $yn = []; foreach (CC_F_YN as $i => $q) $yn[] = ['yn' . $i, 'yn', $q, 'if' => $i === 12 ? 'notmale' : null, 'req' => $i === 12 ? 'shown' : 1];
     $med = []; foreach (['cyc' => 'Cycling', 'run' => 'Running', 'swim' => 'Swimming', 'gym' => 'Gym', 'core' => 'Core & Stretching', 'hike' => 'Hiking'] as $k => $a) $med[] = ['med_' . $k, 'text', $a, 'ph' => 'N/A if nothing', 'half' => 1, 'if' => 'yes:med_any', 'req' => 'shown'];
     return [
@@ -39,6 +47,8 @@ function cc_f_steps() {
           ['team', 'text', 'Cycling club, group or team', 'ph' => 'or N/A', 'half' => 1, 'req' => 1],
           ['sport', 'checks', 'Sport', 'opts' => ['cycling' => 'Cycling', 'triathlon' => 'Triathlon', 'running' => 'Running', 'swimming' => 'Swimming', 'other' => 'Other'], 'only' => 'full', 'req' => 1],
           ['sport_other', 'text', 'Which other sport?', 'if' => 'has:sport=other', 'only' => 'full'],
+          // Matteo 17 Nov: new athletes choose their training app (only asked when they are not on Vekta or TrainingPeaks yet)
+          ['app', 'radio', 'Which app will you train with?', 'opts' => ['vekta' => 'Vekta (recommended)', 'trainingpeaks' => 'TrainingPeaks'], 'only' => 'full', 'req' => 1, 'askapp' => 1],
         ]],
         ['p', 'Emergency contact', 'Someone I can call in an emergency.', 'fields' => [
           ['ec_first', 'text', 'First name', 'req' => 1, 'half' => 1], ['ec_last', 'text', 'Surname', 'req' => 1, 'half' => 1],
@@ -209,6 +219,7 @@ add_filter('cc_ath_can_see', function ($ok, $pid, $uid) { return ($ok && !cc_ath
 function cc_f_page($uid, $pid, $preview, $kind = null) {
     $u = get_userdata($uid); $kind = $kind ?: cc_f_kind($uid);
     cc_f_set_lang($preview ? 0 : $uid);
+    if ($preview) $GLOBALS['cc_f_askapp'] = true; else cc_f_askapp($uid, $pid);
     if ($preview && isset($_GET['flang']) && preg_match('/^[a-z]{2}$/', $_GET['flang'])) $GLOBALS['cc_f_lang'] = $_GET['flang'];   // Matteo previews a language
     $draft = $preview ? [] : (json_decode((string) get_user_meta($uid, 'cc_form_draft', true), true) ?: []);
     $pre = $preview ? [] : (json_decode((string) get_post_meta($pid, 'cc_profile_prefill', true), true) ?: []);
@@ -310,6 +321,7 @@ add_action('rest_api_init', function () {
 function cc_f_rest(WP_REST_Request $r) {
     $uid = get_current_user_id(); $pid = cc_ath_page_of($uid); $kind = cc_f_kind($uid);
     if (cc_f_open($uid) && get_user_meta($uid, 'cc_form_done', true)) return new WP_Error('cc_done', 'Already submitted.', ['status' => 409]);
+    cc_f_askapp($uid, $pid);
     $a = cc_f_clean($r->get_param('data'), $kind);
     if ($r->get_param('action') !== 'submit') { update_user_meta($uid, 'cc_form_draft', wp_slash(wp_json_encode($a))); return ['ok' => true, 'saved' => time()]; }
     $sig = ''; $raw = (string) $r->get_param('sig');
@@ -332,6 +344,14 @@ function cc_f_rest(WP_REST_Request $r) {
         update_post_meta($pid, 'cc_avail_updated', $now);
     }
     if (function_exists('cc_g_from_form')) cc_g_from_form($pid, $profile);
+    // Matteo 17 Nov: their training app. TrainingPeaks: the hub switches to that view; Vekta: the laptop sends Vekta's invitation (vekta-pending)
+    if (($a['app'] ?? '') === 'trainingpeaks') {
+        update_post_meta($pid, 'cc_tp', 1);
+        $nm = get_the_title($pid); $u = get_userdata($uid);
+        if (function_exists('cc_av_notify_to') && cc_av_notify_to()) wp_mail(cc_av_notify_to(), $nm . ' chose TrainingPeaks', '<p><b>' . esc_html($nm) . '</b> chose <b>TrainingPeaks</b> in the rider form. Their hub now shows the TrainingPeaks view.</p><p>To do: invite them in TrainingPeaks (' . esc_html($u ? $u->user_email : '') . ').</p>',
+            ['Content-Type: text/html; charset=UTF-8'] + ($u && is_email($u->user_email) ? [1 => 'Reply-To: ' . $nm . ' <' . $u->user_email . '>'] : []));
+    }
+    elseif (($a['app'] ?? '') === 'vekta' && !get_user_meta($uid, 'cc_vekta_id', true)) update_post_meta($pid, 'cc_vekta_pending', $now);
     cc_f_mail($uid, $pid, $profile, $meta, $pdf);
     return ['ok' => true, 'done' => true];
 }

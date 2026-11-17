@@ -119,8 +119,8 @@ function cc_gc_tell($i, $kind, $why = '', $sim = false) {
     if ($kind === 'error') $h .= '<p style="margin:0 0 12px;color:#b00">' . $e($why) . '</p>';
     $h .= '<table style="border-collapse:collapse;margin:0 0 16px">'; foreach ($rows as $r) if ($r[1] !== '') $h .= '<tr><td style="padding:3px 16px 3px 0;color:#555">' . $e($r[0]) . '</td><td style="padding:3px 0"><b>' . $e($r[1]) . '</b></td></tr>'; $h .= '</table>';
     if ($kind === 'created' || $kind === 'test') {
-        $h .= '<p style="margin:0 0 6px"><b>' . ($kind === 'created' ? 'Done by the hub' : 'The hub would do') . '</b></p><ul style="margin:0 0 14px;padding-left:18px"><li>Hub login and their own page' . ($kind === 'created' ? ' ✔' : '') . '</li><li>Welcome email in their language' . ($kind === 'created' ? ' (' . $e($i['welcome'] ?? '') . ')' : '') . '</li><li>Rider form first, then guides, Vekta, Marine and Skool in the hub</li></ul>'
-            . '<p style="margin:0 0 6px"><b>Your to-do</b></p><ul style="margin:0 0 14px;padding-left:18px"><li>☐ Invite them to Skool (Cigala Cycling Collective)</li><li>☐ Add them in Vekta</li><li>☐ Assessment once their rider form is signed (the hub emails you when it is)</li></ul>';
+        $h .= '<p style="margin:0 0 6px"><b>' . ($kind === 'created' ? 'Done by the hub' : 'The hub would do') . '</b></p><ul style="margin:0 0 14px;padding-left:18px"><li>Hub login and their own page' . ($kind === 'created' ? ' ✔' : '') . '</li><li>Welcome email in their language' . ($kind === 'created' ? ' (' . $e($i['welcome'] ?? '') . ')' : '') . '</li><li>Rider form first, where they choose their app: Vekta (the invitation with the code goes out by itself) or TrainingPeaks (you get an email to invite them there)</li></ul>'
+            . '<p style="margin:0 0 6px"><b>Your to-do</b></p><ul style="margin:0 0 14px;padding-left:18px"><li>☐ Invite them to Skool (Cigala Cycling Collective)</li><li>☐ Assessment once their rider form is signed (the hub emails you when it is)</li></ul>';
     }
     $h .= '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open Contracts</a></p></div>';
     if ($sim) { $GLOBALS['cc_gc_last_mail'] = ['subject' => $title, 'html' => $h]; return; }
@@ -233,6 +233,32 @@ add_action('rest_api_init', function () {
     }]);
 });
 
+/* ---------- Vekta invitation for new athletes who chose Vekta in the rider form (Matteo 17 Nov) ----------
+ * The hub only keeps the list; Matteo's laptop (vekta\hub\vekta_invites.py, his Vekta key never leaves it) sends Vekta's own
+ * invitation email with the code, then links the athlete when they appear in his Vekta list. */
+add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
+    if ($coach || !$view || !get_post_meta($view, 'cc_vekta_pending', true)) return $html;
+    $uid = (int) get_post_meta($view, 'cc_user', true); if ($uid && get_user_meta($uid, 'cc_vekta_id', true)) return $html;
+    return $html . '<section class="ath-s vk-join"><h2>' . cc_ath_icon('logo-vekta', 'ath-hic') . esc_html(cc_ath_w('vk_title')) . '</h2><p class="av-lede" style="margin:0">' . esc_html(cc_ath_w('vk_text')) . '</p></section>';
+}, 5, 3);
+function cc_vk_pending() {
+    $out = [];
+    foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_vekta_pending']) as $p) {
+        $uid = (int) get_post_meta($p->ID, 'cc_user', true); $u = $uid ? get_userdata($uid) : null;
+        if (!$u || get_user_meta($uid, 'cc_vekta_id', true) || cc_ath_tp($p->ID)) { delete_post_meta($p->ID, 'cc_vekta_pending'); continue; }   // linked, gone, or TrainingPeaks after all
+        $out[] = ['page' => $p->ID, 'name' => $p->post_title, 'first' => $u->first_name, 'last' => $u->last_name, 'email' => $u->user_email, 'language' => cc_ath_lang_code($uid),
+                  'pending' => (int) get_post_meta($p->ID, 'cc_vekta_pending', true), 'invited' => (int) get_post_meta($p->ID, 'cc_vekta_invited', true), 'invites' => (int) get_post_meta($p->ID, 'cc_vekta_invites', true)];
+    }
+    return $out;
+}
+add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/vekta-pending', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => 'cc_vk_pending']);
+    register_rest_route('cc/v1', '/vekta-pending', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {   // the laptop: invitation sent
+        $pid = (int) $r['page']; if (!get_post_meta($pid, 'cc_vekta_pending', true)) return new WP_Error('cc_none', 'Not waiting for Vekta', ['status' => 404]);
+        update_post_meta($pid, 'cc_vekta_invited', time()); update_post_meta($pid, 'cc_vekta_invites', (int) get_post_meta($pid, 'cc_vekta_invites', true) + 1);
+        return ['ok' => true];
+    }]);
+});
 add_filter('cc_ath_coach_links', function ($html) {
     $n = 0; foreach (cc_gc_contracts() as $k) if ($k['days_left'] !== null && $k['days_left'] >= 0 && $k['days_left'] <= CC_GC_REMIND_DAYS) $n++;
     return $html . '<a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'contracts', home_url('/' . CC_ATH_SLUG . '/'))) . '">Contracts' . ($n ? ' <span class="av-badge">' . $n . ' ending soon</span>' : '') . '</a>';

@@ -708,6 +708,15 @@ function cc_ath_w($k, $lang = null) {
                       'it' => 'Il tuo allenamento è su TrainingPeaks: il piano, gli allenamenti e il calendario. Aggiungi lì la tua disponibilità, le gare e gli obiettivi, nel tuo calendario TrainingPeaks, così li vedo quando pianifico il tuo allenamento.',
                       'pt' => 'O teu treino está no TrainingPeaks: o plano, os treinos e o calendário. Adiciona lá a tua disponibilidade, provas e objetivos, no teu calendário TrainingPeaks, para eu os ver quando planeio o teu treino.',
                       'sl' => 'Tvoj trening je v TrainingPeaks: načrt, treningi in koledar. Tja dodaj svojo razpoložljivost, tekme in cilje, v svoj koledar TrainingPeaks, da jih vidim, ko načrtujem tvoj trening.'],
+        'wl_app' => ['en' => 'Your first step: choose your password and fill in the short rider form. In it you choose your training app. If you go with Vekta, Vekta emails you a code to join me there.',
+                     'it' => 'Il primo passo: scegli la password e compila il breve modulo atleta. Lì scegli l’app con cui allenarti. Se scegli Vekta, Vekta ti invia via email un codice per raggiungermi.',
+                     'pt' => 'O primeiro passo: escolhe a tua palavra-passe e preenche o pequeno formulário de atleta. Nele escolhes a app de treino. Se escolheres o Vekta, o Vekta envia-te por email um código para te juntares a mim.',
+                     'sl' => 'Prvi korak: izberi geslo in izpolni kratek obrazec za kolesarja. V njem izbereš aplikacijo za trening. Če izbereš Vekta, ti Vekta po e-pošti pošlje kodo, da se mi pridružiš.'],
+        'vk_title' => ['en' => 'Join me on Vekta', 'it' => 'Raggiungimi su Vekta', 'pt' => 'Junta-te a mim no Vekta', 'sl' => 'Pridruži se mi na Vekta'],
+        'vk_text' => ['en' => 'Vekta is sending you an email with a code to join me. Download the Vekta app, sign in with your Google or Apple account and enter the code. Then connect your Garmin, Wahoo or Strava so I can see your rides. Can’t find the email? Check your spam folder, or message me.',
+                      'it' => 'Vekta ti sta inviando un’email con un codice per raggiungermi. Scarica l’app Vekta, accedi con il tuo account Google o Apple e inserisci il codice. Poi collega Garmin, Wahoo o Strava così vedo le tue uscite. Non trovi l’email? Controlla lo spam, oppure scrivimi.',
+                      'pt' => 'O Vekta está a enviar-te um email com um código para te juntares a mim. Descarrega a app Vekta, entra com a tua conta Google ou Apple e introduz o código. Depois liga o teu Garmin, Wahoo ou Strava para eu ver os teus treinos. Não encontras o email? Vê a pasta de spam, ou envia-me uma mensagem.',
+                      'sl' => 'Vekta ti pošilja e-pošto s kodo, da se mi pridružiš. Prenesi aplikacijo Vekta, prijavi se z Google ali Apple računom in vnesi kodo. Nato poveži Garmin, Wahoo ali Strava, da vidim tvoje vožnje. Ne najdeš e-pošte? Preveri mapo z neželeno pošto ali mi piši.'],
         'tp_open' => ['en' => 'Open TrainingPeaks', 'it' => 'Apri TrainingPeaks', 'pt' => 'Abrir o TrainingPeaks', 'sl' => 'Odpri TrainingPeaks'],
         'tp_empty' => ['en' => 'Your assessment and reviews will appear here. I will let you know when there is something new.',
                        'it' => 'Qui troverai la tua valutazione e le tue revisioni. Ti avviso io quando c’è qualcosa di nuovo.',
@@ -842,12 +851,22 @@ function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
                 . (cc_ath_selfpw() ? cc_L('if it has expired, tap “Forgot your password?” on the login page and a new one comes straight away.', 'se è scaduto, tocca “Password dimenticata?” nella pagina di accesso e te ne arriva subito uno nuovo.') : cc_L('if it has expired, just message me and I will send you a new one.', 'se è scaduto, scrivimi e te ne mando uno nuovo.')),
           'p3' => cc_L('Once you are in, bookmark the page on your phone so it is always one tap away.', 'Una volta dentro, salva la pagina tra i preferiti del telefono: così è sempre a un tocco.'),
           'bye' => cc_L('See you on the road,', 'A presto in bici,'), 'eb' => cc_L('Athlete hub', 'Area atleta')];
-    $h = cc_ath_mail_shell($T['hi'], $T['p1'], $T['btn'], $link, '<p style="margin:22px 0 10px;font-size:14px;color:#454a52">' . $T['p2'] . '</p><p style="margin:0 0 22px;font-size:14px;color:#454a52">' . $T['p3'] . '</p>', $T['bye'], $T['eb']);
+    $pg = cc_ath_page_of($u->ID); $newApp = $pg && !get_user_meta($u->ID, 'cc_vekta_id', true) && !cc_ath_tp($pg);   // Matteo 17 Nov: new athletes choose their app in the rider form
+    $h = cc_ath_mail_shell($T['hi'], $T['p1'], $T['btn'], $link, ($newApp ? '<p style="margin:22px 0 10px;font-size:14px;color:#454a52"><b>' . esc_html(cc_ath_w('wl_app')) . '</b></p>' : '') . '<p style="margin:' . ($newApp ? '0' : '22px') . ' 0 10px;font-size:14px;color:#454a52">' . $T['p2'] . '</p><p style="margin:0 0 22px;font-size:14px;color:#454a52">' . $T['p3'] . '</p>', $T['bye'], $T['eb']);
     if ($dry) return ['to' => $to ?: $u->user_email, 'subject' => $T['subj'], 'link' => $link, 'html' => $h];
     $ok = wp_mail($to ?: $u->user_email, $T['subj'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
     if ($ok && !$to) update_user_meta($u->ID, 'cc_welcome_sent', current_time('mysql'));
     return $ok ? ['sent' => true, 'to' => $to ?: $u->user_email] : new WP_Error('mail', 'wp_mail failed');
 }
+add_action('rest_api_init', function () {   // Matteo 17 Nov: "email me a preview": any email design, sent ONLY to the logged-in coach's own address
+    register_rest_route('cc/v1', '/mail-preview', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function ($r) {
+        $me = wp_get_current_user(); if (!is_email($me->user_email)) return new WP_Error('cc_mail', 'No email on your account');
+        $GLOBALS['cc_ath_lang'] = 'en';
+        $h = (string) $r['html'] ?: cc_ath_mail_shell((string) $r['hi'], (string) $r['p1'], (string) $r['btn'], home_url('/' . CC_ATH_SLUG . '/'), (string) $r['small']);
+        $ok = wp_mail($me->user_email, 'PREVIEW · ' . sanitize_text_field((string) $r['subject']), $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>']);
+        return ['sent' => (bool) $ok, 'to' => $me->user_email];
+    }]);
+});
 add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/athlete-welcome', ['methods' => 'POST', 'permission_callback' => function () { return current_user_can('edit_users'); },
         'callback' => function ($r) {
