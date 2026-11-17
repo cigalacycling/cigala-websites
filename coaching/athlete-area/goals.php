@@ -138,11 +138,8 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
         if (count($ev) > 2) $o .= '<small>' . esc_html(sprintf(cc_ath_w('gl_more', $lang), count($ev) - 2)) . '</small>';
     } else $o .= '<p>' . esc_html(cc_ath_w('gl_none', $lang)) . '</p>';
     if (($g['short'] ?? '') !== '') $o .= '<small>' . esc_html(cc_f('Short-term goal (1 year)')) . ': ' . esc_html(wp_trim_words($g['short'], 18)) . '</small>';
+    $o .= '<p class="gl-racehint">' . cc_ath_icon('bolt', 'gl-rhic') . '<span>' . esc_html(cc_ath_w('rc_hint', $lang)) . '</span></p>';   // Matteo 17 Nov: one place: the race day plan invite lives here, no separate card
     $o .= '</div><a class="btn btn-ghost" href="' . esc_url(add_query_arg('my', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html(cc_ath_w('gl_change', $lang)) . '</a></div></section>';
-    // Matteo 17 Nov: tell athletes the race day simulator exists; it starts from a race with its route in Goals & events
-    $o .= '<section class="ath-s gl-racecard" id="raceplan"><h2>' . cc_ath_icon('bolt', 'ath-hic') . esc_html(cc_ath_w('rc_title', $lang)) . '</h2>'
-        . '<div class="av-sumbox"><p class="av-sumt">' . esc_html(cc_ath_w('rc_text', $lang)) . '</p>'
-        . '<a class="btn btn-go" href="' . esc_url(add_query_arg('my', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html(cc_ath_w('rc_btn', $lang)) . '</a></div></section>';
     return $html . $o;
 }, 20, 3);
 add_filter('cc_ath_subpage', function ($html, $sub, $view) { return $sub === 'goals' ? cc_g_section($view, false) : $html; }, 10, 3);
@@ -222,7 +219,7 @@ function draw(){var h='<div class="gl-goals2"><label for="gl-s">'+esc(W['Short-t
 function route(e){var f=e.route_type&&e.route_type!=='link';
  return '<div class="gl-route"><p class="gl-rq">'+esc(W.rt_ask)+'</p>'
   +(f?'<p class="gl-rf"><span>📍 '+esc(e.route_name||'')+'</span>'+(ro?'':' <button type="button" class="av-del gl-rx">'+esc(W.rt_remove)+'</button>')+'</p>'
-     :(ro?'':'<label class="btn btn-ghost gl-up">'+esc(W.rt_upload)+'<input type="file" class="gl-file" accept=".gpx,.fit,.tcx" hidden></label>')
+     :(ro?'':'<label class="gl-up"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>'+esc(W.rt_upload)+'<input type="file" class="gl-file" accept=".gpx,.fit,.tcx" hidden></label>')
       +'<label>'+esc(W.rt_link)+'<input type="url" class="gl-ln" inputmode="url" placeholder="https://" value="'+esc(e.route_link||'')+'"'+(ro?' readonly':'')+'></label>')
   +'<label>'+esc(W.rt_start)+' <small>('+esc(W.optional)+')</small><input type="time" class="gl-st" value="'+esc(e.start||'')+'"'+(ro?' readonly':'')+'></label>'
   +'<span class="gl-rmsg" role="status"></span></div>';}
@@ -285,12 +282,14 @@ html .cc .gl-prio.A { background: linear-gradient(135deg, #F3D774, #D4AF37 55%, 
 html .cc .gl-prio.B { background: linear-gradient(135deg, #F2F3F5, #C0C4CC 55%, #8E939C) !important; color: #15171a !important; }
 html .cc .gl-prio.C { background: linear-gradient(135deg, #E9A86B, #CD7F32 55%, #9A5A1F) !important; color: #1c1006 !important; }
 /* Matteo 17 Nov: the route question inside each race */
-html .cc .gl-route { margin: 12px 0 4px; padding: 14px; border-radius: 12px; border: 1px dashed rgba(52,196,106,.45); background: rgba(1,138,68,.07); display: grid; gap: 8px; }
-html .cc .gl-rq { margin: 0; color: #fff; font-weight: 600; font-size: 15px; line-height: 1.45; }
-html .cc .gl-up { justify-self: start; cursor: pointer; margin: 0; max-width: 100%; white-space: normal; height: auto; text-align: center; }
+html .cc .gl-route { margin: 14px 0 6px; padding: 18px; border-radius: 12px; border: 1px dashed rgba(52,196,106,.45); background: rgba(1,138,68,.07); display: grid; gap: 8px; }
+html .cc .gl-rq { margin: 0; color: #fff; font-weight: 700; font-size: 16px; line-height: 1.45; }
+html .cc .gl-ev label.gl-up, html .cc .gl-up { justify-self: start; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; margin: 4px 0; max-width: 100%; white-space: normal; padding: 13px 20px; border-radius: 999px; background: #018a44; color: #fff; font: 600 15px var(--body); line-height: 1.3; box-shadow: 0 4px 14px rgba(1,138,68,.35); transition: background .2s, transform .2s; }
+html .cc .gl-ev label.gl-up:hover, html .cc .gl-up:hover { background: #12a150; transform: translateY(-1px); } html .cc .gl-up svg { width: 20px; height: 20px; flex: none; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }   /* Matteo 17 Nov: the upload was hard to see */
 html .cc .gl-rf { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: #34c46a; font-weight: 600; font-size: 15px; } html .cc .gl-rf span { overflow-wrap: anywhere; }
 html .cc .gl-rmsg { font-size: 14px; color: var(--text-2); } html .cc .gl-rmsg.bad { color: #ff4a3d; } html .cc .gl-rmsg:empty { display: none; }
-html .cc .gl-racecard .btn { margin: 0; }
+html .cc .gl-racehint { display: flex; gap: 10px; align-items: flex-start; margin: 12px 0 0; padding: 12px 14px; border-radius: 10px; background: rgba(1,138,68,.10); border: 1px solid rgba(52,196,106,.35); color: #e8ebef; font-size: 15px; line-height: 1.45; }
+html .cc .gl-racehint .gl-rhic svg { width: 20px; height: 20px; fill: none; stroke: #34c46a; stroke-width: 2; margin-top: 2px; } html .cc .gl-racehint .gl-rhic { flex: none; display: inline-flex; }
 @media (max-width: 640px) { html .cc .gl-row { grid-template-columns: 1fr; } html .cc .gl-goals { grid-column: 1; } }
 </style>
 CSS;

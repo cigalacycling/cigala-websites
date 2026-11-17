@@ -371,7 +371,7 @@ function cc_ath_inner() {
         $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . (($tl = apply_filters('cc_ath_coach_links', '')) !== '' ? '<div class="ath-coach-tools"><span class="ath-coach-tl">Your coach tools</span>' . $tl . '</div>' : '') . '</div>';
         // coach-only pages (e.g. ?board=availability, from availability.php); empty unless a module adds one
         $board = isset($_GET['board']) ? sanitize_key($_GET['board']) : '';
-        if ($board !== '' && ($b = apply_filters('cc_ath_board', '', $board)) !== '') return $o . $b . '</div>' . cc_ath_js();
+        if ($board !== '' && ($b = apply_filters('cc_ath_board', '', $board)) !== '') return $o . cc_ath_find() . $b . '</div>' . cc_ath_js();
     }
     $hub = ($shared = cc_ath_shared_page($lang)) ? cc_ath_sections(cc_ath_dress(cc_ath_content($shared))) : ['', []];
     $nav = [['reports', cc_t('Your reports')]];
@@ -550,6 +550,19 @@ add_action('wp_footer', function () {
        . 'b.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();if(cur&&cur.b===b){stop();return;}start(b,el);});});}'
        . 'enhance();var q=0;new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;enhance();});}).observe(document.body,{childList:true,subtree:true});})();</script>';
 }, 50);
+/* Matteo 17 Nov: a search box on his boards (reports, availability, goals, rider forms): type part of a name, only matching rows stay */
+function cc_ath_find() {
+    return '<div class="ath-find"><label for="ath-find-q">Find an athlete</label><input id="ath-find-q" type="search" placeholder="Type a name…" autocomplete="off"><span class="ath-find-n" aria-live="polite"></span></div>'
+        . '<style>html .cc .ath-find{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 16px}html .cc .ath-find label{font-weight:700;color:#fff;font-size:15px}'
+        . 'html .cc .ath-find input{flex:1 1 260px;max-width:420px;font:16px var(--body);padding:11px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff}'
+        . 'html .cc .ath-find input:focus{outline:2px solid #018a44;outline-offset:1px}html .cc .ath-find-n{font-size:14px;color:#b8bec8}</style>'
+        . '<script>(function(){var q=document.getElementById("ath-find-q");if(!q)return;var S=".rp-row,.av-tr:not(.av-th),.gl-row,.rf-pickrow,.rf-row";'
+        . 'function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}'
+        . 'q.addEventListener("input",function(){var v=norm(q.value.trim()),n=0,all=0;document.querySelectorAll(S).forEach(function(r){if(r.parentNode.closest(S))return;all++;var ok=!v||norm(r.textContent).indexOf(v)>-1;r.style.display=ok?"":"none";if(ok)n++;});'
+        . 'document.querySelector(".ath-find-n").textContent=v?(n+" of "+all):"";});})();</script>';
+}
+/* Matteo 17 Nov: notification emails showed "WordPress" as the sender: now "Cigala Cycling Coaching" (only replaces WordPress's default name) */
+add_filter('wp_mail_from_name', function ($n) { return ($n === '' || $n === 'WordPress') ? 'Cigala Cycling Coaching' : $n; }, 20);
 /* Words for the summary cards and their pages (Matteo 17 Nov), in the athlete's hub language; English for any other. */
 function cc_ath_w($k, $lang = null) {
     static $W = [
@@ -589,6 +602,10 @@ function cc_ath_w($k, $lang = null) {
                          'pt' => 'Permite o microfone nesta página e depois toca outra vez.', 'sl' => 'Dovoli mikrofon za to stran in ga nato znova tapni.'],
         'mic_none' => ['en' => 'Speaking didn’t work here. You can use the microphone on your phone’s keyboard instead.', 'it' => 'La dettatura qui non ha funzionato. Puoi usare il microfono della tastiera del telefono.',
                        'pt' => 'Ditar não funcionou aqui. Podes usar o microfone do teclado do telemóvel.', 'sl' => 'Narekovanje tu ni delovalo. Uporabiš lahko mikrofon na tipkovnici telefona.'],
+        'rc_hint' => ['en' => 'Racing soon? Add your race with its route (GPX) and you’ll get your race day plan: the power for every climb and your finish time. It goes into your Vekta calendar too.',
+                      'it' => 'Hai una gara in arrivo? Aggiungila con il percorso (GPX) e riceverai il tuo piano per il giorno di gara: la potenza per ogni salita e il tempo all’arrivo. Finisce anche nel tuo calendario Vekta.',
+                      'pt' => 'Tens uma prova em breve? Adiciona-a com o percurso (GPX) e vais receber o teu plano para o dia de prova: a potência para cada subida e o teu tempo final. Também vai para o teu calendário Vekta.',
+                      'sl' => 'Kmalu tekmuješ? Dodaj tekmo s progo (GPX) in prejel boš načrt za dan tekme: moč za vsak vzpon in končni čas. Pojavi se tudi v tvojem koledarju Vekta.'],
         'rc_title' => ['en' => 'Race day plan', 'it' => 'Piano per il giorno di gara', 'pt' => 'Plano para o dia de prova', 'sl' => 'Načrt za dan tekme'],
         'rc_text' => ['en' => 'Get a plan for your race: the power for every climb and your finish time. Add your race here with its route, and it goes into your Vekta calendar too. For road, gravel and sportive events.',
                       'it' => 'Ricevi un piano per la tua gara: la potenza per ogni salita e il tuo tempo all’arrivo. Aggiungi qui la tua gara con il percorso: finisce anche nel tuo calendario Vekta. Per gare su strada, gravel e granfondo.',
@@ -869,7 +886,9 @@ html .cc .av-sumbox .btn { margin: 0; max-width: 100%; white-space: normal; heig
 html .cc .gl-sumev { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 html .cc .gl-prio { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font: 700 12px/1 var(--body); color: #1a1a1a; flex: none; }
 html .cc .gl-prio-a { background: linear-gradient(135deg, #F3D774, #D4AF37 55%, #A8841F); } html .cc .gl-prio-b { background: linear-gradient(135deg, #F2F3F5, #C0C4CC 55%, #8E939C); } html .cc .gl-prio-c { background: linear-gradient(135deg, #E9A86B, #CD7F32 55%, #9A5A1F); }
-html .cc .ath-back { margin: 18px 0 0; } html .cc .ath-back a { color: var(--text-2, #cfd3d8); text-decoration: none; font-weight: 600; } html .cc .ath-back a:hover { color: #fff; }
+html .cc .ath-back { margin: 18px 0 0; }   /* Matteo 17 Nov: the back link was hard to see: now a green pill */
+html .cc .ath-back a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px; background: rgba(1,138,68,.16); border: 1px solid rgba(52,196,106,.55); color: #34c46a; text-decoration: none; font-weight: 700; font-size: 15px; transition: background .2s, color .2s; }
+html .cc .ath-back a:hover { background: #018a44; color: #fff; }
 html .cc .ath-dl { flex: none; padding: 8px 16px; border-radius: 9px; background: #12a150; color: #fff; font-size: 14px; font-weight: 600; }
 html .cc .ath-empty { display: flex; align-items: center; gap: 16px; padding: 18px; border-radius: 14px; border: 1px dashed rgba(43,212,122,.35); }
 html .cc .ath-empty p { margin: 0; color: var(--text-2); }
