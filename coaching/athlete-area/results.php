@@ -37,12 +37,15 @@ function cc_rs_w($k) {
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
 }
-const CC_RS_REACTS = ['clap' => '👏', 'fire' => '🔥', 'strong' => '💪', 'trophy' => '🏆'];
+const CC_RS_REACTS = ['heart' => '❤️', 'clap' => '👏', 'fire' => '🔥', 'strong' => '💪', 'trophy' => '🏆'];   // ❤️ also by double-tapping the photo (Matteo 17 Nov)
 function cc_rs_get($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_results', true), true); return is_array($a) ? $a : []; }
 function cc_rs_put($pid, $a) { update_post_meta((int) $pid, 'cc_results', wp_slash(wp_json_encode(array_slice(array_values($a), -80)))); }
 function cc_rs_card($pid, $r, $forCoach) {
     $u = !empty($r['photo']) ? wp_get_attachment_url((int) $r['photo']) : '';
-    $o = '<div class="rs-card">' . ($u ? '<a href="' . esc_url($u) . '" target="_blank" rel="noopener" class="rs-ph"><img src="' . esc_url($u) . '" alt="" loading="lazy"></a>' : '<span class="rs-ph rs-noph">🏆</span>')
+    // coach: double-tap the photo for ❤️ (a corner button opens it full size); athlete: tap opens it
+    $ph = $u ? ($forCoach ? '<span class="rs-ph rs-dbl" title="Double-tap to like"><img src="' . esc_url($u) . '" alt="" loading="lazy"><a class="rs-full" href="' . esc_url($u) . '" target="_blank" rel="noopener" aria-label="Open the photo">⤢</a><i class="rs-heart">❤️</i></span>'
+                         : '<a href="' . esc_url($u) . '" target="_blank" rel="noopener" class="rs-ph"><img src="' . esc_url($u) . '" alt="" loading="lazy"></a>') : '<span class="rs-ph rs-noph">🏆</span>';
+    $o = '<div class="rs-card">' . $ph
        . '<div class="rs-b"><small>' . esc_html(date_i18n('j M Y', strtotime(($r['date'] ?: date('Y-m-d', $r['at'])) . ' 12:00'))) . ($r['race'] !== '' ? ' · ' . esc_html($r['race']) : '') . '</small>'
        . ($r['text'] !== '' ? '<p>' . nl2br(esc_html($r['text'])) . '</p>' : '')
        . ($forCoach ? '<p class="rs-ok">' . ($r['consent'] ? '✅ OK to share on social media / Skool' : '🔒 Private: not for social media') . '</p>' : '');
@@ -59,7 +62,10 @@ function cc_rs_card($pid, $r, $forCoach) {
 }
 function cc_rs_css() {
     static $d = false; if ($d) return ''; $d = true;
-    return '<style>html .cc .rs-pw{position:relative;display:inline-block}html .cc .rs-x{position:absolute;top:-8px;right:-8px;width:30px;height:30px;min-height:0;padding:0;margin:0;border-radius:50%;border:2px solid #0b0d0f;background:#E10600;color:#fff;font:700 15px/1 var(--body);cursor:pointer}html .cc .rs-x[hidden]{display:none}'
+    return '<style>html .cc .rs-dbl{position:relative;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation}html .cc .rs-full{position:absolute;right:6px;bottom:6px;width:28px;height:28px;border-radius:8px;background:rgba(0,0,0,.6);color:#fff;display:grid;place-items:center;text-decoration:none;font-size:15px}'
+        . 'html .cc .rs-heart{position:absolute;left:50%;top:50%;font-size:56px;font-style:normal;transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none}html .cc .rs-heart.go{animation:rsheart .9s ease-out}'
+        . '@keyframes rsheart{0%{transform:translate(-50%,-50%) scale(0);opacity:0}25%{transform:translate(-50%,-50%) scale(1.25);opacity:1}55%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.1);opacity:0}}'
+        . 'html .cc .rs-pw{position:relative;display:inline-block}html .cc .rs-x{position:absolute;top:-8px;right:-8px;width:30px;height:30px;min-height:0;padding:0;margin:0;border-radius:50%;border:2px solid #0b0d0f;background:#E10600;color:#fff;font:700 15px/1 var(--body);cursor:pointer}html .cc .rs-x[hidden]{display:none}'
         . 'html .cc .rs-form{display:grid;gap:12px}html .cc .rs-pick{display:flex;align-items:center;gap:14px}html .cc .rs-prev{width:96px;height:96px;border-radius:14px;object-fit:cover;border:2px solid #2bd47a;display:none}html .cc .rs-prev.on{display:block}'
         . 'html .cc .rs-form textarea,html .cc .rs-form select,html .cc .rs-form input[type=date]{width:100%;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
         // Matteo 17 Nov: the date box stayed wider than the card on iPhones (native date inputs keep their own width)
@@ -89,6 +95,11 @@ function cc_rs_js() {
   var fd=new FormData();fd.append('text',t);fd.append('race',F.querySelector('select').value);fd.append('date',F.querySelector('input[type=date]').value);fd.append('consent',F.querySelector('.rs-tick input').checked?1:0);if(img)fd.append('img',img);
   fetch(F.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':F.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;msg(W.sent);setTimeout(function(){var u=location.href.split('#')[0];location.replace(u+(u.indexOf('?')>-1?'&':'?')+'rs='+Date.now()+'#results');},1000);})
   .catch(function(){b.disabled=false;msg(W.err,true);});});}
+/* coach: double-tap (or double-click) a photo = ❤️ */
+document.querySelectorAll('.rs-dbl').forEach(function(P){var last=0,A=P.closest('.rs-card').querySelector('.rs-acts');if(!A)return;
+ function like(){var h=P.querySelector('.rs-heart');h.classList.remove('go');void h.offsetWidth;h.classList.add('go');var x=A.querySelector('.rs-rx[data-r="heart"]');if(x)x.click();}
+ P.addEventListener('pointerup',function(e){if(e.target.closest('.rs-full'))return;var t=Date.now();if(t-last<320){like();last=0;}else last=t;});
+ P.addEventListener('dblclick',function(e){e.preventDefault();});});
 document.querySelectorAll('.rs-acts').forEach(function(A){function post(d){var fd=new FormData();fd.append('page',A.dataset.page);fd.append('at',A.dataset.at);Object.keys(d).forEach(function(k){fd.append(k,d[k]);});
   return fetch(A.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':A.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;});}
  A.querySelectorAll('.rs-rx').forEach(function(x){x.addEventListener('click',function(){post({react:x.dataset.r}).then(function(){A.querySelectorAll('.rs-rx').forEach(function(y){y.classList.toggle('on',y===x);});});});});
