@@ -134,7 +134,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     $o = '<section class="ath-s gl gl-sum" id="goals"><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html(cc_f('My goals & events')) . '</h2><div class="av-sumbox"><div class="av-sumt">';
     if ($ev) {
         foreach (array_slice($ev, 0, 2) as $i => $e)
-            $o .= '<p class="gl-sumev"><span class="gl-prio gl-prio-' . esc_attr(strtolower($e['prio'])) . '">' . esc_html($e['prio']) . '</span><b>' . esc_html($e['name']) . '</b> · ' . esc_html(date_i18n('j M Y', strtotime($e['date'] . ' 12:00'))) . '</p>';
+            $o .= '<p class="gl-sumev"><span class="gl-prio ' . esc_attr($e['prio']) . '">' . esc_html($e['prio']) . '</span><b>' . esc_html($e['name']) . '</b> · ' . esc_html(date_i18n('j M Y', strtotime($e['date'] . ' 12:00'))) . '</p>';
         if (count($ev) > 2) $o .= '<small>' . esc_html(sprintf(cc_ath_w('gl_more', $lang), count($ev) - 2)) . '</small>';
     } else $o .= '<p>' . esc_html(cc_ath_w('gl_none', $lang)) . '</p>';
     if (($g['short'] ?? '') !== '') $o .= '<small>' . esc_html(cc_f('Short-term goal (1 year)')) . ': ' . esc_html(wp_trim_words($g['short'], 18)) . '</small>';

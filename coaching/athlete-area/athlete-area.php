@@ -589,11 +589,11 @@ function cc_ath_live_chips($view, $coach, $nrep) {
         if ($o === '') $o = '<span class="ath-chip ath-chip-ok">✓ All caught up</span>';
         return '<div class="ath-chips ath-live">' . $o . '</div>';
     }
-    // the next race or event (within 6 months), with its priority colour
+    // the next race or event (within a year; Matteo 17 Nov: a July race in November must show), with its priority colour
     $g = $view && function_exists('cc_g_get') ? cc_g_get($view) : null; $today = current_time('Y-m-d');
     foreach ((array) ($g['events'] ?? []) as $e) {
         if (($e['date'] ?? '') < $today) continue;
-        $d = (int) round((strtotime($e['date'] . ' 12:00') - strtotime($today . ' 12:00')) / DAY_IN_SECONDS); if ($d > 183) break;
+        $d = (int) round((strtotime($e['date'] . ' 12:00') - strtotime($today . ' 12:00')) / DAY_IN_SECONDS); if ($d > 366) break;
         $p = strtolower($e['prio'] ?? 'b'); $pri = '<i class="ath-pri ath-pri-' . esc_attr($p) . '">' . esc_html(strtoupper($p)) . '</i>';
         $o .= '<a class="ath-chip ath-chip-race" href="#goals">' . $pri . ($d <= 1 ? '<b>' . esc_html(cc_ath_live_w($d ? 'tomorrow' : 'today')) . '</b> '
             : '<b class="ath-n" data-n="' . $d . '">' . $d . '</b> ' . esc_html(cc_ath_live_w('day', $d))) . ' <span class="ath-chip-nm">' . esc_html($e['name']) . '</span></a>';
