@@ -588,25 +588,27 @@ add_action('wp_mail_failed', function ($e) { $msg = is_wp_error($e) ? $e->get_er
 add_action('rest_api_init', function () { register_rest_route('cc/v1', '/smtp-test', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
     $me = wp_get_current_user(); $GLOBALS['cc_smtp_testing'] = 1;   // the hub chat's test: always to the coach himself
     $ok = is_email($me->user_email) && wp_mail($me->user_email, 'Test: Cigala Cycling Coaching emails', '<p>Test from your athlete hub, sent through Register365 as coaching@cigalacycling.com.</p>', ['Content-Type: text/html; charset=UTF-8']);
-    update_option('cc_smtp_ok', $ok ? time() : 0, false); return ['ok' => (bool) $ok, 'to' => $me->user_email, 'error' => $ok ? null : get_option('cc_smtp_err')];
+    update_option('cc_smtp_ok', $ok ? time() : 0, false); if ($ok) delete_option('cc_smtp_err'); return ['ok' => (bool) $ok, 'to' => $me->user_email, 'error' => $ok ? null : get_option('cc_smtp_err')];
 }]); });
 add_action('rest_api_init', function () { register_rest_route('cc/v1', '/smtp-status', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
     return ['active' => (int) get_option('cc_smtp_ok', 0) ?: null, 'user' => get_option('cc_smtp_user', '') ?: CC_SMTP['user'], 'password_set' => (bool) get_option('cc_smtp_pass', ''), 'set_at' => (int) get_option('cc_smtp_set', 0) ?: null, 'last_error' => get_option('cc_smtp_err', null),
             'openssl' => extension_loaded('openssl'), 'can_reach_587' => (function () { $s = @fsockopen('smtp.reg365.net', 587, $no, $str, 6); if ($s) { $l = fgets($s, 200); fclose($s); return trim((string) $l); } return "no: $no $str"; })()];
 }]); });
 function cc_smtp_box() {   // on Matteo's Reports board
-    $set = (int) get_option('cc_smtp_set', 0); $r = sanitize_key($_GET['smtp'] ?? '');
+    $set = (int) get_option('cc_smtp_set', 0); $r = sanitize_key($_GET['smtp'] ?? ''); $okt = (int) get_option('cc_smtp_ok', 0);
+    if ($okt && $r === 'fail') $r = '';   // an old ?smtp=fail address after a later test passed: don't show a stale error
     $msg = ['saved' => 'Saved. Now send yourself a test email.', 'sent' => 'Test email sent to you: check your inbox (and spam, just this once).', 'fail' => 'The test email did not go out: the password may be wrong. Type it again.', 'cleared' => 'Removed: emails go out the old way.'][$r] ?? '';
     return '<section class="ath-s rp-smtp"><h3 class="av-sub" style="margin-top:0">Email sending</h3><p class="av-lede" style="margin:0 0 10px">Emails to athletes go out through your Register365 Authenticated SMTP (smtp.reg365.net, the same login your Gmail “Send mail as” uses) from coaching@cigalacycling.com, so they don’t land in spam. '
         . (get_option('cc_smtp_ok') ? '<b style="color:#34c46a">Working: test passed ' . esc_html(date_i18n('j M Y H:i', (int) get_option('cc_smtp_ok'))) . '. Emails go through Register365.</b>' : '<b style="color:#ff4a3d">Not active yet (no successful test): emails still go the old way.</b>') . '</p>'
+        . ($okt && $r !== 'saved' ? '<details class="rp-smtp-d"><summary>Change the login</summary>' : '')   // working: the fields fold away
         . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="rp-smtp-f" autocomplete="off"><input type="hidden" name="action" value="cc_smtp">' . wp_nonce_field('cc_smtp', '_wpnonce', false, false)
         . '<label>SMTP username <input type="text" name="user" autocomplete="off" value="' . esc_attr((string) get_option('cc_smtp_user', '') ?: 'amedeo@cigalacycling.com') . '"></label>'
         . '<label>SMTP password <input type="password" name="pw" autocomplete="new-password" placeholder="' . ($set ? 'Type it again only to change it' : 'The same password Gmail uses for this username') . '"></label>'
-        . '<input type="hidden" name="act" value="test"><span class="rp-acts"><button class="btn btn-go" type="submit">Save and send me a test email</button>' . ($set ? '<button class="btn btn-ghost" type="submit" onclick="this.form.act.value=\'clear\'">Remove</button>' : '') . '</span></form>'
+        . '<input type="hidden" name="act" value="test"><span class="rp-acts"><button class="btn btn-go" type="submit">Save and send me a test email</button>' . ($set ? '<button class="btn btn-ghost" type="submit" onclick="this.form.act.value=\'clear\'">Remove</button>' : '') . '</span></form>' . ($okt && $r !== 'saved' ? '</details>' : '')
         . ($msg ? '<p class="rp-smtp-m">' . esc_html($msg) . '</p>' : '')
         . (($r === 'fail' && ($er = get_option('cc_smtp_err')) && !empty($er['msg'])) ? '<p class="rp-smtp-m" style="color:#ff4a3d">Reason: ' . esc_html($er['msg']) . '</p>' : '') . '</section>'
         . '<style>html .cc .rp-smtp{margin:0 0 18px}html .cc .rp-smtp-f{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:end}html .cc .rp-smtp-f label{display:grid;gap:6px;font-size:14px;color:#d0d6e0;font-weight:600;flex:1 1 260px}'
-        . 'html .cc .rp-smtp-f input{font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff}html .cc .rp-smtp-m{margin:10px 0 0;color:#34c46a;font-weight:600}</style>';
+        . 'html .cc .rp-smtp-f input{font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff}html .cc .rp-smtp-m{margin:10px 0 0;color:#34c46a;font-weight:600}html .cc .rp-smtp-d summary{cursor:pointer;color:#b8bec8;font-size:15px;margin:0 0 10px}</style>';
 }
 add_action('admin_post_cc_smtp', function () {
     if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_smtp')) wp_die('Not allowed');
@@ -617,7 +619,7 @@ add_action('admin_post_cc_smtp', function () {
         if ($pw !== '') { update_option('cc_smtp_pass', $pw, false); update_option('cc_smtp_set', time(), false); $r = 'saved'; }
         if ($act === 'test') { $me = wp_get_current_user(); $GLOBALS['cc_smtp_testing'] = 1;
             $ok = is_email($me->user_email) && wp_mail($me->user_email, 'Test: Cigala Cycling Coaching emails', '<p>This is a test from your athlete hub, sent through Register365 as coaching@cigalacycling.com. If it is in your inbox (not spam), athletes’ emails will be too.</p>', ['Content-Type: text/html; charset=UTF-8']);
-            $r = $ok ? 'sent' : 'fail'; update_option('cc_smtp_ok', $ok ? time() : 0, false); }
+            $r = $ok ? 'sent' : 'fail'; update_option('cc_smtp_ok', $ok ? time() : 0, false); if ($ok) delete_option('cc_smtp_err'); }
     }
     wp_safe_redirect(add_query_arg(['board' => 'reports', 'smtp' => $r], home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
