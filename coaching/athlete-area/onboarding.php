@@ -397,6 +397,7 @@ function cc_f_status($uid) {
     return get_user_meta($uid, 'cc_form_draft', true) ? 'started' : 'waiting';
 }
 function cc_f_admin($pid, $act, $data = null) {
+    if ($act === 'purge') return cc_f_purge($pid) ? ['ok' => true, 'status' => 'deleted'] : new WP_Error('cc_purge', 'Only a former athlete can be deleted', ['status' => 400]);   // no login any more, so before the check below
     $uid = (int) get_post_meta($pid, 'cc_user', true); if (!$uid) return new WP_Error('cc_nouser', 'No login for that athlete', ['status' => 404]);
     switch ($act) {
         case 'unlock': update_user_meta($uid, 'cc_form_unlock', time()); break;
@@ -414,7 +415,6 @@ function cc_f_admin($pid, $act, $data = null) {
             $m['pdf_id'] = cc_f_store($pid, cc_f_pdf($pid, $a, $m, $sigf && file_exists($sigf) ? file_get_contents($sigf) : ''), 'rider-form', 'pdf', 'application/pdf', 'Rider Information Form (countersigned ' . date_i18n('j M Y') . ')');
             update_post_meta($pid, 'cc_form_signed', wp_slash(wp_json_encode($m))); break;
         case 'end': if (!cc_f_end($pid)) return new WP_Error('cc_end', 'Could not end coaching', ['status' => 400]); return ['ok' => true, 'status' => 'former'];
-        case 'purge': if (!cc_f_purge($pid)) return new WP_Error('cc_purge', 'Only a former athlete can be deleted', ['status' => 400]); return ['ok' => true, 'status' => 'deleted'];
         default: return new WP_Error('cc_act', 'Unknown action', ['status' => 400]);
     }
     return ['ok' => true, 'status' => cc_f_status($uid)];
@@ -525,7 +525,7 @@ add_action('cc_f_retention', function () {   // two years after coaching ended: 
 });
 function cc_f_purge($pid) {   // a former athlete only: the page, its private files (signed PDF, signature, voice notes), their reports
     if (get_post_type($pid) !== 'cc_athlete' || get_post_meta($pid, 'cc_user', true) || get_post_meta($pid, 'cc_shared', true)) return false;
-    $kids = get_posts(['post_parent' => $pid, 'post_type' => 'any', 'post_status' => 'any', 'numberposts' => -1]);
+    $kids = get_posts(['post_parent' => $pid, 'post_type' => ['attachment', 'cc_report'], 'post_status' => 'any', 'numberposts' => -1]);   // 'any' would skip cc_report (excluded from search)
     foreach ($kids as $k) {
         if ($k->post_type === 'attachment') { wp_delete_attachment($k->ID, true); continue; }
         foreach (get_posts(['post_parent' => $k->ID, 'post_type' => 'attachment', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids']) as $a) wp_delete_attachment($a, true);

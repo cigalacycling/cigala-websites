@@ -57,7 +57,12 @@ function cc_r_create(WP_REST_Request $r) {
     return ['ok' => true, 'id' => $rid, 'status' => 'draft', 'replaced_drafts' => $replaced, 'preview' => add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')),
             'review' => add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))];
 }
+function cc_r_sweep() {   // reports whose athlete page no longer exists (deleted athlete): delete them and their file
+    foreach (get_posts(['post_type' => 'cc_report', 'post_status' => 'any', 'numberposts' => -1]) as $p) if (!$p->post_parent || get_post_type($p->post_parent) !== 'cc_athlete') cc_r_delete($p->ID);
+}
+add_action('cc_f_retention', 'cc_r_sweep');
 function cc_r_list_rest(WP_REST_Request $r) {
+    cc_r_sweep();
     $q = ['post_type' => 'cc_report', 'post_status' => ['draft', 'private'], 'numberposts' => 200, 'orderby' => 'date', 'order' => 'DESC'];
     if ($r->get_param('email')) { $u = get_user_by('email', (string) $r->get_param('email')); $q['post_parent'] = $u ? cc_ath_page_of($u->ID) : -1; }
     return array_map(function ($p) { return ['id' => $p->ID, 'athlete' => get_post_field('post_title', $p->post_parent), 'type' => get_post_meta($p->ID, 'cc_type', true), 'title' => $p->post_title,
@@ -164,6 +169,7 @@ function cc_r_btn($rid, $act, $text, $go = false, $extra = '') {
 }
 add_filter('cc_ath_board', function ($html, $board) {
     if ($board !== 'reports' || !cc_ath_is_coach()) return $html;
+    cc_r_sweep();
     $o = '<section class="ath-s"><h2>' . cc_ath_icon('reports', 'ath-hic') . 'Reports</h2><p class="av-lede">Reports your PC tools send arrive here as drafts. Nothing reaches an athlete until you publish it. '
        . 'Preview, then publish (tick “Email the athlete” if you want them told by email) or delete. To add a PDF by hand, upload it inside the athlete’s page, as before.</p>';
     $drafts = get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'numberposts' => -1, 'orderby' => 'date', 'order' => 'DESC']);

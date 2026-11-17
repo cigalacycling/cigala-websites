@@ -1,5 +1,20 @@
 # Athlete hub: going live on coaching.cigalacycling.com
 
+> **Done, 17 Nov 2026 (Matteo: "Marine test on the live").** Steps 1–8 and 10's prep done:
+> - live snippet 8 was exactly commit 3a811c5, nobody else had changed it; backup in `live-coaching/backup/athlete-snippet-8-2026-11-17.json`;
+> - crawl before and after: 101 pages identical (only new URL: /athletes/?cc_forgot=1, noindex);
+> - snippet pushed, with all modules (`push_live` = the same body as the staging push);
+> - shared hubs EN/IT rebuilt and PT/SL created on live (7488, 7489);
+> - languages already right (28 en / 5 it / 1 pt / 1 sl); 32 athletes marked "paper form on file" (no prefill yet); Marine, Tommie and Vittorio get the full form;
+> - full test with a temporary athlete and coach, then both deleted (this found and fixed: the single "Delete for good" button, and reports left behind on delete).
+>
+> **Still to do:**
+> - step 9, the welcome emails: Marine first, on Matteo's OK; the others on his "send";
+> - step 10: tell the laptop chats;
+> - step 11: clean staging.
+>
+> **From now on, every hub change:** test on staging, then push live the same way (back up first).
+
 Everything since 16 Nov evening is built and tested **on staging only** (`staging.coaching.cigalacycling.com`). The live site still has the first, older hub. This is the checklist for putting it live. **Any session doing the go-live follows it, step by step, together with Matteo.**
 
 ## Rules
