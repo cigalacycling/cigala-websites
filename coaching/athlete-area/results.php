@@ -19,8 +19,11 @@ function cc_rs_w($k) {
                  'pt' => 'O que aconteceu? ex. 3.º no escalão, primeiros 100 km, novo recorde aos 20 minutos', 'sl' => 'Kaj se je zgodilo? npr. 3. v kategoriji, prvih 100 km, nov rekord na 20 minut'],
         'race' => ['en' => 'Which race? (optional)', 'it' => 'Quale gara? (facoltativo)', 'pt' => 'Que prova? (opcional)', 'sl' => 'Katera tekma? (neobvezno)'],
         'none' => ['en' => 'Not a race', 'it' => 'Non è una gara', 'pt' => 'Não é uma prova', 'sl' => 'Ni tekma'],
-        'ok' => ['en' => 'Cigala Cycling may share this on social media and in the Skool community', 'it' => 'Cigala Cycling può condividerlo sui social e nella community Skool',
-                 'pt' => 'A Cigala Cycling pode partilhar isto nas redes sociais e na comunidade Skool', 'sl' => 'Cigala Cycling lahko to deli na družbenih omrežjih in v skupnosti Skool'],
+        'askshare' => ['en' => '📣 Can I share it publicly? (optional)', 'it' => '📣 Posso condividerlo pubblicamente? (facoltativo)', 'pt' => '📣 Posso partilhar publicamente? (opcional)', 'sl' => '📣 Ga lahko delim javno? (neobvezno)'],
+        'ok' => ['en' => 'Yes, Cigala Cycling may post this on social media and in the Skool community. Leave it unticked to keep it just between us.',
+                 'it' => 'Sì, Cigala Cycling può pubblicarlo sui social e nella community Skool. Lascialo vuoto per tenerlo solo tra noi.',
+                 'pt' => 'Sim, a Cigala Cycling pode publicar isto nas redes sociais e na comunidade Skool. Deixa por marcar para ficar só entre nós.',
+                 'sl' => 'Da, Cigala Cycling lahko to objavi na družbenih omrežjih in v skupnosti Skool. Pusti neoznačeno, da ostane samo med nama.'],
         'send' => ['en' => 'Share with Matteo', 'it' => 'Condividi con Matteo', 'pt' => 'Partilhar com o Matteo', 'sl' => 'Deli z Matteom'],
         'sending' => ['en' => 'Sending…', 'it' => 'Invio…', 'pt' => 'A enviar…', 'sl' => 'Pošiljam…'],
         'sent' => ['en' => 'Brilliant, thank you for sharing!', 'it' => 'Fantastico, grazie per averlo condiviso!', 'pt' => 'Fantástico, obrigado por partilhares!', 'sl' => 'Odlično, hvala, da si delil!'],
@@ -58,7 +61,11 @@ function cc_rs_css() {
     static $d = false; if ($d) return ''; $d = true;
     return '<style>html .cc .rs-form{display:grid;gap:12px}html .cc .rs-pick{display:flex;align-items:center;gap:14px}html .cc .rs-prev{width:96px;height:96px;border-radius:14px;object-fit:cover;border:2px solid #2bd47a;display:none}html .cc .rs-prev.on{display:block}'
         . 'html .cc .rs-form textarea,html .cc .rs-form select,html .cc .rs-form input[type=date]{width:100%;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
-        . 'html .cc .rs-form label{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}html .cc .rs-form .rs-tick{display:flex!important;gap:12px;align-items:flex-start;font-weight:500}html .cc .rs-tick input{width:24px;height:24px;flex:none;accent-color:#12a150}'
+        // Matteo 17 Nov: the date box stayed wider than the card on iPhones (native date inputs keep their own width)
+        . 'html .cc .rs-form input[type=date]{display:block;max-width:100%;min-width:0;-webkit-appearance:none;appearance:none;min-height:48px;line-height:1.2}html .cc .rs-form input[type=date]::-webkit-date-and-time-value{text-align:left}'
+        . 'html .cc .rs-form label{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600;min-width:0}'
+        . 'html .cc .rs-share{padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03)}html .cc .rs-share b{display:block;color:#fff;font-size:16px;margin:0 0 8px}'
+        . 'html .cc .rs-form .rs-tick{display:flex!important;gap:12px;align-items:flex-start;font-weight:500;font-size:16px;color:#e6e9ee}html .cc .rs-tick input{width:26px;height:26px;flex:none;margin:0;accent-color:#12a150}'
         . 'html .cc .rs-form .btn{justify-self:start}html .cc .rs-msg{margin:0;font-size:16px;font-weight:600;color:#34c46a}html .cc .rs-msg.err{color:#ff7a73}html .cc .rs-msg:empty{display:none}'
         . 'html .cc .rs-shelf{display:grid;gap:12px;margin-top:10px}html .cc .rs-card{display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}'
         . 'html .cc .rs-ph{flex:none;width:110px;height:110px;border-radius:12px;overflow:hidden;display:grid;place-items:center;background:rgba(18,161,80,.12);font-size:40px}html .cc .rs-ph img{width:100%;height:100%;object-fit:cover}'
