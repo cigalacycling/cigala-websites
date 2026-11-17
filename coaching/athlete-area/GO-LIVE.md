@@ -21,6 +21,8 @@
 >
 > **Welcome emails:** Marine Lenehan's sent 17 Nov (Matteo's OK) for the live test. Nobody else yet: they go on Matteo's "send".
 >
+> **Legal texts for PT/SL athletes (Matteo 17 Nov: "A"):** they stay in English (the version they sign), with the short note in their language. No translation unless Matteo asks.
+>
 > **From now on, every hub change:** test on staging, then push live the same way (back up first).
 
 Everything since 16 Nov evening is built and tested **on staging only** (`staging.coaching.cigalacycling.com`). The live site still has the first, older hub. This is the checklist for putting it live. **Any session doing the go-live follows it, step by step, together with Matteo.**
