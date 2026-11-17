@@ -77,6 +77,7 @@ PAY = {'healthy': 'https://pay.gocardless.com/BRT0004V6AWJMPG', 'happy': 'https:
        'performing': 'https://pay.gocardless.com/BRT00045M0SDGT2', 'yoga_monthly': 'https://pay.gocardless.com/BRT0002A1NBMZ4S'}
 EMAIL, PHONE, PHONE_TEL = 'marine@vivifysports.com', '+353 87 224 7402', '+353872247402'
 IG = 'https://www.instagram.com/vivifysports/'
+GBP = 'https://share.google/d4C3iwnzpSU1VDUqt'   # Marine's Google Business Profile (reviews), 17 Nov
 
 ICON = {
  'ig': '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>',
@@ -245,7 +246,9 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 @media (max-width:980px){.plans,.plans.two{grid-template-columns:1fr}}
 .plan{padding:30px 28px;display:flex;flex-direction:column}
 .plan.feat{border-color:var(--aqua);background:linear-gradient(170deg,rgba(25,68,75,.75),rgba(18,51,56,.6));position:relative}
-.plan.feat::before{content:"Most complete";position:absolute;top:-12px;left:28px;background:var(--lime);color:#0C2226;font:700 11px/1 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;border-radius:999px}
+.plan.soldout{position:relative;opacity:.85}
+.plan.soldout::before{content:"Sold out for now";position:absolute;top:-12px;left:28px;background:#2a4a50;color:var(--text);font:700 11px/1 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;border-radius:999px;border:1px solid var(--border-strong)}
+.plan.feat::before{content:"Most popular";position:absolute;top:-12px;left:28px;background:var(--lime);color:#0C2226;font:700 11px/1 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;border-radius:999px}
 .plan h2{font-size:26px;line-height:1.12}
 .plan h2 .price{display:block;font:700 15px/1.4 Montserrat,sans-serif;color:var(--aqua);text-transform:none;letter-spacing:0;margin-top:10px}
 .plan .dur{display:block;font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--lime-text);font-weight:600;margin:12px 0 6px}
@@ -410,7 +413,8 @@ def shell(file, body, schema=None):
   <div><p class="fh">Get in touch</p><ul class="cinfo">
    <li>{ICON['mail']}<a href="mailto:{EMAIL}">{EMAIL}</a></li>
    <li>{ICON['phone']}<a href="tel:{PHONE_TEL}">{PHONE}</a></li>
-   <li>{ICON['pin']}<span>Wicklow, Ireland</span></li></ul>
+   <li>{ICON['pin']}<span>Wicklow, Ireland</span></li>
+   <li>{ICON['star']}<a href="{GBP}" target="_blank" rel="noopener">Google reviews</a></li></ul>
    <a class="social" href="{IG}" aria-label="Vivify Sports on Instagram">{ICON['ig']}</a></div>
  </div>
  <div class="wrap bottom"><span>© 2023 by Vivify Sports</span><a href="privacy-policy.html">Privacy Policy</a></div>
@@ -462,7 +466,8 @@ def testimonials(h2_names=True, names=None):
  <blockquote>{e(q)}</blockquote></article>""" for p, a, n, s, q in T)
     return f"""<section><div class="wrap">
  {head('Client stories', 'Athletes who fuel with Marine', tag=None, center=True)}
- <div class="tgrid" style="margin-top:36px">{cards}</div></div></section>"""
+ <div class="tgrid" style="margin-top:36px">{cards}</div>
+ <div class="center" style="margin-top:12px"><a class="btn btn-secondary" href="{GBP}" target="_blank" rel="noopener">{ICON['star']} Read our Google reviews</a></div></div></section>"""
 
 # ---------------------------------------------------------------- HOME
 def home():
@@ -504,7 +509,7 @@ def home():
 """
     schema = {"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Vivify Sports", "url": LIVE,
               "email": EMAIL, "telephone": PHONE, "areaServed": "Worldwide", "address": {"@type": "PostalAddress", "addressLocality": "Wicklow", "addressCountry": "IE"},
-              "founder": {"@type": "Person", "name": "Marine Lenehan", "jobTitle": "Sports Nutritionist"}, "sameAs": [IG]}
+              "founder": {"@type": "Person", "name": "Marine Lenehan", "jobTitle": "Sports Nutritionist"}, "sameAs": [IG, GBP]}
     return shell('index.html', body, schema)
 
 # ---------------------------------------------------------------- ABOUT
@@ -610,11 +615,15 @@ def coaching():
     trs += '<tr class="price"><th scope="row">Pricing</th>' + ''.join(f'<td>{a}<small>{b}</small></td>' for a, b in
            [('100 €', '120 US$'), ('50 €', '60 US$'), ('99 €/month', '119 US$/month'), ('149 €/month', '180 US$/month'), ('199 €/month', '240 US$/month')]) + '</tr>'
     table = f"""<div class="tbl-wrap"><table class="cmp"><caption class="skip">Vivify Sports nutrition coaching plans compared</caption>
-<thead><tr><th scope="col"><span class="skip">Feature</span>{img(LOGO, LOGO_ALT, w=56, h=53, style='margin:auto')}</th><th scope="col">Nutritional Assessment</th><th scope="col">Follow-up Consultation</th><th scope="col">The Healthy Body Plan</th><th scope="col">The Happy Body Plan</th><th scope="col">The Performing Body Plan</th></tr></thead>
+<thead><tr><th scope="col"><span class="skip">Feature</span>{img(LOGO, LOGO_ALT, w=56, h=53, style='margin:auto')}</th><th scope="col">Nutritional Assessment</th><th scope="col">Follow-up Consultation</th><th scope="col">The Healthy Body Plan</th><th scope="col">The Happy Body Plan</th><th scope="col">The Performing Body Plan<br><small style="font:600 11px Montserrat,sans-serif;letter-spacing:.12em;color:var(--text-3)">SOLD OUT</small></th></tr></thead>
 <tbody>{trs}</tbody></table></div>"""
 
-    def plan(h2, price, dur, intro, inc, btn, href, feat=False, extra=''):
+    def plan(h2, price, dur, intro, inc, btn, href, feat=False, extra='', sold_out=False):
         ext = ' target="_blank" rel="noopener"' if href.startswith('http') else ''
+        if sold_out:   # Marine 17 Nov: The Performing Body Plan is sold out for now
+            return (f'<article class="plan panel soldout"><h2>{h2}<span class="skip"> - </span><span class="price">{price}</span>'
+                    + (f' <span class="dur">{dur}</span>' if dur else '') + '</h2>' + extra + f'<p>{intro}</p><p class="inc">Includes:</p>{ticks(inc)}'
+                    + '<span class="btn btn-secondary" aria-disabled="true" style="cursor:default">Sold out for now</span></article>')
         sep = '<span class="skip"> - </span>' if dur else ' '
         return (f'<article class="plan panel{" feat" if feat else ""}"><h2>{h2}{sep}<span class="price">{price}</span>'
                 + (f' <span class="dur">{dur}</span>' if dur else '') + '</h2>' + extra + f'<p>{intro}</p><p class="inc">Includes:</p>{ticks(inc)}'
@@ -626,10 +635,10 @@ def coaching():
     p1 = plan('THE HEALTHY BODY PLAN', '99€/MONTH', '3 months', 'Build sustainable, healthy eating habits that energize your everyday life.',
               ['3 calls over 3 months', 'Weekly macro plan based on your training load', 'Weekly food diary analysis', 'Advice on balanced nutrition'], 'Sign up', PAY['healthy'])
     p2 = plan('THE HAPPY BODY PLAN', '149€/MONTH', '3 months', 'Create harmony between your nutrition, mood, and lifestyle to bring out the best of you.',
-              ['5 calls over 3 months', 'Weekly meal plan tailored to your training', 'Daily food diary analysis', 'Advice on balanced nutrition, vitamins and supplements', 'Daily Support &amp; Motivation'], 'Sign up', PAY['happy'])
+              ['5 calls over 3 months', 'Weekly meal plan tailored to your training', 'Daily food diary analysis', 'Advice on balanced nutrition, vitamins and supplements', 'Daily Support &amp; Motivation'], 'Sign up', PAY['happy'], feat=True)
     p3 = plan('THE PERFORMING BODY PLAN', '199€/MONTH', '3 months', 'Maximize performance and recovery with a fully personalized approach.',
               ['Unlimited coaching calls', 'Daily WhatsApp support', 'Weekly meal &amp; macro plan', 'Daily food diary analysis', 'Vitamin, supplement &amp; sports-specific optimization', 'Exclusive ebook: "Breakfast to Ignite your potential"'],
-              'Sign up', PAY['performing'], feat=True, extra='<h2 style="font-size:17px;color:var(--aqua);margin:2px 0 10px">SPORTS SPECIFIC REQUIMENTS</h2>')
+              'Sign up', PAY['performing'], sold_out=True, extra='<h2 style="font-size:17px;color:var(--aqua);margin:2px 0 10px">SPORTS SPECIFIC REQUIMENTS</h2>')
     partners = [('0e1488-356941ca85c445f1834a69b48ccf', 'TrainingPeaks logo', None), ('0e1488-a23fdd6bc1854f5a83c28cb05ea9', 'MyFitnessPal logo', None),
                 ('0e1488-e926906d84424b06892a7eb7a3b6', 'Cigala Cycling logo', 'https://www.cigalacycling.com/'),
                 ('0e1488-44c2783c595b4fcba972291cd77f', 'Wicklow 200 logo', None), ('0e1488-ec0a5dbc8a4642d7918c7e2a1037', 'Bryan McKinney logo', None)]

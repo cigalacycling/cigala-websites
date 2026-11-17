@@ -151,7 +151,9 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 @media (max-width:980px){.plans,.plans.two{grid-template-columns:1fr}}
 .plan{padding:30px 28px;display:flex;flex-direction:column}
 .plan.feat{border-color:var(--aqua);background:linear-gradient(170deg,rgba(25,68,75,.75),rgba(18,51,56,.6));position:relative}
-.plan.feat::before{content:"Most complete";position:absolute;top:-12px;left:28px;background:var(--lime);color:#0C2226;font:700 11px/1 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;border-radius:999px}
+.plan.soldout{position:relative;opacity:.85}
+.plan.soldout::before{content:"Sold out for now";position:absolute;top:-12px;left:28px;background:#2a4a50;color:var(--text);font:700 11px/1 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;border-radius:999px;border:1px solid var(--border-strong)}
+.plan.feat::before{content:"Most popular";position:absolute;top:-12px;left:28px;background:var(--lime);color:#0C2226;font:700 11px/1 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:7px 10px;border-radius:999px}
 .plan h2{font-size:26px;line-height:1.12}
 .plan h2 .price{display:block;font:700 15px/1.4 Montserrat,sans-serif;color:var(--aqua);text-transform:none;letter-spacing:0;margin-top:10px}
 .plan .dur{display:block;font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--lime-text);font-weight:600;margin:12px 0 6px}

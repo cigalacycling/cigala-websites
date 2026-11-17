@@ -59,7 +59,7 @@ def build(b):
     def plans_strip():
         rows = [('Nutritional Assessment', '50 min', '100€ / 120 US$'), ('Follow-up Consultation', '30 min', '50€ / 60 US$'),
                 ('The Healthy Body Plan', '3 months', '99€ / 119 US$ a month'), ('The Happy Body Plan', '3 months', '149€ / 180 US$ a month'),
-                ('The Performing Body Plan', '3 months', '199€ / 240 US$ a month')]
+                ('The Performing Body Plan', '3 months', '199€ / 240 US$ a month (sold out for now)')]
         tr = ''.join(f'<tr><th scope="row">{n}</th><td>{d}</td><td>{p}</td></tr>' for n, d, p in rows)
         return f"""<div class="tbl-wrap"><table class="cmp" style="min-width:520px"><thead><tr><th scope="col">Option</th><th scope="col">Length</th><th scope="col">Price</th></tr></thead><tbody>{tr}</tbody></table></div>
  <p class="center" style="margin-top:18px"><a href="sports-nutritionist-ireland.html#plans">Compare everything each plan includes {ICON['arrow']}</a></p>"""
@@ -117,7 +117,7 @@ def build(b):
     qas = [('When should I get my fuelling plan?',
             '<p>Ideally several weeks before your event, so you can practise it in training and train your gut to tolerate the carbohydrate you will need on the day.</p>'),
            ('Is a fuelling plan included in the coaching plans?',
-            '<p>A competition nutrition plan is part of The Performing Body Plan. You can also ask for a fuelling plan on its own for a single event.</p>'),
+            '<p>A competition nutrition plan is part of The Performing Body Plan (sold out for now). You can also ask for a fuelling plan on its own for a single event.</p>'),
            ('Which events do you plan for?',
             '<p>Endurance events of any length: road races, sportives, gravel and ultra-distance rides, triathlon from sprint to Ironman, and running races.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Fuelling plans', 'Common questions')
@@ -193,7 +193,7 @@ def build(b):
   <p>Vivify Sports is based in Wicklow, Ireland, and works with athletes worldwide. Everything happens online: consultations by video call, your plan updated weekly from your training load, and support between calls.</p>
   <p>Marine races the WorldTour herself, so she understands travel and racing abroad, and fits your nutrition around them.</p></div>
  <div class="panel" style="padding:32px"><span class="eyebrow">How it works</span>
-  {ticks(['Free 30-minute discovery call', 'Nutritional assessment by video call', 'Weekly plan from your TrainingPeaks or Vekta training load', 'Food diary review in MyFitnessPal', 'WhatsApp support on The Performing Body Plan', 'Prices in euro and US dollars'])}</div>
+  {ticks(['Free 30-minute discovery call', 'Nutritional assessment by video call', 'Weekly plan from your TrainingPeaks or Vekta training load', 'Food diary review in MyFitnessPal', 'WhatsApp support on The Performing Body Plan (sold out for now)', 'Prices in euro and US dollars'])}</div>
 </div></section>
 <section style="padding-top:8px"><div class="wrap">
  {head('Where Marine coaches', 'Athletes on both sides of the Atlantic', tag='h2', center=True, lead='Currently coaching athletes in the USA, Canada, Ireland and Finland. Past clients in France, Italy and the Netherlands.')}
@@ -233,7 +233,7 @@ def build(b):
 {cta('Based in Wicklow', 'Book a free 30-minute discovery call, or ask about a talk for your club.', 'Book your free call', DISC)}"""
     local = {"@type": "ProfessionalService", "name": "Vivify Sports", "url": LIVE, "email": b.EMAIL, "telephone": b.PHONE,
              "address": {"@type": "PostalAddress", "addressLocality": "Wicklow", "addressRegion": "Co. Wicklow", "addressCountry": "IE"},
-             "areaServed": ["County Wicklow", "County Dublin", "Ireland"], "founder": {"@id": LIVE + "/#marine"}}
+             "areaServed": ["County Wicklow", "County Dublin", "Ireland"], "founder": {"@id": LIVE + "/#marine"}, "sameAs": [b.IG, b.GBP]}
     page('sports-nutritionist-dublin.html', body, [local, faq_schema])
 
     # ------------------------------------------------------------ WOMEN'S CYCLING NUTRITION
@@ -281,7 +281,7 @@ def build(b):
            ('Do I need to live in Ireland?',
             '<p>No. Coaching is online and Marine works with athletes worldwide. Prices are shown in euro and US dollars. See <a href="online-sports-nutritionist.html">online coaching</a>.</p>'),
            ('Which plan should I choose?',
-            '<p>Start with the Nutritional Assessment for a one-off review and report. For ongoing support, The Healthy Body Plan builds habits with a weekly macro plan, The Happy Body Plan adds a weekly meal plan and daily food diary analysis, and The Performing Body Plan adds unlimited calls, daily WhatsApp support and sport-specific work such as a competition plan and sweat rate test. <a href="sports-nutritionist-ireland.html#plans">Compare the plans</a>.</p>'),
+            '<p>Start with the Nutritional Assessment for a one-off review and report. For ongoing support, The Healthy Body Plan builds habits with a weekly macro plan, The Happy Body Plan adds a weekly meal plan and daily food diary analysis, and The Performing Body Plan (sold out for now) adds unlimited calls, daily WhatsApp support and sport-specific work such as a competition plan and sweat rate test. <a href="sports-nutritionist-ireland.html#plans">Compare the plans</a>.</p>'),
            ('How much do the plans cost?',
             '<p>The Nutritional Assessment is 100€ (120 US$) and a Follow-up Consultation is 50€ (60 US$). The 3-month plans are 99€, 149€ or 199€ a month (119, 180 or 240 US$).</p>'),
            ('Is the discovery call free?', '<p>Yes. It is a free 30-minute call to talk about your goals and see whether coaching is right for you. <a href="free-sports-nutrition-consultation.html">Book it here</a>.</p>'),
@@ -301,7 +301,7 @@ def build(b):
     body = f"""
 {hero('What athletes say', 'Client Reviews', 'Cyclists and triathletes on working with Marine. She coaches athletes in the USA, Canada, Ireland and Finland.', btn=('Book your free discovery call', DISC))}
 {b.testimonials(h2_names=False)}
-<section class="section-tight"><div class="wrap center"><p class="lead">Worked with Marine? Leave a review on Google. It helps other athletes find Vivify Sports.</p></div></section>
+<section class="section-tight"><div class="wrap center"><p class="lead">Worked with Marine? <a href="{b.GBP}" target="_blank" rel="noopener">Leave a review on Google</a>. It helps other athletes find Vivify Sports.</p></div></section>
 {cta('Your turn', 'Start with a free 30-minute discovery call.', 'Book your free call', DISC)}"""
     page('testimonials.html', body, [])
 
