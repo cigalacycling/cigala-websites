@@ -570,10 +570,22 @@ add_action('phpmailer_init', function ($m) {
     $pw = (string) get_option('cc_smtp_pass', ''); if ($pw === '') return;
     $m->isSMTP(); $m->Host = CC_SMTP['host']; $m->Port = CC_SMTP['port']; $m->SMTPSecure = 'tls'; $m->SMTPAuth = true;
     $m->Username = CC_SMTP['user']; $m->Password = $pw; $m->Timeout = 20;
+    // keep only the SERVER's replies (never what we send, so the login never ends up in the log), for the reason shown when a send fails
+    $GLOBALS['cc_smtp_srv'] = []; $m->SMTPDebug = 2;
+    $m->Debugoutput = function ($s) { if (strpos($s, 'SERVER -> CLIENT') !== false && count($GLOBALS['cc_smtp_srv']) < 40) $GLOBALS['cc_smtp_srv'][] = trim(substr($s, 0, 200)); };
     if (stripos((string) $m->From, '@cigalacycling.com') === false) { $m->From = CC_SMTP['from']; if ($m->FromName === '' || $m->FromName === 'WordPress') $m->FromName = CC_SMTP['name']; }
     $m->Sender = CC_SMTP['from'];
 }, 99);
 add_filter('wp_mail_from', function ($f) { return stripos($f, 'wordpress@') === 0 ? CC_SMTP['from'] : $f; }, 20);
+// why a send failed (PHPMailer's message, never the password), shown in the box and to the hub chat (GET /cc/v1/smtp-status)
+add_action('wp_mail_failed', function ($e) { $msg = is_wp_error($e) ? $e->get_error_message() : ''; $pw = (string) get_option('cc_smtp_pass', '');
+    if ($pw !== '') $msg = str_replace($pw, '***', $msg);
+    $srv = array_slice((array) ($GLOBALS['cc_smtp_srv'] ?? []), -6); if ($pw !== '') $srv = array_map(function ($l) use ($pw) { return str_replace($pw, '***', $l); }, $srv);
+    update_option('cc_smtp_err', ['at' => time(), 'msg' => substr($msg, 0, 500), 'server' => $srv], false); });
+add_action('rest_api_init', function () { register_rest_route('cc/v1', '/smtp-status', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
+    return ['password_set' => (bool) get_option('cc_smtp_pass', ''), 'set_at' => (int) get_option('cc_smtp_set', 0) ?: null, 'last_error' => get_option('cc_smtp_err', null),
+            'openssl' => extension_loaded('openssl'), 'can_reach_587' => (function () { $s = @fsockopen('smtp.reg365.net', 587, $no, $str, 6); if ($s) { $l = fgets($s, 200); fclose($s); return trim((string) $l); } return "no: $no $str"; })()];
+}]); });
 function cc_smtp_box() {   // on Matteo's Reports board
     $set = (int) get_option('cc_smtp_set', 0); $r = sanitize_key($_GET['smtp'] ?? '');
     $msg = ['saved' => 'Saved. Now send yourself a test email.', 'sent' => 'Test email sent to you: check your inbox (and spam, just this once).', 'fail' => 'The test email did not go out: the password may be wrong. Type it again.', 'cleared' => 'Removed: emails go out the old way.'][$r] ?? '';
@@ -582,7 +594,8 @@ function cc_smtp_box() {   // on Matteo's Reports board
         . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="rp-smtp-f" autocomplete="off"><input type="hidden" name="action" value="cc_smtp">' . wp_nonce_field('cc_smtp', '_wpnonce', false, false)
         . '<label>Authenticated SMTP password <input type="password" name="pw" autocomplete="new-password" placeholder="' . ($set ? 'Type it again only to change it' : 'The password from Register365') . '"></label>'
         . '<span class="rp-acts"><button class="btn btn-go" name="act" value="save">Save</button><button class="btn btn-ghost" name="act" value="test">Send me a test email</button>' . ($set ? '<button class="btn btn-ghost" name="act" value="clear">Remove</button>' : '') . '</span></form>'
-        . ($msg ? '<p class="rp-smtp-m">' . esc_html($msg) . '</p>' : '') . '</section>'
+        . ($msg ? '<p class="rp-smtp-m">' . esc_html($msg) . '</p>' : '')
+        . (($r === 'fail' && ($er = get_option('cc_smtp_err')) && !empty($er['msg'])) ? '<p class="rp-smtp-m" style="color:#ff4a3d">Reason: ' . esc_html($er['msg']) . '</p>' : '') . '</section>'
         . '<style>html .cc .rp-smtp{margin:0 0 18px}html .cc .rp-smtp-f{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:end}html .cc .rp-smtp-f label{display:grid;gap:6px;font-size:14px;color:#d0d6e0;font-weight:600;flex:1 1 260px}'
         . 'html .cc .rp-smtp-f input{font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff}html .cc .rp-smtp-m{margin:10px 0 0;color:#34c46a;font-weight:600}</style>';
 }
