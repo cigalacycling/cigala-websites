@@ -22,8 +22,11 @@ for arg in sys.argv[1:]:
     sd = jget(f'{S}/wp-json/wp/v2/{t}/{pid}?context=edit&_fields=id,meta')['meta']
     ld = jget(f'{L}/wp-json/wp/v2/{t}/{pid}?context=edit&_fields=id,meta,modified_gmt')
     bk = ROOT + f'live/backup/tours/{t}-{pid}-{time.strftime("%Y%m%d-%H%M%S")}.json'; json.dump(ld, open(bk, 'w'))
-    data = sd['_elementor_data']
-    urls = sorted(set(re.findall(r'https:\\?/\\?/staging\.tours\.cigalacycling\.com\\?/wp-content\\?/uploads\\?/[^"\'\s\\)]+', data)))
+    data = sd.get('_elementor_data') or ''
+    ps = sd.get('_elementor_page_settings')   # the kit (elementor_library 6) keeps the site CSS here
+    pjs = json.dumps(ps) if ps else ''
+    data_all = data + pjs
+    urls = sorted(set(re.findall(r'https:\\?/\\?/staging\.tours\.cigalacycling\.com\\?/wp-content\\?/uploads\\?/[^"\'\s\\)]+', data_all)))
     for u in urls:
         su = u.replace('\\/', '/'); lu = su.replace(S, L)
         if exists(lu): continue
@@ -31,9 +34,13 @@ for arg in sys.argv[1:]:
         fn = su.rsplit('/', 1)[1]; ct = {'webp': 'image/webp', 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png', 'svg': 'image/svg+xml'}.get(fn.rsplit('.', 1)[-1].lower(), 'application/octet-stream')
         c2, r2 = req(L + '/wp-json/wp/v2/media', data=raw, method='POST', headers={'Content-Type': ct, 'Content-Disposition': f'attachment; filename="{fn}"'})
         new = json.loads(r2)['source_url']
-        if new != lu: data = data.replace(u, new.replace('/', '\\/') if '\\/' in u else new)
+        if new != lu: data = data.replace(u, new.replace('/', '\\/') if '\\/' in u else new); pjs = pjs.replace(u, new.replace('/', '\\/') if '\\/' in u else new)
         print('  media', fn, c2, '' if new == lu else '-> ' + new)
     data = data.replace(S.replace('/', '\\/'), L.replace('/', '\\/')).replace(S, L)
-    c, r = req(f'{L}/wp-json/wp/v2/{t}/{pid}', data=json.dumps({'meta': {'_elementor_data': data}}).encode(), method='POST', headers={'Content-Type': 'application/json'})
+    pjs = pjs.replace(S.replace('/', '\\/'), L.replace('/', '\\/')).replace(S, L)
+    meta = {}
+    if data: meta['_elementor_data'] = data
+    if pjs: meta['_elementor_page_settings'] = json.loads(pjs)
+    c, r = req(f'{L}/wp-json/wp/v2/{t}/{pid}', data=json.dumps({'meta': meta}).encode(), method='POST', headers={'Content-Type': 'application/json'})
     print(arg, c, 'backup', bk.replace(ROOT, ''))
 c, r = req(L + '/wp-json/elementor/v1/cache', method='DELETE'); print('elementor cache', c)

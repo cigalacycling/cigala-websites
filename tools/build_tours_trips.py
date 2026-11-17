@@ -52,10 +52,11 @@ DAY_MEDIA = {'cyprus-crossing-gravel': {1: ('5wzpNhqEBR0', 3322), 2: ('6dCFozS_3
                                               5: ('img', 2518), 6: ('img', 4514)},   # Matteo 16 Nov, round 2: all from the old Algarve page, upright frames; the podium with the pros moved to the gallery
              'chianti-gran-fondo-strade-bianche': {1: ('4tBZpWAVnrc', 4446), 2: ('4dBK7nxR2nI', 11033), 3: ('jYGwgkZ9CDM', 4872), 4: ('vKw83m2nUh0', 4871),
                                                   5: ('img', 3196), 6: ('0Kw39ByYQGg', 3164)}}   # covers match the day (Matteo 16 Nov): Chianti hills, white road, cypress avenue, Siena crowd (pro race), Siena   # Matteo 16 Nov: a Short per day, day 5 = his photo winning with the bike up   # a YouTube Short in a day's box (Matteo 16 Nov): (video, our own cover photo); loads on tap
-EVENT_BOX = {'chianti-gran-fondo-strade-bianche': ('Gran Fondo Strade Bianche', 'Entry guaranteed', GUAR),
-             'lake-como-gran-fondo-il-lombardia': ('Gran Fondo Il Lombardia', 'Entry guaranteed', GUAR),
-             'discover-the-algarve-granfondo': ('Gran Fondo Algarve', 'Full event-day support', SUPP),
-             'tour-of-flanders-experience': ('We Ride Flanders', 'Full event-day support', SUPP)}
+EVENT_BOX = {'chianti-gran-fondo-strade-bianche': ('Gran Fondo Strade Bianche', 'entry', GUAR),
+             'lake-como-gran-fondo-il-lombardia': ('Gran Fondo Il Lombardia', 'entry', GUAR),
+             'discover-the-algarve-granfondo': ('Gran Fondo Algarve', 'support', SUPP),
+             'tour-of-flanders-experience': ('We Ride Flanders', 'support', SUPP)}   # badge = the tour cards' badge (tours/badges.json), Matteo 17 Nov: same icon and wording everywhere
+_BADGES = json.load(open(ROOT + 'tours/badges.json'))
 TOLFE = ('nUFKHzZkgkI', 5162)   # Strade Bianche pro race day, VIP terrace: Matteo's YouTube Short + our own photo as the cover (Matteo 16 Nov: not the partner site's photos)
 OP_LOGO = {'maratona-dles-dolomites': 'logo-mdd'}
 # who may book through us (Matteo 16 Nov: our target markets as listed for Cigala on the official Maratona tour-operator page)
@@ -428,7 +429,7 @@ def trip(slug):
         ev_opts = next(iter(EVENT_DAY.get(slug, {}).values()), (None, []))[1]
         ev_pills = ''.join(f'<span class="evo"><b>{E(a)}</b> {E(b)}</span>' for a, b in sorted(ev_opts, key=lambda o: int(re.search(r'(\d+)', o[1]).group(1))))
         out.append(f'<section style="padding-top:28px"><div class="in"><div class="panel opbox evbox"><div class="optext"><div class="head"><div><div class="eyebrow">The event</div>'
-                   f'<p class="band-title">{E(ev_name)}</p><div class="bar"></div></div></div><span class="evchip">{ICON["flag"]}{E(ev_chip)}</span>'
+                   f'<p class="band-title">{E(ev_name)}</p><div class="bar"></div></div></div><div class="evbadge">{_BADGES[ev_chip]}</div>'
                    f'<p class="opnote">{E(ev_txt)}</p>{f"<div class=evopts><span>The courses:</span> {ev_pills}</div>" if ev_pills else ""}</div>'
                    + (f'<img class="oplogo{" bleed" if EVENT_LOGO[slug] == 9340 else ""}" src="{lib_url(EVENT_LOGO[slug])}" alt="{E(lib_alt(EVENT_LOGO[slug]))}" loading="lazy">' if EVENT_LOGO.get(slug) else '') + '</div></div></section>')
     route = one('route')
@@ -822,8 +823,11 @@ html .cl .opbox { display: flex; align-items: center; justify-content: space-bet
 html .cl .opbox .head { margin: 0; }
 html .cl .opbox .optext { flex: 1 1 320px; min-width: 0; }
 html .cl .opbox .opnote { margin: 14px 0 0; max-width: 62ch; font-size: 15px; line-height: 1.55; }
-html .cl .evbox .evchip { display: inline-flex; align-items: center; gap: 7px; margin: 14px 0 0; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(43,212,122,.4); background: rgba(0,154,68,.12); color: var(--green-text, #2bd47a); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
-html .cl .evbox .evchip svg { width: 16px; height: 16px; }
+html .cl .evbox .evbadge { margin: 16px 0 0; }   /* the same badge as on the tour cards (Matteo 17 Nov) */
+html .cl .evbox .entry { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #f7f8f8; background: rgba(8,9,10,.85); border: 1px solid rgba(240,191,0,.55); border-radius: 999px; padding: 6px 13px; }
+html .cl .evbox .entry svg { width: 15px; height: 15px; flex: none; fill: #f0bf00; }
+html .cl .evbox .entry-support { border-color: rgba(255,255,255,.22); }
+html .cl .evbox .entry-support svg { fill: #d0d6e0; }
 html .cl .evbox .evopts { margin-top: 14px; }
 html .cl .tolfe .tolfe-in { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px 20px; margin-top: 6px; }
 html .cl .tolfe .tolfe-vid { border-radius: 12px; }

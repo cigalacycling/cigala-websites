@@ -208,8 +208,11 @@ html .cl .opbox { display: flex; align-items: center; justify-content: space-bet
 html .cl .opbox .head { margin: 0; }
 html .cl .opbox .optext { flex: 1 1 320px; min-width: 0; }
 html .cl .opbox .opnote { margin: 14px 0 0; max-width: 62ch; font-size: 15px; line-height: 1.55; }
-html .cl .evbox .evchip { display: inline-flex; align-items: center; gap: 7px; margin: 14px 0 0; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(43,212,122,.4); background: rgba(0,154,68,.12); color: var(--green-text, #2bd47a); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
-html .cl .evbox .evchip svg { width: 16px; height: 16px; }
+html .cl .evbox .evbadge { margin: 16px 0 0; }   /* the same badge as on the tour cards (Matteo 17 Nov) */
+html .cl .evbox .entry { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #f7f8f8; background: rgba(8,9,10,.85); border: 1px solid rgba(240,191,0,.55); border-radius: 999px; padding: 6px 13px; }
+html .cl .evbox .entry svg { width: 15px; height: 15px; flex: none; fill: #f0bf00; }
+html .cl .evbox .entry-support { border-color: rgba(255,255,255,.22); }
+html .cl .evbox .entry-support svg { fill: #d0d6e0; }
 html .cl .evbox .evopts { margin-top: 14px; }
 html .cl .tolfe .tolfe-in { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px 20px; margin-top: 6px; }
 html .cl .tolfe .tolfe-vid { border-radius: 12px; }
