@@ -1,0 +1,197 @@
+<?php
+if (!defined('ABSPATH')) return;
+/* "Share a result" (Matteo, 17 Nov 2026): the athlete shares a photo and a few words about a result or a proud moment, optionally
+ * tied to one of their races, with a tick "Cigala Cycling may share this on social media and Skool". Private between them and
+ * Matteo (stored on their page, photo in uploads/cc-private). Matteo gets an email (photo attached) and a phone notification,
+ * reacts (👏 🔥 💪 🏆) and/or replies on his Results board; the athlete sees it under their result and gets a phone notification.
+ * Their results build a small trophy shelf in their hub. Page meta cc_results (newest last, at most 80). */
+
+function cc_rs_w($k) {
+    static $W = [
+        'title' => ['en' => 'Share a result', 'it' => 'Condividi un risultato', 'pt' => 'Partilha um resultado', 'sl' => 'Deli rezultat'],
+        'lede' => ['en' => 'A race result, a personal best, a ride you are proud of: share it with a photo. I love seeing them.',
+                   'it' => 'Un risultato in gara, un record personale, un’uscita di cui sei fiero: condividilo con una foto. Mi piace vederli.',
+                   'pt' => 'Um resultado em prova, um recorde pessoal, um treino de que te orgulhas: partilha-o com uma foto. Adoro vê-los.',
+                   'sl' => 'Rezultat na tekmi, osebni rekord, vožnja, na katero si ponosen: deli jo s fotografijo. Rad jih vidim.'],
+        'photo' => ['en' => 'Add a photo', 'it' => 'Aggiungi una foto', 'pt' => 'Adicionar uma foto', 'sl' => 'Dodaj fotografijo'],
+        'change' => ['en' => 'Change the photo', 'it' => 'Cambia la foto', 'pt' => 'Mudar a foto', 'sl' => 'Zamenjaj fotografijo'],
+        'ph' => ['en' => 'What happened? e.g. 3rd in my category, first 100 km, new 20-min power', 'it' => 'Cosa è successo? es. 3° di categoria, primi 100 km, nuovo record sui 20 minuti',
+                 'pt' => 'O que aconteceu? ex. 3.º no escalão, primeiros 100 km, novo recorde aos 20 minutos', 'sl' => 'Kaj se je zgodilo? npr. 3. v kategoriji, prvih 100 km, nov rekord na 20 minut'],
+        'race' => ['en' => 'Which race? (optional)', 'it' => 'Quale gara? (facoltativo)', 'pt' => 'Que prova? (opcional)', 'sl' => 'Katera tekma? (neobvezno)'],
+        'none' => ['en' => 'Not a race', 'it' => 'Non è una gara', 'pt' => 'Não é uma prova', 'sl' => 'Ni tekma'],
+        'ok' => ['en' => 'Cigala Cycling may share this on social media and in the Skool community', 'it' => 'Cigala Cycling può condividerlo sui social e nella community Skool',
+                 'pt' => 'A Cigala Cycling pode partilhar isto nas redes sociais e na comunidade Skool', 'sl' => 'Cigala Cycling lahko to deli na družbenih omrežjih in v skupnosti Skool'],
+        'send' => ['en' => 'Share with Matteo', 'it' => 'Condividi con Matteo', 'pt' => 'Partilhar com o Matteo', 'sl' => 'Deli z Matteom'],
+        'sending' => ['en' => 'Sending…', 'it' => 'Invio…', 'pt' => 'A enviar…', 'sl' => 'Pošiljam…'],
+        'sent' => ['en' => 'Brilliant, thank you for sharing!', 'it' => 'Fantastico, grazie per averlo condiviso!', 'pt' => 'Fantástico, obrigado por partilhares!', 'sl' => 'Odlično, hvala, da si delil!'],
+        'empty' => ['en' => 'Add a photo or a few words first.', 'it' => 'Prima aggiungi una foto o qualche parola.', 'pt' => 'Primeiro adiciona uma foto ou algumas palavras.', 'sl' => 'Najprej dodaj fotografijo ali nekaj besed.'],
+        'err' => ['en' => 'It did not send. Please try again.', 'it' => 'Non è stato inviato. Riprova.', 'pt' => 'Não foi enviado. Tenta outra vez.', 'sl' => 'Ni bilo poslano. Poskusi znova.'],
+        'shelf' => ['en' => 'Your trophy shelf', 'it' => 'La tua bacheca', 'pt' => 'A tua vitrine', 'sl' => 'Tvoja vitrina'],
+        'reacted' => ['en' => 'Matteo reacted to your result', 'it' => 'Matteo ha reagito al tuo risultato', 'pt' => 'O Matteo reagiu ao teu resultado', 'sl' => 'Matteo se je odzval na tvoj rezultat'],
+        'replied' => ['en' => 'Matteo replied', 'it' => 'Matteo ha risposto', 'pt' => 'O Matteo respondeu', 'sl' => 'Matteo je odgovoril'],
+        'del' => ['en' => 'Delete', 'it' => 'Elimina', 'pt' => 'Apagar', 'sl' => 'Izbriši'],
+        'delq' => ['en' => 'Delete this? It cannot be undone.', 'it' => 'Eliminarlo? Non si può annullare.', 'pt' => 'Apagar? Não é possível desfazer.', 'sl' => 'Izbrišem? Tega ni mogoče razveljaviti.'],
+    ];
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
+}
+const CC_RS_REACTS = ['clap' => '👏', 'fire' => '🔥', 'strong' => '💪', 'trophy' => '🏆'];
+function cc_rs_get($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_results', true), true); return is_array($a) ? $a : []; }
+function cc_rs_put($pid, $a) { update_post_meta((int) $pid, 'cc_results', wp_slash(wp_json_encode(array_slice(array_values($a), -80)))); }
+function cc_rs_card($pid, $r, $forCoach) {
+    $u = !empty($r['photo']) ? wp_get_attachment_url((int) $r['photo']) : '';
+    $o = '<div class="rs-card">' . ($u ? '<a href="' . esc_url($u) . '" target="_blank" rel="noopener" class="rs-ph"><img src="' . esc_url($u) . '" alt="" loading="lazy"></a>' : '<span class="rs-ph rs-noph">🏆</span>')
+       . '<div class="rs-b"><small>' . esc_html(date_i18n('j M Y', strtotime(($r['date'] ?: date('Y-m-d', $r['at'])) . ' 12:00'))) . ($r['race'] !== '' ? ' · ' . esc_html($r['race']) : '') . '</small>'
+       . ($r['text'] !== '' ? '<p>' . nl2br(esc_html($r['text'])) . '</p>' : '')
+       . ($forCoach ? '<p class="rs-ok">' . ($r['consent'] ? '✅ OK to share on social media / Skool' : '🔒 Private: not for social media') . '</p>' : '');
+    if (!empty($r['react'])) $o .= '<p class="rs-react">' . esc_html(CC_RS_REACTS[$r['react']] ?? '') . ' <small>' . esc_html($forCoach ? 'your reaction' : 'Matteo') . '</small></p>';
+    if (!empty($r['reply'])) $o .= '<div class="nt-rep">' . ($forCoach ? '' : '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">') . '<b>' . esc_html($forCoach ? 'Your reply' : cc_rs_w('replied')) . '</b><p>' . nl2br(esc_html($r['reply'])) . '</p></div>';
+    if ($forCoach) {
+        $act = esc_url(rest_url('cc/v1/result-react')); $n = esc_attr(wp_create_nonce('wp_rest'));
+        $o .= '<div class="rs-acts" data-api="' . $act . '" data-nonce="' . $n . '" data-page="' . (int) $pid . '" data-at="' . (int) $r['at'] . '">';
+        foreach (CC_RS_REACTS as $k => $e) $o .= '<button type="button" class="rs-rx' . (($r['react'] ?? '') === $k ? ' on' : '') . '" data-r="' . $k . '" aria-label="' . $k . '">' . $e . '</button>';
+        $o .= '<input type="text" class="rs-rep" maxlength="600" placeholder="Reply…" value=""><button type="button" class="btn btn-go rs-send">Send</button></div>';
+    }
+    $o .= '<button type="button" class="nt-del rs-del" data-api="' . esc_url(rest_url('cc/v1/result-delete')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-page="' . (int) $pid . '" data-at="' . (int) $r['at'] . '" data-q="' . esc_attr(cc_rs_w('delq')) . '">' . esc_html(cc_rs_w('del')) . '</button>';
+    return $o . '</div></div>';
+}
+function cc_rs_css() {
+    static $d = false; if ($d) return ''; $d = true;
+    return '<style>html .cc .rs-form{display:grid;gap:12px}html .cc .rs-pick{display:flex;align-items:center;gap:14px}html .cc .rs-prev{width:96px;height:96px;border-radius:14px;object-fit:cover;border:2px solid #2bd47a;display:none}html .cc .rs-prev.on{display:block}'
+        . 'html .cc .rs-form textarea,html .cc .rs-form select,html .cc .rs-form input[type=date]{width:100%;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
+        . 'html .cc .rs-form label{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}html .cc .rs-form .rs-tick{display:flex!important;gap:12px;align-items:flex-start;font-weight:500}html .cc .rs-tick input{width:24px;height:24px;flex:none;accent-color:#12a150}'
+        . 'html .cc .rs-form .btn{justify-self:start}html .cc .rs-msg{margin:0;font-size:16px;font-weight:600;color:#34c46a}html .cc .rs-msg.err{color:#ff7a73}html .cc .rs-msg:empty{display:none}'
+        . 'html .cc .rs-shelf{display:grid;gap:12px;margin-top:10px}html .cc .rs-card{display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}'
+        . 'html .cc .rs-ph{flex:none;width:110px;height:110px;border-radius:12px;overflow:hidden;display:grid;place-items:center;background:rgba(18,161,80,.12);font-size:40px}html .cc .rs-ph img{width:100%;height:100%;object-fit:cover}'
+        . 'html .cc .rs-b{flex:1;min-width:0}html .cc .rs-b small{color:#b8bec8;font-size:15px}html .cc .rs-b p{margin:6px 0 0;font-size:16px;color:#e6e9ee}html .cc .rs-ok{font-size:15px!important;color:#d0d6e0!important}html .cc .rs-react{font-size:22px!important}'
+        . 'html .cc .rs-acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}html .cc .rs-rx{width:42px;height:42px;min-height:0;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;font-size:20px;cursor:pointer}html .cc .rs-rx.on{border-color:#2bd47a;background:rgba(18,161,80,.25)}'
+        . 'html .cc .rs-rep{flex:1 1 180px;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff}html .cc .rs-acts .btn{width:auto;margin:0}'
+        . '@media (max-width:560px){html .cc .rs-card{flex-direction:column}html .cc .rs-ph{width:100%;height:220px}}</style>';
+}
+function cc_rs_js() {
+    static $d = false; if ($d) return ''; $d = true;
+    return <<<'JS'
+<script>(function(){var F=document.querySelector('.rs-form');if(F){var W=JSON.parse(F.dataset.w),file=F.querySelector('.rs-file'),pv=F.querySelector('.rs-prev'),pb=F.querySelector('.rs-pickb'),m=F.querySelector('.rs-msg'),img=null;
+ function msg(t,e){m.textContent=t||'';m.classList.toggle('err',!!e);}
+ pb.addEventListener('click',function(){file.click();});
+ file.addEventListener('change',function(){var f=file.files&&file.files[0];if(!f)return;var i=new Image(),u=URL.createObjectURL(f);i.onload=function(){var s=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(i.naturalWidth*s);c.height=Math.round(i.naturalHeight*s);
+  c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);img=c.toDataURL('image/jpeg',.85);pv.src=img;pv.classList.add('on');pb.textContent=W.change;};i.src=u;file.value='';});
+ F.querySelector('.rs-go').addEventListener('click',function(){var b=this,t=F.querySelector('textarea').value.trim();if(!t&&!img){msg(W.empty,true);return;}b.disabled=true;msg(W.sending);
+  var fd=new FormData();fd.append('text',t);fd.append('race',F.querySelector('select').value);fd.append('date',F.querySelector('input[type=date]').value);fd.append('consent',F.querySelector('.rs-tick input').checked?1:0);if(img)fd.append('img',img);
+  fetch(F.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':F.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;msg(W.sent);setTimeout(function(){var u=location.href.split('#')[0];location.replace(u+(u.indexOf('?')>-1?'&':'?')+'rs='+Date.now()+'#results');},1000);})
+  .catch(function(){b.disabled=false;msg(W.err,true);});});}
+document.querySelectorAll('.rs-acts').forEach(function(A){function post(d){var fd=new FormData();fd.append('page',A.dataset.page);fd.append('at',A.dataset.at);Object.keys(d).forEach(function(k){fd.append(k,d[k]);});
+  return fetch(A.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':A.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;});}
+ A.querySelectorAll('.rs-rx').forEach(function(x){x.addEventListener('click',function(){post({react:x.dataset.r}).then(function(){A.querySelectorAll('.rs-rx').forEach(function(y){y.classList.toggle('on',y===x);});});});});
+ A.querySelector('.rs-send').addEventListener('click',function(){var i=A.querySelector('.rs-rep');if(!i.value.trim())return;post({reply:i.value.trim()}).then(function(){location.reload();});});});
+document.addEventListener('click',function(e){var d=e.target.closest('.rs-del');if(!d||!confirm(d.dataset.q))return;var f=new FormData();f.append('page',d.dataset.page);f.append('at',d.dataset.at);
+ fetch(d.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':d.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;var c=d.closest('.rs-card');if(c){var w=c.previousElementSibling;if(w&&w.classList.contains('nt-who'))w.remove();c.remove();}});});
+})();</script>
+JS;
+}
+
+// the section in the athlete's hub (after the notes): the form and their trophy shelf
+add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
+    if (!$view) return $html;
+    $rs = array_reverse(cc_rs_get($view));
+    if ($coach) {
+        if (!$rs) return $html;
+        $o = '<section class="ath-s" id="results"><h2>' . cc_ath_icon('trophy', 'ath-hic') . 'Results</h2><div class="rs-shelf">';
+        foreach (array_slice($rs, 0, 12) as $r) $o .= cc_rs_card($view, $r, true);
+        return $html . $o . '</div></section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() : '');
+    }
+    $g = function_exists('cc_g_get') ? (cc_g_get($view) ?: []) : []; $opts = '<option value="">' . esc_html(cc_rs_w('none')) . '</option>';
+    $ev = (array) ($g['events'] ?? []); usort($ev, function ($a, $b) { return strcmp($b['date'], $a['date']); });
+    foreach ($ev as $e) if ($e['date'] <= current_time('Y-m-d', false) || $e['date'] <= date('Y-m-d', strtotime('+3 days'))) $opts .= '<option value="' . esc_attr($e['name']) . '" data-d="' . esc_attr($e['date']) . '">' . esc_html($e['name'] . ' · ' . date_i18n('j M Y', strtotime($e['date'] . ' 12:00'))) . '</option>';
+    $W = []; foreach (['change', 'sending', 'sent', 'empty', 'err'] as $k) $W[$k] = cc_rs_w($k);
+    $o = '<section class="ath-s" id="results"><h2>' . cc_ath_icon('trophy', 'ath-hic') . esc_html(cc_rs_w('title')) . '</h2><p class="av-lede">' . esc_html(cc_rs_w('lede')) . '</p>'
+       . '<div class="rs-form" data-api="' . esc_url(rest_url('cc/v1/result')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-w="' . esc_attr(wp_json_encode($W)) . '">'
+       . '<div class="rs-pick"><img class="rs-prev" alt=""><button type="button" class="btn btn-ghost rs-pickb">' . esc_html(cc_rs_w('photo')) . '</button><input type="file" accept="image/*" class="rs-file" hidden></div>'
+       . '<textarea rows="3" maxlength="1500" placeholder="' . esc_attr(cc_rs_w('ph')) . '" aria-label="' . esc_attr(cc_rs_w('title')) . '"></textarea>'
+       . '<label>' . esc_html(cc_rs_w('race')) . '<select>' . $opts . '</select></label>'
+       . '<input type="date" max="' . esc_attr(current_time('Y-m-d')) . '" value="' . esc_attr(current_time('Y-m-d')) . '" aria-label="Date">'
+       . '<label class="rs-tick"><input type="checkbox"> <span>'   // unticked: sharing publicly is their active choice . esc_html(cc_rs_w('ok')) . '</span></label>'
+       . '<button type="button" class="btn btn-go rs-go">' . esc_html(cc_rs_w('send')) . '</button><p class="rs-msg" role="status"></p></div>';
+    if ($rs) { $o .= '<h3 class="av-sub" style="margin-top:28px">' . esc_html(cc_rs_w('shelf')) . '</h3><div class="rs-shelf">'; foreach (array_slice($rs, 0, 12) as $r) $o .= cc_rs_card($view, $r, false); $o .= '</div>'; }
+    return $html . $o . '</section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() : '');
+}, 16, 3);
+add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view && !$coach) $nav[] = ['results', cc_rs_w('title')]; return $nav; }, 30, 3);
+
+/* ---------- saving, reacting, deleting ---------- */
+add_action('rest_api_init', function () {
+    $own = function (WP_REST_Request $r) { return cc_ath_is_coach() || (is_user_logged_in() && (int) $r->get_param('page') === cc_ath_page_of(get_current_user_id())); };
+    register_rest_route('cc/v1', '/result', ['methods' => 'POST', 'permission_callback' => function () { return is_user_logged_in() && cc_ath_page_of(get_current_user_id()) && !cc_ath_is_coach(); }, 'callback' => 'cc_rs_save']);
+    register_rest_route('cc/v1', '/result-react', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => 'cc_rs_react']);
+    register_rest_route('cc/v1', '/result-delete', ['methods' => 'POST', 'permission_callback' => $own, 'callback' => function (WP_REST_Request $r) {
+        $pid = (int) $r->get_param('page'); $at = (int) $r->get_param('at'); $a = cc_rs_get($pid);
+        foreach ($a as $k => $x) if ((int) $x['at'] === $at) { if (!empty($x['photo'])) wp_delete_attachment((int) $x['photo'], true); unset($a[$k]); cc_rs_put($pid, $a); return ['ok' => true]; }
+        return new WP_Error('cc_none', 'No such result', ['status' => 404]);
+    }]);
+    register_rest_route('cc/v1', '/results', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {   // Matteo's tools (e.g. social posts): consent included
+        $out = []; foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_results']) as $p) foreach (cc_rs_get($p->ID) as $x)
+            $out[] = ['page' => $p->ID, 'athlete' => $p->post_title, 'at' => $x['at'], 'date' => $x['date'], 'race' => $x['race'], 'text' => $x['text'], 'consent' => (bool) $x['consent'], 'photo' => !empty($x['photo']) ? wp_get_attachment_url((int) $x['photo']) : null];
+        usort($out, function ($a, $b) { return $b['at'] <=> $a['at']; }); return $out;
+    }]);
+});
+function cc_rs_save(WP_REST_Request $r) {
+    $uid = get_current_user_id(); $pid = cc_ath_page_of($uid); $a = cc_rs_get($pid);
+    $today = 0; foreach ($a as $x) if ($x['at'] > time() - DAY_IN_SECONDS) $today++; if ($today >= 8) return new WP_Error('cc_many', 'Too many today', ['status' => 429]);
+    $text = cc_av_note((string) $r->get_param('text'), 1500); $pidPhoto = 0;
+    if (preg_match('#^data:image/jpeg;base64,([A-Za-z0-9+/=]+)$#', (string) $r->get_param('img'), $m)) {
+        $bytes = base64_decode($m[1], true); $sz = $bytes ? @getimagesizefromstring($bytes) : false;
+        if (!$bytes || strlen($bytes) > 3000000 || !$sz || $sz[2] !== IMAGETYPE_JPEG) return new WP_Error('cc_bad', 'Photo not accepted', ['status' => 400]);
+        $pidPhoto = (int) cc_f_store($pid, $bytes, 'result', 'jpg', 'image/jpeg', 'Result photo');
+    }
+    if ($text === '' && !$pidPhoto) return new WP_Error('cc_empty', 'Empty', ['status' => 400]);
+    $date = cc_av_date((string) $r->get_param('date')) ?: current_time('Y-m-d'); if ($date > current_time('Y-m-d')) $date = current_time('Y-m-d');
+    $x = ['at' => time(), 'text' => $text, 'race' => cc_av_str($r->get_param('race'), 120), 'date' => $date, 'photo' => $pidPhoto, 'consent' => (bool) $r->get_param('consent'), 'react' => '', 'reply' => ''];
+    $a[] = $x; cc_rs_put($pid, $a); update_post_meta($pid, 'cc_results_updated', time());
+    // Matteo: email with the photo attached, and his phone
+    $name = get_the_title($pid); $board = add_query_arg('board', 'results', home_url('/' . CC_ATH_SLUG . '/'));
+    if (function_exists('cc_av_notify_to') && cc_av_notify_to()) {
+        $h = '<div style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;color:#222"><h2>🏆 Result from ' . esc_html($name) . '</h2>'
+           . '<p style="margin:0 0 10px">' . esc_html(date_i18n('j M Y', strtotime($date . ' 12:00'))) . ($x['race'] !== '' ? ' · <b>' . esc_html($x['race']) . '</b>' : '') . '</p>'
+           . ($text !== '' ? '<blockquote style="margin:0 0 16px;padding:10px 14px;background:#f2f4f3;border-left:3px solid #009a44;white-space:pre-line">' . esc_html($text) . '</blockquote>' : '')
+           . '<p style="margin:0 0 10px">' . ($x['consent'] ? '✅ OK to share on social media and Skool.' : '🔒 Private: they did not tick social media.') . ($pidPhoto ? ' Photo attached.' : '') . '</p>'
+           . '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">React in the hub</a></p></div>';
+        $u = get_userdata($uid); $hd = ['Content-Type: text/html; charset=UTF-8']; if ($u && is_email($u->user_email)) $hd[] = 'Reply-To: ' . $name . ' <' . $u->user_email . '>';
+        if (function_exists('cc_ath_coach_wrap')) $h = cc_ath_coach_wrap($h);
+        wp_mail(cc_av_notify_to(), '🏆 Result from ' . $name, $h, $hd, $pidPhoto ? array_filter([get_attached_file($pidPhoto)]) : []);
+    }
+    if (function_exists('cc_push_coaches')) cc_push_coaches('🏆 Result from ' . $name, $text !== '' ? wp_trim_words($text, 18) : 'New photo', $board, 'cc-result');
+    return ['ok' => true];
+}
+function cc_rs_react(WP_REST_Request $r) {   // Matteo: a reaction and/or a short reply; the athlete's phone is told
+    $pid = (int) $r->get_param('page'); $at = (int) $r->get_param('at'); $a = cc_rs_get($pid);
+    foreach ($a as $k => $x) {
+        if ((int) $x['at'] !== $at) continue;
+        $react = (string) $r->get_param('react'); $reply = cc_av_note((string) $r->get_param('reply'), 600);
+        if (isset(CC_RS_REACTS[$react])) $a[$k]['react'] = $react;
+        if ($reply !== '') $a[$k]['reply'] = $reply;
+        cc_rs_put($pid, $a);
+        $uid = (int) get_post_meta($pid, 'cc_user', true);
+        if ($uid && function_exists('cc_push_user')) {
+            $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($uid);
+            cc_push_user($uid, $reply !== '' ? cc_rs_w('replied') : cc_rs_w('reacted') . ' ' . (CC_RS_REACTS[$react] ?? ''), $reply !== '' ? wp_trim_words($reply, 18) : '', home_url('/' . CC_ATH_SLUG . '/') . '#results', 'cc-result-' . $at);
+            $GLOBALS['cc_ath_lang'] = $keep;
+        }
+        return ['ok' => true];
+    }
+    return new WP_Error('cc_none', 'No such result', ['status' => 404]);
+}
+
+/* ---------- Matteo's board: /athletes/?board=results ---------- */
+add_filter('cc_ath_coach_links', function ($html) {
+    $seen = (int) get_user_meta(get_current_user_id(), 'cc_results_seen', true); $n = 0;
+    foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_results_updated', 'fields' => 'ids']) as $p) foreach (cc_rs_get($p) as $x) if ($x['at'] > $seen) $n++;
+    return $html . '<a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'results', home_url('/' . CC_ATH_SLUG . '/'))) . '">Results' . ($n ? ' <span class="av-badge">' . $n . ' new</span>' : '') . '</a>';
+}, 13);
+add_filter('cc_ath_board', function ($html, $board) {
+    if ($board !== 'results' || !cc_ath_is_coach()) return $html;
+    add_action('shutdown', function () { update_user_meta(get_current_user_id(), 'cc_results_seen', time()); });
+    $all = []; foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_results_updated']) as $p) foreach (cc_rs_get($p->ID) as $x) $all[] = [$p, $x];
+    usort($all, function ($a, $b) { return $b[1]['at'] <=> $a[1]['at']; });
+    $o = '<section class="ath-s"><h2>' . cc_ath_icon('trophy', 'ath-hic') . 'Results</h2><p class="av-lede">What your athletes are proud of, newest first. ✅ means they agreed you can share it on social media and Skool. React or reply: they see it in their hub and on their phone.</p><div class="rs-shelf">';
+    if (!$all) $o .= '<p class="av-lede">No results yet.</p>';
+    foreach (array_slice($all, 0, 60) as [$p, $x]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 28) . ' ' : '') . '<b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($p->post_title) . '</a></b>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($p->ID) : '') . '</div>' . cc_rs_card($p->ID, $x, true);
+    return $o . '</div></section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() : '');
+}, 10, 2);

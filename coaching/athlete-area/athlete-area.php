@@ -447,6 +447,7 @@ function cc_ath_icon($k, $cls = 'ath-ic') {
     static $I = [
         'calendar' => '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h3v3H8z"/>',
         'mic' => '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/>',   // notes.php
+        'trophy' => '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a2.5 2.5 0 0 0 3 4M16 6h3a2.5 2.5 0 0 1-3 4M12 13v4M8.5 21h7M10 17h4v4h-4z"/>',   // results.php
         'food' => '<path d="M12 7.5c-1.6-1.4-4.3-1.9-5.8-.2C4 9.8 5 15.4 7.9 19.2c1.3 1.6 2.7 1.9 4.1.9 1.4 1 2.8.7 4.1-.9 2.9-3.8 3.9-9.4 1.7-11.9-1.5-1.7-4.2-1.2-5.8.2z"/><path d="M12 7.5c0-2.2.9-4 3-4.5"/>',
         'chat' => '<path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/>',
         'people' => '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15.5 14.6c2.8.2 5 2.2 5 5.4"/>',
