@@ -695,7 +695,7 @@ function cc_f_pdf($pid, $a, $m, $sig) {
 function cc_f_js() {
     return <<<'JS'
 <script>(function(){
-var R=document.getElementById('rf');if(!R)return;var F=R.querySelector('form'),W=JSON.parse(document.getElementById('rf-words').textContent),pv=R.dataset.preview==='1',kind=R.dataset.kind;
+var R=document.getElementById('rf');if(!R)return;var F=R.querySelector('form:not(.ath-lang)'),/* Matteo 17 Nov: the language switch is a form too; it came first, so taps and autosave went to the wrong form */W=JSON.parse(document.getElementById('rf-words').textContent),pv=R.dataset.preview==='1',kind=R.dataset.kind;
 var steps=[].slice.call(R.querySelectorAll('.rf-step')),dots=[].slice.call(R.querySelectorAll('.rf-steps li')),i=0,timer=null,drawn=false;
 function data(){var d={week:{},events:[]};R.querySelectorAll('input,select,textarea').forEach(function(e){if(!e.name||e.closest('.rf-ev'))return;
   if(e.type==='checkbox'){if(e.closest('.rf-tick')){d[e.name]=e.checked?1:0;}else{d[e.name]=d[e.name]||[];if(e.checked)d[e.name].push(e.value);}}
