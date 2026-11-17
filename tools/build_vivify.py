@@ -77,6 +77,7 @@ PAY = {'healthy': 'https://pay.gocardless.com/BRT0004V6AWJMPG', 'happy': 'https:
        'performing': 'https://pay.gocardless.com/BRT00045M0SDGT2', 'yoga_monthly': 'https://pay.gocardless.com/BRT0002A1NBMZ4S'}
 EMAIL, PHONE, PHONE_TEL = 'marine@vivifysports.com', '+353 87 224 7402', '+353872247402'
 IG = 'https://www.instagram.com/vivifysports/'
+EBOOK_PAY = 'https://buy.stripe.com/bJe7sN9augIR63nb6w8k800'   # Marine's Stripe payment link, 5.99 EUR (17 Nov)
 GBP = 'https://share.google/d4C3iwnzpSU1VDUqt'   # Marine's Google Business Profile (reviews), 17 Nov
 
 ICON = {
@@ -786,10 +787,10 @@ def ebook():
   <p style="color:var(--text);font-weight:700;margin-bottom:6px">What's included ?</p>
   {ticks(['30 recipes', 'Method', 'Ingredients list', 'Nutritional information'])}
   <div style="display:flex;align-items:center;gap:22px;margin-top:26px;flex-wrap:wrap"><span class="h2" style="font-size:44px">5.99€</span>
-   <a class="btn btn-primary" href="{LIVE}/recipies" target="_blank" rel="noopener">Buy now {ICON['arrow']}</a></div></div>
+   <a class="btn btn-primary" href="{EBOOK_PAY}" target="_blank" rel="noopener">Buy now {ICON['arrow']}</a></div></div>
 </div></section>"""
     schema = {"@context": "https://schema.org", "@type": "Product", "name": "Breakfasts to Ignite Your Potential (e-book)",
-              "brand": {"@type": "Brand", "name": "Vivify Sports"}, "offers": {"@type": "Offer", "price": "5.99", "priceCurrency": "EUR"}}
+              "brand": {"@type": "Brand", "name": "Vivify Sports"}, "offers": {"@type": "Offer", "price": "5.99", "priceCurrency": "EUR", "url": EBOOK_PAY, "availability": "https://schema.org/InStock"}}
     return shell('recipies.html', body, schema)
 
 # ---------------------------------------------------------------- BLOG
