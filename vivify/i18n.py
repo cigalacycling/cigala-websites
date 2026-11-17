@@ -202,6 +202,7 @@ TR = {
  'Lifestyle advice': ('Conseils d’hygiène de vie', 'Consigli sullo stile di vita'),
  'Healthy recipes': ('Recettes saines', 'Ricette sane'),
  'Craving control guidelines': ('Gérer les fringales', 'Gestire la fame nervosa'),
+ 'Immune health': ('Santé immunitaire', 'Salute immunitaria'),
  'IBS or gastro-intestinal issues': ('Syndrome de l’intestin irritable ou troubles digestifs', 'Colon irritabile o disturbi gastrointestinali'),
  'Compare': ('Comparer', 'Confronta'),
  'Find the right plan': ('Trouvez la bonne formule', 'Trova il piano giusto'),

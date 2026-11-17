@@ -836,7 +836,7 @@ def coaching():
   <p>As an athlete, you want to train hard, compete and be successful. Nutrition will help you do that. Your nutrition requirements are determined by your sport, your training &amp; your genetic make-up.These coaching plans are designed to give you personalized support to reach your goals. Partnered with Training Peaks, Vekta &amp; MyFitnessPal, Marine will build your nutrition plan weekly according to your training load. You will know exactly what to eat on &amp; off training. Whether you are looking to clean up your diet a bit, increase performance, support training adaptations, support your gut health, boost your energy levels or simply have a healthy relationship to food, VIFIFY SPORTS is here to help.</p>
   <p>By assessing your dietary patterns, relationship to food, macronutrient &amp; micronutrient balance, VIVIFY SPORTS will give you tailored solutions to reach your goals.</p></div>
  <div class="panel" style="padding:32px"><span class="eyebrow">What we look at</span>
-  {chips(['Macronutrients requirements', 'Vitamins &amp; Minerals requirements', 'Supplements requirements', 'Sports specific requirements', 'Lifestyle advice', 'Healthy recipes', 'Craving control guidelines', 'IBS or gastro-intestinal issues'])}</div>
+  {chips(['Macronutrients requirements', 'Vitamins &amp; Minerals requirements', 'Supplements requirements', 'Sports specific requirements', 'Lifestyle advice', 'Healthy recipes', 'Craving control guidelines', 'IBS or gastro-intestinal issues', 'Immune health'])}</div>
 </div></section>
 <section id="plans" style="padding-top:24px"><div class="wrap">
  {head('3-month coaching', 'Find the right plan', tag=None, center=True)}
