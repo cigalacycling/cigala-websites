@@ -10,6 +10,8 @@ function cc_hub_dict($l) {
 {
 "pt": {
 " · coach view": " · vista de treinador",
+"Add the hub to your home screen": "Adiciona o hub ao ecrã principal",
+"Add to home screen": "Adicionar ao ecrã principal",
 "Already have a password?": "Já tens palavra-passe?",
 "Any trouble? <a href=\"https://wa.me/353834777697\" target=\"_blank\" rel=\"noopener\">WhatsApp me</a> or <a href=\"mailto:matteo@cigalacycling.com\">email me</a>.": "Algum problema? <a href=\"https://wa.me/353834777697\" target=\"_blank\" rel=\"noopener\">Manda-me WhatsApp</a> ou <a href=\"mailto:matteo@cigalacycling.com\">envia-me um email</a>.",
 "Assessment": "Avaliação",
@@ -50,6 +52,8 @@ function cc_hub_dict($l) {
 "New password": "Nova palavra-passe",
 "New password (at least 8 characters)": "Nova palavra-passe (pelo menos 8 caracteres)",
 "Not coached yet?": "Ainda não treinas comigo?",
+"Not now": "Agora não",
+"On iPhone: tap Share, then “Add to Home Screen”.": "No iPhone: toca em Partilhar e depois em “Adicionar ao ecrã principal”.",
 "Once you are in, bookmark the page on your phone so it is always one tap away.": "Depois de entrares, guarda a página nos favoritos do telemóvel para a teres sempre à distância de um toque.",
 "Open": "Abrir",
 "Open full screen": "Abrir em ecrã inteiro",
@@ -116,6 +120,8 @@ function cc_hub_dict($l) {
 },
 "sl": {
 " · coach view": " · pogled trenerja",
+"Add the hub to your home screen": "Dodaj središče na začetni zaslon",
+"Add to home screen": "Dodaj na začetni zaslon",
 "Already have a password?": "Že imaš geslo?",
 "Any trouble? <a href=\"https://wa.me/353834777697\" target=\"_blank\" rel=\"noopener\">WhatsApp me</a> or <a href=\"mailto:matteo@cigalacycling.com\">email me</a>.": "Kakšna težava? <a href=\"https://wa.me/353834777697\" target=\"_blank\" rel=\"noopener\">Piši mi na WhatsApp</a> ali <a href=\"mailto:matteo@cigalacycling.com\">mi pošlji e-pošto</a>.",
 "Assessment": "Ocena",
@@ -156,6 +162,8 @@ function cc_hub_dict($l) {
 "New password": "Novo geslo",
 "New password (at least 8 characters)": "Novo geslo (vsaj 8 znakov)",
 "Not coached yet?": "Še ne treniraš z mano?",
+"Not now": "Ne zdaj",
+"On iPhone: tap Share, then “Add to Home Screen”.": "Na iPhonu tapni Deli in nato »Dodaj na začetni zaslon«.",
 "Once you are in, bookmark the page on your phone so it is always one tap away.": "Ko si notri, si stran shrani med zaznamke na telefonu, da bo vedno le en dotik stran.",
 "Open": "Odpri",
 "Open full screen": "Odpri čez cel zaslon",

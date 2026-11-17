@@ -750,3 +750,36 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
 </style>
 CSS;
 });
+
+/* ---------- the hub as a phone app (Matteo 17 Nov): "Add to home screen" ---------- */
+// The icon is the site icon (Appearance > Customize > Site Identity: the square logo). The manifest makes it open full screen at /athletes/.
+add_action('init', function () {
+    if (!isset($_GET['cc_manifest'])) return;
+    $ic = function ($s) { return function_exists('get_site_icon_url') ? get_site_icon_url($s) : ''; };
+    $icons = []; foreach ([192, 512] as $s) if ($u = $ic($s)) $icons[] = ['src' => $u, 'sizes' => $s . 'x' . $s, 'type' => 'image/png', 'purpose' => 'any'];
+    header('Content-Type: application/manifest+json; charset=utf-8'); header('Cache-Control: public, max-age=86400');
+    echo wp_json_encode(['name' => 'Cigala Cycling Coaching: athlete hub', 'short_name' => 'Cigala Hub', 'start_url' => '/' . CC_ATH_SLUG . '/?source=app', 'scope' => '/' . CC_ATH_SLUG . '/',
+        'display' => 'standalone', 'background_color' => '#08090a', 'theme_color' => '#08090a', 'icons' => $icons], JSON_UNESCAPED_SLASHES);
+    exit;
+});
+add_action('wp_head', function () {
+    if (!is_page(CC_ATH_SLUG)) return;
+    echo '<link rel="manifest" href="' . esc_url(add_query_arg('cc_manifest', 1, home_url('/'))) . '"><meta name="apple-mobile-web-app-title" content="Cigala Hub"><meta name="mobile-web-app-capable" content="yes">'
+       . '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="theme-color" content="#08090a">' . "\n";
+});
+add_filter('cc_ath_before_reports', function ($html, $view, $coach) {   // a small tip on phones, until they add it or tap "Not now"
+    if ($coach || !$view) return $html;
+    return '<div class="ath-a2hs" hidden><p><b>' . esc_html(cc_L('Add the hub to your home screen', 'Aggiungi l’area alla schermata Home')) . '</b>'
+        . '<span class="a2hs-ios" hidden>' . esc_html(cc_L('On iPhone: tap Share, then “Add to Home Screen”.', 'Su iPhone: tocca Condividi, poi “Aggiungi alla schermata Home”.')) . '</span></p>'
+        . '<button type="button" class="btn btn-go a2hs-go" hidden>' . esc_html(cc_L('Add to home screen', 'Aggiungi alla Home')) . '</button>'
+        . '<button type="button" class="btn btn-ghost a2hs-no">' . esc_html(cc_L('Not now', 'Non ora')) . '</button></div>'
+        . '<script>(function(){var b=document.querySelector(".ath-a2hs");if(!b)return;var k="cc_a2hs_no",ev=null;'
+        . 'function no(){try{return localStorage.getItem(k)}catch(e){return null}}'
+        . 'if(no()||matchMedia("(display-mode: standalone)").matches||navigator.standalone||!matchMedia("(max-width: 900px)").matches)return;'
+        . 'var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);if(ios){b.querySelector(".a2hs-ios").hidden=false;b.hidden=false;}'
+        . 'addEventListener("beforeinstallprompt",function(e){e.preventDefault();ev=e;b.querySelector(".a2hs-go").hidden=false;b.hidden=false;});'
+        . 'b.querySelector(".a2hs-go").addEventListener("click",function(){if(ev){ev.prompt();ev.userChoice.then(function(){b.hidden=true;});}});'
+        . 'b.querySelector(".a2hs-no").addEventListener("click",function(){try{localStorage.setItem(k,"1")}catch(e){}b.hidden=true;});})();</script>'
+        . '<style>html .cc .ath-a2hs{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}'
+        . 'html .cc .ath-a2hs[hidden],html .cc .ath-a2hs [hidden]{display:none!important}html .cc .ath-a2hs .a2hs-ios{display:block}html .cc .ath-a2hs p{margin:0;flex:1 1 220px;font-size:14px;color:var(--text-2)}html .cc .ath-a2hs b{display:block;color:#fff}html .cc .ath-a2hs .btn{width:auto;margin:0}</style>' . $html;
+}, 5, 3);

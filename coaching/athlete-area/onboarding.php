@@ -313,6 +313,7 @@ function cc_f_rest(WP_REST_Request $r) {
     if ($r->get_param('action') !== 'submit') { update_user_meta($uid, 'cc_form_draft', wp_slash(wp_json_encode($a))); return ['ok' => true, 'saved' => time()]; }
     $sig = ''; $raw = (string) $r->get_param('sig');
     if ($kind === 'full' && preg_match('#^data:image/jpeg;base64,([A-Za-z0-9+/=]+)$#', $raw, $m)) { $sig = base64_decode($m[1]); if (strlen($sig) < 800 || strlen($sig) > 600000 || !@getimagesizefromstring($sig)) $sig = ''; }
+    cc_f_set_lang($uid);   // the message below in the athlete's language
     if ($miss = cc_f_missing($a, $kind, $sig !== '')) return new WP_Error('cc_missing', implode(', ', array_map('cc_f', $miss)), ['status' => 400, 'missing' => $miss]);
     $now = time(); $meta = ['kind' => $kind, 'at' => $now, 'ip' => $_SERVER['REMOTE_ADDR'] ?? '', 'ua' => substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 200),
         'name' => $a['sig_name'] ?? '', 'guardian' => $a['sig_g'] ?? '', 'u18' => $kind === 'full' && ($age = cc_f_age($a['dob'])) !== null && $age < 18, 'lang' => cc_ath_lang_code($uid)];

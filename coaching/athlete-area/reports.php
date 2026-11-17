@@ -27,6 +27,11 @@ add_action('init', function () {
 /* ---------- PC tools: send a report (always a draft) ---------- */
 add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/report', ['methods' => 'POST', 'callback' => 'cc_r_create', 'permission_callback' => 'cc_ath_is_coach']);
+    register_rest_route('cc/v1', '/report-testmail', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $rid = (int) $r->get_param('id'); $me = wp_get_current_user();
+        if (get_post_type($rid) !== 'cc_report' || !is_email($me->user_email)) return new WP_Error('cc_none', 'No such report', ['status' => 404]);
+        cc_r_mail($rid, $me->user_email); return ['ok' => true, 'sent_to_yourself' => true];
+    }]);
     register_rest_route('cc/v1', '/reports', ['methods' => 'GET', 'callback' => 'cc_r_list_rest', 'permission_callback' => 'cc_ath_is_coach']);
 });
 function cc_r_create(WP_REST_Request $r) {
@@ -183,7 +188,7 @@ add_filter('cc_ath_board', function ($html, $board) {
         foreach ($pub as $p) { $t = get_post_meta($p->ID, 'cc_type', true); $uid = (int) get_post_meta($p->post_parent, 'cc_user', true);
             $o .= '<div class="rp-row">' . $pick($p) . '<div class="rp-what"><b>' . esc_html($p->post_title) . '</b><small>' . esc_html(get_post_field('post_title', $p->post_parent) . ' · ' . cc_r_label($t, false) . ' · published ' . date_i18n('j M Y', (int) get_post_meta($p->ID, 'cc_published', true))
                 . (get_post_meta($p->ID, 'cc_mailed', true) ? ' · emailed' : '') . ($uid ? (cc_r_unseen($uid, $p->ID) ? ' · not opened yet' : ' · opened') : '')) . '</small></div><div class="rp-acts"><a class="btn btn-ghost" href="' . esc_url(cc_r_url($p->ID)) . '" target="_blank" rel="noopener">Open</a>'
-                . cc_r_btn($p->ID, 'unpublish', 'Unpublish') . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>'; }
+                . cc_r_btn($p->ID, 'testmail', 'Send me a test email') . cc_r_btn($p->ID, 'unpublish', 'Unpublish') . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>'; }
     }
     return $o . '</section>';
 }, 10, 2);
@@ -193,6 +198,7 @@ add_action('admin_post_cc_report_admin', function () {
     if ($act === 'publish') {
         wp_update_post(['ID' => $rid, 'post_status' => 'private']); update_post_meta($rid, 'cc_published', time());
         if (!empty($_POST['mail'])) { cc_r_mail($rid); update_post_meta($rid, 'cc_mailed', time()); }
+    } elseif ($act === 'testmail') { $me = wp_get_current_user(); if (is_email($me->user_email)) cc_r_mail($rid, $me->user_email);
     } elseif ($act === 'unpublish') { wp_update_post(['ID' => $rid, 'post_status' => 'draft']);
     } elseif ($act === 'delete') { cc_r_delete($rid); }
     wp_safe_redirect(add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))); exit;
@@ -207,7 +213,7 @@ add_action('admin_post_cc_report_bulk', function () {   // Matteo 17 Nov: tick s
     wp_safe_redirect(add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
 function cc_r_delete($rid) { $fid = (int) get_post_meta($rid, 'cc_file', true); if ($fid) wp_delete_attachment($fid, true); wp_delete_post($rid, true); }
-function cc_r_mail($rid) {   // "your new report is ready", in the hub language (English or Italian)
+function cc_r_mail($rid, $test_to = null) {   // $test_to: Matteo's "Send me a test email" (goes only to him)   // "your new report is ready", in the hub language (English or Italian)
     $p = get_post($rid); $u = get_userdata((int) get_post_meta($p->post_parent, 'cc_user', true)); if (!$u || !is_email($u->user_email)) return;
     $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($u->ID); $it = $GLOBALS['cc_ath_lang'] === 'it'; $first = esc_html($u->first_name ?: $u->display_name); $t = get_post_meta($rid, 'cc_type', true);
     $link = home_url('/' . CC_ATH_SLUG . '/') . ($t === 'season' ? '#season' : '#reports');
@@ -216,7 +222,7 @@ function cc_r_mail($rid) {   // "your new report is ready", in the hub language 
        . '<p style="padding:12px 16px;border-left:3px solid #12a150;background:#f2f4f3"><b style="color:#111">' . esc_html(cc_r_title($p)) . '</b><br><span style="font-size:14px;color:#454a52">' . esc_html(cc_r_label($t)) . '</span></p>'
        . '<p style="margin:22px 0"><a href="' . esc_url($link) . '" style="display:inline-block;padding:14px 24px;border-radius:10px;background:#12a150;color:#fff;font-weight:700;text-decoration:none">' . (cc_L('Open it in my hub', 'Aprilo nella mia area')) . '</a></p>'
        . '<p>' . (cc_L('See you on the road,', 'A presto in bici,')) . '<br><strong>Matteo</strong></p></div>';
-    $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email;   // staging: never an athlete
+    $to = $test_to ?: (strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email);   // staging: never an athlete
     if (!is_email($to)) return;
     wp_mail($to, cc_L('Your new report is ready: ', 'È pronto il tuo nuovo report: ') . cc_r_title($p), $h,
         ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <noreply@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
