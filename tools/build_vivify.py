@@ -655,7 +655,8 @@ def about():
               '<a href="https://www.stickybottle.com/races-results/irelands-lenehan-wins-gran-fondo-european-championships/" target="_blank" rel="noopener">European Gran Fondo Champion (2023)</a>',
               'Podium Elite Irish Road Nationals (2025)', 'Podium Elite Irish TT Nationals (2026)']
     quals = ['MSc in Sports Nutrition – Universidad Europea de Madrid (2025)', 'Professional Diploma in Sports Nutrition – Barça Innovation Hub (2023)',
-             'Master’s Degree in Massage Therapy (2021)', 'Bachelor of Arts (BA) in Wellness (2020)', '200-hour Yoga Alliance Teaching Certificate (2021)']
+             'Diploma in Spa &amp; Wellness and Massage Therapy, EQF level 5 (BTS level) – Suntaya, France (2020–2021)',   # Marine 17 Nov: Suntaya, technicien spa et bien-être + massage, BTS level
+             '200-hour Yoga Alliance Teaching Certificate (2021)']
     princ = [('Evidence-based, individualised nutrition', 'Every athlete is different. Your nutrition plan should reflect your training load, performance goals, nutritional requirements and personal preferences.'),
              ('Fuel for performance, not restriction', 'Eating enough to support training is essential. I focus on appropriate energy and carbohydrate intake, adequate protein, hydration and recovery, without unnecessary food restrictions or extreme approaches.'),
              ('Sustainable habits and practical strategies', 'Nutrition should complement your life, not complicate it. I help athletes develop realistic habits and practical fueling strategies they can maintain throughout training, competition and everyday life.')]

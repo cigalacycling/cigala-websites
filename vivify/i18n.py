@@ -138,8 +138,7 @@ TR = {
  'I’ve spent years building a well-rounded foundation to support the athletes I coach. My qualifications include:': ('J’ai construit au fil des années une formation complète pour accompagner les athlètes. Mes diplômes :', 'Negli anni ho costruito una formazione completa per seguire gli atleti. I miei titoli:'),
  'MSc in Sports Nutrition – Universidad Europea de Madrid (2025)': ('MSc en nutrition sportive – Universidad Europea de Madrid (2025)', 'MSc in Nutrizione Sportiva – Universidad Europea de Madrid (2025)'),
  'Professional Diploma in Sports Nutrition – Barça Innovation Hub (2023)': ('Diplôme professionnel en nutrition sportive – Barça Innovation Hub (2023)', 'Diploma professionale in nutrizione sportiva – Barça Innovation Hub (2023)'),
- 'Master’s Degree in Massage Therapy (2021)': ('Master en massothérapie (2021)', 'Master in massoterapia (2021)'),
- 'Bachelor of Arts (BA) in Wellness (2020)': ('Licence (BA) en bien-être (2020)', 'Laurea (BA) in benessere (2020)'),
+ 'Diploma in Spa & Wellness and Massage Therapy, EQF level 5 (BTS level) – Suntaya, France (2020–2021)': ('Technicien spa et bien-être et spécialisation massage, niveau BTS (CEC niveau 5) – Suntaya, France (2020–2021)', 'Diploma in spa, benessere e massoterapia, livello EQF 5 (livello BTS) – Suntaya, Francia (2020–2021)'),
  '200-hour Yoga Alliance Teaching Certificate (2021)': ('Certificat d’enseignement du yoga Yoga Alliance, 200 heures (2021)', 'Certificato di insegnante di yoga Yoga Alliance, 200 ore (2021)'),
  'These tools enable me to support the entire athlete, not just their diet, but also their movement, mindset, and recovery.':
   ('Ces compétences me permettent d’accompagner l’athlète dans sa globalité : son alimentation, mais aussi son mouvement, son mental et sa récupération.',
