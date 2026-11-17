@@ -336,7 +336,7 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .plan h2.pt{display:flex;flex-direction:column;align-items:flex-start;gap:0;margin:0 0 4px;font-size:27px;line-height:1.05}
 .plan h2.pt .pd{order:-1;font:700 11.5px/1.3 Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--lime-text);margin-bottom:10px}
 .plan h2.pt .pn{display:block}
-.plan h2.pt .pp{display:flex;align-items:baseline;gap:4px;margin-top:14px;font:400 36px/1 Anton,sans-serif;color:var(--text)}
+.plan h2.pt .pp{display:flex;align-items:baseline;gap:4px;margin-top:14px;font:400 30px/1 Anton,sans-serif;letter-spacing:.02em;color:var(--text-2)}
 .plan h2.pt .pp small{font:600 13px/1 Montserrat,sans-serif;color:var(--text-3)}
 .plan h2.pt .pp small.m{text-transform:lowercase}
 .plan .usd{font-size:12.5px;color:var(--text-3);margin:2px 0 14px}
@@ -357,6 +357,34 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .plan details.more p{font-size:14px;margin:10px 0 0}
 .cmp th.hl,.cmp td.hl{background:rgba(177,216,221,.07)}
 .cmp thead th.hl{background:#21545c;color:var(--aqua)}
+/* compare table, Cigala Coaching style */
+.cmp-scroll{border:1px solid var(--border-strong);border-radius:var(--r);background:var(--panel)}
+.cmp2{width:100%;border-collapse:collapse;font-size:14px}
+.cmp2 th,.cmp2 td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+.cmp2 tbody tr:last-child th,.cmp2 tbody tr:last-child td{border-bottom:0}
+.cmp2 thead th{font:400 19px/1.1 Anton,sans-serif;text-transform:uppercase;color:var(--text);vertical-align:bottom}
+.cmp2 thead th small.cmp-badge{display:block;margin-top:6px;font:700 10.5px/1 Montserrat,sans-serif;letter-spacing:.14em;color:var(--lime-text)}
+.cmp2 thead th small.cmp-badge.sold{color:#ffb3ad}
+.cmp2 tbody th{font-weight:600;color:var(--text);width:30%}
+.cmp2 tbody th small{display:block;font-weight:400;color:var(--text-3);font-size:12px}
+.cmp2 td{color:var(--text-2)}
+.cmp2 .hot{background:rgba(177,216,221,.07)}
+.cmp2 thead .hot{color:var(--aqua)}
+.cmp2 .y{color:var(--lime-text);font-weight:700;font-size:16px}
+.cmp2 .n{color:#ff6b61;font-weight:700;font-size:16px}
+.cmp2 tr.price td{color:var(--text);font-weight:600}
+.cmp2 tr.price td small{display:block;font-weight:400;color:var(--text-3);font-size:12px;margin-top:2px}
+.cmp-note{margin:12px 0 0;font-size:13px;color:var(--text-3)}
+@media (max-width:760px){
+ .cmp2,.cmp2 tbody,.cmp2 tr,.cmp2 th,.cmp2 td{display:block}
+ .cmp2 thead{display:none}
+ .cmp2 tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--border)}
+ .cmp2 tbody tr:last-child{border-bottom:0}
+ .cmp2 tbody th{grid-column:1/-1;width:auto;border:0;padding:14px 14px 4px}
+ .cmp2 td{border:0;padding:4px 10px 14px 14px;font-size:13px}
+ .cmp2 td::before{content:attr(data-l);display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:3px}
+ .cmp2 td.hot::before{color:var(--aqua)}
+}
 /* massage rows */
 .mrow{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:28px;background:var(--panel)}
 .mrow .ph{min-height:420px}.mrow .ph img{width:100%;height:100%;object-fit:cover}
@@ -755,27 +783,28 @@ def philosophy():
 
 # ---------------------------------------------------------------- COACHING
 def coaching():
-    S, D = 'S', '-'
-    rows = [('Dietary Monitoring', '', ['50 min', '30 min', '3 months', '3 months', '3 months']),
-            ('Number of calls', '', ['1', '1', '3', '5', 'Unlimited']),
-            ('WhatsApp support', '', [D, D, S, S, 'Daily']),   # Marine 17 Nov: WhatsApp support on all 3 plans
-            ('Weekly Meal Plan', 'based on your training load', [D, D, D, S, S]),
-            ('Weekly Macro Plan', 'based on your training load', [D, D, S, D, S]),
-            ('Advice on healthy nutritional habits', '', [S, S, S, S, S]),
-            ('Food Diary Analysis', '', [D, D, 'Weekly', 'Daily', 'Daily']),
-            ('Vitamins &amp; minerals requirements', '', [S, S, D, D, S]),
-            ('Supplements requirements', '', [S, S, S, S, S]),   # Marine 17 Nov: supplements on the Healthy Body Plan
-            ('Sports-specific requirements', '', [S, S, D, S, S]),   # Marine 17 Nov: not on the Healthy Body Plan
-            ('“Breakfasts to ignite your potential” ebook', '', [D, D, D, D, S])]
-    def cell(v, i=0):
-        hl = ' class="hl"' if i == 3 else ''
-        return f'<td{hl}>{ICON["star"]}<span class="skip">Included</span></td>' if v == S else (f'<td class="dash{" hl" if i == 3 else ""}" aria-label="Not included">–</td>' if v == D else f'<td{hl}>{v}</td>')
-    trs = ''.join(f'<tr><th scope="row">{n}' + (f'<small>({s})</small>' if s else '') + '</th>' + ''.join(cell(v, i) for i, v in enumerate(vs)) + '</tr>' for n, s, vs in rows)
-    trs += '<tr class="price"><th scope="row">Pricing</th>' + ''.join(f'<td{" class=hl" if i == 3 else ""}>{a}<small>{b}</small></td>' for i, (a, b) in enumerate(
-           [('100 €', '120 US$'), ('50 €', '60 US$'), ('99 €/month', '119 US$/month'), ('149 €/month', '180 US$/month'), ('199 €/month', '240 US$/month')])) + '</tr>'
-    table = f"""<div class="tbl-wrap"><table class="cmp"><caption class="skip">Vivify Sports nutrition coaching plans compared</caption>
-<thead><tr><th scope="col"><span class="skip">Feature</span>{img(LOGO, LOGO_ALT, w=56, h=53, style='margin:auto')}</th><th scope="col">Nutritional Assessment</th><th scope="col">Follow-up Consultation</th><th scope="col">The Healthy Body Plan</th><th scope="col" class="hl">The Happy Body Plan<br><small style="font:700 11px Montserrat,sans-serif;letter-spacing:.12em;color:var(--lime-text)">MOST POPULAR</small></th><th scope="col">The Performing Body Plan<br><small style="font:600 11px Montserrat,sans-serif;letter-spacing:.12em;color:var(--text-3)">SOLD OUT</small></th></tr></thead>
-<tbody>{trs}</tbody></table></div>"""
+    # Compare table, Cigala Coaching style (Marine 17 Nov): the three plans, short text, ✓ / ✗, popular column highlighted
+    Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria-label="Not included">✗</span>'
+    rows = [('Length', '3 months', '3 months', '3 months'),
+            ('Number of calls', '3 calls over 3 months', '5 calls over 3 months', 'Unlimited'),
+            ('WhatsApp support', Y, Y, 'Daily'),
+            ('Weekly Macro Plan <small>(based on your training load)</small>', Y, N, Y),
+            ('Weekly Meal Plan <small>(based on your training load)</small>', N, Y, Y),
+            ('Food Diary Analysis', 'Weekly', 'Daily', 'Daily'),
+            ('Advice on healthy nutritional habits', Y, Y, Y),
+            ('Vitamins &amp; minerals requirements', N, N, Y),
+            ('Supplements requirements', Y, Y, Y),
+            ('Sports-specific requirements', N, Y, Y),
+            ('“Breakfasts to ignite your potential” ebook', N, N, Y),
+            ('Price', '99€/month<small>119 US$/month</small>', '149€/month<small>180 US$/month</small>', '199€/month<small>240 US$/month · sold out for now</small>')]
+    cols = [('The Healthy Body Plan', ''), ('The Happy Body Plan', 'hot'), ('The Performing Body Plan', '')]
+    thead = ''.join(f'<th scope="col"{" class=hot" if c else ""}>{n}' + ('<small class="cmp-badge">Most popular</small>' if c else '<small class="cmp-badge sold">Sold out</small>' if 'Performing' in n else '') + '</th>' for n, c in cols)
+    trs = ''.join('<tr' + (' class="price"' if r[0] == 'Price' else '') + f'><th scope="row">{r[0]}</th>'
+                  + ''.join(f'<td{" class=hot" if cols[k][1] else ""} data-l="{("Healthy", "Happy", "Performing")[k]}">{v}</td>' for k, v in enumerate(r[1:])) + '</tr>' for r in rows)
+    table = f"""<div class="cmp-scroll"><table class="cmp2"><caption class="skip">Vivify Sports coaching plans compared</caption>
+<thead><tr><th scope="col"><span class="skip">Feature</span></th>{thead}</tr></thead>
+<tbody>{trs}</tbody></table></div>
+<p class="cmp-note">The Nutritional Assessment and Follow-up Consultation are single sessions: see above.</p>"""
 
     def plan(name, price, dur, intro, inc, btn, href, usd='', feat=False, extra='', sold_out=False, big=None, more=''):
         """Cigala Coaching style card. The H2 text stays the live Wix wording, e.g. "THE HEALTHY BODY PLAN - 99€/MONTH 3 months";
