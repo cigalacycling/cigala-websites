@@ -408,6 +408,8 @@ function cc_f_admin($pid, $act, $data = null) {
             $sigf = !empty($m['sig_id']) ? get_attached_file($m['sig_id']) : '';
             $m['pdf_id'] = cc_f_store($pid, cc_f_pdf($pid, $a, $m, $sigf && file_exists($sigf) ? file_get_contents($sigf) : ''), 'rider-form', 'pdf', 'application/pdf', 'Rider Information Form (countersigned ' . date_i18n('j M Y') . ')');
             update_post_meta($pid, 'cc_form_signed', wp_slash(wp_json_encode($m))); break;
+        case 'end': if (!cc_f_end($pid)) return new WP_Error('cc_end', 'Could not end coaching', ['status' => 400]); return ['ok' => true, 'status' => 'former'];
+        case 'purge': if (!cc_f_purge($pid)) return new WP_Error('cc_purge', 'Only a former athlete can be deleted', ['status' => 400]); return ['ok' => true, 'status' => 'deleted'];
         default: return new WP_Error('cc_act', 'Unknown action', ['status' => 400]);
     }
     return ['ok' => true, 'status' => cc_f_status($uid)];
@@ -422,7 +424,7 @@ add_action('admin_post_cc_form_admin', function () {   // the buttons on Matteo'
     $pid = (int) ($_POST['page'] ?? 0); $act = sanitize_key($_POST['act'] ?? '');
     if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_form_admin_' . $pid)) wp_die('Not allowed');
     cc_f_admin($pid, $act);
-    wp_safe_redirect(add_query_arg(['board' => 'forms', 'a' => $pid, 'done' => $act], home_url('/' . CC_ATH_SLUG . '/'))); exit;
+    wp_safe_redirect(add_query_arg(array_merge(['board' => 'forms', 'done' => $act], $act === 'purge' ? [] : ['a' => $pid]), home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
 
 /* ---------- Matteo's coach page: /athletes/?board=forms (list) and &a=PAGE (one athlete's answers) ---------- */
@@ -446,31 +448,107 @@ add_filter('cc_ath_board', function ($html, $board) {
     if (!empty($_GET['a']) && get_post_type((int) $_GET['a']) === 'cc_athlete') return cc_f_one((int) $_GET['a'], $base);
     $label = ['signed' => 'Signed', 'updated' => 'Details updated', 'unlocked' => 'Unlocked by you', 'started' => 'Started, not finished', 'waiting' => 'Not started'];
     $o = '<section class="ath-s"><h2>' . cc_ath_icon('doc', 'ath-hic') . 'Rider forms</h2><p class="av-lede">Who has completed the form. Athletes see their hub only after that, or once you unlock it. '
-       . '<b>Paper form on file</b> means they get the short “Update your details” step instead of the full form.</p><div class="rf-list">';
+       . '<b>Paper form on file</b> means they get the short “Update your details” step instead of the full form.</p>'
+       . (isset($_GET['done'], $_GET['n']) ? '<p class="av-msg">' . (int) $_GET['n'] . ($_GET['done'] === 'end' ? ' athlete(s) moved to Former athletes.' : ' former athlete(s) deleted for good.') . '</p>' : '')
+       . (($_GET['done'] ?? '') === 'purge' && !isset($_GET['n']) ? '<p class="av-msg">Deleted for good.</p>' : '')
+       . cc_f_bulkbar('rf-bulk-cur', 'end', 'End coaching for selected', 'End coaching for %n athlete(s)? Their login stops working now and their health answers are deleted (privacy policy). The signed form and other answers stay under Former athletes for two years.') . '<div class="rf-list">';
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'meta_key' => 'cc_user']) as $p) {
         $uid = (int) get_post_meta($p->ID, 'cc_user', true); if (!$uid) continue;
         $st = cc_f_status($uid); $m = json_decode((string) get_post_meta($p->ID, 'cc_form_signed', true), true) ?: [];
         $when = $st === 'signed' || $st === 'updated' ? ' ' . date_i18n('j M Y', (int) get_user_meta($uid, 'cc_form_done', true)) : ($st === 'unlocked' ? ' ' . date_i18n('j M', (int) get_user_meta($uid, 'cc_form_unlock', true)) : '');
-        $o .= '<a class="rf-row rf-' . $st . '" href="' . esc_url(add_query_arg('a', $p->ID, $base)) . '"><b>' . esc_html($p->post_title) . '</b><span>' . $label[$st] . esc_html($when)
-            . (cc_f_kind($uid) === 'update' ? ' · paper form on file' : '') . (!empty($m['u18']) && empty($m['coach']) ? ' · <em>under 18: countersign</em>' : '') . '</span></a>';
+        $o .= cc_f_pickrow($p->ID, 'rf-bulk-cur', '<a class="rf-row rf-' . $st . '" href="' . esc_url(add_query_arg('a', $p->ID, $base)) . '"><b>' . esc_html($p->post_title) . '</b><span>' . $label[$st] . esc_html($when)
+            . (cc_f_kind($uid) === 'update' ? ' · paper form on file' : '') . (!empty($m['u18']) && empty($m['coach']) ? ' · <em>under 18: countersign</em>' : '') . '</span></a>');
     }
     $o .= '</div>';
     // former athletes (login deleted when coaching ended): their signed form and answers stay here, read only
     $former = [];
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC']) as $p)
-        if (!get_post_meta($p->ID, 'cc_user', true) && !get_post_meta($p->ID, 'cc_shared', true) && (get_post_meta($p->ID, 'cc_form_signed', true) || get_post_meta($p->ID, 'cc_profile', true) || get_post_meta($p->ID, 'cc_profile_prefill', true))) $former[] = $p;
+        if (!get_post_meta($p->ID, 'cc_user', true) && !get_post_meta($p->ID, 'cc_shared', true) && (get_post_meta($p->ID, 'cc_ended', true) || get_post_meta($p->ID, 'cc_form_signed', true) || get_post_meta($p->ID, 'cc_profile', true) || get_post_meta($p->ID, 'cc_profile_prefill', true))) $former[] = $p;
     if ($former) {
-        $o .= '<h3 class="av-sub" style="margin-top:24px">Former athletes</h3><p class="av-lede">Login removed when coaching ended. Their signed form and answers are kept here (read only).</p><div class="rf-list">';
+        $o .= '<h3 class="av-sub" style="margin-top:24px">Former athletes</h3><p class="av-lede">Login removed when coaching ended. Their signed form and answers are kept here (read only), without the health answers, which go when coaching ends. Each record is deleted automatically two years after coaching ended (as your privacy policy says), or now with “Delete”.</p>'
+            . cc_f_bulkbar('rf-bulk-old', 'purge', 'Delete selected for good', 'Delete everything for %n former athlete(s): signed form, answers, availability, goals, voice notes and reports? This cannot be undone.') . '<div class="rf-list">';
         foreach ($former as $p) { $m = json_decode((string) get_post_meta($p->ID, 'cc_form_signed', true), true) ?: [];
-            $o .= '<a class="rf-row rf-former" href="' . esc_url(add_query_arg('a', $p->ID, $base)) . '"><b>' . esc_html(preg_replace('/^Former athlete: /', '', $p->post_title)) . '</b><span>'
-                . ($m ? 'Signed ' . esc_html(date_i18n('j M Y', $m['at'])) : 'Paper form on file') . '</span></a>'; }
+            $end = (int) get_post_meta($p->ID, 'cc_ended', true);
+            $o .= cc_f_pickrow($p->ID, 'rf-bulk-old', '<a class="rf-row rf-former" href="' . esc_url(add_query_arg('a', $p->ID, $base)) . '"><b>' . esc_html(preg_replace('/^Former athlete: /', '', $p->post_title)) . '</b><span>'
+                . ($end ? 'Ended ' . esc_html(date_i18n('j M Y', $end)) . ' · ' : '') . ($m ? 'Signed ' . esc_html(date_i18n('j M Y', $m['at'])) : (get_post_meta($p->ID, 'cc_profile_prefill', true) ? 'Paper form on file' : 'No form')) . '</span></a>'); }
         $o .= '</div>';
     }
+    $o .= '<script>(function(){document.querySelectorAll("form.rf-bulk").forEach(function(f){var ps=function(){return document.querySelectorAll("input.rf-pick[form="+f.id+"]")};'
+        . 'f.querySelector(".rf-all").addEventListener("change",function(e){ps().forEach(function(c){c.checked=e.target.checked})});'
+        . 'f.addEventListener("submit",function(e){var n=[].filter.call(ps(),function(c){return c.checked}).length;if(!n){e.preventDefault();alert("Tick the athletes first.");return}'
+        . 'if(!confirm(f.dataset.confirm.replace("%n",n)))e.preventDefault();});});})();</script>';
     return $o . '</section>';
 }, 10, 2);
+/* Matteo 17 Nov: end coaching (login removed, the record stays under Former athletes) and delete a former athlete's data for good, one or many at once */
+function cc_f_end($pid) {   // removes the login; the record stays read only under Former athletes, without the health answers (cc_f_ended below)
+    $uid = (int) get_post_meta($pid, 'cc_user', true); $u = $uid ? get_userdata($uid) : null;
+    if (!$u || user_can($u, 'edit_posts')) return false;   // never a coach, editor or admin
+    require_once ABSPATH . 'wp-admin/includes/user.php';
+    return wp_delete_user($uid, get_current_user_id());   // anything they uploaded is kept, under Matteo's name
+}
+/* The privacy policy (live, "How long we keep it"): health information is deleted when coaching ends; coaching records are kept no longer
+ * than two years after it ends. So: whenever an athlete's login is deleted (here or in Users), their health answers go and the signed PDF
+ * is made again without them; two years later a daily job deletes the whole record. */
+function cc_f_health_keys() {
+    $k = [];
+    foreach (cc_f_steps() as $st) foreach ($st[3] as $pn) if (($pn[0] ?? '') === 'p' && ($st[0] === 'healthupd' || ($pn[1] ?? '') === 'Medical history')) foreach ($pn['fields'] as $f) $k[] = $f[0];
+    return $k;
+}
+function cc_f_strip_health($pid) {
+    $hk = array_flip(cc_f_health_keys());
+    foreach (['cc_profile', 'cc_profile_prefill'] as $mk) { $a = json_decode((string) get_post_meta($pid, $mk, true), true);
+        if (is_array($a)) update_post_meta($pid, $mk, wp_slash(wp_json_encode(array_diff_key($a, $hk)))); }
+    $m = json_decode((string) get_post_meta($pid, 'cc_form_signed', true), true) ?: [];
+    if (!empty($m['pdf_id']) && ($m['kind'] ?? '') === 'full') {
+        $a = json_decode((string) get_post_meta($pid, 'cc_profile', true), true) ?: [];
+        $sigf = !empty($m['sig_id']) ? get_attached_file($m['sig_id']) : '';
+        $old = (int) $m['pdf_id'];
+        $m['pdf_id'] = cc_f_store($pid, cc_f_pdf($pid, $a, $m, $sigf && file_exists($sigf) ? file_get_contents($sigf) : ''), 'rider-form', 'pdf', 'application/pdf', 'Rider Information Form (signed, health answers removed when coaching ended)');
+        if ($m['pdf_id']) { wp_delete_attachment($old, true); $m['health_removed'] = time(); update_post_meta($pid, 'cc_form_signed', wp_slash(wp_json_encode($m))); }
+    }
+    update_post_meta($pid, 'cc_health_removed', time());
+}
+add_action('delete_user', function ($uid) {   // before athlete-area.php turns the page into "Former athlete: …"
+    foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_user', 'meta_value' => (int) $uid, 'numberposts' => -1, 'fields' => 'ids']) as $pid) {
+        update_post_meta($pid, 'cc_ended', time()); cc_f_strip_health($pid);
+    }
+}, 5);
+add_action('init', function () { if (!wp_next_scheduled('cc_f_retention')) wp_schedule_event(time() + HOUR_IN_SECONDS, 'daily', 'cc_f_retention'); });
+add_action('cc_f_retention', function () {   // two years after coaching ended: the whole record goes
+    foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => 'cc_ended']) as $pid)
+        if (!get_post_meta($pid, 'cc_user', true) && (int) get_post_meta($pid, 'cc_ended', true) < time() - 2 * YEAR_IN_SECONDS) cc_f_purge($pid);
+});
+function cc_f_purge($pid) {   // a former athlete only: the page, its private files (signed PDF, signature, voice notes), their reports
+    if (get_post_type($pid) !== 'cc_athlete' || get_post_meta($pid, 'cc_user', true) || get_post_meta($pid, 'cc_shared', true)) return false;
+    $kids = get_posts(['post_parent' => $pid, 'post_type' => 'any', 'post_status' => 'any', 'numberposts' => -1]);
+    foreach ($kids as $k) {
+        if ($k->post_type === 'attachment') { wp_delete_attachment($k->ID, true); continue; }
+        foreach (get_posts(['post_parent' => $k->ID, 'post_type' => 'attachment', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids']) as $a) wp_delete_attachment($a, true);
+        wp_delete_post($k->ID, true);
+    }
+    foreach (['cc_form_signed'] as $mk) { $m = json_decode((string) get_post_meta($pid, $mk, true), true) ?: []; foreach (['pdf_id', 'sig_id'] as $f) if (!empty($m[$f])) wp_delete_attachment((int) $m[$f], true); }
+    return (bool) wp_delete_post($pid, true);
+}
+function cc_f_bulkbar($id, $act, $text, $confirm) {
+    return '<form id="' . $id . '" class="rp-bulk rf-bulk" method="post" action="' . esc_url(admin_url('admin-post.php')) . '" data-confirm="' . esc_attr($confirm) . '"><input type="hidden" name="action" value="cc_form_bulk">'
+         . '<input type="hidden" name="act" value="' . $act . '">' . wp_nonce_field('cc_form_bulk', '_wpnonce', false, false)
+         . '<label class="rp-mail"><input type="checkbox" class="rf-all"> Select all</label><button class="btn btn-ghost rp-del">' . esc_html($text) . '</button></form>';
+}
+function cc_f_pickrow($pid, $form, $row) { return '<div class="rf-pickrow"><input type="checkbox" class="rf-pick" name="pids[]" value="' . $pid . '" form="' . $form . '" aria-label="Select ' . esc_attr(get_post_field('post_title', $pid)) . '">' . $row . '</div>'; }
+add_action('admin_post_cc_form_bulk', function () {
+    if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_form_bulk')) wp_die('Not allowed');
+    $act = sanitize_key($_POST['act'] ?? ''); $n = 0;
+    foreach (array_map('intval', (array) ($_POST['pids'] ?? [])) as $pid) {
+        if (get_post_type($pid) !== 'cc_athlete') continue;
+        if ($act === 'end' && cc_f_end($pid)) $n++; elseif ($act === 'purge' && cc_f_purge($pid)) $n++;
+    }
+    wp_safe_redirect(add_query_arg(['board' => 'forms', 'done' => $act, 'n' => $n], home_url('/' . CC_ATH_SLUG . '/'))); exit;
+});
 function cc_f_btn($pid, $act, $text, $ghost = true) {
     return '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="rf-act"><input type="hidden" name="action" value="cc_form_admin"><input type="hidden" name="page" value="' . $pid . '">'
-         . '<input type="hidden" name="act" value="' . $act . '">' . wp_nonce_field('cc_form_admin_' . $pid, '_wpnonce', false, false) . '<button class="btn ' . ($ghost ? 'btn-ghost' : 'btn-go') . '">' . esc_html($text) . '</button></form>';
+         . '<input type="hidden" name="act" value="' . $act . '">' . wp_nonce_field('cc_form_admin_' . $pid, '_wpnonce', false, false) . '<button class="btn ' . ($ghost ? 'btn-ghost' : 'btn-go') . ($act === 'end' || $act === 'purge' ? ' rp-del' : '') . '"'
+         . ($act === 'end' ? ' onclick="return confirm(\'End coaching? Their login stops working now and their health answers are deleted (privacy policy). The signed form and other answers stay under Former athletes for two years.\')"' : '')
+         . ($act === 'purge' ? ' onclick="return confirm(\'Delete everything for good: signed form, answers, availability, goals, voice notes and reports? This cannot be undone.\')"' : '') . '>' . esc_html($text) . '</button></form>';
 }
 function cc_f_one($pid, $base) {
     $uid = (int) get_post_meta($pid, 'cc_user', true); $st = cc_f_status($uid); $kind = cc_f_kind($uid);
@@ -479,7 +557,7 @@ function cc_f_one($pid, $base) {
     $o = '<p><a href="' . esc_url($base) . '">← All rider forms</a></p><section class="ath-s"><h2>' . cc_ath_icon('doc', 'ath-hic') . esc_html(get_post_field('post_title', $pid)) . '</h2><div class="rf-acts">';
     if (!$uid) {   // former athlete: no login any more, nothing to unlock or ask; just the record
         if (!empty($m['pdf_id'])) $o .= '<a class="btn btn-go" href="' . esc_url(wp_get_attachment_url($m['pdf_id'])) . '" target="_blank" rel="noopener">Signed PDF</a>';
-        $o .= '</div><p class="av-lede">Former athlete: login removed. ' . ($m ? 'Signed ' . esc_html(date_i18n('j M Y, H:i', $m['at'])) . ($m['name'] ? ' by ' . esc_html($m['name']) : '') . '.' : '') . '</p>';
+        $o .= cc_f_btn($pid, 'purge', 'Delete all their data for good') . '</div><p class="av-lede">Former athlete: login removed' . (($e = (int) get_post_meta($pid, 'cc_ended', true)) ? ' on ' . esc_html(date_i18n('j M Y', $e)) : '') . '. ' . ($m ? 'Signed ' . esc_html(date_i18n('j M Y, H:i', $m['at'])) . ($m['name'] ? ' by ' . esc_html($m['name']) : '') . '.' : '') . '</p>';
         $show = $a ?: $pre;
         return $o . ($show ? cc_f_answers_html($show, $a ? ($m['kind'] ?? 'full') : 'full') : '<p>No answers on file.</p>') . '</section>';
     }
@@ -488,6 +566,7 @@ function cc_f_one($pid, $base) {
     $o .= $st === 'unlocked' ? cc_f_btn($pid, 'lock', 'Lock the hub again') : (!cc_f_open($uid) ? cc_f_btn($pid, 'unlock', 'Unlock hub') : '');
     if (!get_user_meta($uid, 'cc_form_done', true)) $o .= $kind === 'full' ? cc_f_btn($pid, 'paper', 'Paper form on file (short update instead)') : cc_f_btn($pid, 'full', 'Ask for the full form instead');
     else $o .= cc_f_btn($pid, 'reopen', 'Ask them to fill it in again');
+    $o .= cc_f_btn($pid, 'end', 'End coaching (remove login)');
     $o .= '</div><p class="av-lede">Status: <b>' . esc_html($st) . '</b>' . ($m ? ' · ' . esc_html(date_i18n('j M Y, H:i', $m['at'])) . ($m['name'] ? ' · signed by ' . esc_html($m['name']) : '') . ($m['guardian'] ? ' (guardian: ' . esc_html($m['guardian']) . ')' : '')
        . (!empty($m['coach']) ? ' · countersigned ' . esc_html(date_i18n('j M Y', $m['coach']['at'])) : '') : '') . '</p>';
     $show = $a ?: $pre;
@@ -732,6 +811,9 @@ html .cc .rf-err { margin: 0 0 12px; }
 /* coach page */
 html .cc .rf-list { display: grid; gap: 6px; } html .cc .rf-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 14px; padding: 11px 14px; border-radius: 10px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.08); color: #fff; text-decoration: none; }
 html .cc .rf-row span { color: var(--text-3); font-size: 13.5px; } html .cc .rf-row.rf-signed span, html .cc .rf-row.rf-updated span { color: #34c46a; } html .cc .rf-row.rf-waiting { border-color: rgba(225,6,0,.4); }
+html .cc .rf-pickrow { display: flex; align-items: center; gap: 10px; } html .cc .rf-pickrow > .rf-row { flex: 1 1 auto; min-width: 0; } html .cc .rf-pick { width: 20px; height: 20px; accent-color: #009a44; flex: none; margin: 0; }
+html .cc .ath form.rf-bulk { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; border: 1px dashed rgba(255,255,255,.14); } html .cc .ath form.rf-bulk .btn { width: auto; margin: 0; white-space: normal; }
+html .cc .rp-del { border-color: rgba(225,6,0,.5) !important; }
 html .cc .rf-row.rf-former { opacity: .75; } html .cc .rf-row em { color: #ff3d33; font-style: normal; } html .cc .rf-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; } html .cc .rf-act { margin: 0; }
 html .cc .rf-qa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 4px 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 14px; }
 html .cc .rf-qa span { color: var(--text-3); } html .cc .rf-qa b { color: #fff; font-weight: 500; }

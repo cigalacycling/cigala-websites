@@ -26,6 +26,7 @@ add_action('init', function () {
     $auth = function () { return current_user_can('edit_pages'); };
     register_post_meta('cc_athlete', 'cc_user', ['type' => 'integer', 'single' => true, 'show_in_rest' => true, 'auth_callback' => $auth]);
     register_post_meta('cc_athlete', 'cc_shared', ['type' => 'boolean', 'single' => true, 'show_in_rest' => true, 'auth_callback' => $auth]);
+    register_post_meta('cc_athlete', 'cc_ended', ['type' => 'integer', 'single' => true, 'show_in_rest' => true, 'auth_callback' => $auth]);   // when coaching ended (onboarding.php)
     // the private upload folder, closed to direct downloads (files are served by cc_ath_serve_file after a login check)
     $u = wp_get_upload_dir(); $dir = $u['basedir'] . '/cc-private';
     if (!file_exists($dir . '/.htaccess')) {

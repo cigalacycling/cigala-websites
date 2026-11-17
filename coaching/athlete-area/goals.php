@@ -43,18 +43,22 @@ function cc_g_from_form($pid, $a) {
 
 add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/goals', [
-        ['methods' => 'POST', 'callback' => 'cc_g_save', 'permission_callback' => function () { return is_user_logged_in() && (bool) cc_ath_page_of(get_current_user_id()) && !cc_ath_is_coach(); }],
+        ['methods' => 'POST', 'callback' => 'cc_g_save', 'permission_callback' => function () { return is_user_logged_in() && (cc_ath_is_coach() || (bool) cc_ath_page_of(get_current_user_id())); }],   // Matteo can edit an athlete's (?page=)
         ['methods' => 'GET', 'callback' => 'cc_g_list', 'permission_callback' => 'cc_ath_is_coach'],
     ]);
 });
 function cc_g_save(WP_REST_Request $r) {
-    $uid = get_current_user_id(); $pid = cc_ath_page_of($uid);
+    $coach = cc_ath_is_coach();
+    if ($coach) { $pid = (int) $r->get_param('page'); if (get_post_type($pid) !== 'cc_athlete' || !get_post_meta($pid, 'cc_user', true)) return new WP_Error('cc_none', 'No such athlete', ['status' => 404]); $uid = (int) get_post_meta($pid, 'cc_user', true); }
+    else { $uid = get_current_user_id(); $pid = cc_ath_page_of($uid); }
     $old = cc_g_get($pid) ?: []; $new = cc_g_clean($r->get_json_params()['goals'] ?? null);
     $new['from_form'] = $old['from_form'] ?? '';
     $diff = cc_g_diff($old, $new);
     if (!$diff) return ['ok' => true, 'unchanged' => true];
     $new['updated'] = time();
+    if ($coach) $new['by_coach'] = time();   // Matteo changed them (from a WhatsApp, a call…): no email to himself
     update_post_meta($pid, 'cc_goals', wp_slash(wp_json_encode($new)));
+    if ($coach) return ['ok' => true, 'updated' => $new['updated']];
     $u = get_userdata($uid); $name = get_post_field('post_title', $pid);
     $h = '<div style="font:15px/1.5 Montserrat,Arial,sans-serif;color:#111;max-width:560px"><p style="margin:0 0 4px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E10600;font-weight:600">Goals &amp; events</p>'
        . '<h2 style="margin:0 0 14px;color:#111">' . esc_html($name) . ' updated their goals and events</h2><ul>' . implode('', array_map(function ($x) { return '<li>' . esc_html($x) . '</li>'; }, $diff)) . '</ul>'
@@ -80,7 +84,8 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     if (!$view) return $html;
     $g = cc_g_get($view) ?: ['short' => '', 'long' => '', 'events' => [], 'from_form' => ''];
     $today = current_time('Y-m-d'); $g['events'] = array_values(array_filter($g['events'], function ($e) use ($today) { return $e['date'] >= $today; }));
-    $ro = $coach && cc_ath_page_of(get_current_user_id()) !== $view;
+    $ed = $coach && get_post_meta($view, 'cc_user', true);   // Matteo 17 Nov: he can edit them from the coach view too
+    $ro = false;
     cc_f_set_lang((int) get_post_meta($view, 'cc_user', true));
     $W = []; foreach (['My goals & events', 'Short-term goal (1 year)', 'Long-term goal (more than 1 year)', 'Events coming up', 'No events yet. Add your races, sportives and camps: I plan your training around them.',
         'Event', 'Date', 'Type', 'Priority', 'A = your main goal, B = important, C = for training or fun', 'Distance (km)', 'Climbing (m)', 'Note', 'Remove', '+ Add an event', 'Save my goals & events', 'Saving…',
@@ -90,7 +95,8 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     $speech = function_exists('cc_av_lang') ? (CC_AV_SPEECH[cc_av_lang($view)] ?? 'en-GB') : 'en-GB';
     return $html . '<section class="ath-s gl" id="goals" lang="' . esc_attr($speech) . '"><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html($W['My goals & events']) . '</h2>'
         . '<p class="av-lede">' . esc_html($W['Where you want to get to, and the events on the way. Keep them up to date: your plan is built around them.']) . '</p>'
-        . '<div id="gl-app" data-ro="' . ($ro ? 1 : 0) . '" data-today="' . esc_attr($today) . '" data-api="' . esc_url(rest_url('cc/v1/goals')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"></div>'
+        . ($ed ? '<p class="rf-note"><b>Coach view.</b> You can change these for the athlete (for example a race they told you about on WhatsApp). They see your changes in their hub; you get no email for your own changes.</p>' : '')
+        . '<div id="gl-app" data-ro="' . ($ro ? 1 : 0) . '" data-today="' . esc_attr($today) . '" data-api="' . esc_url($ed ? add_query_arg('page', $view, rest_url('cc/v1/goals')) : rest_url('cc/v1/goals')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"></div>'
         . '<script type="application/json" id="gl-data">' . wp_json_encode(['g' => $g, 'w' => $W, 'types' => $types, 'L' => $speech]) . '</script></section>' . cc_g_js();
 }, 20, 3);
 
