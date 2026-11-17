@@ -304,7 +304,7 @@ def build(b):
            ('Do I need to live in Ireland?',
             '<p>No. Coaching is online and Marine works with athletes worldwide. Prices are shown in euro and US dollars. See <a href="online-sports-nutritionist.html">online coaching</a>.</p>'),
            ('Which plan should I choose?',
-            '<p>Start with the Nutritional Assessment for a one-off review and report. For ongoing support, The Healthy Body Plan builds habits with a weekly macro plan, The Happy Body Plan adds a weekly meal plan and daily food diary analysis, and The Performing Body Plan (sold out for now) adds unlimited calls, daily WhatsApp support and sport-specific work such as a competition plan and sweat rate test. <a href="sports-nutritionist-ireland.html#plans">Compare the plans</a>.</p>'),
+            '<p>Start with the Nutritional Assessment for a one-off review and report. For ongoing support, The Healthy Body Plan builds habits with a weekly macro plan, The Happy Body Plan adds a weekly meal plan and more calls, and The Performing Body Plan (sold out for now) adds unlimited calls, daily WhatsApp support and sport-specific work such as a competition plan and sweat rate test. <a href="sports-nutritionist-ireland.html#plans">Compare the plans</a>.</p>'),
            ('How much do the plans cost?',
             '<p>The Nutritional Assessment is 100€ (120 US$) and a Follow-up Consultation is 50€ (60 US$). The 3-month plans are 99€, 149€ or 199€ a month (119, 180 or 240 US$).</p>'),
            ('Is the discovery call free?', '<p>Yes. It is a free 30-minute call to talk about your goals and see whether coaching is right for you. <a href="free-sports-nutrition-consultation.html">Book it here</a>.</p>'),
