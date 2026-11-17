@@ -20,7 +20,10 @@ const CC_R_TYPES = ['season' => ['Season plan', 'Piano di stagione', 'peaks'], '
  * One current page per kind. After Matteo has published the first one with "Keep it updated automatically", the laptop's new versions go
  * live straight away (no email); otherwise each one waits for him as a draft. */
 const CC_R_LIVE = ['season', 'snapshot', 'prediction'];
-const CC_R_ONTOP = ['race-plan', 'race-sim'];   // one per race: all stay on top
+const CC_R_ONTOP = ['race-plan', 'race-sim'];
+/* Matteo 17 Nov: the training response report (progress) and race plans also keep themselves up to date once he publishes the first one
+ * with "Keep it updated automatically" (one current per athlete + key; no email). Shown where they always were (Your reports). */
+const CC_R_AUTO = ['season', 'snapshot', 'prediction', 'progress', 'race-sim', 'race-plan'];   // one per race: all stay on top
 function cc_r_auto($pid, $type = null) { $a = (array) get_post_meta($pid, 'cc_auto', true); return $type === null ? $a : in_array($type, $a, true); }
 function cc_r_set_auto($pid, $type, $on) { $a = array_values(array_diff(cc_r_auto($pid), [$type])); if ($on) $a[] = $type; update_post_meta($pid, 'cc_auto', $a); }
 function cc_r_go_live($rid) {   // publish; a live kind replaces the athlete's previous one (season plans are kept as history)
@@ -38,7 +41,7 @@ function cc_r_same_key($rid, $status) {
     return get_posts(['post_type' => 'cc_report', 'post_status' => $status, 'post_parent' => get_post($rid)->post_parent, 'numberposts' => -1, 'exclude' => [$rid], 'fields' => 'ids',
         'meta_query' => [['key' => 'cc_type', 'value' => get_post_meta($rid, 'cc_type', true)], ['key' => 'cc_key', 'value' => $k]]]);
 }   // guide: a resource for this athlete (Vekta brief 17 Nov)
-function cc_r_mail_default($type) { return !in_array($type, CC_R_LIVE, true); }   // pages that keep changing (season plan, prediction, snapshot): no email unless Matteo ticks it
+function cc_r_mail_default($type) { return !in_array($type, CC_R_AUTO, true); }   // pages that keep changing (season plan, prediction, snapshot): no email unless Matteo ticks it
 function cc_r_label($type, $it = null) { $t = CC_R_TYPES[$type] ?? CC_R_TYPES['other']; return $it === false ? $t[0] : cc_L($t[0], $t[1]); }   // false: English (coach board)
 
 add_action('init', function () {
@@ -79,7 +82,7 @@ function cc_r_create(WP_REST_Request $r) {
         cc_r_delete($old); $replaced[] = $old;   // one draft per live kind: a newer one replaces an unpublished older one
     }
     foreach (cc_r_same_key($rid, 'draft') as $old) { cc_r_delete($old); $replaced[] = $old; }   // same key: one draft
-    $auto = in_array($type, CC_R_LIVE, true) && cc_r_auto($pid, $type);
+    $auto = in_array($type, CC_R_AUTO, true) && cc_r_auto($pid, $type);
     if ($auto) cc_r_go_live($rid);   // Matteo switched on automatic updates for this athlete and kind
     return ['ok' => true, 'id' => $rid, 'status' => $auto ? 'published' : 'draft', 'auto' => $auto, 'replaced_drafts' => $replaced, 'preview' => add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')),
             'review' => add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))];
@@ -223,14 +226,14 @@ add_filter('cc_ath_board', function ($html, $board) {
         $o .= '<div class="rp-row">' . $pick($p) . '<div class="rp-what"><b>' . esc_html($p->post_title) . '</b><small>' . esc_html(get_post_field('post_title', $p->post_parent) . ' · ' . cc_r_label($t, false) . ' · sent ' . human_time_diff(strtotime(get_gmt_from_date($p->post_date) . ' UTC')) . ' ago')
             . ($t === 'season' ? ' · replaces their current season plan' : '') . '</small></div><div class="rp-acts"><a class="btn btn-ghost" href="' . esc_url(cc_r_url($p->ID)) . '" target="_blank" rel="noopener">Preview</a>'
             . cc_r_btn($p->ID, 'publish', 'Publish', true, '<label class="rp-mail"><input type="checkbox" name="mail" value="1"' . $chk . '> Email the athlete</label>'
-                . (in_array($t, CC_R_LIVE, true) ? '<label class="rp-mail"><input type="checkbox" name="auto" value="1" checked> Keep it updated automatically</label>' : '')) . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>';
+                . (in_array($t, CC_R_AUTO, true) ? '<label class="rp-mail"><input type="checkbox" name="auto" value="1" checked> Keep it updated automatically</label>' : '')) . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>';
     }
     if ($pub) {
         $o .= '<h3 class="av-sub" style="margin-top:22px">Published</h3>';
         foreach ($pub as $p) { $t = get_post_meta($p->ID, 'cc_type', true); $uid = (int) get_post_meta($p->post_parent, 'cc_user', true);
             $o .= '<div class="rp-row">' . $pick($p) . '<div class="rp-what"><b>' . esc_html($p->post_title) . '</b><small>' . esc_html(get_post_field('post_title', $p->post_parent) . ' · ' . cc_r_label($t, false) . ' · published ' . date_i18n('j M Y', (int) get_post_meta($p->ID, 'cc_published', true))
-                . (get_post_meta($p->ID, 'cc_mailed', true) ? ' · emailed' : '') . (in_array($t, CC_R_LIVE, true) && cc_r_auto($p->post_parent, $t) ? ' · updates automatically' : '') . ($uid ? (cc_r_unseen($uid, $p->ID) ? ' · not opened yet' : ' · opened') : '')) . '</small></div><div class="rp-acts"><a class="btn btn-ghost" href="' . esc_url(cc_r_url($p->ID)) . '" target="_blank" rel="noopener">Open</a>'
-                . (in_array($t, CC_R_LIVE, true) && cc_r_auto($p->post_parent, $t) ? cc_r_btn($p->ID, 'stopauto', 'Stop automatic updates') : '')
+                . (get_post_meta($p->ID, 'cc_mailed', true) ? ' · emailed' : '') . (in_array($t, CC_R_AUTO, true) && cc_r_auto($p->post_parent, $t) ? ' · updates automatically' : '') . ($uid ? (cc_r_unseen($uid, $p->ID) ? ' · not opened yet' : ' · opened') : '')) . '</small></div><div class="rp-acts"><a class="btn btn-ghost" href="' . esc_url(cc_r_url($p->ID)) . '" target="_blank" rel="noopener">Open</a>'
+                . (in_array($t, CC_R_AUTO, true) && cc_r_auto($p->post_parent, $t) ? cc_r_btn($p->ID, 'stopauto', 'Stop automatic updates') : '')
                 . cc_r_btn($p->ID, 'testmail', 'Send me a test email') . cc_r_btn($p->ID, 'unpublish', 'Unpublish') . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>'; }
     }
     return $o . '</section>';
@@ -240,7 +243,7 @@ add_action('admin_post_cc_report_admin', function () {
     if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_report_' . $rid) || get_post_type($rid) !== 'cc_report') wp_die('Not allowed');
     if ($act === 'publish') {
         cc_r_go_live($rid); $t = get_post_meta($rid, 'cc_type', true);
-        if (in_array($t, CC_R_LIVE, true)) cc_r_set_auto(get_post($rid)->post_parent, $t, !empty($_POST['auto']));
+        if (in_array($t, CC_R_AUTO, true)) cc_r_set_auto(get_post($rid)->post_parent, $t, !empty($_POST['auto']));
         if (!empty($_POST['mail'])) { cc_r_mail($rid); update_post_meta($rid, 'cc_mailed', time()); }
     } elseif ($act === 'stopauto') { cc_r_set_auto(get_post($rid)->post_parent, get_post_meta($rid, 'cc_type', true), false);
     } elseif ($act === 'testmail') { $me = wp_get_current_user(); if (is_email($me->user_email)) cc_r_mail($rid, $me->user_email);
