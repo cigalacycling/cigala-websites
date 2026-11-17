@@ -847,12 +847,6 @@ def coaching():
  <div style="margin-top:64px">{head('Side by side', 'Compare plans', tag=None)}</div>
  <div style="margin-top:6px">{table}</div>
 </div></section>
-<section style="padding-top:24px"><div class="wrap g2" style="align-items:start">
- <div>{head('The Performing Body Plan', 'Sport-specific nutrition', tag=None)}
-  <p>The requirements for sports nutrition can vary greatly between sports, depending on the length of the activity, the intensity, training requirements and energy system requirements. Sport-specific nutrition entails a dietary regime that will aid in optimizing sports performance. You can consider food products such as sports drinks, sports bars, sports gels and protein shakes, but in most cases basic nutrition products are just as good (or sometimes even better).</p>
-  <p style="color:var(--text);font-weight:600">With THE PERFORMING BODY PLAN, you can expect :</p></div>
- <div class="panel" style="padding:32px">{chips(['Daily macronutrient plan', 'Daily hydration plan', 'Daily supplement plan', 'Competition nutrition plan', 'Sweat rate test', 'Glucose sensor monitoring', 'Immunity management', 'Weight management'])}</div>
-</div></section>
 <section style="padding-top:8px"><div class="wrap"><div class="cta">
  <div><span class="eyebrow">Race day</span><h2>FUELLING PLAN</h2><span class="bar"></span>
   <p>As an athlete, you want to train hard, compete and be successful. Nutrition is almost as important as your training load to bring your performance to the next level. Fuelling for an event can be quite a headache. Remember bonking out half way through your event ?</p>
