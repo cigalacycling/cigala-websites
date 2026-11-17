@@ -10807,5 +10807,90 @@
    1200
   ],
   "orig": 11126
+ },
+ "flag-gb": {
+  "id": 11136,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-gb.webp",
+  "alt": "Flag of United Kingdom"
+ },
+ "flag-nl": {
+  "id": 11137,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-nl.webp",
+  "alt": "Flag of the Netherlands"
+ },
+ "flag-de": {
+  "id": 11138,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-de.webp",
+  "alt": "Flag of Germany"
+ },
+ "flag-dk": {
+  "id": 11139,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-dk.webp",
+  "alt": "Flag of Denmark"
+ },
+ "flag-fi": {
+  "id": 11140,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-fi.webp",
+  "alt": "Flag of Finland"
+ },
+ "flag-us": {
+  "id": 11141,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-us.webp",
+  "alt": "Flag of the United States"
+ },
+ "flag-ca": {
+  "id": 11142,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-ca.webp",
+  "alt": "Flag of Canada"
+ },
+ "flag-mx": {
+  "id": 11143,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-mx.webp",
+  "alt": "Flag of Mexico"
+ },
+ "flag-co": {
+  "id": 11144,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-co.webp",
+  "alt": "Flag of Colombia"
+ },
+ "flag-br": {
+  "id": 11145,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-br.webp",
+  "alt": "Flag of Brazil"
+ },
+ "flag-ar": {
+  "id": 11146,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-ar.webp",
+  "alt": "Flag of Argentina"
+ },
+ "flag-za": {
+  "id": 11147,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-za.webp",
+  "alt": "Flag of South Africa"
+ },
+ "flag-ae": {
+  "id": 11148,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-ae.webp",
+  "alt": "Flag of the United Arab Emirates"
+ },
+ "flag-tr": {
+  "id": 11149,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-tr.webp",
+  "alt": "Flag of Turkey"
+ },
+ "flag-au": {
+  "id": 11150,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-au.webp",
+  "alt": "Flag of Australia"
+ },
+ "flag-nz": {
+  "id": 11151,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-nz.webp",
+  "alt": "Flag of New Zealand"
+ },
+ "flag-sg": {
+  "id": 11152,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-sg.webp",
+  "alt": "Flag of Singapore"
  }
 }

@@ -439,6 +439,27 @@ foot = '\n        '.join(f'<li><a href="{L}{u}" {EXT}>{t}</a></li>' for t, u in 
 s, n = re.subn(r'<li><a href="' + re.escape(L) + r'/trips/" ' + re.escape(EXT) + r'>All tours</a></li>(?:\s*<li><a href="[^"]+" ' + re.escape(EXT) + r'>(?:Gran Fondo|Italian|Gravel|Road|Custom) tours</a></li>)+', foot, s, count=1)
 assert n == 1
 
+# where our guests come from (Matteo 17 Nov: under the reviews, not high up). Only countries guests really came from.
+GUEST_FROM = [('ie', 'Ireland'), ('gb', 'United Kingdom'), ('it', 'Italy'), ('fr', 'France'), ('es', 'Spain'), ('pt', 'Portugal'), ('nl', 'Netherlands'),
+              ('be', 'Belgium'), ('de', 'Germany'), ('dk', 'Denmark'), ('fi', 'Finland'), ('us', 'United States'), ('ca', 'Canada'), ('mx', 'Mexico'),
+              ('co', 'Colombia'), ('br', 'Brazil'), ('ar', 'Argentina'), ('za', 'South Africa'), ('ae', 'United Arab Emirates'), ('tr', 'Turkey'),
+              ('au', 'Australia'), ('nz', 'New Zealand'), ('sg', 'Singapore')]
+gf = ('<div class="guests"><p class="gtitle">Riders from <b>' + str(len(GUEST_FROM)) + ' countries</b> have joined us so far</p><ul class="gflags">'
+      + ''.join(f'<li><img src="img/flag-{c}.webp" alt="Flag of {n}" title="{n}" width="40" height="40" loading="lazy"><span>{n}</span></li>' for c, n in GUEST_FROM) + '</ul></div>')
+s, n = re.subn(r'(<div class="reviews">.*?</article>\s*</div>)', lambda m: m.group(1) + '\n    ' + gf, s, count=1, flags=re.S)
+assert n == 1
+s = s.replace('@media (max-width: 1080px)', """
+.guests { margin-top: 34px; padding: 22px 24px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255,255,255,.025); text-align: center; }
+.guests .gtitle { margin: 0 0 16px; font-size: 15px; color: var(--text-2); letter-spacing: .02em; }
+.guests .gtitle b { color: var(--text); font-weight: 700; }
+.gflags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.gflags li { position: relative; }
+.gflags img { display: block; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); transition: transform .2s; }
+.gflags li:hover img { transform: translateY(-3px) scale(1.08); }
+.gflags span { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; font-size: 12px; font-weight: 600; color: #fff; background: rgba(8,9,10,.92); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+.gflags li:hover span { opacity: 1; }
+@media (max-width: 600px) { .gflags { gap: 10px; } .gflags img { width: 30px; height: 30px; } .guests { padding: 18px 14px; } }
+@media (max-width: 1080px)""", 1)
 s = s.replace('<title>Cigala Tours Homepage</title>', '<title>Cigala Cycling Tours | Europe Bike Tour Operator</title>')
 open(OUT + 'home.html', 'w').write(s)
 print('wrote tourspages/home.html', len(s), 'bytes,', len(cards), 'tours')
