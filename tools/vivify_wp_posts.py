@@ -130,7 +130,7 @@ def build(slug):
     bottom = ('</div><div class="author panel"><img src="' + ME['url'] + '" alt="Marine Lenehan" width="84" height="84"><div>'
               '<span class="eyebrow">Written by</span><div class="h3">Marine Lenehan</div>'
               '<p class="muted" style="margin:8px 0 14px">MSc Sports Nutritionist | WorldTour Professional Cyclist. Founder of Vivify Sports, Wicklow, Ireland.</p>'
-              '<a class="btn btn-primary" href="/contact/">Book a free discovery call</a></div></div></article>'
+              '<a class="btn btn-primary" href="' + BV.DISCOVERY + '">Book a free discovery call</a></div></div></article>'
               f'<div style="margin-top:72px;padding-bottom:88px"><div class="center"><span class="eyebrow">Keep reading</span><h2>Recent Posts</h2><span class="bar"></span></div>'
               f'<div class="bgrid" style="margin-top:28px">{recent(slug)}</div></div></div></section>' + FOOTER)
     content = '\n\n'.join([hblock(top), body, hblock(bottom)])

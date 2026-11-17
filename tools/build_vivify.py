@@ -70,8 +70,8 @@ PAGES.update({f: v[0] for f, v in NEW.items()})
 NAV = [('index.html', 'Home'), ('about.html', 'About'), ('nutrition-nutrition-philosophy.html', 'Sports Nutrition Philosophy'),
        ('sports-nutritionist-ireland.html', 'Sports Nutrition Coaching'), ('workshops.html', 'Workshops'),
        ('recipies.html', 'E-Book'), ('blog.html', 'Blog'), ('contact.html', 'Contact')]
-DISCOVERY = 'contact.html'          # live "BOOK YOUR FREE NUTRITION DISCOVERY CALL" -> /contact
-BOOK_CAL = LIVE + '/booking-calendar/vivify-sport-s-discovery-call'
+DISCOVERY = 'https://cal.com/marine-lenehan/discovery-call'   # Marine 17 Nov: Cal.com replaces Wix Bookings
+BOOK_CAL = DISCOVERY
 MASSAGE_BOOK = 'http://VEV.CO/MASSAGE-THERAPIST-VIVIFY-SPORTS-IE'
 PAY = {'healthy': 'https://pay.gocardless.com/BRT0004V6AWJMPG', 'happy': 'https://pay.gocardless.com/BRT00045M0TDENA',
        'performing': 'https://pay.gocardless.com/BRT00045M0SDGT2', 'yoga_monthly': 'https://pay.gocardless.com/BRT0002A1NBMZ4S'}
