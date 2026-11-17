@@ -122,10 +122,10 @@ function cc_g_list(WP_REST_Request $r) {
 }
 
 /* ---------- the athlete's box ---------- */
-add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view) { cc_f_set_lang((int) get_post_meta($view, 'cc_user', true)); array_splice($nav, 2, 0, [['goals', cc_f('My goals & events')]]); } return $nav; }, 20, 3);
+add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view && !cc_ath_tp($view)) { cc_f_set_lang((int) get_post_meta($view, 'cc_user', true)); array_splice($nav, 2, 0, [['goals', cc_f('My goals & events')]]); } return $nav; }, 20, 3);
 /* Matteo 17 Nov: in the athlete's hub a short summary (next events, short-term goal) with "Add or change" opening its own page (?my=goals). Coach view: the full box (he can edit). */
 add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
-    if (!$view) return $html;
+    if (!$view || cc_ath_tp($view)) return $html;   // TrainingPeaks athletes add races and goals there
     if ($coach) return $html . cc_g_section($view, $coach);
     $lang = function_exists('cc_av_lang') ? cc_av_lang($view) : 'en';
     cc_f_set_lang((int) get_post_meta($view, 'cc_user', true));
@@ -142,7 +142,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     $o .= '</div><a class="btn btn-ghost" href="' . esc_url(add_query_arg('my', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html(cc_ath_w('gl_change', $lang)) . '</a></div></section>';
     return $html . $o;
 }, 20, 3);
-add_filter('cc_ath_subpage', function ($html, $sub, $view) { return $sub === 'goals' ? cc_g_section($view, false) : $html; }, 10, 3);
+add_filter('cc_ath_subpage', function ($html, $sub, $view) { return $sub === 'goals' && !cc_ath_tp($view) ? cc_g_section($view, false) : $html; }, 10, 3);
 function cc_g_section($view, $coach) {
     $html = '';
     $g = cc_g_get($view) ?: ['short' => '', 'long' => '', 'events' => [], 'from_form' => ''];

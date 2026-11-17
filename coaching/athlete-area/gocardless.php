@@ -141,7 +141,7 @@ function cc_gc_contracts() {
         $k = json_decode((string) get_post_meta($p->ID, 'cc_contract', true), true) ?: [];
         $out[] = ['page' => $p->ID, 'name' => $p->post_title, 'fee' => $k['fee'] ?? null, 'currency' => $k['currency'] ?? 'EUR', 'signup' => $k['signup'] ?? '', 'end' => $k['end'] ?? '', 'source' => $k['source'] ?? '',
                   'days_left' => !empty($k['end']) ? (int) floor((strtotime($k['end']) - strtotime(current_time('Y-m-d'))) / DAY_IN_SECONDS) : null,
-                  'reminded' => (string) get_post_meta($p->ID, 'cc_contract_reminded', true)];
+                  'reminded' => (string) get_post_meta($p->ID, 'cc_contract_reminded', true), 'tp' => (bool) get_post_meta($p->ID, 'cc_tp', true)];
     }
     usort($out, function ($a, $b) { return [$a['end'] === '' ? 1 : 0, $a['end'], $a['name']] <=> [$b['end'] === '' ? 1 : 0, $b['end'], $b['name']]; });
     return $out;
@@ -165,6 +165,8 @@ add_action('rest_api_init', function () {
         $done = [];
         foreach ((array) $r->get_param('items') as $it) {
             $pid = (int) ($it['page'] ?? 0); if (get_post_type($pid) !== 'cc_athlete') { $done[] = ['page' => $pid, 'ok' => false, 'why' => 'no such athlete page']; continue; }
+            if (array_key_exists('tp', $it)) update_post_meta($pid, 'cc_tp', $it['tp'] ? 1 : 0);   // TrainingPeaks athlete
+            if (!empty($it['tp_only'])) { $done[] = ['page' => $pid, 'ok' => true, 'tp' => (bool) $it['tp']]; continue; }
             $old = json_decode((string) get_post_meta($pid, 'cc_contract', true), true) ?: [];
             if (($old['source'] ?? '') === 'gocardless' && empty($it['force'])) { $done[] = ['page' => $pid, 'ok' => false, 'why' => 'kept the GoCardless contract']; continue; }
             $end = preg_match('~^\d{4}-\d{2}-\d{2}$~', (string) ($it['end'] ?? '')) ? $it['end'] : ''; $su = preg_match('~^\d{4}-\d{2}-\d{2}$~', (string) ($it['signup'] ?? '')) ? $it['signup'] : '';
@@ -225,13 +227,15 @@ add_filter('cc_ath_board', function ($html, $board) {
     if ($board !== 'contracts' || !cc_ath_is_coach()) return $html;
     $r = sanitize_key($_GET['gc'] ?? ''); $f = function ($d) { return $d ? esc_html(date_i18n('j M Y', strtotime($d))) : '—'; };
     $o = '<section class="ath-s"><h2>Contracts</h2><p class="av-lede">Every athlete with their fee and 6-month commitment, the soonest ending first. 15 days before an end you get an email (the athlete never does). New GoCardless signups appear here by themselves.</p>';
-    $o .= '<div class="gc-tw"><table class="gc-t"><thead><tr><th>Athlete</th><th>Fee / month</th><th>Signed up</th><th>Commitment ends</th><th></th></tr></thead><tbody>';
+    $o .= '<div class="gc-tw"><table class="gc-t"><thead><tr><th>Athlete</th><th>Fee / month</th><th>Signed up</th><th>Commitment ends</th><th></th><th>TrainingPeaks</th></tr></thead><tbody>';
     foreach (cc_gc_contracts() as $k) {
         $soon = $k['days_left'] !== null && $k['days_left'] >= 0 && $k['days_left'] <= CC_GC_REMIND_DAYS; $past = $k['days_left'] !== null && $k['days_left'] < 0;
         $o .= '<tr' . ($soon ? ' class="soon"' : '') . '><td><a href="' . esc_url(add_query_arg('view', $k['page'], home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($k['name']) . '</a></td><td>' . ($k['fee'] !== null ? esc_html(number_format((float) $k['fee'], 2) . ' ' . $k['currency']) : '—') . '</td><td>' . $f($k['signup']) . '</td><td>' . $f($k['end'])
             . ($soon ? ' <span class="av-badge">' . (int) $k['days_left'] . ' days</span>' : ($past ? ' <small>past: rolling monthly</small>' : '')) . '</td>'
             . '<td><form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="gc-ed"><input type="hidden" name="action" value="cc_gc_end"><input type="hidden" name="page" value="' . (int) $k['page'] . '">' . wp_nonce_field('cc_gc_end', '_wpnonce', false, false)
-            . '<input type="date" name="end" value="' . esc_attr($k['end']) . '" aria-label="Commitment end for ' . esc_attr($k['name']) . '"><button class="btn btn-ghost" type="submit">Save</button></form></td></tr>';
+            . '<input type="date" name="end" value="' . esc_attr($k['end']) . '" aria-label="Commitment end for ' . esc_attr($k['name']) . '"><button class="btn btn-ghost" type="submit">Save</button></form></td>'
+            . '<td><form method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_gc_tp"><input type="hidden" name="page" value="' . (int) $k['page'] . '">' . wp_nonce_field('cc_gc_tp', '_wpnonce', false, false)
+            . '<label class="gc-tp"><input type="checkbox" name="tp" value="1"' . ($k['tp'] ? ' checked' : '') . ' onchange="this.form.submit()" aria-label="' . esc_attr($k['name']) . ' trains in TrainingPeaks"> TP</label></form></td></tr>';
     }
     $o .= '</tbody></table></div></section>';
     // GoCardless connection
@@ -251,9 +255,14 @@ add_filter('cc_ath_board', function ($html, $board) {
     $o .= '</section><style>html .cc .gc-tw{overflow-x:auto}html .cc .gc-t{width:100%;border-collapse:collapse;font-size:16px}html .cc .gc-t th{text-align:left;font-size:14px;color:#b8bec8;font-weight:600;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.15)}'
         . 'html .cc .gc-t td{padding:10px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:middle}html .cc .gc-t td a{color:#fff}html .cc .gc-t tr.soon td{background:rgba(240,180,41,.08)}html .cc .gc-t small{color:#b8bec8;font-size:14px}'
         . 'html .cc .gc-ed{display:flex;gap:8px;align-items:center}html .cc .gc-ed input{font:16px var(--body);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff}'
-        . 'html .cc .gc-log{margin:0;padding-left:18px;font-size:15px;color:#d0d6e0}html .cc .gc-log small{color:#b8bec8}html .cc .gc-set code{font-size:14px;word-break:break-all}</style>';
+        . 'html .cc .gc-tp{display:flex;gap:8px;align-items:center;font-size:15px;color:#d0d6e0;white-space:nowrap}html .cc .gc-tp input{width:20px;height:20px}html .cc .gc-log{margin:0;padding-left:18px;font-size:15px;color:#d0d6e0}html .cc .gc-log small{color:#b8bec8}html .cc .gc-set code{font-size:14px;word-break:break-all}</style>';
     return $o;
 }, 10, 2);
+add_action('admin_post_cc_gc_tp', function () {   // TrainingPeaks athlete: no Availability / Goals / Vekta section in their hub, a TrainingPeaks card instead
+    if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_gc_tp')) wp_die('Not allowed');
+    $pid = (int) ($_POST['page'] ?? 0); if (get_post_type($pid) === 'cc_athlete') update_post_meta($pid, 'cc_tp', empty($_POST['tp']) ? 0 : 1);
+    wp_safe_redirect(add_query_arg('board', 'contracts', home_url('/' . CC_ATH_SLUG . '/'))); exit;
+});
 add_action('admin_post_cc_gc_end', function () {
     if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_gc_end')) wp_die('Not allowed');
     $pid = (int) ($_POST['page'] ?? 0); $end = sanitize_text_field($_POST['end'] ?? '');

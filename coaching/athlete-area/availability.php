@@ -216,11 +216,11 @@ function cc_av_email($pid, $uid, $diff, $a, $vid) {
 /* ---------- the athlete's card (inside their area, after "Your reports") ---------- */
 // the box speaks the athlete's report language (Matteo 16 Nov); Matteo's board and emails stay English
 function cc_av_lang($view) { $uid = (int) get_post_meta($view, 'cc_user', true); return ($uid && function_exists('cc_ath_report_lang')) ? cc_ath_report_lang($uid) : 'en'; }
-add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view) array_splice($nav, 1, 0, [['availability', cc_av_words(cc_av_lang($view))['title']]]); return $nav; }, 10, 3);
+add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view && !cc_ath_tp($view)) array_splice($nav, 1, 0, [['availability', cc_av_words(cc_av_lang($view))['title']]]); return $nav; }, 10, 3);
 /* Matteo 17 Nov: in the athlete's hub a short summary of what they set at sign-up, with "Change my availability" opening its own page
  * (?my=availability). Athletes who never set it (hub opened without the form) see a one-time "please set it once". Coach view: the full box, read only. */
 add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
-    if (!$view) return $html;
+    if (!$view || cc_ath_tp($view)) return $html;   // TrainingPeaks athletes add availability there
     if ($coach) return $html . cc_av_section($view, $coach);
     $lang = cc_av_lang($view); $W = cc_av_words($lang); $a = cc_av_get($view);
     $go = esc_url(add_query_arg('my', 'availability', home_url('/' . CC_ATH_SLUG . '/')));
@@ -239,7 +239,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     }
     return $html . $o . '</section>';
 }, 10, 3);
-add_filter('cc_ath_subpage', function ($html, $sub, $view) { return $sub === 'availability' ? cc_av_section($view, false) : $html; }, 10, 3);
+add_filter('cc_ath_subpage', function ($html, $sub, $view) { return $sub === 'availability' && !cc_ath_tp($view) ? cc_av_section($view, false) : $html; }, 10, 3);
 function cc_av_section($view, $coach) {
     $html = '';
     $a = cc_av_get($view);
