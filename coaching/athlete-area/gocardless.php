@@ -136,12 +136,18 @@ function cc_gc_tell_problem($sid, $msg) {
 /* ---------- contracts: board, renewal reminders, laptop route ---------- */
 function cc_gc_contracts() {
     $out = [];
-    foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_user', 'orderby' => 'title', 'order' => 'ASC']) as $p) {
-        if (!($uid = (int) get_post_meta($p->ID, 'cc_user', true)) || !get_userdata($uid)) continue;
+    // athletes with a hub login, plus Basic 12-week athletes (Matteo 17 Nov: no hub, only their end date and the reminder; page meta cc_basic, no login)
+    $ps = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_user', 'orderby' => 'title', 'order' => 'ASC']);
+    $ps = array_merge($ps, get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_basic', 'meta_value' => '1']));
+    $seen = [];
+    foreach ($ps as $p) {
+        if (isset($seen[$p->ID])) continue; $seen[$p->ID] = 1;
+        $basic = (bool) get_post_meta($p->ID, 'cc_basic', true);
+        if (!$basic && (!($uid = (int) get_post_meta($p->ID, 'cc_user', true)) || !get_userdata($uid))) continue;
         $k = json_decode((string) get_post_meta($p->ID, 'cc_contract', true), true) ?: [];
         $out[] = ['page' => $p->ID, 'name' => $p->post_title, 'fee' => $k['fee'] ?? null, 'currency' => $k['currency'] ?? 'EUR', 'signup' => $k['signup'] ?? '', 'end' => $k['end'] ?? '', 'source' => $k['source'] ?? '',
                   'days_left' => !empty($k['end']) ? (int) floor((strtotime($k['end']) - strtotime(current_time('Y-m-d'))) / DAY_IN_SECONDS) : null,
-                  'reminded' => (string) get_post_meta($p->ID, 'cc_contract_reminded', true), 'tp' => (bool) get_post_meta($p->ID, 'cc_tp', true)];
+                  'reminded' => (string) get_post_meta($p->ID, 'cc_contract_reminded', true), 'tp' => (bool) get_post_meta($p->ID, 'cc_tp', true), 'basic' => $basic];
     }
     usort($out, function ($a, $b) { return [$a['end'] === '' ? 1 : 0, $a['end'], $a['name']] <=> [$b['end'] === '' ? 1 : 0, $b['end'], $b['name']]; });
     return $out;
@@ -151,10 +157,11 @@ add_action('cc_gc_daily', function () {   // 15 days before the end: one email t
     foreach (cc_gc_contracts() as $k) {
         if ($k['days_left'] === null || $k['days_left'] < 0 || $k['days_left'] > CC_GC_REMIND_DAYS || $k['reminded'] === $k['end']) continue;
         $board = add_query_arg('board', 'contracts', home_url('/' . CC_ATH_SLUG . '/'));
-        $h = '<div style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;color:#222"><h2>Commitment ending: ' . esc_html($k['name']) . '</h2><p style="margin:0 0 12px">Their 6-month commitment ends on <b>' . esc_html(date_i18n('j M Y', strtotime($k['end']))) . '</b> (' . (int) $k['days_left'] . ' days). Time for their review and a chat about what comes next.</p>'
+        $h = '<div style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;color:#222"><h2>' . ($k['basic'] ? 'Basic 12 weeks ending: ' : 'Commitment ending: ') . esc_html($k['name']) . '</h2><p style="margin:0 0 12px">' . ($k['basic'] ? 'Their 12-week Basic block ends on <b>' : 'Their 6-month commitment ends on <b>') . esc_html(date_i18n('j M Y', strtotime($k['end']))) . '</b> (' . (int) $k['days_left'] . ' days). '
+           . ($k['basic'] ? 'Time to talk about what comes next: another block, or the Advanced package.' : 'Time for their review and a chat about what comes next.') . '</p>'
            . '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open Contracts</a></p></div>';
         if (function_exists('cc_ath_coach_wrap')) $h = cc_ath_coach_wrap($h);
-        if (function_exists('cc_av_notify_to') && cc_av_notify_to() && wp_mail(cc_av_notify_to(), 'Commitment ending: ' . $k['name'] . ' (' . date_i18n('j M', strtotime($k['end'])) . ')', $h, ['Content-Type: text/html; charset=UTF-8']))
+        if (function_exists('cc_av_notify_to') && cc_av_notify_to() && wp_mail(cc_av_notify_to(), ($k['basic'] ? 'Basic 12 weeks ending: ' : 'Commitment ending: ') . $k['name'] . ' (' . date_i18n('j M', strtotime($k['end'])) . ')', $h, ['Content-Type: text/html; charset=UTF-8']))
             update_post_meta($k['page'], 'cc_contract_reminded', $k['end']);
     }
 });
@@ -164,6 +171,13 @@ add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/contracts', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
         $done = [];
         foreach ((array) $r->get_param('items') as $it) {
+            if (!empty($it['basic_name']) && empty($it['page'])) {   // a Basic 12-week athlete: a private record with no login (never emailed, not in the hub)
+                $nm = sanitize_text_field((string) $it['basic_name']);
+                $ex = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids', 'title' => $nm, 'meta_key' => 'cc_basic', 'meta_value' => '1']);
+                $it['page'] = $ex ? (int) $ex[0] : (int) wp_insert_post(['post_type' => 'cc_athlete', 'post_status' => 'private', 'post_title' => $nm, 'post_content' => '', 'meta_input' => ['cc_basic' => 1]]);
+                $it['force'] = 1;
+            }
+            if (!empty($it['basic']) && !empty($it['page'])) update_post_meta((int) $it['page'], 'cc_basic', 1);
             $pid = (int) ($it['page'] ?? 0); if (get_post_type($pid) !== 'cc_athlete') { $done[] = ['page' => $pid, 'ok' => false, 'why' => 'no such athlete page']; continue; }
             if (array_key_exists('tp', $it)) update_post_meta($pid, 'cc_tp', $it['tp'] ? 1 : 0);   // TrainingPeaks athlete
             if (!empty($it['tp_only'])) { $done[] = ['page' => $pid, 'ok' => true, 'tp' => (bool) $it['tp']]; continue; }
@@ -230,7 +244,9 @@ add_filter('cc_ath_board', function ($html, $board) {
     $o .= '<div class="gc-tw"><table class="gc-t"><thead><tr><th>Athlete</th><th>Fee / month</th><th>Signed up</th><th>Commitment ends</th><th></th><th>TrainingPeaks</th></tr></thead><tbody>';
     foreach (cc_gc_contracts() as $k) {
         $soon = $k['days_left'] !== null && $k['days_left'] >= 0 && $k['days_left'] <= CC_GC_REMIND_DAYS; $past = $k['days_left'] !== null && $k['days_left'] < 0;
-        $o .= '<tr' . ($soon ? ' class="soon"' : '') . '><td><a href="' . esc_url(add_query_arg('view', $k['page'], home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($k['name']) . '</a></td><td>' . ($k['fee'] !== null ? esc_html(number_format((float) $k['fee'], 2) . ' ' . $k['currency']) : '—') . '</td><td>' . $f($k['signup']) . '</td><td>' . $f($k['end'])
+        $hasHub = (bool) get_post_meta($k['page'], 'cc_user', true);
+        $o .= '<tr' . ($soon ? ' class="soon"' : '') . '><td>' . ($hasHub ? '<a href="' . esc_url(add_query_arg('view', $k['page'], home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($k['name']) . '</a>' : esc_html($k['name']))
+            . ($k['basic'] ? ' <small>Basic 12 weeks' . ($hasHub ? '' : ' · no hub') . '</small>' : '') . '</td><td>' . ($k['fee'] !== null ? esc_html(number_format((float) $k['fee'], 2) . ' ' . $k['currency']) : '—') . '</td><td>' . $f($k['signup']) . '</td><td>' . $f($k['end'])
             . ($soon ? ' <span class="av-badge">' . (int) $k['days_left'] . ' days</span>' : ($past ? ' <small>past: rolling monthly</small>' : '')) . '</td>'
             . '<td><form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="gc-ed"><input type="hidden" name="action" value="cc_gc_end"><input type="hidden" name="page" value="' . (int) $k['page'] . '">' . wp_nonce_field('cc_gc_end', '_wpnonce', false, false)
             . '<input type="date" name="end" value="' . esc_attr($k['end']) . '" aria-label="Commitment end for ' . esc_attr($k['name']) . '"><button class="btn btn-ghost" type="submit">Save</button></form></td>'
