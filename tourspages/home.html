@@ -333,7 +333,8 @@ section.matteo .in .photo { aspect-ratio: auto !important; overflow: visible; bo
 .gflags li:hover img { transform: translateY(-3px) scale(1.08); }
 .gflags span { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; font-size: 12px; font-weight: 600; color: #fff; background: rgba(8,9,10,.92); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; opacity: 0; pointer-events: none; transition: opacity .15s; }
 .gflags li:hover span { opacity: 1; }
-@media (max-width: 600px) { .gflags { gap: 10px; } .gflags img { width: 30px; height: 30px; } .guests { padding: 18px 14px; } }
+@media (min-width: 1100px) { .gflags { flex-wrap: nowrap; gap: 9px; } }   /* laptops: all flags on one line */
+@media (max-width: 600px) { .gflags { display: grid; grid-template-columns: repeat(5, 44px); justify-content: center; gap: 12px 16px; } .gflags img { width: 44px; height: 44px; } .guests { padding: 18px 14px; } .gflags span { display: none; } }   /* phones: 5 x 5, no lone flag on the last row (Matteo 17 Nov) */
 @media (max-width: 1080px) { .menu { display: none; } .burger { display: block; } .nav .btn { display: none; } }
 @media (max-width: 900px) {
   .split, .split.flip { grid-template-columns: minmax(0, 1fr); }
