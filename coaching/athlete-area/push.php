@@ -137,12 +137,19 @@ function cc_inbox_w($k) {
 function cc_inbox_get($uid) { $in = get_user_meta((int) $uid, 'cc_inbox', true); return is_array($in) ? $in : []; }
 function cc_inbox_unread($uid) { return count(array_filter(cc_inbox_get($uid), function ($x) { return empty($x['read']); })); }
 // Matteo 17 Nov: each line shows who it is from, like the notes: athletes see Matteo's photo, Matteo sees the athlete's (else the Cigala icon)
+function cc_inbox_guess_from($title) {   // "🏆 Result from Laura X", "Note from …", "Rider form signed: …", "Hub idea: …" → that athlete's page
+    static $by = null;
+    if ($by === null) { $by = []; foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids']) as $id) $by[mb_strtolower(trim(get_the_title($id)))] = (int) $id; }
+    if (!preg_match('/(?:\bfrom|:)\s+(.+)$/u', $title, $m)) return 0;
+    return $by[mb_strtolower(trim($m[1]))] ?? 0;
+}
 function cc_inbox_items($uid) {
     $coach = user_can((int) $uid, 'edit_pages'); $items = '';
     $matteo = '<img class="bell-f" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" alt="">';
     $logo = '<img class="bell-f" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-app-192.png" alt="">';
     foreach (cc_inbox_get($uid) as $x) {
         $from = (int) ($x['from'] ?? 0);
+        if (!$from && $coach) $from = cc_inbox_guess_from((string) $x['title']);   // older lines: the athlete's name is in the title
         $face = !$coach ? $matteo : ($from && function_exists('cc_ph_widget') && get_post_type($from) === 'cc_athlete' ? cc_ph_widget($from, 40, false, 'bell-f') : $logo);
         $items .= '<a class="bell-it' . (empty($x['read']) ? ' new' : '') . '" href="' . esc_url($x['url'] ?: home_url('/' . CC_ATH_SLUG . '/')) . '">' . $face . '<span class="bell-t"><b>' . esc_html($x['title']) . '</b>'
             . ($x['body'] !== '' ? '<span>' . esc_html($x['body']) . '</span>' : '') . '<small>' . esc_html(human_time_diff((int) $x['at'], time())) . '</small></span></a>';

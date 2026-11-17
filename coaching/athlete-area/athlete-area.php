@@ -369,7 +369,7 @@ function cc_ath_inner() {
         // Matteo 17 Nov: the athlete's own round photo by the greeting (initials + camera until they add one; tap to add or change)
         . (!$coach && $view && function_exists('cc_ph_widget') ? '<div class="ath-hello">' . cc_ph_widget($view, 72, true, 'ath-me-ph') : '')
         // Matteo 17 Nov: the comma stays glued to the greeting (it slipped out of sight on phones)
-        . '<h1><span class="ath-gw"><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>,</span> ' . ($coach ? '<span class="ath-coach-tag">Coach</span>&nbsp;' : '') . esc_html($first) . '</h1>'
+        . '<h1><span class="ath-gw"><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>,</span> ' . '<span class="ath-nm">' . ($coach ? '<span class="ath-coach-tag">Coach</span>&nbsp;' : '') . esc_html($first) . '</span></h1>'
         . (!$coach && $view && function_exists('cc_ph_widget') ? '</div>' . cc_ph_assets() : '')
         // Matteo 17 Nov: his own view drops the athlete line; both get live chips instead (what is new, the next race)
         . ($coach ? '' : '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>')
@@ -1006,6 +1006,7 @@ html .cc .ath-hero { position: relative; display: grid; grid-template-columns: m
 html .cc .ath-hero-txt { padding-bottom: 44px; min-width: 0; align-self: center; }   /* Matteo 17 Nov: the text centred in the header (the photo still stands on the bottom) */
 html .cc .ath-hero-txt:has(.ath-coach-tag) { align-self: end; padding-bottom: 64px; }   /* his own coach view: the text lower, at the bottom (Matteo 17 Nov: then ~half a cm back up) */
 html .cc .ath-hero h1 { font-size: clamp(36px, 6.4vw, 66px); line-height: 1; margin: 8px 0 12px; }
+html .cc .ath-hero h1 .ath-nm { font-family: var(--head); font-weight: 400; text-transform: uppercase; letter-spacing: inherit; color: #fff; }   /* the name keeps the Anton headline */
 html .cc h1 .ath-greet { color: var(--green-text, #2bd47a); font-family: var(--head); }
 html .cc h1 .ath-coach-tag { font-size: .45em; color: #b8bec8; letter-spacing: .04em; vertical-align: text-top; margin-right: .15em; }   /* raised, on the left of the name */   /* Matteo 17 Nov: a small "Coach" before his name, nothing else changed */
 html .cc .ath-lede { color: var(--text-2); font-size: 17px; line-height: 1.55; margin: 0 0 22px; max-width: 600px; }
@@ -1025,12 +1026,20 @@ html .cc .ath-pri-a { background: linear-gradient(135deg,#F3D774,#D4AF37,#A8841F
 html .cc .ath-pri-b { background: linear-gradient(135deg,#F2F3F5,#C0C4CC,#8E939C); }
 html .cc .ath-pri-c { background: linear-gradient(135deg,#E9A86B,#CD7F32,#9A5A1F); }
 @media (prefers-reduced-motion: no-preference) {
-  html .cc .ath-hero h1 .ath-greet { display: inline-block; animation: athIn .6s ease both; }
-  html .cc .ath-live .ath-chip { animation: athIn .5s ease both; }
-  html .cc .ath-live .ath-chip:nth-child(2) { animation-delay: .12s; } html .cc .ath-live .ath-chip:nth-child(3) { animation-delay: .24s; } html .cc .ath-live .ath-chip:nth-child(n+4) { animation-delay: .36s; }
+  /* Matteo 17 Nov: the greeting sweeps in from the left, then the name rises in (phone, tablet, laptop) */
+  html .cc .ath-hero h1 .ath-gw { display: inline-block; animation: athSweep .8s cubic-bezier(.2,.8,.2,1) .1s both; }
+  html .cc .ath-hero h1 .ath-nm { display: inline-block; animation: athIn .7s cubic-bezier(.2,.8,.2,1) .55s both; }
+  html .cc .ath-live .ath-chip { animation: athIn .5s ease .85s both; }
+  html .cc .ath-live .ath-chip:nth-child(2) { animation-delay: .97s; } html .cc .ath-live .ath-chip:nth-child(3) { animation-delay: 1.09s; } html .cc .ath-live .ath-chip:nth-child(n+4) { animation-delay: 1.2s; }
   html .cc .ath-live .ath-chip-race .ath-pri { animation: athPulse 2.4s ease-in-out 1s 2; }
 }
+/* Matteo 17 Nov: date and time boxes stayed wider than their box on phones (iPhone gives them a fixed inner width). Every form: full width, never wider */
+html .cc :is(.gl, .av-chr, .nt-day, .rs-form, .rf) :is(input[type=date], input[type=time]) { display: block; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; -webkit-appearance: none; appearance: none; min-height: 46px; line-height: 1.2; font: 16px var(--body); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,.18); background: #0b0d0f; color: #fff; color-scheme: dark; }
+html .cc :is(.gl, .av-chr, .nt-day, .rs-form, .rf) :is(input[type=date], input[type=time])::-webkit-date-and-time-value { text-align: left; }
+html .cc :is(.gl-r, .av-chr, .gl) > label, html .cc .gl-r { min-width: 0; }
 @keyframes athIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes athSweep { from { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateX(-10px); } to { opacity: 1; clip-path: inset(0 0 0 0); transform: none; } }
+html .cc .ath-hero-txt:has(.ath-coach-tag) .ath-live { margin-top: 14px; }   /* Matteo 17 Nov: "All caught up" a little lower */
 @keyframes athPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0); } 50% { box-shadow: 0 0 0 6px rgba(212,175,55,.25); } }
 html .cc .ath-out { color: var(--text-3); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
 html .cc .ath-out:hover { color: #fff; }
