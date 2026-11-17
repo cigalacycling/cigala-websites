@@ -83,13 +83,13 @@ d.addEventListener('DOMContentLoaded',function(){hdr();
  d.querySelectorAll('.ddt').forEach(function(b){b.addEventListener('click',function(){var li=b.parentNode;var open=li.classList.toggle('open');b.setAttribute('aria-expanded',open);});});
 });})();"""
 
-MENU = [('About', 'about.html'),
-        ('Coaching', [('sports-nutritionist-ireland.html', 'Coaching Plans'), ('race-fuelling-plan.html', 'Race Fuelling Plan'),
-                      ('nutrition-nutrition-philosophy.html', 'Sports Nutrition Philosophy'), ('free-sports-nutrition-consultation.html', 'Free Discovery Call')]),
-        ('Who I Help', [('cycling-nutritionist.html', 'Cyclists'), ('womens-cycling-nutrition.html', "Women's Cycling"), ('triathlon-nutritionist.html', 'Triathletes'),
-                        ('online-sports-nutritionist.html', 'Online, Worldwide'), ('sports-nutritionist-dublin.html', 'Dublin & Wicklow')]),
-        ('Services', [('workshops.html', 'Workshops & Talks'), ('recipies.html', 'E-Book'), ('yoga.html', 'Online Yoga'), ('massage-therapy.html', 'Massage Therapy')]),
-        ('Blog', 'blog.html'), ('Reviews', 'testimonials.html'), ('Contact', 'contact.html')]
+MENU = [('Home', 'index.html'), ('About', 'about.html'), ('Sports Nutrition Philosophy', 'nutrition-nutrition-philosophy.html'),
+        ('Sports Nutrition Coaching', 'sports-nutritionist-ireland.html', [('sports-nutritionist-ireland.html', 'Coaching Plans'),
+            ('race-fuelling-plan.html', 'Race Fuelling Plan'), ('free-sports-nutrition-consultation.html', 'Free Discovery Call')]),
+        ('Who I Help', None, [('cycling-nutritionist.html', 'Cyclists'), ('womens-cycling-nutrition.html', "Women's Cycling"), ('triathlon-nutritionist.html', 'Triathletes'),
+                              ('online-sports-nutritionist.html', 'Online, Worldwide'), ('sports-nutritionist-dublin.html', 'Dublin & Wicklow')]),
+        ('Workshops', 'workshops.html'), ('E-Book', 'recipies.html'), ('Blog', 'blog.html'), ('Contact', 'contact.html')]
+# Marine 17 Nov: same pages as the Wix menu, in capitals, smaller; Who I Help added
 DISCOVERY = 'https://cal.com/marine-lenehan/discovery-call'   # Marine 17 Nov: Cal.com replaces Wix Bookings
 BOOK_CAL = DISCOVERY
 MASSAGE_BOOK = 'http://VEV.CO/MASSAGE-THERAPIST-VIVIFY-SPORTS-IE'
@@ -166,11 +166,12 @@ section{padding:88px 0}
 /* header */
 .skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;z-index:100;background:var(--aqua);color:var(--on-aqua);padding:10px 14px;border-radius:8px}
 header.site{position:sticky;top:0;z-index:50;background:rgba(12,34,38,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-header.site .hdr{display:flex;align-items:center;gap:22px;height:78px;max-width:1360px;transition:height .25s}
+header.site .hdr{display:flex;align-items:center;gap:16px;height:78px;max-width:1360px;transition:height .25s}
 header.site.scrolled{box-shadow:0 10px 30px rgba(0,0,0,.35)}
 header.site.scrolled .hdr{height:64px}
 header.site.scrolled .logo img{width:46px;height:46px}
 .logo img{transition:width .25s,height .25s}
+.logo{flex-shrink:0}
 .topbar{background:linear-gradient(90deg,#123a40,#19444B 50%,#123a40);border-bottom:1px solid var(--border);font:500 12.5px/1 Montserrat,sans-serif;color:var(--text-2);overflow:hidden;max-height:40px;transition:max-height .25s}
 .topbar .wrap{display:flex;gap:10px;align-items:center;justify-content:center;height:36px;flex-wrap:wrap}
 .topbar a{color:var(--lime-text);font-weight:700;text-decoration:none;margin-left:6px}
@@ -178,8 +179,9 @@ header.site.scrolled .topbar{max-height:0}
 @media (max-width:640px){.topbar .tb-sep,.topbar span:nth-of-type(3){display:none}}
 .logo img{width:58px;height:58px;object-fit:cover}
 nav.main{margin-left:auto}
+nav.main > ul{gap:0!important}
 nav.main ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
-nav.main a,nav.main .ddt{display:flex;align-items:center;gap:6px;color:var(--text);text-decoration:none;font:600 12.5px/1 Montserrat,sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:12px 10px;position:relative;white-space:nowrap;background:none;border:0;cursor:pointer}
+nav.main a,nav.main .ddt{display:flex;align-items:center;gap:5px;color:var(--text);text-decoration:none;font:600 11px/1 Montserrat,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:12px 7px;position:relative;white-space:nowrap;background:none;border:0;cursor:pointer}
 nav.main .ddt svg{transition:transform .2s}
 nav.main .dd{position:relative}
 nav.main .sub{position:absolute;top:100%;left:0;min-width:240px;flex-direction:column;gap:0;padding:10px;background:rgba(12,34,38,.98);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s,transform .18s,visibility .18s}
@@ -188,19 +190,19 @@ nav.main .sub a:hover{background:rgba(177,216,221,.08)}
 nav.main .sub a::after{display:none}
 nav.main .dd:hover .sub,nav.main .dd:focus-within .sub{opacity:1;visibility:visible;transform:none}
 nav.main .dd:hover .ddt svg,nav.main .dd:focus-within .ddt svg{transform:rotate(180deg)}
-nav.main .ddt[data-current]::after{content:"";position:absolute;left:10px;right:22px;bottom:4px;height:2px;background:var(--lime)}
+nav.main .ddt[data-current]::after{content:"";position:absolute;left:7px;right:20px;bottom:4px;height:2px;background:var(--lime)}
 nav.main .ddt:hover{color:var(--aqua)}
-nav.main > ul > li > a::after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:transparent;transition:background .2s}
+nav.main > ul > li > a::after{content:"";position:absolute;left:7px;right:7px;bottom:4px;height:2px;background:transparent;transition:background .2s}
 nav.main a:hover{color:var(--aqua)}nav.main a:hover::after{background:var(--aqua)}
 nav.main a[aria-current=page]::after{background:var(--lime)}
 nav.main li.lang{display:flex;align-items:center;gap:2px;margin-left:8px;padding-left:10px;border-left:1px solid var(--border-strong)}
 nav.main li.lang a{padding:10px 6px;font-size:12px;letter-spacing:.08em;color:var(--text-3)}
 nav.main li.lang a[aria-current=true]{color:var(--text)}
 nav.main li.lang a::after{display:none}
-.hdr-cta{padding:13px 18px;font-size:13px}
+.hdr-cta{padding:12px 15px;font-size:12px;white-space:nowrap}
 .burger{display:none}
 #menu-t{position:absolute;opacity:0;pointer-events:none}
-@media (max-width:1180px){
+@media (max-width:1320px){
  nav.main li.lang{margin:12px 0 0;padding:0;border:0}
  nav.main li.lang a{font-size:15px;padding:10px 14px 10px 0;border:0}
  .burger{display:flex;margin-left:auto;width:46px;height:46px;border:1px solid var(--border-strong);border-radius:8px;align-items:center;justify-content:center;cursor:pointer;color:var(--text)}
@@ -479,15 +481,18 @@ def shell(file, body, schema=None):
     else:
         b = BASE[LIVE + path] if (LIVE + path) in BASE else BASE[LIVE]
     title, desc = b['title'], b.get('meta_description') or ''
-    def item(label, target):
-        if isinstance(target, str):
+    chev = '<svg viewBox="0 0 12 8" width="9" height="6" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>'
+    def item(label, target, children=None):
+        if not children:
             return f'<li><a href="{target}"' + (' aria-current="page"' if target == file else '') + f'>{e(label)}</a></li>'
-        cur = any(f == file for f, _ in target)
-        sub = ''.join(f'<li><a href="{f}"' + (' aria-current="page"' if f == file else '') + f'>{e(t)}</a></li>' for f, t in target)
-        return (f'<li class="dd"><button type="button" class="ddt"' + (' data-current="1"' if cur else '') + f' aria-haspopup="true">{e(label)}'
-                '<svg viewBox="0 0 12 8" width="10" height="7" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>'
-                f'<ul class="sub">{sub}</ul></li>')
-    navh = ''.join(item(l, t) for l, t in MENU)
+        cur = target == file or any(f == file for f, _ in children)
+        sub = ''.join(f'<li><a href="{f}"' + (' aria-current="page"' if f == file else '') + f'>{e(t)}</a></li>' for f, t in children)
+        if target:   # the parent is a page too: link + dropdown
+            head_ = f'<a class="ddt" href="{target}"' + (' data-current="1"' if cur else '') + f'>{e(label)}{chev}</a>'
+        else:
+            head_ = f'<button type="button" class="ddt"' + (' data-current="1"' if cur else '') + f' aria-haspopup="true">{e(label)}{chev}</button>'
+        return f'<li class="dd">{head_}<ul class="sub">{sub}</ul></li>'
+    navh = ''.join(item(*m) for m in MENU)
     ld = f'<script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script>' if schema else ''
     return fix_typos(f"""<!doctype html>
 <html lang="en">
