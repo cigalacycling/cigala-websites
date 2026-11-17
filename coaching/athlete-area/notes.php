@@ -116,7 +116,8 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
 function cc_nt_css() {
     static $done = false; if ($done) return ''; $done = true;
     return '<style>html .cc .nt-box{display:grid;gap:12px}html .cc .nt-box textarea{width:100%;min-height:96px;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
-        . 'html .cc .nt-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}html .cc .nt-rec{display:inline-flex;align-items:center;gap:10px}html .cc .nt-rec .nt-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}'
+        . 'html .cc .nt-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}html .cc .nt-rec{display:inline-flex;align-items:center;gap:10px}'
+        . 'html .cc .nt-rec:not(.on){background:#12a150!important;border-color:#12a150!important;color:#fff!important}html .cc .nt-rec:not(.on):hover{background:#16b85c!important}'   // Matteo 17 Nov: green = actionhtml .cc .nt-rec .nt-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}'
         . 'html .cc .nt-rec.on{background:#ca212a!important;border-color:#ca212a!important;color:#fff!important;animation:ntpulse 1.2s ease-in-out infinite}@keyframes ntpulse{0%,100%{box-shadow:0 0 0 0 rgba(202,33,42,.6)}50%{box-shadow:0 0 0 8px rgba(202,33,42,0)}}'
         . 'html .cc .nt-st{font-size:15px;color:#d0d6e0}html .cc .nt-st button{background:none;border:0;color:#ff7a73;text-decoration:underline;font:inherit;cursor:pointer;padding:0;margin-left:8px}'
         . 'html .cc .nt-day{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}html .cc .nt-day input{font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;max-width:220px}'
