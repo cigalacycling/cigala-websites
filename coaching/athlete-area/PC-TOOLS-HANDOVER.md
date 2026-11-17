@@ -2,7 +2,7 @@
 
 Answer to the Vekta "Season Plan" chat brief (HUB-REQUEST.md, 17 Nov 2026), from the cloud "athlete availability" chat, which builds and owns the hub.
 
-**Status:** everything below is built and tested on **staging** (`https://staging.coaching.cigalacycling.com`), which only has test athletes. It goes live on `https://coaching.cigalacycling.com` when Matteo puts the new athlete area live, together with the cloud chat. Until then the live site does not have these routes: build and test against staging.
+**Status (17 Nov):** live on `https://coaching.cigalacycling.com` since 17 Nov (staging has the same, for tests). Use a **live** application password for the live site. Earlier note: everything below was built and tested on **staging** (`https://staging.coaching.cigalacycling.com`), which only has test athletes. It goes live on `https://coaching.cigalacycling.com` when Matteo puts the new athlete area live, together with the cloud chat. Until then the live site does not have these routes: build and test against staging.
 
 ## Auth (every route)
 - WordPress **application password** for Matteo's admin user (wp-admin > Users > Profile > Application Passwords). One for staging, one for live.
@@ -103,6 +103,9 @@ Answer to the Vekta "Season Plan" chat brief (HUB-REQUEST.md, 17 Nov 2026), from
 - **Athlete:** `vekta_id`, `email` or `page`.
 - **`type`:**
   - `season`: the season plan / periodization;
+  - `prediction`: race prediction (live page, see below);
+  - `snapshot`: training snapshot (live page, see below);
+  - `race-sim`: race day simulator, one per race;
   - `assessment`: initial assessment;
   - `review`: e.g. the 6-month review before renewal;
   - `race-plan`;
@@ -110,7 +113,7 @@ Answer to the Vekta "Season Plan" chat brief (HUB-REQUEST.md, 17 Nov 2026), from
   - `guide`: a resource for this one athlete;
   - `other`.
 - **`title`:** optional. Without it the athlete sees the kind and month in their language, e.g. "Revisão · maio 2027".
-- **Content:** `html` (one self-contained page) **or** `pdf_base64`. Maximum 12 MB. Your 200 KB season page is fine.
+- **Content:** `html` (one self-contained page) **or** `pdf_base64` **or** `url` (https link). Maximum 12 MB. Your 200 KB season page is fine.
 - **Answer:** `{"ok": true, "id": 7502, "status": "draft", "replaced_drafts": [7500], "preview": "…", "review": "…/athletes/?board=reports"}`.
 - **Always a draft.** Nothing reaches the athlete until Matteo presses Publish in the hub's Reports board. He can tick "Email the athlete": on by default for everything except season plans.
 - **Season plan, replace in place:**
@@ -127,6 +130,40 @@ Answer to the Vekta "Season Plan" chat brief (HUB-REQUEST.md, 17 Nov 2026), from
   - Inline CSS/JS. Google Fonts and CDN images are fine.
   - Links open in a new tab (`target="_blank"`).
   - The race-priority picker in the season page can't save into the hub. Make it send the athlete to `https://coaching.cigalacycling.com/athletes/#goals` (open in a new tab), where they change it.
+
+### Pages athletes open every day (Matteo 17 Nov): one per athlete, always the latest
+Matteo wants each athlete to find these in the hub straight away, kept up to date by the laptop.
+They're not the one-off reports: the assessment and the 6-month review stay normal reports.
+
+| `type` | Shown to the athlete as | How many |
+|---|---|---|
+| `season` | "Your season": the periodisation, shown inside the hub (scripts on), "Open full screen" | 1 current; earlier versions kept as history |
+| `prediction` | "Race prediction" card under the season plan | 1 current (the old one is deleted) |
+| `snapshot` | "Training snapshot" card under the season plan (snapshot data, fitness, recent load…) | 1 current (the old one is deleted) |
+| `race-sim` | "Race day simulator", in "Your reports", always on top | one per race |
+| `race-plan` | "Race plan", in "Your reports", always on top | one per race |
+
+**Automatic updates.** The first `season` / `prediction` / `snapshot` for an athlete arrives as a draft. Matteo publishes it with "Keep it updated automatically" (ticked by default).
+- From then on, every new version you send for that athlete and type goes **live straight away**, replacing the previous one. The answer says `"status": "published", "auto": true`.
+- No email goes to the athlete for these.
+- Matteo can press "Stop automatic updates" at any time; then they're drafts again.
+- `GET /cc/v1/athletes` → `live_pages` shows, per type, the latest published page and whether `auto` is on.
+
+**Suggested schedule:**
+- `snapshot`: once a day, after the Vekta sync;
+- `prediction`: when it changes;
+- `season`: when the plan changes.
+
+**A link instead of a page:** send `"url": "https://…"` (no `html`/`pdf_base64`) if the page lives somewhere else. The athlete opens it from the hub after logging in. Prefer `html`: it stays private inside the hub, whereas a public link can be seen by anyone who has it.
+
+### Every page in the athlete's language, with their flag (Matteo 17 Nov)
+- **Language:** write every page you send (season plan, prediction, snapshot, race simulator, race plan, reports, guides) in the athlete's `language` from `GET /cc/v1/athletes`.
+  - The hub is fully translated for `en`, `it`, `pt`, `sl`; for any other code, write in English.
+  - Dates and numbers in that language's style (e.g. "24 abr 2027" in Portuguese).
+- **Flag:** put the athlete's flag on every page, small, next to their name in the page header.
+  - Use `flag_emoji` from the read route: the nationality flag, or the language's flag while the athlete hasn't given a nationality yet; `null` for English with no nationality, so no flag.
+  - In HTML, show it as text, e.g. `<span class="flag">🇮🇪</span>`.
+- **Titles:** send a `title` in the athlete's language, or leave it out and the hub names it ("Previsão de prova · novembro 2026").
 
 ### Resources (brief §6)
 What the hub has for athletes:

@@ -24,6 +24,13 @@ function cc_pc_nat($pid) {   // the athlete's own answer in the rider form wins;
     $p = json_decode((string) get_post_meta($pid, 'cc_profile', true), true) ?: [];
     return (string) (!empty($p['nat']) ? $p['nat'] : get_post_meta($pid, 'cc_nat', true));
 }
+function cc_pc_flag_emoji($code, $is_nat = true) {   // for the laptop's pages: the athlete's flag (nationality, else their language's country)
+    $c = strtolower((string) $code); if (!$is_nat) $c = ['it' => 'it', 'sl' => 'si', 'pt' => 'pt', 'es' => 'es', 'fr' => 'fr', 'hr' => 'hr', 'de' => 'de', 'nl' => 'nl', 'pl' => 'pl', 'cs' => 'cz', 'da' => 'dk', 'sv' => 'se', 'no' => 'no', 'fi' => 'fi', 'ga' => 'ie'][$c] ?? '';
+    if (in_array($c, ['gb-eng', 'gb-sct', 'gb-wls'], true)) { $f = mb_chr(0x1F3F4, 'UTF-8'); foreach (str_split(str_replace('-', '', $c)) as $ch) $f .= mb_chr(0xE0000 + ord($ch), 'UTF-8'); return $f . mb_chr(0xE007F, 'UTF-8'); }
+    if ($c === 'gb-nir') $c = 'gb';
+    if (!preg_match('/^[a-z]{2}$/', $c)) return null;
+    $f = ''; foreach (str_split(strtoupper($c)) as $ch) $f .= mb_chr(0x1F1E6 + ord($ch) - 65, 'UTF-8'); return $f;
+}
 function cc_pc_page_from(WP_REST_Request $r) {
     if ($r->get_param('page')) { $pid = (int) $r->get_param('page'); return get_post_type($pid) === 'cc_athlete' ? $pid : 0; }
     if ($r->get_param('email')) { $u = get_user_by('email', (string) $r->get_param('email')); return $u ? cc_ath_page_of($u->ID) : 0; }
@@ -42,19 +49,24 @@ function cc_pc_one($p, $since) {
     if ($since && max($avu, $gu, $uid ? (int) get_user_meta($uid, 'cc_form_done', true) : 0) <= $since) return null;
     $signed = json_decode((string) get_post_meta($p->ID, 'cc_form_signed', true), true) ?: [];
     $nat = cc_pc_nat($p->ID);
-    $season = get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'post_parent' => $p->ID, 'numberposts' => 1, 'orderby' => 'meta_value_num', 'meta_key' => 'cc_published', 'order' => 'DESC',
-                         'meta_query' => [['key' => 'cc_type', 'value' => 'season']]]);
+    $live = [];
+    foreach (defined('CC_R_LIVE') ? CC_R_LIVE : ['season'] as $t) {
+        $x = get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'post_parent' => $p->ID, 'numberposts' => 1, 'orderby' => 'meta_value_num', 'meta_key' => 'cc_published', 'order' => 'DESC', 'meta_query' => [['key' => 'cc_type', 'value' => $t]]]);
+        $live[$t] = ['published' => $x ? ['id' => $x[0]->ID, 'at' => (int) get_post_meta($x[0]->ID, 'cc_published', true)] : null, 'auto' => function_exists('cc_r_auto') && cc_r_auto($p->ID, $t)];
+    }
+    $season = $live['season']['published'] ?? null;
     return [
         'page' => $p->ID, 'status' => $u ? 'active' : 'former', 'ended' => (int) get_post_meta($p->ID, 'cc_ended', true) ?: null,
         'name' => preg_replace('/^Former athlete: /', '', get_post_field('post_title', $p->ID)), 'first_name' => $u ? $u->first_name : null, 'last_name' => $u ? $u->last_name : null,
         'email' => $u ? $u->user_email : null, 'vekta_id' => $u ? ((string) get_user_meta($uid, 'cc_vekta_id', true) ?: null) : null,
-        'language' => $u ? cc_ath_lang_code($uid) : null, 'nationality' => $nat !== '' ? strtoupper($nat) : null,
+        'language' => $u ? cc_ath_lang_code($uid) : null, 'language_name' => $u ? (CC_REPORT_LANGS[cc_ath_lang_code($uid)] ?? null) : null,
+        'nationality' => $nat !== '' ? strtoupper($nat) : null, 'flag_emoji' => cc_pc_flag_emoji($nat !== '' ? $nat : ($u ? cc_ath_lang_code($uid) : ''), $nat !== ''),
         'nationality_name' => $nat !== '' && defined('CC_F_COUNTRIES') ? (CC_F_COUNTRIES[$nat] ?? null) : null,
         'form' => ['status' => $u && function_exists('cc_f_status') ? cc_f_status($uid) : null, 'signed_at' => $signed['at'] ?? null, 'kind' => $signed['kind'] ?? null],
         'availability' => $av ? ['data' => $av, 'updated' => $avu ?: null, 'status' => $avu > $avseen ? 'new' : 'seen'] : null,
         'goals' => $g ? ['short' => $g['short'] ?? '', 'long' => $g['long'] ?? '', 'events' => $g['events'] ?? [], 'from_form' => $g['from_form'] ?? '',
                          'updated' => $gu ?: null, 'changed_by' => !empty($g['by_coach']) && (int) $g['by_coach'] === $gu ? 'matteo' : 'athlete', 'status' => $gu > $gseen ? 'new' : 'seen'] : null,
-        'season_published' => $season ? ['id' => $season[0]->ID, 'at' => (int) get_post_meta($season[0]->ID, 'cc_published', true)] : null,
+        'season_published' => $season, 'live_pages' => $live,   // live_pages: season / prediction / snapshot, latest published + whether new versions go live automatically
     ];
 }
 add_action('rest_api_init', function () {

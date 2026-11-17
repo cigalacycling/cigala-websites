@@ -399,7 +399,7 @@ html .cc .av-dsel { display: grid; grid-template-columns: repeat(7, minmax(0, 1f
 html .cc .av-chw { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) !important; }
 html .cc .av-hint { font-size: 12.5px; color: var(--text-3); margin: -4px 0 0; }
 html .cc .av-del, html .cc .av-x { justify-self: start; background: none; border: 0; padding: 4px 0; color: var(--text-3); font: 13px var(--body); text-decoration: underline; cursor: pointer; }
-html .cc .av-add { margin: 0; }
+html .cc .av-add { margin: 0; max-width: 100%; white-space: normal; height: auto; text-align: center; }
 html .cc .av-notew { position: relative; }
 html .cc .av-notew textarea { padding-right: 64px; resize: vertical; min-height: 110px; line-height: 1.5; }
 html .cc .av-mic { position: absolute; right: 10px; bottom: 12px; width: 46px; height: 46px; border-radius: 50%; border: 0; background: #009a44; display: grid; place-items: center; cursor: pointer; box-shadow: 0 6px 18px rgba(0,154,68,.35); }

@@ -14,8 +14,22 @@ if (!defined('ABSPATH')) return;
 
 const CC_R_TYPES = ['season' => ['Season plan', 'Piano di stagione', 'peaks'], 'assessment' => ['Assessment', 'Valutazione', 'gauge'],
     'review' => ['Review', 'Revisione', 'reports'], 'race-plan' => ['Race plan', 'Piano gara', 'bolt'], 'progress' => ['Progress report', 'Report dei progressi', 'reports'],
-    'guide' => ['Guide', 'Guida', 'book'], 'other' => ['Report', 'Report', 'doc']];   // guide: a resource for this athlete (Vekta brief 17 Nov)
-function cc_r_mail_default($type) { return $type !== 'season'; }   // season plan updates: no email unless Matteo ticks it
+    'race-sim' => ['Race day simulator', 'Simulatore di gara', 'bolt'], 'prediction' => ['Race prediction', 'Previsione gara', 'gauge'], 'snapshot' => ['Training snapshot', 'Panoramica allenamento', 'reports'],
+    'guide' => ['Guide', 'Guida', 'book'], 'other' => ['Report', 'Report', 'doc']];
+/* Matteo 17 Nov: pages the athlete opens often, always the latest one: season plan (periodisation), race prediction, training snapshot.
+ * One current page per kind. After Matteo has published the first one with "Keep it updated automatically", the laptop's new versions go
+ * live straight away (no email); otherwise each one waits for him as a draft. */
+const CC_R_LIVE = ['season', 'snapshot', 'prediction'];
+const CC_R_ONTOP = ['race-plan', 'race-sim'];   // one per race: all stay on top
+function cc_r_auto($pid, $type = null) { $a = (array) get_post_meta($pid, 'cc_auto', true); return $type === null ? $a : in_array($type, $a, true); }
+function cc_r_set_auto($pid, $type, $on) { $a = array_values(array_diff(cc_r_auto($pid), [$type])); if ($on) $a[] = $type; update_post_meta($pid, 'cc_auto', $a); }
+function cc_r_go_live($rid) {   // publish; a live kind replaces the athlete's previous one (season plans are kept as history)
+    $p = get_post($rid); $t = get_post_meta($rid, 'cc_type', true);
+    wp_update_post(['ID' => $rid, 'post_status' => 'private']); update_post_meta($rid, 'cc_published', time());
+    if (in_array($t, CC_R_LIVE, true) && $t !== 'season')
+        foreach (get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'post_parent' => $p->post_parent, 'numberposts' => -1, 'exclude' => [$rid], 'meta_key' => 'cc_type', 'meta_value' => $t, 'fields' => 'ids']) as $old) cc_r_delete($old);
+}   // guide: a resource for this athlete (Vekta brief 17 Nov)
+function cc_r_mail_default($type) { return !in_array($type, CC_R_LIVE, true); }   // pages that keep changing (season plan, prediction, snapshot): no email unless Matteo ticks it
 function cc_r_label($type, $it = null) { $t = CC_R_TYPES[$type] ?? CC_R_TYPES['other']; return $it === false ? $t[0] : cc_L($t[0], $t[1]); }   // false: English (coach board)
 
 add_action('init', function () {
@@ -41,20 +55,23 @@ function cc_r_create(WP_REST_Request $r) {
     if (!$pid || !get_post_meta($pid, 'cc_user', true)) return new WP_Error('cc_none', 'No active athlete with that email / vekta_id / page', ['status' => 404]);
     $type = isset(CC_R_TYPES[$r->get_param('type')]) ? $r->get_param('type') : 'other';
     $title = cc_av_str($r->get_param('title') ?: cc_r_label($type, false) . ' · ' . date_i18n('F Y'), 140);
-    $html = (string) $r->get_param('html'); $pdf = (string) $r->get_param('pdf_base64');
-    if ($html !== '') { if (strlen($html) > 12 * 1024 * 1024) return new WP_Error('cc_big', 'Report too big (12 MB max)', ['status' => 413]); $bytes = $html; $ext = 'html'; $mime = 'text/html'; }
+    $html = (string) $r->get_param('html'); $pdf = (string) $r->get_param('pdf_base64'); $link = esc_url_raw((string) $r->get_param('url'), ['https']);
+    if ($link !== '' && $html === '' && $pdf === '') { $bytes = null; }   // a link to a page that lives elsewhere (opens after the login check)
+    elseif ($html !== '') { if (strlen($html) > 12 * 1024 * 1024) return new WP_Error('cc_big', 'Report too big (12 MB max)', ['status' => 413]); $bytes = $html; $ext = 'html'; $mime = 'text/html'; }
     elseif ($pdf !== '') { $bytes = base64_decode($pdf, true); if ($bytes === false || strpos($bytes, '%PDF') !== 0) return new WP_Error('cc_pdf', 'Not a PDF', ['status' => 400]); $ext = 'pdf'; $mime = 'application/pdf'; }
-    else return new WP_Error('cc_empty', 'Send html or pdf_base64', ['status' => 400]);
+    else return new WP_Error('cc_empty', 'Send html, pdf_base64 or url (https)', ['status' => 400]);
     $rid = wp_insert_post(['post_type' => 'cc_report', 'post_status' => 'draft', 'post_title' => $title, 'post_parent' => $pid,
         'meta_input' => ['cc_type' => $type, 'cc_note' => cc_av_str($r->get_param('note'), 300), 'cc_autotitle' => $r->get_param('title') ? 0 : 1]]);
     if (is_wp_error($rid) || !$rid) return new WP_Error('cc_fail', 'Could not save the report', ['status' => 500]);
-    $fid = cc_f_store($rid, $bytes, 'report-' . $type, $ext, $mime, $title);
-    update_post_meta($rid, 'cc_file', $fid);
+    if ($bytes === null) update_post_meta($rid, 'cc_url', $link);
+    else { $fid = cc_f_store($rid, $bytes, 'report-' . $type, $ext, $mime, $title); update_post_meta($rid, 'cc_file', $fid); }
     $replaced = [];
-    if ($type === 'season') foreach (get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'post_parent' => $pid, 'numberposts' => -1, 'exclude' => [$rid], 'meta_key' => 'cc_type', 'meta_value' => 'season', 'fields' => 'ids']) as $old) {
-        cc_r_delete($old); $replaced[] = $old;   // one season draft per athlete: a newer one replaces an unpublished older one
+    if (in_array($type, CC_R_LIVE, true)) foreach (get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'post_parent' => $pid, 'numberposts' => -1, 'exclude' => [$rid], 'meta_key' => 'cc_type', 'meta_value' => $type, 'fields' => 'ids']) as $old) {
+        cc_r_delete($old); $replaced[] = $old;   // one draft per live kind: a newer one replaces an unpublished older one
     }
-    return ['ok' => true, 'id' => $rid, 'status' => 'draft', 'replaced_drafts' => $replaced, 'preview' => add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')),
+    $auto = in_array($type, CC_R_LIVE, true) && cc_r_auto($pid, $type);
+    if ($auto) cc_r_go_live($rid);   // Matteo switched on automatic updates for this athlete and kind
+    return ['ok' => true, 'id' => $rid, 'status' => $auto ? 'published' : 'draft', 'auto' => $auto, 'replaced_drafts' => $replaced, 'preview' => add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')),
             'review' => add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))];
 }
 function cc_r_sweep() {   // reports whose athlete page no longer exists (deleted athlete): delete them and their file
@@ -83,8 +100,10 @@ add_action('template_redirect', function () {
     if (!is_user_logged_in()) { wp_safe_redirect(home_url('/' . CC_ATH_SLUG . '/')); exit; }
     if (!cc_r_can_open($rid)) { status_header(403); exit('This report is not part of your account.'); }
     $fid = (int) get_post_meta($rid, 'cc_file', true); $file = $fid ? get_attached_file($fid, true) : '';
-    if (!$file || !file_exists($file)) { status_header(404); exit('Not found'); }
+    $ext = (string) get_post_meta($rid, 'cc_url', true);
+    if ($ext === '' && (!$file || !file_exists($file))) { status_header(404); exit('Not found'); }
     if (!cc_ath_is_coach()) { $seen = (array) get_user_meta(get_current_user_id(), 'cc_seen_reports', true); if (!in_array($rid, $seen, true)) { $seen[] = $rid; update_user_meta(get_current_user_id(), 'cc_seen_reports', $seen); } }
+    if ($ext !== '') { wp_redirect($ext); exit; }
     while (ob_get_level()) ob_end_clean();
     $mime = get_post_mime_type($fid) ?: 'application/octet-stream';
     header('Content-Type: ' . ($mime === 'text/html' ? 'text/html; charset=utf-8' : $mime));
@@ -116,15 +135,19 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     if (!$view) return $html;
     $uid = (int) get_post_meta($view, 'cc_user', true); $it = ($GLOBALS['cc_ath_lang'] ?? 'en') === 'it';
     $all = cc_r_published($view); $season = null; $new = 0;
-    foreach ($all as $p) { $t = get_post_meta($p->ID, 'cc_type', true); if ($t === 'season') { if (!$season) $season = $p; } elseif ($uid && cc_r_unseen($uid, $p->ID)) $new++; }
+    $live = [];
+    foreach ($all as $p) { $t = get_post_meta($p->ID, 'cc_type', true); if (in_array($t, CC_R_LIVE, true) && $t !== 'season') { if (!isset($live[$t])) $live[$t] = $p; continue; } if ($t === 'season') { if (!$season) $season = $p; } elseif ($uid && cc_r_unseen($uid, $p->ID)) $new++; }
     if ($new) $html .= '<p class="rp-new" role="status"><b>' . $new . '</b> ' . esc_html(cc_Ln($new, 'new report for you', 'nuovo report per te', 'new reports for you', 'nuovi report per te')) . ' <a href="#reports">' . esc_html(cc_L('See', 'Vedi')) . ' →</a></p>';
+    $cards = ''; foreach (['prediction', 'snapshot'] as $t) if (isset($live[$t])) $cards .= cc_r_card($live[$t], $uid);
+    if (!$season && $cards !== '') $html .= '<section class="ath-s rp-season" id="season"><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html(cc_L('Your training', 'Il tuo allenamento')) . '</h2><div class="ath-body rp-list">' . $cards . '</div></section>';
     if ($season) {   // Vekta brief 17 Nov: the season page shown in the hub, scripts on (zoom, hover), in a sandbox with no access to the login
         $when = (int) get_post_meta($season->ID, 'cc_published', true); $url = cc_r_url($season->ID); $fid = (int) get_post_meta($season->ID, 'cc_file', true);
         $html .= '<section class="ath-s rp-season" id="season"><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html(cc_L('Your season', 'La tua stagione')) . '</h2>'
             . '<p class="av-lede">' . esc_html(cc_L('Your season plan: the blocks, your races and your goals. I update it whenever the plan changes; your day-to-day sessions stay in Vekta.', 'Il tuo piano di stagione: blocchi, gare e obiettivi. Lo aggiorno ogni volta che il piano cambia; gli allenamenti di ogni giorno restano su Vekta.')) . '</p>'
-            . (get_post_mime_type($fid) === 'text/html' ? '<div class="rp-frame"><iframe src="' . esc_url($url) . '" title="' . esc_attr(cc_L('Your season plan', 'Il tuo piano di stagione')) . '" loading="lazy" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerpolicy="same-origin"></iframe></div>' : '')
-            . '<div class="rp-season-row"><a class="btn btn-go" href="' . esc_url($url) . '" target="_blank" rel="noopener">' . esc_html(get_post_mime_type($fid) === 'text/html' ? cc_L('Open full screen', 'Apri a schermo intero') : cc_L('Open my season plan', 'Apri il mio piano di stagione')) . '</a>'
-            . '<span class="rp-when">' . esc_html(cc_L('Updated ', 'Aggiornato il ') . cc_r_date($when)) . ($uid && cc_r_unseen($uid, $season->ID) ? ' <span class="rp-badge">' . esc_html(cc_L('Updated', 'Aggiornato')) . '</span>' : '') . '</span></div></section>';
+            . ($fid && get_post_mime_type($fid) === 'text/html' ? '<div class="rp-frame"><iframe src="' . esc_url($url) . '" title="' . esc_attr(cc_L('Your season plan', 'Il tuo piano di stagione')) . '" loading="lazy" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" referrerpolicy="same-origin"></iframe></div>' : '')
+            . '<div class="rp-season-row"><a class="btn btn-go" href="' . esc_url($url) . '" target="_blank" rel="noopener">' . esc_html($fid && get_post_mime_type($fid) === 'text/html' ? cc_L('Open full screen', 'Apri a schermo intero') : cc_L('Open my season plan', 'Apri il mio piano di stagione')) . '</a>'
+            . '<span class="rp-when">' . esc_html(cc_L('Updated ', 'Aggiornato il ') . cc_r_date($when)) . ($uid && cc_r_unseen($uid, $season->ID) ? ' <span class="rp-badge">' . esc_html(cc_L('Updated', 'Aggiornato')) . '</span>' : '') . '</span></div>'
+            . ($cards !== '' ? '<h3 class="av-sub" style="margin-top:20px">' . esc_html(cc_L('Always up to date', 'Sempre aggiornati')) . '</h3><div class="ath-body rp-list">' . $cards . '</div>' : '') . '</section>';
     }
     return $html;
 }, 10, 3);
@@ -144,7 +167,8 @@ add_filter('cc_ath_reports_html', function ($html, $view, $coach) {   // Matteo 
     foreach (cc_r_published($view) as $p) {
         $t = get_post_meta($p->ID, 'cc_type', true);
         if ($t === 'season') { if ($first) { $first = false; continue; } $old[] = $p; continue; }   // the latest season plan is the "Your season" card
-        if (isset($seen[$t]) && $t !== 'race-plan') { $old[] = $p; continue; }   // every race plan stays on top (one per race)
+        if (in_array($t, CC_R_LIVE, true)) continue;   // prediction, snapshot: in "Your season", always the latest
+        if (isset($seen[$t]) && !in_array($t, CC_R_ONTOP, true)) { $old[] = $p; continue; }   // every race plan / race simulator stays on top (one per race)
         $seen[$t] = 1; $top .= cc_r_card($p, $uid);
     }
     $o = $top ? '<div class="ath-body rp-list">' . $top . '</div>' : '';
@@ -153,7 +177,7 @@ add_filter('cc_ath_reports_html', function ($html, $view, $coach) {   // Matteo 
     return $html . $o;
 }, 10, 3);
 add_filter('cc_ath_nav', function ($nav, $view) {
-    if ($view && get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'post_parent' => $view, 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => 'cc_type', 'meta_value' => 'season']))
+    if ($view && get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'post_parent' => $view, 'numberposts' => 1, 'fields' => 'ids', 'meta_query' => [['key' => 'cc_type', 'value' => CC_R_LIVE, 'compare' => 'IN']]]))
         array_unshift($nav, ['season', cc_L('Your season', 'La tua stagione')]);
     return $nav;
 }, 30, 2);
@@ -188,13 +212,15 @@ add_filter('cc_ath_board', function ($html, $board) {
         $t = get_post_meta($p->ID, 'cc_type', true); $chk = cc_r_mail_default($t) ? ' checked' : '';
         $o .= '<div class="rp-row">' . $pick($p) . '<div class="rp-what"><b>' . esc_html($p->post_title) . '</b><small>' . esc_html(get_post_field('post_title', $p->post_parent) . ' · ' . cc_r_label($t, false) . ' · sent ' . human_time_diff(strtotime(get_gmt_from_date($p->post_date) . ' UTC')) . ' ago')
             . ($t === 'season' ? ' · replaces their current season plan' : '') . '</small></div><div class="rp-acts"><a class="btn btn-ghost" href="' . esc_url(cc_r_url($p->ID)) . '" target="_blank" rel="noopener">Preview</a>'
-            . cc_r_btn($p->ID, 'publish', 'Publish', true, '<label class="rp-mail"><input type="checkbox" name="mail" value="1"' . $chk . '> Email the athlete</label>') . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>';
+            . cc_r_btn($p->ID, 'publish', 'Publish', true, '<label class="rp-mail"><input type="checkbox" name="mail" value="1"' . $chk . '> Email the athlete</label>'
+                . (in_array($t, CC_R_LIVE, true) ? '<label class="rp-mail"><input type="checkbox" name="auto" value="1" checked> Keep it updated automatically</label>' : '')) . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>';
     }
     if ($pub) {
         $o .= '<h3 class="av-sub" style="margin-top:22px">Published</h3>';
         foreach ($pub as $p) { $t = get_post_meta($p->ID, 'cc_type', true); $uid = (int) get_post_meta($p->post_parent, 'cc_user', true);
             $o .= '<div class="rp-row">' . $pick($p) . '<div class="rp-what"><b>' . esc_html($p->post_title) . '</b><small>' . esc_html(get_post_field('post_title', $p->post_parent) . ' · ' . cc_r_label($t, false) . ' · published ' . date_i18n('j M Y', (int) get_post_meta($p->ID, 'cc_published', true))
-                . (get_post_meta($p->ID, 'cc_mailed', true) ? ' · emailed' : '') . ($uid ? (cc_r_unseen($uid, $p->ID) ? ' · not opened yet' : ' · opened') : '')) . '</small></div><div class="rp-acts"><a class="btn btn-ghost" href="' . esc_url(cc_r_url($p->ID)) . '" target="_blank" rel="noopener">Open</a>'
+                . (get_post_meta($p->ID, 'cc_mailed', true) ? ' · emailed' : '') . (in_array($t, CC_R_LIVE, true) && cc_r_auto($p->post_parent, $t) ? ' · updates automatically' : '') . ($uid ? (cc_r_unseen($uid, $p->ID) ? ' · not opened yet' : ' · opened') : '')) . '</small></div><div class="rp-acts"><a class="btn btn-ghost" href="' . esc_url(cc_r_url($p->ID)) . '" target="_blank" rel="noopener">Open</a>'
+                . (in_array($t, CC_R_LIVE, true) && cc_r_auto($p->post_parent, $t) ? cc_r_btn($p->ID, 'stopauto', 'Stop automatic updates') : '')
                 . cc_r_btn($p->ID, 'testmail', 'Send me a test email') . cc_r_btn($p->ID, 'unpublish', 'Unpublish') . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>'; }
     }
     return $o . '</section>';
@@ -203,8 +229,10 @@ add_action('admin_post_cc_report_admin', function () {
     $rid = (int) ($_POST['rid'] ?? 0); $act = sanitize_key($_POST['act'] ?? '');
     if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_report_' . $rid) || get_post_type($rid) !== 'cc_report') wp_die('Not allowed');
     if ($act === 'publish') {
-        wp_update_post(['ID' => $rid, 'post_status' => 'private']); update_post_meta($rid, 'cc_published', time());
+        cc_r_go_live($rid); $t = get_post_meta($rid, 'cc_type', true);
+        if (in_array($t, CC_R_LIVE, true)) cc_r_set_auto(get_post($rid)->post_parent, $t, !empty($_POST['auto']));
         if (!empty($_POST['mail'])) { cc_r_mail($rid); update_post_meta($rid, 'cc_mailed', time()); }
+    } elseif ($act === 'stopauto') { cc_r_set_auto(get_post($rid)->post_parent, get_post_meta($rid, 'cc_type', true), false);
     } elseif ($act === 'testmail') { $me = wp_get_current_user(); if (is_email($me->user_email)) cc_r_mail($rid, $me->user_email);
     } elseif ($act === 'unpublish') { wp_update_post(['ID' => $rid, 'post_status' => 'draft']);
     } elseif ($act === 'delete') { cc_r_delete($rid); }

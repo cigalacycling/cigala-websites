@@ -394,7 +394,7 @@ add_shortcode('cc_latest_posts', function ($at) {
     $li = '';
     foreach (array_slice($ps, 0, max(1, min(8, (int) $at['n']))) as $p) $li .= '<li><a href="' . esc_url(get_permalink($p)) . '">' . esc_html(get_the_title($p)) . '</a></li>';
     if (!$li) return '';
-    return '<ul class="wp-block-list">' . $li . '</ul><p class="ath-allposts"><a href="' . esc_url(home_url('/blog/')) . '">' . esc_html($at['lang'] === 'it' ? 'Tutti gli articoli del blog →' : 'All blog posts →') . '</a></p>';
+    return '<ul class="wp-block-list">' . $li . '</ul><p class="ath-allposts"><a href="' . esc_url(home_url('/blog/')) . '">' . esc_html($at['lang'] === 'it' ? 'Tutti gli articoli del blog →' : cc_L('All blog posts →', 'Tutti gli articoli del blog →')) . '</a></p>';
 });
 
 /* ---------- the dashboard look ---------- */
