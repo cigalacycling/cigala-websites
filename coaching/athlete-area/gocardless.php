@@ -259,14 +259,19 @@ add_filter('cc_ath_board', function ($html, $board) {
     // GoCardless connection
     $mode = cc_gc_mode(); $since = (int) get_option('cc_gc_since', 0); $sec = (bool) get_option('cc_gc_secret', ''); $tok = (bool) get_option('cc_gc_token', '');
     $msg = ['saved' => 'Saved.', 'live' => 'Live: new signups now get their login and welcome email automatically.', 'test' => 'Test mode: signups only send you an email.', 'ok' => 'Connected to GoCardless: ', 'bad' => 'GoCardless did not accept the token: '][$r] ?? '';
-    $o .= '<section class="ath-s gc-set"><h3 class="av-sub" style="margin-top:0">GoCardless connection</h3><p class="av-lede">Mode: <b style="color:' . ($mode === 'live' ? '#34c46a' : '#f0b429') . '">' . ($mode === 'live' ? 'LIVE' : 'TEST (nothing is created, you only get an email)') . '</b>'
+    $ready = $sec && $tok; $form = $ready && $r !== 'bad';   // Matteo 17 Nov: once connected, the fields fold away; status, Go live and the log stay
+    $nonce = wp_nonce_field('cc_gc_set', '_wpnonce', false, false); $act = esc_url(admin_url('admin-post.php'));
+    $o .= '<section class="ath-s gc-set"><h3 class="av-sub" style="margin-top:0">GoCardless connection</h3><p class="av-lede">' . ($ready ? '<b style="color:#34c46a">Connected</b> · ' : '') . 'Mode: <b style="color:' . ($mode === 'live' ? '#34c46a' : '#f0b429') . '">' . ($mode === 'live' ? 'LIVE' : 'TEST (nothing is created, you only get an email)') . '</b>'
         . ($since ? ' · signups after ' . esc_html(date_i18n('j M Y H:i', $since)) . ' count as new' : '') . '</p>'
+        . ($ready ? '<form method="post" action="' . $act . '"><input type="hidden" name="action" value="cc_gc_set">' . $nonce
+            . ($mode === 'live' ? '<input type="hidden" name="act" value="test"><button class="btn btn-ghost" type="submit">Back to test mode</button>'
+                                : '<input type="hidden" name="act" value="live"><button class="btn btn-go" type="submit" onclick="return confirm(\'Go live? From now on a new GoCardless signup gets a hub login and the welcome email straight away.\')">Go live</button>') . '</form>' : '')
+        . ($form ? '<details class="rp-smtp-d" style="margin-top:12px"><summary>Change the connection</summary>' : '')
         . '<p class="av-lede">In GoCardless: Developers → Create → <b>Webhook endpoint</b>, URL <code>' . esc_html(rest_url('cc/v1/gocardless')) . '</code>, then copy its secret here. Developers → Create → <b>Access token</b>, <b>read-only</b>, and paste it here.</p>'
         . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="rp-smtp-f" autocomplete="off"><input type="hidden" name="action" value="cc_gc_set">' . wp_nonce_field('cc_gc_set', '_wpnonce', false, false)
         . '<label>Webhook secret <input type="password" name="secret" autocomplete="new-password" placeholder="' . ($sec ? 'Saved · type only to change it' : 'From the webhook endpoint') . '"></label>'
         . '<label>Read-only access token <input type="password" name="token" autocomplete="new-password" placeholder="' . ($tok ? 'Saved · type only to change it' : 'Starts with live_') . '"></label>'
-        . '<input type="hidden" name="act" value="save"><span class="rp-acts"><button class="btn btn-go" type="submit">Save and check</button>'
-        . ($sec && $tok ? ($mode === 'live' ? '<button class="btn btn-ghost" type="submit" onclick="this.form.act.value=\'test\'">Back to test mode</button>' : '<button class="btn btn-ghost" type="submit" onclick="if(!confirm(\'Go live? From now on a new GoCardless signup gets a hub login and the welcome email straight away.\'))return false;this.form.act.value=\'live\'">Go live</button>') : '') . '</span></form>'
+        . '<input type="hidden" name="act" value="save"><span class="rp-acts"><button class="btn btn-go" type="submit">Save and check</button></span></form>' . ($form ? '</details>' : '')
         . ($msg ? '<p class="rp-smtp-m"' . ($r === 'bad' ? ' style="color:#ff4a3d"' : '') . '>' . esc_html($msg . (string) get_transient('cc_gc_msg')) . '</p>' : '');
     $log = array_slice((array) get_option('cc_gc_log', []), 0, 10);
     if ($log) { $o .= '<h3 class="av-sub">Latest signups</h3><ul class="gc-log">'; foreach ($log as $l) $o .= '<li><small>' . esc_html(date_i18n('j M H:i', (int) $l['at'])) . '</small> <b>' . esc_html($l['what']) . '</b> ' . esc_html(($l['name'] ?? '') . (!empty($l['why']) ? ' · ' . $l['why'] : '') . (!empty($l['msg']) ? ' · ' . $l['msg'] : '')) . '</li>'; $o .= '</ul>'; }
