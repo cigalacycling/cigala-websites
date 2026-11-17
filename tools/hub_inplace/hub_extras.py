@@ -41,7 +41,11 @@ for p in c.req(f'{c.B}/wp/v2/cc_athlete?status=private&per_page=100&context=edit
     i = raw.find(f'<h2 class="wp-block-heading">{LIB[lang]}</h2>')
     j = raw.find('<!-- wp:heading -->', i + 10) if i >= 0 else -1
     if j < 0: print(p['id'], lang, 'library not found: skipped'); continue
-    new = raw[:j] + videos(lang) + raw[j:] + share(lang)
+    # Matteo 17 Nov (third pass): videos above Nutrition (the last h3 in the library), Share your rides above the blog (the last h2, "Worth reading")
+    v = raw.rfind('<!-- wp:heading {"level":3} -->', i, j)
+    w = raw.rfind('<!-- wp:heading -->')
+    if v < 0 or w <= j: print(p['id'], lang, 'layout not as expected: skipped'); continue
+    new = raw[:v] + videos(lang) + raw[v:w] + share(lang) + raw[w:]
     json.dump({'id': p['id'], 'raw': p['content']['raw']}, open(bk + f'shared-hub-{p["id"]}-before-extras-v2-2026-11-17.json', 'w', encoding='utf-8'), ensure_ascii=False)
     r = c.req(f'{c.B}/wp/v2/cc_athlete/{p["id"]}', {'content': new}, 'POST')
     s = (r.get('content') or {}).get('raw', '') if isinstance(r, dict) else ''
