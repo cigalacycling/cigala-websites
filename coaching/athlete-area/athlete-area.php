@@ -425,6 +425,8 @@ function cc_ath_icon($k, $cls = 'ath-ic') {
         'sweat' => '<path d="M12 2.7l5.7 5.6a8 8 0 1 1-11.4 0z"/>',
         'ftp' => '<circle cx="12" cy="13" r="8"/><path d="M12 13l4-4M12 3V1M9 1h6"/>',
         'gear' => '<circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8L7 17M17 7l2.8-2.8"/>',
+        'play' => '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z"/>',   // Matteo 17 Nov: video routines as small cards
+        'insta' => '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/>',
         'swim' => '<path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><path d="M2 13c2 0 2-1.5 4-1.5S8 13 10 13s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><circle cx="16" cy="5" r="2"/><path d="M6 9l4-3 3 3"/>',
     ];
     return '<span class="' . $cls . '" aria-hidden="true"><svg viewBox="0 0 24 24">' . ($I[$k] ?? $I['link']) . '</svg></span>';
@@ -435,7 +437,8 @@ function cc_ath_kind($href) {
           ['wa.me', 'chat', 'I usually reply within a few hours'], ['skool.com', 'people', 'Free for coaching clients'],
           ['vekta', 'bolt', 'Your plan, workouts and analysis'], ['trainingpeaks', 'peaks', 'Your plan and workouts'],
           ['training-zones', 'zones', ''], ['carbs-per-hour', 'carbs', ''], ['critical-power', 'cp', ''], ['ftp-test', 'ftp', ''],
-          ['sweat-rate', 'sweat', ''], ['climb-time', 'climb', ''], ['gear-speed', 'gear', ''], ['swim-pace', 'swim', ''], ['.pdf', 'doc', '']];
+          ['sweat-rate', 'sweat', ''], ['climb-time', 'climb', ''], ['gear-speed', 'gear', ''], ['swim-pace', 'swim', ''], ['.pdf', 'doc', ''],
+          ['youtube.com/playlist', 'play', 'YouTube'], ['instagram.com', 'insta', '@cigalacycling']];
     foreach ($m as $x) if (stripos($href, $x[0]) !== false) return [$x[1], $x[2] === '' ? '' : cc_t($x[2])];
     return ['link', ''];
 }
