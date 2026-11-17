@@ -965,7 +965,7 @@ html .cc .ath-flag-e { display: inline-grid; place-items: center; width: 14px; h
 html .cc .ath-flag-e span { font-size: 20px; line-height: 1; }
 html .cc .ath form.ath-lang { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 0 14px; vertical-align: middle; }
 html .cc .ath-lang label { font-size: 13px; color: var(--text-3); margin: 0; }
-html .cc .ath-lang select { font-size: 16px; padding: 2px 26px 2px 8px; min-height: 32px; height: 32px; line-height: 1.2; width: auto; border-radius: 8px; margin: 0; }   /* Matteo 17 Nov: a bit smaller (16px text stays: iPhones zoom on smaller) */
+html .cc .ath-lang select { font-size: 16px; padding: 5px 28px 5px 10px; min-height: 38px; height: auto; width: auto; border-radius: 8px; margin: 0; }   /* Matteo 17 Nov: as before, a touch slimmer; no fixed height so the language always shows */
 html .cc img.ath-flag { width: 14px; height: 14px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 1px 4px rgba(0,0,0,.4); margin: 0; flex: none; }
 html .cc .ath-coach-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.1); }
 html .cc .ath-coach-tl { flex-basis: 100%; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
