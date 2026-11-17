@@ -15,15 +15,18 @@ if (!defined('ABSPATH')) return;
 const CC_R_TYPES = ['season' => ['Season plan', 'Piano di stagione', 'peaks'], 'assessment' => ['Assessment', 'Valutazione', 'gauge'],
     'review' => ['Review', 'Revisione', 'reports'], 'race-plan' => ['Race plan', 'Piano gara', 'bolt'], 'progress' => ['Progress report', 'Report dei progressi', 'reports'],
     'race-sim' => ['Race day simulator', 'Simulatore di gara', 'bolt'], 'prediction' => ['Race prediction', 'Previsione gara', 'gauge'], 'snapshot' => ['Training snapshot', 'Panoramica allenamento', 'reports'],
+    'race-recap' => ['Race recap', 'Resoconto della gara', 'bolt'], 'milestones' => ['Since you joined', 'Da quando hai iniziato', 'peaks'],   // Matteo 17 Nov
     'guide' => ['Guide', 'Guida', 'book'], 'other' => ['Report', 'Report', 'doc']];
 /* Matteo 17 Nov: pages the athlete opens often, always the latest one: season plan (periodisation), race prediction, training snapshot.
  * One current page per kind. After Matteo has published the first one with "Keep it updated automatically", the laptop's new versions go
  * live straight away (no email); otherwise each one waits for him as a draft. */
 const CC_R_LIVE = ['season', 'snapshot', 'prediction'];
-const CC_R_ONTOP = ['race-plan', 'race-sim'];
+const CC_R_ONTOP = ['race-plan', 'race-sim', 'race-recap'];
 /* Matteo 17 Nov: the training response report (progress) and race plans also keep themselves up to date once he publishes the first one
  * with "Keep it updated automatically" (one current per athlete + key; no email). Shown where they always were (Your reports). */
-const CC_R_AUTO = ['season', 'snapshot', 'prediction', 'progress', 'race-sim', 'race-plan'];   // one per race: all stay on top
+const CC_R_AUTO = ['season', 'snapshot', 'prediction', 'progress', 'race-sim', 'race-plan', 'race-recap', 'milestones'];
+/* Matteo 17 Nov: pages made by automatic processes that need no review from him: they publish themselves when his switch is on */
+const CC_R_SELF = ['race-sim', 'race-plan', 'race-recap', 'milestones'];   // one per race: all stay on top
 function cc_r_auto($pid, $type = null) { $a = (array) get_post_meta($pid, 'cc_auto', true); return $type === null ? $a : in_array($type, $a, true); }
 function cc_r_set_auto($pid, $type, $on) { $a = array_values(array_diff(cc_r_auto($pid), [$type])); if ($on) $a[] = $type; update_post_meta($pid, 'cc_auto', $a); }
 function cc_r_go_live($rid) {   // publish; a live kind replaces the athlete's previous one (season plans are kept as history)
@@ -90,7 +93,7 @@ function cc_r_create(WP_REST_Request $r) {
     }
     foreach (cc_r_same_key($rid, 'draft') as $old) { cc_r_delete($old); $replaced[] = $old; }   // same key: one draft
     $auto = in_array($type, CC_R_AUTO, true) && cc_r_auto($pid, $type);
-    if (in_array($type, ['race-sim', 'race-plan'], true) && get_option('cc_r_race_auto')) $auto = true;   // Matteo 17 Nov: his switch "Publish race plans automatically" (no draft step, no email)
+    if (in_array($type, CC_R_SELF, true) && get_option('cc_r_race_auto')) $auto = true;   // Matteo 17 Nov: his switch "Publish race plans automatically" (no draft step, no email)
     if ($auto) cc_r_go_live($rid);   // Matteo switched on automatic updates for this athlete and kind
     return ['ok' => true, 'id' => $rid, 'status' => $auto ? 'published' : 'draft', 'auto' => $auto, 'replaced_drafts' => $replaced, 'preview' => add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')),
             'review' => add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))];
@@ -218,7 +221,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     $o = '<section class="ath-s"><h2>' . cc_ath_icon('reports', 'ath-hic') . 'Reports</h2><p class="av-lede">Reports your PC tools send arrive here as drafts. Nothing reaches an athlete until you publish it. '
        . 'Preview, then publish (tick “Email the athlete” if you want them told by email) or delete. To add a PDF by hand, upload it inside the athlete’s page, as before.</p>';
     $o .= '<form class="rp-set" method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_report_settings">' . wp_nonce_field('cc_report_settings', '_wpnonce', false, false)
-        . '<label class="rp-mail"><input type="checkbox" name="race_auto" value="1"' . (get_option('cc_r_race_auto') ? ' checked' : '') . ' onchange="this.form.submit()"> <b>Publish race plans automatically</b>: race day plans go straight into the athlete’s hub, the first one too, without waiting here (no email). Untick to review them first.</label></form>';
+        . '<label class="rp-mail"><input type="checkbox" name="race_auto" value="1"' . (get_option('cc_r_race_auto') ? ' checked' : '') . ' onchange="this.form.submit()"> <b>Publish automatic pages automatically</b>: race day plans, race recaps and “Since you joined” milestones go straight into the athlete’s hub, the first one too, without waiting here (no email). Reviews, assessments, season plans and training reports always wait for you. Untick to review everything first.</label></form>';
     $drafts = get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'numberposts' => -1, 'orderby' => 'date', 'order' => 'DESC']);
     $pub = get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'numberposts' => 60, 'orderby' => 'meta_value_num', 'meta_key' => 'cc_published', 'order' => 'DESC']);
     if ($drafts || $pub) $o .= '<form id="rp-bulk" class="rp-bulk" method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_report_bulk">' . wp_nonce_field('cc_report_bulk', '_wpnonce', false, false)
