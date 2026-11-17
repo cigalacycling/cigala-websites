@@ -28,6 +28,15 @@ function cc_r_go_live($rid) {   // publish; a live kind replaces the athlete's p
     wp_update_post(['ID' => $rid, 'post_status' => 'private']); update_post_meta($rid, 'cc_published', time());
     if (in_array($t, CC_R_LIVE, true) && $t !== 'season')
         foreach (get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'post_parent' => $p->post_parent, 'numberposts' => -1, 'exclude' => [$rid], 'meta_key' => 'cc_type', 'meta_value' => $t, 'fields' => 'ids']) as $old) cc_r_delete($old);
+    foreach (cc_r_same_key($rid, 'private') as $old) cc_r_delete($old);   // same athlete + kind + key (one race, the training report): the new one replaces it
+}
+/* Optional `key` from the laptop (Matteo 17 Nov): one current report per athlete + kind + key, e.g. a race slug for race-sim / race-plan,
+ * "training-report" for the Training Response Report. A newer draft replaces an unpublished one; publishing it replaces the published one. */
+function cc_r_key($k) { return substr(sanitize_title((string) $k), 0, 80); }
+function cc_r_same_key($rid, $status) {
+    $k = (string) get_post_meta($rid, 'cc_key', true); if ($k === '') return [];
+    return get_posts(['post_type' => 'cc_report', 'post_status' => $status, 'post_parent' => get_post($rid)->post_parent, 'numberposts' => -1, 'exclude' => [$rid], 'fields' => 'ids',
+        'meta_query' => [['key' => 'cc_type', 'value' => get_post_meta($rid, 'cc_type', true)], ['key' => 'cc_key', 'value' => $k]]]);
 }   // guide: a resource for this athlete (Vekta brief 17 Nov)
 function cc_r_mail_default($type) { return !in_array($type, CC_R_LIVE, true); }   // pages that keep changing (season plan, prediction, snapshot): no email unless Matteo ticks it
 function cc_r_label($type, $it = null) { $t = CC_R_TYPES[$type] ?? CC_R_TYPES['other']; return $it === false ? $t[0] : cc_L($t[0], $t[1]); }   // false: English (coach board)
@@ -61,7 +70,7 @@ function cc_r_create(WP_REST_Request $r) {
     elseif ($pdf !== '') { $bytes = base64_decode($pdf, true); if ($bytes === false || strpos($bytes, '%PDF') !== 0) return new WP_Error('cc_pdf', 'Not a PDF', ['status' => 400]); $ext = 'pdf'; $mime = 'application/pdf'; }
     else return new WP_Error('cc_empty', 'Send html, pdf_base64 or url (https)', ['status' => 400]);
     $rid = wp_insert_post(['post_type' => 'cc_report', 'post_status' => 'draft', 'post_title' => $title, 'post_parent' => $pid,
-        'meta_input' => ['cc_type' => $type, 'cc_note' => cc_av_str($r->get_param('note'), 300), 'cc_autotitle' => $r->get_param('title') ? 0 : 1]]);
+        'meta_input' => ['cc_type' => $type, 'cc_note' => cc_av_str($r->get_param('note'), 300), 'cc_autotitle' => $r->get_param('title') ? 0 : 1, 'cc_key' => $type === 'season' ? '' : cc_r_key($r->get_param('key'))]]);   // season plans keep their history
     if (is_wp_error($rid) || !$rid) return new WP_Error('cc_fail', 'Could not save the report', ['status' => 500]);
     if ($bytes === null) update_post_meta($rid, 'cc_url', $link);
     else { $fid = cc_f_store($rid, $bytes, 'report-' . $type, $ext, $mime, $title); update_post_meta($rid, 'cc_file', $fid); }
@@ -69,6 +78,7 @@ function cc_r_create(WP_REST_Request $r) {
     if (in_array($type, CC_R_LIVE, true)) foreach (get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'post_parent' => $pid, 'numberposts' => -1, 'exclude' => [$rid], 'meta_key' => 'cc_type', 'meta_value' => $type, 'fields' => 'ids']) as $old) {
         cc_r_delete($old); $replaced[] = $old;   // one draft per live kind: a newer one replaces an unpublished older one
     }
+    foreach (cc_r_same_key($rid, 'draft') as $old) { cc_r_delete($old); $replaced[] = $old; }   // same key: one draft
     $auto = in_array($type, CC_R_LIVE, true) && cc_r_auto($pid, $type);
     if ($auto) cc_r_go_live($rid);   // Matteo switched on automatic updates for this athlete and kind
     return ['ok' => true, 'id' => $rid, 'status' => $auto ? 'published' : 'draft', 'auto' => $auto, 'replaced_drafts' => $replaced, 'preview' => add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')),
@@ -83,7 +93,7 @@ function cc_r_list_rest(WP_REST_Request $r) {
     $q = ['post_type' => 'cc_report', 'post_status' => ['draft', 'private'], 'numberposts' => 200, 'orderby' => 'date', 'order' => 'DESC'];
     if ($r->get_param('email')) { $u = get_user_by('email', (string) $r->get_param('email')); $q['post_parent'] = $u ? cc_ath_page_of($u->ID) : -1; }
     return array_map(function ($p) { return ['id' => $p->ID, 'athlete' => get_post_field('post_title', $p->post_parent), 'type' => get_post_meta($p->ID, 'cc_type', true), 'title' => $p->post_title,
-        'status' => $p->post_status === 'private' ? 'published' : 'draft', 'created' => $p->post_date, 'published' => (int) get_post_meta($p->ID, 'cc_published', true) ?: null]; }, get_posts($q));
+        'key' => (string) get_post_meta($p->ID, 'cc_key', true) ?: null, 'status' => $p->post_status === 'private' ? 'published' : 'draft', 'created' => $p->post_date, 'published' => (int) get_post_meta($p->ID, 'cc_published', true) ?: null]; }, get_posts($q));
 }
 
 /* ---------- serving a report: /athletes/?cc_report=ID ---------- */

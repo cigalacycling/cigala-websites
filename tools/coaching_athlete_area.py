@@ -12,9 +12,30 @@ HOST = 'coaching.cigalacycling.com' if LIVE else 'staging.coaching.cigalacycling
 B = f'https://{HOST}/wp-json'
 SNIP = ROOT + ('live-coaching' if LIVE else 'stg-coaching') + '/athlete-snippet-id.txt'
 
+def laptop_auth():   # Matteo's laptop (17 Nov 2026): no proxy there, so the application password comes from vekta\.env (never printed)
+    env = os.path.normpath(ROOT + '../../.env')
+    if not os.path.exists(env): return None
+    kv = dict(l.strip().split('=', 1) for l in open(env, encoding='utf-8') if '=' in l and not l.lstrip().startswith('#'))
+    u, p = (kv.get('CC_HUB_USER'), kv.get('CC_HUB_APP_PASSWORD')) if LIVE else (kv.get('CC_STG_USER'), kv.get('CC_STG_APP_PASSWORD'))
+    if not (u and p): raise SystemExit('Add ' + ('CC_HUB_USER / CC_HUB_APP_PASSWORD' if LIVE else 'CC_STG_USER / CC_STG_APP_PASSWORD') + ' to ' + env)
+    return u.strip() + ':' + p.strip()
+AUTH = laptop_auth()
+
 def req(url, body=None, method='GET'):
     assert url.startswith(f'https://{HOST}/')
     a = ['curl', '-sS', '-m', '90', '-X', method, url]
+    if AUTH:   # laptop: Windows curl (Python's OpenSSL rejects the new Let's Encrypt chain); the password goes in a temp config file, never on the command line
+        import tempfile
+        fd, cfg = tempfile.mkstemp(suffix='.curl')
+        with os.fdopen(fd, 'w') as f: f.write('user = "' + AUTH.replace('\\', '\\\\').replace('"', '\\"') + '"\n')
+        a += ['-K', cfg]
+        try:
+            if body is not None: a += ['-H', 'Content-Type: application/json', '--data-binary', '@-']
+            r = subprocess.run(a, capture_output=True, input=json.dumps(body).encode() if body is not None else None)
+        finally: os.remove(cfg)
+        out = r.stdout.decode('utf-8', 'replace')
+        try: return json.loads(out or 'null')
+        except ValueError: raise SystemExit('bad response: ' + out[:300])
     if body is not None: a += ['-H', 'Content-Type: application/json', '--data-binary', '@-']   # from stdin: the snippet is too big for an argument
     r = subprocess.run(a, capture_output=True, text=True, input=json.dumps(body) if body is not None else None)
     try: return json.loads(r.stdout or 'null')
