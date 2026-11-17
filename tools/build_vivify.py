@@ -806,11 +806,7 @@ def coaching():
                'A complete evaluation to understand your current nutrition, goals, and needs. The ideal first step: one private session with Marine and a full written report you can keep.',
                ['A 50-minute private online consultation with Marine', 'A review of your eating habits, training and goals',
                 'Personalized advice on healthy habits and food preferences', 'Vitamin &amp; mineral recommendations', 'Supplement guidance',
-                'Sports-specific nutrition', 'Your Full Nutritional Assessment Report'], 'Book now', ASSESSMENT_PAY,
-               more=('<details class="more"><summary>How the assessment works</summary>'
-                     '<p>This private online meeting with Marine will study your eating habits and how to improve them, whatever your goals.</p>'
-                     '<p>From general health, gut health to weight loss or to sports performance, Marine will develop a nutrition strategy that suits you whether it’s nutritional advice for a sedentary population, general recreational exercise, or competitive sport.</p>'
-                     '<p>You will learn the basics of nutrition and advice to lose weight permanently or solve your nutritional problems with a FULL NUTRITIONAL ASSESSMENT REPORT.</p></details>'))
+                'Sports-specific nutrition', 'Your Full Nutritional Assessment Report'], 'Book now', ASSESSMENT_PAY)   # Marine 17 Nov: 'How the assessment works' removed
     two = plan('FOLLOW-UP CONSULTATION', '30mn 50€ / 60 US$', '', 'A session to review your progress, fine-tune your plan, and stay on track.',
                ['1 follow-up call', 'Updated nutritional and supplement advice'], 'Book now', FOLLOWUP_PAY)
     p1 = plan('THE HEALTHY BODY PLAN', '99€/MONTH', '3 months', 'Build sustainable, healthy eating habits that energize your everyday life.',
