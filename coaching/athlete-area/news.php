@@ -31,6 +31,23 @@ function cc_nw_w($k) {
     $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
 }
 const CC_NW_LANGS = ['en', 'it', 'pt', 'sl'];
+// Matteo 17 Nov: each athlete's time zone (sent by their browser when they open the hub), for event times in emails / notifications
+add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/tz', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {
+        $tz = (string) $r->get_param('tz'); if (!in_array($tz, timezone_identifiers_list(), true)) return new WP_Error('cc_tz', 'Unknown time zone', ['status' => 400]);
+        update_user_meta(get_current_user_id(), 'cc_tz', $tz); return ['ok' => true];
+    }]);
+});
+// "Thu 20 Nov, 21:00" in the athlete's language and time zone (Irish time when unknown)
+function cc_nw_when($utc, $uid, $l) {
+    $tz = $uid ? (string) get_user_meta($uid, 'cc_tz', true) : ''; $known = $tz !== '';
+    try { $d = new DateTime('@' . (int) $utc); $d->setTimezone(new DateTimeZone($known ? $tz : 'Europe/Dublin')); } catch (Exception $e) { return ''; }
+    $loc = ['en' => 'en_GB', 'it' => 'it_IT', 'pt' => 'pt_PT', 'sl' => 'sl_SI'][$l] ?? 'en_GB';
+    if (class_exists('IntlDateFormatter')) { $f = new IntlDateFormatter($loc, IntlDateFormatter::FULL, IntlDateFormatter::SHORT, $d->getTimezone()->getName(), null, 'EEEE d MMMM, HH:mm'); $s = $f->format($d); }
+    else $s = $d->format('l j F, H:i');
+    $suffix = $known ? ['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas'][$l] ?? 'your time' : ['en' => 'Irish time', 'it' => 'ora irlandese', 'pt' => 'hora da Irlanda', 'sl' => 'irski čas'][$l] ?? 'Irish time';
+    return '🕗 ' . $s . ' (' . $suffix . ')';
+}
 function cc_nw_all() { $a = get_option('cc_news', []); return is_array($a) ? $a : []; }
 function cc_nw_for($pid) {   // the news this athlete should see (audience match), newest first
     $tp = function_exists('cc_ath_tp') && cc_ath_tp($pid); $uid = (int) get_post_meta($pid, 'cc_user', true); $l = $uid ? cc_ath_lang_code($uid) : 'en';
@@ -57,6 +74,9 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
         $l = $GLOBALS['cc_ath_lang'] ?? 'en'; $t = $n['t'][$l] ?? ($n['t']['en'] ?? []);
         $o .= '<div class="nw-card" data-id="' . esc_attr($n['id']) . '" hidden>' . (!empty($n['img']) ? '<img src="' . esc_url($n['img']) . '" alt="">' : '')
             . '<div><p class="nw-eb">📣 ' . esc_html(cc_nw_w('news')) . ' · ' . esc_html(date_i18n('j M', (int) $n['at'])) . '</p><b>' . esc_html($t['title'] ?? '') . '</b>'
+            // the event time: Irish time from the server, then the browser rewrites it in the viewer's own time zone
+            . (!empty($n['when']) ? '<p class="nw-when" data-utc="' . (int) $n['when'] . '" data-loc="' . esc_attr(['en' => 'en-GB', 'it' => 'it-IT', 'pt' => 'pt-PT', 'sl' => 'sl-SI'][$l] ?? 'en-GB') . '" data-mine="' . esc_attr(['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas'][$l] ?? 'your time') . '">'
+                . esc_html(cc_nw_when($n['when'], 0, $l)) . '</p>' : '')
             . (($t['body'] ?? '') !== '' ? '<p>' . nl2br(esc_html($t['body'])) . '</p>' : '')
             . '<span class="nw-acts">' . (!empty($n['url']) ? '<a class="btn btn-go" href="' . esc_url($n['url']) . '" target="_blank" rel="noopener">' . esc_html(($t['btn'] ?? '') !== '' ? $t['btn'] : cc_nw_w('more')) . '</a>' : '')
             . '<button type="button" class="btn btn-ghost nw-got">' . esc_html(cc_nw_w('got')) . '</button></span></div></div>';
@@ -70,7 +90,11 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
         . '@media (max-width:560px){html .cc .nw-card{flex-direction:column}html .cc .nw-card img{width:100%;height:160px}}</style>'
         . '<script>(function(){function g(k){try{return localStorage.getItem(k);}catch(e){return null;}}function s(k,v){try{localStorage.setItem(k,v);}catch(e){}}'
         . 'var d=document.getElementById("nw-guide");if(d){if(g("cc_guide_closed"))d.open=false;d.addEventListener("toggle",function(){s("cc_guide_closed",d.open?"":"1");});}'
-        . 'document.querySelectorAll(".nw-card").forEach(function(c){if(g("cc_news_"+c.dataset.id))return;c.hidden=false;c.querySelector(".nw-got").addEventListener("click",function(){s("cc_news_"+c.dataset.id,"1");c.hidden=true;});});})();</script>';
+        . 'document.querySelectorAll(".nw-card").forEach(function(c){if(g("cc_news_"+c.dataset.id))return;c.hidden=false;c.querySelector(".nw-got").addEventListener("click",function(){s("cc_news_"+c.dataset.id,"1");c.hidden=true;});});'
+        // event times in the viewer's own time zone; and the hub remembers that zone for emails / notifications
+        . 'document.querySelectorAll(".nw-when").forEach(function(p){try{var d=new Date(1000*p.dataset.utc);p.textContent="🕗 "+d.toLocaleString(p.dataset.loc,{weekday:"long",day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})+" ("+p.dataset.mine+")";}catch(e){}});'
+        . 'try{var tz=Intl.DateTimeFormat().resolvedOptions().timeZone;if(tz&&g("cc_tz")!==tz){fetch("' . esc_url(rest_url('cc/v1/tz')) . '",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":"' . esc_attr(wp_create_nonce('wp_rest')) . '"},body:JSON.stringify({tz:tz})}).then(function(r){if(r.ok)s("cc_tz",tz);});}}catch(e){}'
+        . '})();</script>';
 }, 3, 3);
 
 /* ---------- posting: News board and POST /wp-json/cc/v1/news ---------- */
@@ -82,7 +106,9 @@ function cc_nw_post($in) {   // ['aud', 'url', 'img', 'push', 't' => [lang => [t
     foreach (CC_NW_LANGS as $l) { $x = (array) ($in['t'][$l] ?? []); $title = cc_av_str($x['title'] ?? '', 140); if ($title === '') continue;
         $t[$l] = ['title' => $title, 'body' => cc_av_note($x['body'] ?? '', 1500), 'btn' => cc_av_str($x['btn'] ?? '', 40)]; }
     foreach ($need as $l) if (empty($t[$l])) return new WP_Error('cc_lang', 'Missing the ' . strtoupper($l) . ' text: every athlete reads news in their own language', ['status' => 400]);
-    $n = ['id' => wp_generate_password(8, false, false), 'at' => time(), 'aud' => $aud, 'url' => esc_url_raw((string) ($in['url'] ?? '')), 'img' => esc_url_raw((string) ($in['img'] ?? '')), 't' => $t];
+    $when = 0;   // optional event time, entered in Irish time ("YYYY-MM-DDTHH:MM"), stored as UTC
+    if (preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/', (string) ($in['when'] ?? ''))) { try { $when = (new DateTime(substr($in['when'], 0, 16), new DateTimeZone('Europe/Dublin')))->getTimestamp(); } catch (Exception $e) { $when = 0; } }
+    $n = ['id' => wp_generate_password(8, false, false), 'at' => time(), 'aud' => $aud, 'url' => esc_url_raw((string) ($in['url'] ?? '')), 'img' => esc_url_raw((string) ($in['img'] ?? '')), 'when' => $when, 't' => $t];
     $all = cc_nw_all(); $all[] = $n; update_option('cc_news', array_slice($all, -30), false);
     // everyone in the audience: the notification centre (and their phone if they turned it on); an email only to athletes who
     // already set their hub password (Matteo 17 Nov: athletes not invited to the hub yet never get an email)
@@ -91,10 +117,11 @@ function cc_nw_post($in) {   // ['aud', 'url', 'img', 'push', 't' => [lang => [t
         $uid = (int) get_post_meta($pid, 'cc_user', true); $u = $uid ? get_userdata($uid) : null; if (!$u || user_can($uid, 'edit_pages')) continue;
         $mine = false; foreach (cc_nw_for($pid) as $x) if ($x['id'] === $n['id']) $mine = true; if (!$mine) continue;
         $l = cc_ath_lang_code($uid); $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = $l; $tt = $t[$l];
-        if (!empty($in['push']) && function_exists('cc_push_user')) cc_push_user($uid, '📣 ' . $tt['title'], wp_trim_words($tt['body'], 18), home_url('/' . CC_ATH_SLUG . '/'), 'cc-news-' . $n['id']);
+        $wh = $when ? cc_nw_when($when, $uid, $l) : '';   // the event time in their own time zone
+        if (!empty($in['push']) && function_exists('cc_push_user')) cc_push_user($uid, '📣 ' . $tt['title'], $wh !== '' ? $wh : wp_trim_words($tt['body'], 18), home_url('/' . CC_ATH_SLUG . '/'), 'cc-news-' . $n['id']);
         if (!empty($in['email']) && get_user_meta($uid, 'cc_pw_set', true) && is_email($u->user_email) && function_exists('cc_ath_mail_shell')) {
             $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email;
-            $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), esc_html($u->first_name ?: $u->display_name)), '<b>' . esc_html($tt['title']) . '</b><br>' . nl2br(esc_html($tt['body'])),
+            $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), esc_html($u->first_name ?: $u->display_name)), '<b>' . esc_html($tt['title']) . '</b>' . ($wh !== '' ? '<br><b style="color:#12a150">' . esc_html($wh) . '</b>' : '') . '<br>' . nl2br(esc_html($tt['body'])),
                 esc_html($tt['btn'] !== '' ? $tt['btn'] : cc_nw_w('more')), $n['url'] ?: home_url('/' . CC_ATH_SLUG . '/'));
             if (is_email($to) && wp_mail($to, '📣 ' . $tt['title'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>'])) $sent++;
         }
@@ -124,7 +151,8 @@ add_filter('cc_ath_board', function ($html, $board) {
        . '<option value="lang:en">English readers</option><option value="lang:it">Italian readers</option><option value="lang:pt">Portuguese readers</option><option value="lang:sl">Slovenian readers</option></select></label>';
     foreach (['en' => 'English', 'it' => 'Italiano', 'pt' => 'Português', 'sl' => 'Slovenščina'] as $l => $nm)
         $o .= '<fieldset><legend>' . $nm . '</legend><input name="t[' . $l . '][title]" maxlength="140" placeholder="Title"><textarea name="t[' . $l . '][body]" rows="3" placeholder="Message"></textarea><input name="t[' . $l . '][btn]" maxlength="40" placeholder="Button text (optional)"></fieldset>';
-    $o .= '<label>Button link (optional) <input name="url" type="url" placeholder="https://"></label><label class="nw-tick"><input type="checkbox" name="push" value="1" checked> Also send a phone notification</label>'
+    $o .= '<label>Event date &amp; time, Irish time (optional): each athlete sees it in their own time zone <input name="when" type="datetime-local"></label>'
+       . '<label>Button link (optional) <input name="url" type="url" placeholder="https://"></label><label class="nw-tick"><input type="checkbox" name="push" value="1" checked> Also send a phone notification</label>'
        . '<label class="nw-tick"><input type="checkbox" name="email" value="1" checked> Also email it (only to athletes who already use the hub, i.e. set their password)</label>'
        . '<button class="btn btn-go" type="submit">Post the news</button></form>';
     $all = array_reverse(cc_nw_all());
@@ -136,7 +164,7 @@ add_filter('cc_ath_board', function ($html, $board) {
 }, 10, 2);
 add_action('admin_post_cc_news', function () {
     if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_news')) wp_die('Not allowed');
-    $n = cc_nw_post(['aud' => $_POST['aud'] ?? 'all', 'url' => $_POST['url'] ?? '', 'push' => !empty($_POST['push']), 'email' => !empty($_POST['email']), 't' => wp_unslash((array) ($_POST['t'] ?? []))]);
+    $n = cc_nw_post(['aud' => $_POST['aud'] ?? 'all', 'url' => $_POST['url'] ?? '', 'when' => sanitize_text_field($_POST['when'] ?? ''), 'push' => !empty($_POST['push']), 'email' => !empty($_POST['email']), 't' => wp_unslash((array) ($_POST['t'] ?? []))]);
     if (is_wp_error($n)) set_transient('cc_nw_err', $n->get_error_message(), 120);
     wp_safe_redirect(add_query_arg(['board' => 'news', 'nw' => is_wp_error($n) ? 'bad' : 'ok'], home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
