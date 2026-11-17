@@ -85,14 +85,17 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
             . '<button type="button" class="btn btn-ghost nw-got">' . esc_html(cc_nw_w('got')) . '</button></span></div></div>';
     }
     return $html . $o
-        . '<style>html .cc .nw-guide{margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}html .cc .nw-guide summary{cursor:pointer;font-weight:700;font-size:16px;color:#fff}'
+        . '<style>html .cc .nw-guide{margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}html .cc .nw-guide summary{cursor:pointer;font-weight:700;font-size:16px;color:#fff;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}'
+        . 'html .cc .nw-guide summary::-webkit-details-marker{display:none}html .cc .nw-guide summary::after{content:"";width:9px;height:9px;border-right:2.5px solid #2bd47a;border-bottom:2.5px solid #2bd47a;transform:rotate(45deg);margin:-4px 4px 0 0;transition:transform .2s}'
+        . 'html .cc .nw-guide[open] summary::after{transform:rotate(-135deg);margin-top:4px}'
         . 'html .cc .nw-guide ul{margin:10px 0 2px;padding:0;list-style:none;display:grid;gap:8px}html .cc .nw-guide li{font-size:16px;color:var(--text-2);line-height:1.45}html .cc .nw-guide b{color:#fff}html .cc .nw-guide a{color:#2bd47a;text-decoration:underline;text-underline-offset:3px;font-weight:600}'
         . 'html .cc .nw-card{display:flex;gap:14px;align-items:flex-start;margin:0 0 14px;padding:14px 16px;border-radius:14px;border:1px solid rgba(43,212,122,.45);background:linear-gradient(135deg,rgba(18,161,80,.16),rgba(18,161,80,.04))}html .cc .nw-card[hidden]{display:none!important}'
         . 'html .cc .nw-card img{width:84px;height:84px;border-radius:12px;object-fit:cover;flex:none}html .cc .nw-eb{margin:0 0 4px;font-size:14px;color:#2bd47a;font-weight:700;letter-spacing:.04em;text-transform:uppercase}'
         . 'html .cc .nw-card b{display:block;font-size:18px;color:#fff}html .cc .nw-card p{margin:6px 0 0;font-size:16px;color:var(--text-2)}html .cc .nw-acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}html .cc .nw-acts .btn{width:auto;margin:0}'
         . '@media (max-width:560px){html .cc .nw-card{flex-direction:column}html .cc .nw-card img{width:100%;height:160px}}</style>'
         . '<script>(function(){function g(k){try{return localStorage.getItem(k);}catch(e){return null;}}function s(k,v){try{localStorage.setItem(k,v);}catch(e){}}'
-        . 'var d=document.getElementById("nw-guide");if(d){if(g("cc_guide_closed"))d.open=false;d.addEventListener("toggle",function(){s("cc_guide_closed",d.open?"":"1");});}'
+        // Matteo 17 Nov: open on the first visit only; afterwards folded (tap the title to open it again)
+        . 'var d=document.getElementById("nw-guide");if(d){if(g("cc_guide_seen"))d.open=false;else s("cc_guide_seen","1");}'
         . 'document.querySelectorAll(".nw-card").forEach(function(c){if(g("cc_news_"+c.dataset.id))return;c.hidden=false;c.querySelector(".nw-got").addEventListener("click",function(){s("cc_news_"+c.dataset.id,"1");c.hidden=true;});});'
         // event times in the viewer's own time zone; and the hub remembers that zone for emails / notifications
         . 'document.querySelectorAll(".nw-when").forEach(function(p){try{var d=new Date(1000*p.dataset.utc);p.textContent="🕗 "+d.toLocaleString(p.dataset.loc,{weekday:"long",day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})+" ("+p.dataset.mine+")";}catch(e){}});'
