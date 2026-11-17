@@ -382,6 +382,13 @@ function cc_ath_inner() {
             return '<section class="ath-s" id="' . $m[1] . '"><h2>' . $m[2] . '</h2><div class="ath-body"><p>' . esc_html(cc_ath_w('tp_card')) . '</p>'
                 . cc_ath_dress('<div class="wp-block-buttons"><div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="https://app.trainingpeaks.com/" target="_blank" rel="noreferrer noopener">' . esc_html(cc_ath_w('tp_open')) . '</a></div></div>') . '</div></section>';
         }, $hub[0]);
+        // Matteo 17 Nov: any other section that only works with Vekta ("Share your rides": Vekta app steps + video) goes, with its menu link
+        $gone = [];
+        $hub[0] = preg_replace_callback('~<section class="ath-s" id="([^"]+)">(?:(?!</section>).)*</section>~s', function ($m) use (&$gone) {
+            if (stripos(wp_strip_all_tags($m[0]), 'vekta') === false) return $m[0];
+            $gone[] = $m[1]; return '';
+        }, $hub[0]);
+        $hub[1] = array_values(array_filter($hub[1], function ($n) use ($gone) { return !in_array($n[0], $gone, true); }));
     }
     $nav = [['reports', cc_t('Your reports')]];
     foreach ($hub[1] as $s) $nav[] = $s;
