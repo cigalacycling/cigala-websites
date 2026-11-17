@@ -116,7 +116,8 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
        . '<textarea rows="3" maxlength="1500" placeholder="' . esc_attr(cc_rs_w('ph')) . '" aria-label="' . esc_attr(cc_rs_w('title')) . '"></textarea>'
        . '<label>' . esc_html(cc_rs_w('race')) . '<select>' . $opts . '</select></label>'
        . '<input type="date" max="' . esc_attr(current_time('Y-m-d')) . '" value="' . esc_attr(current_time('Y-m-d')) . '" aria-label="Date">'
-       . '<label class="rs-tick"><input type="checkbox"> <span>'   // unticked: sharing publicly is their active choice . esc_html(cc_rs_w('ok')) . '</span></label>'
+       // unticked: sharing publicly is their active choice; a heading says what the tick is for
+       . '<div class="rs-share"><b>' . esc_html(cc_rs_w('askshare')) . '</b><label class="rs-tick"><input type="checkbox"> <span>' . esc_html(cc_rs_w('ok')) . '</span></label></div>'
        . '<button type="button" class="btn btn-go rs-go">' . esc_html(cc_rs_w('send')) . '</button><p class="rs-msg" role="status"></p></div>';
     if ($rs) { $o .= '<h3 class="av-sub" style="margin-top:28px">' . esc_html(cc_rs_w('shelf')) . '</h3><div class="rs-shelf">'; foreach (array_slice($rs, 0, 12) as $r) $o .= cc_rs_card($view, $r, false); $o .= '</div>'; }
     return $html . $o . '</section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() : '');
