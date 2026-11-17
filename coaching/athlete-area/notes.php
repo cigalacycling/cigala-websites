@@ -57,7 +57,8 @@ function cc_nt_words() { $W = []; foreach (['listening', 'ready', 'del', 'rec', 
 function cc_nt_box($api, $extra, $ph, $send, $withDay = false, $lang = 'en-GB') {
     return '<div class="nt-box" data-api="' . esc_url($api) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-lang="' . esc_attr($lang) . '" data-extra="' . esc_attr(wp_json_encode($extra)) . '" data-w="' . esc_attr(wp_json_encode(cc_nt_words())) . '">'
         . '<textarea rows="3" maxlength="3000" placeholder="' . esc_attr($ph) . '" aria-label="' . esc_attr($ph) . '"></textarea>'
-        . '<div class="nt-row"><button type="button" class="btn btn-ghost nt-rec" aria-pressed="false">' . cc_ath_icon('mic', 'nt-ic') . '<span>' . esc_html(cc_nt_w('rec')) . '</span></button><span class="nt-st" role="status"></span></div>'
+        // Matteo 17 Nov: a green microphone on the left of the button, sized and coloured in the icon itself (always visible)
+        . '<div class="nt-row"><button type="button" class="btn btn-ghost nt-rec" aria-pressed="false"><svg class="nt-mic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2bd47a" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="width:20px;height:20px;flex:none;display:inline-block"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg><span>' . esc_html(cc_nt_w('rec')) . '</span></button><span class="nt-st" role="status"></span></div>'
         . ($withDay ? '<label class="nt-day">' . esc_html(cc_nt_w('day')) . '<input type="date" max="' . esc_attr(current_time('Y-m-d')) . '"></label>' : '')
         . '<button type="button" class="btn btn-go nt-send">' . esc_html($send) . '</button><p class="nt-msg" role="status"></p></div>';
 }
@@ -121,7 +122,7 @@ function cc_nt_css() {
     static $done = false; if ($done) return ''; $done = true;
     return '<style>html .cc .nt-box{display:grid;gap:12px}html .cc .nt-box textarea{width:100%;min-height:96px;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
         . 'html .cc .nt-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}html .cc .nt-rec{display:inline-flex;align-items:center;gap:10px}'
-        . 'html .cc .nt-rec:not(.on) .nt-ic svg{stroke:#2bd47a}'   // Matteo 17 Nov: dark button as before, only the microphone in greenhtml .cc .nt-rec .nt-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}'
+        . 'html .cc .nt-rec .nt-mic{display:inline-block!important}html .cc .nt-rec.on .nt-mic{stroke:#fff}'   // Matteo 17 Nov: dark button as before, only the microphone in greenhtml .cc .nt-rec .nt-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}'
         . 'html .cc .nt-rec.on{background:#ca212a!important;border-color:#ca212a!important;color:#fff!important;animation:ntpulse 1.2s ease-in-out infinite}@keyframes ntpulse{0%,100%{box-shadow:0 0 0 0 rgba(202,33,42,.6)}50%{box-shadow:0 0 0 8px rgba(202,33,42,0)}}'
         . 'html .cc .nt-st{font-size:15px;color:#d0d6e0}html .cc .nt-st button{background:none;border:0;color:#ff7a73;text-decoration:underline;font:inherit;cursor:pointer;padding:0;margin-left:8px}'
         . 'html .cc .nt-day{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}html .cc .nt-day input{font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;max-width:220px}'
@@ -148,7 +149,7 @@ function cc_nt_css() {
 function cc_nt_js() {
     static $done = false; if ($done) return ''; $done = true;
     return <<<'JS'
-<script>(function(){document.querySelectorAll('.nt-box').forEach(function(A){var W=JSON.parse(A.dataset.w),L=A.dataset.lang,ta=A.querySelector('textarea'),
+<script>(function(){function ntInit(){document.querySelectorAll('.nt-box').forEach(function(A){var W=JSON.parse(A.dataset.w),L=A.dataset.lang,ta=A.querySelector('textarea'),
 b=A.querySelector('.nt-rec'),st=A.querySelector('.nt-st'),go=A.querySelector('.nt-send'),m=A.querySelector('.nt-msg'),dy=A.querySelector('.nt-day input'),
 rec=null,sr=null,chunks=[],blob=null,tr='',t0=0,tick=null;
 function msg(t,e){m.textContent=t||'';m.classList.toggle('err',!!e);}
@@ -179,9 +180,11 @@ go.addEventListener('click',function(){if(rec){rec.stop();setTimeout(function(){
  fetch(A.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':A.dataset.nonce}}).then(function(r){return r.json().then(function(j){return[r.ok,j];});})
  .then(function(x){if(!x[0])throw new Error();ta.value='';blob=null;tr='';st.textContent='';voice(false);if(dy)dy.value='';msg(W.sent);go.disabled=false;
   /* Matteo 17 Nov: show it straight away: reload and come back to the notes */
-  setTimeout(function(){var u=location.href.split('#')[0];location.replace(u+(u.indexOf('?')>-1?'&':'?')+'nt='+Date.now()+'#notes');},900);})
+  setTimeout(function(){var u=location.href.split('#')[0];location.replace(u+(u.indexOf('?')>-1?'&':'?')+'nt='+Date.now()+(A.dataset.api.indexOf('result-reply')>-1?'#results':'#notes'));},900);})
  .catch(function(){go.disabled=false;msg(W.err,true);});});
-});
+});}
+/* boxes further down the page (results) exist only once the page has loaded */
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ntInit);else ntInit();
 /* delete a note or a reply (asks first) */
 document.addEventListener('click',function(e){var d=e.target.closest('.nt-del');if(!d||!confirm(d.dataset.q))return;var f=new FormData();f.append('page',d.dataset.page);f.append('at',d.dataset.at);f.append('ri',d.dataset.ri);
  fetch(d.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':d.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;var el=d.dataset.ri==='-1'?d.closest('.nt-item'):d.closest('.nt-rep');if(el){if(d.dataset.ri==='-1'){var w=el.previousElementSibling;if(w&&w.classList.contains('nt-who'))w.remove();}el.remove();}}).catch(function(){alert('Not deleted. Please try again.');});});

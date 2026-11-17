@@ -33,15 +33,22 @@ function cc_rs_w($k) {
         'reacted' => ['en' => 'Matteo reacted to your result', 'it' => 'Matteo ha reagito al tuo risultato', 'pt' => 'O Matteo reagiu ao teu resultado', 'sl' => 'Matteo se je odzval na tvoj rezultat'],
         'replied' => ['en' => 'Matteo replied', 'it' => 'Matteo ha risposto', 'pt' => 'O Matteo respondeu', 'sl' => 'Matteo je odgovoril'],
         'del' => ['en' => 'Delete', 'it' => 'Elimina', 'pt' => 'Apagar', 'sl' => 'Izbriši'],
+        'you' => ['en' => 'You', 'it' => 'Tu', 'pt' => 'Tu', 'sl' => 'Ti'],
+        'answer' => ['en' => 'Answer Matteo', 'it' => 'Rispondi a Matteo', 'pt' => 'Responder ao Matteo', 'sl' => 'Odgovori Matteu'],
+        'ansph' => ['en' => 'Your answer…', 'it' => 'La tua risposta…', 'pt' => 'A tua resposta…', 'sl' => 'Tvoj odgovor…'],
         'delq' => ['en' => 'Delete this? It cannot be undone.', 'it' => 'Eliminarlo? Non si può annullare.', 'pt' => 'Apagar? Não é possível desfazer.', 'sl' => 'Izbrišem? Tega ni mogoče razveljaviti.'],
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
 }
 const CC_RS_REACTS = ['heart' => '❤️', 'clap' => '👏', 'fire' => '🔥', 'strong' => '💪', 'trophy' => '🏆'];   // ❤️ also by double-tapping the photo (Matteo 17 Nov)
 function cc_rs_get($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_results', true), true); return is_array($a) ? $a : []; }
+function cc_rs_files_gone($x) {   // a result's photo, reply photo and every photo/voice note in its conversation
+    foreach (['photo', 'reply_photo'] as $f) if (!empty($x[$f])) wp_delete_attachment((int) $x[$f], true);
+    foreach ((array) ($x['thread'] ?? []) as $e) foreach (['photo', 'audio'] as $f) if (!empty($e[$f])) wp_delete_attachment((int) $e[$f], true);
+}
 function cc_rs_put($pid, $a) {   // keeps the newest 80; older ones go, with their photos
     $a = array_values($a);
-    foreach (array_slice($a, 0, max(0, count($a) - 80)) as $old) foreach (['photo', 'reply_photo'] as $f) if (!empty($old[$f])) wp_delete_attachment((int) $old[$f], true);
+    foreach (array_slice($a, 0, max(0, count($a) - 80)) as $old) cc_rs_files_gone($old);
     update_post_meta((int) $pid, 'cc_results', wp_slash(wp_json_encode(array_slice($a, -80))));
 }
 function cc_rs_card($pid, $r, $forCoach) {
@@ -54,9 +61,24 @@ function cc_rs_card($pid, $r, $forCoach) {
        . ($r['text'] !== '' ? '<p>' . nl2br(esc_html($r['text'])) . '</p>' : '')
        . ($forCoach ? '<p class="rs-ok">' . ($r['consent'] ? '✅ OK to share on social media / Skool' : '🔒 Private: not for social media') . '</p>' : '');
     if (!empty($r['react'])) $o .= '<p class="rs-react">' . esc_html(CC_RS_REACTS[$r['react']] ?? '') . ' <small>' . esc_html($forCoach ? 'your reaction' : 'Matteo') . '</small></p>';
-    $rp = !empty($r['reply_photo']) ? wp_get_attachment_url((int) $r['reply_photo']) : '';
-    if (!empty($r['reply']) || $rp) $o .= '<div class="nt-rep">' . ($forCoach ? '' : '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">') . '<b>' . esc_html($forCoach ? 'Your reply' : cc_rs_w('replied')) . '</b>'
-        . (!empty($r['reply']) ? '<p>' . nl2br(esc_html($r['reply'])) . '</p>' : '') . ($rp ? '<a href="' . esc_url($rp) . '" target="_blank" rel="noopener"><img class="rs-rimg" src="' . esc_url($rp) . '" alt="" loading="lazy"></a>' : '') . '</div>';
+    // Matteo 17 Nov: the conversation under a result: his replies (his photo) and the athlete's answers (their photo), text, voice, photo
+    $thread = (array) ($r['thread'] ?? []);
+    if (!empty($r['reply']) || !empty($r['reply_photo'])) array_unshift($thread, ['at' => (int) $r['at'], 'from' => 'coach', 'text' => (string) ($r['reply'] ?? ''), 'photo' => (int) ($r['reply_photo'] ?? 0)]);   // older single reply
+    $me = '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">';
+    foreach ($thread as $e) {
+        $coachSide = ($e['from'] ?? 'coach') === 'coach';
+        $face = $coachSide ? $me : (function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '');
+        $label = $coachSide ? ($forCoach ? 'You' : cc_rs_w('replied')) : ($forCoach ? get_the_title($pid) : cc_rs_w('you'));
+        $ph = !empty($e['photo']) ? wp_get_attachment_url((int) $e['photo']) : ''; $au = !empty($e['audio']) ? wp_get_attachment_url((int) $e['audio']) : '';
+        $o .= '<div class="nt-rep' . ($coachSide ? '' : ' nt-rep-a') . '">' . $face . '<b>' . esc_html($label) . '</b>'
+            . ($au && function_exists('cc_nt_player') ? cc_nt_player($au) : '') . (($e['text'] ?? '') !== '' ? '<p>' . nl2br(esc_html($e['text'])) . '</p>' : '')
+            . ($ph ? '<a href="' . esc_url($ph) . '" target="_blank" rel="noopener"><img class="rs-rimg" src="' . esc_url($ph) . '" alt="" loading="lazy"></a>' : '') . '</div>';
+    }
+    $speech = defined('CC_AV_SPEECH') ? (CC_AV_SPEECH[$GLOBALS['cc_ath_lang'] ?? 'en'] ?? 'en-GB') : 'en-GB';
+    if (function_exists('cc_nt_box')) {
+        if ($forCoach) $o .= '<details class="nt-replyd"><summary>🎙 Reply with a voice note</summary>' . cc_nt_box(rest_url('cc/v1/result-reply'), ['page' => $pid, 'at' => (int) $r['at']], 'Your reply…', 'Send reply') . '</details>';
+        elseif ($thread) $o .= '<details class="nt-replyd"><summary>' . esc_html(cc_rs_w('answer')) . '</summary>' . cc_nt_box(rest_url('cc/v1/result-reply'), ['page' => $pid, 'at' => (int) $r['at']], cc_rs_w('ansph'), cc_rs_w('send'), false, $speech) . '</details>';
+    }
     if ($forCoach) {
         $act = esc_url(rest_url('cc/v1/result-react')); $n = esc_attr(wp_create_nonce('wp_rest'));
         $o .= '<div class="rs-acts" data-api="' . $act . '" data-nonce="' . $n . '" data-page="' . (int) $pid . '" data-at="' . (int) $r['at'] . '">';
@@ -133,7 +155,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
         if (!$rs) return $html;
         $o = '<section class="ath-s" id="results"><h2>' . cc_ath_icon('trophy', 'ath-hic') . 'Results</h2><div class="rs-shelf">';
         foreach (array_slice($rs, 0, 12) as $r) $o .= cc_rs_card($view, $r, true);
-        return $html . $o . '</div></section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() : '');
+        return $html . $o . '</div></section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() . cc_nt_js() : '');
     }
     $g = function_exists('cc_g_get') ? (cc_g_get($view) ?: []) : []; $opts = '<option value="">' . esc_html(cc_rs_w('none')) . '</option>';
     $ev = (array) ($g['events'] ?? []); usort($ev, function ($a, $b) { return strcmp($b['date'], $a['date']); });
@@ -149,7 +171,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
        . '<div class="rs-share"><b>' . esc_html(cc_rs_w('askshare')) . '</b><label class="rs-tick"><input type="checkbox"> <span>' . esc_html(cc_rs_w('ok')) . '</span></label></div>'
        . '<button type="button" class="btn btn-go rs-go">' . esc_html(cc_rs_w('send')) . '</button><p class="rs-msg" role="status"></p></div>';
     if ($rs) { $o .= '<h3 class="av-sub" style="margin-top:28px">' . esc_html(cc_rs_w('shelf')) . '</h3><div class="rs-shelf">'; foreach (array_slice($rs, 0, 12) as $r) $o .= cc_rs_card($view, $r, false); $o .= '</div>'; }
-    return $html . $o . '</section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() : '');
+    return $html . $o . '</section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() . cc_nt_js() : '');
 }, 16, 3);
 add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view && !$coach) $nav[] = ['results', cc_rs_w('title')]; return $nav; }, 30, 3);
 
@@ -158,9 +180,27 @@ add_action('rest_api_init', function () {
     $own = function (WP_REST_Request $r) { return cc_ath_is_coach() || (is_user_logged_in() && (int) $r->get_param('page') === cc_ath_page_of(get_current_user_id())); };
     register_rest_route('cc/v1', '/result', ['methods' => 'POST', 'permission_callback' => function () { return is_user_logged_in() && cc_ath_page_of(get_current_user_id()) && !cc_ath_is_coach(); }, 'callback' => 'cc_rs_save']);
     register_rest_route('cc/v1', '/result-react', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => 'cc_rs_react']);
+    // the conversation: Matteo or the athlete (own page), text and/or voice
+    register_rest_route('cc/v1', '/result-reply', ['methods' => 'POST', 'permission_callback' => $own, 'callback' => function (WP_REST_Request $r) {
+        $pid = (int) $r->get_param('page'); $at = (int) $r->get_param('at'); $a = cc_rs_get($pid); $coach = cc_ath_is_coach();
+        foreach ($a as $k => $x) {
+            if ((int) $x['at'] !== $at) continue;
+            $text = cc_av_note((string) $r->get_param('text'), 1500); $aid = 0; $files = $r->get_file_params();
+            if (!empty($files['audio']['tmp_name'])) { $aid = cc_av_store_audio($files['audio'], $pid, cc_av_str($r->get_param('transcript'), 2000)); if (is_wp_error($aid)) return $aid; }
+            if ($text === '' && !$aid) return new WP_Error('cc_empty', 'Empty', ['status' => 400]);
+            $a[$k]['thread'][] = ['at' => time(), 'from' => $coach ? 'coach' : 'athlete', 'text' => $text, 'audio' => (int) $aid]; cc_rs_put($pid, $a);
+            $url = home_url('/' . CC_ATH_SLUG . '/') . '#results';
+            if ($coach) { $uid = (int) get_post_meta($pid, 'cc_user', true);
+                if ($uid && function_exists('cc_push_user')) { $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($uid); cc_push_user($uid, cc_rs_w('replied'), $text !== '' ? wp_trim_words($text, 18) : '🎙', $url, 'cc-result-' . $at); $GLOBALS['cc_ath_lang'] = $keep; } }
+            else { update_post_meta($pid, 'cc_results_updated', time());
+                if (function_exists('cc_push_coaches')) cc_push_coaches('Reply on a result from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : '🎙 Voice note', add_query_arg('board', 'results', home_url('/' . CC_ATH_SLUG . '/')), 'cc-result'); }
+            return ['ok' => true];
+        }
+        return new WP_Error('cc_none', 'No such result', ['status' => 404]);
+    }]);
     register_rest_route('cc/v1', '/result-delete', ['methods' => 'POST', 'permission_callback' => $own, 'callback' => function (WP_REST_Request $r) {
         $pid = (int) $r->get_param('page'); $at = (int) $r->get_param('at'); $a = cc_rs_get($pid);
-        foreach ($a as $k => $x) if ((int) $x['at'] === $at) { if (!empty($x['photo'])) wp_delete_attachment((int) $x['photo'], true); if (!empty($x['reply_photo'])) wp_delete_attachment((int) $x['reply_photo'], true); unset($a[$k]); cc_rs_put($pid, $a); return ['ok' => true]; }
+        foreach ($a as $k => $x) if ((int) $x['at'] === $at) { cc_rs_files_gone($x); unset($a[$k]); cc_rs_put($pid, $a); return ['ok' => true]; }
         return new WP_Error('cc_none', 'No such result', ['status' => 404]);
     }]);
     register_rest_route('cc/v1', '/results', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {   // Matteo's tools (e.g. social posts): consent included
@@ -206,14 +246,13 @@ function cc_rs_react(WP_REST_Request $r) {   // Matteo: a reaction and/or a shor
         if ((int) $x['at'] !== $at) continue;
         $react = (string) $r->get_param('react'); $reply = cc_av_note((string) $r->get_param('reply'), 600);
         if (isset(CC_RS_REACTS[$react])) $a[$k]['react'] = $react;
-        if ($reply !== '') $a[$k]['reply'] = $reply;
-        $pic = false;
+        $pic = 0;
         if (preg_match('#^data:image/jpeg;base64,([A-Za-z0-9+/=]+)$#', (string) $r->get_param('img'), $m)) {   // Matteo's photo in the reply
             $bytes = base64_decode($m[1], true); $sz = $bytes ? @getimagesizefromstring($bytes) : false;
             if (!$bytes || strlen($bytes) > 3000000 || !$sz || $sz[2] !== IMAGETYPE_JPEG) return new WP_Error('cc_bad', 'Photo not accepted', ['status' => 400]);
-            if (!empty($x['reply_photo'])) wp_delete_attachment((int) $x['reply_photo'], true);
-            $a[$k]['reply_photo'] = (int) cc_f_store($pid, $bytes, 'result-reply', 'jpg', 'image/jpeg', 'Reply photo'); $pic = true;
+            $pic = (int) cc_f_store($pid, $bytes, 'result-reply', 'jpg', 'image/jpeg', 'Reply photo');
         }
+        if ($reply !== '' || $pic) $a[$k]['thread'][] = ['at' => time(), 'from' => 'coach', 'text' => $reply, 'photo' => $pic];   // a reply joins the conversation
         cc_rs_put($pid, $a);
         $uid = (int) get_post_meta($pid, 'cc_user', true);
         if ($uid && function_exists('cc_push_user')) {
@@ -240,5 +279,5 @@ add_filter('cc_ath_board', function ($html, $board) {
     $o = '<section class="ath-s"><h2>' . cc_ath_icon('trophy', 'ath-hic') . 'Results</h2><p class="av-lede">What your athletes are proud of, newest first. ✅ means they agreed you can share it on social media and Skool. React or reply: they see it in their hub and on their phone.</p><div class="rs-shelf">';
     if (!$all) $o .= '<p class="av-lede">No results yet.</p>';
     foreach (array_slice($all, 0, 60) as [$p, $x]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 28) . ' ' : '') . '<b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($p->post_title) . '</a></b>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($p->ID) : '') . '</div>' . cc_rs_card($p->ID, $x, true);
-    return $o . '</div></section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() : '');
+    return $o . '</div></section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() . cc_nt_js() : '');
 }, 10, 2);
