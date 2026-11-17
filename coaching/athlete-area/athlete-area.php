@@ -817,7 +817,12 @@ function cc_ath_mail_shell($hi, $p1, $btn, $link, $small = '', $bye = null, $eb 
        . '<p style="margin:0 0 14px;font-size:18px;font-weight:700">' . $hi . '</p><p style="margin:0 0 22px">' . $p1 . '</p>'
        . '<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="border-radius:10px;background:#12a150"><a href="' . esc_url($link) . '" style="display:inline-block;padding:15px 26px;' . $f . ';font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:10px">' . $btn . '</a></td></tr></table>'
        . $small
-       . ($bye === false ? '' : '<p style="margin:0">' . $bye . '<br><strong>Matteo</strong></p>') . '</td></tr>'
+       . ($bye === false ? '' : '<p style="margin:0 0 18px">' . $bye . '</p>') . '</td></tr>'
+       // Matteo 17 Nov: every coaching email signs off with his photo and handwritten signature (white, on a dark band like the header)
+       . ($bye === false ? '' : '<tr><td style="padding:20px 30px;background:#07080a"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
+          . '<td style="padding-right:16px;vertical-align:middle"><img src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="64" height="64" alt="Matteo Cigala" style="display:block;width:64px;height:64px;border-radius:50%;border:2px solid #12a150"></td>'
+          . '<td style="vertical-align:middle"><img src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-signature.png" width="170" alt="Matteo Cigala" style="display:block;width:170px;height:auto;margin:0 0 4px;border:0">'
+          . '<span style="' . $f . ';font-size:13px;font-weight:600;color:#b8bec8">Matteo Cigala · Head Coach</span></td></tr></table></td></tr>')
        . '<tr><td style="padding:18px 30px 26px;' . $f . ';font-size:12px;color:#7a808a;border-top:1px solid #eceef1">' . ($foot ?? 'Matteo Cigala · Head Coach, Cigala Cycling Coaching · <a href="https://wa.me/353834777697" style="color:#12a150">WhatsApp</a> · <a href="mailto:matteo@cigalacycling.com" style="color:#12a150">matteo@cigalacycling.com</a>') . '</td></tr>'
        . '</table></td></tr></table></td></tr></table></body></html>';
     return $h;
