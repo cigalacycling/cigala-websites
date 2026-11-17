@@ -23,3 +23,8 @@ ul{margin:0;padding-left:18px}li{margin:4px 0}
 .bfoot .l div{font-size:13px;color:#9aa1ab}.bfoot .l b{display:block;color:#fff;font-size:14px}
 .bfoot .r{text-align:right}.bfoot .r img{height:44px;display:block;margin-left:auto}.bfoot .r small{display:block;color:#9aa1ab;font-size:12px;margin-top:4px}
 .bfoot .tg{color:#2bd47a;font-weight:700;letter-spacing:.14em;font-size:12px;text-transform:uppercase;margin-top:3px}
+/* topographic background like the website (Matteo 17 Nov) */
+body{position:relative;background:#08090a}
+body::before{content:"";position:absolute;inset:0;background:url(topo.svg) top center/1500px auto repeat-y;opacity:.55;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1}
+.card{background:linear-gradient(180deg,rgba(18,20,23,.94),rgba(13,15,17,.94))}
