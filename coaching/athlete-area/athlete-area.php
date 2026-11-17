@@ -373,7 +373,7 @@ function cc_ath_inner() {
         . (!$coach && $view && function_exists('cc_ph_widget') ? '</div>' . cc_ph_assets() : '')
         . '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>'
         . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . esc_html(cc_Ln($nrep, 'report in your folder', 'report nella tua cartella', 'reports in your folder', 'report nella tua cartella')) . '</span></div>' : '')
-        . '<a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a>' . apply_filters('cc_ath_hero_links', '', $coach) . '</div>'
+        . '<div class="ath-links"><a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a>' . apply_filters('cc_ath_hero_links', '', $coach) . '</div></div>'   // Matteo 17 Nov: the links in one tidy row
         . '<div class="ath-hero-me">' . cc_ath_sig_photo() . '</div></header>';
     // Matteo 17 Nov: "Change my availability" / "Add or change my goals & events" open their own page (?my=availability|goals); the hub shows a short summary
     $sub = (!$coach && $view && isset($_GET['my'])) ? sanitize_key($_GET['my']) : '';
@@ -943,13 +943,16 @@ html .cc .ath-help { font-size: 14px; color: var(--text-3); margin: 6px 0 0; }
 html .cc .ath-help a, html .cc .ath-body a:not([class]) { color: var(--green-text, #2bd47a); }
 /* ---- dashboard (logged in) ---- */
 html .cc .ath-sec:has(.ath-hero) .ath { max-width: 1080px; }
-html .cc .ath-hero { position: relative; display: grid; grid-template-columns: 1fr 250px; align-items: end; gap: 24px; padding: 34px 36px 0; margin: 0 0 18px; border-radius: 20px; overflow: hidden;
+/* Matteo 17 Nov: more room on laptops (it felt squeezed): bigger padding, wider text column, links in a row */
+html .cc .ath-links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 4px; }
+html .cc .ath-links .ath-out { font-size: 15px; margin: 0 !important; } html .cc .ath-links form.ath-lang { margin: 0 !important; }
+html .cc .ath-hero { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 290px; align-items: end; gap: 40px; padding: 46px 52px 0; margin: 0 0 18px; border-radius: 20px; overflow: hidden;
   background: radial-gradient(120% 140% at 100% 100%, rgba(18,161,80,.28), transparent 55%), radial-gradient(90% 120% at 0% 0%, rgba(255,61,51,.14), transparent 60%), rgba(12,14,16,.92); border: 1px solid rgba(43,212,122,.3); box-shadow: 0 30px 80px rgba(0,0,0,.45); }
-html .cc .ath-hero-txt { padding-bottom: 34px; min-width: 0; }
+html .cc .ath-hero-txt { padding-bottom: 44px; min-width: 0; }
 html .cc .ath-hero h1 { font-size: clamp(36px, 6.4vw, 66px); line-height: 1; margin: 8px 0 12px; }
 html .cc h1 .ath-greet { color: var(--green-text, #2bd47a); font-family: var(--head); }
 html .cc h1 .ath-coach-tag { font-size: .45em; color: #b8bec8; letter-spacing: .04em; vertical-align: text-top; margin-right: .15em; }   /* raised, on the left of the name */   /* Matteo 17 Nov: a small "Coach" before his name, nothing else changed */
-html .cc .ath-lede { color: var(--text-2); font-size: 16px; margin: 0 0 18px; max-width: 520px; }
+html .cc .ath-lede { color: var(--text-2); font-size: 17px; line-height: 1.55; margin: 0 0 22px; max-width: 600px; }
 html .cc .ath-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px; }
 html .cc .ath-chip { display: inline-flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text-2); font-size: 13.5px; }
 html .cc .ath-chip b { font-family: var(--head); font-weight: 400; font-size: 22px; line-height: 1; color: #fff; }
@@ -1057,7 +1060,8 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
   html .cc .ath-hero { grid-template-columns: 1fr 152px; gap: 8px; padding: 24px 16px 0; }   /* Matteo 17 Nov: the signed photo bigger on phones (was 104px) */
   html .cc .ath-hero-me { align-self: end; margin-bottom: 0; min-width: 0; overflow: hidden; }   /* at the bottom again, kept inside its column (Matteo 17 Nov) */
   html .cc .ath-hero-txt { min-width: 0; position: relative; z-index: 1; }
-  html .cc .ath form.ath-lang { display: flex; margin: 14px 0 0; }   /* on its own line, with room above it, under Change password / Log out */
+  html .cc .ath form.ath-lang, html .cc .ath-links form.ath-lang { display: flex; flex-basis: 100%; margin: 6px 0 0 !important; }   /* on its own line, with room above it, under Change password / Log out */
+  html .cc .ath-links { gap: 8px 18px; }
   html .cc .ath-hero h1 { font-size: clamp(32px, 10vw, 44px); }
   /* Matteo 17 Nov: "Good evening," on one line on phones, sized to the text column (fits "Buon pomeriggio," too) */
   html .cc .ath-hero-txt { container-type: inline-size; min-width: 0; }
