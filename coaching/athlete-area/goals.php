@@ -81,8 +81,27 @@ function cc_g_list(WP_REST_Request $r) {
 
 /* ---------- the athlete's box ---------- */
 add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view) { cc_f_set_lang((int) get_post_meta($view, 'cc_user', true)); array_splice($nav, 2, 0, [['goals', cc_f('My goals & events')]]); } return $nav; }, 20, 3);
+/* Matteo 17 Nov: in the athlete's hub a short summary (next events, short-term goal) with "Add or change" opening its own page (?my=goals). Coach view: the full box (he can edit). */
 add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     if (!$view) return $html;
+    if ($coach) return $html . cc_g_section($view, $coach);
+    $lang = function_exists('cc_av_lang') ? cc_av_lang($view) : 'en';
+    cc_f_set_lang((int) get_post_meta($view, 'cc_user', true));
+    $g = cc_g_get($view) ?: ['short' => '', 'events' => []];
+    $today = current_time('Y-m-d'); $ev = array_values(array_filter($g['events'] ?? [], function ($e) use ($today) { return $e['date'] >= $today; }));
+    $o = '<section class="ath-s gl gl-sum" id="goals"><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html(cc_f('My goals & events')) . '</h2><div class="av-sumbox"><div class="av-sumt">';
+    if ($ev) {
+        foreach (array_slice($ev, 0, 2) as $i => $e)
+            $o .= '<p class="gl-sumev"><span class="gl-prio gl-prio-' . esc_attr(strtolower($e['prio'])) . '">' . esc_html($e['prio']) . '</span><b>' . esc_html($e['name']) . '</b> · ' . esc_html(date_i18n('j M Y', strtotime($e['date'] . ' 12:00'))) . '</p>';
+        if (count($ev) > 2) $o .= '<small>' . esc_html(sprintf(cc_ath_w('gl_more', $lang), count($ev) - 2)) . '</small>';
+    } else $o .= '<p>' . esc_html(cc_ath_w('gl_none', $lang)) . '</p>';
+    if (($g['short'] ?? '') !== '') $o .= '<small>' . esc_html(cc_f('Short-term goal (1 year)')) . ': ' . esc_html(wp_trim_words($g['short'], 18)) . '</small>';
+    $o .= '</div><a class="btn btn-ghost" href="' . esc_url(add_query_arg('my', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html(cc_ath_w('gl_change', $lang)) . '</a></div></section>';
+    return $html . $o;
+}, 20, 3);
+add_filter('cc_ath_subpage', function ($html, $sub, $view) { return $sub === 'goals' ? cc_g_section($view, false) : $html; }, 10, 3);
+function cc_g_section($view, $coach) {
+    $html = '';
     $g = cc_g_get($view) ?: ['short' => '', 'long' => '', 'events' => [], 'from_form' => ''];
     $today = current_time('Y-m-d'); $g['events'] = array_values(array_filter($g['events'], function ($e) use ($today) { return $e['date'] >= $today; }));
     $ed = $coach && get_post_meta($view, 'cc_user', true);   // Matteo 17 Nov: he can edit them from the coach view too
@@ -99,7 +118,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
         . ($ed ? '<p class="rf-note"><b>Coach view.</b> You can change these for the athlete (for example a race they told you about on WhatsApp). They see your changes in their hub; you get no email for your own changes.</p>' : '')
         . '<div id="gl-app" data-ro="' . ($ro ? 1 : 0) . '" data-today="' . esc_attr($today) . '" data-api="' . esc_url($ed ? add_query_arg('page', $view, rest_url('cc/v1/goals')) : rest_url('cc/v1/goals')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"></div>'
         . '<script type="application/json" id="gl-data">' . wp_json_encode(['g' => $g, 'w' => $W, 'types' => $types, 'L' => $speech]) . '</script></section>' . cc_g_js();
-}, 20, 3);
+}
 
 /* ---------- Matteo's board: /athletes/?board=goals ---------- */
 add_filter('cc_ath_coach_links', function ($html) { return $html . '<a class="av-boardlink" href="' . esc_url(add_query_arg('board', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '">Goals &amp; events</a>'; }, 15);

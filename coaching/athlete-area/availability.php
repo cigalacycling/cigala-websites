@@ -217,8 +217,31 @@ function cc_av_email($pid, $uid, $diff, $a, $vid) {
 // the box speaks the athlete's report language (Matteo 16 Nov); Matteo's board and emails stay English
 function cc_av_lang($view) { $uid = (int) get_post_meta($view, 'cc_user', true); return ($uid && function_exists('cc_ath_report_lang')) ? cc_ath_report_lang($uid) : 'en'; }
 add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view) array_splice($nav, 1, 0, [['availability', cc_av_words(cc_av_lang($view))['title']]]); return $nav; }, 10, 3);
+/* Matteo 17 Nov: in the athlete's hub a short summary of what they set at sign-up, with "Change my availability" opening its own page
+ * (?my=availability). Athletes who never set it (hub opened without the form) see a one-time "please set it once". Coach view: the full box, read only. */
 add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     if (!$view) return $html;
+    if ($coach) return $html . cc_av_section($view, $coach);
+    $lang = cc_av_lang($view); $W = cc_av_words($lang); $a = cc_av_get($view);
+    $go = esc_url(add_query_arg('my', 'availability', home_url('/' . CC_ATH_SLUG . '/')));
+    $days = 0; $hrs = 0.0; $plus = false;
+    foreach (($a['week'] ?? []) as $d) { $h = (string) ($d['h'] ?? ''); if ($h === '' || $h === '0') continue; $days++; $hrs += (float) $h; if ($h === '4') $plus = true; }
+    $o = '<section class="ath-s av av-sum" id="availability"><h2>' . cc_ath_icon('calendar', 'ath-hic') . esc_html($W['title']) . '</h2>';
+    if (!$days) {
+        $o .= '<p class="av-lede">' . esc_html(cc_ath_w('av_once', $lang)) . '</p><p><a class="btn btn-go" href="' . $go . '">' . esc_html(cc_ath_w('av_set', $lang)) . '</a></p>';
+    } else {
+        $tot = strtr($days === 1 ? ($W['total_one'] ?? $W['total']) : $W['total'], ['{h}' => rtrim(rtrim(number_format($hrs, 1, '.', ''), '0'), '.') . ($plus ? '+' : ''), '{n}' => $days]);
+        $n = count($a['changes'] ?? []); $cw = explode('|', cc_ath_w('changes', $lang));
+        $upd = (int) get_post_meta($view, 'cc_avail_updated', true);
+        $o .= '<div class="av-sumbox"><p class="av-sumt"><b>' . esc_html($tot) . '</b>' . ($n ? ' · ' . esc_html(sprintf($n === 1 ? $cw[0] : ($cw[1] ?? $cw[0]), $n)) : '')
+            . ($upd ? '<small>' . esc_html(sprintf(cc_ath_w('updated', $lang), date_i18n('j M', $upd))) . '</small>' : '') . '</p>'
+            . '<a class="btn btn-ghost" href="' . $go . '">' . esc_html(cc_ath_w('av_change', $lang)) . '</a></div>';
+    }
+    return $html . $o . '</section>';
+}, 10, 3);
+add_filter('cc_ath_subpage', function ($html, $sub, $view) { return $sub === 'availability' ? cc_av_section($view, false) : $html; }, 10, 3);
+function cc_av_section($view, $coach) {
+    $html = '';
     $a = cc_av_get($view);
     $data = $a ? ['week' => $a['week'], 'changes' => $a['changes'], 'note' => $a['note']] : null;
     $upd = (int) get_post_meta($view, 'cc_avail_updated', true);
@@ -228,14 +251,14 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     $types = []; foreach (CC_AV_TYPES as $k => $_) $types[$k] = $W[$k === 'more' ? 'more_t' : $k];
     return $html . '<section class="ath-s av" id="availability" lang="' . esc_attr($speech) . '">'
         . '<h2>' . cc_ath_icon('calendar', 'ath-hic') . esc_html($W['title']) . '</h2>'
-        . '<p class="av-lede">' . esc_html($W['lede']) . '</p>'
+        . '<p class="av-lede">' . esc_html($coach ? $W['lede'] : ($a ? cc_ath_w('av_lede', $lang) : cc_ath_w('av_once', $lang))) . '</p>'
         . '<div id="av-app" data-ro="' . ($ro ? 1 : 0) . '" data-updated="' . $upd . '" data-today="' . esc_attr(current_time('Y-m-d')) . '"'
         . ' data-api="' . esc_url(rest_url('cc/v1/availability')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '">'
         . '<noscript><p>' . esc_html($W['noscript']) . '</p></noscript></div>'
         . '<script type="application/json" id="av-data">' . wp_json_encode(['data' => $data, 'days' => CC_AV_DAYS, 'hours' => $hours, 'types' => $types, 'speech' => $speech,
               'when' => ['am' => $W['am'], 'mid' => $W['mid'], 'pm' => $W['pm']], 'w' => $W]) . '</script>'
         . '</section>' . cc_av_js();
-}, 10, 3);
+}
 
 /* ---------- Matteo's board: /athletes/?board=availability ---------- */
 add_filter('cc_ath_coach_links', function ($html) {
