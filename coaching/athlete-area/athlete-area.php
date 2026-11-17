@@ -412,7 +412,7 @@ function cc_ath_inner() {
     $o .= '</nav>';
     // Matteo 17 Nov: each menu link gets a small copy of its section's icon (taken from the section, so they always match)
     $o .= '<script>addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".ath-jump a[href^=\'#\']").forEach(function(a){var s=document.getElementById(a.getAttribute("href").slice(1)),i=s&&s.querySelector("h2 .ath-hic");if(!i)return;var c=i.cloneNode(true);c.classList.remove("ath-hic");c.classList.add("ath-jic");c.removeAttribute("id");a.insertBefore(c,a.firstChild);});});</script>'
-        . '<style>html .cc .ath-jump a{display:inline-flex;align-items:center;gap:7px}html .cc .ath-jump .ath-jic{flex:none;width:22px;height:22px;border-radius:7px;display:inline-grid;place-items:center;background:rgba(18,161,80,.15);border:1px solid rgba(43,212,122,.35)}'
+        . '<style>html .cc .ath-jump a{display:inline-flex;align-items:center;gap:7px}html .cc .ath-jump .ath-jic{flex:none;width:24px;height:24px;border-radius:7px;display:inline-grid;place-items:center;background:rgba(18,161,80,.15);border:1px solid rgba(43,212,122,.35)}'
         . 'html .cc .ath-jump .ath-jic svg{width:13px;height:13px;fill:none;stroke:var(--green-text,#2bd47a);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}html .cc .ath-jump .ath-jic.ath-logo{background-size:62%;background-repeat:no-repeat;background-position:center}</style>';
     $o .= apply_filters('cc_ath_before_reports', '', $view, $coach);   // reports.php: "Your season" card, "N new reports"
     $rx = apply_filters('cc_ath_reports_html', '', $view, $coach);      // reports.php: reports sent from Matteo's PC tools
@@ -983,7 +983,7 @@ html .cc .ath-coach-tools .av-boardlink:hover { border-color: #009a44; }
 html .cc .ath-allposts { margin: 4px 0 18px; font-size: 14px; } html .cc .ath-allposts a { color: var(--green-text, #34c46a); }
 html .cc .ath-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 2px; }   /* Matteo 17 Nov: the last pill ("Worth reading") ran off the right edge; the pills now wrap */
 html .cc .ath-jump::-webkit-scrollbar { display: none; }
-html .cc .ath-jump a { flex: none; padding: 9px 15px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); background: rgba(12,14,16,.85); color: var(--text-2); font-size: 13px; font-weight: 600; text-decoration: none; transition: border-color .2s, color .2s; }
+html .cc .ath-jump a { flex: none; padding: 9px 15px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); background: rgba(12,14,16,.85); color: var(--text-2); font-size: 15px; font-weight: 600; text-decoration: none; transition: border-color .2s, color .2s; }   /* Matteo 17 Nov: bigger (was 13px) */
 html .cc .ath-jump a:hover { border-color: #12a150; color: #fff; }
 html .cc .ath-s { padding: 28px 28px 30px; border-radius: 18px; background: rgba(13,15,17,.9); border: 1px solid rgba(255,255,255,.09); margin: 0 0 18px; scroll-margin-top: 100px; }
 html .cc .ath-s.ath-mine { border-color: rgba(43,212,122,.4); background: linear-gradient(180deg, rgba(18,161,80,.1), rgba(13,15,17,.9) 60%); }
