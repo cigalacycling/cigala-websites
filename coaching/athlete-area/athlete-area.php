@@ -350,6 +350,7 @@ function cc_ath_inner() {
     if ($coach && in_array($_GET['lang'] ?? '', ['it', 'en'], true)) $GLOBALS['cc_ath_lang'] = $_GET['lang'];
     $lang = $GLOBALS['cc_ath_lang'];
     $first = $me->first_name ?: $me->display_name;
+    if ($coach) $first = 'Coach ' . (trim($me->first_name . ' ' . $me->last_name) ?: $me->display_name);   // Matteo 17 Nov: "Good evening, Coach Matteo Cigala"
     // personal numbers: days since the login was made, and reports in their page
     $vu = $view ? get_userdata((int) get_post_meta($view, 'cc_user', true)) : null;
     $since = $vu ? $vu->user_registered : $me->user_registered;
