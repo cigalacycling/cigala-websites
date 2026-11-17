@@ -790,7 +790,7 @@ def coaching():
             ('WhatsApp support', Y, Y, 'Daily'),
             ('Weekly Macro Plan <small>(based on your training load)</small>', Y, N, Y),
             ('Weekly Meal Plan <small>(based on your training load)</small>', N, Y, Y),
-            ('Food Diary Analysis', 'Weekly', 'Daily', 'Daily'),
+            ('Food Diary Analysis', 'Weekly', 'Weekly', 'Daily'),   # Marine 17 Nov: weekly on the Happy plan
             ('Advice on healthy nutritional habits', Y, Y, Y),
             ('Vitamins &amp; minerals requirements', N, N, Y),
             ('Supplements requirements', Y, Y, Y),
@@ -843,7 +843,7 @@ def coaching():
     p1 = plan('THE HEALTHY BODY PLAN', '99€/MONTH', '3 months', 'Build sustainable, healthy eating habits that energize your everyday life.',
               ['3 calls over 3 months', 'WhatsApp support', 'Weekly macro plan based on your training load', 'Weekly food diary analysis', 'Advice on balanced nutrition', 'Supplement advice'], 'Sign up', PAY['healthy'], usd='119 US$ a month')
     p2 = plan('THE HAPPY BODY PLAN', '149€/MONTH', '3 months', 'Create harmony between your nutrition, mood, and lifestyle to bring out the best of you.',
-              ['5 calls over 3 months', 'WhatsApp support', 'Weekly meal plan tailored to your training', 'Daily food diary analysis', 'Advice on balanced nutrition, vitamins and supplements', 'Daily Support &amp; Motivation'], 'Sign up', PAY['happy'], usd='180 US$ a month', feat=True)
+              ['5 calls over 3 months', 'WhatsApp support', 'Weekly meal plan tailored to your training', 'Weekly food diary analysis', 'Advice on balanced nutrition, vitamins and supplements', 'Daily Support &amp; Motivation'], 'Sign up', PAY['happy'], usd='180 US$ a month', feat=True)
     p3 = plan('THE PERFORMING BODY PLAN', '199€/MONTH', '3 months', 'Maximize performance and recovery with a fully personalized approach.',
               ['Unlimited coaching calls', 'Daily WhatsApp support', 'Weekly meal &amp; macro plan', 'Daily food diary analysis', 'Vitamin, supplement &amp; sports-specific optimization', 'Exclusive ebook: "Breakfast to Ignite your potential"'],
               'Sign up', PAY['performing'], usd='240 US$ a month', sold_out=True, extra='<h2 class="psub">SPORTS SPECIFIC REQUIMENTS</h2>')
