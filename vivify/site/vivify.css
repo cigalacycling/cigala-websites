@@ -47,12 +47,31 @@ section{padding:88px 0}
 /* header */
 .skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;z-index:100;background:var(--aqua);color:var(--on-aqua);padding:10px 14px;border-radius:8px}
 header.site{position:sticky;top:0;z-index:50;background:rgba(12,34,38,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-header.site .wrap{display:flex;align-items:center;gap:24px;height:82px;max-width:1360px}
+header.site .hdr{display:flex;align-items:center;gap:22px;height:78px;max-width:1360px;transition:height .25s}
+header.site.scrolled{box-shadow:0 10px 30px rgba(0,0,0,.35)}
+header.site.scrolled .hdr{height:64px}
+header.site.scrolled .logo img{width:46px;height:46px}
+.logo img{transition:width .25s,height .25s}
+.topbar{background:linear-gradient(90deg,#123a40,#19444B 50%,#123a40);border-bottom:1px solid var(--border);font:500 12.5px/1 Montserrat,sans-serif;color:var(--text-2);overflow:hidden;max-height:40px;transition:max-height .25s}
+.topbar .wrap{display:flex;gap:10px;align-items:center;justify-content:center;height:36px;flex-wrap:wrap}
+.topbar a{color:var(--lime-text);font-weight:700;text-decoration:none;margin-left:6px}
+header.site.scrolled .topbar{max-height:0}
+@media (max-width:640px){.topbar .tb-sep,.topbar span:nth-of-type(3){display:none}}
 .logo img{width:58px;height:58px;object-fit:cover}
 nav.main{margin-left:auto}
 nav.main ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
-nav.main a{display:block;color:var(--text);text-decoration:none;font:600 13px/1 Montserrat,sans-serif;padding:12px 10px;position:relative;white-space:nowrap}
-nav.main a::after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:transparent;transition:background .2s}
+nav.main a,nav.main .ddt{display:flex;align-items:center;gap:6px;color:var(--text);text-decoration:none;font:600 12.5px/1 Montserrat,sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:12px 10px;position:relative;white-space:nowrap;background:none;border:0;cursor:pointer}
+nav.main .ddt svg{transition:transform .2s}
+nav.main .dd{position:relative}
+nav.main .sub{position:absolute;top:100%;left:0;min-width:240px;flex-direction:column;gap:0;padding:10px;background:rgba(12,34,38,.98);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s,transform .18s,visibility .18s}
+nav.main .sub a{text-transform:none;letter-spacing:0;font-size:14px;font-weight:500;padding:11px 12px;border-radius:8px}
+nav.main .sub a:hover{background:rgba(177,216,221,.08)}
+nav.main .sub a::after{display:none}
+nav.main .dd:hover .sub,nav.main .dd:focus-within .sub{opacity:1;visibility:visible;transform:none}
+nav.main .dd:hover .ddt svg,nav.main .dd:focus-within .ddt svg{transform:rotate(180deg)}
+nav.main .ddt[data-current]::after{content:"";position:absolute;left:10px;right:22px;bottom:4px;height:2px;background:var(--lime)}
+nav.main .ddt:hover{color:var(--aqua)}
+nav.main > ul > li > a::after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:transparent;transition:background .2s}
 nav.main a:hover{color:var(--aqua)}nav.main a:hover::after{background:var(--aqua)}
 nav.main a[aria-current=page]::after{background:var(--lime)}
 nav.main li.lang{display:flex;align-items:center;gap:2px;margin-left:8px;padding-left:10px;border-left:1px solid var(--border-strong)}
@@ -62,11 +81,16 @@ nav.main li.lang a::after{display:none}
 .hdr-cta{padding:13px 18px;font-size:13px}
 .burger{display:none}
 #menu-t{position:absolute;opacity:0;pointer-events:none}
-@media (max-width:1240px){
+@media (max-width:1180px){
  nav.main li.lang{margin:12px 0 0;padding:0;border:0}
  nav.main li.lang a{font-size:15px;padding:10px 14px 10px 0;border:0}
  .burger{display:flex;margin-left:auto;width:46px;height:46px;border:1px solid var(--border-strong);border-radius:8px;align-items:center;justify-content:center;cursor:pointer;color:var(--text)}
- nav.main{position:fixed;inset:82px 0 auto 0;background:var(--bg);border-bottom:1px solid var(--border);display:none;margin:0;max-height:calc(100vh - 82px);overflow:auto}
+ nav.main{position:fixed;inset:var(--hdr-h,114px) 0 auto 0;background:var(--bg);border-bottom:1px solid var(--border);display:none;margin:0;max-height:calc(100vh - var(--hdr-h,114px));overflow:auto}
+ nav.main .sub{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:0;background:none;padding:0 0 6px 14px;min-width:0}
+ nav.main .ddt{width:100%;justify-content:space-between;font-size:15px;padding:16px 0;border-bottom:1px solid var(--border)}
+ nav.main .ddt svg{display:none}
+ nav.main .ddt[data-current]::after{display:none}
+ nav.main .sub a{font-size:15px;padding:12px 0;border-bottom:1px solid var(--border)}
  #menu-t:checked~nav.main{display:block}
  nav.main ul{flex-direction:column;padding:12px 24px 24px}
  nav.main a{font-size:16px;padding:16px 0;border-bottom:1px solid var(--border)}
@@ -170,6 +194,35 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .partners a,.partners span{display:flex;align-items:center;justify-content:center;background:#fff;border-radius:10px;padding:12px;width:150px;height:96px}
 .partners img{max-height:72px;width:auto;object-fit:contain}
 
+/* plan cards, Cigala Coaching style */
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.note{border-left:3px solid var(--lime);background:rgba(25,68,75,.3);padding:14px 16px;font-size:13.5px;color:var(--text-2);border-radius:0 8px 8px 0}
+@media (max-width:860px){.notes{grid-template-columns:1fr}}
+.plans{align-items:start}
+.plan{position:relative;padding:34px 28px 28px}
+.plan .pbadge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--lime);color:#0C2226;font:700 11px/1 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:8px 12px;border-radius:999px}
+.plan .pbadge.sold{background:#3a1d1d;color:#ffb3ad;border:1px solid rgba(255,120,110,.35)}
+.plan.feat::before,.plan.soldout::before{display:none}
+.plan.feat{border:1.5px solid var(--aqua);box-shadow:0 0 0 1px rgba(177,216,221,.15),0 24px 60px rgba(177,216,221,.12);background:linear-gradient(170deg,rgba(25,68,75,.85),rgba(18,51,56,.6))}
+.plan.soldout{opacity:.88}
+.plan h2.pt{display:flex;flex-direction:column;align-items:flex-start;gap:0;margin:0 0 4px;font-size:30px;line-height:1.05}
+.plan h2.pt .pd{order:-1;font:700 11.5px/1.3 Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--lime-text);margin-bottom:10px}
+.plan h2.pt .pn{display:block}
+.plan h2.pt .pp{display:flex;align-items:baseline;gap:4px;margin-top:16px;font:400 54px/1 Anton,sans-serif;color:var(--text)}
+.plan h2.pt .pp small{font:600 15px/1 Montserrat,sans-serif;color:var(--text-3)}
+.plan h2.pt .pp small.m{text-transform:lowercase}
+.plan .usd{font-size:12.5px;color:var(--text-3);margin:2px 0 14px}
+.plan h2.psub{font-size:15px;color:var(--aqua);margin:6px 0 8px}
+.plan .pdesc{font-size:14.5px;min-height:3.2em}
+.plan .pbtn{width:100%;justify-content:center;margin-top:6px}
+.btn-outline{background:transparent;color:var(--text);border-color:var(--border-strong)}
+.btn-outline:hover{border-color:var(--aqua);color:var(--aqua)}
+.plan .notsure{display:block;text-align:center;font-size:12.5px;font-weight:600;color:var(--lime-text);text-decoration:none;margin:12px 0 18px}
+.plan .notsure:hover{text-decoration:underline}
+.plan .wyg{font:700 11.5px/1 Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);border-top:1px solid var(--border);padding-top:18px;margin:0 0 6px}
+.plan .ticks li{font-size:14px;padding:5px 0}
+.cmp th.hl,.cmp td.hl{background:rgba(177,216,221,.07)}
+.cmp thead th.hl{background:#21545c;color:var(--aqua)}
 /* massage rows */
 .mrow{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:28px;background:var(--panel)}
 .mrow .ph{min-height:420px}.mrow .ph img{width:100%;height:100%;object-fit:cover}
@@ -244,6 +297,21 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 /* Marine 17 Nov: justified text inside boxes (as on her Wix site); hyphens keep phone lines even */
 .panel p,.pcard p,.plan p,.mrow .tx p,.cta p,.scard p,.bcard p,.author p,.qa>div p,.tcard blockquote,.intro p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
 .center p,.panel.center p,p.center,.facts p{text-align:center;-webkit-hyphens:manual;hyphens:manual}
+/* motion (Marine 17 Nov: "more dynamic"); nothing hides without JS, nothing moves with reduced motion */
+.vv-js .rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.vv-js .rv.in{opacity:1;transform:none}
+.btn{transition:background .2s,border-color .2s,transform .2s,box-shadow .25s}
+.btn-primary:hover{box-shadow:0 10px 26px rgba(177,216,221,.25)}
+.panel{transition:border-color .25s,transform .25s,box-shadow .25s}
+.pcard:hover,.tcard:hover,.plan:hover{transform:translateY(-4px);border-color:var(--border-strong);box-shadow:0 18px 40px rgba(0,0,0,.3)}
+.scard .ph img,.bcard .ph img,.mrow .ph img,.portrait img{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.scard:hover .ph img,.bcard:hover .ph img,.mrow:hover .ph img{transform:scale(1.05)}
+.hero>img{animation:vvzoom 14s ease-out both}
+@keyframes vvzoom{from{transform:scale(1.08)}to{transform:scale(1)}}
+.hero .wrap>*{animation:vvup .9s cubic-bezier(.2,.7,.2,1) both}
+.hero .wrap>*:nth-child(2){animation-delay:.12s}.hero .wrap>*:nth-child(3){animation-delay:.24s}.hero .wrap>*:nth-child(4){animation-delay:.36s}
+@keyframes vvup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.vv-js .rv{opacity:1;transform:none;transition:none}.hero>img,.hero .wrap>*{animation:none}*{transition:none!important}}
 /* footer */
 footer.site{margin-top:40px;background:linear-gradient(180deg,rgba(25,68,75,.35),rgba(25,68,75,.7));border-top:1px solid var(--border)}
 footer.site .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:40px;padding:64px 24px 40px}

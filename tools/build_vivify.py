@@ -70,6 +70,26 @@ PAGES.update({f: v[0] for f, v in NEW.items()})
 NAV = [('index.html', 'Home'), ('about.html', 'About'), ('nutrition-nutrition-philosophy.html', 'Sports Nutrition Philosophy'),
        ('sports-nutritionist-ireland.html', 'Sports Nutrition Coaching'), ('workshops.html', 'Workshops'),
        ('recipies.html', 'E-Book'), ('blog.html', 'Blog'), ('contact.html', 'Contact')]
+# Header menu, Cigala Coaching style (Marine 17 Nov): (label, file) or (label, [(file, label), ...])
+MOTION_JS = r"""(function(){var d=document,h=d.documentElement;h.classList.add('vv-js');
+function hdr(){var x=d.querySelector('header.site');if(!x)return;x.classList.toggle('scrolled',scrollY>40);h.style.setProperty('--hdr-h',x.getBoundingClientRect().height+'px');}
+addEventListener('scroll',hdr,{passive:true});addEventListener('resize',hdr);
+d.addEventListener('DOMContentLoaded',function(){hdr();
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))return;
+ var els=d.querySelectorAll('section .wrap>div:not(.g2):not(.g3):not(.g4):not(.intro):not(.tgrid):not(.bgrid):not(.plans):not(.facts),.panel,.pcard,.mrow,.portrait,.titles li,.cta');
+ var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{rootMargin:'0px 0px -8% 0px'});
+ els.forEach(function(el){if(el.closest('header')||el.closest('.hero'))return;var r=el.getBoundingClientRect();if(r.top<innerHeight)return;
+  var i=[].indexOf.call(el.parentNode.children,el)%4;el.style.transitionDelay=(i*80)+'ms';el.classList.add('rv');io.observe(el);});
+ d.querySelectorAll('.ddt').forEach(function(b){b.addEventListener('click',function(){var li=b.parentNode;var open=li.classList.toggle('open');b.setAttribute('aria-expanded',open);});});
+});})();"""
+
+MENU = [('About', 'about.html'),
+        ('Coaching', [('sports-nutritionist-ireland.html', 'Coaching Plans'), ('race-fuelling-plan.html', 'Race Fuelling Plan'),
+                      ('nutrition-nutrition-philosophy.html', 'Sports Nutrition Philosophy'), ('free-sports-nutrition-consultation.html', 'Free Discovery Call')]),
+        ('Who I Help', [('cycling-nutritionist.html', 'Cyclists'), ('womens-cycling-nutrition.html', "Women's Cycling"), ('triathlon-nutritionist.html', 'Triathletes'),
+                        ('online-sports-nutritionist.html', 'Online, Worldwide'), ('sports-nutritionist-dublin.html', 'Dublin & Wicklow')]),
+        ('Services', [('workshops.html', 'Workshops & Talks'), ('recipies.html', 'E-Book'), ('yoga.html', 'Online Yoga'), ('massage-therapy.html', 'Massage Therapy')]),
+        ('Blog', 'blog.html'), ('Reviews', 'testimonials.html'), ('Contact', 'contact.html')]
 DISCOVERY = 'https://cal.com/marine-lenehan/discovery-call'   # Marine 17 Nov: Cal.com replaces Wix Bookings
 BOOK_CAL = DISCOVERY
 MASSAGE_BOOK = 'http://VEV.CO/MASSAGE-THERAPIST-VIVIFY-SPORTS-IE'
@@ -146,12 +166,31 @@ section{padding:88px 0}
 /* header */
 .skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;z-index:100;background:var(--aqua);color:var(--on-aqua);padding:10px 14px;border-radius:8px}
 header.site{position:sticky;top:0;z-index:50;background:rgba(12,34,38,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-header.site .wrap{display:flex;align-items:center;gap:24px;height:82px;max-width:1360px}
+header.site .hdr{display:flex;align-items:center;gap:22px;height:78px;max-width:1360px;transition:height .25s}
+header.site.scrolled{box-shadow:0 10px 30px rgba(0,0,0,.35)}
+header.site.scrolled .hdr{height:64px}
+header.site.scrolled .logo img{width:46px;height:46px}
+.logo img{transition:width .25s,height .25s}
+.topbar{background:linear-gradient(90deg,#123a40,#19444B 50%,#123a40);border-bottom:1px solid var(--border);font:500 12.5px/1 Montserrat,sans-serif;color:var(--text-2);overflow:hidden;max-height:40px;transition:max-height .25s}
+.topbar .wrap{display:flex;gap:10px;align-items:center;justify-content:center;height:36px;flex-wrap:wrap}
+.topbar a{color:var(--lime-text);font-weight:700;text-decoration:none;margin-left:6px}
+header.site.scrolled .topbar{max-height:0}
+@media (max-width:640px){.topbar .tb-sep,.topbar span:nth-of-type(3){display:none}}
 .logo img{width:58px;height:58px;object-fit:cover}
 nav.main{margin-left:auto}
 nav.main ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
-nav.main a{display:block;color:var(--text);text-decoration:none;font:600 13px/1 Montserrat,sans-serif;padding:12px 10px;position:relative;white-space:nowrap}
-nav.main a::after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:transparent;transition:background .2s}
+nav.main a,nav.main .ddt{display:flex;align-items:center;gap:6px;color:var(--text);text-decoration:none;font:600 12.5px/1 Montserrat,sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:12px 10px;position:relative;white-space:nowrap;background:none;border:0;cursor:pointer}
+nav.main .ddt svg{transition:transform .2s}
+nav.main .dd{position:relative}
+nav.main .sub{position:absolute;top:100%;left:0;min-width:240px;flex-direction:column;gap:0;padding:10px;background:rgba(12,34,38,.98);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s,transform .18s,visibility .18s}
+nav.main .sub a{text-transform:none;letter-spacing:0;font-size:14px;font-weight:500;padding:11px 12px;border-radius:8px}
+nav.main .sub a:hover{background:rgba(177,216,221,.08)}
+nav.main .sub a::after{display:none}
+nav.main .dd:hover .sub,nav.main .dd:focus-within .sub{opacity:1;visibility:visible;transform:none}
+nav.main .dd:hover .ddt svg,nav.main .dd:focus-within .ddt svg{transform:rotate(180deg)}
+nav.main .ddt[data-current]::after{content:"";position:absolute;left:10px;right:22px;bottom:4px;height:2px;background:var(--lime)}
+nav.main .ddt:hover{color:var(--aqua)}
+nav.main > ul > li > a::after{content:"";position:absolute;left:10px;right:10px;bottom:4px;height:2px;background:transparent;transition:background .2s}
 nav.main a:hover{color:var(--aqua)}nav.main a:hover::after{background:var(--aqua)}
 nav.main a[aria-current=page]::after{background:var(--lime)}
 nav.main li.lang{display:flex;align-items:center;gap:2px;margin-left:8px;padding-left:10px;border-left:1px solid var(--border-strong)}
@@ -161,11 +200,16 @@ nav.main li.lang a::after{display:none}
 .hdr-cta{padding:13px 18px;font-size:13px}
 .burger{display:none}
 #menu-t{position:absolute;opacity:0;pointer-events:none}
-@media (max-width:1240px){
+@media (max-width:1180px){
  nav.main li.lang{margin:12px 0 0;padding:0;border:0}
  nav.main li.lang a{font-size:15px;padding:10px 14px 10px 0;border:0}
  .burger{display:flex;margin-left:auto;width:46px;height:46px;border:1px solid var(--border-strong);border-radius:8px;align-items:center;justify-content:center;cursor:pointer;color:var(--text)}
- nav.main{position:fixed;inset:82px 0 auto 0;background:var(--bg);border-bottom:1px solid var(--border);display:none;margin:0;max-height:calc(100vh - 82px);overflow:auto}
+ nav.main{position:fixed;inset:var(--hdr-h,114px) 0 auto 0;background:var(--bg);border-bottom:1px solid var(--border);display:none;margin:0;max-height:calc(100vh - var(--hdr-h,114px));overflow:auto}
+ nav.main .sub{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:0;background:none;padding:0 0 6px 14px;min-width:0}
+ nav.main .ddt{width:100%;justify-content:space-between;font-size:15px;padding:16px 0;border-bottom:1px solid var(--border)}
+ nav.main .ddt svg{display:none}
+ nav.main .ddt[data-current]::after{display:none}
+ nav.main .sub a{font-size:15px;padding:12px 0;border-bottom:1px solid var(--border)}
  #menu-t:checked~nav.main{display:block}
  nav.main ul{flex-direction:column;padding:12px 24px 24px}
  nav.main a{font-size:16px;padding:16px 0;border-bottom:1px solid var(--border)}
@@ -269,6 +313,35 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .partners a,.partners span{display:flex;align-items:center;justify-content:center;background:#fff;border-radius:10px;padding:12px;width:150px;height:96px}
 .partners img{max-height:72px;width:auto;object-fit:contain}
 
+/* plan cards, Cigala Coaching style */
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.note{border-left:3px solid var(--lime);background:rgba(25,68,75,.3);padding:14px 16px;font-size:13.5px;color:var(--text-2);border-radius:0 8px 8px 0}
+@media (max-width:860px){.notes{grid-template-columns:1fr}}
+.plans{align-items:start}
+.plan{position:relative;padding:34px 28px 28px}
+.plan .pbadge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--lime);color:#0C2226;font:700 11px/1 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:8px 12px;border-radius:999px}
+.plan .pbadge.sold{background:#3a1d1d;color:#ffb3ad;border:1px solid rgba(255,120,110,.35)}
+.plan.feat::before,.plan.soldout::before{display:none}
+.plan.feat{border:1.5px solid var(--aqua);box-shadow:0 0 0 1px rgba(177,216,221,.15),0 24px 60px rgba(177,216,221,.12);background:linear-gradient(170deg,rgba(25,68,75,.85),rgba(18,51,56,.6))}
+.plan.soldout{opacity:.88}
+.plan h2.pt{display:flex;flex-direction:column;align-items:flex-start;gap:0;margin:0 0 4px;font-size:30px;line-height:1.05}
+.plan h2.pt .pd{order:-1;font:700 11.5px/1.3 Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--lime-text);margin-bottom:10px}
+.plan h2.pt .pn{display:block}
+.plan h2.pt .pp{display:flex;align-items:baseline;gap:4px;margin-top:16px;font:400 54px/1 Anton,sans-serif;color:var(--text)}
+.plan h2.pt .pp small{font:600 15px/1 Montserrat,sans-serif;color:var(--text-3)}
+.plan h2.pt .pp small.m{text-transform:lowercase}
+.plan .usd{font-size:12.5px;color:var(--text-3);margin:2px 0 14px}
+.plan h2.psub{font-size:15px;color:var(--aqua);margin:6px 0 8px}
+.plan .pdesc{font-size:14.5px;min-height:3.2em}
+.plan .pbtn{width:100%;justify-content:center;margin-top:6px}
+.btn-outline{background:transparent;color:var(--text);border-color:var(--border-strong)}
+.btn-outline:hover{border-color:var(--aqua);color:var(--aqua)}
+.plan .notsure{display:block;text-align:center;font-size:12.5px;font-weight:600;color:var(--lime-text);text-decoration:none;margin:12px 0 18px}
+.plan .notsure:hover{text-decoration:underline}
+.plan .wyg{font:700 11.5px/1 Montserrat,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);border-top:1px solid var(--border);padding-top:18px;margin:0 0 6px}
+.plan .ticks li{font-size:14px;padding:5px 0}
+.cmp th.hl,.cmp td.hl{background:rgba(177,216,221,.07)}
+.cmp thead th.hl{background:#21545c;color:var(--aqua)}
 /* massage rows */
 .mrow{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:28px;background:var(--panel)}
 .mrow .ph{min-height:420px}.mrow .ph img{width:100%;height:100%;object-fit:cover}
@@ -343,6 +416,21 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 /* Marine 17 Nov: justified text inside boxes (as on her Wix site); hyphens keep phone lines even */
 .panel p,.pcard p,.plan p,.mrow .tx p,.cta p,.scard p,.bcard p,.author p,.qa>div p,.tcard blockquote,.intro p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
 .center p,.panel.center p,p.center,.facts p{text-align:center;-webkit-hyphens:manual;hyphens:manual}
+/* motion (Marine 17 Nov: "more dynamic"); nothing hides without JS, nothing moves with reduced motion */
+.vv-js .rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.vv-js .rv.in{opacity:1;transform:none}
+.btn{transition:background .2s,border-color .2s,transform .2s,box-shadow .25s}
+.btn-primary:hover{box-shadow:0 10px 26px rgba(177,216,221,.25)}
+.panel{transition:border-color .25s,transform .25s,box-shadow .25s}
+.pcard:hover,.tcard:hover,.plan:hover{transform:translateY(-4px);border-color:var(--border-strong);box-shadow:0 18px 40px rgba(0,0,0,.3)}
+.scard .ph img,.bcard .ph img,.mrow .ph img,.portrait img{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.scard:hover .ph img,.bcard:hover .ph img,.mrow:hover .ph img{transform:scale(1.05)}
+.hero>img{animation:vvzoom 14s ease-out both}
+@keyframes vvzoom{from{transform:scale(1.08)}to{transform:scale(1)}}
+.hero .wrap>*{animation:vvup .9s cubic-bezier(.2,.7,.2,1) both}
+.hero .wrap>*:nth-child(2){animation-delay:.12s}.hero .wrap>*:nth-child(3){animation-delay:.24s}.hero .wrap>*:nth-child(4){animation-delay:.36s}
+@keyframes vvup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.vv-js .rv{opacity:1;transform:none;transition:none}.hero>img,.hero .wrap>*{animation:none}*{transition:none!important}}
 /* footer */
 footer.site{margin-top:40px;background:linear-gradient(180deg,rgba(25,68,75,.35),rgba(25,68,75,.7));border-top:1px solid var(--border)}
 footer.site .top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:40px;padding:64px 24px 40px}
@@ -391,7 +479,15 @@ def shell(file, body, schema=None):
     else:
         b = BASE[LIVE + path] if (LIVE + path) in BASE else BASE[LIVE]
     title, desc = b['title'], b.get('meta_description') or ''
-    navh = ''.join(f'<li><a href="{f}"' + (' aria-current="page"' if f == file else '') + f'>{t}</a></li>' for f, t in NAV)
+    def item(label, target):
+        if isinstance(target, str):
+            return f'<li><a href="{target}"' + (' aria-current="page"' if target == file else '') + f'>{e(label)}</a></li>'
+        cur = any(f == file for f, _ in target)
+        sub = ''.join(f'<li><a href="{f}"' + (' aria-current="page"' if f == file else '') + f'>{e(t)}</a></li>' for f, t in target)
+        return (f'<li class="dd"><button type="button" class="ddt"' + (' data-current="1"' if cur else '') + f' aria-haspopup="true">{e(label)}'
+                '<svg viewBox="0 0 12 8" width="10" height="7" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>'
+                f'<ul class="sub">{sub}</ul></li>')
+    navh = ''.join(item(l, t) for l, t in MENU)
     ld = f'<script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script>' if schema else ''
     return fix_typos(f"""<!doctype html>
 <html lang="en">
@@ -411,13 +507,15 @@ def shell(file, body, schema=None):
 </head>
 <body>
 <a class="skip" href="#main">Skip to Main Content</a>
-<header class="site"><div class="wrap">
+<header class="site"><div class="topbar"><div class="wrap"><span>Free 30-minute discovery call</span><span class="tb-sep">·</span><span>Online coaching in English, French &amp; Italian</span><a href="{DISCOVERY}">Book now →</a></div></div>
+<div class="wrap hdr">
  <a class="logo" href="index.html" aria-label="Vivify Sports home">{img(LOGO, LOGO_ALT, lazy=False, w=58, h=55)}</a>
  <input type="checkbox" id="menu-t" aria-label="Menu">
  <label class="burger" for="menu-t" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></label>
  <nav class="main" aria-label="Main"><ul>{navh}{lang_switch(file)}</ul></nav>
- <a class="btn btn-primary hdr-cta" href="{DISCOVERY}">Free Discovery Call</a>
-</div></header>
+ <a class="btn btn-primary hdr-cta" href="{DISCOVERY}">Book a Free Call</a>
+</div>
+<script>{MOTION_JS}</script></header>
 <main id="main">
 {body}
 </main>
@@ -635,46 +733,63 @@ def coaching():
             ('Supplements requirements', '', [S, S, D, S, S]),
             ('Sports-specific requirements', '', [S, S, S, S, S]),
             ('“Breakfasts to ignite your potential” ebook', '', [D, D, D, D, S])]
-    def cell(v):
-        return f'<td>{ICON["star"]}<span class="skip">Included</span></td>' if v == S else ('<td class="dash" aria-label="Not included">–</td>' if v == D else f'<td>{v}</td>')
-    trs = ''.join(f'<tr><th scope="row">{n}' + (f'<small>({s})</small>' if s else '') + '</th>' + ''.join(cell(v) for v in vs) + '</tr>' for n, s, vs in rows)
-    trs += '<tr class="price"><th scope="row">Pricing</th>' + ''.join(f'<td>{a}<small>{b}</small></td>' for a, b in
-           [('100 €', '120 US$'), ('50 €', '60 US$'), ('99 €/month', '119 US$/month'), ('149 €/month', '180 US$/month'), ('199 €/month', '240 US$/month')]) + '</tr>'
+    def cell(v, i=0):
+        hl = ' class="hl"' if i == 3 else ''
+        return f'<td{hl}>{ICON["star"]}<span class="skip">Included</span></td>' if v == S else (f'<td class="dash{" hl" if i == 3 else ""}" aria-label="Not included">–</td>' if v == D else f'<td{hl}>{v}</td>')
+    trs = ''.join(f'<tr><th scope="row">{n}' + (f'<small>({s})</small>' if s else '') + '</th>' + ''.join(cell(v, i) for i, v in enumerate(vs)) + '</tr>' for n, s, vs in rows)
+    trs += '<tr class="price"><th scope="row">Pricing</th>' + ''.join(f'<td{" class=hl" if i == 3 else ""}>{a}<small>{b}</small></td>' for i, (a, b) in enumerate(
+           [('100 €', '120 US$'), ('50 €', '60 US$'), ('99 €/month', '119 US$/month'), ('149 €/month', '180 US$/month'), ('199 €/month', '240 US$/month')])) + '</tr>'
     table = f"""<div class="tbl-wrap"><table class="cmp"><caption class="skip">Vivify Sports nutrition coaching plans compared</caption>
-<thead><tr><th scope="col"><span class="skip">Feature</span>{img(LOGO, LOGO_ALT, w=56, h=53, style='margin:auto')}</th><th scope="col">Nutritional Assessment</th><th scope="col">Follow-up Consultation</th><th scope="col">The Healthy Body Plan</th><th scope="col">The Happy Body Plan</th><th scope="col">The Performing Body Plan<br><small style="font:600 11px Montserrat,sans-serif;letter-spacing:.12em;color:var(--text-3)">SOLD OUT</small></th></tr></thead>
+<thead><tr><th scope="col"><span class="skip">Feature</span>{img(LOGO, LOGO_ALT, w=56, h=53, style='margin:auto')}</th><th scope="col">Nutritional Assessment</th><th scope="col">Follow-up Consultation</th><th scope="col">The Healthy Body Plan</th><th scope="col" class="hl">The Happy Body Plan<br><small style="font:700 11px Montserrat,sans-serif;letter-spacing:.12em;color:var(--lime-text)">MOST POPULAR</small></th><th scope="col">The Performing Body Plan<br><small style="font:600 11px Montserrat,sans-serif;letter-spacing:.12em;color:var(--text-3)">SOLD OUT</small></th></tr></thead>
 <tbody>{trs}</tbody></table></div>"""
 
-    def plan(h2, price, dur, intro, inc, btn, href, feat=False, extra='', sold_out=False):
+    def plan(name, price, dur, intro, inc, btn, href, usd='', feat=False, extra='', sold_out=False, big=None):
+        """Cigala Coaching style card. The H2 text stays the live Wix wording, e.g. "THE HEALTHY BODY PLAN - 99€/MONTH 3 months";
+        CSS lays it out as duration label, plan name, big price."""
         ext = ' target="_blank" rel="noopener"' if href.startswith('http') else ''
-        if sold_out:   # Marine 17 Nov: The Performing Body Plan is sold out for now
-            return (f'<article class="plan panel soldout"><h2>{h2}<span class="skip"> - </span><span class="price">{price}</span>'
-                    + (f' <span class="dur">{dur}</span>' if dur else '') + '</h2>' + extra + f'<p>{intro}</p><p class="inc">Includes:</p>{ticks(inc)}'
-                    + '<span class="btn btn-secondary" aria-disabled="true" style="cursor:default">Sold out for now</span></article>')
-        sep = '<span class="skip"> - </span>' if dur else ' '
-        return (f'<article class="plan panel{" feat" if feat else ""}"><h2>{h2}{sep}<span class="price">{price}</span>'
-                + (f' <span class="dur">{dur}</span>' if dur else '') + '</h2>' + extra + f'<p>{intro}</p><p class="inc">Includes:</p>{ticks(inc)}'
-                + f'<a class="btn {"btn-primary" if feat or href.startswith("http") else "btn-secondary"}" href="{href}"{ext}>{btn}</a></article>')
+        if dur:   # monthly plans: name, hidden " - ", price, duration
+            amount, per = price.split('/', 1)
+            h2 = (f'<h2 class="pt"><span class="pn">{name}</span><span class="skip"> - </span><span class="pp"><b>{amount}</b><small class="m">/{per}</small></span>'
+                  f' <span class="pd">{dur}</span></h2>')
+        else:     # single sessions: "NAME 50mn 100€ / 120 US$"
+            mins, rest = price.split(' ', 1)
+            h2 = (f'<h2 class="pt"><span class="pn">{name}</span> <span class="pd">{mins}</span> <span class="pp"><b>{rest.split(" / ")[0]}</b>'
+                  f'<small> / {rest.split(" / ")[1]}</small></span></h2>')
+        badge = ('<span class="pbadge sold">Sold out for now</span>' if sold_out else '<span class="pbadge">Most popular</span>' if feat else '')
+        if sold_out:
+            cta_ = '<span class="btn btn-secondary pbtn" aria-disabled="true" style="cursor:default">Sold out for now</span>'
+        else:
+            cta_ = f'<a class="btn {"btn-primary" if feat else "btn-outline"} pbtn" href="{href}"{ext}>{btn}</a>'
+        return (f'<article class="plan panel{" feat" if feat else ""}{" soldout" if sold_out else ""}">{badge}{h2}'
+                + (f'<p class="usd">{usd}</p>' if usd else '') + extra + f'<p class="pdesc">{intro}</p>{cta_}'
+                + f'<a class="notsure" href="{DISCOVERY}">Not sure? Book a free discovery call →</a>'
+                + f'<p class="wyg">What you get</p>{ticks(inc)}</article>')
     one = plan('NUTRITIONAL ASSESEMENT', '50mn 100€ / 120 US$', '', 'A complete evaluation to understand your current nutrition, goals, and needs.',
                ['Personalized advice on healthy habits and food preferences', 'Vitamin &amp; mineral recommendations', 'Supplement guidance', 'Sports-specific nutrition'], 'Book now', ASSESSMENT_PAY)
     two = plan('FOLLOW-UP CONSULTATION', '30mn 50€ / 60 US$', '', 'A session to review your progress, fine-tune your plan, and stay on track.',
                ['1 follow-up call', 'Updated nutritional and supplement advice'], 'Book now', FOLLOWUP_PAY)
     p1 = plan('THE HEALTHY BODY PLAN', '99€/MONTH', '3 months', 'Build sustainable, healthy eating habits that energize your everyday life.',
-              ['3 calls over 3 months', 'Weekly macro plan based on your training load', 'Weekly food diary analysis', 'Advice on balanced nutrition'], 'Sign up', PAY['healthy'])
+              ['3 calls over 3 months', 'Weekly macro plan based on your training load', 'Weekly food diary analysis', 'Advice on balanced nutrition'], 'Sign up', PAY['healthy'], usd='119 US$ a month')
     p2 = plan('THE HAPPY BODY PLAN', '149€/MONTH', '3 months', 'Create harmony between your nutrition, mood, and lifestyle to bring out the best of you.',
-              ['5 calls over 3 months', 'Weekly meal plan tailored to your training', 'Daily food diary analysis', 'Advice on balanced nutrition, vitamins and supplements', 'Daily Support &amp; Motivation'], 'Sign up', PAY['happy'], feat=True)
+              ['5 calls over 3 months', 'Weekly meal plan tailored to your training', 'Daily food diary analysis', 'Advice on balanced nutrition, vitamins and supplements', 'Daily Support &amp; Motivation'], 'Sign up', PAY['happy'], usd='180 US$ a month', feat=True)
     p3 = plan('THE PERFORMING BODY PLAN', '199€/MONTH', '3 months', 'Maximize performance and recovery with a fully personalized approach.',
               ['Unlimited coaching calls', 'Daily WhatsApp support', 'Weekly meal &amp; macro plan', 'Daily food diary analysis', 'Vitamin, supplement &amp; sports-specific optimization', 'Exclusive ebook: "Breakfast to Ignite your potential"'],
-              'Sign up', PAY['performing'], sold_out=True, extra='<h2 style="font-size:17px;color:var(--aqua);margin:2px 0 10px">SPORTS SPECIFIC REQUIMENTS</h2>')
+              'Sign up', PAY['performing'], usd='240 US$ a month', sold_out=True, extra='<h2 class="psub">SPORTS SPECIFIC REQUIMENTS</h2>')
+    notes = ''.join(f'<div class="note">{t}</div>' for t in [
+        'Partnered with TrainingPeaks, Vekta &amp; MyFitnessPal: your plan follows your training load every week.',
+        'Prices in euro and US dollars. Coaching online in English, French and Italian.',
+        'Not sure which plan suits you? Start with a free 30-minute discovery call.'])
     partners = [('0e1488-356941ca85c445f1834a69b48ccf', 'TrainingPeaks logo', None), ('0e1488-a23fdd6bc1854f5a83c28cb05ea9', 'MyFitnessPal logo', None),
                 ('0e1488-e926906d84424b06892a7eb7a3b6', 'Cigala Cycling logo', 'https://www.cigalacycling.com/'),
                 ('vekta-logo', 'Vekta logo', None), ('0e1488-44c2783c595b4fcba972291cd77f', 'Wicklow 200 logo', None)]   # Marine 17 Nov: + Vekta, - Bryan McKinney
     pl = ''.join((f'<a href="{u}" target="_blank" rel="noopener">' if u else '<span>') + img(p, a, w=150, h=72, style='width:auto') + ('</a>' if u else '</span>') for p, a, u in partners)
     body = f"""
-<section class="page-hero"><div class="wrap">
- <span class="eyebrow">Sports Nutritionist Ireland</span><h1>ONLINE NUTRITION COACHING</h1><span class="bar" style="margin:16px auto 18px"></span>
- <p class="lead">Ever wish you could have your own nutritionist that will tell you exactly what to do and be there with you every step of the way?</p>
- <a class="btn btn-primary" href="#plans">See the plans {ICON['arrow']}</a>
-</div></section>
+<section class="hero" style="min-height:min(72vh,620px)">
+ {img('0e1488-26eed664485245b6b26c855875ee', 'Road cyclist riding through a forest', lazy=False, w=1600, h=1067)}
+ <div class="wrap"><span class="pill">Sports Nutritionist Ireland</span><h1>ONLINE NUTRITION COACHING</h1>
+  <p class="lead">Ever wish you could have your own nutritionist that will tell you exactly what to do and be there with you every step of the way?</p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-primary" href="{DISCOVERY}">Book a free discovery call {ICON['arrow']}</a><a class="btn btn-secondary" href="#plans">Compare plans ↓</a></div></div>
+</section>
 <section style="padding-top:16px"><div class="wrap g2" style="align-items:start">
  <div>{head('Personalised coaching', 'PERSONALIZED NUTRITION PLANS FOR YOU')}
   <p>As an athlete, you want to train hard, compete and be successful. Nutrition will help you do that. Your nutrition requirements are determined by your sport, your training &amp; your genetic make-up.These coaching plans are designed to give you personalized support to reach your goals. Partnered with Training Peaks, Vekta &amp; MyFitnessPal, Marine will build your nutrition plan weekly according to your training load. You will know exactly what to eat on &amp; off training. Whether you are looking to clean up your diet a bit, increase performance, support training adaptations, support your gut health, boost your energy levels or simply have a healthy relationship to food, VIFIFY SPORTS is here to help.</p>
@@ -683,10 +798,13 @@ def coaching():
   {chips(['Macronutrients requirements', 'Vitamins &amp; Minerals requirements', 'Supplements requirements', 'Sports specific requirements', 'Lifestyle advice', 'Healthy recipes', 'Craving control guidelines', 'IBS or gastro-intestinal issues'])}</div>
 </div></section>
 <section id="plans" style="padding-top:24px"><div class="wrap">
- {head('Compare', 'Find the right plan', tag=None, center=True)}
- <div style="margin-top:28px">{table}</div>
- <div class="plans two" style="margin-top:48px">{one}{two}</div>
- <div class="plans" style="margin-top:28px">{p1}{p2}{p3}</div>
+ {head('3-month coaching', 'Find the right plan', tag=None, center=True)}
+ <div class="notes">{notes}</div>
+ <div class="plans" style="margin-top:34px">{p1}{p2}{p3}</div>
+ <div style="margin-top:64px">{head('Single sessions', 'One-off consultations', tag=None)}</div>
+ <div class="plans two" style="margin-top:10px">{one}{two}</div>
+ <div style="margin-top:64px">{head('Side by side', 'Compare plans', tag=None)}</div>
+ <div style="margin-top:6px">{table}</div>
 </div></section>
 <section style="padding-top:24px"><div class="wrap g2" style="align-items:start">
  <div>{head('The Performing Body Plan', 'Sport-specific nutrition', tag=None)}
