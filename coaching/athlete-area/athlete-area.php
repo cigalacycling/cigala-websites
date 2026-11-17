@@ -565,6 +565,7 @@ function cc_ath_mail_shell($hi, $p1, $btn, $link, $small = '', $bye = null, $eb 
     if ($small === '') $small = '<div style="height:24px;line-height:24px;font-size:1px">&nbsp;</div>';   // space between the button and the sign-off
     $it = ($GLOBALS['cc_ath_lang'] ?? 'en') === 'it'; $bye = $bye ?? cc_L('See you on the road,', 'A presto in bici,'); $eb = $eb ?? cc_L('Athlete hub', 'Area atleta');
     $logo = esc_url(get_option('cc_mail_logo', '')); $head = esc_url(get_option($it ? 'cc_mail_header_it' : 'cc_mail_header_en', ''));
+    $logo = str_replace('//staging.coaching.', '//coaching.', $logo); $head = str_replace('//staging.coaching.', '//coaching.', $head);   // pictures always from the live site: staging is password-protected, so mail apps can't load them
     $f = "font-family:Montserrat,Helvetica,Arial,sans-serif";
     $h = '<!doctype html><html><body style="margin:0;padding:0;background:#07080a"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#07080a"><tr><td align="center" style="padding:30px 12px;background-color:#07080a">'
        . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px">'

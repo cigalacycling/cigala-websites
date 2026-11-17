@@ -360,9 +360,11 @@ function cc_f_mail($uid, $pid, $a, $meta, $pdf) {
     if ($full && $u && is_email($u->user_email)) {   // the athlete's own copy
         cc_f_set_lang($uid);
         $first = esc_html($u->first_name ?: $name);
-        wp_mail($u->user_email, cc_f('Your signed Rider Information Form'), '<div style="font:15px/1.6 Montserrat,Arial,sans-serif;color:#111;max-width:560px"><p>' . sprintf(esc_html(cc_f('Hi %s,')), $first) . '</p><p>'
-            . esc_html(cc_f('Thank you! Your Rider Information Form is in, and your signed copy is attached. Your athlete hub is now open.')) . '</p><p><a href="' . esc_url(home_url('/' . CC_ATH_SLUG . '/')) . '" style="color:#009a44;font-weight:600">'
-            . esc_html(cc_f('Open my athlete hub')) . '</a></p><p>' . esc_html(cc_f('See you on the road,')) . '<br><b style="color:#111">Matteo</b></p></div>',
+        $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($uid);   // the branded athlete email (same design as the welcome email)
+        $h = cc_ath_mail_shell(sprintf(esc_html(cc_f('Hi %s,')), $first), esc_html(cc_f('Thank you! Your Rider Information Form is in, and your signed copy is attached. Your athlete hub is now open.')),
+                               esc_html(cc_f('Open my athlete hub')), home_url('/' . CC_ATH_SLUG . '/'), '', esc_html(cc_f('See you on the road,')));
+        $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email;   // staging: never a real inbox
+        if (is_email($to)) wp_mail($to, cc_f('Your signed Rider Information Form'), $h,
             ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <noreply@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>'], $tmp ? [$tmp] : []);
     }
     if ($tmp) @unlink($tmp);
