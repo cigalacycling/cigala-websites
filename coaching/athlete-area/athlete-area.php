@@ -1046,6 +1046,10 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
   html .cc .ath-hero { grid-template-columns: 1fr 136px; gap: 8px; padding: 24px 16px 0; }   /* Matteo 17 Nov: the signed photo bigger on phones (was 104px) */
   html .cc .ath form.ath-lang { display: flex; margin: 14px 0 0; }   /* on its own line, with room above it, under Change password / Log out */
   html .cc .ath-hero h1 { font-size: clamp(32px, 10vw, 44px); }
+  /* Matteo 17 Nov: "Good evening," on one line on phones, sized to the text column (fits "Buon pomeriggio," too) */
+  html .cc .ath-hero-txt { container-type: inline-size; min-width: 0; }
+  html .cc .ath-hero h1 { font-size: clamp(24px, 14cqi, 40px); }
+  html .cc .ath-hero h1 .ath-greet { white-space: nowrap; }
   html .cc .ath-hero-txt { padding-bottom: 22px; }
   html .cc .ath-lede { font-size: 14.5px; }
   html .cc .ath-chips { gap: 8px; }
