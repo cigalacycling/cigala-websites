@@ -1037,7 +1037,11 @@ html .cc .ath-pri-c { background: linear-gradient(135deg,#E9A86B,#CD7F32,#9A5A1F
 html .cc :is(.gl, .av-chr, .nt-day, .rs-form, .rf) :is(input[type=date], input[type=time]) { display: block; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; -webkit-appearance: none; appearance: none; min-height: 46px; line-height: 1.2; font: 16px var(--body); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,.18); background: #0b0d0f; color: #fff; color-scheme: dark; }
 html .cc :is(.gl, .av-chr, .nt-day, .rs-form, .rf) :is(input[type=date], input[type=time])::-webkit-date-and-time-value { text-align: left; }
 html .cc :is(.gl-r, .av-chr, .gl) > label, html .cc .gl-r { min-width: 0; }
-@keyframes athIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* Final check 17 Nov: the last hub labels under 14px (50+ readers rule): header eyebrow, language label, report dates and badges, notes day, priority letters, reading times */
+html .cc .ath-hero .eyebrow { font-size: 14px !important; }
+html .cc form.ath-lang, html .cc form.ath-lang label { font-size: 14px !important; }
+html .cc .rp-when, html .cc .rp-badge, html .cc .nt-day, html .cc .ath small { font-size: 14px !important; }
+html .cc .gl-prio { font-size: 13px !important; width: 22px !important; height: 22px !important; }@keyframes athIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @keyframes athSweep { from { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateX(-10px); } to { opacity: 1; clip-path: inset(0 0 0 0); transform: none; } }
 html .cc .ath-hero-txt:has(.ath-coach-tag) .ath-live { margin-top: 14px; }   /* Matteo 17 Nov: "All caught up" a little lower */
 @keyframes athPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0); } 50% { box-shadow: 0 0 0 6px rgba(212,175,55,.25); } }
