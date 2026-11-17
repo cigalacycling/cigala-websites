@@ -84,13 +84,14 @@ d.addEventListener('DOMContentLoaded',function(){hdr();
  d.querySelectorAll('.ddt').forEach(function(b){b.addEventListener('click',function(){var li=b.parentNode;var open=li.classList.toggle('open');b.setAttribute('aria-expanded',open);});});
 });})();"""
 
-MENU = [('Home', 'index.html'), ('About', 'about.html'), ('Sports Nutrition Philosophy', 'nutrition-nutrition-philosophy.html'),
-        ('Sports Nutrition Coaching', 'sports-nutritionist-ireland.html', [('sports-nutritionist-ireland.html', 'Coaching Plans'),
+MENU = [('Home', 'index.html'),
+        ('About', 'about.html', [('about.html', 'About Marine'), ('nutrition-nutrition-philosophy.html', 'Sports Nutrition Philosophy'), ('testimonials.html', 'Client Reviews')]),
+        ('Coaching', 'sports-nutritionist-ireland.html', [('sports-nutritionist-ireland.html', 'Coaching Plans'),
             ('race-fuelling-plan.html', 'Race Fuelling Plan'), ('free-sports-nutrition-consultation.html', 'Free Discovery Call')]),
         ('Who I Help', None, [('cycling-nutritionist.html', 'Cyclists'), ('womens-cycling-nutrition.html', "Women's Cycling"), ('triathlon-nutritionist.html', 'Triathletes'),
                               ('online-sports-nutritionist.html', 'Online, Worldwide'), ('sports-nutritionist-dublin.html', 'Dublin & Wicklow')]),
         ('Workshops', 'workshops.html'), ('E-Book', 'recipies.html'), ('Blog', 'blog.html'), ('Contact', 'contact.html')]
-# Marine 17 Nov: same pages as the Wix menu, in capitals, smaller; Who I Help added
+# Marine 17 Nov: lighter header; About keeps its place and holds Philosophy (+ Reviews); short "Coaching" label
 DISCOVERY = 'https://cal.com/marine-lenehan/discovery-call'   # Marine 17 Nov: Cal.com replaces Wix Bookings
 BOOK_CAL = DISCOVERY
 MASSAGE_BOOK = 'http://VEV.CO/MASSAGE-THERAPIST-VIVIFY-SPORTS-IE'
@@ -182,7 +183,7 @@ header.site.scrolled .topbar{max-height:0}
 nav.main{margin-left:auto}
 nav.main > ul{gap:0!important}
 nav.main ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
-nav.main a,nav.main .ddt{display:flex;align-items:center;gap:5px;color:var(--text);text-decoration:none;font:600 11px/1 Montserrat,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:12px 7px;position:relative;white-space:nowrap;background:none;border:0;cursor:pointer}
+nav.main a,nav.main .ddt{display:flex;align-items:center;gap:5px;color:var(--text);text-decoration:none;font:600 12px/1 Montserrat,sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:12px 9px;position:relative;white-space:nowrap;background:none;border:0;cursor:pointer}
 nav.main .ddt svg{transition:transform .2s}
 nav.main .dd{position:relative}
 nav.main .sub{position:absolute;top:100%;left:0;min-width:240px;flex-direction:column;gap:0;padding:10px;background:rgba(12,34,38,.98);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s,transform .18s,visibility .18s}
@@ -203,7 +204,7 @@ nav.main li.lang a::after{display:none}
 .hdr-cta{padding:12px 15px;font-size:12px;white-space:nowrap}
 .burger{display:none}
 #menu-t{position:absolute;opacity:0;pointer-events:none}
-@media (max-width:1320px){
+@media (max-width:1100px){
  nav.main li.lang{margin:12px 0 0;padding:0;border:0}
  nav.main li.lang a{font-size:15px;padding:10px 14px 10px 0;border:0}
  .burger{display:flex;margin-left:auto;width:46px;height:46px;border:1px solid var(--border-strong);border-radius:8px;align-items:center;justify-content:center;cursor:pointer;color:var(--text)}
@@ -656,7 +657,7 @@ def about():
               'Podium Elite Irish Road Nationals (2025)', 'Podium Elite Irish TT Nationals (2026)']
     quals = ['MSc in Sports Nutrition – Universidad Europea de Madrid (2025)', 'Professional Diploma in Sports Nutrition – Barça Innovation Hub (2023)',
              'Diploma in Spa &amp; Wellness and Massage Therapy, EQF level 5 (BTS level) – Suntaya, France (2020–2021)',   # Marine 17 Nov: Suntaya, technicien spa et bien-être + massage, BTS level
-             '200-hour Yoga Alliance Teaching Certificate (2021)']
+             '200-hour Yoga Alliance Teaching Certificate in Vinyasa &amp; Yin Yoga – House of OM (2021)']
     princ = [('Evidence-based, individualised nutrition', 'Every athlete is different. Your nutrition plan should reflect your training load, performance goals, nutritional requirements and personal preferences.'),
              ('Fuel for performance, not restriction', 'Eating enough to support training is essential. I focus on appropriate energy and carbohydrate intake, adequate protein, hydration and recovery, without unnecessary food restrictions or extreme approaches.'),
              ('Sustainable habits and practical strategies', 'Nutrition should complement your life, not complicate it. I help athletes develop realistic habits and practical fueling strategies they can maintain throughout training, competition and everyday life.')]
