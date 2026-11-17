@@ -371,8 +371,9 @@ function cc_ath_inner() {
         // Matteo 17 Nov: the comma stays glued to the greeting (it slipped out of sight on phones)
         . '<h1><span class="ath-gw"><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>,</span> ' . ($coach ? '<span class="ath-coach-tag">Coach</span>&nbsp;' : '') . esc_html($first) . '</h1>'
         . (!$coach && $view && function_exists('cc_ph_widget') ? '</div>' . cc_ph_assets() : '')
-        . '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>'
-        . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . esc_html(cc_Ln($nrep, 'report in your folder', 'report nella tua cartella', 'reports in your folder', 'report nella tua cartella')) . '</span></div>' : '')
+        // Matteo 17 Nov: his own view drops the athlete line; both get live chips instead (what is new, the next race)
+        . ($coach ? '' : '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>')
+        . cc_ath_live_chips($coach ? 0 : $view, $coach, $coach ? 0 : $nrep)
         . '<div class="ath-links"><a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a>' . apply_filters('cc_ath_hero_links', '', $coach) . '</div></div>'   // Matteo 17 Nov: the links in one tidy row
         . '<div class="ath-hero-me">' . cc_ath_sig_photo() . '</div></header>';
     // Matteo 17 Nov: "Change my availability" / "Add or change my goals & events" open their own page (?my=availability|goals); the hub shows a short summary
@@ -384,7 +385,7 @@ function cc_ath_inner() {
         // Matteo 17 Nov: his own demo page (no login, his own Vekta data), first in the list
         $list = array_merge(get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_demo', 'meta_value' => '1']), $list);
         $o .= '<div class="ath-coach"><p><b>Coach view.</b> You see what every athlete sees. Choose an athlete to see their own reports, or add one in WordPress: Users &gt; Add New (role Subscriber).</p><p class="ath-list">';
-        foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 22) : '') . esc_html($p->post_title)
+        foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 24) : '') . esc_html($p->post_title)
             . cc_ath_flag_for($p->ID) . (get_post_meta($p->ID, 'cc_demo', true) ? ' <small style="opacity:.75">demo</small>' : '') . '</a>';
         $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . (function_exists('cc_ph_assets') ? cc_ph_assets() : '') . (($tl = apply_filters('cc_ath_coach_links', '')) !== '' ? '<div class="ath-coach-tools"><span class="ath-coach-tl">Your coach tools</span>' . $tl . '</div>' : '') . '</div>';
         // coach-only pages (e.g. ?board=availability, from availability.php); empty unless a module adds one
@@ -548,6 +549,53 @@ function cc_ath_sections($html) {
     }
     if ($open) $out .= '</div></section>';
     return [$out, $nav];
+}
+/* Matteo 17 Nov: a livelier header. Athletes: the countdown to their next race, what is new for them, their reports.
+ * Matteo: what is waiting for him (new notes, results, forms, ideas, signups), each opening its board. */
+function cc_ath_live_w($k, $n = 0) {
+    static $W = [
+        'today' => ['en' => 'Today', 'it' => 'Oggi', 'pt' => 'Hoje', 'sl' => 'Danes'],
+        'tomorrow' => ['en' => 'Tomorrow', 'it' => 'Domani', 'pt' => 'Amanhã', 'sl' => 'Jutri'],
+        'day' => ['en' => ['day', 'days'], 'it' => ['giorno', 'giorni'], 'pt' => ['dia', 'dias'], 'sl' => ['dan', 'dni']],
+        'new' => ['en' => ['new notification', 'new notifications'], 'it' => ['nuova notifica', 'nuove notifiche'], 'pt' => ['nova notificação', 'novas notificações'], 'sl' => ['novo obvestilo', 'nova obvestila']],
+        'rep' => ['en' => ['report in your folder', 'reports in your folder'], 'it' => ['report nella tua cartella', 'report nella tua cartella'], 'pt' => ['relatório na tua pasta', 'relatórios na tua pasta'], 'sl' => ['poročilo v tvoji mapi', 'poročil v tvoji mapi']],
+    ];
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en'; $v = $W[$k][$l] ?? $W[$k]['en'];
+    if (!is_array($v)) return $v;
+    if ($k === 'day' && $l === 'sl') return $n === 1 ? 'dan' : ($n === 2 ? 'dneva' : ($n <= 4 ? 'dnevi' : 'dni'));
+    if ($k === 'new' && $l === 'sl') return $n === 1 ? 'novo obvestilo' : ($n === 2 ? 'novi obvestili' : ($n <= 4 ? 'nova obvestila' : 'novih obvestil'));
+    return $n === 1 ? $v[0] : $v[1];
+}
+function cc_ath_live_chips($view, $coach, $nrep) {
+    $uid = get_current_user_id(); $in = function_exists('cc_inbox_get') ? cc_inbox_get($uid) : [];
+    $unread = array_filter($in, function ($x) { return empty($x['read']); });
+    $chip = function ($n, $txt, $href = '', $cls = '') { $b = '<b class="ath-n" data-n="' . (int) $n . '">' . (int) $n . '</b> ' . esc_html($txt);
+        return $href ? '<a class="ath-chip ' . $cls . '" href="' . esc_url($href) . '">' . $b . '</a>' : '<span class="ath-chip ' . $cls . '">' . $b . '</span>'; };
+    $o = '';
+    if ($coach) {
+        $hub = home_url('/' . CC_ATH_SLUG . '/');
+        $kinds = ['cc-note' => ['notes', 'new note', 'new notes'], 'cc-result' => ['results', 'new result', 'new results'], 'cc-form' => ['forms', 'form signed', 'forms signed'],
+                  'cc-idea' => ['ideas', 'new idea', 'new ideas'], 'cc-new' => ['contracts', 'new athlete', 'new athletes']];
+        foreach ($kinds as $tag => [$board, $one, $many]) {
+            $n = count(array_filter($unread, function ($x) use ($tag) { return ($x['tag'] ?? '') === $tag || strpos((string) ($x['tag'] ?? ''), $tag . '-') === 0; }));
+            if ($n) $o .= $chip($n, $n === 1 ? $one : $many, add_query_arg('board', $board, $hub), 'ath-chip-go');
+        }
+        if ($o === '') $o = '<span class="ath-chip ath-chip-ok">✓ All caught up</span>';
+        return '<div class="ath-chips ath-live">' . $o . '</div>';
+    }
+    // the next race or event (within 6 months), with its priority colour
+    $g = $view && function_exists('cc_g_get') ? cc_g_get($view) : null; $today = current_time('Y-m-d');
+    foreach ((array) ($g['events'] ?? []) as $e) {
+        if (($e['date'] ?? '') < $today) continue;
+        $d = (int) round((strtotime($e['date'] . ' 12:00') - strtotime($today . ' 12:00')) / DAY_IN_SECONDS); if ($d > 183) break;
+        $p = strtolower($e['prio'] ?? 'b'); $pri = '<i class="ath-pri ath-pri-' . esc_attr($p) . '">' . esc_html(strtoupper($p)) . '</i>';
+        $o .= '<a class="ath-chip ath-chip-race" href="#goals">' . $pri . ($d <= 1 ? '<b>' . esc_html(cc_ath_live_w($d ? 'tomorrow' : 'today')) . '</b> '
+            : '<b class="ath-n" data-n="' . $d . '">' . $d . '</b> ' . esc_html(cc_ath_live_w('day', $d)) . ' · ') . '<span class="ath-chip-nm">' . esc_html($e['name']) . '</span></a>';
+        break;
+    }
+    if ($n = count($unread)) $o .= $chip($n, cc_ath_live_w('new', $n), '#', 'ath-chip-go ath-chip-bell');
+    if ($nrep) $o .= $chip($nrep, cc_ath_live_w('rep', $nrep), '#reports');
+    return $o !== '' ? '<div class="ath-chips ath-live">' . $o . '</div>' : '';
 }
 function cc_ath_sig_photo() {
     $u = content_url('/uploads/2026/11/');
@@ -747,6 +795,7 @@ function cc_ath_js() {
     return <<<'JS'
 <script>(function(){
 var g=document.querySelector('.ath-greet');if(g){var h=new Date().getHours(),it=g.getAttribute('data-l')==='it',w=JSON.parse(g.getAttribute('data-g')||'[]');if(w.length===3)g.textContent=(h>=5&&h<(it?13:12))?w[0]:(h>=5&&h<18)?w[1]:w[2];}
+document.querySelectorAll('.ath-chip-bell').forEach(function(c){c.addEventListener('click',function(e){e.preventDefault();var b=document.querySelector('.ath-bell');if(b){e.stopPropagation();b.click();c.remove();}});});
 try{localStorage.setItem('cc_tools_ok','1');}catch(e){}   /* coached athletes skip the newsletter step on the free tools */
 var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,io='IntersectionObserver' in window;
 document.querySelectorAll('.ath-n').forEach(function(el){var n=+el.getAttribute('data-n');if(rm||!n)return;var s=0;el.textContent='0';
@@ -957,6 +1006,25 @@ html .cc .ath-lede { color: var(--text-2); font-size: 17px; line-height: 1.55; m
 html .cc .ath-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px; }
 html .cc .ath-chip { display: inline-flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text-2); font-size: 13.5px; }
 html .cc .ath-chip b { font-family: var(--head); font-weight: 400; font-size: 22px; line-height: 1; color: #fff; }
+/* Matteo 17 Nov: live chips in the header (race countdown, what is new); links lift a little on hover */
+html .cc .ath-live .ath-chip { font-size: 15px; color: #d0d6e0; align-items: center; text-decoration: none; max-width: 100%; transition: transform .15s ease, border-color .15s ease, background .15s ease; }
+html .cc .ath-live a.ath-chip:hover { transform: translateY(-1px); border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.09); }
+html .cc .ath-live .ath-chip-go { border-color: rgba(43,212,122,.45); background: rgba(18,161,80,.14); }
+html .cc .ath-live .ath-chip-go b { color: #2bd47a; }
+html .cc .ath-live .ath-chip-ok { color: #2bd47a; border-color: rgba(43,212,122,.35); font-weight: 600; }
+html .cc .ath-chip-nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 22ch; color: #fff; font-weight: 600; }
+html .cc .ath-pri { flex: none; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font: 700 12px/1 var(--body); font-style: normal; color: #1a1a1a; }
+html .cc .ath-pri-a { background: linear-gradient(135deg,#F3D774,#D4AF37,#A8841F); }
+html .cc .ath-pri-b { background: linear-gradient(135deg,#F2F3F5,#C0C4CC,#8E939C); }
+html .cc .ath-pri-c { background: linear-gradient(135deg,#E9A86B,#CD7F32,#9A5A1F); }
+@media (prefers-reduced-motion: no-preference) {
+  html .cc .ath-hero h1 .ath-greet { display: inline-block; animation: athIn .6s ease both; }
+  html .cc .ath-live .ath-chip { animation: athIn .5s ease both; }
+  html .cc .ath-live .ath-chip:nth-child(2) { animation-delay: .12s; } html .cc .ath-live .ath-chip:nth-child(3) { animation-delay: .24s; } html .cc .ath-live .ath-chip:nth-child(n+4) { animation-delay: .36s; }
+  html .cc .ath-live .ath-chip-race .ath-pri { animation: athPulse 2.4s ease-in-out 1s 2; }
+}
+@keyframes athIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes athPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0); } 50% { box-shadow: 0 0 0 6px rgba(212,175,55,.25); } }
 html .cc .ath-out { color: var(--text-3); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
 html .cc .ath-out:hover { color: #fff; }
 html .cc .ath-hero-me { align-self: end; }
@@ -1073,6 +1141,8 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
   html .cc .ath-chips { gap: 8px; }
   html .cc .ath-chip { padding: 7px 11px; font-size: 12.5px; gap: 6px; }
   html .cc .ath-chip b { font-size: 18px; }
+  html .cc .ath-live .ath-chip { font-size: 14px; padding: 7px 12px; }   /* 14px minimum (50+ readers) */
+  html .cc .ath-chip-nm { max-width: 14ch; }
   html .cc .ath-s { padding: 22px 16px 24px; }
   html .cc .ath-body .ath-tools { grid-template-columns: 1fr 1fr; gap: 10px; }
   html .cc .ath-tools .ath-tile { padding: 14px 12px; }

@@ -51,7 +51,7 @@ add_action('admin_post_cc_idea', function () {
         $hd = ['Content-Type: text/html; charset=UTF-8']; if (is_email($u->user_email)) $hd[] = 'Reply-To: ' . $name . ' <' . $u->user_email . '>';
         if (function_exists('cc_ath_coach_wrap')) $h = cc_ath_coach_wrap($h);
         if (function_exists('cc_av_notify_to') && cc_av_notify_to()) wp_mail(cc_av_notify_to(), 'Hub idea: ' . $name, $h, $hd);
-        if (function_exists('cc_push_coaches')) cc_push_coaches('Hub idea: ' . $name, wp_trim_words($txt, 18), $board, 'cc-idea');
+        if (function_exists('cc_push_coaches')) cc_push_coaches('Hub idea: ' . $name, wp_trim_words($txt, 18), $board, 'cc-idea', $pid);
     }
     wp_safe_redirect(add_query_arg('idea', 1, $url) . '#cc-idea'); exit;
 });

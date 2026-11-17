@@ -238,7 +238,7 @@ function cc_nt_save(WP_REST_Request $r) {
     $n = ['at' => time(), 'text' => $text, 'tr' => $aid ? $tr : '', 'audio' => (int) $aid, 'day' => $day ?: null, 'replies' => []]; $ns[] = $n;
     cc_nt_put($pid, $ns); update_post_meta($pid, 'cc_notes_updated', time());
     cc_nt_mail($pid, $uid, $n);
-    if (function_exists('cc_push_coaches')) cc_push_coaches('Note from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : ($tr !== '' ? '🎙 ' . wp_trim_words($tr, 18) : '🎙 Voice note'), add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')), 'cc-note');
+    if (function_exists('cc_push_coaches')) cc_push_coaches('Note from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : ($tr !== '' ? '🎙 ' . wp_trim_words($tr, 18) : '🎙 Voice note'), add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')), 'cc-note', $pid);
     return ['ok' => true];
 }
 function cc_nt_delete(WP_REST_Request $r) {   // a note (ri -1) or one reply; athletes only their own, Matteo anything; the recordings go too
@@ -267,7 +267,7 @@ function cc_nt_reply(WP_REST_Request $r) {   // a reply in the thread: Matteo (s
         $tr = cc_av_str($r->get_param('transcript'), 2000);
         $ns[$i]['replies'][] = ['at' => time(), 'text' => $text, 'audio' => (int) $aid, 'from' => 'athlete', 'tr' => $aid ? $tr : '']; cc_nt_put($pid, $ns); update_post_meta($pid, 'cc_notes_updated', time());
         cc_nt_mail($pid, get_current_user_id(), ['text' => $text, 'tr' => $aid ? $tr : '', 'audio' => (int) $aid, 'day' => null], true);
-        if (function_exists('cc_push_coaches')) cc_push_coaches('Reply from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : '🎙 Voice note', add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')), 'cc-note');
+        if (function_exists('cc_push_coaches')) cc_push_coaches('Reply from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : '🎙 Voice note', add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')), 'cc-note', $pid);
         return ['ok' => true];
     }
     $ns[$i]['replies'][] = ['at' => time(), 'text' => $text, 'audio' => (int) $aid, 'from' => 'coach']; cc_nt_put($pid, $ns);
@@ -312,6 +312,6 @@ add_filter('cc_ath_board', function ($html, $board) {
     usort($all, function ($a, $b) { return $b[1]['at'] <=> $a[1]['at']; });
     $o = '<section class="ath-s nt"><h2>' . cc_ath_icon('mic', 'ath-hic') . 'Notes</h2><p class="av-lede">Notes and voice notes from your athletes, newest first. Tap Reply to answer by typing or with a voice note: they see it in their hub and get an email.</p>';
     if (!$all) return $o . '<p class="av-lede">No notes yet.</p></section>' . cc_nt_css();
-    foreach (array_slice($all, 0, 80) as [$p, $n]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 28) . ' ' : '') . '<b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($p->post_title) . '</a></b>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($p->ID) : '') . '</div>' . cc_nt_item($n, true, $p->ID);
+    foreach (array_slice($all, 0, 80) as [$p, $n]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 30) . ' ' : '') . '<b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($p->post_title) . '</a></b>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($p->ID) : '') . '</div>' . cc_nt_item($n, true, $p->ID);
     return $o . '</section>' . cc_nt_css() . cc_nt_js();
 }, 10, 2);
