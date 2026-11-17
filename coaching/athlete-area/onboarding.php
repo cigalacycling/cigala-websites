@@ -215,6 +215,7 @@ function cc_f_page($uid, $pid, $preview, $kind = null) {
     $prof = $preview ? [] : (json_decode((string) get_post_meta($pid, 'cc_profile', true), true) ?: []);   // earlier answers, when asked again
     $vals = array_merge(['first' => $u ? $u->first_name : '', 'last' => $u ? $u->last_name : '', 'email' => $u ? $u->user_email : ''], $prof, $pre, $draft);
     if (!$preview && ($av = cc_av_get($pid)) && empty($draft['week'])) $vals['week'] = $av['week'];
+    if (!$preview && empty($vals['nat']) && ($cn = (string) get_post_meta($pid, 'cc_nat', true)) !== '') $vals['nat'] = $cn;   // set by Matteo or the laptop (pc-api.php): the athlete just confirms it
     $steps = array_values(array_filter(cc_f_steps(), function ($s) use ($kind) { return $s[2] === 'both' || $s[2] === $kind; }));
     $n = count($steps);
     $first = $u ? ($u->first_name ?: $u->display_name) : '';

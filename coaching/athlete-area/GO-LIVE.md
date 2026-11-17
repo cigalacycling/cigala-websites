@@ -44,7 +44,7 @@ The whole `coaching/athlete-area/` code, as one Code Snippet (live snippet id in
    - Matteo's notices go to `info@cigalacycling.com` (live default in `cc_av_notify_to()`).
    - Check the daily job `cc_f_retention` is scheduled.
 7. **Athletes' data on live** (the 35 logins already exist; no emails):
-   - each athlete's **language** (`cc_lang`), from Matteo's list (28 en, 5 it, 1 pt, 1 sl);
+   - each athlete's **language** (`cc_lang`): **already set on live** (Matteo, 17 Nov). Only check it against his list (28 en, 5 it, 1 pt, 1 sl);
    - the **32 paper forms**: `POST /cc/v1/form-admin {email, action: "prefill", data}` then `{action: "paper"}`, so they get the short update. The answers come from the forms in Gmail, which are never committed;
    - Vittorio, Tommie and Marine have no form, so they get the full form;
    - Vekta ids later, by the laptop after Matteo confirms (`/cc/v1/athlete-meta`).
