@@ -369,7 +369,7 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .cmp2 tbody th small{display:block;font-weight:400;color:var(--text-3);font-size:12px}
 .cmp2 td{color:var(--text-2)}
 .cmp2 .hot{background:rgba(177,216,221,.07)}
-.cmp2 thead .hot{color:var(--aqua)}
+.cmp2 thead .hot{color:var(--text)}
 .cmp2 .y{color:var(--lime-text);font-weight:700;font-size:16px}
 .cmp2 .n{color:#ff6b61;font-weight:700;font-size:16px}
 .cmp2 tr.price td{color:var(--text);font-weight:600}
