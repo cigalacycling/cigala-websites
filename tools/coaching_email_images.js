@@ -27,5 +27,9 @@ const page = (w, h, inner) => `<!doctype html><html><head><meta charset="utf-8">
   await p.screenshot({ path: R + 'coaching/email/cigala-email-header-en.jpg', type: 'jpeg', quality: 90 });
   await p.evaluate(() => { document.querySelectorAll('div')[4].textContent = 'AREA ATLETA'; });
   await p.screenshot({ path: R + 'coaching/email/cigala-email-header-it.jpg', type: 'jpeg', quality: 90 });
+  for (const [l, t] of [['pt', 'ÁREA DE ATLETA'], ['sl', 'OBMOČJE ZA ŠPORTNIKE']]) {   // Matteo 17 Nov: every athlete email in their language
+    await p.evaluate((t) => { document.querySelectorAll('div')[4].textContent = t; }, t);
+    await p.screenshot({ path: R + 'coaching/email/cigala-email-header-' + l + '.jpg', type: 'jpeg', quality: 90 });
+  }
   await b.close(); console.log('done');
 })();

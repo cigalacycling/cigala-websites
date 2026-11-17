@@ -13,7 +13,7 @@ def req(url, body=None, method='GET', extra=None):
     if body is not None: a += ['-H', 'Content-Type: application/json', '--data-binary', json.dumps(body)]
     return json.loads(subprocess.run(a, capture_output=True, text=True).stdout or 'null')
 done = json.load(open(OUT)) if os.path.exists(OUT) else {}
-for opt, f in [('cc_mail_topo', 'cigala-email-topo-bg.jpg'), ('cc_mail_header_en', 'cigala-email-header-en.jpg'), ('cc_mail_header_it', 'cigala-email-header-it.jpg')]:
+for opt, f in [('cc_mail_topo', 'cigala-email-topo-bg.jpg'), ('cc_mail_header_en', 'cigala-email-header-en.jpg'), ('cc_mail_header_it', 'cigala-email-header-it.jpg'), ('cc_mail_header_pt', 'cigala-email-header-pt.jpg'), ('cc_mail_header_sl', 'cigala-email-header-sl.jpg')]:
     if opt not in done:
         m = req(f'{B}/wp/v2/media', None, 'POST', ['-H', 'Content-Type: image/jpeg', '-H', f'Content-Disposition: attachment; filename={f}', '--data-binary', '@' + ROOT + 'coaching/email/' + f])
         done[opt] = m['source_url']; json.dump(done, open(OUT, 'w'), indent=1)

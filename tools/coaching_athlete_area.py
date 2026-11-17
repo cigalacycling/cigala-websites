@@ -182,12 +182,28 @@ HUB_T = {
         'Gear &amp; speed': 'Prestave in hitrost', 'Swim pace (CSS)': 'Tempo plavanja (CSS)',
         'Worth reading': 'Vredno branja', 'New on the blog': 'Novo na blogu', 'Training': 'Trening', 'Fuelling': 'Prehrana', 'Recovery': 'Regeneracija', 'Race week': 'Teden tekme',
         'soon': 'Core, vaje in fitnes: PDF-ji bodo kmalu tukaj.'}}
-def hub_lang(L):
+def upload_guides_lang(hub_id, L, files_json=None):   # the translated PDFs (<name>-PT.pdf / -SL.pdf) into that language's hub, privately
+    fj = files_json or FILES; ids = json.load(open(fj)) if os.path.exists(fj) else {}
+    for _, items in GUIDES:
+        for t, f in items:
+            tr = f[:-4] + '-' + L.upper() + '.pdf'
+            if tr in ids or not os.path.exists(ROOT + tr): continue
+            r = subprocess.run(['curl', '-sS', '-m', '300', '-X', 'POST', f'{B}/wp/v2/media', '-F', f'file=@{ROOT + tr};type=application/pdf',
+                                '-F', f'post={hub_id}', '-F', 'title=' + HUB_T[L][t]], capture_output=True, text=True)
+            d = json.loads(r.stdout); assert d.get('id'), r.stdout[:300]
+            assert '/athletes/?cc_file=' in d['source_url'], 'not in the private folder: ' + d['source_url']
+            ids[tr] = {'id': d['id'], 'url': d['source_url']}; print('uploaded', tr, d['id'])
+            json.dump(ids, open(fj, 'w'), indent=1)
+def hub_lang(L, files_json=None):
     T = HUB_T[L]; en = ' (' + T['in English'] + ')'
-    ids = json.load(open(FILES)) if os.path.exists(FILES) else {}
+    ids = json.load(open(files_json or FILES)) if os.path.exists(files_json or FILES) else {}
     g = ''
     for grp, items in GUIDES:
-        blocks = ''.join(file_block(ids[f]['id'], ids[f]['url'], T[t] + en) for t, f in items if f in ids)
+        def one(t, f):
+            tr = f[:-4] + '-' + L.upper() + '.pdf'
+            if tr in ids: return file_block(ids[tr]['id'], ids[tr]['url'], T[t])   # translated guide
+            return file_block(ids[f]['id'], ids[f]['url'], T[t] + en) if f in ids else ''
+        blocks = ''.join(one(t, f) for t, f in items)
         if blocks: g += f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{T[grp]}</h3><!-- /wp:heading -->' + blocks
     return (h2(T['Quick links'])
        + buttons(btn(T['Book a catch-up call'], 'https://cal.com/matteocigala/15min'), btn(T['Nutrition consult with Marine'], 'https://www.vivifysports.com/nutritionalcoaching'),
@@ -246,5 +262,6 @@ if __name__ == '__main__':
             if not hl:
                 hl = [req(f'{B}/wp/v2/cc_athlete', {'title': f'Shared hub ({name} athletes)', 'status': 'private', 'content': hub_lang(L), 'meta': {'cc_shared': True, 'cc_lang': L}}, 'POST')]
             elif '--hub' in sys.argv:
+                upload_guides_lang(hl[0]['id'], L)
                 req(f'{B}/wp/v2/cc_athlete/{hl[0]["id"]}', {'content': hub_lang(L)}, 'POST')
             print('hub', L, hl[0].get('id'), hl[0].get('message', ''))
