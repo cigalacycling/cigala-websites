@@ -60,6 +60,12 @@ function cc_ath_lang_code($uid) {
     if (!isset(CC_REPORT_LANGS[$l]) || $l === 'en') { $r = get_user_meta((int) $uid, 'cc_report_lang', true); if (isset(CC_REPORT_LANGS[$r])) $l = $r; }   // older setting
     return isset(CC_REPORT_LANGS[$l]) ? $l : 'en';
 }
+function cc_ath_flag($lc) {   // coach view (Matteo 17 Nov): a flag beside the name instead of IT/PT; nothing for English
+    $cc = ['it' => 'IT', 'sl' => 'SI', 'de' => 'DE', 'fr' => 'FR', 'es' => 'ES', 'nl' => 'NL', 'pt' => 'PT', 'pl' => 'PL', 'hr' => 'HR', 'cs' => 'CZ', 'da' => 'DK', 'sv' => 'SE', 'no' => 'NO', 'fi' => 'FI', 'ga' => 'IE'][$lc] ?? '';
+    if ($cc === '') return '';
+    $f = ''; foreach (str_split($cc) as $ch) $f .= mb_chr(0x1F1E6 + ord($ch) - 65, 'UTF-8');
+    return ' <span class="ath-flag" role="img" aria-label="' . esc_attr(CC_REPORT_LANGS[$lc] ?? $lc) . '" title="' . esc_attr(CC_REPORT_LANGS[$lc] ?? $lc) . '">' . $f . '</span>';
+}
 function cc_ath_user_lang($uid) { $l = cc_ath_lang_code($uid); return in_array($l, CC_UI_LANGS, true) ? $l : 'en'; }   // the hub interface
 function cc_ath_report_lang($uid) { return cc_ath_lang_code($uid); }                                                       // reports, availability, race plans
 function cc_ath_lang_field($user = null) {
@@ -300,7 +306,7 @@ function cc_ath_inner() {
         $list = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'meta_key' => 'cc_user']);
         $o .= '<div class="ath-coach"><p><b>Coach view.</b> You see what every athlete sees. Choose an athlete to see their own reports, or add one in WordPress: Users &gt; Add New (role Subscriber).</p><p class="ath-list">';
         foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . esc_html($p->post_title)
-            . (($lc = cc_ath_lang_code((int) get_post_meta($p->ID, 'cc_user', true))) !== 'en' ? ' · ' . strtoupper($lc) : '') . '</a>';
+            . cc_ath_flag(cc_ath_lang_code((int) get_post_meta($p->ID, 'cc_user', true))) . '</a>';
         $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . (($tl = apply_filters('cc_ath_coach_links', '')) !== '' ? '<div class="ath-coach-tools"><span class="ath-coach-tl">Your coach tools</span>' . $tl . '</div>' : '') . '</div>';
         // coach-only pages (e.g. ?board=availability, from availability.php); empty unless a module adds one
         $board = isset($_GET['board']) ? sanitize_key($_GET['board']) : '';
@@ -313,8 +319,10 @@ function cc_ath_inner() {
     $o .= '<nav class="ath-jump" aria-label="' . cc_t('Sections') . '">';
     foreach ($nav as $n) $o .= '<a href="#' . esc_attr($n[0]) . '">' . esc_html($n[1]) . '</a>';
     $o .= '</nav>';
+    $o .= apply_filters('cc_ath_before_reports', '', $view, $coach);   // reports.php: "Your season" card, "N new reports"
+    $rx = apply_filters('cc_ath_reports_html', '', $view, $coach);      // reports.php: reports sent from Matteo's PC tools
     $o .= '<section class="ath-s ath-mine" id="reports"><h2>' . cc_ath_icon('reports', 'ath-hic') . cc_t('Your reports') . '</h2>'
-        . ($mineHtml !== '' ? '<div class="ath-body">' . $mineHtml . '</div>'
+        . ($mineHtml !== '' || $rx !== '' ? $rx . ($mineHtml !== '' ? '<div class="ath-body">' . $mineHtml . '</div>' : '')
            : '<div class="ath-empty">' . cc_ath_icon('doc') . '<p>' . cc_t('Your first assessment, reviews and progress reports will appear here. I will let you know when there is something new.') . '</p></div>')
         . '</section>';
     $o .= apply_filters('cc_ath_after_reports', '', $view, $coach);

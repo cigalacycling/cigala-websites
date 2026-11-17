@@ -451,7 +451,7 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - Tested 16 Nov on staging: login and wrong password, 1-year login cookie, file open/refused/direct-download blocked, a deleted athlete can't log in, wp-admin redirects athletes. 390/820/1440 widths, 16px fields, one H1. Test users removed.
 - After go-live: open /athletes/ logged out on live and check that LiteSpeed doesn't cache it, and that `/wp-content/uploads/cc-private/` answers 403.
 
-### Athlete area: reports from Matteo's PC tools (planned, after launch, Matteo 16 Nov)
+### Athlete area: reports from Matteo's PC tools (built on staging 17 Nov: `reports.php`)
 - **Plan:** the PC tools (Vekta: progress report, race day simulator, assessment, reviews) deliver each athlete's page to their area, matched by email, instead of public Netlify or claude.ai links.
 - **Rule (Matteo):** only motivating, athlete-friendly content. That means progress and highlights, race plans, the first assessment framed as a starting point, milestones.
 - **Never shown to athletes:** the Weekly Athlete Plan (Matteo: "for sure"), Early Warning flags, fatigue or risk alerts, missed-session or compliance counts, comment drafts, Command Centre, comparisons with other athletes.
@@ -465,6 +465,14 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
 - **Build:**
   - Website: a secure upload endpoint (application password on Matteo's PC only), draft/publish, report cards with a "new" badge, HTML reports served sandboxed.
   - PC side: one helper script the tools call at the end.
+- **Built (staging, 17 Nov), `coaching/athlete-area/reports.php`, pushed with `--availability`:**
+  - `POST /wp-json/cc/v1/report` {email, type: season|assessment|review|race-plan|progress|other, title, html | pdf_base64, note} → always a draft (CPT `cc_report`, child of the athlete page, file in uploads/cc-private). `GET /cc/v1/reports[?email=]` lists drafts and published.
+  - Coach tool "Reports" (`?board=reports`): Preview, Publish (with "Email the athlete": ticked by default except for season plans), Delete; Published list shows emailed / opened / not opened, with Unpublish.
+  - Hub: "Your season" card (latest published season plan, "Updated" badge), report cards with "New" badges in "Your reports", "N new reports for you". Coach view shows the same badges as the athlete sees.
+  - Served by `?cc_report=ID` after the login check; HTML with `Content-Security-Policy: sandbox` (no access to the login cookie). Opening clears the badge (athletes only).
+  - Staging emails go only to the option `cc_staging_notify`.
+  - Test athlete on staging (Testa Prova, language pt) holds four SAMPLE reports for Matteo to look at; delete it before go-live.
+- **Coach list:** a flag beside each non-English athlete's name instead of IT/PT (Matteo 17 Nov).
 
 ### Athlete area: availability (planned, after launch, Matteo 16 Nov)
 - **"My availability" card in each athlete's area:**

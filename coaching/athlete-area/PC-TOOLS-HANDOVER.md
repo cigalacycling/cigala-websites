@@ -74,3 +74,11 @@ Authentication is the application password on Matteo's PC (see above), never in 
 - Athletes only ever see motivating, athlete-friendly things.
 - Never shown to athletes: the weekly plan, early warnings, compliance counts.
 - Health answers are private: only the athlete and Matteo see them.
+
+## Sending a report into an athlete's hub (built on staging 17 Nov)
+- `POST https://coaching.cigalacycling.com/wp-json/cc/v1/report` (application password, Basic auth), JSON:
+  `{"email": "<athlete email>", "type": "season|assessment|review|race-plan|progress|other", "title": "…", "html": "<full page>"}` or `"pdf_base64": "…"` instead of `html`. Max 12 MB.
+- The answer gives `id`, `preview` and `review` links. It always lands as a **draft**: Matteo previews and publishes it at `/athletes/?board=reports`. Nothing reaches the athlete before that.
+- A new `season` report replaces the athlete's "Your season" card when published (the latest one is shown). Send the season page here instead of a public link.
+- HTML is shown sandboxed: one self-contained page (inline CSS/JS; Google Fonts and CDN images are fine). No logins or forms inside it.
+- Only motivating, athlete-friendly reports (rules below). Live only once Matteo puts the new athlete area live.
