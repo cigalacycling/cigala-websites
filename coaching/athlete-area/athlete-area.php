@@ -1187,6 +1187,7 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
   /* Matteo 17 Nov: the photo in line with "Good evening", and the line under it with some air */
   html .cc .ath-hero-txt .ath-hello { align-items: flex-start; }
   html .cc .ath-hero-txt .ath-hello h1 { margin-top: 6px !important; }
+  html .cc .ath-hero-txt .ath-hello .ath-me-ph { margin-top: 8px; }   /* Matteo 17 Nov: the photo (and "Remove photo") ~2 mm lower on phones */
   html .cc .ath-hello ~ .ath-lede { margin-top: 18px; }
   html .cc .ath-s { padding: 22px 16px 24px; }
   html .cc .ath-body .ath-tools { grid-template-columns: 1fr 1fr; gap: 10px; }
