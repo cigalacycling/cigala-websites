@@ -10892,5 +10892,15 @@
   "id": 11152,
   "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-sg.webp",
   "alt": "Flag of Singapore"
+ },
+ "flag-cn": {
+  "id": 11154,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-cn.webp",
+  "alt": "Flag of China"
+ },
+ "flag-kr": {
+  "id": 11155,
+  "url": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-flag-kr.webp",
+  "alt": "Flag of South Korea"
  }
 }
