@@ -362,7 +362,7 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .cmp2{width:100%;border-collapse:collapse;font-size:14px}
 .cmp2 th,.cmp2 td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
 .cmp2 tbody tr:last-child th,.cmp2 tbody tr:last-child td{border-bottom:0}
-.cmp2 thead th{font:400 19px/1.1 Anton,sans-serif;text-transform:uppercase;color:var(--text);vertical-align:bottom}
+.cmp2 thead th{font:400 19px/1.1 Anton,sans-serif;text-transform:uppercase;color:var(--text);vertical-align:top}
 .cmp2 thead th small.cmp-badge{display:block;margin-top:6px;font:700 10.5px/1 Montserrat,sans-serif;letter-spacing:.14em;color:var(--lime-text)}
 .cmp2 thead th small.cmp-badge.sold{color:#ffb3ad}
 .cmp2 tbody th{font-weight:600;color:var(--text);width:30%}
