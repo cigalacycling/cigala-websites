@@ -44,7 +44,7 @@ function cc_pw_mail($u) {
         cc_L('Choose a new password', 'Scegli una nuova password'), $link,
         cc_ath_mail_small(cc_L('Didn’t ask for this? Just ignore this email: your password stays the same.', 'Non l’hai chiesto tu? Ignora questa email: la tua password non cambia.')));
     wp_mail($u->user_email, cc_L('Your new Cigala Coaching password', 'La tua nuova password Cigala Coaching'), $h,
-        ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <noreply@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
+        ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
 }
 
 /* ---------- change password, inside the hub ---------- */

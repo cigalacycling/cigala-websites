@@ -561,6 +561,43 @@ function cc_ath_find() {
         . 'q.addEventListener("input",function(){var v=norm(q.value.trim()),n=0,all=0;document.querySelectorAll(S).forEach(function(r){if(r.parentNode.closest(S))return;all++;var ok=!v||norm(r.textContent).indexOf(v)>-1;r.style.display=ok?"":"none";if(ok)n++;});'
         . 'document.querySelector(".ath-find-n").textContent=v?(n+" of "+all):"";});})();</script>';
 }
+/* Matteo 17 Nov: hub emails landed in spam (Marine). The domain's SPF only allows Register365's Authenticated SMTP (and Elastic Email
+ * behind it), not Hostinger. So every email from this site goes through smtp.reg365.net, signed in as cigalacycling.com, from
+ * coaching@cigalacycling.com. The password is typed by Matteo in the Reports board ("Email sending"), kept in the option cc_smtp_pass,
+ * never shown again. Until it is set, emails go out as before. */
+const CC_SMTP = ['host' => 'smtp.reg365.net', 'port' => 587, 'user' => 'cigalacycling.com', 'from' => 'coaching@cigalacycling.com', 'name' => 'Cigala Cycling Coaching'];
+add_action('phpmailer_init', function ($m) {
+    $pw = (string) get_option('cc_smtp_pass', ''); if ($pw === '') return;
+    $m->isSMTP(); $m->Host = CC_SMTP['host']; $m->Port = CC_SMTP['port']; $m->SMTPSecure = 'tls'; $m->SMTPAuth = true;
+    $m->Username = CC_SMTP['user']; $m->Password = $pw; $m->Timeout = 20;
+    if (stripos((string) $m->From, '@cigalacycling.com') === false) { $m->From = CC_SMTP['from']; if ($m->FromName === '' || $m->FromName === 'WordPress') $m->FromName = CC_SMTP['name']; }
+    $m->Sender = CC_SMTP['from'];
+}, 99);
+add_filter('wp_mail_from', function ($f) { return stripos($f, 'wordpress@') === 0 ? CC_SMTP['from'] : $f; }, 20);
+function cc_smtp_box() {   // on Matteo's Reports board
+    $set = (int) get_option('cc_smtp_set', 0); $r = sanitize_key($_GET['smtp'] ?? '');
+    $msg = ['saved' => 'Saved. Now send yourself a test email.', 'sent' => 'Test email sent to you: check your inbox (and spam, just this once).', 'fail' => 'The test email did not go out: the password may be wrong. Type it again.', 'cleared' => 'Removed: emails go out the old way.'][$r] ?? '';
+    return '<section class="ath-s rp-smtp"><h3 class="av-sub" style="margin-top:0">Email sending</h3><p class="av-lede" style="margin:0 0 10px">Emails to athletes go out through your Register365 Authenticated SMTP (smtp.reg365.net, user cigalacycling.com) from coaching@cigalacycling.com, so they don’t land in spam. '
+        . ($set ? '<b style="color:#34c46a">Password set ' . esc_html(date_i18n('j M Y', $set)) . '.</b>' : '<b style="color:#ff4a3d">Password not set yet: emails still go the old way.</b>') . '</p>'
+        . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="rp-smtp-f" autocomplete="off"><input type="hidden" name="action" value="cc_smtp">' . wp_nonce_field('cc_smtp', '_wpnonce', false, false)
+        . '<label>Authenticated SMTP password <input type="password" name="pw" autocomplete="new-password" placeholder="' . ($set ? 'Type it again only to change it' : 'The password from Register365') . '"></label>'
+        . '<span class="rp-acts"><button class="btn btn-go" name="act" value="save">Save</button><button class="btn btn-ghost" name="act" value="test">Send me a test email</button>' . ($set ? '<button class="btn btn-ghost" name="act" value="clear">Remove</button>' : '') . '</span></form>'
+        . ($msg ? '<p class="rp-smtp-m">' . esc_html($msg) . '</p>' : '') . '</section>'
+        . '<style>html .cc .rp-smtp{margin:0 0 18px}html .cc .rp-smtp-f{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:end}html .cc .rp-smtp-f label{display:grid;gap:6px;font-size:14px;color:#d0d6e0;font-weight:600;flex:1 1 260px}'
+        . 'html .cc .rp-smtp-f input{font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff}html .cc .rp-smtp-m{margin:10px 0 0;color:#34c46a;font-weight:600}</style>';
+}
+add_action('admin_post_cc_smtp', function () {
+    if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_smtp')) wp_die('Not allowed');
+    $act = sanitize_key($_POST['act'] ?? ''); $pw = trim(wp_unslash((string) ($_POST['pw'] ?? ''))); $r = '';
+    if ($act === 'clear') { delete_option('cc_smtp_pass'); delete_option('cc_smtp_set'); $r = 'cleared'; }
+    else {
+        if ($pw !== '') { update_option('cc_smtp_pass', $pw, false); update_option('cc_smtp_set', time(), false); $r = 'saved'; }
+        if ($act === 'test') { $me = wp_get_current_user();
+            $ok = is_email($me->user_email) && wp_mail($me->user_email, 'Test: Cigala Cycling Coaching emails', '<p>This is a test from your athlete hub, sent through Register365 as coaching@cigalacycling.com. If it is in your inbox (not spam), athletes’ emails will be too.</p>', ['Content-Type: text/html; charset=UTF-8']);
+            $r = $ok ? 'sent' : 'fail'; }
+    }
+    wp_safe_redirect(add_query_arg(['board' => 'reports', 'smtp' => $r], home_url('/' . CC_ATH_SLUG . '/'))); exit;
+});
 /* Matteo 17 Nov: notification emails showed "WordPress" as the sender: now "Cigala Cycling Coaching" (only replaces WordPress's default name) */
 add_filter('wp_mail_from_name', function ($n) { return ($n === '' || $n === 'WordPress') ? 'Cigala Cycling Coaching' : $n; }, 20);
 /* Words for the summary cards and their pages (Matteo 17 Nov), in the athlete's hub language; English for any other. */
@@ -743,7 +780,7 @@ function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
           'bye' => cc_L('See you on the road,', 'A presto in bici,'), 'eb' => cc_L('Athlete hub', 'Area atleta')];
     $h = cc_ath_mail_shell($T['hi'], $T['p1'], $T['btn'], $link, '<p style="margin:22px 0 10px;font-size:14px;color:#454a52">' . $T['p2'] . '</p><p style="margin:0 0 22px;font-size:14px;color:#454a52">' . $T['p3'] . '</p>', $T['bye'], $T['eb']);
     if ($dry) return ['to' => $to ?: $u->user_email, 'subject' => $T['subj'], 'link' => $link, 'html' => $h];
-    $ok = wp_mail($to ?: $u->user_email, $T['subj'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <noreply@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
+    $ok = wp_mail($to ?: $u->user_email, $T['subj'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
     if ($ok && !$to) update_user_meta($u->ID, 'cc_welcome_sent', current_time('mysql'));
     return $ok ? ['sent' => true, 'to' => $to ?: $u->user_email] : new WP_Error('mail', 'wp_mail failed');
 }

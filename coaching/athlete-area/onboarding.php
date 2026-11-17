@@ -367,7 +367,7 @@ function cc_f_mail($uid, $pid, $a, $meta, $pdf) {
                                esc_html(cc_f('Open my athlete hub')), home_url('/' . CC_ATH_SLUG . '/'), '', esc_html(cc_f('See you on the road,')));
         $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email;   // staging: never a real inbox
         if (is_email($to)) wp_mail($to, cc_f('Your signed Rider Information Form'), $h,
-            ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <noreply@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>'], $tmp ? [$tmp] : []);
+            ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>'], $tmp ? [$tmp] : []);
     }
     if ($tmp) @unlink($tmp);
 }

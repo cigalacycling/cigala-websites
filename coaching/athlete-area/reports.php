@@ -220,6 +220,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     cc_r_sweep();
     $o = '<section class="ath-s"><h2>' . cc_ath_icon('reports', 'ath-hic') . 'Reports</h2><p class="av-lede">Reports your PC tools send arrive here as drafts. Nothing reaches an athlete until you publish it. '
        . 'Preview, then publish (tick “Email the athlete” if you want them told by email) or delete. To add a PDF by hand, upload it inside the athlete’s page, as before.</p>';
+    if (function_exists('cc_smtp_box')) $o .= cc_smtp_box();   // Matteo 17 Nov: emails through Register365 so they don't land in spam
     $o .= '<form class="rp-set" method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_report_settings">' . wp_nonce_field('cc_report_settings', '_wpnonce', false, false)
         . '<label class="rp-mail"><input type="checkbox" name="race_auto" value="1"' . (get_option('cc_r_race_auto') ? ' checked' : '') . ' onchange="this.form.submit()"> <b>Publish automatic pages automatically</b>: training reports, race day plans, race recaps and “Since you joined” milestones go straight into the athlete’s hub, the first one too, without waiting here (no email). Reviews, assessments and season plans always wait for you. Untick to review everything first.</label></form>';
     $drafts = get_posts(['post_type' => 'cc_report', 'post_status' => 'draft', 'numberposts' => -1, 'orderby' => 'date', 'order' => 'DESC']);
@@ -296,7 +297,7 @@ function cc_r_mail($rid, $test_to = null, $dry = false) {   // "your new report 
     $to = $test_to ?: (strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email);   // staging: never an athlete
     if (!is_email($to)) return;
     wp_mail($to, cc_L('Your new report is ready: ', 'È pronto il tuo nuovo report: ') . cc_r_title($p), $h,
-        ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <noreply@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
+        ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
 }
 add_action('wp_head', function () {
     if (!is_page(CC_ATH_SLUG)) return;
