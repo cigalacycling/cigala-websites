@@ -513,6 +513,35 @@ function cc_ath_sig_photo() {
     return '<span class="sigph"><img src="' . esc_url($u . 'cigala-coaching-about-hero-matteo-photo.webp') . '" alt="' . esc_attr(cc_t('Matteo Cigala, your coach, in the white Cigala Cycling jersey')) . '" width="720" height="933">'
          . '<img class="signature" src="' . esc_url($u . 'cigala-coaching-matteo-cigala-signature.webp') . '" alt="" aria-hidden="true" width="720" height="933"><span class="sig-anchor" aria-hidden="true"></span></span>';
 }
+/* Matteo 17 Nov: a microphone on the open text boxes of the rider form and of Goals & events. Tap, speak, the words appear in the box
+ * (the browser's own speech-to-text, in the athlete's language; nothing is recorded or sent to the site). Hidden where the browser can't do it. */
+add_action('wp_footer', function () {
+    if (!is_page(CC_ATH_SLUG) || !is_user_logged_in()) return;
+    $l = cc_ath_lang_code(get_current_user_id()); $speech = defined('CC_AV_SPEECH') ? (CC_AV_SPEECH[$l] ?? 'en-GB') : 'en-GB';
+    $cfg = wp_json_encode(['lang' => $speech, 'w' => ['mic' => cc_ath_w('mic', $l), 'on' => cc_ath_w('mic_on', $l), 'denied' => cc_ath_w('mic_denied', $l), 'none' => cc_ath_w('mic_none', $l)]]);
+    echo '<style id="cc-mic">.cc-micw{position:relative;display:block}.cc-micw textarea{padding-right:58px!important}.cc-micw input{padding-right:52px!important}'
+       . '.cc-mic{position:absolute;right:8px;bottom:8px;width:42px;height:42px;min-height:0!important;padding:0!important;margin:0!important;border-radius:50%!important;border:0!important;background:#018a44!important;display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4)}'
+       . '.cc-micw input~.cc-mic{top:50%;bottom:auto;transform:translateY(-50%);width:36px;height:36px}'
+       . '.cc-mic svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}.cc-mic.on{background:#ca212a!important;animation:ccmic 1.2s ease-in-out infinite}'
+       . '@keyframes ccmic{0%,100%{box-shadow:0 0 0 0 rgba(202,33,42,.6)}50%{box-shadow:0 0 0 8px rgba(202,33,42,0)}}'
+       . '.cc-mic-msg{display:block;margin-top:6px;font-size:14px;color:#d0d6e0}.cc-mic-msg:empty{display:none}</style>'
+       . '<script>(function(){var SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return;var C=' . $cfg . ',cur=null;'
+       . 'var ico=\'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>\';'
+       . 'function msg(w,t){var m=w.nextElementSibling;if(!m||!m.classList.contains("cc-mic-msg")){m=document.createElement("small");m.className="cc-mic-msg";w.parentNode.insertBefore(m,w.nextSibling);}m.textContent=t||"";}'
+       . 'function stop(){if(cur){try{cur.sr.stop();}catch(x){}}}'
+       . 'function start(b,el){stop();var w=b.parentNode,sr=new SR(),base=el.value?el.value.replace(/\s*$/,"")+" ":"",fin="";sr.lang=C.lang;sr.continuous=true;sr.interimResults=true;'
+       . 'cur={sr:sr,b:b};b.classList.add("on");b.setAttribute("aria-pressed","true");msg(w,C.w.on);'
+       . 'sr.onresult=function(e){var tmp="";for(var i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)fin+=e.results[i][0].transcript;else tmp+=e.results[i][0].transcript;}'
+       . 'el.value=(base+fin+tmp).replace(/\s+/g," ").replace(/^ /,"");el.dispatchEvent(new Event("input",{bubbles:true}));};'
+       . 'sr.onerror=function(e){msg(w,(e.error==="not-allowed"||e.error==="service-not-allowed")?C.w.denied:(e.error==="no-speech"||e.error==="aborted"?"":C.w.none));};'
+       . 'sr.onend=function(){b.classList.remove("on");b.setAttribute("aria-pressed","false");if(cur&&cur.b===b)cur=null;var m=w.nextElementSibling;if(m&&m.textContent===C.w.on)msg(w,"");el.dispatchEvent(new Event("change",{bubbles:true}));};'
+       . 'try{sr.start();}catch(x){msg(w,C.w.none);}}'
+       . 'function enhance(){document.querySelectorAll("#rf textarea, #gl-app textarea, #gl-app input.gl-no").forEach(function(el){if(el.dataset.mic||el.readOnly||el.disabled)return;el.dataset.mic="1";'
+       . 'var w=document.createElement("span");w.className="cc-micw";el.parentNode.insertBefore(w,el);w.appendChild(el);var b=document.createElement("button");b.type="button";b.className="cc-mic";'
+       . 'b.setAttribute("aria-label",C.w.mic);b.title=C.w.mic;b.setAttribute("aria-pressed","false");b.innerHTML=ico;w.appendChild(b);'
+       . 'b.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();if(cur&&cur.b===b){stop();return;}start(b,el);});});}'
+       . 'enhance();var q=0;new MutationObserver(function(){if(q)return;q=requestAnimationFrame(function(){q=0;enhance();});}).observe(document.body,{childList:true,subtree:true});})();</script>';
+}, 50);
 /* Words for the summary cards and their pages (Matteo 17 Nov), in the athlete's hub language; English for any other. */
 function cc_ath_w($k, $lang = null) {
     static $W = [
@@ -545,6 +574,13 @@ function cc_ath_w($k, $lang = null) {
         'rt_bad' => ['en' => 'That file didn’t upload. Please use a .gpx, .fit or .tcx file under 15 MB.', 'it' => 'Il file non è stato caricato. Usa un file .gpx, .fit o .tcx sotto i 15 MB.',
                      'pt' => 'O ficheiro não foi carregado. Usa um ficheiro .gpx, .fit ou .tcx com menos de 15 MB.', 'sl' => 'Datoteka se ni naložila. Uporabi datoteko .gpx, .fit ali .tcx, manjšo od 15 MB.'],
         'rt_ok' => ['en' => 'Route added', 'it' => 'Percorso aggiunto', 'pt' => 'Percurso adicionado', 'sl' => 'Proga dodana'],
+        'mic' => ['en' => 'Speak instead of typing', 'it' => 'Parla invece di scrivere', 'pt' => 'Fala em vez de escrever', 'sl' => 'Govori namesto tipkanja'],
+        'mic_on' => ['en' => 'Listening… speak now, tap the microphone again to stop.', 'it' => 'Ti ascolto… parla ora, tocca di nuovo il microfono per fermare.',
+                     'pt' => 'A ouvir… fala agora, toca outra vez no microfone para parar.', 'sl' => 'Poslušam… govori zdaj, za konec znova tapni mikrofon.'],
+        'mic_denied' => ['en' => 'Please allow the microphone for this page, then tap it again.', 'it' => 'Consenti l’uso del microfono per questa pagina, poi toccalo di nuovo.',
+                         'pt' => 'Permite o microfone nesta página e depois toca outra vez.', 'sl' => 'Dovoli mikrofon za to stran in ga nato znova tapni.'],
+        'mic_none' => ['en' => 'Speaking didn’t work here. You can use the microphone on your phone’s keyboard instead.', 'it' => 'La dettatura qui non ha funzionato. Puoi usare il microfono della tastiera del telefono.',
+                       'pt' => 'Ditar não funcionou aqui. Podes usar o microfone do teclado do telemóvel.', 'sl' => 'Narekovanje tu ni delovalo. Uporabiš lahko mikrofon na tipkovnici telefona.'],
         'rc_title' => ['en' => 'Race day plan', 'it' => 'Piano per il giorno di gara', 'pt' => 'Plano para o dia de prova', 'sl' => 'Načrt za dan tekme'],
         'rc_text' => ['en' => 'Get a plan for your race: the power for every climb and your finish time. Add your race here with its route, and it goes into your Vekta calendar too. For road, gravel and sportive events.',
                       'it' => 'Ricevi un piano per la tua gara: la potenza per ogni salita e il tuo tempo all’arrivo. Aggiungi qui la tua gara con il percorso: finisce anche nel tuo calendario Vekta. Per gare su strada, gravel e granfondo.',
