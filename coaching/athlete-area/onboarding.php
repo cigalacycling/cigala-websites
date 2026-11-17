@@ -288,7 +288,8 @@ function cc_f_field($f, $v, $kind) {
         case 'yn': $o = $f['yesno'] ?? 0;
             $c = '<label><input type="radio" name="' . $k . '" value="' . ($o ? 'yes' : 'no') . '"' . ($v === ($o ? 'yes' : 'no') ? ' checked' : '') . '><span>' . esc_html(cc_f($o ? 'Yes' : 'No')) . '</span></label>'
                . '<label><input type="radio" name="' . $k . '" value="' . ($o ? 'no' : 'yes') . '"' . ($v === ($o ? 'no' : 'yes') ? ' checked' : '') . '><span>' . esc_html(cc_f($o ? 'No' : 'Yes')) . '</span></label>';
-            return $wrap('<fieldset class="rf-yn"><legend>' . $label . '</legend><div class="rf-seg">' . $c . '</div></fieldset>', ' full');
+            // Matteo 17 Nov: plain elements (a fieldset/legend was drawn on the box's edge on some phones)
+            return $wrap('<div class="rf-yn" role="radiogroup" aria-labelledby="q-' . esc_attr($k) . '"><span class="rf-ynq" id="q-' . esc_attr($k) . '">' . $label . '</span><div class="rf-seg">' . $c . '</div></div>', ' full');
         case 'tick': return $wrap('<label class="rf-tick"><input type="checkbox" name="' . $k . '" value="1"' . ($v ? ' checked' : '') . '><span>' . $label . '</span></label>', ' full');
         case 'group': return $wrap('<p class="rf-group">' . $label . '</p>' . (isset($f['text']) ? '<div class="rf-group-t">' . cc_f_legal($f['text']) . '</div>' : ''), ' full');
         case 'legal': return $wrap('<div class="rf-legal" tabindex="0" role="region" aria-label="' . esc_attr($label) . '">' . cc_f_legal($f['text']) . '</div><p class="rf-scrollhint">' . esc_html(cc_f('Scroll to the end to agree.')) . '</p>', ' full');
@@ -834,8 +835,8 @@ html .cc .rf textarea { resize: vertical; min-height: 88px; line-height: 1.5; } 
 html .cc .rf-chips { display: flex; flex-wrap: wrap; gap: 8px; } html .cc .rf-chip { position: relative; margin: 0 !important; } html .cc .rf-chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
 html .cc .rf-chip span { display: inline-block; font: 600 13.5px var(--body); padding: 10px 15px; border-radius: 999px; border: 1px solid rgba(255,255,255,.16); color: var(--text-2); }
 html .cc .rf-chip input:checked + span { background: #009a44; border-color: #009a44; color: #fff; } html .cc .rf-chip input:focus-visible + span { outline: 2px solid #34c46a; outline-offset: 2px; }
-html .cc .rf-yn { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); }
-html .cc .rf-yn legend { float: left; font-weight: 500; font-size: 14px; margin: 0; max-width: 70%; } html .cc .rf-seg { display: inline-flex; flex: none; margin-left: auto; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; overflow: hidden; }
+html .cc .rf .rf-yn { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); }
+html .cc .rf .rf-ynq { display: block; font-weight: 500; font-size: 14px; line-height: 1.4; margin: 0; color: var(--text); flex: 1 1 auto; min-width: 0; } html .cc .rf-seg { display: inline-flex; flex: none; margin-left: auto; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; overflow: hidden; }
 html .cc .rf-seg label { position: relative; margin: 0 !important; } html .cc .rf-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
 html .cc .rf-seg span { display: block; padding: 7px 14px; font: 600 13px var(--body); color: var(--text-3); } html .cc .rf-seg input:checked + span { background: #009a44; color: #fff; }
 html .cc .rf-seg input[value=yes]:checked + span { background: #E10600; } html .cc .rf-seg input:focus-visible + span { outline: 2px solid #34c46a; outline-offset: -2px; }
@@ -848,7 +849,7 @@ html .cc .rf-tick input:checked { background-color: #009a44; border-color: #009a
 html .cc .rf-tick input:disabled { opacity: .35; cursor: not-allowed; } html .cc .rf-tick input:focus-visible { outline: 2px solid #34c46a; outline-offset: 2px; }
 html .cc .rf-tick span { padding-top: 3px; } html .cc .rf-scrollhint { margin: 8px 0 0; font-size: 12.5px; color: #ff3d33; font-weight: 600; } html .cc .rf-scrollhint[hidden] { display: none; }
 html .cc .rf-miss :is(input:not([type=radio]):not([type=checkbox]), select, textarea, .rf-seg, .rf-tick input) { border-color: #ff3d33 !important; box-shadow: 0 0 0 1px #ff3d33; }
-html .cc .rf-miss :is(label, legend, .rf-tick span) { color: #ff3d33 !important; } html .cc .rf-miss .rf-chips { outline: 2px solid #ff3d33; outline-offset: 4px; border-radius: 8px; }
+html .cc .rf-miss :is(label, legend, .rf-tick span, .rf-ynq) { color: #ff3d33 !important; } html .cc .rf-miss .rf-chips { outline: 2px solid #ff3d33; outline-offset: 4px; border-radius: 8px; }
 html .cc .rf-dmiss select { border-color: #ff3d33 !important; box-shadow: 0 0 0 1px #ff3d33; } html .cc .rf-dmiss .av-dn { color: #ff3d33; }
 html .cc .rf-pv { border-color: rgba(240,191,0,.5); background: rgba(240,191,0,.08); }
 html .cc .rf-group { margin: 6px 0 0; font-weight: 600; color: var(--text); font-size: 14px; } html .cc .rf-group-t p { margin: 8px 0 0; font-size: 14px; }
@@ -885,7 +886,7 @@ html .cc .rf-row.rf-former { opacity: .75; } html .cc .rf-row em { color: #ff3d3
 html .cc .rf-qa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 4px 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 14px; }
 html .cc .rf-qa span { color: var(--text-3); } html .cc .rf-qa b { color: #fff; font-weight: 500; }
 @media (max-width: 640px) { html .cc .rf-grid { grid-template-columns: 1fr; } html .cc .rf-qa { grid-template-columns: 1fr; } html .cc .rf-steps { top: 60px; }
-  html .cc .rf-yn { flex-wrap: wrap; } html .cc .rf-yn legend { max-width: 100%; } }
+  html .cc .rf .rf-yn { flex-wrap: wrap; } html .cc .rf .rf-ynq { flex-basis: 100%; } }
 </style>
 CSS;
 });

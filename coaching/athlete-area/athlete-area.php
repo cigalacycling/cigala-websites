@@ -819,7 +819,7 @@ function cc_ath_mail_shell($hi, $p1, $btn, $link, $small = '', $bye = null, $eb 
        . $small
        . ($bye === false ? '' : '<p style="margin:0 0 18px">' . $bye . '</p>') . '</td></tr>'
        // Matteo 17 Nov: every coaching email signs off with his round photo, his signature across the bottom (see-through, so it takes the email's own colour)
-       . ($bye === false ? '' : '<tr><td style="padding:0 30px 18px"><img src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-signed-photo.png" width="190" alt="Matteo Cigala" style="display:block;width:190px;height:auto;border:0"></td></tr>')
+       . ($bye === false ? '' : '<tr><td style="padding:0 30px 18px"><img src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-signed-photo-2.png" width="190" alt="Matteo Cigala" style="display:block;width:190px;height:auto;border:0"></td></tr>')
        . '<tr><td style="padding:18px 30px 26px;' . $f . ';font-size:12px;color:#7a808a;border-top:1px solid #eceef1">' . ($foot ?? 'Matteo Cigala · Head Coach, Cigala Cycling Coaching · <a href="https://wa.me/353834777697" style="color:#12a150">WhatsApp</a> · <a href="mailto:matteo@cigalacycling.com" style="color:#12a150">matteo@cigalacycling.com</a>') . '</td></tr>'
        . '</table></td></tr></table></td></tr></table></body></html>';
     return $h;
