@@ -11,6 +11,8 @@ Matteo 16 Nov 2026: "remake this site using my own style of fonts but using thei
   python3 -I tools/build_vivify.py      -> vivify/site/*.html (+ vivify/site/img/)
 """
 import os, re, sys, json, html, shutil, glob
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import vivify_example as EX   # 'What your coaching looks like' example week
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 V = ROOT + 'vivify/'
@@ -838,6 +840,7 @@ def coaching():
  <div class="panel" style="padding:32px"><span class="eyebrow">What we look at</span>
   {chips(['Macronutrients requirements', 'Vitamins &amp; Minerals requirements', 'Supplements requirements', 'Sports specific requirements', 'Lifestyle advice', 'Healthy recipes', 'Craving control guidelines', 'IBS or gastro-intestinal issues', 'Immune health'])}</div>
 </div></section>
+{EX.section(head, DISCOVERY)}
 <section id="plans" style="padding-top:24px"><div class="wrap">
  {head('3-month coaching', 'Find the right plan', tag=None, center=True)}
  <div class="notes">{notes}</div>
@@ -1139,7 +1142,7 @@ def privacy():
 
 # ---------------------------------------------------------------- write
 if __name__ == '__main__':
-    open(OUT + 'vivify.css', 'w').write(CSS)
+    open(OUT + 'vivify.css', 'w').write(CSS + EX.CSS)
     b, n, ni, nu = blog()
     for f, h in [('index.html', home()), ('about.html', about()), ('nutrition-nutrition-philosophy.html', philosophy()),
                  ('sports-nutritionist-ireland.html', coaching()), ('massage-therapy.html', massage()), ('yoga.html', yoga()),
