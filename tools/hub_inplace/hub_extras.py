@@ -27,7 +27,9 @@ def share(lang):
     h, lede, steps = T[lang]
     return (c.h2(h) + c.para(lede)
             + '<!-- wp:list {"ordered":true} --><ol class="wp-block-list">' + ''.join(f'<!-- wp:list-item --><li>{s}</li><!-- /wp:list-item -->' for s in steps) + '</ol><!-- /wp:list -->'
-            + c.buttons(c.btn('Instagram', 'https://www.instagram.com/cigalacycling/', True)))
+            + c.buttons(c.btn(HOW[lang], 'https://www.instagram.com/reel/DeyoyBDI1Rl/', True),   # Vekta's own reel showing session sharing (linked, not copied)
+                        c.btn('Instagram', 'https://www.instagram.com/cigalacycling/', True)))
+HOW = {'en': 'See how it works (Vekta video)', 'it': 'Guarda come funziona (video Vekta)', 'pt': 'Vê como funciona (vídeo Vekta)', 'sl': 'Poglej, kako deluje (video Vekta)'}
 
 bk = c.ROOT + ('live-coaching' if live else 'stg-coaching') + '/backup/'
 for p in c.req(f'{c.B}/wp/v2/cc_athlete?status=private&per_page=100&context=edit&_fields=id,meta,content'):

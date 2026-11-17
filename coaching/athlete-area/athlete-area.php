@@ -438,7 +438,7 @@ function cc_ath_kind($href) {
           ['vekta', 'bolt', 'Your plan, workouts and analysis'], ['trainingpeaks', 'peaks', 'Your plan and workouts'],
           ['training-zones', 'zones', ''], ['carbs-per-hour', 'carbs', ''], ['critical-power', 'cp', ''], ['ftp-test', 'ftp', ''],
           ['sweat-rate', 'sweat', ''], ['climb-time', 'climb', ''], ['gear-speed', 'gear', ''], ['swim-pace', 'swim', ''], ['.pdf', 'doc', ''],
-          ['youtube.com/playlist', 'play', 'YouTube'], ['instagram.com', 'insta', '@cigalacycling']];
+          ['youtube.com/playlist', 'play', 'YouTube'], ['instagram.com/reel/', 'play', 'Instagram'], ['instagram.com', 'insta', '@cigalacycling']];
     foreach ($m as $x) if (stripos($href, $x[0]) !== false) return [$x[1], $x[2] === '' ? '' : cc_t($x[2])];
     return ['link', ''];
 }
