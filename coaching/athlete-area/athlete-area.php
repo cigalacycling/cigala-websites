@@ -925,6 +925,13 @@ html .cc .ath-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 !import
 html .cc .ath-list a { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.08); color: #fff; text-decoration: none; font-size: 13px; }
 html .cc .ath-list a[aria-current] { background: #12a150; }
 html .cc .ath-list a { display: inline-flex; align-items: center; gap: 6px; }
+/* Matteo 17 Nov: a bit of life on hover: the pill lifts, glows green and the flag pops */
+html .cc .ath-list a { border: 1px solid transparent; transition: transform .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease; }
+html .cc .ath-list a > * { transition: transform .2s ease; }
+html .cc .ath-list a:hover, html .cc .ath-list a:focus-visible { transform: translateY(-2px); background: rgba(18,161,80,.18); border-color: rgba(43,212,122,.55); box-shadow: 0 6px 18px rgba(18,161,80,.25); }
+html .cc .ath-list a:hover > *, html .cc .ath-list a:focus-visible > * { transform: scale(1.18) rotate(-4deg); }
+html .cc .ath-list a[aria-current]:hover { background: #12a150; }
+@media (prefers-reduced-motion: reduce) { html .cc .ath-list a, html .cc .ath-list a > * { transition: none; } html .cc .ath-list a:hover, html .cc .ath-list a:hover > * { transform: none; } }
 html .cc .ath-flag-e { display: inline-grid; place-items: center; width: 14px; height: 14px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 1px 4px rgba(0,0,0,.4); flex: none; }
 html .cc .ath-flag-e span { font-size: 20px; line-height: 1; }
 html .cc .ath form.ath-lang { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 0 14px; vertical-align: middle; }
