@@ -154,8 +154,8 @@ HUB_EXAMPLES = [('season-plan', 'Season plan', 'Periodisation from base to race 
                 ('race-plan', 'Race-day plan', 'Pacing climb by climb, fuelling and a predicted finish time.')]
 def hub_section():
     pts = ''.join(f'<li><span class="hb-ic">{ic}</span><span><b>{t}</b>{d}</span></li>' for ic, t, d in HUB_POINTS)
-    ex = ''.join(f'<a class="hb-ex" href="{conv(_HX + f + ".png", "hub-example-" + f)}" target="_blank" rel="noopener">'
-                 f'<span class="hb-shot"><img src="{conv(_HX + f + ".png", "hub-example-" + f + "-thumb", 900)}" alt="Example {t.lower()} in the Cigala Athlete Hub (made-up athlete)" loading="lazy" width="900" height="760"></span>'
+    ex = ''.join(f'<a class="hb-ex" href="{conv(_HX + f + ".png", "hub-report-" + f)}" target="_blank" rel="noopener">'
+                 f'<span class="hb-shot"><img src="{conv(_HX + f + ".png", "hub-report-" + f + "-thumb", 900)}" alt="Example {t.lower()} in the Cigala Athlete Hub (made-up athlete)" loading="lazy" width="900" height="760"></span>'
                  f'<b>{t}</b><small>{d}</small><i>View example →</i></a>' for f, t, d in HUB_EXAMPLES)
     return f'''<div class="hb">
       <div class="hb-head"><div class="eyebrow">Included in Advanced &amp; Premium</div><h3 class="hb-h">YOUR PERSONAL ATHLETE HUB</h3><div class="bar"></div>

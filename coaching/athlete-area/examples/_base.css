@@ -13,3 +13,13 @@ h2{font:400 22px/1.2 Anton,Impact,sans-serif;color:#fff;text-transform:uppercase
 .note{border-left:3px solid #12a150;padding:12px 16px;background:rgba(18,161,80,.08);border-radius:0 10px 10px 0;color:#e6e9ee}
 ul{margin:0;padding-left:18px}li{margin:4px 0}
 .foot{margin-top:24px;color:#6f7782;font-size:12px;display:flex;justify-content:space-between}
+
+/* branding (Matteo 17 Nov: "put the brand on top and my branding below") */
+.brandrow{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.brandrow img{width:64px;height:64px;border:2px solid #fff;display:block}
+.brandrow span{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9aa1ab}.brandrow span b{display:block;color:#fff;font-size:15px;letter-spacing:.12em;margin-top:2px}
+.bfoot{margin-top:26px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between;gap:20px}
+.bfoot .l{display:flex;align-items:center;gap:14px}.bfoot .l img{width:44px;height:44px;border:2px solid #fff}
+.bfoot .l div{font-size:13px;color:#9aa1ab}.bfoot .l b{display:block;color:#fff;font-size:14px}
+.bfoot .r{text-align:right}.bfoot .r img{height:44px;display:block;margin-left:auto}.bfoot .r small{display:block;color:#9aa1ab;font-size:12px;margin-top:4px}
+.bfoot .tg{color:#2bd47a;font-weight:700;letter-spacing:.14em;font-size:12px;text-transform:uppercase;margin-top:3px}
