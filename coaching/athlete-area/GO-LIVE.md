@@ -19,6 +19,8 @@
 > - email headers in PT and SL;
 > - fixes found by a full language sweep (EN/IT/PT/SL at 390/820/1440, no leftovers except the legal texts, which stay English for PT/SL until Matteo approves a translation).
 >
+> **Welcome emails:** Marine Lenehan's sent 17 Nov (Matteo's OK) for the live test. Nobody else yet: they go on Matteo's "send".
+>
 > **From now on, every hub change:** test on staging, then push live the same way (back up first).
 
 Everything since 16 Nov evening is built and tested **on staging only** (`staging.coaching.cigalacycling.com`). The live site still has the first, older hub. This is the checklist for putting it live. **Any session doing the go-live follows it, step by step, together with Matteo.**
