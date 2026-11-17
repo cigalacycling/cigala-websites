@@ -106,7 +106,7 @@ HUB = lambda: (h2('Quick links')
        + h2('Your training apps')
        + para('Your plan is in Vekta and syncs to your Garmin, Wahoo or Zwift.')   # Matteo 16 Nov: Vekta only
        + buttons(btn('Open my Vekta calendar', 'https://app.joinvekta.com/me/calendar', True))   # Matteo 16 Nov: straight to the calendar
-       + h2('Training guides')
+       + h2('Training library')
        + guides_html()
        + h2('Training tools')
        + buttons(*[btn(t, u, True, False) for t, u in TOOLS], cls='ath-tools')
@@ -166,7 +166,7 @@ HUB_IT = lambda: (h2('Link rapidi')
        + h2('Le tue app di allenamento')
        + para('Il tuo piano è su Vekta e si sincronizza con Garmin, Wahoo o Zwift.')
        + buttons(btn('Apri il mio calendario Vekta', 'https://app.joinvekta.com/me/calendar', True))
-       + h2('Guide di allenamento')
+       + h2('Biblioteca di allenamento')
        + guides_html_it()
        + h2('Strumenti di allenamento')
        + buttons(*[btn(t, u, True, False) for t, u in TOOLS_IT], cls='ath-tools')
@@ -183,7 +183,7 @@ HUB_T = {
         'Community on Skool': 'Comunidade no Skool',
         'skool': 'A comunidade no Skool é gratuita para os atletas que treino. Ainda não recebeste o convite? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">Envia-me um email</a> e eu mando-to (vê também a pasta de spam, às vezes vai parar lá).',
         'Your training apps': 'As tuas apps de treino', 'vekta': 'O teu plano está no Vekta e sincroniza com o teu Garmin, Wahoo ou Zwift.', 'Open my Vekta calendar': 'Abrir o meu calendário Vekta',
-        'Training guides': 'Guias de treino', 'Strength and core': 'Força e core', 'Nutrition, with Marine Lenehan': 'Nutrição, com a Marine Lenehan',
+        'Training guides': 'Biblioteca de treino', 'Strength and core': 'Força e core', 'Nutrition, with Marine Lenehan': 'Nutrição, com a Marine Lenehan',
         'Stretches &amp; Core': 'Alongamentos e core', 'Gym Circuit: Winter, first month': 'Circuito de ginásio: inverno, primeiro mês',
         'Gym Circuit: Winter, second and third month': 'Circuito de ginásio: inverno, segundo e terceiro mês', 'Gym Circuit: In season': 'Circuito de ginásio: em época',
         'Nutritional Guide': 'Guia de nutrição', 'Supplement List': 'Lista de suplementos', 'in English': 'em inglês',
@@ -195,7 +195,7 @@ HUB_T = {
         'Community on Skool': 'Skupnost na Skoolu',
         'skool': 'Skupnost na Skoolu je za športnike, ki jih treniram, brezplačna. Povabila še nimaš? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">Pošlji mi email</a> in ti ga pošljem (preveri tudi mapo z neželeno pošto, včasih pristane tam).',
         'Your training apps': 'Tvoje aplikacije za trening', 'vekta': 'Tvoj načrt je v Vekti in se sinhronizira z Garminom, Wahoojem ali Zwiftom.', 'Open my Vekta calendar': 'Odpri moj koledar v Vekti',
-        'Training guides': 'Vodniki za trening', 'Strength and core': 'Moč in core', 'Nutrition, with Marine Lenehan': 'Prehrana, z Marine Lenehan',
+        'Training guides': 'Knjižnica za trening', 'Strength and core': 'Moč in core', 'Nutrition, with Marine Lenehan': 'Prehrana, z Marine Lenehan',
         'Stretches &amp; Core': 'Raztezanje in core', 'Gym Circuit: Winter, first month': 'Krožni trening v fitnesu: zima, prvi mesec',
         'Gym Circuit: Winter, second and third month': 'Krožni trening v fitnesu: zima, drugi in tretji mesec', 'Gym Circuit: In season': 'Krožni trening v fitnesu: med sezono',
         'Nutritional Guide': 'Prehranski vodnik', 'Supplement List': 'Seznam prehranskih dopolnil', 'in English': 'v angleščini',
