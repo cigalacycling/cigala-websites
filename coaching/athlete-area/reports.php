@@ -74,7 +74,8 @@ add_action('rest_api_init', function () {
 function cc_r_create(WP_REST_Request $r) {
     if (function_exists('cc_pc_page_from')) $pid = cc_pc_page_from($r);   // email, vekta_id or page (pc-api.php)
     else { $u = get_user_by('email', (string) $r->get_param('email')); $pid = $u ? cc_ath_page_of($u->ID) : 0; }
-    if (!$pid || !get_post_meta($pid, 'cc_user', true)) return new WP_Error('cc_none', 'No active athlete with that email / vekta_id / page', ['status' => 404]);
+    $demo = $pid && get_post_meta($pid, 'cc_demo', true);   // Matteo's demo page: no login, his pages go live straight away
+    if (!$pid || (!get_post_meta($pid, 'cc_user', true) && !$demo)) return new WP_Error('cc_none', 'No active athlete with that email / vekta_id / page', ['status' => 404]);
     $type = isset(CC_R_TYPES[$r->get_param('type')]) ? $r->get_param('type') : 'other';
     $title = cc_av_str($r->get_param('title') ?: cc_r_label($type, false) . ' · ' . date_i18n('F Y'), 140);
     $html = (string) $r->get_param('html'); $pdf = (string) $r->get_param('pdf_base64'); $link = esc_url_raw((string) $r->get_param('url'), ['https']);
@@ -94,6 +95,7 @@ function cc_r_create(WP_REST_Request $r) {
     foreach (cc_r_same_key($rid, 'draft') as $old) { cc_r_delete($old); $replaced[] = $old; }   // same key: one draft
     $auto = in_array($type, CC_R_AUTO, true) && cc_r_auto($pid, $type);
     if (in_array($type, CC_R_SELF, true) && get_option('cc_r_race_auto')) $auto = true;   // Matteo 17 Nov: his switch "Publish race plans automatically" (no draft step, no email)
+    if ($demo) $auto = true;
     if ($auto) cc_r_go_live($rid);   // Matteo switched on automatic updates for this athlete and kind
     return ['ok' => true, 'id' => $rid, 'status' => $auto ? 'published' : 'draft', 'auto' => $auto, 'replaced_drafts' => $replaced, 'preview' => add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')),
             'review' => add_query_arg('board', 'reports', home_url('/' . CC_ATH_SLUG . '/'))];

@@ -195,6 +195,15 @@ function cc_ath_shared_page($lang = 'en') {   // the shared hub in the athlete's
 function cc_ath_is_coach() { return current_user_can('edit_pages'); }
 // Matteo 17 Nov: athletes coached in TrainingPeaks (tick on the Contracts board). Their hub has no Availability, Goals & events or Vekta
 // section (they add those in TrainingPeaks); a TrainingPeaks card instead. The rider form stays.
+// Matteo 17 Nov: his demo page: a private athlete page with no login, filled from his own Vekta data ("me"); never counted, never emailed
+add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/demo', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $nm = sanitize_text_field((string) ($r['name'] ?: 'Matteo Cigala'));
+        $ex = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => 'cc_demo', 'meta_value' => '1']);
+        $pid = $ex ? (int) $ex[0] : (int) wp_insert_post(['post_type' => 'cc_athlete', 'post_status' => 'private', 'post_title' => $nm, 'post_content' => '', 'meta_input' => ['cc_demo' => 1, 'cc_nat' => (string) ($r['nat'] ?: 'it')]]);
+        return ['page' => $pid, 'name' => get_the_title($pid)];
+    }]);
+});
 function cc_ath_tp($pid) { return $pid && (bool) get_post_meta((int) $pid, 'cc_tp', true); }
 function cc_ath_can_see($pid) {
     if (!$pid || get_post_type($pid) !== 'cc_athlete' || !is_user_logged_in()) return false;
@@ -368,9 +377,11 @@ function cc_ath_inner() {
         return $o . '<p class="ath-back"><a href="' . esc_url($url) . '">← ' . esc_html(cc_ath_w('back')) . '</a></p>' . $sp . '</div>' . cc_ath_js();
     if ($coach) {
         $list = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'meta_key' => 'cc_user']);
+        // Matteo 17 Nov: his own demo page (no login, his own Vekta data), first in the list
+        $list = array_merge(get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_demo', 'meta_value' => '1']), $list);
         $o .= '<div class="ath-coach"><p><b>Coach view.</b> You see what every athlete sees. Choose an athlete to see their own reports, or add one in WordPress: Users &gt; Add New (role Subscriber).</p><p class="ath-list">';
         foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . '>' . esc_html($p->post_title)
-            . cc_ath_flag_for($p->ID) . '</a>';
+            . cc_ath_flag_for($p->ID) . (get_post_meta($p->ID, 'cc_demo', true) ? ' <small style="opacity:.75">demo</small>' : '') . '</a>';
         $o .= ($list ? '</p>' : '<span>No athletes yet.</span></p>') . (($tl = apply_filters('cc_ath_coach_links', '')) !== '' ? '<div class="ath-coach-tools"><span class="ath-coach-tl">Your coach tools</span>' . $tl . '</div>' : '') . '</div>';
         // coach-only pages (e.g. ?board=availability, from availability.php); empty unless a module adds one
         $board = isset($_GET['board']) ? sanitize_key($_GET['board']) : '';
@@ -919,6 +930,7 @@ html .cc .ath-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 !import
 html .cc .ath-list a { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.08); color: #fff; text-decoration: none; font-size: 13px; }
 html .cc .ath-list a[aria-current] { background: #12a150; }
 html .cc .ath-list a { display: inline-flex; align-items: center; gap: 6px; }
+html .cc .ath-list a { font-family: var(--body, Montserrat, sans-serif); font-size: 14.5px; font-weight: 600; letter-spacing: 0; padding: 8px 14px; }   /* Matteo 17 Nov: easier to read, like the coach tools */
 /* Matteo 17 Nov: a bit of life on hover: the pill lifts, glows green and the flag pops */
 html .cc .ath-list a { border: 1px solid transparent; transition: transform .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease; }
 html .cc .ath-list a > * { transition: transform .2s ease; }
