@@ -76,13 +76,17 @@ add_action('init', function () {
 }, 1);
 function cc_push_w($k) {
     static $W = [
-        'title' => ['en' => 'Get notifications on this phone', 'it' => 'Ricevi le notifiche su questo telefono', 'pt' => 'Recebe notificações neste telemóvel', 'sl' => 'Prejemaj obvestila na ta telefon'],
-        'text' => ['en' => 'Your phone tells you when I reply to your note or something new is in your hub.', 'it' => 'Il telefono ti avvisa quando rispondo al tuo messaggio o c’è qualcosa di nuovo nella tua area.',
-                   'pt' => 'O telemóvel avisa-te quando respondo à tua mensagem ou há algo novo na tua área.', 'sl' => 'Telefon te obvesti, ko odgovorim na tvoje sporočilo ali je v tvojem središču kaj novega.'],
-        'coach' => ['en' => 'Your phone tells you about new notes, signups, signed forms and ideas.', 'it' => 'Your phone tells you about new notes, signups, signed forms and ideas.', 'pt' => 'Your phone tells you about new notes, signups, signed forms and ideas.', 'sl' => 'Your phone tells you about new notes, signups, signed forms and ideas.'],
+        'title' => ['en' => 'Get notifications on this device', 'it' => 'Ricevi le notifiche su questo dispositivo', 'pt' => 'Recebe notificações neste dispositivo', 'sl' => 'Prejemaj obvestila na tej napravi'],
+        'text' => ['en' => 'This device tells you when I reply to your note or something new is in your hub.', 'it' => 'Questo dispositivo ti avvisa quando rispondo al tuo messaggio o c’è qualcosa di nuovo nella tua area.',
+                   'pt' => 'Este dispositivo avisa-te quando respondo à tua mensagem ou há algo novo na tua área.', 'sl' => 'Ta naprava te obvesti, ko odgovorim na tvoje sporočilo ali je v tvojem središču kaj novega.'],
+        'coach' => ['en' => 'This device tells you about new notes, results, signups, signed forms and ideas.', 'it' => 'This device tells you about new notes, results, signups, signed forms and ideas.', 'pt' => 'This device tells you about new notes, results, signups, signed forms and ideas.', 'sl' => 'This device tells you about new notes, results, signups, signed forms and ideas.'],
+        'ask' => ['en' => 'Your browser did not ask. Click the lock or bell icon next to the web address, allow notifications for this site, then tap the button again.',
+                  'it' => 'Il browser non ha chiesto. Clicca sull’icona del lucchetto o della campanella accanto all’indirizzo, consenti le notifiche per questo sito, poi tocca di nuovo il pulsante.',
+                  'pt' => 'O navegador não perguntou. Clica no ícone do cadeado ou do sino junto ao endereço, permite as notificações deste site e toca de novo no botão.',
+                  'sl' => 'Brskalnik ni vprašal. Klikni ikono ključavnice ali zvonca ob naslovu, dovoli obvestila za to stran in znova tapni gumb.'],
         'on' => ['en' => 'Turn on notifications', 'it' => 'Attiva le notifiche', 'pt' => 'Ativar notificações', 'sl' => 'Vklopi obvestila'],
         'no' => ['en' => 'Not now', 'it' => 'Non ora', 'pt' => 'Agora não', 'sl' => 'Ne zdaj'],
-        'done' => ['en' => 'Notifications are on for this phone.', 'it' => 'Notifiche attive su questo telefono.', 'pt' => 'Notificações ativas neste telemóvel.', 'sl' => 'Obvestila so vklopljena na tem telefonu.'],
+        'done' => ['en' => 'Notifications are on for this device.', 'it' => 'Notifiche attive su questo dispositivo.', 'pt' => 'Notificações ativas neste dispositivo.', 'sl' => 'Obvestila so vklopljena na tej napravi.'],
         'ios' => ['en' => 'On iPhone, add the hub to your Home Screen first, then open it from there to turn notifications on.', 'it' => 'Su iPhone aggiungi prima l’area alla schermata Home, poi aprila da lì per attivare le notifiche.',
                   'pt' => 'No iPhone, adiciona primeiro a área ao ecrã principal e abre-a a partir daí para ativar as notificações.', 'sl' => 'Na iPhonu najprej dodaj središče na začetni zaslon in ga odpri od tam, da vklopiš obvestila.'],
         'denied' => ['en' => 'Notifications are blocked for this site in your phone settings.', 'it' => 'Le notifiche per questo sito sono bloccate nelle impostazioni del telefono.', 'pt' => 'As notificações deste site estão bloqueadas nas definições do telemóvel.', 'sl' => 'Obvestila za to stran so blokirana v nastavitvah telefona.'],
@@ -92,7 +96,7 @@ function cc_push_w($k) {
 // the card: on the hub, until notifications are on for this phone (or "Not now"); for athletes and for Matteo
 add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     $v = cc_push_vapid(); if (!$v) return $html;
-    $W = ['done' => cc_push_w('done'), 'ios' => cc_push_w('ios'), 'denied' => cc_push_w('denied')];
+    $W = ['done' => cc_push_w('done'), 'ios' => cc_push_w('ios'), 'denied' => cc_push_w('denied'), 'ask' => cc_push_w('ask')];
     return $html . '<div class="ath-push" hidden data-key="' . esc_attr($v['pub']) . '" data-sw="' . esc_url(add_query_arg('cc_sw', 1, home_url('/' . CC_ATH_SLUG . '/'))) . '" data-api="' . esc_url(rest_url('cc/v1/push-sub')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-w="' . esc_attr(wp_json_encode($W)) . '">'
         . '<p><b>' . esc_html(cc_push_w('title')) . '</b><span>' . esc_html(cc_push_w($coach ? 'coach' : 'text')) . '</span></p>'
         . '<button type="button" class="btn btn-go push-on">' . esc_html(cc_push_w('on')) . '</button><button type="button" class="btn btn-ghost push-no">' . esc_html(cc_push_w('no')) . '</button><span class="push-msg" role="status"></span></div>'
@@ -109,7 +113,7 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
         // Matteo 17 Nov: each step shows on screen and any error is reported to the hub (GET /cc/v1/push-status shows the last ones)
         . 'function rep(step,e){m.textContent=W.denied+" ("+step+(e?": "+(e.message||e):"")+")";try{fetch(c.dataset.api.replace("push-sub","push-log"),{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":c.dataset.nonce},body:JSON.stringify({step:step,err:String(e&&(e.message||e)||""),ua:navigator.userAgent,sa:!!(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone),perm:Notification.permission})});}catch(x){}}'
         . 'c.querySelector(".push-on").addEventListener("click",function(){m.textContent="…";var pr;try{pr=Notification.requestPermission();}catch(e){rep("permission",e);return;}'
-        . 'Promise.resolve(pr).then(function(p){p=p||Notification.permission;if(p!=="granted"){rep("permission "+p);return;}m.textContent="… 1/3";'
+        . 'Promise.resolve(pr).then(function(p){p=p||Notification.permission;if(p!=="granted"){rep("permission "+p);if(p==="default")m.textContent=W.ask;return;}m.textContent="… 1/3";'
         . 'return Promise.race([navigator.serviceWorker.ready,new Promise(function(_,no){setTimeout(function(){no(new Error("service worker not ready"));},10000);})]).then(function(r){m.textContent="… 2/3";return r.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key(c.dataset.key)});}).catch(function(e){rep("subscribe",e);throw e;}).then(function(s){m.textContent="… 3/3";'
         . 'return fetch(c.dataset.api,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":c.dataset.nonce},body:JSON.stringify(s)});}).then(function(r){if(!r.ok){rep("save "+r.status);return;}m.textContent=W.done;c.querySelector(".push-on").hidden=true;c.querySelector(".push-no").hidden=true;setTimeout(function(){c.hidden=true;},4000);});'
         . '}).catch(function(e){if(m.textContent.indexOf("(")<0)rep("other",e);});});'
