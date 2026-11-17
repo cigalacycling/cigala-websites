@@ -49,7 +49,7 @@ def build(b):
  <p class="lead">{lead}</p><a class="btn btn-primary" href="{btn[1]}">{btn[0]} {ICON['arrow']}</a></div></section>"""
 
     def creds(title='Why athletes choose Marine'):
-        items = [('MSc in Sports Nutrition', 'Universidad Europea de Madrid (2025), plus a Professional Diploma in Sports Nutrition (2023).'),
+        items = [('MSc in Sports Nutrition', 'Universidad Europea de Madrid (2025), plus a Professional Diploma in Sports Nutrition from Barça Innovation Hub (2023).'),
                  ('WorldTour professional cyclist', 'Signed with LIDL-TREK in 2025. Irish National Gravel Champion (2026) and Amateur Gravel World Champion (2024).'),
                  ('Built on your training', 'Your plan follows your training load week by week, with TrainingPeaks, Vekta and MyFitnessPal.'),
                  ('The whole athlete', 'Also a qualified massage therapist and 200-hour Yoga Alliance teacher, for recovery as well as fuel.')]
