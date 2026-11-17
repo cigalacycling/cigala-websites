@@ -84,7 +84,7 @@ def build(b):
            ('Do you work with gravel and ultra-distance riders?',
             '<p>Yes. Marine is the Amateur Gravel World Champion (2024) and Irish National Gravel Champion (2026), and has coached riders for ultra-endurance gravel races.</p>'),
            ('Do I need to be in Ireland?',
-            '<p>No. Coaching is online, with clients in Ireland, Italy, France and the Netherlands. Plans are priced in euro and US dollars.</p>')]
+            '<p>No. Coaching is online. Marine currently coaches athletes in the USA, Canada, Ireland and Finland, and has coached athletes in France, Italy and the Netherlands. Plans are priced in euro and US dollars.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Cycling nutrition', 'Common questions')
     body = f"""
 {hero('Sports Nutritionist · Ireland & Online', 'Cycling Nutritionist',
@@ -180,14 +180,14 @@ def build(b):
            ('Can I pay in US dollars?',
             '<p>Yes. Every option is priced in euro and US dollars. For example, the Nutritional Assessment is 100€ / 120 US$.</p>'),
            ('Which athletes do you work with?',
-            '<p>Endurance athletes, mainly cyclists, triathletes and runners, from first events to elite level. Clients include riders in Ireland, Italy, France and the Netherlands.</p>'),
+            '<p>Endurance athletes, mainly cyclists, triathletes and runners, from first events to elite level. Marine currently coaches athletes in the USA, Canada, Ireland and Finland, and has coached athletes in France, Italy and the Netherlands.</p>'),
            ('Can I try it before committing?',
             '<p>Yes. The first step is a free 30-minute discovery call.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Working online', 'Common questions')
-    flags = [('Ireland', 'Sean, Colum, James, Damian'), ('Italy', 'Francesco, Matteo'), ('France', 'Eleonore'), ('Netherlands', 'Iwan')]
+    flags = [('USA', 'Coaching now'), ('Canada', 'Coaching now'), ('Ireland', 'Coaching now'), ('Finland', 'Coaching now')]
     body = f"""
 {hero('Worldwide · Online', 'Online Sports Nutritionist',
-      'Personal nutrition coaching from an MSc sports nutritionist and WorldTour cyclist, wherever you live and train.')}
+      'Personal nutrition coaching from an MSc sports nutritionist and WorldTour cyclist, wherever you live and train. Currently coaching athletes in the USA, Canada, Ireland and Finland.')}
 <section><div class="wrap g2" style="align-items:start">
  <div>{head('From Wicklow to the world', 'Coaching that travels with you')}
   <p>Vivify Sports is based in Wicklow, Ireland, and works with athletes worldwide. Everything happens online: consultations by video call, your plan updated weekly from your training load, and support between calls.</p>
@@ -196,7 +196,7 @@ def build(b):
   {ticks(['Free 30-minute discovery call', 'Nutritional assessment by video call', 'Weekly plan from your TrainingPeaks or Vekta training load', 'Food diary review in MyFitnessPal', 'WhatsApp support on The Performing Body Plan', 'Prices in euro and US dollars'])}</div>
 </div></section>
 <section style="padding-top:8px"><div class="wrap">
- {head('Clients', 'Athletes coached across Europe', tag='h2', center=True)}
+ {head('Where Marine coaches', 'Athletes on both sides of the Atlantic', tag='h2', center=True, lead='Currently coaching athletes in the USA, Canada, Ireland and Finland. Past clients in France, Italy and the Netherlands.')}
  <div class="g4" style="margin-top:28px">{''.join(f'<div class="pcard panel center"><span class="h3">{c}</span><p class="muted" style="margin:0">{n}</p></div>' for c, n in flags)}</div>
 </div></section>
 <section style="padding-top:24px"><div class="wrap">{head('Coaching options', 'Plans in euro and US dollars', center=True)}<div style="margin-top:24px">{plans_strip()}</div></div></section>
@@ -208,7 +208,7 @@ def build(b):
 
     # ------------------------------------------------------------ DUBLIN & WICKLOW
     qas = [('Do you see clients in person in Dublin?',
-            '<p>Nutrition consultations are online by video call, so there is no travel and you can book from anywhere in Dublin. Workshops for clubs and sports massage on call are in person in Co. Wicklow and Co. Dublin.</p>'),
+            '<p>Nutrition consultations are online by video call, so there is no travel and you can book from anywhere in Dublin. Workshops for clubs are in person in Co. Wicklow and Co. Dublin. Sports massage on call is currently sold out.</p>'),
            ('Do you give talks to Dublin and Wicklow clubs?',
             '<p>Yes. Marine gives nutrition workshops and talks for cycling, running, swimming and athletic clubs, gyms and team sports. See <a href="workshops.html">Workshops &amp; Talks</a>.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Local', 'Common questions')
@@ -221,12 +221,12 @@ def build(b):
  <div class="g3" style="margin-top:28px">
   <a class="scard panel" href="sports-nutritionist-ireland.html"><div class="tx"><span class="eyebrow">Online</span><span class="h3">Nutrition coaching</span><p class="muted">Consultations by video call, with your plan updated weekly from your training.</p><span class="go">See plans {ICON['arrow']}</span></div></a>
   <a class="scard panel" href="workshops.html"><div class="tx"><span class="eyebrow">In person</span><span class="h3">Club workshops &amp; talks</span><p class="muted">For cycling, running, swimming and athletic clubs, gyms and teams.</p><span class="go">Workshops {ICON['arrow']}</span></div></a>
-  <a class="scard panel" href="massage-therapy.html"><div class="tx"><span class="eyebrow">On call</span><span class="h3">Sports massage</span><p class="muted">Deep tissue, cupping and Thai massage, on call in Co. Wicklow and Co. Dublin.</p><span class="go">Massage {ICON['arrow']}</span></div></a>
+  <a class="scard panel" href="massage-therapy.html"><div class="tx"><span class="eyebrow">Currently sold out</span><span class="h3">Sports massage</span><p class="muted">Deep tissue, cupping and Thai massage, on call in Co. Wicklow and Co. Dublin. Sold out for now.</p><span class="go">Massage {ICON['arrow']}</span></div></a>
  </div></div></section>
 <section style="padding-top:8px"><div class="wrap g2" style="align-items:start">
  <div>{head('Rooted in Irish cycling', 'Irish champion, local partner')}
   <p>Marine is the Irish National Gravel Champion (2026), Irish National Criterium Champion (2024) and has podiums at the Elite Irish Road and TT Nationals. Vivify Sports partners with the Wicklow 200 and works with riders and triathletes across Ireland.</p></div>
- <div class="panel" style="padding:32px">{ticks(['Wicklow Town service area', 'On call (on demand): Co. Wicklow - Co. Dublin', 'Online coaching across Ireland', 'Free 30-minute discovery call'])}</div>
+ <div class="panel" style="padding:32px">{ticks(['Wicklow Town service area', 'Sports massage on call: currently sold out', 'Online coaching across Ireland', 'Free 30-minute discovery call'])}</div>
 </div></section>
 {quotes(['Sean Goggin, Ireland', 'Colum Traynor, Ireland', 'James Makin, Ireland', 'Damian Maloney, Ireland'], 'Athletes from Ireland')}
 {faq_html}
@@ -299,7 +299,7 @@ def build(b):
 
     # ------------------------------------------------------------ TESTIMONIALS
     body = f"""
-{hero('What athletes say', 'Client Reviews', 'Cyclists and triathletes from Ireland, Italy, France and the Netherlands on working with Marine.', btn=('Book your free discovery call', DISC))}
+{hero('What athletes say', 'Client Reviews', 'Cyclists and triathletes on working with Marine. She coaches athletes in the USA, Canada, Ireland and Finland.', btn=('Book your free discovery call', DISC))}
 {b.testimonials(h2_names=False)}
 <section class="section-tight"><div class="wrap center"><p class="lead">Worked with Marine? Leave a review on Google. It helps other athletes find Vivify Sports.</p></div></section>
 {cta('Your turn', 'Start with a free 30-minute discovery call.', 'Book your free call', DISC)}"""

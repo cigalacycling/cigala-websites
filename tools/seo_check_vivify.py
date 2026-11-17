@@ -9,6 +9,8 @@ spec = importlib.util.spec_from_file_location('b', ROOT + 'tools/build_vivify.py
 from html.parser import HTMLParser
 src = open(ROOT + 'tools/crawl.py').read(); exec('import json\n' + src[src.index('class P('):src.index('def norm')])
 def n(x): return re.sub(r'\s+', ' ', x.replace('​', '')).strip().upper()
+_n0 = n
+def n(x): return _n0(b.fix_typos(x))   # Marine 17 Nov: typos fixed on purpose
 for f, path in b.PAGES.items():
     if f in b.NEW: continue
     live = b.BASE.get(b.LIVE + path) or b.BASE[b.LIVE]

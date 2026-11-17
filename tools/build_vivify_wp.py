@@ -98,3 +98,5 @@ if __name__ == '__main__':
     files = sys.argv[1:] or sorted(f for f in os.listdir(V + 'site') if f.endswith('.html') and f not in SKIP)
     for f in files:
         push(f)
+    # Elementor's element cache would keep serving the old page
+    subprocess.run(['curl', '-sS', '-m', '60', '-X', 'DELETE', SITE + '/wp-json/elementor/v1/cache'], capture_output=True)

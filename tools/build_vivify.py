@@ -345,6 +345,16 @@ footer.site .bottom a{color:var(--text-3)}
 """
 
 # ---------------------------------------------------------------- shell
+TYPOS = [('BREAKFATS', 'BREAKFASTS'), ('ASSESEMENT', 'ASSESSMENT'), ('REQUIMENTS', 'REQUIREMENTS'), ('VIFIFY', 'VIVIFY'),
+         ('PERFORMACE', 'PERFORMANCE'), ('STRENGHTENING', 'STRENGTHENING'), ('to loose ', 'to lose '), ('loose or gain', 'lose or gain'),
+         ('every pallet', 'every palate'), ('Nutriton', 'Nutrition'), ('MSs Sports', 'MSc Sports'), ('Masssage Theraphy', 'Massage Therapy'),
+         ('NOT LOOSING', 'NOT LOSING'), ('Matteo Cigala,Italy', 'Matteo Cigala, Italy'), ('Damian Maloney,Ireland', 'Damian Maloney, Ireland')]
+
+def fix_typos(s):
+    for a, b in TYPOS:
+        s = s.replace(a, b)
+    return s
+
 def shell(file, body, schema=None):
     path = PAGES[file]
     if file in NEW:
@@ -354,7 +364,7 @@ def shell(file, body, schema=None):
     title, desc = b['title'], b.get('meta_description') or ''
     navh = ''.join(f'<li><a href="{f}"' + (' aria-current="page"' if f == file else '') + f'>{t}</a></li>' for f, t in NAV)
     ld = f'<script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script>' if schema else ''
-    return f"""<!doctype html>
+    return fix_typos(f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -405,7 +415,7 @@ def shell(file, body, schema=None):
  </div>
  <div class="wrap bottom"><span>© 2023 by Vivify Sports</span><a href="privacy-policy.html">Privacy Policy</a></div>
 </footer>
-</body></html>"""
+</body></html>""")
 
 def head(eyebrow, title, tag='h2', lead=None, center=False, cls=''):
     h = f'<{tag}{" class=%s" % chr(34)+cls+chr(34) if cls else ""}>{title}</{tag}>' if tag else f'<div class="h2">{title}</div>'
@@ -426,21 +436,21 @@ def cta(title, text, label, href, ext=False):
 
 # ---------------------------------------------------------------- testimonials (live copy, live alt)
 T = [
- ('0e1488-12e7dafd294d4fb1bdd2c91ef3e8', 'Gravel cyclist  testimonial for vivify sports sports nutrition coaching', 'Francesco Pippa, Italy', 'Gravel Cyclist',
+ ('0e1488-12e7dafd294d4fb1bdd2c91ef3e8', 'Francesco Pippa, Italy, gravel cyclist, Vivify Sports client', 'Francesco Pippa, Italy', 'Gravel Cyclist',
   "Thank you Marine for everything we have done together so far. It was a very difficult and tiring journey, but I must say that with your approach you taught me what it means to EAT and have good habits. Now the long-awaited month has arrived, the month where I will face my ultra endurance gravel race. Thanks to your help I'm sure it will go as I expect."),
- ('nsplsh-586757424e557349764f45', 'Road cyclist  testimonial for vivify sports sports nutrition coaching', 'Sean Goggin, Ireland', 'Road Cyclist',
+ ('0e1488-b61442552ce945e3a69078a5b0bd', 'Sean Goggin, Ireland, road cyclist, Vivify Sports client', 'Sean Goggin, Ireland', 'Road Cyclist',
   "Working with Marine has enhanced my understanding and approach to the type of foods I should be consuming to maximize my performance on the bike. Her personalized plan and support helped me reach my goals and make better food choices. I feel more confident and healthier overall and I would highly recommend working with Marine."),
- ('0e1488-b61442552ce945e3a69078a5b0bd', 'Leisure cyclist  testimonial for vivify sports sports nutrition coaching', 'Eleonore Vaillon, France', 'Leisure Cyclist',
+ ('0e1488-dd9b8d0527804135a7702494e568', 'Eleonore Vaillon, France, leisure cyclist, Vivify Sports client', 'Eleonore Vaillon, France', 'Leisure Cyclist',
   "I had gotten in touch with Marine to loose a few kilos. I lost 6 kgs in 4 months. She not only made my goal possible but she also increased my energy levels and my general well-being. A very professional nutritionist for sure!"),
- ('0e1488-9726c9f5f34c4bc0a075d5cb639e', 'Triathlete  testimonial for vivify sports sports nutrition coaching', 'Colum Traynor, Ireland', 'Triathlete',
+ ('0e1488-9726c9f5f34c4bc0a075d5cb639e', 'Colum Traynor, Ireland, triathlete, Vivify Sports client', 'Colum Traynor, Ireland', 'Triathlete',
   "I would highly recommend Marine and the team in Vivify Sports. The nutrition advice I received for my 70.3 Ironman training & race day resulted in a 30 min PB & I never felt so good on the run leg. Don't waste money on expensive bike kit when you can shave 10 times more time with the right nutrition plan!"),
- ('0e1488-e2519416f668488c87b778c3f655', 'Gravel cyclist  testimonial for vivify sports sports nutrition coaching', 'Matteo Cigala,Italy', 'Road & Gravel cyclist',
+ ('0e1488-e2519416f668488c87b778c3f655', 'Matteo Cigala,Italy, road & gravel cyclist, Vivify Sports client', 'Matteo Cigala,Italy', 'Road & Gravel cyclist',
   "Working with Marine has helped me increase my endurance and my performance. She has taught me to optimise my nutrition and fuelling to bring out the best of me on the bike. Energy levels increased and no more cramping at the end of races. I think what makes working with Marine so special is that she really focuses on what works for you."),
- ('0e1488-bea1a60dd96d43b4af51cddfa40c', 'Gravel cyclist  testimonial for vivify sports sports nutrition coaching', 'Iwan Harmsen, Netherlands', 'Road cyclist',
+ ('nsplsh-586757424e557349764f45', 'Iwan Harmsen, Netherlands, road cyclist, Vivify Sports client', 'Iwan Harmsen, Netherlands', 'Road cyclist',
   "Marine helped me understand in more detail my training needs in relation to food during and after my cycling. Further she provided my clear information on foods that would work for me individually. I'm very happy with the information she provided."),
- ('0e1488-dd9b8d0527804135a7702494e568', 'Woman testimonial for vivify sports sports nutrition coaching', 'Damian Maloney, Ireland', 'Road & Leisure Cyclist',
+ ('0e1488-2062d596f6f94b6dbae416691757', 'Damian Maloney, Ireland, road & leisure cyclist, Vivify Sports client', 'Damian Maloney, Ireland', 'Road & Leisure Cyclist',
   "My original goal was to shed a few lbs, but the focus shifted to adopting better eating habits and eating better quality food choices. I'm happy to recommend Marine to all who are looking to improve their diet and wellbeing!"),
- ('0e1488-2062d596f6f94b6dbae416691757', 'Client testimonial for vivify sports sports nutrition coaching', 'James Makin, Ireland', 'Road & Gravel Cyclist',
+ ('0e1488-bea1a60dd96d43b4af51cddfa40c', 'James Makin, Ireland, road & gravel cyclist, Vivify Sports client', 'James Makin, Ireland', 'Road & Gravel Cyclist',
   "I have been working with Marine since the end of last year in preparation for the Traka gravel race. I can honestly say I have learned so much about food and performance over this time and through her nutrition plan I have lost over 13 kg so far with an increase in power and fitness . Marine is very dedicated and a pleasure to deal with I look forward to what we can achieve in the future"),
 ]
 
@@ -457,7 +467,7 @@ def testimonials(h2_names=True, names=None):
 # ---------------------------------------------------------------- HOME
 def home():
     services = [
-        ('massage-therapy.html', img('11062b-c7086e8444c14484a9e3ec96b46e', 'Deep Tissue Massage', w=640, h=427), 'Massage Therapy', 'Deep tissue, sports, cupping and Thai massage in Co. Wicklow & Dublin.'),
+        ('massage-therapy.html', img('11062b-c7086e8444c14484a9e3ec96b46e', 'Deep Tissue Massage', w=640, h=427), 'Massage Therapy', 'Deep tissue, sports, cupping and Thai massage in Co. Wicklow & Dublin. Currently sold out.'),
         ('yoga.html', img('0e1488-a687b5ba8de7467fa18ece35f8a9', 'Yoga pose on a clifftop by the sea at sunset', w=640, h=424), 'Online Yoga', 'Yin, Vinyasa and yoga for cyclists.'),
         ('recipies.html', img('0e1488-8cee9e1e3ac743dd828b4bd69d89', 'Raspberry Chia Seed pudding', w=640, h=363), 'E-Book', 'Breakfasts to ignite your potential: 30 recipes.'),
         ('workshops.html', f'<span>{ICON["talk"]}</span>', 'Workshops & Talks', 'Nutrition talks for clubs, gyms and teams.'),
@@ -685,9 +695,9 @@ def massage():
  <h2>{t}</h2><h4>A MASSAGE FOR WHO?</h4>{who}<h4>{wl}</h4>{res}<p class="mq">{q}</p></div></div>""" for i, (p, a, t, who, res, q, wl) in enumerate(rows))
     body = f"""
 <section class="page-hero"><div class="wrap">
- <span class="eyebrow">Co. Wicklow · Co. Dublin</span><h1>MASSAGE THERAPY</h1><span class="bar" style="margin:16px auto 18px"></span>
+ <span class="pill" style="margin-bottom:14px">Currently sold out</span><br><span class="eyebrow">Co. Wicklow · Co. Dublin</span><h1>MASSAGE THERAPY</h1><span class="bar" style="margin:16px auto 18px"></span>
  <p class="lead">Get a massage for the health of it.</p>
- <a class="btn btn-primary" href="{MASSAGE_BOOK}" target="_blank" rel="noopener">Book a massage {ICON['arrow']}</a>
+ <span class="btn btn-secondary" aria-disabled="true" style="cursor:default">Sold out for now</span>
 </div></section>
 <section style="padding-top:8px"><div class="wrap">{rh}</div></section>
 <section style="padding-top:16px"><div class="wrap center">
@@ -697,7 +707,7 @@ def massage():
   <div class="panel"><b>A great way to support athletic recovery or pain relief</b></div>
   <div class="panel"><b>Wicklow Town Service Area</b>Wicklow Town</div>
   <div class="panel"><b>On call (on demand)</b>Co. Wicklow - Co. Dublin</div></div>
- <a class="btn btn-primary" href="{MASSAGE_BOOK}" target="_blank" rel="noopener">Book a massage {ICON['arrow']}</a>
+ <span class="btn btn-secondary" aria-disabled="true" style="cursor:default">Sold out for now</span>
 </div></section>"""
     return shell('massage-therapy.html', body)
 
@@ -723,7 +733,7 @@ def yoga():
  {head('Classes', 'Book Your Session Now', center=True)}
  <div class="plans" style="margin-top:28px">
   <article class="plan panel"><h3>Yoga for cyclists</h3><p class="dur" style="display:block">(One-off payment)</p><a class="btn btn-secondary" href="contact.html" style="margin-top:18px">Enquire</a></article>
-  <article class="plan panel feat" style="--x:0"><h3>Monthly Subscription</h3><p class="dur">(3 month subscription)</p><a class="btn btn-primary" href="{PAY['yoga_monthly']}" target="_blank" rel="noopener" style="margin-top:18px">Subscribe</a></article>
+  <article class="plan panel feat" style="--x:0"><h3>Monthly Subscription</h3><p class="dur">(3 month subscription)</p><a class="btn btn-primary" href="contact.html" style="margin-top:18px">Enquire</a></article>
   <article class="plan panel"><h3>Private Class</h3><p class="dur" style="display:block">(One-off payment)</p><a class="btn btn-secondary" href="contact.html" style="margin-top:18px">Enquire</a></article>
  </div>
  <div class="center" style="margin-top:40px"><span style="display:inline-block;background:#fff;border-radius:50%;padding:10px">{img('0e1488-fc2524470e9740249b245fb18b25', 'Yoga alliance certified ', w=120, h=120)}</span></div>

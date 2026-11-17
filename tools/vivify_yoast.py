@@ -14,6 +14,7 @@ for f, pid in pages.items():
     else:
         r = b.BASE.get(b.LIVE + b.PAGES[f]) or b.BASE[b.LIVE]
         t, d = r['title'], (r.get('meta_description') or '')
+    t, d = b.fix_typos(t), b.fix_typos(d)
     items += [{'id': pid, 'seo_title': t}, {'id': pid, 'meta_description': d}]
 fails = 0
 for i in range(0, len(items), 18):
