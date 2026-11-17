@@ -569,8 +569,10 @@ const CC_SMTP = ['host' => 'smtp.reg365.net', 'port' => 587, 'user' => 'cigalacy
 add_action('phpmailer_init', function ($m) {
     $pw = (string) get_option('cc_smtp_pass', ''); if ($pw === '') return;
     if (!get_option('cc_smtp_ok') && empty($GLOBALS['cc_smtp_testing'])) return;   // only after a test succeeded: a wrong login must never stop the hub's emails
-    $m->isSMTP(); $m->Host = CC_SMTP['host']; $m->Port = CC_SMTP['port']; $m->SMTPSecure = CC_SMTP['port'] === 465 ? 'ssl' : 'tls';   // Matteo 17 Nov (on the phone with Register365): 465 with SSL $m->SMTPAuth = true;
-    $m->Username = (string) get_option('cc_smtp_user', '') ?: CC_SMTP['user'];   // Matteo 17 Nov: the login is email-style (Gmail uses amedeo@cigalacycling.com) $m->Password = $pw; $m->Timeout = 20;
+    $m->isSMTP(); $m->Host = CC_SMTP['host']; $m->Port = CC_SMTP['port']; $m->SMTPSecure = CC_SMTP['port'] === 465 ? 'ssl' : 'tls';
+    $m->SMTPAuth = true;
+    $m->Username = (string) get_option('cc_smtp_user', '') ?: CC_SMTP['user'];
+    $m->Password = $pw; $m->Timeout = 20;
     // keep only the SERVER's replies (never what we send, so the login never ends up in the log), for the reason shown when a send fails
     $GLOBALS['cc_smtp_srv'] = []; $m->SMTPDebug = 2;
     $m->Debugoutput = function ($s) { if (strpos($s, 'SERVER -> CLIENT') !== false && count($GLOBALS['cc_smtp_srv']) < 40) $GLOBALS['cc_smtp_srv'][] = trim(substr($s, 0, 200)); };
