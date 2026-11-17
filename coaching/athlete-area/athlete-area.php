@@ -368,7 +368,8 @@ function cc_ath_inner() {
     $o .= '<header class="ath-hero"><div class="ath-hero-txt"><p class="eyebrow">' . cc_t('Athlete area') . ($coach ? cc_t(' · coach view') : '') . '</p>'
         // Matteo 17 Nov: the athlete's own round photo by the greeting (initials + camera until they add one; tap to add or change)
         . (!$coach && $view && function_exists('cc_ph_widget') ? '<div class="ath-hello">' . cc_ph_widget($view, 72, true, 'ath-me-ph') : '')
-        . '<h1><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>, ' . ($coach ? '<span class="ath-coach-tag">Coach</span>&nbsp;' : '') . esc_html($first) . '</h1>'
+        // Matteo 17 Nov: the comma stays glued to the greeting (it slipped out of sight on phones)
+        . '<h1><span class="ath-gw"><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>,</span> ' . ($coach ? '<span class="ath-coach-tag">Coach</span>&nbsp;' : '') . esc_html($first) . '</h1>'
         . (!$coach && $view && function_exists('cc_ph_widget') ? '</div>' . cc_ph_assets() : '')
         . '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>'
         . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . esc_html(cc_Ln($nrep, 'report in your folder', 'report nella tua cartella', 'reports in your folder', 'report nella tua cartella')) . '</span></div>' : '')
@@ -1054,13 +1055,14 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
   html .cc .ath-sec { padding-block: 24px 56px; }
   html .cc .ath-login { padding: 24px 18px; }
   html .cc .ath-hero { grid-template-columns: 1fr 152px; gap: 8px; padding: 24px 16px 0; }   /* Matteo 17 Nov: the signed photo bigger on phones (was 104px) */
-  html .cc .ath-hero-me { align-self: center; margin-bottom: 14px; }   /* and a little higher */
+  html .cc .ath-hero-me { align-self: end; margin-bottom: 0; min-width: 0; overflow: hidden; }   /* at the bottom again, kept inside its column (Matteo 17 Nov) */
+  html .cc .ath-hero-txt { min-width: 0; position: relative; z-index: 1; }
   html .cc .ath form.ath-lang { display: flex; margin: 14px 0 0; }   /* on its own line, with room above it, under Change password / Log out */
   html .cc .ath-hero h1 { font-size: clamp(32px, 10vw, 44px); }
   /* Matteo 17 Nov: "Good evening," on one line on phones, sized to the text column (fits "Buon pomeriggio," too) */
   html .cc .ath-hero-txt { container-type: inline-size; min-width: 0; }
   html .cc .ath-hero h1 { font-size: clamp(24px, 14cqi, 40px); }
-  html .cc .ath-hero h1 .ath-greet { white-space: nowrap; }
+  html .cc .ath-hero h1 .ath-greet, html .cc .ath-hero h1 .ath-gw { white-space: nowrap; }
   html .cc .ath-hero-txt { padding-bottom: 22px; }
   html .cc .ath-lede { font-size: 14.5px; }
   html .cc .ath-chips { gap: 8px; }
