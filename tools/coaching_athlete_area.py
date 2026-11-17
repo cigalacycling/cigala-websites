@@ -153,12 +153,61 @@ HUB_IT = lambda: (h2('Link rapidi')
        + '<!-- wp:heading {"level":3} --><h3 class="wp-block-heading">Nuovi sul blog</h3><!-- /wp:heading --><!-- wp:shortcode -->[cc_latest_posts lang="it"]<!-- /wp:shortcode -->'
        + ''.join(f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{g}</h3><!-- /wp:heading -->' + links(items) for g, items in READ_IT))
 
+
+# ---------- Portuguese and Slovenian hubs (Matteo 17 Nov: every athlete sees the whole hub in their language) ----------
+# Same sections as the English hub. PDFs, blog articles and tool pages are in English, so they are marked as such.
+# Draft translations by Claude: a native speaker should glance at them.
+HUB_T = {
+ 'pt': {'Quick links': 'Links rápidos', 'Book a catch-up call': 'Marcar uma chamada', 'Nutrition consult with Marine': 'Consulta de nutrição com a Marine',
+        'Community on Skool': 'Comunidade no Skool',
+        'skool': 'A comunidade no Skool é gratuita para os atletas que treino. Ainda não recebeste o convite? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">Envia-me um email</a> e eu mando-to (vê também a pasta de spam, às vezes vai parar lá).',
+        'Your training apps': 'As tuas apps de treino', 'vekta': 'O teu plano está no Vekta e sincroniza com o teu Garmin, Wahoo ou Zwift.', 'Open my Vekta calendar': 'Abrir o meu calendário Vekta',
+        'Training guides': 'Guias de treino', 'Strength and core': 'Força e core', 'Nutrition, with Marine Lenehan': 'Nutrição, com a Marine Lenehan',
+        'Stretches &amp; Core': 'Alongamentos e core', 'Gym Circuit: Winter, first month': 'Circuito de ginásio: inverno, primeiro mês',
+        'Gym Circuit: Winter, second and third month': 'Circuito de ginásio: inverno, segundo e terceiro mês', 'Gym Circuit: In season': 'Circuito de ginásio: em época',
+        'Nutritional Guide': 'Guia de nutrição', 'Supplement List': 'Lista de suplementos', 'in English': 'em inglês',
+        'Training tools': 'Ferramentas de treino', 'Carbs per hour': 'Hidratos por hora', 'Critical Power': 'Critical Power', 'Sweat rate': 'Taxa de suor', 'Climb time': 'Tempo de subida',
+        'Gear &amp; speed': 'Mudanças e velocidade', 'Swim pace (CSS)': 'Ritmo de natação (CSS)',
+        'Worth reading': 'Vale a pena ler', 'New on the blog': 'Novo no blog', 'Training': 'Treino', 'Fuelling': 'Alimentação', 'Recovery': 'Recuperação', 'Race week': 'Semana de prova',
+        'soon': 'Core, exercícios e ginásio: os PDF vão estar aqui em breve.'},
+ 'sl': {'Quick links': 'Hitre povezave', 'Book a catch-up call': 'Rezerviraj klic', 'Nutrition consult with Marine': 'Prehranski posvet z Marine',
+        'Community on Skool': 'Skupnost na Skoolu',
+        'skool': 'Skupnost na Skoolu je za športnike, ki jih treniram, brezplačna. Povabila še nimaš? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">Pošlji mi email</a> in ti ga pošljem (preveri tudi mapo z neželeno pošto, včasih pristane tam).',
+        'Your training apps': 'Tvoje aplikacije za trening', 'vekta': 'Tvoj načrt je v Vekti in se sinhronizira z Garminom, Wahoojem ali Zwiftom.', 'Open my Vekta calendar': 'Odpri moj koledar v Vekti',
+        'Training guides': 'Vodniki za trening', 'Strength and core': 'Moč in core', 'Nutrition, with Marine Lenehan': 'Prehrana, z Marine Lenehan',
+        'Stretches &amp; Core': 'Raztezanje in core', 'Gym Circuit: Winter, first month': 'Krožni trening v fitnesu: zima, prvi mesec',
+        'Gym Circuit: Winter, second and third month': 'Krožni trening v fitnesu: zima, drugi in tretji mesec', 'Gym Circuit: In season': 'Krožni trening v fitnesu: med sezono',
+        'Nutritional Guide': 'Prehranski vodnik', 'Supplement List': 'Seznam prehranskih dopolnil', 'in English': 'v angleščini',
+        'Training tools': 'Orodja za trening', 'Carbs per hour': 'Ogljikovi hidrati na uro', 'Critical Power': 'Critical Power', 'Sweat rate': 'Stopnja potenja', 'Climb time': 'Čas vzpona',
+        'Gear &amp; speed': 'Prestave in hitrost', 'Swim pace (CSS)': 'Tempo plavanja (CSS)',
+        'Worth reading': 'Vredno branja', 'New on the blog': 'Novo na blogu', 'Training': 'Trening', 'Fuelling': 'Prehrana', 'Recovery': 'Regeneracija', 'Race week': 'Teden tekme',
+        'soon': 'Core, vaje in fitnes: PDF-ji bodo kmalu tukaj.'}}
+def hub_lang(L):
+    T = HUB_T[L]; en = ' (' + T['in English'] + ')'
+    ids = json.load(open(FILES)) if os.path.exists(FILES) else {}
+    g = ''
+    for grp, items in GUIDES:
+        blocks = ''.join(file_block(ids[f]['id'], ids[f]['url'], T[t] + en) for t, f in items if f in ids)
+        if blocks: g += f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{T[grp]}</h3><!-- /wp:heading -->' + blocks
+    return (h2(T['Quick links'])
+       + buttons(btn(T['Book a catch-up call'], 'https://cal.com/matteocigala/15min'), btn(T['Nutrition consult with Marine'], 'https://www.vivifysports.com/nutritionalcoaching'),
+                 btn('WhatsApp Matteo', 'https://wa.me/353834777697', True), btn(T['Community on Skool'], 'https://www.skool.com/cigala-cycling-collective-1115', True))
+       + para(T['skool'])
+       + h2(T['Your training apps']) + para(T['vekta'])
+       + buttons(btn(T['Open my Vekta calendar'], 'https://app.joinvekta.com/me/calendar', True))
+       + h2(T['Training guides']) + (g or para(T['soon']))
+       + h2(T['Training tools'])
+       + buttons(*[btn(T[t], u, True, False) for t, u in TOOLS], cls='ath-tools')
+       + h2(T['Worth reading'])
+       + f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{T["New on the blog"]}{en}</h3><!-- /wp:heading --><!-- wp:shortcode -->[cc_latest_posts lang="en"]<!-- /wp:shortcode -->'
+       + ''.join(f'<!-- wp:heading {{"level":3}} --><h3 class="wp-block-heading">{T[grp]}{en}</h3><!-- /wp:heading -->' + links(items) for grp, items in READ))
+
 if __name__ == '__main__':
     print('code snippets', req(f'{B}/wp/v2/plugins/code-snippets/code-snippets?_fields=plugin,status', {'status': 'active'}, 'POST'))
     code = open(ROOT + 'coaching/athlete-area/athlete-area.php').read()
     assert code.startswith('<?php\n'); code = code[len('<?php\n'):]
     if '--availability' in sys.argv:   # the availability card (README "Athlete area: availability"); only once Matteo says go
-        for f in ('availability-i18n.php', 'availability.php', 'form-legal.php', 'form-legal-it.php', 'onboarding-i18n.php', 'onboarding.php', 'goals.php', 'passwords.php', 'reports.php'):
+        for f in ('hub-i18n.php', 'availability-i18n.php', 'availability.php', 'form-legal.php', 'form-legal-it.php', 'onboarding-i18n.php', 'onboarding.php', 'goals.php', 'passwords.php', 'reports.php'):
             extra = open(ROOT + 'coaching/athlete-area/' + f).read()
             assert extra.startswith('<?php\n'); code += '\n' + extra[len('<?php\n'):].replace("if (!defined('ABSPATH')) return;", '', 1)
     body = {'name': 'Cigala athlete area (one login per athlete)', 'desc': 'Built by tools/coaching_athlete_area.py from coaching/athlete-area/athlete-area.php in the cigala-websites repo. Do not edit here.',
@@ -191,3 +240,11 @@ if __name__ == '__main__':
         upload_guides_it(hub_it[0]['id'])
         req(f'{B}/wp/v2/cc_athlete/{hub_it[0]["id"]}', {'content': HUB_IT()}, 'POST')
     print('hub it', hub_it[0].get('id'), hub_it[0].get('message', ''))
+    if '--availability' in sys.argv:   # the Portuguese and Slovenian hubs go with hub-i18n.php
+        for L, name in (('pt', 'Portuguese'), ('sl', 'Slovenian')):
+            hl = [p for p in shared if p['meta'].get('cc_lang') == L]
+            if not hl:
+                hl = [req(f'{B}/wp/v2/cc_athlete', {'title': f'Shared hub ({name} athletes)', 'status': 'private', 'content': hub_lang(L), 'meta': {'cc_shared': True, 'cc_lang': L}}, 'POST')]
+            elif '--hub' in sys.argv:
+                req(f'{B}/wp/v2/cc_athlete/{hl[0]["id"]}', {'content': hub_lang(L)}, 'POST')
+            print('hub', L, hl[0].get('id'), hl[0].get('message', ''))

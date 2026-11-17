@@ -60,13 +60,28 @@ function cc_ath_lang_code($uid) {
     if (!isset(CC_REPORT_LANGS[$l]) || $l === 'en') { $r = get_user_meta((int) $uid, 'cc_report_lang', true); if (isset(CC_REPORT_LANGS[$r])) $l = $r; }   // older setting
     return isset(CC_REPORT_LANGS[$l]) ? $l : 'en';
 }
-function cc_ath_flag($lc) {   // coach view (Matteo 17 Nov): a flag beside the name instead of IT/PT; nothing for English
-    $cc = ['it' => 'IT', 'sl' => 'SI', 'de' => 'DE', 'fr' => 'FR', 'es' => 'ES', 'nl' => 'NL', 'pt' => 'PT', 'pl' => 'PL', 'hr' => 'HR', 'cs' => 'CZ', 'da' => 'DK', 'sv' => 'SE', 'no' => 'NO', 'fi' => 'FI', 'ga' => 'IE'][$lc] ?? '';
+function cc_ath_flag($lc) {   // coach view (Matteo 17 Nov): the round flags from the Tours site beside the name, instead of IT/PT; nothing for English
+    static $IMG = ['it' => 'UklGRpgAAABXRUJQVlA4IIwAAAAQCACdASp4AFoAPjEWiUMiISEUVAAgAwSygGs1Dj8A/FXZ8OAfib+pNd+Aqn6X7+aJFiyiS7QrbGvuUH8p4+5PKc77Gff5Tx7QAP7xlW60w71OO1rg2l/wyFZdet9f/+kUR0zbzUt28gV/ntxawIjukh+PcGPD/oLlJ8HPDVCbXtvZuLL1YW7jk1XAAA==', 'sl' => 'UklGRsgDAABXRUJQVlA4ILwDAADQGACdASp4AFoAPjEYikOiIaERVYwgAwSxAGr4gBmgHsRWB+nfhH8TcuV4p/z32k+8T+jfiBqGPMB+pv+k9u30I/kB7gH9J/mfWS+gB+u/pLf7X+0/Bp+yf7Jezj/7rxZ+oV2f9VzLuOt/tmdAcwNG1/sfT9/ufLL8x/7f3Av47/O/9P+aHwgesD0RCQdAX6p4eJlarwOySdToxhtOa4dk+MfSKI4lrBrIW8YDeG+Eh1o6E4gYxHsgPSwKyRkT9Eqi+MpSTo+VrQLZTIemmoAA/v60Ir+dfP7rSZpGjKdPPz/9Mf9HblomL8tZw1PX/NfzxLw/6O420iuv/JhJke5EZ0E1Tt1xXQrzYf+MJQn+Ke/CxbaUPSh20HX+Y3liw64bs5NTkRNW6Dp80O+eLnOrbEfuiNP91ZRIJ6BZazTpBEEMyj//YOA/1eqcOOQcMye0rjigKyoThveRvEHjcP7mxqcv/0N51yO0pLX9KKDIh6ZT2rHpTmb8KCU0QU0HvQPdavxur2Mg9mD5T4dQXN4ryQ7em/KILpl9a/fomQEVTzlR2//Ox+p4CiQ7tt8ZOxS8wGMKFp7DMTmsVf6YZuDRo+KmeqMJxvYqX5+x7F8WAGzTYLPdF0JVqd8TbHlDb/s2eDDIuDe/8aTfx0bX4PvFZ/ZHvokEv/SbwyvEimu87tAPUMvlvETmaa27RtLQ4zYmH/joVn/wKDfhcZhTHMf3g9X2r8rsxggoOSouWj4Ro22vuKcHi3LIA0C1aWLgNSfKSar+fVvIf1K1+nOdwU/xhfVeu2BOUsiQTMH9ijzCdAX2AfON/8b9+F5qAR3/iAHfKaZpH9FN8Hj6ym/hrrsdFCQOuNR42BOqxlHx5OgjJ7lCsV+gOLw36pnwvNbyzhxDFO0P/25Qcer+dW4Qh8ncef/wTYyoDim+IA5vTi+BZnKBxmRQ2EC1AEJwyb11O3/9fdLU5JlhH2yHCWp+waHd+tkRsDCXsWW3R0mU7GeLUjYc2H//Xvq1thZFQl+QBd/+poSMH+iX60nbrte2MWmzTBy9ABxzvh1zk5JeBhpxQxT6mG+oSIBdVV/PwvMLNIrIN81j1EZ79jmS2df/qT+2X/6pY6i3OFP8wvkwzH3lRQXb+1ygJxmfy1ZxzR403xbfgo5urQMsBOvsP7mfmL/0F79/MPle+ESOuX3cijTuQOS5ZeLzgXCh+wCBq44FZ8t+6P/moYhE8T/81DEInbP/4+qR6+v/+PqkevgADcTFOXCPFKRxYnQ3ICekAA==', 'pt' => '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', 'es' => 'UklGRtQAAABXRUJQVlA4IMgAAADQCgCdASp4AFoAPjEWiUMiISEVpAAgAwSxgEoAfiBtJHFvwY/ZnmDNAu0FoA/gH5AYoB6/92Af4AC0GMA3Og37cku9uD5hjdyQj4CCxgG/jaMdhuoE5hjdT9+3zavK8AD++ajvvsUNPG/Dy9kCJyTgcz5//nVcP/dgVNIO9xPnxLh7ifV7mE/6+4FtBWsldoM7gtW1UZasutWXWszEAAPn/CKpvgnKwj5DrYP3SPDeziL22MGEoYWZ2KGhpvAUs2/roQhwAAAAAA==', 'fr' => 'UklGRogAAABXRUJQVlA4IHwAAADwBwCdASp4AFoAPjEWiUMiISEUVAAgAwSygEqB/APxV1QrgH4m/qTXfgG56NQSXaFbY19yg/lPH3J5TnfYz7/KePuTynO+uAAA/v37iyu1UHj/lAGles/itnj//619A6kWzXlpfsviADJFLc7qj2xFxj/dYAAAAAAAAAAA', 'hr' => 'UklGRmQEAABXRUJQVlA4IFgEAABQHgCdASp4AFoAPjEYikOiIaESCV2EIAMEsQBqntv/VfxV2sztP4x/hBylfgfJ2+R37L+Q/ss/xf5GdRF/gPyd+AHOA/Rz/M/5n3a/65+pPYAfzD/KdYB6AH7Gejh/nf7n8Fv64f9r/i/Aj+qWaAfwD8AO/H+efh3+s3S4ngXyX8IPwx9wP4B+AG2c3PH+AfgB+//OAawB/AP5T9onvi/j/5Kf0T//+ph6FH9D/LX+08gB+jZXOixO9FR2oQARKZxC9GAfaVt5+fqmPaxg/igk/B37A3C3BWFv4Aq9E+MycISJteOYtiY5rM4fNP8y70A2mj1Xm3qxPslJgAD++U82mmvOp/y08eT/0BP/QE/8/8AAn0UZQ6EbJXIDrPoFqNpZJRLwu4l02PnSwr3ukvisdFgzQN/27QZ4UQZOy2RTW5j795QI3DE96KbY/k5mzQl/oX/gVEvLPuVJzIMQPZkKXDtnetdMwSLLxrqoMBbGgyoUi9vjBQCHCsxC3nbdQzFy5NAo7lSdEh4iFQkavCuttlKkxTqoUPDjO5Os9a1yS56FGY4lNT5w3OOYVf7BU36yr7Qzpo009mUMfLiTu2DCjOoELmKRpsMC2NBlQpF7fGChd5OU44snZkKbSF1cskhsxOtz57D9qi09xA87YT4unClZEM2/If/WbuRHbzUhTAqb+3vctYqTmHYlH3Qx5bGo+bKvo4jZjJQ+wXKO/5yJydCMbQ/KA1BQES41NEOVKM4d2HAHnVFP6KfV/Qbn9WBf7Wj+JiUiThzKGiLVWv7m1+IlApdGOBuldqGuiP1xNVMqQAO/+NYVwN8Zk6xx4FwfWLccFFCaFF3+qCl9oJPdQDDTcfl8KqPBR2MB4zrInCV/nIlK+NHMXeRMgZukKVLneno8RFF1+eBnQE1nPilG2VNADY3PsAHdIAkUDuwLhRJkP0csvl/No+Tq6tUhGd38F/5abuMKwWo75EINra5VE/P66SpK/vb9hkY9Agmfdb2h2FP/S4x7PBkEzuLu5XUeZR96dnesH+jft7S/8+Mmh0yLmjp1VpO+FZXRunh/xf//C8IOi58ULdtalKqRv2Cy+WaFOc1M8N7aO7CCuTl0fTRT7QObg/10kOEiZKPZGkMn3N15ZbSgPpNAO39RtIVnN3kCOr/+N/IgSvExBIwCfq0yWX3LTWSDlnrRuDfpInaYFaUgR+IBlHiK9IJzLP1PKvtAGYPiPYUF5fBTHpkhJ3QXCZiWq3y0ioii03aG/FwA9JaVbVaX2KZ3xyA9U7JVZW0wdcV8I0Lyyr7vEdAIE2OWcQDKPEV6QTuzuVPKvhzu2f35aueLA3B/3FgPG4gOEnDvyyl57k8beez8L+Cf+o6p+p1PSzi8Id6etqk8tgVxG2s7x0e7vBIRa9qet47kNP3mCnz0UMT5D3DV6Ej4VCQxKqI//SDxIDi5ZbQd8K6zsfepO5XYQAAyauhiCG0+w3AAAAAAAA==', 'ga' => 'UklGRooAAABXRUJQVlA4IH4AAAAQCACdASp4AFoAPjEYikOiIaEUX1wAIAMEsoBKgf1X8ANUK6b+AH4k1/4Cqe7aOZmlwRYyCddWyYLLlGxeCPaeCrq27ngixj8gAP7tztA2S3JgizqML/aNf0aH//yhNXm+S1No+vDNoVsiXfv6eg/TBAcEB/wAAAAAAAAAAAA='];
+    $n = esc_attr(CC_REPORT_LANGS[$lc] ?? $lc);
+    if (isset($IMG[$lc])) return ' <img class="ath-flag" src="data:image/webp;base64,' . $IMG[$lc] . '" alt="' . $n . '" title="' . $n . '" width="18" height="18">';
+    $cc = ['de' => 'DE', 'nl' => 'NL', 'pl' => 'PL', 'cs' => 'CZ', 'da' => 'DK', 'sv' => 'SE', 'no' => 'NO', 'fi' => 'FI'][$lc] ?? '';   // no round image yet: emoji flag
     if ($cc === '') return '';
     $f = ''; foreach (str_split($cc) as $ch) $f .= mb_chr(0x1F1E6 + ord($ch) - 65, 'UTF-8');
-    return ' <span class="ath-flag" role="img" aria-label="' . esc_attr(CC_REPORT_LANGS[$lc] ?? $lc) . '" title="' . esc_attr(CC_REPORT_LANGS[$lc] ?? $lc) . '">' . $f . '</span>';
+    return ' <span class="ath-flag" role="img" aria-label="' . $n . '" title="' . $n . '">' . $f . '</span>';
 }
-function cc_ath_user_lang($uid) { $l = cc_ath_lang_code($uid); return in_array($l, CC_UI_LANGS, true) ? $l : 'en'; }   // the hub interface
+function cc_ath_user_lang($uid) { $l = cc_ath_lang_code($uid); return in_array($l, CC_UI_LANGS, true) || (function_exists('cc_hub_dict') && cc_hub_dict($l)) ? $l : 'en'; }
+function cc_Ln($n, $en1, $it1, $en, $it) {   // plural: Slovenian has its own forms for 2 and 5+ (keys "sl2:" / "sl5:" in hub-i18n.php)
+    if (($GLOBALS['cc_ath_lang'] ?? 'en') === 'sl' && function_exists('cc_hub_dict')) { $d = cc_hub_dict('sl'); $m = $n % 100;
+        if ($m === 2 && isset($d['sl2:' . $en])) return $d['sl2:' . $en]; if (($m === 0 || $m >= 5) && isset($d['sl5:' . $en])) return $d['sl5:' . $en]; }
+    return $n === 1 ? cc_L($en1, $it1) : cc_L($en, $it);
+}
+// Matteo 17 Nov: every hub text in the athlete's language. cc_L(English, Italian); other languages come from cc_hub_dict() (hub-i18n.php, keyed by the English text).
+function cc_L($en, $it) {
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en';
+    if ($l === 'it') return $it;
+    if ($l !== 'en' && function_exists('cc_hub_dict')) { $d = cc_hub_dict($l); if (isset($d[$en])) return $d[$en]; }
+    return $en;
+}   // the hub interface
 function cc_ath_report_lang($uid) { return cc_ath_lang_code($uid); }                                                       // reports, availability, race plans
 function cc_ath_lang_field($user = null) {
     $v = ($user instanceof WP_User) ? cc_ath_lang_code($user->ID) : 'en';
@@ -110,7 +125,9 @@ function cc_t($s) {
         'PDF · opens in a new tab' => 'PDF · si apre in una nuova scheda', 'Open' => 'Apri', 'min read' => 'min di lettura', 'Document' => 'Documento',
         'Matteo Cigala, your coach, in the white Cigala Cycling jersey' => 'Matteo Cigala, il tuo coach, con la maglia bianca Cigala Cycling',
     ];
-    return ($GLOBALS['cc_ath_lang'] === 'it' && isset($IT[$s])) ? $IT[$s] : $s;
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en';
+    if ($l === 'it') return $IT[$s] ?? $s;
+    return $l !== 'en' ? cc_L($s, $s) : $s;
 }
 
 /* ---------- who is who ---------- */
@@ -253,7 +270,9 @@ function cc_ath_inner() {
     $o = '<div class="ath">';
     if (!is_user_logged_in()) {
         $al = strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '');
-        $GLOBALS['cc_ath_lang'] = (($_GET['lang'] ?? '') === 'it' || (($_GET['lang'] ?? '') !== 'en' && strpos($al, 'it') === 0)) ? 'it' : 'en';
+        $ql = sanitize_key($_GET['lang'] ?? ''); $bl = substr($al, 0, 2);   // the login page: ?lang= or the browser language, when the hub speaks it
+        $ok = function ($l) { return $l === 'it' || $l === 'en' || (function_exists('cc_hub_dict') && cc_hub_dict($l)); };
+        $GLOBALS['cc_ath_lang'] = $ql !== '' && $ok($ql) ? $ql : ($ql === '' && $ok($bl) ? $bl : 'en');
         $it = $GLOBALS['cc_ath_lang'] === 'it';
         if (isset($_GET['cc_set'])) return $o . cc_ath_setpw_html() . '</div>';   // link from the welcome email
         if (isset($_GET['cc_forgot']) && ($fp = apply_filters('cc_ath_forgot_page', '')) !== '') return $o . $fp . '</div>';   // passwords.php
@@ -268,10 +287,8 @@ function cc_ath_inner() {
             . '<input type="hidden" name="redirect_to" value="' . esc_url($next) . '">'
             . '<button type="submit" class="btn btn-go">' . cc_t('Log in') . '</button></form>'
             . apply_filters('cc_ath_forgot_link', '')   // passwords.php: "Forgot your password?" with a reset link by email
-            . ($it ? (cc_ath_selfpw() ? '' : '<p class="ath-help">Password dimenticata? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">Scrivimi su WhatsApp</a> o <a href="mailto:matteo@cigalacycling.com">mandami un’email</a> e te ne invio una nuova.</p>')
-                   . '<p class="ath-help">Non sei ancora seguito? <a href="' . esc_url(home_url('/preparatore-di-ciclismo-italia/')) . '">Scopri il coaching</a>.</p>'
-                   : (cc_ath_selfpw() ? '' : '<p class="ath-help">Forgot your password? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a> or <a href="mailto:matteo@cigalacycling.com">email me</a> and I will send you a new one.</p>')
-                   . '<p class="ath-help">Not coached yet? <a href="' . esc_url(home_url('/individual-packages/')) . '">See the coaching packages</a>.</p>')
+            . (cc_ath_selfpw() ? '' : '<p class="ath-help">' . cc_L('Forgot your password? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a> or <a href="mailto:matteo@cigalacycling.com">email me</a> and I will send you a new one.', 'Password dimenticata? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">Scrivimi su WhatsApp</a> o <a href="mailto:matteo@cigalacycling.com">mandami un’email</a> e te ne invio una nuova.') . '</p>')
+            . '<p class="ath-help">' . cc_L('Not coached yet?', 'Non sei ancora seguito?') . ' <a href="' . esc_url(home_url($it ? '/preparatore-di-ciclismo-italia/' : '/individual-packages/')) . '">' . cc_L('See the coaching packages', 'Scopri il coaching') . '</a>.</p>'
             . '</div>';
         return $o . '</div>';
     }
@@ -297,9 +314,9 @@ function cc_ath_inner() {
     $mineHtml = $view ? cc_ath_dress(trim(cc_ath_content($view))) : '';
     $nrep = substr_count($mineHtml, 'class="ath-file"');
     $o .= '<header class="ath-hero"><div class="ath-hero-txt"><p class="eyebrow">' . cc_t('Athlete area') . ($coach ? cc_t(' · coach view') : '') . '</p>'
-        . '<h1><span class="ath-greet" data-l="' . $lang . '">' . cc_t('Welcome') . '</span>, ' . esc_html($first) . '</h1>'
+        . '<h1><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>, ' . esc_html($first) . '</h1>'
         . '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>'
-        . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . cc_t($nrep === 1 ? 'report in your folder' : 'reports in your folder') . '</span></div>' : '')
+        . ($nrep ? '<div class="ath-chips"><span class="ath-chip"><b class="ath-n" data-n="' . $nrep . '">' . $nrep . '</b> ' . esc_html(cc_Ln($nrep, 'report in your folder', 'report nella tua cartella', 'reports in your folder', 'report nella tua cartella')) . '</span></div>' : '')
         . '<a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a>' . apply_filters('cc_ath_hero_links', '', $coach) . '</div>'
         . '<div class="ath-hero-me">' . cc_ath_sig_photo() . '</div></header>';
     if ($coach) {
@@ -443,7 +460,7 @@ function cc_ath_sig_photo() {
 function cc_ath_js() {
     return <<<'JS'
 <script>(function(){
-var g=document.querySelector('.ath-greet');if(g){var h=new Date().getHours(),it=g.getAttribute('data-l')==='it';g.textContent=it?(h>=5&&h<13?'Buongiorno':h>=13&&h<18?'Buon pomeriggio':'Buonasera'):(h<5?'Good evening':h<12?'Good morning':h<18?'Good afternoon':'Good evening');}
+var g=document.querySelector('.ath-greet');if(g){var h=new Date().getHours(),it=g.getAttribute('data-l')==='it',w=JSON.parse(g.getAttribute('data-g')||'[]');if(w.length===3)g.textContent=(h>=5&&h<(it?13:12))?w[0]:(h>=5&&h<18)?w[1]:w[2];}
 try{localStorage.setItem('cc_tools_ok','1');}catch(e){}   /* coached athletes skip the newsletter step on the free tools */
 var rm=matchMedia('(prefers-reduced-motion: reduce)').matches,io='IntersectionObserver' in window;
 document.querySelectorAll('.ath-n').forEach(function(el){var n=+el.getAttribute('data-n');if(rm||!n)return;var s=0;el.textContent='0';
@@ -487,42 +504,40 @@ function cc_ath_setpw_html() {
     $lu = $u ?: get_user_by('login', $login);
     $GLOBALS['cc_ath_lang'] = $lu ? cc_ath_user_lang($lu->ID) : 'en';
     $it = $GLOBALS['cc_ath_lang'] === 'it';
-    $help = $it ? '<p class="ath-help">Problemi? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">Scrivimi su WhatsApp</a> o <a href="mailto:matteo@cigalacycling.com">mandami un’email</a>.</p>'
-                : '<p class="ath-help">Any trouble? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a> or <a href="mailto:matteo@cigalacycling.com">email me</a>.</p>';
+    $help = '<p class="ath-help">' . cc_L('Any trouble? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a> or <a href="mailto:matteo@cigalacycling.com">email me</a>.', 'Problemi? <a href="https://wa.me/353834777697" target="_blank" rel="noopener">Scrivimi su WhatsApp</a> o <a href="mailto:matteo@cigalacycling.com">mandami un’email</a>.') . '</p>';
     $eb = '<p class="eyebrow">' . cc_t('Coached athletes') . '</p>';
-    if (!$u) return '<div class="ath-login">' . $eb . '<h1>' . ($it ? 'Link scaduto' : 'This link has expired') . '</h1><p class="ath-lede">'
-        . (cc_ath_selfpw() ? ($it ? 'Il link per scegliere la password vale 7 giorni e si usa una volta sola. Chiedine uno nuovo qui: arriva subito via email.' : 'The link to choose your password works once and lasts 7 days. Ask for a new one here: it comes straight to your email.')
-                           : ($it ? 'Il link per scegliere la password vale 7 giorni e si usa una volta sola. Scrivimi e te ne mando uno nuovo.' : 'The link to choose your password works once and lasts 7 days. Message me and I will send you a new one.'))
-        . '</p><p>' . (cc_ath_selfpw() ? '<a class="btn btn-go" href="' . esc_url(cc_ath_forgot_url()) . '">' . ($it ? 'Mandami un nuovo link' : 'Send me a new link') . '</a>'
-                                      : '<a class="btn btn-go" href="https://wa.me/353834777697" target="_blank" rel="noopener">' . ($it ? 'Scrivimi su WhatsApp' : 'WhatsApp me') . '</a>') . '</p>'
-        . '<p class="ath-help">' . ($it ? 'Hai già una password?' : 'Already have a password?') . ' <a href="' . esc_url(home_url('/' . CC_ATH_SLUG . '/')) . '">' . cc_t('Log in') . '</a></p></div>';
+    if (!$u) return '<div class="ath-login">' . $eb . '<h1>' . (cc_L('This link has expired', 'Link scaduto')) . '</h1><p class="ath-lede">'
+        . (cc_ath_selfpw() ? (cc_L('The link to choose your password works once and lasts 7 days. Ask for a new one here: it comes straight to your email.', 'Il link per scegliere la password vale 7 giorni e si usa una volta sola. Chiedine uno nuovo qui: arriva subito via email.'))
+                           : (cc_L('The link to choose your password works once and lasts 7 days. Message me and I will send you a new one.', 'Il link per scegliere la password vale 7 giorni e si usa una volta sola. Scrivimi e te ne mando uno nuovo.')))
+        . '</p><p>' . (cc_ath_selfpw() ? '<a class="btn btn-go" href="' . esc_url(cc_ath_forgot_url()) . '">' . (cc_L('Send me a new link', 'Mandami un nuovo link')) . '</a>'
+                                      : '<a class="btn btn-go" href="https://wa.me/353834777697" target="_blank" rel="noopener">' . (cc_L('WhatsApp me', 'Scrivimi su WhatsApp')) . '</a>') . '</p>'
+        . '<p class="ath-help">' . (cc_L('Already have a password?', 'Hai già una password?')) . ' <a href="' . esc_url(home_url('/' . CC_ATH_SLUG . '/')) . '">' . cc_t('Log in') . '</a></p></div>';
     $first = $u->first_name ?: $u->display_name;
-    $err = ['short' => $it ? 'Usa almeno 8 caratteri.' : 'Use at least 8 characters.', 'match' => $it ? 'Le due password non coincidono.' : 'The two passwords are not the same.',
-            'expired' => cc_ath_selfpw() ? ($it ? 'Il link è scaduto. Tocca “Password dimenticata?” nella pagina di accesso per riceverne uno nuovo.' : 'The link has expired. Tap “Forgot your password?” on the login page to get a new one.')
-                                         : ($it ? 'Il link è scaduto. Scrivimi e te ne mando uno nuovo.' : 'The link has expired. Message me and I will send you a new one.')][$_GET['err'] ?? ''] ?? '';
-    return '<div class="ath-login">' . $eb . '<h1>' . ($it ? 'Scegli la tua password' : 'Choose your password') . '</h1>'
-        . '<p class="ath-lede">' . sprintf($it ? 'Ciao %s, scegli una password per la tua area atleta. Per entrare userai la tua email, <strong>%s</strong>, e questa password.' : 'Hi %s, choose a password for your athlete hub. You will log in with your email, <strong>%s</strong>, and this password.', esc_html($first), esc_html($u->user_email)) . '</p>'
+    $err = ['short' => cc_L('Use at least 8 characters.', 'Usa almeno 8 caratteri.'), 'match' => cc_L('The two passwords are not the same.', 'Le due password non coincidono.'),
+            'expired' => cc_ath_selfpw() ? (cc_L('The link has expired. Tap “Forgot your password?” on the login page to get a new one.', 'Il link è scaduto. Tocca “Password dimenticata?” nella pagina di accesso per riceverne uno nuovo.'))
+                                         : (cc_L('The link has expired. Message me and I will send you a new one.', 'Il link è scaduto. Scrivimi e te ne mando uno nuovo.'))][$_GET['err'] ?? ''] ?? '';
+    return '<div class="ath-login">' . $eb . '<h1>' . (cc_L('Choose your password', 'Scegli la tua password')) . '</h1>'
+        . '<p class="ath-lede">' . sprintf(cc_L('Hi %s, choose a password for your athlete hub. You will log in with your email, <strong>%s</strong>, and this password.', 'Ciao %s, scegli una password per la tua area atleta. Per entrare userai la tua email, <strong>%s</strong>, e questa password.'), esc_html($first), esc_html($u->user_email)) . '</p>'
         . ($err ? '<p class="ath-err" role="alert">' . esc_html($err) . '</p>' : '')
         . '<form method="post" action="' . esc_url(remove_query_arg('err')) . '">'
         . '<input type="text" name="log" value="' . esc_attr($u->user_email) . '" autocomplete="username" hidden>'
-        . '<label for="ath-p1">' . ($it ? 'Nuova password (almeno 8 caratteri)' : 'New password (at least 8 characters)') . '</label><input id="ath-p1" name="cc_pw1" type="password" autocomplete="new-password" minlength="8" required>'
-        . '<label for="ath-p2">' . ($it ? 'Ripeti la password' : 'Repeat the password') . '</label><input id="ath-p2" name="cc_pw2" type="password" autocomplete="new-password" minlength="8" required>'
-        . '<button type="submit" class="btn btn-go">' . ($it ? 'Salva e apri la mia area' : 'Save and open my hub') . '</button></form>' . $help . '</div>';
+        . '<label for="ath-p1">' . (cc_L('New password (at least 8 characters)', 'Nuova password (almeno 8 caratteri)')) . '</label><input id="ath-p1" name="cc_pw1" type="password" autocomplete="new-password" minlength="8" required>'
+        . '<label for="ath-p2">' . (cc_L('Repeat the password', 'Ripeti la password')) . '</label><input id="ath-p2" name="cc_pw2" type="password" autocomplete="new-password" minlength="8" required>'
+        . '<button type="submit" class="btn btn-go">' . (cc_L('Save and open my hub', 'Salva e apri la mia area')) . '</button></form>' . $help . '</div>';
 }
 function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
     $u = get_userdata((int) $uid); if (!$u) return new WP_Error('nouser', 'No such user');
     $key = get_password_reset_key($u); if (is_wp_error($key)) return $key;
     $link = add_query_arg(['cc_set' => $key, 'u' => rawurlencode($u->user_login)], home_url('/' . CC_ATH_SLUG . '/'));
-    $it = cc_ath_user_lang($u->ID) === 'it'; $first = esc_html($u->first_name ?: $u->display_name);
-    $logo = esc_url(get_option('cc_mail_logo', '')); $head = esc_url(get_option($it ? 'cc_mail_header_it' : 'cc_mail_header_en', '')); 
-    $T = $it ? ['subj' => 'La tua area atleta Cigala Coaching è pronta', 'hi' => "Ciao $first,",
-                'p1' => 'la tua area atleta personale è pronta. Qui trovi i tuoi report, le guide di allenamento, gli strumenti gratuiti senza registrazione e un contatto diretto con me, tutto in un unico posto.',
-                'btn' => 'Scegli la tua password', 'p2' => 'Per entrare usi la tua email, <strong>' . esc_html($u->user_email) . '</strong>. Il pulsante vale 7 giorni: ' . (cc_ath_selfpw() ? 'se è scaduto, tocca “Password dimenticata?” nella pagina di accesso e te ne arriva subito uno nuovo.' : 'se è scaduto, scrivimi e te ne mando uno nuovo.'),
-                'p3' => 'Una volta dentro, salva la pagina tra i preferiti del telefono: così è sempre a un tocco.', 'bye' => 'A presto in bici,', 'eb' => 'Area atleta']
-             : ['subj' => 'Your Cigala Coaching athlete hub is ready', 'hi' => "Hi $first,",
-                'p1' => 'Your personal athlete hub is ready. It is where you will find your reports from me, the training guides, the free tools without any sign-up and a direct line to me, all in one place.',
-                'btn' => 'Choose your password', 'p2' => 'You log in with your email, <strong>' . esc_html($u->user_email) . '</strong>. The button works for 7 days: ' . (cc_ath_selfpw() ? 'if it has expired, tap “Forgot your password?” on the login page and a new one comes straight away.' : 'if it has expired, just message me and I will send you a new one.'),
-                'p3' => 'Once you are in, bookmark the page on your phone so it is always one tap away.', 'bye' => 'See you on the road,', 'eb' => 'Athlete hub'];
+    $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($u->ID); $it = $GLOBALS['cc_ath_lang'] === 'it'; $first = esc_html($u->first_name ?: $u->display_name);
+    $logo = esc_url(get_option('cc_mail_logo', '')); $head = esc_url(get_option($it ? 'cc_mail_header_it' : 'cc_mail_header_en', ''));
+    $T = ['subj' => cc_L('Your Cigala Coaching athlete hub is ready', 'La tua area atleta Cigala Coaching è pronta'), 'hi' => sprintf(cc_L('Hi %s,', 'Ciao %s,'), $first),
+          'p1' => cc_L('Your personal athlete hub is ready. It is where you will find your reports from me, the training guides, the free tools without any sign-up and a direct line to me, all in one place.', 'la tua area atleta personale è pronta. Qui trovi i tuoi report, le guide di allenamento, gli strumenti gratuiti senza registrazione e un contatto diretto con me, tutto in un unico posto.'),
+          'btn' => cc_L('Choose your password', 'Scegli la tua password'),
+          'p2' => sprintf(cc_L('You log in with your email, %s. The button works for 7 days: ', 'Per entrare usi la tua email, %s. Il pulsante vale 7 giorni: '), '<strong>' . esc_html($u->user_email) . '</strong>')
+                . (cc_ath_selfpw() ? cc_L('if it has expired, tap “Forgot your password?” on the login page and a new one comes straight away.', 'se è scaduto, tocca “Password dimenticata?” nella pagina di accesso e te ne arriva subito uno nuovo.') : cc_L('if it has expired, just message me and I will send you a new one.', 'se è scaduto, scrivimi e te ne mando uno nuovo.')),
+          'p3' => cc_L('Once you are in, bookmark the page on your phone so it is always one tap away.', 'Una volta dentro, salva la pagina tra i preferiti del telefono: così è sempre a un tocco.'),
+          'bye' => cc_L('See you on the road,', 'A presto in bici,'), 'eb' => cc_L('Athlete hub', 'Area atleta')];
     $f = "font-family:Montserrat,Helvetica,Arial,sans-serif";
     $h = '<!doctype html><html><body style="margin:0;padding:0;background:#07080a"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#07080a"><tr><td align="center" style="padding:30px 12px;background-color:#07080a">'
        . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px">'
@@ -577,7 +592,7 @@ add_filter('manage_users_custom_column', function ($v, $col, $uid) {
 
 function cc_ath_shortcode() {   // in the site design: the .cc wrapper picks up the Coaching kit styles
     $inner = cc_ath_inner();
-    return '<div class="cc cc-page" lang="' . ($GLOBALS['cc_ath_lang'] === 'it' ? 'it' : 'en') . '"><section class="ath-sec"><div class="in">' . $inner . '</div></section></div>';
+    return '<div class="cc cc-page" lang="' . esc_attr($GLOBALS['cc_ath_lang'] ?: 'en') . '"><section class="ath-sec"><div class="in">' . $inner . '</div></section></div>';
 }
 add_shortcode('cc_athletes', 'cc_ath_shortcode');
 add_action('wp_head', function () {
@@ -623,6 +638,8 @@ html .cc .ath-coach p { margin: 0 0 8px; }
 html .cc .ath-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 !important; }
 html .cc .ath-list a { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.08); color: #fff; text-decoration: none; font-size: 13px; }
 html .cc .ath-list a[aria-current] { background: #12a150; }
+html .cc .ath-list a { display: inline-flex; align-items: center; gap: 6px; }
+html .cc img.ath-flag { width: 18px; height: 18px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 1px 4px rgba(0,0,0,.4); margin: 0; flex: none; }
 html .cc .ath-coach-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.1); }
 html .cc .ath-coach-tl { flex-basis: 100%; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
 html .cc .ath-coach-tools .av-boardlink { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 9px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.05); color: #fff; font-size: 13.5px; font-weight: 600; text-decoration: none; }

@@ -472,7 +472,9 @@ python3 -I tools/push_tours_wp.py lib-6 lib-170 lib-228 page-5212   # staging on
   - Served by `?cc_report=ID` after the login check; HTML with `Content-Security-Policy: sandbox` (no access to the login cookie). Opening clears the badge (athletes only).
   - Staging emails go only to the option `cc_staging_notify`.
   - Test athlete on staging (Testa Prova, language pt) holds four SAMPLE reports for Matteo to look at; delete it before go-live.
-- **Coach list:** a flag beside each non-English athlete's name instead of IT/PT (Matteo 17 Nov).
+- **Coach list:** the round Tours-site flag beside each non-English athlete's name instead of IT/PT (Matteo 17 Nov; embedded, no extra files).
+- **Report list (Matteo 17 Nov):** the newest report of each kind on top (every race plan stays on top), earlier ones folded under "Earlier reports (N)" with their dates; older season plans go there too. A report sent without a title is named "Review · May 2027". Bulk: tick boxes + "Select all", then "Delete selected" (asks to confirm) or "Unpublish selected".
+- **Hub languages (Matteo 17 Nov: "the Portuguese person sees only half in Portuguese"):** every hub text goes through `cc_L(English, Italian)`; other languages come from `hub-i18n.php` (`cc_hub_dict()`, keyed by the English text, Portuguese and Slovenian today, Claude's drafts). Shared hub pages "Shared hub (Portuguese athletes)" / "(Slovenian athletes)" come from `HUB_T` in the push script (PDFs and articles marked "em inglês" / "v angleščini"). An athlete whose language has no dictionary sees English. Dates in the hub use the athlete's language.
 
 ### Athlete area: availability (planned, after launch, Matteo 16 Nov)
 - **"My availability" card in each athlete's area:**
