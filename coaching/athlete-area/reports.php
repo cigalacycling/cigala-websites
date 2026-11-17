@@ -35,6 +35,12 @@ function cc_r_go_live($rid) {   // publish; a live kind replaces the athlete's p
     if (in_array($t, CC_R_LIVE, true) && $t !== 'season')
         foreach (get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'post_parent' => $p->post_parent, 'numberposts' => -1, 'exclude' => [$rid], 'meta_key' => 'cc_type', 'meta_value' => $t, 'fields' => 'ids']) as $old) cc_r_delete($old);
     foreach (cc_r_same_key($rid, 'private') as $old) cc_r_delete($old);   // same athlete + kind + key (one race, the training report): the new one replaces it
+    // Matteo 17 Nov: a buzz on their phone, only if they turned notifications on themselves (push.php); never an email
+    if (function_exists('cc_push_athlete_page') && ($uid = (int) get_post_meta($p->post_parent, 'cc_user', true))) {
+        $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($uid);
+        cc_push_athlete_page($p->post_parent, cc_L('Your new report is ready: ', 'È pronto il tuo nuovo report: ') . cc_r_title(get_post($rid)), '', home_url('/' . CC_ATH_SLUG . '/') . ($t === 'season' ? '#season' : '#reports'), 'cc-report-' . $rid);
+        $GLOBALS['cc_ath_lang'] = $keep;
+    }
 }
 /* Optional `key` from the laptop (Matteo 17 Nov): one current report per athlete + kind + key, e.g. a race slug for race-sim / race-plan,
  * "training-report" for the Training Response Report. A newer draft replaces an unpublished one; publishing it replaces the published one. */

@@ -98,6 +98,7 @@ function cc_gc_handle($s, $c, $sim = false, $force = false) {   // $force: Matte
     $w = $sim ? cc_ath_welcome_mail($uid, null, true) : cc_ath_welcome_mail($uid);   // the simulator never emails anyone
     $info['welcome'] = is_wp_error($w) ? 'failed: ' . $w->get_error_message() : ($sim ? 'not sent (simulation)' : 'sent');
     $info['page'] = $pid; cc_gc_log('created', $info); cc_gc_tell($info, 'created', '', $sim);
+    if (!$sim && function_exists('cc_push_coaches')) cc_push_coaches('New athlete: ' . $info['name'], trim($info['sub_name'] . ' · ' . ($info['fee'] !== null ? $info['fee'] . ' ' . $info['currency'] : ''), ' ·'), add_query_arg('board', 'contracts', home_url('/' . CC_ATH_SLUG . '/')), 'cc-new');
     return ['result' => 'created', 'user' => $uid] + $info;
 }
 function cc_gc_lang($c) {   // GoCardless' customer language, else the country's

@@ -196,6 +196,7 @@ function cc_nt_save(WP_REST_Request $r) {
     $n = ['at' => time(), 'text' => $text, 'tr' => $aid ? $tr : '', 'audio' => (int) $aid, 'day' => $day ?: null, 'replies' => []]; $ns[] = $n;
     cc_nt_put($pid, $ns); update_post_meta($pid, 'cc_notes_updated', time());
     cc_nt_mail($pid, $uid, $n);
+    if (function_exists('cc_push_coaches')) cc_push_coaches('Note from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : ($tr !== '' ? '🎙 ' . wp_trim_words($tr, 18) : '🎙 Voice note'), add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')), 'cc-note');
     return ['ok' => true];
 }
 function cc_nt_reply(WP_REST_Request $r) {   // Matteo answers: text and/or voice, shown under the note in the athlete's hub, and an email to them
@@ -212,6 +213,8 @@ function cc_nt_reply(WP_REST_Request $r) {   // Matteo answers: text and/or voic
         $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email;   // staging: never an athlete
         $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), esc_html($u->first_name ?: $u->display_name)), esc_html(cc_nt_w('mail_p')), esc_html(cc_nt_w('mail_btn')), home_url('/' . CC_ATH_SLUG . '/') . '#notes');
         if (is_email($to)) wp_mail($to, cc_nt_w('mail_subj'), $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
+        // and on their phone, if they turned notifications on (push.php)
+        if (function_exists('cc_push_user')) cc_push_user($uid, cc_nt_w('mail_subj'), $text !== '' ? wp_trim_words($text, 18) : '🎙 ' . cc_nt_w('voice'), home_url('/' . CC_ATH_SLUG . '/') . '#notes', 'cc-reply');
         $GLOBALS['cc_ath_lang'] = $keep;
     }
     return ['ok' => true];

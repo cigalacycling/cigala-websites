@@ -360,6 +360,7 @@ function cc_f_rest(WP_REST_Request $r) {
     }
     elseif (($a['app'] ?? '') === 'vekta' && !get_user_meta($uid, 'cc_vekta_id', true)) update_post_meta($pid, 'cc_vekta_pending', $now);
     cc_f_mail($uid, $pid, $profile, $meta, $pdf);
+    if (function_exists('cc_push_coaches')) cc_push_coaches(($kind === 'full' ? 'Rider form signed: ' : 'Details updated: ') . get_the_title($pid), ($a['app'] ?? '') === 'trainingpeaks' ? 'Chose TrainingPeaks' : '', add_query_arg(['board' => 'forms', 'a' => $pid], home_url('/' . CC_ATH_SLUG . '/')), 'cc-form');
     return ['ok' => true, 'done' => true];
 }
 function cc_f_store($pid, $bytes, $base, $ext, $mime, $title) {   // private file, attached to the athlete page (served only through the login check)
