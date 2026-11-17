@@ -1042,5 +1042,15 @@
    909,
    855
   ]
+ },
+ "vekta-logo.webp": {
+  "orig": "coachingpages/img/logo-vekta.webp (Cigala Coaching, Vekta partner logo)",
+  "alts": [
+   "Vekta logo"
+  ],
+  "pages": [
+   "sports-nutritionist-ireland"
+  ],
+  "webp": "webp/vekta-logo.webp"
  }
 }

@@ -641,7 +641,7 @@ def coaching():
               'Sign up', PAY['performing'], sold_out=True, extra='<h2 style="font-size:17px;color:var(--aqua);margin:2px 0 10px">SPORTS SPECIFIC REQUIMENTS</h2>')
     partners = [('0e1488-356941ca85c445f1834a69b48ccf', 'TrainingPeaks logo', None), ('0e1488-a23fdd6bc1854f5a83c28cb05ea9', 'MyFitnessPal logo', None),
                 ('0e1488-e926906d84424b06892a7eb7a3b6', 'Cigala Cycling logo', 'https://www.cigalacycling.com/'),
-                ('0e1488-44c2783c595b4fcba972291cd77f', 'Wicklow 200 logo', None), ('0e1488-ec0a5dbc8a4642d7918c7e2a1037', 'Bryan McKinney logo', None)]
+                ('vekta-logo', 'Vekta logo', None), ('0e1488-44c2783c595b4fcba972291cd77f', 'Wicklow 200 logo', None)]   # Marine 17 Nov: + Vekta, - Bryan McKinney
     pl = ''.join((f'<a href="{u}" target="_blank" rel="noopener">' if u else '<span>') + img(p, a, w=150, h=72, style='width:auto') + ('</a>' if u else '</span>') for p, a, u in partners)
     body = f"""
 <section class="page-hero"><div class="wrap">
