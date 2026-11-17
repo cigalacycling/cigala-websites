@@ -35,6 +35,10 @@ def used_images(pages):
             src = re.search(r'src="([^"]+)"', tag).group(1); alt = html.unescape(re.search(r'alt="([^"]*)"', tag).group(1))
             if src.startswith(('http', 'data:')): continue
             out.setdefault(src, alt)
+        # full-size images opened by a link around a thumbnail (Athlete Hub examples, 17 Nov): alt from the thumbnail
+        for href, inner in re.findall(r'<a\b[^>]*href="(img/[^"]+\.webp)"[^>]*>(.*?)</a>', t, re.S):
+            m = re.search(r'alt="([^"]*)"', inner)
+            if m: out.setdefault(href, html.unescape(m.group(1)))
     return out
 
 def local(src):

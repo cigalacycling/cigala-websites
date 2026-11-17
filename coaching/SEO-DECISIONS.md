@@ -552,3 +552,8 @@ Matteo created a "Claude live" application password on coaching.cigalacycling.co
 ## 17 Nov 2026: SOLD OUT stamp in English (Matteo)
 - The Italian page's "ESAURITO" rule sat in the site-wide kit CSS, so every packages page showed ESAURITO. It is now limited to html[lang="it-IT"] (the Italian page). The scoper in tools/build_coaching_wp.py now also handles html[...] selectors.
 - Staging and live (kit lib-6; backup live-coaching/backup/lib-6-before-esaurito-fix.json). Checked: Individual, Tri and UK show SOLD OUT; Italia shows ESAURITO.
+
+## 17 Nov 2026: Athlete Hub section on Individual Packages (Matteo: "a section about the athlete hub, examples of periodisation, reports, no real names")
+- Under the package comparison: eyebrow "Included in Advanced & Premium", heading "Your personal Athlete Hub". It is an **H3** styled like the section H2s, so the page's H2 set is unchanged. Then 4 points, a laptop and phone screen of the hub, and 3 example reports (season plan, progress report, race-day plan) that open full size.
+- All examples use a made-up athlete, "Alex Doyle", with made-up numbers (coaching/athlete-area/examples/, tools/coaching_hub_examples.js). The hub screens come from a demo athlete on staging, deleted afterwards.
+- New copy is additive; nothing existing changed. STAGING only (page 3338). Live and the other packages pages wait for Matteo's OK.

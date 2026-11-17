@@ -138,6 +138,38 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         <div class="pkg-buy2">{re.search(r'<a [^>]*>.*?</a>', buttons).group(0).replace(' pay"', ' pay pay2"')}</div>
       </article>'''   # Matteo 15 Nov: the button stays by the price, and again at the end of the list
 
+# ---------- Athlete Hub showcase under the compare table (Matteo 17 Nov 2026: "a section about the athlete hub, showing what it is,
+# with examples of periodisation, athlete report etc., not real names"). Screens: a demo athlete on staging, deleted afterwards;
+# example reports: coaching/athlete-area/examples/*.html (made-up athlete "Alex Doyle"), rendered by tools/coaching_hub_examples.js.
+_HX = 'coaching/athlete-area/examples/'
+def _hic(d): return f'<svg viewBox="0 0 24 24" aria-hidden="true">{d}</svg>'
+HUB_POINTS = [
+    (_hic('<path d="m3 20 6-10 4 6 3-4 5 8z"/>'), 'Your season plan', 'The blocks, your races and your goals on one page, updated whenever the plan changes.'),
+    (_hic('<path d="M4 19V5m0 14h16M8 15l4-4 3 3 5-6"/>'), 'Personal reports', 'Progress reports, race-day plans and reviews, with a "New" badge when I publish one.'),
+    (_hic('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/>'), 'Your week &amp; your events', 'Tell me your availability and your goals in a few taps, so the plan fits your life.'),
+    (_hic('<path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6"/>'), 'Guides &amp; tools', 'Training and nutrition guides plus the free calculators, all in one place, no sign-up.'),
+]
+HUB_EXAMPLES = [('season-plan', 'Season plan', 'Periodisation from base to race day, with every block and race.'),
+                ('progress-report', 'Progress report', 'Twelve weeks in numbers: Critical Power, bests and highlights.'),
+                ('race-plan', 'Race-day plan', 'Pacing climb by climb, fuelling and a predicted finish time.')]
+def hub_section():
+    pts = ''.join(f'<li><span class="hb-ic">{ic}</span><span><b>{t}</b>{d}</span></li>' for ic, t, d in HUB_POINTS)
+    ex = ''.join(f'<a class="hb-ex" href="{conv(_HX + f + ".png", "hub-example-" + f)}" target="_blank" rel="noopener">'
+                 f'<span class="hb-shot"><img src="{conv(_HX + f + ".png", "hub-example-" + f + "-thumb", 900)}" alt="Example {t.lower()} in the Cigala Athlete Hub (made-up athlete)" loading="lazy" width="900" height="760"></span>'
+                 f'<b>{t}</b><small>{d}</small><i>View example →</i></a>' for f, t, d in HUB_EXAMPLES)
+    return f'''<div class="hb">
+      <div class="hb-head"><div class="eyebrow">Included in Advanced &amp; Premium</div><h3 class="hb-h">YOUR PERSONAL ATHLETE HUB</h3><div class="bar"></div>
+        <p>Every Advanced and Premium athlete gets a private online area, on the phone and on the laptop: your season plan, your reports and everything you need from me, in one place.</p></div>
+      <div class="hb-grid">
+        <div class="hb-devices"><img class="hb-desk" src="{conv(_HX + 'hub-desktop.png', 'hub-screen-desktop', 1600)}" alt="The Cigala Athlete Hub on a laptop: welcome, season plan and reports" loading="lazy" width="1600" height="1094">
+          <img class="hb-phone" src="{conv(_HX + 'hub-phone.png', 'hub-screen-phone', 900)}" alt="The Cigala Athlete Hub on a phone: new reports from the coach" loading="lazy" width="601" height="900"></div>
+        <ul class="hb-pts">{pts}</ul>
+      </div>
+      <div class="hb-exs">{ex}</div>
+      <p class="hb-note">Examples with a made-up athlete. Your own hub shows your own plan and reports.</p>
+    </div>'''
+HUBSEC = hub_section()
+
 # ---------- compare table: only the differences, wording from the live feature lines ----------
 Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria-label="Not included">✗</span>'
 ROWS = [
@@ -272,6 +304,7 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
     </div>
     {compare}
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="{C}/terms-conditions/" {EXT}>HERE</a></b></p>
+    {HUBSEC}
 
 
     <div class="addons">
@@ -577,6 +610,32 @@ PCSS = '''<style>
   .vk-lock img:last-child { height: 30px; max-width: none; }
   .vk-logos > span img { max-height: 84px; }
 }
+/* Athlete Hub showcase (Matteo 17 Nov) */
+.hb { margin: 64px 0 8px; }
+.hb-head { max-width: 760px; }
+.hb-h { margin: 6px 0 0; font: 400 clamp(32px, 5vw, 52px)/1.02 var(--head); color: var(--text); letter-spacing: .01em; text-transform: uppercase; }   /* an h3 that looks like the section h2s: the page's H2 set stays unchanged */
+.hb-head p { margin: 14px 0 0; color: var(--text-2); }
+.hb-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 40px; align-items: center; margin-top: 30px; }
+.hb-devices { position: relative; padding: 0 70px 40px 0; }
+.hb-desk { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border-strong); box-shadow: 0 30px 70px rgba(0,0,0,.55); }
+.hb-phone { position: absolute; right: 0; bottom: 0; width: 34%; height: auto; border-radius: 22px; border: 6px solid #1b1e22; box-shadow: 0 24px 60px rgba(0,0,0,.6); }
+.hb-pts { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.hb-pts li { display: flex; gap: 14px; align-items: flex-start; }
+.hb-pts li > span:last-child { display: grid; gap: 3px; color: var(--text-2); font-size: 15px; }
+.hb-pts b { color: var(--text); font-size: 16px; }
+.hb-ic { flex: none; width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; background: var(--green-wash); }
+.hb-ic svg { width: 21px; height: 21px; fill: none; stroke: var(--green-text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.hb-exs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
+.hb-ex { display: grid; gap: 4px; padding: 12px 12px 16px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255,255,255,.03); text-decoration: none; transition: border-color .2s, transform .2s; }
+.hb-ex:hover { border-color: rgba(0,154,68,.6); transform: translateY(-3px); }
+.hb-shot { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 9px; margin-bottom: 10px; background: #08090a; }
+.hb-shot img { display: block; width: 100%; height: auto; transition: transform .4s; }
+.hb-ex:hover .hb-shot img { transform: scale(1.03); }
+.hb-ex b { color: var(--text); font-size: 16px; padding: 0 4px; }
+.hb-ex small { color: var(--text-3); font-size: 14px; padding: 0 4px; }
+.hb-ex i { font-style: normal; color: var(--green-text); font-weight: 600; font-size: 14px; padding: 4px 4px 0; }
+.hb-note { margin: 14px 0 0; color: var(--text-3); font-size: 13px; }
+@media (max-width: 900px) { .hb-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } .hb-exs { grid-template-columns: minmax(0, 1fr); } .hb-devices { padding: 0 40px 30px 0; } }
 </style>'''
 PJS = '''<script>
 document.getElementById('g-more').addEventListener('click', function () {
