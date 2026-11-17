@@ -712,6 +712,7 @@ function cc_ath_w($k, $lang = null) {
                      'it' => 'Il primo passo: scegli la password e compila il breve modulo atleta. Lì scegli l’app con cui allenarti. Se scegli Vekta (consigliata), Vekta ti invia via email un codice per raggiungermi.',
                      'pt' => 'O primeiro passo: escolhe a tua palavra-passe e preenche o pequeno formulário de atleta. Nele escolhes a app de treino. Se escolheres o Vekta (recomendada), o Vekta envia-te por email um código para te juntares a mim.',
                      'sl' => 'Prvi korak: izberi geslo in izpolni kratek obrazec za kolesarja. V njem izbereš aplikacijo za trening. Če izbereš Vekta (priporočeno), ti Vekta po e-pošti pošlje kodo, da se mi pridružiš.'],
+        'vk_open' => ['en' => 'Open Vekta', 'it' => 'Apri Vekta', 'pt' => 'Abrir o Vekta', 'sl' => 'Odpri Vekta'],
         'vk_title' => ['en' => 'Join me on Vekta', 'it' => 'Raggiungimi su Vekta', 'pt' => 'Junta-te a mim no Vekta', 'sl' => 'Pridruži se mi na Vekta'],
         'vk_text' => ['en' => 'Vekta is sending you an email with a code to join me. Download the Vekta app, sign in with your Google or Apple account and enter the code. Then connect your Garmin, Wahoo or Strava so I can see your rides. Can’t find the email? Check your spam folder, or message me.',
                       'it' => 'Vekta ti sta inviando un’email con un codice per raggiungermi. Scarica l’app Vekta, accedi con il tuo account Google o Apple e inserisci il codice. Poi collega Garmin, Wahoo o Strava così vedo le tue uscite. Non trovi l’email? Controlla lo spam, oppure scrivimi.',
@@ -839,7 +840,7 @@ function cc_ath_coach_wrap($html) {
     $GLOBALS['cc_ath_lang'] = $keep;
     return $out;
 }
-function cc_ath_mail_small($html) { return '<p style="margin:22px 0 10px;font-size:14px;color:#454a52">' . $html . '</p>'; }
+function cc_ath_mail_small($html) { return '<p style="margin:22px 0 10px;font-size:16px;color:#454a52">' . $html . '</p>'; }
 function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
     $u = get_userdata((int) $uid); if (!$u) return new WP_Error('nouser', 'No such user');
     $key = get_password_reset_key($u); if (is_wp_error($key)) return $key;
@@ -854,7 +855,7 @@ function cc_ath_welcome_mail($uid, $to = null, $dry = false) {
           'p3' => cc_L('Once you are in, bookmark the page on your phone so it is always one tap away.', 'Una volta dentro, salva la pagina tra i preferiti del telefono: così è sempre a un tocco.'),
           'bye' => cc_L('See you on the road,', 'A presto in bici,'), 'eb' => cc_L('Athlete hub', 'Area atleta')];
     $pg = cc_ath_page_of($u->ID); $newApp = $pg && !get_user_meta($u->ID, 'cc_vekta_id', true) && !cc_ath_tp($pg);   // Matteo 17 Nov: new athletes choose their app in the rider form
-    $h = cc_ath_mail_shell($T['hi'], $T['p1'], $T['btn'], $link, ($newApp ? '<p style="margin:22px 0 10px;font-size:14px;color:#454a52"><b>' . esc_html(cc_ath_w('wl_app')) . '</b></p>' : '') . '<p style="margin:' . ($newApp ? '0' : '22px') . ' 0 10px;font-size:14px;color:#454a52">' . $T['p2'] . '</p><p style="margin:0 0 22px;font-size:14px;color:#454a52">' . $T['p3'] . '</p>', $T['bye'], $T['eb']);
+    $h = cc_ath_mail_shell($T['hi'], $T['p1'], $T['btn'], $link, ($newApp ? '<p style="margin:22px 0 10px;font-size:16px;color:#454a52"><b>' . esc_html(cc_ath_w('wl_app')) . '</b></p>' : '') . '<p style="margin:' . ($newApp ? '0' : '22px') . ' 0 10px;font-size:16px;color:#454a52">' . $T['p2'] . '</p><p style="margin:0 0 22px;font-size:16px;color:#454a52">' . $T['p3'] . '</p>', $T['bye'], $T['eb']);
     if ($dry) return ['to' => $to ?: $u->user_email, 'subject' => $T['subj'], 'link' => $link, 'html' => $h];
     $ok = wp_mail($to ?: $u->user_email, $T['subj'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
     if ($ok && !$to) update_user_meta($u->ID, 'cc_welcome_sent', current_time('mysql'));
@@ -978,6 +979,8 @@ html .cc .ath-s { padding: 28px 28px 30px; border-radius: 18px; background: rgba
 html .cc .ath-s.ath-mine { border-color: rgba(43,212,122,.4); background: linear-gradient(180deg, rgba(18,161,80,.1), rgba(13,15,17,.9) 60%); }
 html .cc .ath-s > h2 { display: flex; align-items: center; gap: 12px; font-size: clamp(24px, 3.6vw, 30px); margin: 0 0 18px; }
 html .cc .ath-hic { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: rgba(18,161,80,.15); border: 1px solid rgba(43,212,122,.35); }
+html .cc .ath-hic.ath-logo { background-repeat: no-repeat; background-position: center; background-size: 58%; }
+html .cc .ath-hic.logo-vekta { background-color: #FFC20E; border-color: #FFC20E; }   /* Matteo 17 Nov: the Vekta mark on its yellow, like the Vekta tile */
 html .cc .ath-hic svg, html .cc .ath-ic svg { width: 21px; height: 21px; fill: none; stroke: var(--green-text, #2bd47a); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 html .cc .ath-body > :first-child { margin-top: 0; }
 html .cc .ath-body > :last-child { margin-bottom: 0; }
@@ -1040,7 +1043,8 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
 @media (max-width: 760px) {
   html .cc .ath-sec { padding-block: 24px 56px; }
   html .cc .ath-login { padding: 24px 18px; }
-  html .cc .ath-hero { grid-template-columns: 1fr 104px; gap: 8px; padding: 24px 16px 0; }
+  html .cc .ath-hero { grid-template-columns: 1fr 136px; gap: 8px; padding: 24px 16px 0; }   /* Matteo 17 Nov: the signed photo bigger on phones (was 104px) */
+  html .cc .ath form.ath-lang { display: flex; margin: 14px 0 0; }   /* on its own line, with room above it, under Change password / Log out */
   html .cc .ath-hero h1 { font-size: clamp(32px, 10vw, 44px); }
   html .cc .ath-hero-txt { padding-bottom: 22px; }
   html .cc .ath-lede { font-size: 14.5px; }

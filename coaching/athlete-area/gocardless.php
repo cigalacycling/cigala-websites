@@ -239,7 +239,8 @@ add_action('rest_api_init', function () {
 add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     if ($coach || !$view || !get_post_meta($view, 'cc_vekta_pending', true)) return $html;
     $uid = (int) get_post_meta($view, 'cc_user', true); if ($uid && get_user_meta($uid, 'cc_vekta_id', true)) return $html;
-    return $html . '<section class="ath-s vk-join"><h2>' . cc_ath_icon('logo-vekta', 'ath-hic') . esc_html(cc_ath_w('vk_title')) . '</h2><p class="av-lede" style="margin:0">' . esc_html(cc_ath_w('vk_text')) . '</p></section>';
+    return $html . '<section class="ath-s vk-join"><h2>' . cc_ath_icon('logo-vekta', 'ath-hic') . esc_html(cc_ath_w('vk_title')) . '</h2><p class="av-lede">' . esc_html(cc_ath_w('vk_text')) . '</p>'
+        . cc_ath_dress('<div class="wp-block-buttons"><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="https://app.joinvekta.com/" target="_blank" rel="noreferrer noopener">' . esc_html(cc_ath_w('vk_open')) . '</a></div></div>') . '</section>';   // a Vekta tile with the logo
 }, 5, 3);
 function cc_vk_pending() {
     $out = [];

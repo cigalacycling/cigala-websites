@@ -296,7 +296,7 @@ function cc_r_mail($rid, $test_to = null, $dry = false) {   // "your new report 
     $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), $first),
         cc_L('There is something new for you in your athlete hub:', 'nella tua area atleta c’è qualcosa di nuovo per te:')
           . '</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 22px"><tr><td style="padding:14px 18px;border-left:3px solid #12a150;background:#f2f4f3;font-family:Montserrat,Helvetica,Arial,sans-serif">'
-          . '<b style="color:#111;font-size:16px">' . esc_html(cc_r_title($p)) . '</b><br><span style="font-size:14px;color:#454a52">' . esc_html(get_post_meta($rid, 'cc_autotitle', true) ? cc_r_date((int) get_post_meta($rid, 'cc_published', true) ?: time()) : cc_r_label($t)) . '</span></td></tr></table><p style="margin:0">',
+          . '<b style="color:#111;font-size:16px">' . esc_html(cc_r_title($p)) . '</b><br><span style="font-size:15px;color:#454a52">' . esc_html(get_post_meta($rid, 'cc_autotitle', true) ? cc_r_date((int) get_post_meta($rid, 'cc_published', true) ?: time()) : cc_r_label($t)) . '</span></td></tr></table><p style="margin:0">',
         cc_L('Open it in my hub', 'Aprilo nella mia area'), $link);
     if ($dry) return ['subject' => cc_L('Your new report is ready: ', 'È pronto il tuo nuovo report: ') . cc_r_title($p), 'html' => $h];
     $to = $test_to ?: (strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email);   // staging: never an athlete
