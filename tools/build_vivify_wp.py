@@ -31,6 +31,19 @@ body{background-color:#0C2226}
 .filters button:hover,.filters button:focus{background:rgba(25,68,75,.9);color:var(--text)}
 .filters button[aria-pressed=true]:hover{background:var(--aqua);color:var(--on-aqua)}
 button.btn{border:1px solid transparent}
+/* Contact Form 7 (contact page) */
+.wpcf7 form.form p{margin:0}
+.wpcf7 form.form{padding:36px}
+@media (max-width:560px){.wpcf7 form.form{padding:26px 22px}}
+/* Elementor's Text Editor widget brings the kit font (Roboto); use the site's */
+.vv-root .elementor-widget-text-editor{font-family:Montserrat,system-ui,sans-serif;font-weight:400;color:var(--text-2);font-size:15px;line-height:1.7}
+.wpcf7 .wpcf7-form-control-wrap{display:block}
+.wpcf7 input.wpcf7-submit{font:600 14px/1 Montserrat,sans-serif;letter-spacing:.04em;text-transform:uppercase;padding:16px 24px;border-radius:8px;border:0;background:var(--aqua);color:var(--on-aqua);cursor:pointer;width:auto}
+.wpcf7 input.wpcf7-submit:hover{background:var(--aqua-hover)}
+.wpcf7-not-valid-tip{color:#ffb3ad;font-size:13px;margin-top:6px}
+.wpcf7 form .wpcf7-response-output{margin:4px 0 0;padding:12px 14px;border-radius:8px;color:var(--text);border-color:var(--border-strong)!important}
+.wpcf7 form.sent .wpcf7-response-output{border-color:var(--lime)!important}
+.wpcf7-spinner{background-color:var(--aqua)}
 """
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">'
 
@@ -76,7 +89,14 @@ def page_data(f):
     first = FONTS + '<style>' + CSS + '</style>' + ld + header + '<main id="main"></main>'
     # main landmark: keep one <main> around content? Elementor wraps widgets, so mark the first section instead
     first = first.replace('<main id="main"></main>', '<span id="main"></span>')
-    els = [html_widget(first)] + [html_widget(b) for b in blocks] + [html_widget(footer)]
+    def widget(b):
+        # the contact form is a Contact Form 7 shortcode: the Text Editor widget runs shortcodes, the HTML widget does not
+        if '<form class="form panel"' in b:
+            b = re.sub(r'<form class="form panel".*?</form>', '[contact-form-7 id="349" html_class="form panel" title="Contact"]', b, flags=re.S)
+            b = re.sub(r'>\s+<', '><', b.replace('\n', ' '))   # one line, so wpautop adds no stray <p>/<br>
+            return {"id": rid(), "elType": "widget", "widgetType": "text-editor", "settings": {"editor": b}, "elements": [], "isInner": False}
+        return html_widget(b)
+    els = [html_widget(first)] + [widget(b) for b in blocks] + [html_widget(footer)]
     return title, [container(els)], '\n'.join([header, main, footer])
 
 def push(f):
