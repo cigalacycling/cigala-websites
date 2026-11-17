@@ -45,7 +45,11 @@ function cc_nt_w($k) {
     return $W[$k][$l] ?? $W[$k]['en'];
 }
 function cc_nt_get($pid) { $a = json_decode((string) get_post_meta($pid, 'cc_notes', true), true); return is_array($a) ? $a : []; }
-function cc_nt_put($pid, $ns) { update_post_meta($pid, 'cc_notes', wp_slash(wp_json_encode(array_slice(array_values($ns), -60)))); }
+function cc_nt_put($pid, $ns) {   // keeps the newest 60; older ones go, with their recordings (Matteo 17 Nov: no files left behind)
+    $ns = array_values($ns);
+    foreach (array_slice($ns, 0, max(0, count($ns) - 60)) as $old) foreach (array_merge([$old], (array) ($old['replies'] ?? [])) as $x) if (!empty($x['audio'])) wp_delete_attachment((int) $x['audio'], true);
+    update_post_meta($pid, 'cc_notes', wp_slash(wp_json_encode(array_slice($ns, -60))));
+}
 function cc_nt_url($aid) { return $aid ? wp_get_attachment_url((int) $aid) : ''; }
 function cc_nt_words() { $W = []; foreach (['listening', 'ready', 'del', 'rec', 'stop', 'sending', 'sent', 'empty', 'err', 'mic_no', 'mic_denied'] as $k) $W[$k] = cc_nt_w($k); return $W; }
 

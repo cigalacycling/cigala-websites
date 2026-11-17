@@ -39,7 +39,11 @@ function cc_rs_w($k) {
 }
 const CC_RS_REACTS = ['heart' => '❤️', 'clap' => '👏', 'fire' => '🔥', 'strong' => '💪', 'trophy' => '🏆'];   // ❤️ also by double-tapping the photo (Matteo 17 Nov)
 function cc_rs_get($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_results', true), true); return is_array($a) ? $a : []; }
-function cc_rs_put($pid, $a) { update_post_meta((int) $pid, 'cc_results', wp_slash(wp_json_encode(array_slice(array_values($a), -80)))); }
+function cc_rs_put($pid, $a) {   // keeps the newest 80; older ones go, with their photos
+    $a = array_values($a);
+    foreach (array_slice($a, 0, max(0, count($a) - 80)) as $old) foreach (['photo', 'reply_photo'] as $f) if (!empty($old[$f])) wp_delete_attachment((int) $old[$f], true);
+    update_post_meta((int) $pid, 'cc_results', wp_slash(wp_json_encode(array_slice($a, -80))));
+}
 function cc_rs_card($pid, $r, $forCoach) {
     $u = !empty($r['photo']) ? wp_get_attachment_url((int) $r['photo']) : '';
     // coach: double-tap the photo for ❤️ (a corner button opens it full size); athlete: tap opens it
