@@ -181,7 +181,18 @@ add_action('rest_api_init', function () {
             $a[$k]['replies'][] = ['at' => time(), 'from' => $from, 'text' => $text]; cc_bt_put($pid, $a);
             $uid = (int) get_post_meta($pid, 'cc_user', true); $url = home_url('/' . CC_ATH_SLUG . '/') . '#blood';
             if ($from !== 'athlete' && $uid && function_exists('cc_push_user')) { $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($uid);
-                cc_push_user($uid, cc_bt_w($from === 'nutri' ? 'marine_rep' : 'matteo_rep'), wp_trim_words($text, 18), $url, 'cc-blood-' . $at); $GLOBALS['cc_ath_lang'] = $keep; }
+                cc_push_user($uid, cc_bt_w($from === 'nutri' ? 'marine_rep' : 'matteo_rep'), wp_trim_words($text, 18), $url, 'cc-blood-' . $at);
+                // Matteo 18 Nov: and an email, so a reply about their blood test is never missed
+                $au = get_userdata($uid); $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : ($au ? $au->user_email : '');
+                if (is_email($to) && function_exists('cc_ath_mail_shell'))
+                    wp_mail($to, cc_bt_w($from === 'nutri' ? 'marine_rep' : 'matteo_rep'), cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), esc_html($au->first_name ?: $au->display_name)), nl2br(esc_html($text)), cc_bt_w('open'), $url),
+                            ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
+                $GLOBALS['cc_ath_lang'] = $keep; }
+            if ($from === 'athlete' && !empty($b['share'])) foreach (get_users(['role' => 'cc_nutritionist']) as $nu) {   // the athlete answered: the nutritionist gets an email
+                $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $nu->user_email; $GLOBALS['cc_ath_lang'] = 'en';
+                if (is_email($to) && function_exists('cc_ath_mail_shell')) wp_mail($to, get_the_title($pid) . ' replied on a blood test', cc_ath_mail_shell('Hi ' . esc_html($nu->first_name ?: $nu->display_name) . ',', '<b>' . esc_html(get_the_title($pid)) . '</b> wrote: ' . nl2br(esc_html($text)), 'Open the hub', home_url('/' . CC_ATH_SLUG . '/'), '', 'Thank you,', 'Nutrition'),
+                    ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
+            }
             if ($from !== 'coach' && function_exists('cc_push_coaches')) cc_push_coaches(($from === 'nutri' ? 'Marine' : get_the_title($pid)) . ' on a blood test (' . get_the_title($pid) . ')', wp_trim_words($text, 18), add_query_arg('board', 'blood', home_url('/' . CC_ATH_SLUG . '/')), 'cc-blood', $pid);
             if ($from === 'athlete' && !empty($b['share'])) foreach (get_users(['role' => 'cc_nutritionist']) as $n) if (function_exists('cc_push_user')) cc_push_user($n->ID, get_the_title($pid) . ' replied on a blood test', wp_trim_words($text, 18), home_url('/' . CC_ATH_SLUG . '/'), 'cc-blood');
             return ['ok' => true];
