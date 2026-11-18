@@ -1142,7 +1142,7 @@
  "img/case-tilen.webp": {
   "id": 6801,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-case-tilen.webp",
-  "alt": "Tilen \u010c. racing in a white team kit"
+  "alt": "Tilen Č. racing in a white team kit"
  },
  "img/case-marco.webp": {
   "id": 6802,
@@ -1387,7 +1387,7 @@
  "img/pg-.webp": {
   "id": 6861,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-pg-.webp",
-  "alt": "\u2605\u2605\u2605\u2605\u2605"
+  "alt": "★★★★★"
  },
  "img/pg-cyclist-doing-a-time-trial.webp": {
   "id": 6862,
@@ -1852,7 +1852,7 @@
  "img/pg-matteo-cigala-adjusting-a-rider-s-positi.webp": {
   "id": 7082,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-pg-matteo-cigala-adjusting-a-rider-s-positi.webp",
-  "alt": "Matteo Cigala adjusting a rider\u2019s position during a bike fit"
+  "alt": "Matteo Cigala adjusting a rider’s position during a bike fit"
  },
  "img/pg-riders-and-matteo-cigala-after-a-bike-fi.webp": {
   "id": 7083,
@@ -1997,7 +1997,7 @@
  "img/nutrition-marine-lenehan-signature.webp": {
   "id": 7164,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-nutrition-marine-lenehan-signature.webp",
-  "alt": "Marine Lenehan\u2019s signature"
+  "alt": "Marine Lenehan’s signature"
  },
  "img/club-band-group.webp": {
   "id": 7166,
@@ -2332,42 +2332,42 @@
  "img/hub-screen-it-desktop.webp": {
   "id": 7585,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-screen-it-desktop.webp",
-  "alt": "L\u2019area atleta Cigala sul computer: benvenuto, piano di stagione e report"
+  "alt": "L’area atleta Cigala sul computer: benvenuto, piano di stagione e report"
  },
  "img/hub-screen-it-phone.webp": {
   "id": 7586,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-screen-it-phone.webp",
-  "alt": "L\u2019area atleta Cigala sul telefono: nuovi report dal coach"
+  "alt": "L’area atleta Cigala sul telefono: nuovi report dal coach"
  },
  "img/hub-report-v3-it-season-plan-thumb.webp": {
   "id": 7587,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-report-v3-it-season-plan-thumb.webp",
-  "alt": "Esempio di piano di stagione nell\u2019area atleta Cigala (atleta inventato)"
+  "alt": "Esempio di piano di stagione nell’area atleta Cigala (atleta inventato)"
  },
  "img/hub-report-v3-it-progress-report-thumb.webp": {
   "id": 7588,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-report-v3-it-progress-report-thumb.webp",
-  "alt": "Esempio di report dei progressi nell\u2019area atleta Cigala (atleta inventato)"
+  "alt": "Esempio di report dei progressi nell’area atleta Cigala (atleta inventato)"
  },
  "img/hub-report-v3-it-race-plan-thumb.webp": {
   "id": 7589,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-report-v3-it-race-plan-thumb.webp",
-  "alt": "Esempio di piano gara nell\u2019area atleta Cigala (atleta inventato)"
+  "alt": "Esempio di piano gara nell’area atleta Cigala (atleta inventato)"
  },
  "img/hub-report-v3-it-season-plan.webp": {
   "id": 7590,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-report-v3-it-season-plan.webp",
-  "alt": "Esempio di piano di stagione nell\u2019area atleta Cigala (atleta inventato)"
+  "alt": "Esempio di piano di stagione nell’area atleta Cigala (atleta inventato)"
  },
  "img/hub-report-v3-it-progress-report.webp": {
   "id": 7591,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-report-v3-it-progress-report.webp",
-  "alt": "Esempio di report dei progressi nell\u2019area atleta Cigala (atleta inventato)"
+  "alt": "Esempio di report dei progressi nell’area atleta Cigala (atleta inventato)"
  },
  "img/hub-report-v3-it-race-plan.webp": {
   "id": 7592,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-report-v3-it-race-plan.webp",
-  "alt": "Esempio di piano gara nell\u2019area atleta Cigala (atleta inventato)"
+  "alt": "Esempio di piano gara nell’area atleta Cigala (atleta inventato)"
  },
  "img/hub-hero.webp": {
   "id": 7627,
@@ -2562,6 +2562,16 @@
  "img/hub-x-fan.webp": {
   "id": 7681,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-x-fan.webp",
+  "alt": "The Cigala Athlete Hub on a phone: Goals & races"
+ },
+ "img/hub-hero-v5.webp": {
+  "id": 7686,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-hero-v5.webp",
+  "alt": "The Cigala Athlete Hub on a laptop (season plan) and on a phone (welcome screen)"
+ },
+ "img/hub-x-fan2.webp": {
+  "id": 7687,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-x-fan2.webp",
   "alt": "The Cigala Athlete Hub on a phone: Goals & races"
  }
 }
