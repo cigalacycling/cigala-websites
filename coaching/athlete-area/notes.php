@@ -34,6 +34,11 @@ function cc_nt_w($k) {
         'voice' => ['en' => 'Voice note', 'it' => 'Messaggio vocale', 'pt' => 'Mensagem de voz', 'sl' => 'Glasovno sporočilo'],
         'about' => ['en' => 'About the session on %s', 'it' => 'Sull’allenamento del %s', 'pt' => 'Sobre o treino de %s', 'sl' => 'O treningu %s'],
         'reply' => ['en' => 'Matteo replied', 'it' => 'Matteo ha risposto', 'pt' => 'O Matteo respondeu', 'sl' => 'Matteo je odgovoril'],
+        // Matteo 18 Nov: a message he starts himself
+        'from_m' => ['en' => 'Matteo', 'it' => 'Matteo', 'pt' => 'Matteo', 'sl' => 'Matteo'],
+        'new_subj' => ['en' => 'A new message from Matteo', 'it' => 'Un nuovo messaggio da Matteo', 'pt' => 'Uma nova mensagem do Matteo', 'sl' => 'Novo sporočilo od Mattea'],
+        'new_p' => ['en' => 'Matteo sent you a message in your athlete hub. Open it to read or listen, and answer him there.', 'it' => 'Matteo ti ha mandato un messaggio nella tua area atleta. Aprila per leggerlo o ascoltarlo e rispondergli lì.',
+                    'pt' => 'O Matteo enviou-te uma mensagem na tua área de atleta. Abre-a para ler ou ouvir e responder-lhe aí.', 'sl' => 'Matteo ti je poslal sporočilo v tvojem središču. Odpri ga, da ga prebereš ali poslušaš, in mu odgovori tam.'],
         'mail_subj' => ['en' => 'Matteo replied to your note', 'it' => 'Matteo ha risposto al tuo messaggio', 'pt' => 'O Matteo respondeu à tua mensagem', 'sl' => 'Matteo je odgovoril na tvoje sporočilo'],
         'mail_p' => ['en' => 'I replied to your note in your athlete hub.', 'it' => 'ho risposto al tuo messaggio nella tua area atleta.', 'pt' => 'respondi à tua mensagem na tua área de atleta.', 'sl' => 'odgovoril sem na tvoje sporočilo v tvojem središču za športnike.'],
         'you' => ['en' => 'You', 'it' => 'Tu', 'pt' => 'Tu', 'sl' => 'Ti'],
@@ -74,7 +79,8 @@ function cc_nt_delbtn($pid, $at, $ri = -1) {
 }
 function cc_nt_item($n, $forCoach, $pid = 0) {
     $who = $forCoach && $pid ? get_the_title($pid) : '';
-    $o = '<div class="nt-item"><small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at'])) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), date_i18n('j M', strtotime($n['day'] . ' 12:00')))) : '') . '</small>'
+    $byMe = ($n['from'] ?? '') === 'coach';   // a message Matteo started himself (Matteo 18 Nov)
+    $o = '<div class="nt-item' . ($byMe ? ' nt-bym' : '') . '">' . ($byMe ? '<span class="nt-rh"><img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt=""><b>' . esc_html($forCoach ? 'Your message' : cc_nt_w('from_m')) . '</b></span>' : '') . '<small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at'])) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), date_i18n('j M', strtotime($n['day'] . ' 12:00')))) : '') . '</small>'
        . ($pid ? cc_nt_delbtn($pid, $n['at']) : '');
     if (($u = cc_nt_url($n['audio'] ?? 0))) $o .= cc_nt_player($u);
     if (($n['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($n['text'])) . '</p>';
@@ -94,7 +100,7 @@ function cc_nt_item($n, $forCoach, $pid = 0) {
         $o .= '</div>';
     }
     if ($pid && $forCoach) $o .= '<details class="nt-replyd"><summary>Reply</summary>' . cc_nt_box(rest_url('cc/v1/note-reply'), ['page' => $pid, 'at' => (int) $n['at']], 'Your reply…', 'Send reply') . '</details>';
-    elseif ($pid && !empty($n['replies'])) {   // the athlete answers in the same thread once Matteo has replied
+    elseif ($pid && (!empty($n['replies']) || $byMe)) {   // the athlete answers in the same thread once Matteo has replied (or wrote first)
         $speech = defined('CC_AV_SPEECH') ? (CC_AV_SPEECH[$GLOBALS['cc_ath_lang'] ?? 'en'] ?? 'en-GB') : 'en-GB';
         $o .= '<details class="nt-replyd"><summary>' . esc_html(cc_nt_w('answer')) . '</summary>' . cc_nt_box(rest_url('cc/v1/note-reply'), ['page' => $pid, 'at' => (int) $n['at']], cc_nt_w('ph'), cc_nt_w('send'), false, $speech) . '</details>';
     }
@@ -106,8 +112,10 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     if (!$view) return $html;
     $ns = array_reverse(cc_nt_get($view));
     if ($coach) {
-        if (!$ns) return $html;
+        // Matteo 18 Nov: he can start a conversation himself, text or voice (only when looking at one athlete)
+        $first = ($u = get_userdata((int) get_post_meta($view, 'cc_user', true))) ? ($u->first_name ?: $u->display_name) : get_the_title($view);
         $o = '<section class="ath-s nt" id="notes"><h2>' . cc_ath_icon('mic', 'ath-hic') . 'Notes</h2>';
+        if ($u) $o .= '<h3 class="av-sub">Send ' . esc_html($first) . ' a message</h3>' . cc_nt_box(rest_url('cc/v1/coach-note'), ['page' => $view], 'Your message to ' . $first . '…', 'Send message');
         foreach (array_slice($ns, 0, 10) as $n) $o .= cc_nt_item($n, true, $view);
         return $html . $o . '</section>' . cc_nt_css() . cc_nt_js();
     }
@@ -217,11 +225,28 @@ add_action('rest_api_init', function () {
     // Matteo, or the athlete in a thread on their own page
     $own = function (WP_REST_Request $r) { return cc_ath_is_coach() || (is_user_logged_in() && (int) $r->get_param('page') === cc_ath_page_of(get_current_user_id())); };
     register_rest_route('cc/v1', '/note-reply', ['methods' => 'POST', 'callback' => 'cc_nt_reply', 'permission_callback' => $own]);
+    // Matteo 18 Nov: a message he starts himself (text and/or voice); the athlete gets it in their notes, bell, phone and an email
+    register_rest_route('cc/v1', '/coach-note', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $pid = (int) $r->get_param('page'); if (get_post_type($pid) !== 'cc_athlete') return new WP_Error('cc_none', 'No such athlete', ['status' => 404]);
+        $text = cc_av_note((string) $r->get_param('text'), 3000); $aid = cc_nt_audio($r, $pid, ''); if (is_wp_error($aid)) return $aid;
+        if ($text === '' && !$aid) return new WP_Error('cc_empty', 'Empty message', ['status' => 400]);
+        $ns = cc_nt_get($pid); $ns[] = ['at' => time(), 'text' => $text, 'tr' => '', 'audio' => (int) $aid, 'day' => null, 'replies' => [], 'from' => 'coach']; cc_nt_put($pid, $ns);
+        $uid = (int) get_post_meta($pid, 'cc_user', true); $u = $uid ? get_userdata($uid) : null;
+        if ($u && is_email($u->user_email) && function_exists('cc_ath_mail_shell')) {
+            $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($uid);
+            $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email;   // staging: never an athlete
+            $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), esc_html($u->first_name ?: $u->display_name)), esc_html(cc_nt_w('new_p')), esc_html(cc_nt_w('mail_btn')), home_url('/' . CC_ATH_SLUG . '/') . '#notes');
+            if (is_email($to)) wp_mail($to, cc_nt_w('new_subj'), $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
+            if (function_exists('cc_push_user')) cc_push_user($uid, cc_nt_w('new_subj'), $text !== '' ? wp_trim_words($text, 18) : '🎙 ' . cc_nt_w('voice'), home_url('/' . CC_ATH_SLUG . '/') . '#notes', 'cc-msg');
+            $GLOBALS['cc_ath_lang'] = $keep;
+        }
+        return ['ok' => true];
+    }]);
     register_rest_route('cc/v1', '/note-delete', ['methods' => 'POST', 'callback' => 'cc_nt_delete', 'permission_callback' => $own]);
     register_rest_route('cc/v1', '/notes', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {   // the laptop (Vekta sync) and Matteo's tools
         $out = []; foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_notes']) as $p) {
             $uid = (int) get_post_meta($p->ID, 'cc_user', true); $vid = $uid ? (string) get_user_meta($uid, 'cc_vekta_id', true) : '';
-            foreach (cc_nt_get($p->ID) as $n) $out[] = ['page' => $p->ID, 'athlete' => $p->post_title, 'vekta_id' => $vid ?: null, 'at' => $n['at'], 'day' => $n['day'] ?? null,
+            foreach (cc_nt_get($p->ID) as $n) if (($n['from'] ?? '') !== 'coach') $out[] = ['page' => $p->ID,   // Matteo's own messages stay in the hub (not synced to Vekta) 'athlete' => $p->post_title, 'vekta_id' => $vid ?: null, 'at' => $n['at'], 'day' => $n['day'] ?? null,
                 'text' => $n['text'] ?? '', 'transcript' => $n['tr'] ?? '', 'audio' => cc_nt_url($n['audio'] ?? 0) ?: null, 'replies' => count((array) ($n['replies'] ?? []))];
         }
         usort($out, function ($a, $b) { return $b['at'] <=> $a['at']; }); return $out;

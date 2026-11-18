@@ -288,6 +288,13 @@ add_action('wp_head', function () {
 }, 1);
 
 /* ---------- logins: athletes never see wp-admin and stay logged in for a year ---------- */
+/* Matteo 18 Nov: in the hub the site's "Book Consultation" button makes no sense. Athletes get "WhatsApp Matteo";
+ * his own coach view gets no button. The rest of the website keeps "Book Consultation". */
+add_filter('cc_ath_end', function ($html, $view, $coach) {
+    return $html . '<script>(function(){document.querySelectorAll(\'a.btn[href*="calendly.com/cigalacycling"]\').forEach(function(a){'
+        . ($coach ? 'a.style.display="none";' : 'a.href="https://wa.me/353834777697";a.textContent="WhatsApp Matteo";a.setAttribute("aria-label","WhatsApp Matteo");')
+        . '});})();</script>';
+}, 50, 3);
 add_filter('show_admin_bar', function ($s) {
     if (!current_user_can('edit_posts')) return false;
     // Matteo 18 Nov: no WordPress toolbar in the hub, for him either (the app looks like the athletes' app); the rest of the site keeps it
