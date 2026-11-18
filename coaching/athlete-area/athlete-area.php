@@ -71,11 +71,10 @@ function cc_ath_flag_cc($cc, $name) {   // a round flag like the Tours site (emb
     $cc = strtolower($cc); $n = esc_attr($name);
     if (isset($SVG[$cc])) return ' <img class="ath-flag" src="data:image/svg+xml;base64,' . base64_encode($SVG[$cc]) . '" alt="' . $n . '" title="' . $n . '" width="14" height="14">';
     if (isset($IMG[$cc])) return ' <img class="ath-flag" src="data:image/webp;base64,' . $IMG[$cc] . '" alt="' . $n . '" title="' . $n . '" width="14" height="14">';
-    if (in_array($cc, ['gb-eng', 'gb-sct', 'gb-wls'], true)) {   // England, Scotland, Wales: the emoji tag flags
-        $f = mb_chr(0x1F3F4, 'UTF-8'); foreach (str_split(str_replace('-', '', $cc)) as $ch) $f .= mb_chr(0xE0000 + ord($ch), 'UTF-8'); $f .= mb_chr(0xE007F, 'UTF-8');
-        return ' <span class="ath-flag ath-flag-e" role="img" aria-label="' . $n . '" title="' . $n . '"><span>' . $f . '</span></span>';
-    }
+    // Matteo 18 Nov (Katka, Slovakia): every other country gets a flag drawn for a round frame (emblems centred), never the emoji,
+    // so anyone who signs up from anywhere has a properly centred flag. Pinned version of the open circle-flags set.
     if ($cc === 'gb-nir') $cc = 'gb';
+    if (preg_match('/^[a-z]{2}(-[a-z]{3})?$/', $cc)) return ' <img class="ath-flag" src="https://cdn.jsdelivr.net/gh/HatScripts/circle-flags@2.7.0/flags/' . $cc . '.svg" alt="' . $n . '" title="' . $n . '" width="14" height="14" loading="lazy">';
     if (!preg_match('/^[a-z]{2}$/', $cc)) return '';
     $f = ''; foreach (str_split(strtoupper($cc)) as $ch) $f .= mb_chr(0x1F1E6 + ord($ch) - 65, 'UTF-8');
     return ' <span class="ath-flag ath-flag-e" role="img" aria-label="' . $n . '" title="' . $n . '"><span>' . $f . '</span></span>';
