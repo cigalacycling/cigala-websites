@@ -7,10 +7,15 @@
 function cc_bt_w($k) {
     static $W = [
         'title' => ['en' => 'Blood tests', 'it' => 'Analisi del sangue', 'pt' => 'Análises ao sangue', 'sl' => 'Krvne preiskave'],
-        'lede' => ['en' => 'Upload your blood test results here (PDF or photo). Only Matteo sees them, and the nutritionist if you tick the box. They are deleted when your coaching ends.',
-                   'it' => 'Carica qui i risultati delle tue analisi del sangue (PDF o foto). Le vede solo Matteo, e la nutrizionista se spunti la casella. Vengono cancellate quando finisce il coaching.',
-                   'pt' => 'Carrega aqui os resultados das tuas análises ao sangue (PDF ou foto). Só o Matteo os vê, e a nutricionista se marcares a caixa. São apagados quando o coaching termina.',
-                   'sl' => 'Tukaj naloži izvide krvnih preiskav (PDF ali fotografijo). Vidi jih samo Matteo, in nutricionistka, če označiš polje. Izbrišejo se, ko se coaching konča.'],
+        'lede' => ['en' => 'Upload your blood test results here (PDF or photo). Your files are private and kept here as your history, so we can follow how your values change over time. Only Matteo sees them, and our nutritionist Marine if you tick the box: she can reply to you right here. Everything is deleted when your coaching ends.',
+                   'it' => 'Carica qui i risultati delle tue analisi del sangue (PDF o foto). I tuoi file sono privati e restano qui come tuo storico, così possiamo seguire come cambiano i valori nel tempo. Li vede solo Matteo, e la nostra nutrizionista Marine se spunti la casella: ti può rispondere direttamente qui. Tutto viene cancellato quando finisce il coaching.',
+                   'pt' => 'Carrega aqui os resultados das tuas análises ao sangue (PDF ou foto). Os teus ficheiros são privados e ficam aqui como o teu histórico, para acompanharmos como os valores mudam ao longo do tempo. Só o Matteo os vê, e a nossa nutricionista Marine se marcares a caixa: ela pode responder-te aqui mesmo. Tudo é apagado quando o coaching termina.',
+                   'sl' => 'Tukaj naloži izvide krvnih preiskav (PDF ali fotografijo). Tvoje datoteke so zasebne in ostanejo tukaj kot tvoja zgodovina, da lahko spremljamo, kako se vrednosti spreminjajo. Vidi jih samo Matteo, in naša nutricionistka Marine, če označiš polje: odgovori ti lahko kar tukaj. Vse se izbriše, ko se coaching konča.'],
+        'reply' => ['en' => 'Reply', 'it' => 'Rispondi', 'pt' => 'Responder', 'sl' => 'Odgovori'],
+        'send_r' => ['en' => 'Send', 'it' => 'Invia', 'pt' => 'Enviar', 'sl' => 'Pošlji'],
+        'you' => ['en' => 'You', 'it' => 'Tu', 'pt' => 'Tu', 'sl' => 'Ti'],
+        'marine_rep' => ['en' => 'Marine replied about your blood test', 'it' => 'Marine ha risposto sulle tue analisi', 'pt' => 'A Marine respondeu sobre as tuas análises', 'sl' => 'Marine je odgovorila glede tvojih izvidov'],
+        'matteo_rep' => ['en' => 'Matteo replied about your blood test', 'it' => 'Matteo ha risposto sulle tue analisi', 'pt' => 'O Matteo respondeu sobre as tuas análises', 'sl' => 'Matteo je odgovoril glede tvojih izvidov'],
         'file' => ['en' => 'Choose the file', 'it' => 'Scegli il file', 'pt' => 'Escolhe o ficheiro', 'sl' => 'Izberi datoteko'],
         'date' => ['en' => 'Date of the test', 'it' => 'Data delle analisi', 'pt' => 'Data das análises', 'sl' => 'Datum preiskave'],
         'share' => ['en' => 'Share with my nutritionist', 'it' => 'Condividi con la mia nutrizionista', 'pt' => 'Partilhar com a minha nutricionista', 'sl' => 'Deli z mojo nutricionistko'],
@@ -29,12 +34,38 @@ function cc_bt_w($k) {
 }
 function cc_bt_get($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_blood', true), true); return is_array($a) ? $a : []; }
 function cc_bt_put($pid, $a) { update_post_meta((int) $pid, 'cc_blood', wp_slash(wp_json_encode(array_values($a)))); }
-function cc_bt_row($pid, $b, $forCoach) {
+/* Marine (or any nutritionist): a login with only the 'cc_nutrition' capability. She sees the blood tests athletes chose to share, nothing else. */
+add_action('init', function () { if (!get_role('cc_nutritionist')) add_role('cc_nutritionist', 'Nutritionist', ['read' => true, 'cc_nutrition' => true]); });
+function cc_bt_is_nutri() { return is_user_logged_in() && current_user_can('cc_nutrition') && !cc_ath_is_coach(); }
+add_filter('cc_ath_file_ok', function ($ok, $id) {   // she may open a file only if it is a SHARED blood test
+    if ($ok || !cc_bt_is_nutri()) return $ok;
+    $pid = wp_get_post_parent_id($id); foreach (cc_bt_get($pid) as $b) if ((int) $b['file'] === (int) $id && !empty($b['share'])) return true;
+    return false;
+}, 10, 2);
+// the conversation under a test: Matteo, Marine and the athlete
+function cc_bt_thread($pid, $b, $viewer) {   // $viewer: coach | nutri | athlete
+    $o = '';
+    foreach ((array) ($b['replies'] ?? []) as $r) {
+        $who = $r['from'] ?? 'coach';
+        $face = $who === 'athlete' ? (function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '')
+              : '<img class="nt-me" src="' . esc_url($who === 'nutri' ? 'https://coaching.cigalacycling.com/wp-content/uploads/2026/11/vivify-tile.png' : 'https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg') . '" width="30" height="30" alt="">';
+        $label = $who === 'athlete' ? ($viewer === 'athlete' ? cc_bt_w('you') : get_the_title($pid)) : ($who === 'nutri' ? 'Marine' : 'Matteo');
+        $o .= '<div class="nt-rep' . ($who === 'athlete' ? ' nt-rep-a' : '') . '"><span class="nt-rh">' . $face . '<b>' . esc_html($label) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small></span><p>' . nl2br(esc_html($r['text'])) . '</p></div>';
+    }
+    $can = $viewer !== 'nutri' || !empty($b['share']);
+    if ($can && ($viewer !== 'athlete' || !empty($b['replies'])))
+        $o .= '<details class="nt-replyd"><summary>' . esc_html($viewer === 'athlete' ? cc_bt_w('reply') : 'Reply') . '</summary><div class="bt-r" data-page="' . (int) $pid . '" data-at="' . (int) $b['at'] . '"><textarea rows="3"></textarea><button type="button" class="btn btn-go bt-send">'
+            . esc_html($viewer === 'athlete' ? cc_bt_w('send_r') : 'Send') . '</button></div></details>';
+    return $o;
+}
+function cc_bt_row($pid, $b, $forCoach, $viewer = null) {
+    $viewer = $viewer ?: ($forCoach ? 'coach' : 'athlete');
     $u = wp_get_attachment_url((int) $b['file']); if (!$u) return '';
     $when = $b['date'] ? date_i18n('j M Y', strtotime($b['date'] . ' 12:00')) : date_i18n('j M Y', (int) $b['at']);
     return '<div class="bt-row"><span class="bt-ic">🩸</span><span class="bt-t"><b>' . esc_html($when) . '</b>' . (!empty($b['share']) ? '<small>' . esc_html($forCoach ? 'shared with the nutritionist' : cc_bt_w('shared')) . '</small>' : '') . '</span>'
          . '<a class="btn btn-ghost" href="' . esc_url($u) . '" target="_blank" rel="noopener">' . esc_html($forCoach ? 'Open' : cc_bt_w('open')) . '</a>'
-         . '<button type="button" class="bt-del" data-page="' . (int) $pid . '" data-at="' . (int) $b['at'] . '" data-q="' . esc_attr($forCoach ? 'Delete this blood test?' : cc_bt_w('delq')) . '">' . esc_html($forCoach ? 'Delete' : cc_bt_w('del')) . '</button></div>';
+         . ($viewer === 'nutri' ? '' : '<button type="button" class="bt-del" data-page="' . (int) $pid . '" data-at="' . (int) $b['at'] . '" data-q="' . esc_attr($forCoach ? 'Delete this blood test?' : cc_bt_w('delq')) . '">' . esc_html($forCoach ? 'Delete' : cc_bt_w('del')) . '</button>')
+         . '</div><div class="bt-th">' . cc_bt_thread($pid, $b, $viewer) . '</div>';
 }
 function cc_bt_assets() {
     static $done = false; if ($done) return ''; $done = true;
@@ -44,7 +75,10 @@ function cc_bt_assets() {
         . 'html .cc .bt-form .btn{justify-self:start;width:auto;margin:0}html .cc .bt-msg{font-size:15px;font-weight:600;color:#2bd47a;margin:0}html .cc .bt-msg.err{color:#ff7a73}html .cc .bt-msg:empty{display:none}'
         . 'html .cc .bt-row{display:flex;align-items:center;gap:12px;padding:10px 12px;margin:8px 0 0;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}'
         . 'html .cc .bt-ic{font-size:20px}html .cc .bt-t{display:grid;flex:1;min-width:0}html .cc .bt-t b{color:#fff;font-size:16px}html .cc .bt-t small{color:#b8bec8;font-size:14px}'
-        . 'html .cc .bt-row .btn{width:auto;margin:0;padding:8px 14px}html .cc .bt-del{background:none;border:0;color:#b8bec8;text-decoration:underline;font-size:14px;cursor:pointer;padding:4px}</style>'
+        . 'html .cc .bt-row .btn{width:auto;margin:0;padding:8px 14px}html .cc .bt-del{background:none;border:0;color:#b8bec8;text-decoration:underline;font-size:14px;cursor:pointer;padding:4px}'
+        . 'html .cc .bt-th{margin:0 0 6px 14px}html .cc .bt-r{display:grid;gap:8px}html .cc .bt-r textarea{width:100%;box-sizing:border-box;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0b0d0f;color:#fff}html .cc .bt-r .btn{justify-self:start;width:auto;margin:0}</style>'
+        . '<script>document.addEventListener("click",function(e){var b=e.target.closest(".bt-send");if(!b)return;var r=b.closest(".bt-r"),t=r.querySelector("textarea");if(!t.value.trim())return;b.disabled=true;var d=new FormData();d.append("page",r.dataset.page);d.append("at",r.dataset.at);d.append("text",t.value);'
+        . 'fetch("' . esc_url(rest_url('cc/v1/blood-reply')) . '",{method:"POST",body:d,credentials:"same-origin",headers:{"X-WP-Nonce":"' . $nonce . '"}}).then(function(x){if(!x.ok)throw 0;location.reload();}).catch(function(){b.disabled=false;alert("Not sent. Please try again.");});});</script>'
         . '<script>(function(){var f=document.querySelector(".bt-form");if(f){var m=f.querySelector(".bt-msg"),W=JSON.parse(f.dataset.w);f.addEventListener("submit",function(e){e.preventDefault();'
         . 'var fi=f.querySelector("input[type=file]").files[0];if(!fi||fi.size>10485760||!/pdf|jpe?g|png|heic|heif/i.test(fi.type+fi.name)){m.className="bt-msg err";m.textContent=W.bad;return;}'
         . 'var d=new FormData();d.append("file",fi);d.append("date",f.querySelector("input[type=date]").value);d.append("share",f.querySelector(".bt-tick input").checked?1:0);var b=f.querySelector(".btn");b.disabled=true;m.className="bt-msg";m.textContent=W.sending;'
@@ -109,6 +143,61 @@ add_action('rest_api_init', function () {
         $pid = (int) ($r->get_param('page') ?: cc_ath_page_of(get_current_user_id())); $at = (int) $r->get_param('at'); $a = cc_bt_get($pid);
         foreach ($a as $k => $b) if ((int) $b['at'] === $at) { wp_delete_attachment((int) $b['file'], true); unset($a[$k]); cc_bt_put($pid, $a); return ['ok' => true]; }
         return new WP_Error('cc_none', 'Not found', ['status' => 404]);
+    }]);
+});
+/* Marine's own view of the hub: the blood tests shared with her, newest first, with the conversation under each */
+add_filter('cc_ath_nutritionist', function ($html, $me) {
+    if (!user_can($me, 'cc_nutrition')) return $html;
+    $GLOBALS['cc_ath_lang'] = 'en'; $all = [];
+    foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_blood']) as $p)
+        if (get_post_meta($p->ID, 'cc_user', true)) foreach (cc_bt_get($p->ID) as $b) if (!empty($b['share'])) $all[] = [$p, $b];
+    usort($all, function ($a, $b) { return $b[1]['at'] <=> $a[1]['at']; });
+    $o = '<section class="ath-s"><p class="eyebrow">Cigala Cycling Coaching · nutrition</p><h1>Hi ' . esc_html($me->first_name ?: $me->display_name) . '</h1>'
+       . '<p class="av-lede">Blood tests Matteo\'s athletes chose to share with you, newest first. Open the file, then reply under it: the athlete and Matteo see your reply in the hub.</p>'
+       . '<p><a class="btn btn-ghost" href="' . esc_url(wp_logout_url(home_url('/' . CC_ATH_SLUG . '/'))) . '">Log out</a></p>';
+    if (!$all) $o .= '<p class="av-lede">Nothing shared yet. You will get an email when an athlete shares a blood test with you.</p>';
+    foreach ($all as [$p, $b]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 30) . ' ' : '') . '<b>' . esc_html($p->post_title) . '</b>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($p->ID) : '') . '</div>' . cc_bt_row($p->ID, $b, false, 'nutri');
+    return $html . $o . '</section>' . cc_bt_assets() . (function_exists('cc_nt_css') ? cc_nt_css() : '') . (function_exists('cc_ph_assets') ? cc_ph_assets() : '');
+}, 10, 2);
+add_action('rest_api_init', function () {
+    // a reply under a test: Matteo, the nutritionist (shared tests only) or the athlete (own tests)
+    register_rest_route('cc/v1', '/blood-reply', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {
+        $pid = (int) $r->get_param('page'); $at = (int) $r->get_param('at'); $text = trim(sanitize_textarea_field((string) $r->get_param('text')));
+        if ($text === '' || mb_strlen($text) > 3000) return new WP_Error('cc_bad', 'Empty or too long', ['status' => 400]);
+        $from = cc_ath_is_coach() ? 'coach' : (cc_bt_is_nutri() ? 'nutri' : ((int) cc_ath_page_of(get_current_user_id()) === $pid ? 'athlete' : ''));
+        if ($from === '') return new WP_Error('cc_no', 'Not allowed', ['status' => 403]);
+        $a = cc_bt_get($pid);
+        foreach ($a as $k => $b) {
+            if ((int) $b['at'] !== $at) continue;
+            if ($from === 'nutri' && empty($b['share'])) return new WP_Error('cc_no', 'Not shared', ['status' => 403]);
+            $a[$k]['replies'][] = ['at' => time(), 'from' => $from, 'text' => $text]; cc_bt_put($pid, $a);
+            $uid = (int) get_post_meta($pid, 'cc_user', true); $url = home_url('/' . CC_ATH_SLUG . '/') . '#blood';
+            if ($from !== 'athlete' && $uid && function_exists('cc_push_user')) { $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($uid);
+                cc_push_user($uid, cc_bt_w($from === 'nutri' ? 'marine_rep' : 'matteo_rep'), wp_trim_words($text, 18), $url, 'cc-blood-' . $at); $GLOBALS['cc_ath_lang'] = $keep; }
+            if ($from !== 'coach' && function_exists('cc_push_coaches')) cc_push_coaches(($from === 'nutri' ? 'Marine' : get_the_title($pid)) . ' on a blood test (' . get_the_title($pid) . ')', wp_trim_words($text, 18), add_query_arg('board', 'blood', home_url('/' . CC_ATH_SLUG . '/')), 'cc-blood', $pid);
+            if ($from === 'athlete' && !empty($b['share'])) foreach (get_users(['role' => 'cc_nutritionist']) as $n) if (function_exists('cc_push_user')) cc_push_user($n->ID, get_the_title($pid) . ' replied on a blood test', wp_trim_words($text, 18), home_url('/' . CC_ATH_SLUG . '/'), 'cc-blood');
+            return ['ok' => true];
+        }
+        return new WP_Error('cc_none', 'Not found', ['status' => 404]);
+    }]);
+    // Matteo: create a nutritionist login and (send=1) email her the "choose your password" link
+    register_rest_route('cc/v1', '/nutritionist', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $email = sanitize_email((string) $r['email']); if (!is_email($email)) return new WP_Error('cc_bad', 'Email needed', ['status' => 400]);
+        $u = get_user_by('email', $email);
+        if (!$u) { $id = wp_insert_user(['user_login' => sanitize_user(strstr($email, '@', true) . '-nutrition', true), 'user_email' => $email, 'user_pass' => wp_generate_password(24),
+                                         'first_name' => sanitize_text_field((string) $r['first']), 'last_name' => sanitize_text_field((string) $r['last']), 'display_name' => trim($r['first'] . ' ' . $r['last']), 'role' => 'cc_nutritionist']);
+            if (is_wp_error($id)) return $id; $u = get_userdata($id); }
+        elseif (!user_can($u, 'cc_nutrition')) return new WP_Error('cc_exists', 'That email already belongs to another account', ['status' => 409]);
+        $out = ['user' => $u->ID, 'login' => $u->user_login];
+        if ($r['send']) {
+            $key = get_password_reset_key($u); if (is_wp_error($key)) return $key;
+            $link = add_query_arg(['cc_set' => $key, 'u' => rawurlencode($u->user_login)], home_url('/' . CC_ATH_SLUG . '/'));
+            $GLOBALS['cc_ath_lang'] = 'en';
+            $h = cc_ath_mail_shell('Hi ' . esc_html($u->first_name ?: $u->display_name) . ',', 'Matteo has set up your login to the Cigala Cycling Coaching hub. Here you will see the blood tests his athletes choose to share with you, and you can reply to each of them right there.',
+                                   'Choose your password', $link, '<p style="margin:22px 0 10px;font-size:16px;color:#454a52">You log in with <strong>' . esc_html($u->user_email) . '</strong>. The button works for 7 days; after that, use “Forgot your password?” on the login page.</p>', 'Thank you,', 'Nutrition');
+            $out['sent'] = wp_mail($u->user_email, 'Your Cigala Cycling Coaching hub login', $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
+        }
+        return $out;
     }]);
 });
 // health data: gone when coaching ends (login removed), unless the athlete stays coached (moved to Basic)

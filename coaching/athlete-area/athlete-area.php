@@ -213,7 +213,7 @@ function cc_ath_can_see($pid) {
 }
 
 // a new Subscriber gets their own page; a deleted one loses the link (the page is kept for Matteo)
-add_action('user_register', function ($uid) { cc_ath_page_of($uid, true); }, 20);
+add_action('user_register', function ($uid) { if (!user_can($uid, 'cc_nutrition')) cc_ath_page_of($uid, true); }, 20);   // a nutritionist login gets no athlete page
 add_action('set_user_role', function ($uid, $role) { if ($role === 'subscriber') cc_ath_page_of($uid, true); }, 20, 2);
 add_action('add_user_role', function ($uid, $role) { if ($role === 'subscriber') cc_ath_page_of($uid, true); }, 20, 2);   // the REST API adds roles this way
 add_action('delete_user', function ($uid) {
@@ -265,7 +265,8 @@ add_action('template_redirect', function () {
     $id = (int) $_GET['cc_file']; $file = get_attached_file($id, true);
     if (!$file || !cc_ath_is_private_file($id) || !file_exists($file)) { status_header(404); exit('Not found'); }
     if (!is_user_logged_in()) { wp_safe_redirect(add_query_arg('next', $id, home_url('/' . CC_ATH_SLUG . '/'))); exit; }
-    if (!cc_ath_can_see(wp_get_post_parent_id($id))) { status_header(403); exit('This file is not part of your account.'); }
+    // blood.php: the nutritionist may open shared blood tests only
+    if (!cc_ath_can_see(wp_get_post_parent_id($id)) && !apply_filters('cc_ath_file_ok', false, $id)) { status_header(403); exit('This file is not part of your account.'); }
     while (ob_get_level()) ob_end_clean();
     header('Content-Type: ' . (get_post_mime_type($id) ?: 'application/octet-stream'));
     header('Content-Length: ' . filesize($file));
@@ -358,6 +359,7 @@ function cc_ath_inner() {
     }
     $me = wp_get_current_user(); $mine = cc_ath_page_of($me->ID); $coach = cc_ath_is_coach();
     $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($me->ID);
+    if (!$mine && !$coach && ($nv = apply_filters('cc_ath_nutritionist', '', $me)) !== '') return $o . $nv . '</div>';   // blood.php: the nutritionist's own view
     if (!$mine && !$coach) {
         return $o . '<h1>' . cc_t('Athlete area') . '</h1><p>' . cc_t('This area is for athletes I coach. If you are one of them, message me and I will set up your login.') . '</p>'
              . '<p><a class="btn btn-ghost" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a></p></div>';

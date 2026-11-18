@@ -18,6 +18,9 @@ function cc_nw_w($k) {
                      'pt' => '🎙 <b>Como está a correr a tua semana</b>: <a href="#notes">Deixa-me uma mensagem</a> (texto ou voz)', 'sl' => '🎙 <b>Kako gre tvoj teden</b>: <a href="#notes">Pusti mi sporočilo</a> (besedilo ali glas)'],
         'g_res' => ['en' => '🏆 <b>A result you are proud of</b>: <a href="#results">Share a result</a>', 'it' => '🏆 <b>Un risultato di cui sei fiero</b>: <a href="#results">Condividi un risultato</a>',
                     'pt' => '🏆 <b>Um resultado de que te orgulhas</b>: <a href="#results">Partilha um resultado</a>', 'sl' => '🏆 <b>Rezultat, na katerega si ponosen</b>: <a href="#results">Deli rezultat</a>'],
+        // Matteo 18 Nov: blood tests, private, kept as history
+        'g_blood' => ['en' => '🩸 <b>Your blood tests</b>: <a href="#blood">upload them privately</a>, kept as your history', 'it' => '🩸 <b>Le tue analisi del sangue</b>: <a href="#blood">caricale in privato</a>, restano come tuo storico',
+                      'pt' => '🩸 <b>As tuas análises ao sangue</b>: <a href="#blood">carrega-as em privado</a>, ficam como o teu histórico', 'sl' => '🩸 <b>Tvoji krvni izvidi</b>: <a href="#blood">naloži jih zasebno</a>, ostanejo kot tvoja zgodovina'],
         'g_av' => ['en' => '📅 <b>Your availability and races</b>: keep <a href="#availability">your availability</a> and <a href="#goals">your races</a> up to date here. They go into your Vekta calendar automatically.',
                    'it' => '📅 <b>La tua disponibilità e le gare</b>: tieni aggiornate qui <a href="#availability">la tua disponibilità</a> e <a href="#goals">le tue gare</a>. Finiscono automaticamente nel tuo calendario Vekta.',
                    'pt' => '📅 <b>A tua disponibilidade e as provas</b>: mantém aqui atualizadas <a href="#availability">a tua disponibilidade</a> e <a href="#goals">as tuas provas</a>. Passam automaticamente para o teu calendário Vekta.',
@@ -71,7 +74,7 @@ function cc_nw_for($pid) {   // the news this athlete should see (audience match
 add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     if (!$view) return $html;
     $tp = function_exists('cc_ath_tp') && cc_ath_tp($view);
-    $lines = [cc_nw_w($tp ? 'g_train_t' : 'g_train_v'), cc_nw_w('g_note'), cc_nw_w('g_res')];
+    $lines = [cc_nw_w($tp ? 'g_train_t' : 'g_train_v'), cc_nw_w('g_note'), cc_nw_w('g_res'), cc_nw_w('g_blood')];
     if (!$tp) $lines[] = cc_nw_w('g_av');
     $lines[] = cc_nw_w('g_rep'); $lines[] = cc_nw_w('g_wa');
     $o = '<details class="nw-guide" id="nw-guide" open><summary>' . esc_html(cc_nw_w('g_title')) . '</summary><ul>' . implode('', array_map(function ($x) { return '<li>' . wp_kses($x, ['b' => [], 'a' => ['href' => [], 'target' => [], 'rel' => []]]) . '</li>'; }, $lines)) . '</ul></details>';

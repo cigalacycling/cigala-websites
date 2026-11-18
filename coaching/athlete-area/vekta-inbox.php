@@ -186,7 +186,8 @@ add_action('rest_api_init', function () {
         foreach (cc_vx_data() as $pid => $a) foreach ((array) $a['unanswered'] as $u) if ($u['key'] === $key) {
             $ob = cc_vx_outbox();
             foreach ($ob as $o) if ($o['key'] === $key && $o['status'] === 'queued') return new WP_Error('cc_dup', 'Already queued', ['status' => 409]);
-            $ob[] = ['id' => wp_generate_password(10, false), 'key' => $key, 'page' => (int) $pid, 'vekta_id' => $a['vekta_id'], 'activity' => $u['activity'], 'text' => $text, 'at' => time(), 'status' => 'queued', 'by' => get_current_user_id()];
+            $ob[] = ['id' => wp_generate_password(10, false), 'key' => $key, 'page' => (int) $pid, 'vekta_id' => $a['vekta_id'], 'activity' => $u['activity'], 'text' => $text, 'at' => time(), 'status' => 'queued', 'by' => get_current_user_id(),
+                     'draft' => cc_vx_drafts()[$key] ?? '', 'message' => $u['text'], 'session' => $u['session']['name'] ?? ''];   // Matteo 18 Nov: the drafts learn from how he edits them
             update_option('cc_vx_outbox', $ob, false);
             return ['ok' => true, 'queued' => true];
         }
