@@ -1,0 +1,114 @@
+[
+ {
+  "cc": "ca",
+  "name": "Canada"
+ },
+ {
+  "cc": "us",
+  "name": "United States"
+ },
+ {
+  "cc": "mx",
+  "name": "Mexico"
+ },
+ {
+  "cc": "br",
+  "name": "Brazil"
+ },
+ {
+  "cc": "ar",
+  "name": "Argentina"
+ },
+ {
+  "cc": "ie",
+  "name": "Ireland"
+ },
+ {
+  "cc": "gb",
+  "name": "United Kingdom"
+ },
+ {
+  "cc": "fi",
+  "name": "Finland"
+ },
+ {
+  "cc": "de",
+  "name": "Germany"
+ },
+ {
+  "cc": "nl",
+  "name": "Netherlands"
+ },
+ {
+  "cc": "be",
+  "name": "Belgium"
+ },
+ {
+  "cc": "fr",
+  "name": "France"
+ },
+ {
+  "cc": "es",
+  "name": "Spain"
+ },
+ {
+  "cc": "pt",
+  "name": "Portugal"
+ },
+ {
+  "cc": "it",
+  "name": "Italy"
+ },
+ {
+  "cc": "ch",
+  "name": "Switzerland"
+ },
+ {
+  "cc": "si",
+  "name": "Slovenia"
+ },
+ {
+  "cc": "sk",
+  "name": "Slovakia"
+ },
+ {
+  "cc": "se",
+  "name": "Sweden"
+ },
+ {
+  "cc": "tr",
+  "name": "Turkey"
+ },
+ {
+  "cc": "za",
+  "name": "South Africa"
+ },
+ {
+  "cc": "au",
+  "name": "Australia"
+ },
+ {
+  "cc": "nz",
+  "name": "New Zealand"
+ },
+ {
+  "cc": "ph",
+  "name": "Philippines"
+ },
+ {
+  "cc": "kr",
+  "name": "South Korea"
+ },
+ {
+  "cc": "th",
+  "name": "Thailand"
+ },
+ {
+  "cc": "cn",
+  "name": "China"
+ },
+ {
+  "cc": "in",
+  "name": "India"
+ }
+]

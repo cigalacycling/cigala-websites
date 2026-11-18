@@ -713,3 +713,24 @@ def build(name, path, main, ribbon, h1=None, h2_changes=None, extra_css='', extr
     print(f'wrote coachingpages/{name}.html', len(page), 'bytes; H1 ok;', len(set(want)), 'H2s match live')
     return page
 
+
+# ---------- "Athletes coached in N countries" flags (Matteo 18 Nov: same look as the Tours homepage, Coaching's own list) ----------
+# coaching/athlete-countries.json (Matteo's list via the Tours chat). Flags: the Tours renders (tourspages/img/flag-<cc>.webp, MIT flag-icons 7.2.3);
+# ch and si use the -square versions (the plain ones are 4:3 card flags). Laptops 14 x 2, phones 7 x 4: no lone flag on a last row.
+def countries_html():
+    cs = json.load(open(ROOT + 'coaching/athlete-countries.json'))
+    flag = lambda c: conv(f'tourspages/img/flag-{c}{"-square" if c in ("ch", "si") else ""}.webp', f'flag-{c}')
+    lis = ''.join(f'<li><img src="{flag(c["cc"])}" alt="Flag of {c["name"]}" title="{c["name"]}" width="40" height="40" loading="lazy"><span>{c["name"]}</span></li>' for c in cs)
+    return f'<div class="ctry"><p class="ctry-t">Athletes coached in <b>{len(cs)} countries</b></p><ul class="ctry-f">{lis}</ul></div>'
+COUNTRIES_CSS = '''<style>
+.ctry { margin-top: 30px; padding: 22px 24px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255,255,255,.025); text-align: center; }
+.ctry-t { margin: 0 0 16px; font-size: 15px; color: var(--text-2); letter-spacing: .02em; }
+.ctry-t b { color: var(--text); font-weight: 700; }
+.ctry-f { list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: repeat(14, 36px); justify-content: center; gap: 12px 14px; }
+.ctry-f li { position: relative; margin: 0; }
+.ctry-f img { display: block; width: 36px; height: 36px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); transition: transform .2s; }
+.ctry-f li:hover img { transform: translateY(-3px) scale(1.08); }
+.ctry-f span { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; font-size: 12px; font-weight: 600; color: #fff; background: rgba(8,9,10,.92); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; opacity: 0; pointer-events: none; transition: opacity .15s; z-index: 2; }
+.ctry-f li:hover span { opacity: 1; }
+@media (max-width: 760px) { .ctry-f { grid-template-columns: repeat(7, 36px); gap: 12px 10px; } .ctry { padding: 18px 12px; } .ctry-f span { display: none; } }
+</style>'''

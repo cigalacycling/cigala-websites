@@ -156,6 +156,7 @@ No matter where you are in the world, we coach remotely in different countries, 
       <div class="rv-links"><a class="arrow-link" href="{GOOGLE_REVIEWS}" {EXT}><span class="gstar" aria-hidden="true">★</span> Read our reviews on Google →</a><a class="arrow-link" href="{C}/testimonials/" {EXT}>All testimonials →</a></div>
     </div>
     {reviews_strip()}
+    {COUNTRIES_CSS}{countries_html()}
   </div>
 </section>
 
