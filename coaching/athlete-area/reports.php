@@ -280,12 +280,19 @@ add_filter('cc_ath_board', function ($html, $board) {
                 . (in_array($t, CC_R_AUTO, true) ? '<label class="rp-mail"><input type="checkbox" name="auto" value="1" checked> Keep it updated automatically</label>' : '')) . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>';
     }
     if ($pub) {
-        $o .= '<h3 class="av-sub" style="margin-top:22px">Published</h3>';
+        // Matteo 18 Nov: the published list folds away behind an arrow (it was confusing with so many); closed unless he opened it last time
+        $o .= '<details class="rp-pub"><summary><h3 class="av-sub">Published <small>' . count($pub) . (count($pub) >= 60 ? '+' : '') . '</small></h3><span class="rp-pub-tg"><span class="s">Show ▾</span><span class="x">Hide ▴</span></span></summary>'
+            . '<style>html .cc .rp-pub{margin-top:22px}html .cc .rp-pub>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px}html .cc .rp-pub>summary::-webkit-details-marker{display:none}'
+            . 'html .cc .rp-pub>summary .av-sub{margin:0}html .cc .rp-pub>summary small{font-size:14px;font-weight:700;color:#2bd47a;margin-left:6px}'
+            . 'html .cc .rp-pub-tg{margin-left:auto;padding:6px 14px;border-radius:999px;border:1px solid rgba(43,212,122,.55);font-size:15px;font-weight:600;color:#2bd47a}'
+            . 'html .cc .rp-pub .x,html .cc .rp-pub[open] .s{display:none}html .cc .rp-pub[open] .x{display:inline}html .cc .rp-pub[open]>summary{margin-bottom:10px}</style>'
+            . '<script>(function(){var d=document.currentScript.parentNode;try{if(localStorage.getItem("cc_rp_pub")==="1")d.open=true;}catch(x){}d.addEventListener("toggle",function(){try{localStorage.setItem("cc_rp_pub",d.open?"1":"0");}catch(x){}});})();</script>';
         foreach ($pub as $p) { $t = get_post_meta($p->ID, 'cc_type', true); $uid = (int) get_post_meta($p->post_parent, 'cc_user', true);
             $o .= '<div class="rp-row">' . $pick($p) . '<div class="rp-what"><b>' . esc_html($p->post_title) . '</b><small>' . esc_html(get_post_field('post_title', $p->post_parent) . ' · ' . cc_r_label($t, false) . ' · published ' . date_i18n('j M Y', (int) get_post_meta($p->ID, 'cc_published', true))
                 . (get_post_meta($p->ID, 'cc_mailed', true) ? ' · emailed' : '') . (in_array($t, CC_R_AUTO, true) && cc_r_auto($p->post_parent, $t) ? ' · updates automatically' : '') . ($uid ? (cc_r_unseen($uid, $p->ID) ? ' · not opened yet' : ' · opened') : '')) . '</small></div><div class="rp-acts"><a class="btn btn-ghost" href="' . esc_url(cc_r_url($p->ID)) . '" target="_blank" rel="noopener">Open</a>'
                 . (in_array($t, CC_R_AUTO, true) && cc_r_auto($p->post_parent, $t) ? cc_r_btn($p->ID, 'stopauto', 'Stop automatic updates') : '')
                 . cc_r_btn($p->ID, 'testmail', 'Send me a test email') . cc_r_btn($p->ID, 'unpublish', 'Unpublish') . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>'; }
+        $o .= '</details>';
     }
     return $o . '</section>';
 }, 10, 2);
