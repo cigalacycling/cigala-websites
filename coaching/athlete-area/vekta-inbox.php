@@ -231,6 +231,7 @@ add_action('rest_api_init', function () {
         return ['board' => apply_filters('cc_ath_board', '', sanitize_key((string) ($r['board'] ?? '')) ?: 'vekta'), 'athlete' => $pid ? apply_filters('cc_ath_before_reports', '', $pid, true) : '', 'chips' => function_exists('cc_ath_live_chips') ? cc_ath_live_chips(0, true, 0) : '', 'tools' => apply_filters('cc_ath_coach_links', '')];
     }]);
     register_rest_route('cc/v1', '/vekta-outbox', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
+        cc_vx_mail_run();   // the laptop asks every 15 minutes: a good moment to send the reply emails that are due
         return array_values(array_filter(cc_vx_outbox(), function ($o) { return $o['status'] === 'queued'; }));
     }]);
     register_rest_route('cc/v1', '/vekta-outbox-done', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
@@ -246,7 +247,74 @@ add_action('rest_api_init', function () {
             // Matteo 18 Nov: open that exact session (athlete link format he gave: /me/activity/<id>/overview); calendar only if the id is missing
             $go = !empty($notify['activity']) ? 'https://app.joinvekta.com/me/activity/' . rawurlencode($notify['activity']) . '/overview' : 'https://app.joinvekta.com/me/calendar';
             cc_push_user($uid, $T[$l] ?? $T['en'], wp_trim_words($notify['text'], 20), $go, 'cc-vx-' . $notify['activity']);
+            cc_vx_mail_queue($uid, $notify, $go);
         }
         return ['ok' => $hit];
     }]);
+    // the athlete's own switch (in their notifications panel): email me when Matteo replies on Vekta
+    register_rest_route('cc/v1', '/vx-mail', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {
+        $uid = get_current_user_id();
+        if ($r['on']) delete_user_meta($uid, 'cc_vx_mail_off'); else update_user_meta($uid, 'cc_vx_mail_off', 1);
+        return ['ok' => true, 'on' => !get_user_meta($uid, 'cc_vx_mail_off', true)];
+    }]);
 });
+
+/* ---------- Reply emails (Matteo 18 Nov 2026) ----------
+ * When Matteo replies on a session, the athlete gets the hub notification at once. If they still haven't opened it
+ * 3 hours later, one email follows (evenings wait until 8:00 Irish time; at most one such email a day). Each athlete can
+ * switch these emails off in their notifications panel (the bell). On by default. */
+function cc_vx_mail_w($k, $l) {
+    static $W = [
+        'opt' => ['en' => 'Email me when Matteo replies to my workouts in Vekta', 'it' => 'Mandami un’email quando Matteo risponde ai miei allenamenti su Vekta', 'pt' => 'Envia-me um email quando o Matteo responder aos meus treinos no Vekta', 'sl' => 'Pošlji mi e-pošto, ko Matteo odgovori na moje treninge v Vekti', 'sk' => 'Pošli mi e-mail, keď Matteo odpovie na moje tréningy vo Vekte'],
+        'optc' => ['en' => 'Only if you haven’t seen my reply after 3 hours, at most once a day.', 'it' => 'Solo se non hai visto la mia risposta dopo 3 ore, al massimo una volta al giorno.', 'pt' => 'Só se não tiveres visto a minha resposta após 3 horas, no máximo uma vez por dia.', 'sl' => 'Samo če mojega odgovora ne vidiš v 3 urah, največ enkrat na dan.', 'sk' => 'Iba ak moju odpoveď neuvidíš do 3 hodín, najviac raz za deň.'],
+        'hi' => ['en' => 'Hi %s,', 'it' => 'Ciao %s,', 'pt' => 'Olá %s,', 'sl' => 'Živjo %s,', 'sk' => 'Ahoj %s,'],
+        'p1' => ['en' => 'I replied to your workout in Vekta:', 'it' => 'Ho risposto al tuo allenamento su Vekta:', 'pt' => 'Respondi ao teu treino no Vekta:', 'sl' => 'Odgovoril sem na tvoj trening v Vekti:', 'sk' => 'Odpovedal som na tvoj tréning vo Vekte:'],
+        'btn' => ['en' => 'Open it in Vekta', 'it' => 'Aprilo su Vekta', 'pt' => 'Abrir no Vekta', 'sl' => 'Odpri v Vekti', 'sk' => 'Otvoriť vo Vekte'],
+        'off' => ['en' => 'Don’t want these emails? Untick the box in your hub notifications (the bell).', 'it' => 'Non vuoi queste email? Togli la spunta nelle notifiche della tua area (la campanella).', 'pt' => 'Não queres estes emails? Desmarca a caixa nas notificações da tua área (o sino).', 'sl' => 'Ne želiš teh e-poštnih sporočil? Odznači polje v obvestilih v svojem območju (zvonček).', 'sk' => 'Nechceš tieto e-maily? Zruš zaškrtnutie v upozorneniach vo svojej zóne (zvonček).'],
+    ];
+    return $W[$k][$l] ?? $W[$k]['en'];
+}
+function cc_vx_mail_due($t) {   // 3 hours later, but never in the evening or at night: then 8:00 the next morning (Irish time)
+    $tz = new DateTimeZone('Europe/Dublin'); $d = (new DateTime('@' . $t))->setTimezone($tz); $h = (int) $d->format('G');
+    if ($h >= 21 || $h < 8) { if ($h >= 21) $d->modify('+1 day'); $d->setTime(8, 0); }
+    return $d->getTimestamp();
+}
+function cc_vx_mail_queue($uid, $o, $go) {
+    if (get_user_meta($uid, 'cc_vx_mail_off', true)) return;
+    $q = get_option('cc_vx_mailq', []); $q = is_array($q) ? $q : [];
+    $q[] = ['uid' => (int) $uid, 'activity' => (string) ($o['activity'] ?? ''), 'text' => (string) ($o['text'] ?? ''), 'go' => $go, 'due' => cc_vx_mail_due(time() + 3 * HOUR_IN_SECONDS)];
+    update_option('cc_vx_mailq', array_slice($q, -200), false);
+}
+function cc_vx_mail_run() {
+    $q = get_option('cc_vx_mailq', []); if (!is_array($q) || !$q) return 0;
+    $keep = []; $sent = 0; $today = (new DateTime('now', new DateTimeZone('Europe/Dublin')))->format('Y-m-d');
+    foreach ($q as $it) {
+        if ($it['due'] > time()) { $keep[] = $it; continue; }
+        $uid = (int) $it['uid']; $u = get_userdata($uid);
+        if (!$u || get_user_meta($uid, 'cc_vx_mail_off', true) || get_user_meta($uid, 'cc_vx_mail_day', true) === $today) continue;
+        $seen = true;   // still unread in their bell = not seen yet
+        foreach (function_exists('cc_inbox_get') ? cc_inbox_get($uid) : [] as $x) if (($x['tag'] ?? '') === 'cc-vx-' . $it['activity'] && empty($x['read'])) { $seen = false; break; }
+        if ($seen) continue;
+        $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en'; $keepL = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = $l;
+        $T = ['en' => 'Matteo replied to your workout', 'it' => 'Matteo ha risposto al tuo allenamento', 'pt' => 'O Matteo respondeu ao teu treino', 'sl' => 'Matteo je odgovoril na tvoj trening', 'sk' => 'Matteo odpovedal na tvoj tréning'];
+        $h = cc_ath_mail_shell(sprintf(cc_vx_mail_w('hi', $l), esc_html($u->first_name ?: $u->display_name)),
+            esc_html(cc_vx_mail_w('p1', $l)) . '</p><p style="margin:0 0 22px;padding:12px 16px;border-left:3px solid #12a150;background:#f3f5f7;border-radius:0 10px 10px 0">' . nl2br(esc_html($it['text'])),
+            esc_html(cc_vx_mail_w('btn', $l)), $it['go'], '<p style="margin:22px 0 10px;font-size:14px;color:#6b7078">' . esc_html(cc_vx_mail_w('off', $l)) . '</p>');
+        $ok = wp_mail($u->user_email, $T[$l] ?? $T['en'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
+        $GLOBALS['cc_ath_lang'] = $keepL;
+        if ($ok) { update_user_meta($uid, 'cc_vx_mail_day', $today); $sent++; }
+    }
+    update_option('cc_vx_mailq', $keep, false);
+    return $sent;
+}
+add_action('cc_vx_mail_tick', 'cc_vx_mail_run');
+add_action('init', function () { if (!wp_next_scheduled('cc_vx_mail_tick')) wp_schedule_event(time() + 600, 'hourly', 'cc_vx_mail_tick'); });
+// the switch, at the bottom of the athlete's notifications panel (not in Matteo's own)
+add_filter('cc_bell_extra', function ($html, $uid, $coach) {
+    if ($coach) return $html;
+    $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en'; $on = !get_user_meta($uid, 'cc_vx_mail_off', true);
+    return $html . '<label class="bell-opt"><input type="checkbox"' . ($on ? ' checked' : '') . ' data-api="' . esc_url(rest_url('cc/v1/vx-mail')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"><span><b>' . esc_html(cc_vx_mail_w('opt', $l)) . '</b><small>' . esc_html(cc_vx_mail_w('optc', $l)) . '</small></span></label>'
+        . '<style>html body .bell-opt{display:flex;align-items:flex-start;gap:10px;margin:0 4px 8px;padding:6px 8px 12px;border-bottom:1px solid rgba(255,255,255,.12);cursor:pointer}html body .bell-opt input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:#12a150}'
+        . 'html body .bell-opt span{flex:1;min-width:0;display:grid;gap:3px}html body .bell-opt b{font-size:15px;line-height:1.35;color:#fff;font-weight:600}html body .bell-opt small{font-size:14px;line-height:1.4;color:#b8bec8}</style>'
+        . '<script>document.addEventListener("change",function(e){var c=e.target;if(!c.closest||!c.closest(".bell-opt"))return;fetch(c.dataset.api,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":c.dataset.nonce},body:JSON.stringify({on:c.checked?1:0})}).catch(function(){c.checked=!c.checked;});});</script>';
+}, 10, 3);
