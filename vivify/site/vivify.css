@@ -333,6 +333,11 @@ table.cmp{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
 .qa summary::after{content:"+";position:absolute;right:22px;top:50%;transform:translateY(-50%);font:400 26px/1 Montserrat,sans-serif;color:var(--aqua)}
 .qa[open] summary::after{content:"–"}
 .qa>div{padding:0 24px 8px;color:var(--text-2)}
+/* Marine 18 Nov: justify paragraphs site-wide where suited; centred, short and caption text keeps its alignment */
+p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
+.center p,p.center,.page-hero p,.bigquote,p.bigquote,.center .lead,footer p,.bcard p,.cal-note p,.cal-sample,.plan .after,.plan .notsure,.plan .usd,.cmp-note,
+.facts p,.wyg,.eyebrow,.pill,.tcard .name,.portrait p,p.muted:only-child{text-align:inherit;-webkit-hyphens:manual;hyphens:manual}
+.center .lead,.page-hero p{text-align:center}
 /* Marine 17 Nov: justified text inside boxes (as on her Wix site); hyphens keep phone lines even */
 .panel p,.pcard p,.plan p,.mrow .tx p,.cta p,.scard p,.bcard p,.author p,.qa>div p,.tcard blockquote,.intro p{text-align:justify;-webkit-hyphens:auto;hyphens:auto}
 .center p,.panel.center p,p.center,.facts p{text-align:center;-webkit-hyphens:manual;hyphens:manual}
