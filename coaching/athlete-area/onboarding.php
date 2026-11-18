@@ -562,6 +562,19 @@ function cc_f_purge($pid) {   // a former athlete only: the page, its private fi
     foreach (['cc_form_signed'] as $mk) { $m = json_decode((string) get_post_meta($pid, $mk, true), true) ?: []; foreach (['pdf_id', 'sig_id'] as $f) if (!empty($m[$f])) wp_delete_attachment((int) $m[$f], true); }
     return (bool) wp_delete_post($pid, true);
 }
+// Matteo 18 Nov ("delete the test athlete"): the same two steps as the Forms board buttons (end coaching, then delete for good),
+// callable by a coach over REST. Refuses unless "name" matches the page title exactly, so a wrong page id can never delete anyone.
+add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/athlete-purge', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $pid = (int) $r['page']; if (get_post_type($pid) !== 'cc_athlete') return new WP_Error('cc_none', 'No such athlete page', ['status' => 404]);
+        $title = preg_replace('/^Former athlete: /', '', get_post_field('post_title', $pid));
+        if (trim((string) $r['name']) === '' || trim((string) $r['name']) !== $title) return new WP_Error('cc_name', 'Name does not match this page', ['status' => 409]);
+        $uid = (int) get_post_meta($pid, 'cc_user', true);
+        if ($uid && !cc_f_end($pid)) return new WP_Error('cc_end', 'Could not remove the login', ['status' => 500]);
+        if (get_post_meta($pid, 'cc_user', true)) delete_post_meta($pid, 'cc_user');
+        return ['login_removed' => (bool) $uid, 'deleted' => cc_f_purge($pid)];
+    }]);
+});
 function cc_f_bulkbar($id, $act, $text, $confirm) {
     return '<form id="' . $id . '" class="rp-bulk rf-bulk" method="post" action="' . esc_url(admin_url('admin-post.php')) . '" data-confirm="' . esc_attr($confirm) . '"><input type="hidden" name="action" value="cc_form_bulk">'
          . '<input type="hidden" name="act" value="' . $act . '">' . wp_nonce_field('cc_form_bulk', '_wpnonce', false, false)
