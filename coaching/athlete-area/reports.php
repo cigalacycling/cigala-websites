@@ -36,7 +36,7 @@ function cc_r_go_live($rid) {   // publish; a live kind replaces the athlete's p
         foreach (get_posts(['post_type' => 'cc_report', 'post_status' => 'private', 'post_parent' => $p->post_parent, 'numberposts' => -1, 'exclude' => [$rid], 'meta_key' => 'cc_type', 'meta_value' => $t, 'fields' => 'ids']) as $old) cc_r_delete($old);
     foreach (cc_r_same_key($rid, 'private') as $old) cc_r_delete($old);   // same athlete + kind + key (one race, the training report): the new one replaces it
     // Matteo 17 Nov: a buzz on their phone, only if they turned notifications on themselves (push.php); never an email
-    if (function_exists('cc_push_athlete_page') && ($uid = (int) get_post_meta($p->post_parent, 'cc_user', true))) {
+    if (!get_post_meta($rid, 'cc_renewal', true) && function_exists('cc_push_athlete_page') && ($uid = (int) get_post_meta($p->post_parent, 'cc_user', true))) {   // renewal reviews: quiet
         $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($uid);
         cc_push_athlete_page($p->post_parent, cc_L('Your new report is ready: ', 'È pronto il tuo nuovo report: ') . cc_r_title(get_post($rid)), '', home_url('/' . CC_ATH_SLUG . '/') . ($t === 'season' ? '#season' : '#reports'), 'cc-report-' . $rid);
         $GLOBALS['cc_ath_lang'] = $keep;
@@ -69,6 +69,12 @@ add_action('rest_api_init', function () {
         cc_r_mail($rid, $me->user_email); return ['ok' => true, 'sent_to_yourself' => true];
     }]);
     register_rest_route('cc/v1', '/reports', ['methods' => 'GET', 'callback' => 'cc_r_list_rest', 'permission_callback' => 'cc_ath_is_coach']);
+    // Matteo 18 Nov: mark a review as the renewal one: publishing it sends no "report ready" email or notification (his Gmail renewal email covers it)
+    register_rest_route('cc/v1', '/report-renewal', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $id = (int) $r['id']; if (get_post_type($id) !== 'cc_report') return new WP_Error('cc_none', 'No such report', ['status' => 404]);
+        if ($r['off']) delete_post_meta($id, 'cc_renewal'); else update_post_meta($id, 'cc_renewal', 1);
+        return ['ok' => true, 'id' => $id, 'renewal' => (bool) get_post_meta($id, 'cc_renewal', true)];
+    }]);
     // Matteo 17 Nov: the hub chat can clear DRAFTS its tools made (e.g. the retired Training snapshot). Published reports are never deleted this way.
     register_rest_route('cc/v1', '/report/(?P<id>\d+)', ['methods' => 'DELETE', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
         $id = (int) $r['id'];
@@ -312,6 +318,7 @@ add_action('admin_post_cc_report_bulk', function () {   // Matteo 17 Nov: tick s
 function cc_r_delete($rid) { $fid = (int) get_post_meta($rid, 'cc_file', true); if ($fid) wp_delete_attachment($fid, true); wp_delete_post($rid, true); }
 function cc_r_mail($rid, $test_to = null, $dry = false) {   // "your new report is ready": the branded email in the athlete's language; $test_to: Matteo's "Send me a test email" (only to him)
     $p = get_post($rid); $u = get_userdata((int) get_post_meta($p->post_parent, 'cc_user', true)); if (!$u || !is_email($u->user_email)) return;
+    if (!$test_to && get_post_meta($rid, 'cc_renewal', true)) return;   // Matteo 18 Nov: a renewal review goes with his own renewal email from Gmail, never "your report is ready"
     $GLOBALS['cc_ath_lang'] = cc_ath_user_lang($u->ID); $it = $GLOBALS['cc_ath_lang'] === 'it'; $first = esc_html($u->first_name ?: $u->display_name); $t = get_post_meta($rid, 'cc_type', true);
     $link = home_url('/' . CC_ATH_SLUG . '/') . ($t === 'season' ? '#season' : '#reports');
     $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), $first),
