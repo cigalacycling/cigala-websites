@@ -255,8 +255,9 @@ nav.main li.lang a::after{display:none}
 @media (max-width:980px){.intro{grid-template-columns:1fr}}
 
 /* testimonials */
-.tgrid{columns:3 300px;column-gap:24px}
-.tcard{break-inside:avoid;margin:0 0 24px;padding:28px;position:relative}
+.tgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:24px}   /* Marine 18 Nov: rows, last row centred */
+.tcard{flex:0 1 calc((100% - 48px)/3);margin:0;padding:28px;position:relative}
+@media (max-width:980px){.tcard{flex-basis:calc((100% - 24px)/2)}}@media (max-width:640px){.tcard{flex-basis:100%}}
 .tcard .who{display:flex;gap:14px;align-items:center;margin-bottom:16px}
 .tcard .who img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--border-strong)}
 .tcard h2,.tcard .name{font:700 15px/1.3 Montserrat,sans-serif;text-transform:none;color:var(--text);letter-spacing:0}
@@ -653,7 +654,7 @@ def testimonials(h2_names=True, names=None):
     return f"""<section><div class="wrap">
  {head('Client stories', 'Athletes who fuel with Marine', tag=None, center=True)}
  <div class="tgrid" style="margin-top:36px">{cards}</div>
- <div class="center" style="margin-top:12px"><a class="btn btn-secondary" href="{GBP}" target="_blank" rel="noopener">{ICON['star']} Read our Google reviews</a></div></div></section>"""
+ </div></section>"""
 
 # ---------------------------------------------------------------- HOME
 def home():
@@ -692,7 +693,7 @@ def home():
 <section style="padding-top:24px"><div class="wrap">
  {head('More from Vivify Sports', 'Support for the whole athlete', tag=None, center=True)}
  <div class="g4" style="margin-top:32px">{sc}</div></div></section>
-{cta('Ready to fuel smarter?', 'A free 30-minute discovery call with Marine to talk through your training, goals and nutrition.', 'Book your free call', DISCOVERY)}
+{cta('Ready to fuel smarter?', 'A free 30-minute discovery call with Marine to talk about your nutrition, your goals and how you fuel your sport.', 'Book your free call', DISCOVERY)}
 """
     schema = {"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Vivify Sports", "url": LIVE,
               "email": EMAIL, "telephone": PHONE, "areaServed": "Worldwide", "address": {"@type": "PostalAddress", "addressLocality": "Wicklow", "addressCountry": "IE"},
@@ -706,6 +707,7 @@ def about():
               '<a href="https://www.stickybottle.com/races-results/irelands-lenehan-wins-gran-fondo-european-championships/" target="_blank" rel="noopener">European Gran Fondo Champion (2023)</a>',
               'Podium Elite Irish Road Nationals (2025)', 'Podium Elite Irish TT Nationals (2026)']
     quals = ['MSc in Sports Nutrition – Universidad Europea de Madrid (2025)', 'Professional Diploma in Sports Nutrition – Barça Innovation Hub (2023)',
+             'Two years of study in Dietetics &amp; Nutrition (BTS Diététique programme) – CNED, France',   # Marine 18 Nov: studied 2 years, did not sit the exam
              'Diploma in Spa &amp; Wellness and Massage Therapy, European Qualifications Framework level 5 – Suntaya, France (2020–2021)',   # Marine 17 Nov: Suntaya, technicien spa et bien-être + massage, BTS level
              '200-hour Yoga Alliance Teaching Certificate in Vinyasa &amp; Yin Yoga – House of OM (2021)']
     princ = [('Evidence-based, individualised nutrition', 'Every athlete is different. Your nutrition plan should reflect your training load, performance goals, nutritional requirements and personal preferences.'),

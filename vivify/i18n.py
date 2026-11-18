@@ -74,6 +74,7 @@ TR = {
  'Workshops & Talks': ('Ateliers et conférences', 'Workshop e conferenze'),
  'Nutrition talks for clubs, gyms and teams.': ('Conférences nutrition pour clubs, salles de sport et équipes.', 'Incontri sulla nutrizione per club, palestre e squadre.'),
  'Ready to fuel smarter?': ('Prêt à mieux vous alimenter ?', 'Pronto ad alimentarti meglio?'),
+ 'A free 30-minute discovery call with Marine to talk about your nutrition, your goals and how you fuel your sport.': ('Un appel découverte gratuit de 30 minutes avec Marine pour parler de votre alimentation, de vos objectifs et de la façon dont vous vous alimentez pour votre sport.', 'Una chiamata conoscitiva gratuita di 30 minuti con Marine per parlare della tua alimentazione, dei tuoi obiettivi e di come ti alimenti per il tuo sport.'),
  'A free 30-minute discovery call with Marine to talk through your training, goals and nutrition.':
   ('Un appel découverte gratuit de 30 minutes avec Marine pour parler de votre entraînement, de vos objectifs et de votre alimentation.',
    'Una chiamata conoscitiva gratuita di 30 minuti con Marine per parlare di allenamento, obiettivi e alimentazione.'),
@@ -138,6 +139,7 @@ TR = {
  'I’ve spent years building a well-rounded foundation to support the athletes I coach. My qualifications include:': ('J’ai construit au fil des années une formation complète pour accompagner les athlètes. Mes diplômes :', 'Negli anni ho costruito una formazione completa per seguire gli atleti. I miei titoli:'),
  'MSc in Sports Nutrition – Universidad Europea de Madrid (2025)': ('MSc en nutrition sportive – Universidad Europea de Madrid (2025)', 'MSc in Nutrizione Sportiva – Universidad Europea de Madrid (2025)'),
  'Professional Diploma in Sports Nutrition – Barça Innovation Hub (2023)': ('Diplôme professionnel en nutrition sportive – Barça Innovation Hub (2023)', 'Diploma professionale in nutrizione sportiva – Barça Innovation Hub (2023)'),
+ 'Two years of study in Dietetics & Nutrition (BTS Diététique programme) – CNED, France': ('Deux années d’études en diététique et nutrition (programme du BTS Diététique) – CNED, France', 'Due anni di studi in dietetica e nutrizione (programma del BTS Diététique) – CNED, Francia'),
  'Diploma in Spa & Wellness and Massage Therapy, European Qualifications Framework level 5 – Suntaya, France (2020–2021)': ('Technicien spa et bien-être et spécialisation massage, Cadre européen des certifications niveau 5 – Suntaya, France (2020–2021)', 'Diploma in spa, benessere e massoterapia, Quadro europeo delle qualifiche livello 5 – Suntaya, Francia (2020–2021)'),
  '200-hour Yoga Alliance Teaching Certificate in Vinyasa & Yin Yoga – House of OM (2021)': ('Certificat d’enseignement du yoga Yoga Alliance (200 h), vinyasa et yin yoga – House of OM (2021)', 'Certificato di insegnante di yoga Yoga Alliance (200 ore), vinyasa e yin yoga – House of OM (2021)'),
  'These tools enable me to support the entire athlete, not just their diet, but also their movement, mindset, and recovery.':
