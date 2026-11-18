@@ -361,7 +361,7 @@ function cc_gt_signup($pid) {   // when their 14 days started (GoCardless sign-u
     $c = json_decode((string) get_post_meta($pid, 'cc_contract', true), true); $t = !empty($c['signup']) ? strtotime($c['signup']) : 0;
     if (!$t && ($uid = (int) get_post_meta($pid, 'cc_user', true)) && ($u = get_userdata($uid))) $t = strtotime($u->user_registered . ' UTC');
     // Matteo 18 Nov: only for people who sign up from now on (it wasn't part of the deal for earlier sign-ups, e.g. Katka)
-    $from = (int) get_option('cc_gt_from'); if (!$from) { $from = time(); update_option('cc_gt_from', $from, false); }
+    $from = (int) get_option('cc_gt_from', 1795037361);   // 18 Nov 2026, 21:29 Irish time: Matteo's go
     $u2 = get_userdata((int) get_post_meta($pid, 'cc_user', true));
     if (!$u2 || strtotime($u2->user_registered . ' UTC') < $from) return 0;   // their hub login was made before the guarantee started
     return $t;
