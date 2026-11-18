@@ -47,7 +47,7 @@ function cc_vx_session_line($s) {
     if (!empty($s['stim'])) $bits[] = ucfirst(str_replace('_', ' ', (string) $s['stim']));
     if (!empty($s['rpe'])) $bits[] = 'RPE ' . $s['rpe'];
     if (!empty($s['feeling'])) $bits[] = 'feel ' . $s['feeling'] . '/5';
-    return '<b>' . esc_html($s['name'] ?: ucfirst((string) ($s['sport'] ?? 'Session'))) . '</b> <span>' . esc_html(implode(' · ', array_filter($bits))) . '</span>';
+    return '<b>' . esc_html($s['name'] ?: (!empty($s['plan']['title']) ? $s['plan']['title'] : ucfirst((string) ($s['sport'] ?? 'Session')))) . '</b> <span>' . esc_html(implode(' · ', array_filter($bits))) . '</span>';
 }
 function cc_vx_item($pid, $u, $queued) {
     $face = function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '';
