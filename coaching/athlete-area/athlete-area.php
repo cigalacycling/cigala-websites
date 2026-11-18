@@ -401,7 +401,11 @@ function cc_ath_inner() {
         . (!$coach && $view && function_exists('cc_ph_widget') ? '<div class="ath-hello">' . cc_ph_widget($view, 72, true, 'ath-me-ph') : '')
         // Matteo 17 Nov: the comma stays glued to the greeting (it slipped out of sight on phones)
         . '<h1><span class="ath-gw"><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>,</span> ' . '<span class="ath-nm">' . ($coach
-            ? '<span class="ath-nm-stack"><span>' . esc_html($cfirst) . '</span><span class="ath-coach-tag">Coach</span><span>' . esc_html($clast) . '</span></span>'
+            ? '<span class="ath-nm-stack"><span class="ath-coach-tag">Coach</span><span class="n1">' . esc_html($cfirst) . '</span><span class="n2">' . esc_html($clast) . '</span></span>'
+              . '<script>(function(){function fit(){var s=document.querySelector(".ath-nm-stack"),g=document.querySelector(".ath-greet");if(!s||!g)return;var t=g.firstChild;if(!t||t.nodeType!==3)return;'
+              . 'var i=t.textContent.indexOf(" ");if(i<0)return;var r=document.createRange();r.setStart(t,i+1);r.setEnd(t,i+2);var off=r.getBoundingClientRect().left-s.getBoundingClientRect().left;'
+              . 'var c=s.querySelector(".ath-coach-tag"),need=c?c.getBoundingClientRect().width+8:0;s.style.setProperty("--cc-off",Math.max(need,Math.round(off))+"px");}'
+              . 'fit();setTimeout(fit,400);setTimeout(fit,1500);addEventListener("load",fit);addEventListener("resize",fit);})();</script>'
             : esc_html($first)) . '</span></h1>'
         . (!$coach && $view && function_exists('cc_ph_widget') ? '</div>' . cc_ph_assets() : '')
         // Matteo 17 Nov: his own view drops the athlete line; both get live chips instead (what is new, the next race)
@@ -1054,7 +1058,11 @@ html .cc .ath-hero h1 .ath-nm { font-family: var(--head); font-weight: 400; text
 html .cc h1 .ath-greet { color: var(--green-text, #2bd47a); font-family: var(--head); }
 html .cc h1 .ath-coach-tag { font-size: .45em; color: #b8bec8; letter-spacing: .04em; vertical-align: text-top; margin-right: .15em; }
 /* Matteo 18 Nov: his coach home reads MATTEO, then a small "Coach" just below, then CIGALA in the same style as Matteo */
-html .cc h1 .ath-nm-stack { display: inline-flex; flex-direction: column; align-items: flex-start; vertical-align: top; line-height: 1; }
+/* Matteo 18 Nov (his sketch): MATTEO and CIGALA one under the other, starting under "EVENING"; the small COACH on their left, in the middle */
+html .cc h1 .ath-nm-stack { display: inline-grid; grid-template-columns: var(--cc-off, auto) auto; grid-template-rows: auto auto; align-items: center; column-gap: 0; vertical-align: top; line-height: 1; }
+html .cc h1 .ath-nm-stack .ath-coach-tag { grid-column: 1; grid-row: 1 / 3; align-self: center; justify-self: start; margin: 0 .3em 0 0 !important; }
+html .cc h1 .ath-nm-stack .n1 { grid-column: 2; grid-row: 1; }
+html .cc h1 .ath-nm-stack .n2 { grid-column: 2; grid-row: 2; }
 html .cc .ath-hero h1 .ath-nm .ath-nm-stack > span:not(.ath-coach-tag) { font-family: var(--head) !important; font-weight: 400 !important; text-transform: uppercase; color: #fff; line-height: 1.02; }
 html .cc h1 .ath-nm-stack .ath-coach-tag { margin: .12em 0 .1em; line-height: 1.1; }   /* raised, on the left of the name */   /* Matteo 17 Nov: a small "Coach" before his name, nothing else changed */
 html .cc .ath-lede { color: var(--text-2); font-size: 17px; line-height: 1.55; margin: 0 0 22px; max-width: 600px; }
