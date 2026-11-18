@@ -630,6 +630,10 @@ function cc_ath_live_chips($view, $coach, $nrep) {
             if ($n) $o .= $chip($n, $n === 1 ? $one : $many, add_query_arg('board', $board, $hub), 'ath-chip-go');
         }
         if (function_exists('cc_vx_open_count') && ($n = cc_vx_open_count())) $o .= $chip($n, $n === 1 ? 'Vekta message' : 'Vekta messages', add_query_arg('board', 'vekta', $hub), 'ath-chip-go');   // waiting in Vekta (laptop sync)
+        // Matteo 18 Nov: new sign-ups still waiting for their Skool invite + community welcome
+        $sk = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => 'cc_skool_due']);
+        $sk = array_values(array_filter($sk, function ($id) { return !get_post_meta($id, 'cc_skool_sent', true); }));
+        if ($sk) $o .= $chip(count($sk), count($sk) === 1 ? 'Skool invite to send' : 'Skool invites to send', add_query_arg('view', $sk[0], $hub), 'ath-chip-go');
         if ($o === '') $o = '<span class="ath-chip ath-chip-ok">✓ All caught up</span>';
         return '<div class="ath-chips ath-live">' . $o . '</div>';
     }

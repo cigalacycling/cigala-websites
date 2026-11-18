@@ -99,7 +99,8 @@ function cc_gc_handle($s, $c, $sim = false, $force = false) {   // $force: Matte
     $w = $sim ? cc_ath_welcome_mail($uid, null, true) : cc_ath_welcome_mail($uid);   // the simulator never emails anyone
     $info['welcome'] = is_wp_error($w) ? 'failed: ' . $w->get_error_message() : ($sim ? 'not sent (simulation)' : 'sent');
     $info['page'] = $pid; cc_gc_log('created', $info); cc_gc_tell($info, 'created', '', $sim);
-    if (!$sim && function_exists('cc_push_coaches')) cc_push_coaches('New athlete: ' . $info['name'], trim($info['sub_name'] . ' · ' . ($info['fee'] !== null ? $info['fee'] . ' ' . $info['currency'] : ''), ' ·'), add_query_arg('board', 'contracts', home_url('/' . CC_ATH_SLUG . '/')), 'cc-new');
+    // Matteo 18 Nov: the email in the notification (for the Skool invite), and it opens their page, where the Skool card is
+    if (!$sim && function_exists('cc_push_coaches')) cc_push_coaches('New athlete: ' . $info['name'], trim($email . ' · ' . $info['sub_name'] . ' · ' . ($info['fee'] !== null ? $info['fee'] . ' ' . $info['currency'] : ''), ' ·'), $pid ? add_query_arg('view', $pid, home_url('/' . CC_ATH_SLUG . '/')) : add_query_arg('board', 'contracts', home_url('/' . CC_ATH_SLUG . '/')), 'cc-new', (int) $pid);
     return ['result' => 'created', 'user' => $uid] + $info;
 }
 function cc_gc_lang($c) {   // GoCardless' customer language, else the country's
@@ -515,6 +516,7 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     if (!$coach || !$view || !get_post_meta($view, 'cc_skool_due', true) || get_post_meta($view, 'cc_skool_sent', true)) return $html;
     $uid = (int) get_post_meta($view, 'cc_user', true); $u = $uid ? get_userdata($uid) : null; if (!$u) return $html;
     return $html . '<div class="sk-card"><p><b>Skool</b><span>Invite <b>' . esc_html($u->user_email) . '</b> to the Cigala Cycling Collective on Skool, then tap the button: your community welcome email goes to ' . esc_html($u->first_name ?: $u->display_name) . ' (Italian for Italian athletes, English for everyone else).</span></p>'
+        . '<button type="button" class="btn btn-ghost sk-copy" data-email="' . esc_attr($u->user_email) . '" onclick="var b=this;navigator.clipboard&&navigator.clipboard.writeText(b.dataset.email).then(function(){b.textContent=\'✓ Copied\';setTimeout(function(){b.textContent=\'Copy email\';},2000);});">Copy email</button>'
         . '<a class="btn btn-ghost" href="' . esc_url(CC_SKOOL_URL) . '" target="_blank" rel="noopener">Open Skool</a><button type="button" class="btn btn-go sk-go" data-page="' . (int) $view . '" data-api="' . esc_url(rest_url('cc/v1/skool-sent')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '">Skool invite sent: email them</button><span class="sk-m" role="status"></span></div>'
         . '<style>html .cc .sk-card{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(43,212,122,.35);background:rgba(18,161,80,.08)}html .cc .sk-card p{margin:0;flex:1 1 260px;font-size:15px;color:#d0d6e0}html .cc .sk-card p>b{display:block;color:#fff;font-size:16px}html .cc .sk-card .btn{width:auto;margin:0}html .cc .sk-m{flex-basis:100%;font-size:15px;color:#2bd47a;font-weight:600}html .cc .sk-m:empty{display:none}</style>'
         . '<script>(function(){var b=document.querySelector(".sk-go");if(!b)return;b.addEventListener("click",function(){var m=b.parentNode.querySelector(".sk-m");b.disabled=true;m.textContent="…";'
