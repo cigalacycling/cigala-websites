@@ -599,7 +599,7 @@ def shell(file, body, schema=None):
    <li>{ICON['mail']}<a href="mailto:{EMAIL}">{EMAIL}</a></li>
    <li>{ICON['phone']}<a href="tel:{PHONE_TEL}">{PHONE}</a></li>
    <li>{ICON['pin']}<span>Wicklow, Ireland</span></li>
-   <li>{ICON['star']}<a href="{GBP}" target="_blank" rel="noopener">Google reviews</a></li></ul>
+   <li><span class="gstars" aria-hidden="true">{ICON['star'] * 5}</span><a href="{GBP}" target="_blank" rel="noopener">Google reviews</a></li></ul>
    <a class="social" href="{IG}" aria-label="Vivify Sports on Instagram">{ICON['ig']}</a></div>
  </div>
  <div class="wrap bottom"><span>© 2023 by Vivify Sports<span class="sep"> · </span>VAT {VAT}</span>   <a href="privacy-policy.html">Privacy Policy</a></div>
@@ -664,18 +664,24 @@ def testimonials(h2_names=True, names=None):
  </div></section>"""
 
 # ---------------------------------------------------------------- HOME
+def who_i_help():
+    """'Nutrition for endurance athletes' cards with photos, linking each sport page (Home and About)."""
+    who = [('cycling-nutritionist.html', 'Cyclists', 'Leisure to elite: road, gravel, track, MTB, CX', ('0e1488-2799dd6f68d6413ca857a962316', 'Cyclist riding a quiet country road in winter')),
+           ('triathlon-nutritionist.html', 'Triathletes', 'Ironman, 70.3 and shorter races', ('nsplsh-5aa897658f1e4fb8bd88bbd8b1654', 'Triathletes running during a race')),
+           ('race-fuelling-plan.html', 'Race day', 'A fuelling plan for your event', ('0e1488-45f685e5e5e54029b7cf7b5211aa', 'Cyclist eating an energy bar during a ride')),
+           ('online-sports-nutritionist.html', 'Worldwide', 'Online coaching, wherever you train', ('0e1488-a22022be24dc4c7893882498f30', 'Cyclist with a gravel bike on a hilltop'))]
+    return ('<section style="padding-top:24px"><div class="wrap">' + head('Who Marine works with', 'Nutrition for endurance athletes', tag=None, center=True)
+                  + '<div class="g4" style="margin-top:32px">' + ''.join(f'<a class="scard panel" href="{h}"><div class="ph">{img(ph[0], ph[1], w=640, h=480)}</div><div class="tx"><span class="eyebrow">{e(d)}</span><span class="h3">{e(t)}</span><span class="go">Learn more {ICON["arrow"]}</span></div></a>' for h, t, d, ph in who)
+                  + '</div></div></section>')
+
 def home():
     services = [
         ('massage-therapy.html', img('11062b-c7086e8444c14484a9e3ec96b46e', 'Deep Tissue Massage', w=640, h=427), 'Massage Therapy', 'Deep tissue, sports, cupping and Thai massage in Co. Wicklow & Dublin. Currently sold out.'),
         ('yoga.html', img('0e1488-a687b5ba8de7467fa18ece35f8a9', 'Yoga pose on a clifftop by the sea at sunset', w=640, h=424), 'Online Yoga', 'Yin, Vinyasa and yoga for cyclists.'),
-        ('recipies.html', img('0e1488-8cee9e1e3ac743dd828b4bd69d89', 'Raspberry Chia Seed pudding', w=640, h=363), 'E-Book', 'Breakfasts to ignite your potential: 30 recipes.'),
+        ('recipies.html', img('0e1488-8cee9e1e3ac743dd828b4bd69d89', 'Raspberry Chia Seed pudding', w=640, h=363), 'E-Book', 'Breakfasts to ignite your potential: 38 recipes.'),
         ('workshops.html', f'<span>{ICON["talk"]}</span>', 'Workshops & Talks', 'Nutrition talks for clubs, gyms and teams.'),
     ]
-    who = [('cycling-nutritionist.html', 'Cyclists', 'Leisure to elite: road, gravel, track, MTB, CX'), ('triathlon-nutritionist.html', 'Triathletes', 'Ironman, 70.3 and shorter races'),
-           ('race-fuelling-plan.html', 'Race day', 'A fuelling plan for your event'), ('online-sports-nutritionist.html', 'Worldwide', 'Online coaching, wherever you train')]
-    WHO_I_HELP = ('<section style="padding-top:24px"><div class="wrap">' + head('Who Marine works with', 'Nutrition for endurance athletes', tag=None, center=True)
-                  + '<div class="g4" style="margin-top:32px">' + ''.join(f'<a class="scard panel" href="{h}"><div class="tx"><span class="eyebrow">{e(d)}</span><span class="h3">{e(t)}</span><span class="go">Learn more {ICON["arrow"]}</span></div></a>' for h, t, d in who)
-                  + '</div></div></section>')
+    WHO_I_HELP = who_i_help()
     sc = ''.join(f'<a class="scard panel" href="{h}"><div class="ph">{im}</div><div class="tx"><span class="h3">{e(t)}</span><p class="muted">{e(d)}</p><span class="go">Learn more {ICON["arrow"]}</span></div></a>' for h, im, t, d in services)
     body = f"""
 <section class="hero">
@@ -694,9 +700,8 @@ def home():
  <div class="panel"><h3>Why work with Vivify Sports?</h3>
   {ticks(['MSc-qualified Sports Nutritionist', 'Professional WorldTour cycling experience', 'Individualised nutrition plans', 'Online coaching worldwide', 'Practical, science-based advice'])}</div>
 </div></section>
-{testimonials()}
-{google_reviews()}
 {WHO_I_HELP}
+{testimonials()}
 <section style="padding-top:24px"><div class="wrap">
  {head('More from Vivify Sports', 'Support for the whole athlete', tag=None, center=True)}
  <div class="g4" style="margin-top:32px">{sc}</div></div></section>
@@ -755,6 +760,7 @@ def about():
  <p>Whether you're preparing for your first endurance event or competing at an advanced level, my goal is to give you the knowledge, confidence and nutritional support to perform at your best.</p>
  <p>My aim is to make nutrition easier to understand, easier to implement and more effective in everyday life.</p></div>
 </div></section>
+{who_i_help()}
 <section class="center" style="padding-top:32px"><div class="wrap">
  <p class="bigquote">“You are unique, <span>simply and wonderfully you.</span>”</p>
  <p class="lead" style="margin-top:24px">Your uniqueness is your power. I believe in working with, not against, your body. Together, we’ll uncover what energizes you, makes you feel strong, and keeps you in sync with your goals.</p>
@@ -792,7 +798,12 @@ def philosophy():
                'Mountjoy et al. (2023). IOC consensus statement on Relative Energy Deficiency in Sport (REDs).',
                'Walsh (2018). Recommendations to maintain immune health in athletes. European Journal of Sport Science.',
                'Jeukendrup (2017). Training the gut for athletes. Sports Medicine.']
-    cards = ''.join(f'<div class="pcard panel"{" style=%sgrid-column:span 2%s" % (chr(34), chr(34)) if i == 4 else ""}><span class="num">{i+1}</span><span class="h3">{t}</span>' + ''.join(f'<p>{p}</p>' for p in ps) + '</div>' for i, (t, ps) in enumerate(P))
+    PH = [('0e1488-2182adb27d8841c4b9d2e42d758', 'Berry and nut porridge, a carbohydrate-rich breakfast for energy'),
+          ('11062b-adb55043aa3b41e79df25e7d245', 'Pasta salad with fresh vegetables, a balanced meal'),
+          ('protein-salmon-fillets', 'Fresh salmon fillets on a wooden board, a protein-rich food for muscle repair'),
+          ('e74ada189a6b4b21badde4860665a1ef', 'Superfood recovery smoothie rich in fruit'),
+          ('0e1488-5cd296938d634927be6ebf114c5', 'Bowl of granola with fruit and yogurt')]
+    cards = ''.join(f'<div class="pcard panel"{" style=%sgrid-column:span 2%s" % (chr(34), chr(34)) if i == 4 else ""}><div class="ph"{" style=%saspect-ratio:21/7%s" % (chr(34), chr(34)) if i == 4 else ""}>{img(PH[i][0], PH[i][1], w=900, h=506)}</div><span class="num">{i+1}</span><span class="h3">{t}</span>' + ''.join(f'<p>{p}</p>' for p in ps) + '</div>' for i, (t, ps) in enumerate(P))
     body = f"""
 <section class="page-hero"><div class="wrap">
  <p class="bigquote" style="font-size:clamp(26px,3.6vw,44px)">"Our food should be our medicine and <span>our medicine should be our food</span>"</p>
@@ -858,7 +869,8 @@ def coaching():
         if sold_out:
             cta_ = '<span class="btn btn-secondary pbtn" aria-disabled="true" style="cursor:default">Sold out for now</span>'
         else:
-            cta_ = f'<a class="btn {"btn-primary" if feat else "btn-outline"} pbtn" href="{href}"{ext}>{btn}</a>'
+            # Marine 18 Nov: all plan sign-ups the same colour; single sessions (assessment, follow-up) in lime to stand apart
+            cta_ = f'<a class="btn {"btn-primary" if dur else "btn-lime"} pbtn" href="{href}"{ext}>{btn}</a>'
             if href.startswith('https://buy.stripe.com'):   # Marine 17 Nov: Stripe confirmation links to her Cal.com calendar
                 cta_ += '<p class="after">Pay online, then choose your time in Marine’s calendar.</p>'
             elif href.startswith('https://cal.com/') and href != DISCOVERY:   # Cal.com paid event
@@ -902,10 +914,17 @@ def coaching():
  <div>{head('Personalised coaching', 'PERSONALIZED NUTRITION PLANS FOR YOU')}
   <p>As an athlete, you want to train hard, compete and be successful. Nutrition will help you do that. Your nutrition requirements are determined by your sport, your training &amp; your genetic make-up.These coaching plans are designed to give you personalized support to reach your goals. Partnered with Training Peaks, Vekta &amp; MyFitnessPal, Marine will build your nutrition plan weekly according to your training load. You will know exactly what to eat on &amp; off training. Whether you are looking to clean up your diet a bit, increase performance, support training adaptations, support your gut health, boost your energy levels or simply have a healthy relationship to food, VIFIFY SPORTS is here to help.</p>
   <p>By assessing your dietary patterns, relationship to food, macronutrient &amp; micronutrient balance, VIVIFY SPORTS will give you tailored solutions to reach your goals.</p></div>
+ <div><div class="side-photo">{img('0e1488-45f685e5e5e54029b7cf7b5211aa', 'Cyclist eating an energy bar during a ride', w=900, h=563)}</div>
  <div class="panel" style="padding:32px"><span class="eyebrow">What we look at</span>
   {chips(['Macronutrients requirements', 'Vitamins &amp; Minerals requirements', 'Supplements requirements', 'Sports specific requirements', 'Lifestyle advice', 'Healthy recipes', 'Craving control guidelines', 'IBS or gastro-intestinal issues', 'Immune health'])}</div>
-</div></section>
+</div></div></section>
 {EX.section(head, DISCOVERY)}
+<section class="section-tight" style="padding-top:8px"><div class="wrap"><div class="pstrip">
+ <figure>{img('0e1488-2182adb27d8841c4b9d2e42d758', 'Berry and nut porridge', w=600, h=750)}<figcaption>Fuel your training</figcaption></figure>
+ <figure>{img('0e1488-0f8685dc06d3448fb873620002d', 'Fish with roasted vegetables and asparagus', w=600, h=750)}<figcaption>Recover well</figcaption></figure>
+ <figure>{img('e74ada189a6b4b21badde4860665a1ef', 'Superfood recovery smoothie', w=600, h=750)}<figcaption>Stay healthy</figcaption></figure>
+ <figure>{img('0e1488-1a90881d935c4aa0bb75472c0e9', 'Healthy Greek yogurt pancakes with berries', w=600, h=750)}<figcaption>Enjoy every meal</figcaption></figure>
+</div></div></section>
 <section id="plans" style="padding-top:24px"><div class="wrap">
  {head('3-month coaching', 'Find the right plan', tag=None, center=True)}
  <div class="notes">{notes}</div>
@@ -1205,9 +1224,42 @@ def privacy():
 <section style="padding-top:8px"><div class="wrap article"><p style="color:var(--text);font-weight:700">{e(rows[0])}</p>{''.join(out)}</div></section>"""
     return shell('privacy-policy.html', body)
 
+EXTRA_CSS = r"""
+/* Marine 18 Nov: background pattern (nutrition + cycling line icons), stronger hover lift, yellow Google stars, single-session buttons */
+.vv-pattern,.page-hero,.cta,.intro .feature{position:relative;isolation:isolate}
+.vv-pattern::before,.page-hero::before,.cta::before,.intro .feature::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" fill="none" stroke="%23B1D8DD" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M22 52c0-20 15-32 34-32 0 21-14 34-34 32zM22 52l24-22"/%3E%3Cpath d="M128 18c-7 10-12 17-12 24a12 12 0 0 0 24 0c0-7-5-14-12-24z"/%3E%3Ccircle cx="46" cy="128" r="20"/%3E%3Ccircle cx="46" cy="128" r="3"/%3E%3Cpath d="M46 108v40M26 128h40M32 114l28 28M60 114l-28 28"/%3E%3Cpath d="M136 160v-48M136 124c-8-2-12-8-12-14 8 1 12 6 12 14zM136 124c8-2 12-8 12-14-8 1-12 6-12 14zM136 140c-8-2-12-8-12-14 8 1 12 6 12 14zM136 140c8-2 12-8 12-14-8 1-12 6-12 14z"/%3E%3Cpath d="M96 86c-9 0-14 7-14 15s6 17 14 17 14-9 14-17-5-15-14-15zM96 86c0-5 3-9 7-10"/%3E%3Ccircle cx="162" cy="74" r="1.6"/%3E%3Ccircle cx="84" cy="164" r="1.6"/%3E%3Ccircle cx="92" cy="30" r="1.6"/%3E%3Ccircle cx="12" cy="96" r="1.6"/%3E%3C/svg%3E') repeat;background-size:180px;opacity:.07}
+.page-hero::before{-webkit-mask-image:linear-gradient(180deg,#000 40%,transparent);mask-image:linear-gradient(180deg,#000 40%,transparent)}
+.cta::before,.intro .feature::before{opacity:.09}
+@media (hover:hover){
+ .pcard,.tcard,.plan,.scard,.bcard,.intro>div,.notes .note,.flagcard{transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .35s}
+ .pcard:hover,.tcard:hover,.plan:hover,.scard:hover,.bcard:hover,.intro>div:hover,.notes .note:hover{transform:translateY(-6px);border-color:rgba(177,216,221,.5);box-shadow:0 22px 46px rgba(0,0,0,.4),0 0 0 1px rgba(177,216,221,.1)}
+ .scard .ph img,.pcard .ph img,.pstrip img{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+ .scard:hover .ph img,.pcard:hover .ph img,.pstrip figure:hover img{transform:scale(1.06)}
+}
+footer.site .gstars{display:inline-flex;gap:1px;color:#FBBC04}
+footer.site .gstars svg{width:15px;height:15px}
+.btn-lime{background:var(--lime);color:#0C2226;border-color:var(--lime)}
+.btn-lime:hover{background:#93b81c;border-color:#93b81c;color:#0C2226;transform:translateY(-1px);box-shadow:0 10px 26px rgba(128,163,21,.3)}
+/* photos on cards and photo strips */
+.pcard .ph{margin:-30px -28px 22px;aspect-ratio:16/9;overflow:hidden;border-radius:var(--r) var(--r) 0 0;background:var(--teal)}
+.pcard .ph img{width:100%;height:100%;object-fit:cover}
+.pstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pstrip.three{grid-template-columns:repeat(3,1fr)}
+.pstrip figure{margin:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);aspect-ratio:4/5;background:var(--teal);position:relative}
+.pstrip img{width:100%;height:100%;object-fit:cover}
+.pstrip figcaption{position:absolute;left:0;right:0;bottom:0;padding:28px 16px 14px;background:linear-gradient(transparent,rgba(12,34,38,.92));font:600 12px/1.3 Montserrat,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--text)}
+@media (max-width:980px){.pstrip{grid-template-columns:1fr 1fr}.pstrip.three{grid-template-columns:1fr 1fr 1fr}}
+@media (max-width:640px){.pstrip,.pstrip.three{grid-template-columns:1fr 1fr;gap:10px}.pstrip.three figure:last-child{display:none}}
+.mfeature{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:44px;align-items:center}
+.mfeature .portrait img{aspect-ratio:4/5;object-fit:cover;width:100%;border-radius:16px}
+@media (max-width:860px){.mfeature{grid-template-columns:1fr;gap:26px}.mfeature .portrait{max-width:420px}}
+.side-photo{border-radius:16px;overflow:hidden;border:1px solid var(--border);margin-bottom:18px;aspect-ratio:16/10}
+.side-photo img{width:100%;height:100%;object-fit:cover}
+"""
+
 # ---------------------------------------------------------------- write
 if __name__ == '__main__':
-    open(OUT + 'vivify.css', 'w').write(CSS + EX.CSS)
+    open(OUT + 'vivify.css', 'w').write(CSS + EX.CSS + EXTRA_CSS)
     b, n, ni, nu = blog()
     for f, h in [('index.html', home()), ('about.html', about()), ('nutrition-nutrition-philosophy.html', philosophy()),
                  ('sports-nutritionist-ireland.html', coaching()), ('massage-therapy.html', massage()), ('yoga.html', yoga()),

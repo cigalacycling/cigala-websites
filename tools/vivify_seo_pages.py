@@ -122,7 +122,7 @@ def build(b):
   <div class="pcard panel"><span class="h3">Travel, camps &amp; altitude</span><p style="margin:0">Eating well at training camps, at altitude and on the road between races.</p></div>
  </div>
 </div></section>
-<section class="section-tight" style="padding-top:0"><div class="wrap center"><a class="btn btn-secondary" href="womens-cycling-nutrition.html">Women's cycling nutrition {ICON['arrow']}</a></div></section>
+<section class="section-tight" style="padding-top:0"><div class="wrap center"><a class="btn btn-primary" href="womens-cycling-nutrition.html">Women's cycling nutrition {ICON['arrow']}</a></div></section>
 <section style="padding-top:8px"><div class="wrap">
  {head('Gran Fondos, sportives, gravel and more', 'Fuel for your target event', center=True, lead='Whatever you are training for, your nutrition is built around the event: its distance, terrain, climbing, weather and feed stations. From the Wicklow 200 to the Marmotte, the Traka or the Cape Epic.')}
  <div class="g3" style="margin-top:28px"><div class="pcard panel"><span class="h3">Gran Fondos &amp; sportives</span><ul class="chips" style="margin-top:12px"><li>UCI Gran Fondo World Championships</li><li>Gran Fondo</li><li>Gran Fondo Strade Bianche</li><li>Gran Fondo Il Lombardia</li><li>Nove Colli</li><li>Gran Fondo Fausto Coppi</li><li>Gran Fondo Stelvio Santini</li><li>Wicklow 200</li><li>Ring of Kerry Charity Cycle</li><li>L’Étape du Tour</li><li>La Marmotte</li><li>Maratona dles Dolomites</li><li>Mallorca 312</li></ul></div><div class="pcard panel"><span class="h3">Gravel</span><ul class="chips" style="margin-top:12px"><li>UCI Gravel World Championships</li><li>The Traka</li><li>Unbound Gravel</li><li>Tuscany Trail</li><li>L’Eroica</li><li>Gravel Earth Series</li></ul></div><div class="pcard panel"><span class="h3">Mountain bike</span><ul class="chips" style="margin-top:12px"><li>XC and marathon (XCM) races</li><li>Absa Cape Epic</li><li>Enduro</li></ul></div><div class="pcard panel"><span class="h3">Cyclocross &amp; track</span><ul class="chips" style="margin-top:12px"><li>National cyclocross series</li><li>National championships</li><li>Track omnium and endurance events</li></ul></div><div class="pcard panel"><span class="h3">Multi-day &amp; ultra</span><ul class="chips" style="margin-top:12px"><li>Haute Route</li><li>Stage races</li><li>Ultra-distance and bikepacking events</li></ul></div></div>
@@ -355,9 +355,22 @@ def build(b):
 
     # ------------------------------------------------------------ TESTIMONIALS
     body = f"""
-{hero('What athletes say', 'Client Reviews', 'Cyclists and triathletes on working with Marine. She coaches athletes in the USA, Canada, Ireland and Finland.', btn=('Book your free discovery call', DISC))}
+{hero('What athletes say', 'Client Reviews', 'Cyclists and triathletes on working with Marine, from Ireland, the UK, the USA, Canada and across Europe.', photo='0e1488-d948fe5ba845478c91dd9ce03ef', alt='Cyclist lifting their bike to celebrate after a race in an Italian town square', btn=('Book your free discovery call', DISC))}
 {b.google_reviews()}
 {b.testimonials(h2_names=False)}
+<style>.hero img{{object-position:50% 12%}}</style>
+<section style="padding-top:24px"><div class="wrap mfeature">
+ <div class="portrait">{img('matteo-cigala-italia-podium', 'Matteo Cigala on the World Championships podium in the Italian national team kit, coached by Vivify Sports', w=1280, h=1600)}</div>
+ <div><span class="eyebrow">Fuelled by Vivify Sports</span><h2>On the world podium in the Italian kit</h2><span class="bar"></span>
+  <p>Matteo Cigala, road and gravel racer from Italy, on the World Championships podium in the Italian national team kit. Marine plans his day-to-day nutrition and his race fuelling, so he arrives at the start line ready to perform.</p>
+  <p>Whether you race for your country or ride your first Gran Fondo, the approach is the same: fuel the work you do, recover well and make it sustainable.</p>
+  <a class="btn btn-primary" href="sports-nutritionist-ireland.html">See coaching plans {ICON['arrow']}</a></div>
+</div></section>
+<section class="section-tight"><div class="wrap"><div class="pstrip three">
+ <figure>{img('0e1488-94c8f6c2bc35403c89535101d7f', 'Cyclist drinking from a bottle during a race', w=600, h=750)}<figcaption>Race day</figcaption></figure>
+ <figure>{img('0e1488-bea1a60dd96d43b4af51cddfa40', 'Gravel cyclist riding a forest trail', w=600, h=750)}<figcaption>Gravel</figcaption></figure>
+ <figure>{img('nsplsh-586757424e557349764f45', 'Road cyclist racing on a time trial bike', w=600, h=750)}<figcaption>Road</figcaption></figure>
+</div></div></section>
 <section class="section-tight"><div class="wrap center"><p class="lead">Worked with Marine? <a href="{b.GBP}" target="_blank" rel="noopener">Leave a review on Google</a>. It helps other athletes find Vivify Sports.</p></div></section>
 {cta('Your turn', 'Start with a free 30-minute discovery call.', 'Book your free call', DISC)}"""
     page('testimonials.html', body, [])

@@ -426,3 +426,34 @@ footer.site .bottom a{color:var(--text-3)}
 .cal-note ul,.cal-note ol{margin:4px 0 0;padding-left:18px}
 .cal-sup{margin:6px 0 0;display:grid;gap:2px}.cal-sup dt{font-weight:700;color:var(--text);margin-top:8px}.cal-sup dd{margin:0}
 .cal-sample{margin:0;color:var(--text-3);font-size:13px;font-style:italic}
+
+/* Marine 18 Nov: background pattern (nutrition + cycling line icons), stronger hover lift, yellow Google stars, single-session buttons */
+.vv-pattern,.page-hero,.cta,.intro .feature{position:relative;isolation:isolate}
+.vv-pattern::before,.page-hero::before,.cta::before,.intro .feature::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" fill="none" stroke="%23B1D8DD" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M22 52c0-20 15-32 34-32 0 21-14 34-34 32zM22 52l24-22"/%3E%3Cpath d="M128 18c-7 10-12 17-12 24a12 12 0 0 0 24 0c0-7-5-14-12-24z"/%3E%3Ccircle cx="46" cy="128" r="20"/%3E%3Ccircle cx="46" cy="128" r="3"/%3E%3Cpath d="M46 108v40M26 128h40M32 114l28 28M60 114l-28 28"/%3E%3Cpath d="M136 160v-48M136 124c-8-2-12-8-12-14 8 1 12 6 12 14zM136 124c8-2 12-8 12-14-8 1-12 6-12 14zM136 140c-8-2-12-8-12-14 8 1 12 6 12 14zM136 140c8-2 12-8 12-14-8 1-12 6-12 14z"/%3E%3Cpath d="M96 86c-9 0-14 7-14 15s6 17 14 17 14-9 14-17-5-15-14-15zM96 86c0-5 3-9 7-10"/%3E%3Ccircle cx="162" cy="74" r="1.6"/%3E%3Ccircle cx="84" cy="164" r="1.6"/%3E%3Ccircle cx="92" cy="30" r="1.6"/%3E%3Ccircle cx="12" cy="96" r="1.6"/%3E%3C/svg%3E') repeat;background-size:180px;opacity:.07}
+.page-hero::before{-webkit-mask-image:linear-gradient(180deg,#000 40%,transparent);mask-image:linear-gradient(180deg,#000 40%,transparent)}
+.cta::before,.intro .feature::before{opacity:.09}
+@media (hover:hover){
+ .pcard,.tcard,.plan,.scard,.bcard,.intro>div,.notes .note,.flagcard{transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .35s}
+ .pcard:hover,.tcard:hover,.plan:hover,.scard:hover,.bcard:hover,.intro>div:hover,.notes .note:hover{transform:translateY(-6px);border-color:rgba(177,216,221,.5);box-shadow:0 22px 46px rgba(0,0,0,.4),0 0 0 1px rgba(177,216,221,.1)}
+ .scard .ph img,.pcard .ph img,.pstrip img{transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+ .scard:hover .ph img,.pcard:hover .ph img,.pstrip figure:hover img{transform:scale(1.06)}
+}
+footer.site .gstars{display:inline-flex;gap:1px;color:#FBBC04}
+footer.site .gstars svg{width:15px;height:15px}
+.btn-lime{background:var(--lime);color:#0C2226;border-color:var(--lime)}
+.btn-lime:hover{background:#93b81c;border-color:#93b81c;color:#0C2226;transform:translateY(-1px);box-shadow:0 10px 26px rgba(128,163,21,.3)}
+/* photos on cards and photo strips */
+.pcard .ph{margin:-30px -28px 22px;aspect-ratio:16/9;overflow:hidden;border-radius:var(--r) var(--r) 0 0;background:var(--teal)}
+.pcard .ph img{width:100%;height:100%;object-fit:cover}
+.pstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pstrip.three{grid-template-columns:repeat(3,1fr)}
+.pstrip figure{margin:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);aspect-ratio:4/5;background:var(--teal);position:relative}
+.pstrip img{width:100%;height:100%;object-fit:cover}
+.pstrip figcaption{position:absolute;left:0;right:0;bottom:0;padding:28px 16px 14px;background:linear-gradient(transparent,rgba(12,34,38,.92));font:600 12px/1.3 Montserrat,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--text)}
+@media (max-width:980px){.pstrip{grid-template-columns:1fr 1fr}.pstrip.three{grid-template-columns:1fr 1fr 1fr}}
+@media (max-width:640px){.pstrip,.pstrip.three{grid-template-columns:1fr 1fr;gap:10px}.pstrip.three figure:last-child{display:none}}
+.mfeature{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:44px;align-items:center}
+.mfeature .portrait img{aspect-ratio:4/5;object-fit:cover;width:100%;border-radius:16px}
+@media (max-width:860px){.mfeature{grid-template-columns:1fr;gap:26px}.mfeature .portrait{max-width:420px}}
+.side-photo{border-radius:16px;overflow:hidden;border:1px solid var(--border);margin-bottom:18px;aspect-ratio:16/10}
+.side-photo img{width:100%;height:100%;object-fit:cover}

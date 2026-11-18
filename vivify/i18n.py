@@ -70,7 +70,7 @@ TR = {
    'Massaggio profondo, sportivo, coppettazione e massaggio thai nelle contee di Wicklow e Dublino. Al momento esaurito.'),
  'Online Yoga': ('Yoga en ligne', 'Yoga online'),
  'Yin, Vinyasa and yoga for cyclists.': ('Yin, Vinyasa et yoga pour cyclistes.', 'Yin, Vinyasa e yoga per ciclisti.'),
- 'Breakfasts to ignite your potential: 30 recipes.': ('Des petits-déjeuners pour révéler votre potentiel : 30 recettes (en anglais).', 'Colazioni per accendere il tuo potenziale: 30 ricette (in inglese).'),
+ 'Breakfasts to ignite your potential: 38 recipes.': ('Des petits-déjeuners pour révéler votre potentiel : 38 recettes (en anglais).', 'Colazioni per accendere il tuo potenziale: 38 ricette (in inglese).'),
  'Workshops & Talks': ('Ateliers et conférences', 'Workshop e conferenze'),
  'Nutrition talks for clubs, gyms and teams.': ('Conférences nutrition pour clubs, salles de sport et équipes.', 'Incontri sulla nutrizione per club, palestre e squadre.'),
  'Ready to fuel smarter?': ('Prêt à mieux vous alimenter ?', 'Pronto ad alimentarti meglio?'),

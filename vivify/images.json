@@ -848,7 +848,7 @@
  "0e1488_94c8f6c2bc35403c89535101d7f0d21a~mv2.jpg": {
   "orig": "https://static.wixstatic.com/media/0e1488_94c8f6c2bc35403c89535101d7f0d21a~mv2.jpg",
   "alts": [
-   "Water vs Sports Drinks : what is the best choice ?\u00a0"
+   "Water vs Sports Drinks : what is the best choice ? "
   ],
   "pages": [
    "blog"
@@ -1062,5 +1062,26 @@
    "all"
   ],
   "webp": "webp/vivify-logo-white.webp"
+ },
+ "matteo-cigala-italia-podium": {
+  "webp": "webp/matteo-cigala-italia-podium.webp",
+  "alts": [
+   "Matteo Cigala on the World Championships podium in the Italian national team kit, coached by Vivify Sports"
+  ],
+  "size": [
+   1280,
+   1600
+  ]
+ },
+ "protein-salmon-fillets": {
+  "webp": "webp/protein-salmon-fillets.webp",
+  "alts": [
+   "Fresh salmon fillets on a wooden board, a protein-rich food for muscle repair"
+  ],
+  "size": [
+   1024,
+   683
+  ],
+  "credit": "Jakub Kapusnak, CC0 (rawpixel via Openverse)"
  }
 }
