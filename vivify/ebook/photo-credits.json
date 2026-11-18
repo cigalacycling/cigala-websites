@@ -1,11 +1,9 @@
 {
  "apple-pie-overnight-oats": {
-  "src": "wp",
-  "url": "https://pd.w.org/2026/06/8986a2835b4718207.21031253.jpeg",
-  "link": "https://wordpress.org/photos/photo/8986a2835b/",
-  "license": "cc0",
-  "creator": "",
-  "desc": "A hand holding a teal bowl of overnight oats topped with diced papaya and sliced apple pie"
+  "src": "ov",
+  "license": "pdm",
+  "creator": "Kim Siever",
+  "link": "https://www.flickr.com/photos/57873306@N00/4626501723"
  },
  "greek-yogurt-pancakes": {
   "src": "ov",
@@ -16,12 +14,10 @@
   "desc": "Free pancake berries plate image"
  },
  "avocado-toast": {
-  "src": "wp",
-  "url": "https://pd.w.org/2026/05/5336a0e4fc75ba9a6.90888541.jpg",
-  "link": "https://wordpress.org/photos/photo/5336a0e4fc/",
+  "src": "ov",
   "license": "cc0",
-  "creator": "",
-  "desc": "An image of a breakfast plate with toast and avocado paste on its top, besides it is a dif"
+  "creator": "STIL",
+  "link": "https://stocksnap.io/photo/bread-avocado-D0XCQBQWS9"
  },
  "smoothie-bowl": {
   "src": "ov",
@@ -30,12 +26,10 @@
   "link": "https://www.rawpixel.com/image/5921785/photo-image-public-domain-blue-purple"
  },
  "egg-muffins": {
-  "src": "wp",
-  "url": "https://pd.w.org/2024/02/38865c14b023384d6.96914911.jpg",
-  "link": "https://wordpress.org/photos/photo/38865c14b0/",
-  "license": "cc0",
-  "creator": "",
-  "desc": "A vegetable frittata with cut tomatoes on top in a cast-iron pan."
+  "src": "ov",
+  "license": "pdm",
+  "creator": "Susan Dennis",
+  "link": "https://www.flickr.com/photos/23506271@N06/3272038613"
  },
  "tofu-scramble": {
   "src": "wp",
@@ -81,12 +75,6 @@
   "creator": "roland",
   "desc": "epic is your matchstick coffee breakfast hash"
  },
- "spinach-feta-oats": {
-  "src": "ov",
-  "license": "cc0",
-  "creator": null,
-  "link": "https://www.rawpixel.com/image/5928370/photo-image-background-public-domain-food"
- },
  "pb-banana-toast": {
   "src": "ov",
   "url": "https://images.rawpixel.com/editor_1024/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvc3YxOTQzNjItaW1hZ2Uta3d2dWlkNXUuanBn.jpg",
@@ -94,5 +82,11 @@
   "license": "cc0",
   "creator": null,
   "desc": "Free wheat bread toasted peanut"
+ },
+ "omelette": {
+  "src": "wp",
+  "license": "cc0",
+  "creator": "",
+  "link": "https://wordpress.org/photos/photo/194697966c/"
  }
 }

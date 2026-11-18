@@ -5,6 +5,7 @@
 - Text and macros come from Marine's PDF (vivify/ebook/source-text.txt -> recipes.json), unchanged.
 - Photos: Marine's own photos (vivify/ebook/img/*.jpg) are kept; recipes that had a placeholder use
   CC0 / public-domain photos (img/new-*.jpg, sources in photo-credits.json).
+- Savoury toasts moved to the savoury chapter; feta oats removed; chia tips = lactose-free swap (Marine's review).
 - Quinoa bowl moved into chapter 3 "Porridge & warm grains" with the oat and rice porridges.
 - One recipe per page, so there are no half-empty pages.
 """
@@ -14,14 +15,23 @@ E = ROOT + 'vivify/ebook/'
 R = json.load(open(E + 'recipes.json'))
 e = html.escape
 
+# --- Marine's edits (review of the first draft)
+R = [r for r in R if r['title'] != 'Savoury Spinach & Feta Oats']          # recipe removed
+LACTOSE = 'VIVIFY TIP For a lactose-free version, replace the Greek yogurt with coconut yogurt.'
+for r in R:
+    if r['cat'] == 'CHIA SEED PUDDINGS':
+        r['notes'] = [LACTOSE] + [x for x in r['notes'] if not x.startswith('VIVIFY TIP')]
+    r['notes'] = [x for x in r['notes'] if 'thick yogurt' not in x]          # no "use a thick yogurt" advice
+    r['ing'] = [x.replace('thick Greek', 'Greek') for x in r['ing']]
+    r['notes'] = [x.replace('thick Greek', 'Greek') for x in r['notes']]
+
 PHOTO = {
  'Raspberry Chia Seed Pudding': 'raspberry-chia', 'Mango Chia Seed Pudding': 'mango-chia', 'Banana & Cinnamon Chia Pudding': 'banana-chia',
  'Almond & Banana Overnight Oats': 'almond-banana-oats', 'Strawberry & Cream Overnight Oats': 'strawberry-oats',
  'Tiramisu Overnight Oats': 'tiramisu-oats', 'Chocolate, Peanut Butter & Banana Oats': 'choc-pb-oats',
  'Apple Pie Overnight Oats': 'new-apple-pie-overnight-oats',
  'Creamy Greek Yogurt Porridge': 'greek-yogurt-porridge', 'Berry & Nut Porridge': 'berry-nut-porridge',
- 'Baked Banana Porridge': 'baked-banana-porridge', 'Savoury Spinach & Feta Oats': 'new-spinach-feta-oats',
- 'Creamy Cinnamon Rice Porridge': 'new-rice-porridge', 'Warm Quinoa & Berry Bowl': 'new-quinoa-berry-bowl',
+ 'Baked Banana Porridge': 'baked-banana-porridge', 'Creamy Cinnamon Rice Porridge': 'new-rice-porridge', 'Warm Quinoa & Berry Bowl': 'new-quinoa-berry-bowl',
  'Crunchy Homemade Granola': 'granola', 'Berries, Granola & Honey Bowl': 'berries-granola-bowl', 'Tropical Yogurt Bowl': 'tropical-bowl',
  'Classic Fluffy American Pancakes': 'classic-pancakes', 'Oat Pancakes': 'oat-pancakes',
  'Cottage Cheese & Banana Pancakes': 'cottage-banana-pancakes', 'Fluffy Buttermilk Blueberry Pancakes': 'blueberry-pancakes',
@@ -30,12 +40,11 @@ PHOTO = {
  'Banana Bread': 'banana-bread', 'Peanut Butter & Banana Toast': 'new-pb-banana-toast', 'Ricotta & Blueberry Jam Toast': 'new-ricotta-blueberry-toast',
  'Spinach & Feta Egg Muffins': 'new-egg-muffins', 'Tofu Scramble on Toast': 'new-tofu-scramble',
  'Smoked Salmon & Scrambled Egg Toast': 'salmon-scrambled', 'Breakfast Quesadilla': 'new-quesadilla',
- 'Sweet Potato & Egg Hash': 'new-sweet-potato-hash', 'Classic Fluffy Omelette': 'omelette',
+ 'Sweet Potato & Egg Hash': 'new-sweet-potato-hash', 'Classic Fluffy Omelette': 'new-omelette',
  'Banoffee Smoothie': 'banoffee', 'Green Pineapple & Yogurt Smoothie': 'green-smoothie', 'Tropical Yogurt Smoothie': 'tropical-smoothie',
  'The Athlete’s Banana & Blueberry Smoothie': 'athlete-smoothie', 'Berry Recovery Smoothie Bowl': 'new-smoothie-bowl',
 }
 # photos that only show an ingredient (Marine's own, kept): show them a little shorter
-INGREDIENT_ONLY = {'almond-banana-oats', 'strawberry-oats', 'baked-banana-porridge', 'new-ricotta-blueberry-toast'}
 
 CHAPTERS = [
  ('Chia seed puddings', 'Fibre, plant omega-3 and make-ahead convenience', 'Chia seeds absorb liquid and thicken as they rest. Prepare these puddings the night before, then add yogurt and toppings in the morning.', ['CHIA SEED PUDDINGS']),
@@ -44,22 +53,27 @@ CHAPTERS = [
  ('Granola & breakfast bowls', 'Build a bowl around what you need', 'Granola adds crunch and energy. Pair it with yogurt, milk or skyr and fruit for a simple breakfast that can be adjusted to your appetite.', ['GRANOLA & BREAKFAST BOWLS']),
  ('Pancakes & French toast', 'Carbohydrate-rich favourites with satisfying toppings', 'Pancakes and French toast can be useful before or after training. Add yogurt, eggs, cottage cheese or milk to make the meal more substantial.', ['PANCAKES & FRENCH TOAST']),
  ('Toasts, breads & spreads', 'Simple staples and batch-friendly bakes', 'Bread-based breakfasts are quick to assemble and easy to adapt. Add eggs, cottage cheese, yogurt or fish when you want a more protein-rich option.', ['TOASTS, BREADS & SPREADS']),
- ('Eggs & savoury breakfasts', 'A savoury start with flexible portions', 'Eggs, tofu, fish and dairy foods make useful savoury breakfast ingredients. Add bread, potatoes or other carbohydrate foods to match the session ahead.', ['EGGS & SAVOURY BREAKFASTS']),
+ ('Eggs & savoury breakfasts', 'A savoury start with flexible portions', 'Eggs, tofu, fish and dairy foods make useful savoury breakfast ingredients. Add bread, potatoes or other carbohydrate foods to match the session ahead.', ['Cottage Cheese & Avocado Toast', 'Cottage Cheese & Smoked Salmon Toast', 'EGGS & SAVOURY BREAKFASTS']),
  ('Smoothies & smoothie bowls', 'Quick fuel and easy-to-adjust portions', 'Smoothies can be useful when appetite or time is limited. Blending fruit does not remove its carbohydrate content; pair smoothies with a protein-rich ingredient when they are intended to replace a meal.', ['SMOOTHIES & SMOOTHIE BOWLS']),
 ]
 
+MOVED = {k for c in CHAPTERS for k in c[3] if not k.isupper()}   # recipes moved to another chapter
 def chapter_recipes(keys):
     out = []
     for k in keys:
         if k.isupper():
-            out += [r for r in R if r['cat'] == k and r['title'] not in keys and not (k == 'GRANOLA & BREAKFAST BOWLS' and r['title'] == 'Warm Quinoa & Berry Bowl')]
+            out += [r for r in R if r['cat'] == k and r['title'] not in MOVED]
         else:
             out += [r for r in R if r['title'] == k]
     return out
 
 CH = [(t, s, i, chapter_recipes(k)) for t, s, i, k in CHAPTERS]
-assert sum(len(c[3]) for c in CH) == len(R) == 39
+assert sum(len(c[3]) for c in CH) == len(R) == 38
 assert all(r['title'] in PHOTO for r in R)
+
+POS = {'new-avocado-toast': '50% 70%'}   # crop focus for photos whose subject is off-centre
+def pos(n):
+    return f' style="object-position:{POS[n]}"' if n in POS else ''
 
 def img(n):
     return 'img/' + n + '.jpg'
@@ -139,7 +153,7 @@ page(f'''<span class="eyebrow">Meet your nutritionist</span><h2 class="pt">A wor
 
 # --- chapters
 for k, (t, s, intro, rs) in enumerate(CH):
-    cards = ''.join(f'<li><img src="{img(PHOTO[r["title"]])}" alt=""><span><b>{e(r["title"])}</b><small>{r["macros"][0]} kcal · {r["macros"][1].replace("g", " g")} protein</small></span><em>{r["page"]}</em></li>' for r in rs)
+    cards = ''.join(f'<li><img src="{img(PHOTO[r["title"]])}"{pos(PHOTO[r["title"]])} alt=""><span><b>{e(r["title"])}</b><small>{r["macros"][0]} kcal · {r["macros"][1].replace("g", " g")} protein</small></span><em>{r["page"]}</em></li>' for r in rs)
     page(f'''<div class="ch-no">{k + 1:02d}</div><span class="eyebrow">Chapter {k + 1:02d}</span><h2 class="ch">{e(t)}</h2>
 <p class="ch-sub">{e(s)}</p><p class="ch-intro">{e(intro)}</p>
 <span class="eyebrow small">In this chapter</span><ul class="ch-list n{len(rs)}">{cards}</ul>''', 'chapter')
@@ -148,7 +162,7 @@ for k, (t, s, intro, rs) in enumerate(CH):
         tips = ''.join(f'<div class="tip"><b>Vivify tip</b><p>{e(x[len("VIVIFY TIP "):])}</p></div>' for x in r['notes'] if x.startswith('VIVIFY TIP'))
         small = ' '.join(e(x) for x in r['notes'] if not x.startswith('VIVIFY TIP'))
         long = len(' '.join(r['method'])) > 520 or len(r['ing']) > 9
-        page(f'''<div class="photo"><img src="{img(ph)}" alt="{e(r['title'])}"></div>
+        page(f'''<div class="photo"><img src="{img(ph)}"{pos(ph)} alt="{e(r['title'])}"></div>
 <span class="eyebrow">{e(t)}</span><h2 class="rt">{e(r['title'])}</h2><p class="serves">{e(r['serves'])}</p>
 {macros(r['macros'], True)}
 <div class="cols"><div class="ing"><h3>Ingredients</h3><ul>{''.join(f'<li>{e(x)}</li>' for x in r['ing'])}</ul></div>
