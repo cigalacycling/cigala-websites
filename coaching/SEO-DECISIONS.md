@@ -580,3 +580,9 @@ Matteo created a "Claude live" application password on coaching.cigalacycling.co
 - Pictures rendered at 2x/3x from a made-up demo athlete on STAGING (Alex Doyle / Italian Luca Ferri), deleted afterwards. Live media: live-coaching/hub-media.json (hub-hero-v5[-it], hub-x-fan2[-it]).
 - Live process (tools/coaching_hub_section_live.py): backups in live-coaching/backup/hub-section-v4/; on each page only the <div class="hb ..."> block inside the HTML widget was swapped (the rest of the widget was checked identical to the staging build); 16 .hb4 CSS rules appended to the live kit 6; Elementor cache cleared.
 - Checked on live: 6 pages x 390/820/1440, no sideways scrolling, 1 H1, no broken images. Crawl before/after: 102 URLs, titles, meta, canonical, robots, H1/H2 and schema unchanged; only the hub images changed on the 6 pages (5 old images out, 2 new in, descriptive alt text).
+
+## 18 Nov 2026: 14-day money-back guarantee (Matteo via the athlete-hub chat), STAGING, Individual Packages only
+- Badge "14-day money-back guarantee" with a shield icon, under the sign-up button on cards that sign up through GoCardless. Today that is Advanced only: Premium is sold out (waiting list), and Basic pays through Shopify and has no hub.
+- Box under the T&C line: "Try your coaching risk-free. If you’re not happy in your first 14 days on Advanced or Premium, you get a full refund, no questions asked. Just ask from your Athlete Hub."
+- New FAQ "Is there a money-back guarantee?" (an H3; the H2 set is unchanged).
+- New copy: waiting for Matteo's OK on the wording, and on whether Basic is included, before live. tools/build_coaching_packages.py (GUAR_*). The UK/USA/Canada pages share the card builder and will get the badge on their next rebuild.

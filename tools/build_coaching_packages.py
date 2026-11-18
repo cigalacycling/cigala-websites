@@ -95,6 +95,13 @@ FOR = {
     'advanced': 'Access to Matteo as your coach, with weekly feedback, a monthly catch up call and deep training analysis, plus Vekta.',
     'premium': 'The closest coaching: daily contact, feedback and analysis, and a weekly catch up call.',
 }
+# 14-day money-back guarantee (Matteo 18 Nov 2026, via the athlete-hub chat): GoCardless sign-ups (Advanced, Premium) can ask
+# for a full refund in their first 14 days from the hub's Settings; Matteo refunds and cancels in GoCardless.
+GUAR_SHIELD = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.4 3 8.4 7 10 4-1.6 7-5.6 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>'
+GUAR_BADGE = '<span class="pkg-guar">' + GUAR_SHIELD + '14-day money-back guarantee</span>'
+GUAR_BOX = ('<div class="guar">' + GUAR_SHIELD + '<div><b>14-day money-back guarantee</b>'
+            '<p>Try your coaching risk-free. If you’re not happy in your first 14 days on Advanced or Premium, you get a full refund, no questions asked. '
+            'Just ask from your Athlete Hub.</p></div></div>')
 def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     top = list(own[key])
     if key in ('advanced', 'premium'): top.insert(1, ASSESS)
@@ -135,7 +142,7 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         <p class="pkg-for">{FOR[key]}</p>
         <div class="pkg-price"><b>{price}</b><span>{per}</span></div>
         <p class="pkg-sub">{sub}</p>
-        <div class="pkg-buy">{buttons}<a class="pkg-call" href="{CAL}" {EXT}>Not sure? Book a free consultation →</a></div>
+        <div class="pkg-buy">{buttons}{GUAR_BADGE if 'pay.gocardless.com' in buttons else ''}<a class="pkg-call" href="{CAL}" {EXT}>Not sure? Book a free consultation →</a></div>
         <div class="pkg-lab">What you get</div>
         <ul class="ticks">{items}</ul>
         <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
@@ -360,6 +367,7 @@ for l in faq_lines:
     elif cur and l.startswith('P: '): cur[1].append(l[3:])
     elif cur and l and not l.startswith(('TXT', '<')): cur[1][-1] += '\n' + l
 # Matteo 15 Nov: a question on working 1-to-1 with the nutritionist
+faq.append(('Is there a money-back guarantee?', ['Yes. Advanced and Premium come with a 14-day money-back guarantee. If you’re not happy in your first 14 days, you get a full refund, no questions asked: just ask from your Athlete Hub.']))   # Matteo 18 Nov
 faq.append(('Can I work 1-to-1 with a sports nutritionist?', ['Yes. Every package includes access to our sports nutritionist, Marine Lenehan (MSc, WorldTour professional cyclist), and Advanced and Premium include a nutritional consult and daily carb recommendations for your sessions.',
             'You can also add nutrition coaching with Marine: your daily macros and carbs per hour in the same calendar as your training, food diary reviews, and a fuelling plan for your races. [Read more about nutrition coaching](' + C + '/nutrition/#upgrade)']))
 faq_html = ''.join(f'<details{" open" if i == 0 else ""}><summary><h3>{E(q)}</h3></summary>' + ''.join(f'<p>{md(p).replace(chr(10), "<br>")}</p>' for p in ps) + '</details>' for i, (q, ps) in enumerate(faq))
@@ -416,6 +424,7 @@ MAIN = f'''<div class="hero hero-sm hero-lake">
     </div>
     {compare}
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="{C}/terms-conditions/" {EXT}>HERE</a></b></p>
+    {GUAR_BOX}
     {HUBSEC}
 
 
@@ -747,6 +756,13 @@ PCSS = '''<style>
 .hb-ex small { color: var(--text-3); font-size: 14px; padding: 0 4px; }
 .hb-ex i { font-style: normal; color: var(--green-text); font-weight: 600; font-size: 14px; padding: 4px 4px 0; }
 .hb-note { margin: 14px 0 0; color: var(--text-3); font-size: 13px; }
+/* 14-day money-back guarantee (Matteo 18 Nov) */
+.pkg-guar { display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--text); }
+.pkg-guar svg, .guar > svg { flex: none; width: 18px; height: 18px; fill: none; stroke: var(--green-text); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.guar { display: flex; gap: 16px; align-items: flex-start; max-width: 760px; margin: 22px auto 0; padding: 18px 22px; border: 1px solid rgba(0,154,68,.45); border-radius: 14px; background: linear-gradient(135deg, rgba(0,154,68,.12), rgba(0,154,68,0) 70%); }
+.guar > svg { width: 34px; height: 34px; padding: 6px; border-radius: 10px; background: var(--green-wash); }
+.guar b { color: var(--text); font-size: 16px; }
+.guar p { margin: 4px 0 0; color: var(--text-2); font-size: 14.5px; }
 .hb2 .hb-hero { display: block; width: 100%; height: auto; margin: 26px 0 8px; }
 .hb-sub { margin: 34px 0 16px; font: 600 13px/1.2 var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--green-text); }
 .hb-tour { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
