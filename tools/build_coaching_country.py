@@ -190,7 +190,7 @@ def build_country(key):
     facts = ''.join(f'<div class="note"><svg viewBox="0 0 24 24" aria-hidden="true">{IC[i]}</svg><p><b>{E(t)}</b><br>{E(d)}</p></div>' for i, t, d in c['facts'])
     steps = c['how'] + [('Nutrition, if you want it', 'Add 1-to-1 nutrition coaching with our sports nutritionist, Marine Lenehan (WorldTour Pro): daily macros, carbs per hour and notes in the same calendar as your training.')]
     how = ''.join(f'<li class="cn-day"><div class="cn-num"><span><small>STEP</small>{i + 1}</span></div><div class="panel cn-box"><h3 class="h-sm">{E(t)}</h3><p>{E(d)}</p></div></li>' for i, (t, d) in enumerate(steps))
-    faq = list(c['faq'].items()) + ([c['extra_q']] if c['extra_q'] else []) + [NUT_Q]
+    faq = list(c['faq'].items()) + ([c['extra_q']] if c['extra_q'] else []) + [P.GUAR_Q, NUT_Q]   # Matteo 18 Nov: guarantee on UK/USA/Canada too
     live_q = [l[5:].strip() for l in lines(T, 'H2: FREQUENTLY ASKED QUESTIONS', ('H1:',)) if l.startswith('TXT: ')]
     assert [q for q, _ in faq][:len(live_q)] == live_q, ([q for q, _ in faq], live_q)   # every live question kept, same wording
     faq_html = ''.join(f'<details{" open" if i == 0 else ""}><summary><h3>{E(q)}</h3></summary>' + ''.join(f'<p>{E(p)}</p>' for p in ps) + '</details>' for i, (q, ps) in enumerate(faq))
@@ -241,6 +241,7 @@ def build_country(key):
     {cad_note}
     <div class="pkgs">{cards}</div>
     <p class="terms"><b>By subscribing to any of our packages, you accept our Terms &amp; Conditions. View T&amp;C <a href="{C}/terms-conditions/" {EXT}>HERE</a></b></p>
+    {P.GUAR_BOX}
     {P.hub_section('en')}
     <div class="vk-logos cn-tp">
       <a class="vk-lock" href="https://joinvekta.com/partnerships" {EXT} aria-label="{E(live_alt('SDFASDFASDF'))}"><img src="{LOGO}" alt="" loading="lazy" width="64" height="64"><svg class="vk-x" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg><img src="{P.VKLOGO}" alt="{E(live_alt('SDFASDFASDF'))}" loading="lazy" width="531" height="139"></a>

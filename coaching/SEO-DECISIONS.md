@@ -604,3 +604,12 @@ Matteo created a "Claude live" application password on coaching.cigalacycling.co
 - HELD BACK: the talent "After you apply" panel under the photo (new copy, on staging only, waiting for Matteo's OK). To put it live: python3 -I tools/coaching_live_push_181126.py --with-panel (re-take the 896 backup first).
 - Live crawl before/after (102 URLs): titles, metas, H1/H2, schema unchanged; only addition: 28 flag alt texts on the home page. Checked at 390/820/1440: no sideways scroll, 1 H1, 16px fields; contact form unchanged.
 - Countries box: kept on the home page only (Matteo: "you choose"), so it doesn't repeat across pages.
+
+## 18 Nov 2026 (late): LIVE: guarantee on UK/USA/Canada and Italia; Italian catch-up call up front
+- Matteo: "yes on both. Also money back in the italian too" (guarantee on UK/USA/Canada; catch-up swap on the Italian page).
+- UK/USA/Canada (6098/6100/6102): badge on Advanced and Premium (never Basic), guarantee box under the T&C line, FAQ "Is there a money-back guarantee?" (also in the FAQPage structured data; nothing else in it changed).
+- Italia (6106): badge "14 giorni soddisfatti o rimborsati" on Avanzato and Premium; box: "Prova il coaching senza rischi. Se nei primi 14 giorni con Avanzato o Premium non sei soddisfatto, ricevi il rimborso completo, senza domande. Basta chiederlo dalla tua Area atleta."; FAQ "C’è una garanzia soddisfatti o rimborsati?".
+- Italia cards: the call line moved up right after the Area atleta line (visible without "Vedi tutte"), like the English cards; Premium gets "Chiamata di aggiornamento settimanale o quando necessario" (the Italian of the English Premium line; the Premium card text already says "una chiamata ogni settimana"). "Guida Nutrizionale" moves under "Vedi tutte".
+- Pushed with tools/coaching_live_widgets.py (new, generic: swaps only reviewed html widgets, stops if anything else differs). Backups: live-coaching/backup/guarantee-intl/.
+- Live crawl before/after (102 URLs): titles, metas, H1/H2, alts, schema types unchanged. 390/820/1440: no sideways scroll, 1 H1.
+- Noted, not changed: on Canada the Advanced button wraps to 2 lines (70px) at 390 and 1440 ("Subscribe to Advanced · $250 CAD/mo"); same before this change.

@@ -102,6 +102,7 @@ GUAR_BADGE = '<span class="pkg-guar">' + GUAR_SHIELD + '14-day money-back guaran
 GUAR_BOX = ('<div class="guar">' + GUAR_SHIELD + '<div><b>14-day money-back guarantee</b>'
             '<p>Try your coaching risk-free. If you’re not happy in your first 14 days on Advanced or Premium, you get a full refund, no questions asked. '
             'Just ask from your Athlete Hub.</p></div></div>')
+GUAR_Q = ('Is there a money-back guarantee?', ['Yes. Advanced and Premium come with a 14-day money-back guarantee. If you’re not happy in your first 14 days, you get a full refund, no questions asked: just ask from your Athlete Hub.'])
 def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     top = list(own[key])
     if key in ('advanced', 'premium'): top.insert(1, ASSESS)
@@ -367,7 +368,7 @@ for l in faq_lines:
     elif cur and l.startswith('P: '): cur[1].append(l[3:])
     elif cur and l and not l.startswith(('TXT', '<')): cur[1][-1] += '\n' + l
 # Matteo 15 Nov: a question on working 1-to-1 with the nutritionist
-faq.append(('Is there a money-back guarantee?', ['Yes. Advanced and Premium come with a 14-day money-back guarantee. If you’re not happy in your first 14 days, you get a full refund, no questions asked: just ask from your Athlete Hub.']))   # Matteo 18 Nov
+faq.append(GUAR_Q)   # Matteo 18 Nov
 faq.append(('Can I work 1-to-1 with a sports nutritionist?', ['Yes. Every package includes access to our sports nutritionist, Marine Lenehan (MSc, WorldTour professional cyclist), and Advanced and Premium include a nutritional consult and daily carb recommendations for your sessions.',
             'You can also add nutrition coaching with Marine: your daily macros and carbs per hour in the same calendar as your training, food diary reviews, and a fuelling plan for your races. [Read more about nutrition coaching](' + C + '/nutrition/#upgrade)']))
 faq_html = ''.join(f'<details{" open" if i == 0 else ""}><summary><h3>{E(q)}</h3></summary>' + ''.join(f'<p>{md(p).replace(chr(10), "<br>")}</p>' for p in ps) + '</details>' for i, (q, ps) in enumerate(faq))

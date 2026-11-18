@@ -60,11 +60,22 @@ PAY_B = next(u for k, u in pay.items() if k.startswith('Base')); PAY_A = next(u 
 FOR = {'base': 'Per chi sa seguire l’allenamento in autonomia, senza il contatto diretto con un coach.',
        'avanzato': 'Matteo come tuo coach: feedback settimanale, una chiamata al mese, analisi approfondita dei dati e Vekta incluso.',
        'premium': 'Il coaching più vicino: contatto, feedback e analisi ogni giorno, e una chiamata ogni settimana.'}
+# Matteo 18 Nov: 14-day money-back guarantee in Italian too (Avanzato, Premium; never Base: a 12-week plan built up front)
+GUAR_IT_BADGE = '<span class="pkg-guar">' + P.GUAR_SHIELD + '14 giorni soddisfatti o rimborsati</span>'
+GUAR_IT_BOX = ('<div class="guar">' + P.GUAR_SHIELD + '<div><b>14 giorni soddisfatti o rimborsati</b>'
+               '<p>Prova il coaching senza rischi. Se nei primi 14 giorni con Avanzato o Premium non sei soddisfatto, ricevi il rimborso completo, senza domande. '
+               'Basta chiederlo dalla tua Area atleta.</p></div></div>')
+GUAR_IT_Q = ('C’è una garanzia soddisfatti o rimborsati?', ['Sì. Avanzato e Premium hanno una garanzia di 14 giorni soddisfatti o rimborsati: se nei primi 14 giorni non sei soddisfatto, ricevi il rimborso completo, senza domande. Basta chiederlo dalla tua Area atleta.'])
+CALL_PREM_IT = 'Chiamata di aggiornamento settimanale o quando necessario'   # the English Premium line ("Weekly catch up call or when needed"), missing on the Italian list
 def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     inc = [t for c, t in FEAT[key] if 'excluded' not in c]; no = [t for c, t in FEAT[key] if 'excluded' in c]
+    if key == 'premium' and not any(t.startswith('Chiamata di aggiornamento') for t in inc): inc.append(CALL_PREM_IT)
     HUB_IT = 'Area atleta personale: i tuoi report, guide e strumenti'   # Matteo 16 Nov: Avanzato e Premium, non Base
     if key == 'base': no = no + [HUB_IT]
-    else: inc.insert(3, HUB_IT)
+    else:
+        inc.insert(3, HUB_IT)
+        # Matteo 18 Nov: the catch-up call up front (visible without "Vedi tutte"), right after the athlete area, like the English cards
+        CU = next(t for t in inc if t.startswith('Chiamata di aggiornamento')); inc.remove(CU); inc.insert(4, CU)
     items = ''.join(f'<li{" class=\"more\"" if i >= 12 else ""}>{E(x)}</li>' for i, x in enumerate(inc))
     if key != 'base': items = items.replace('>' + E(HUB_IT) + '<', '>' + E(HUB_IT) + '<', 1)
     if no:
@@ -77,7 +88,7 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         <p class="pkg-for">{FOR[key]}</p>
         <div class="pkg-price"><b>{price}</b><span>{per}</span></div>
         <p class="pkg-sub">{sub}</p>
-        <div class="pkg-buy">{buttons}<a class="pkg-call" href="{P.CAL}" {EXT}>Non sei sicuro? Prenota una consulenza gratuita →</a></div>
+        <div class="pkg-buy">{buttons}{GUAR_IT_BADGE if key in ('avanzato', 'premium') else ''}<a class="pkg-call" href="{P.CAL}" {EXT}>Non sei sicuro? Prenota una consulenza gratuita →</a></div>
         <div class="pkg-lab">Cosa include</div>
         <ul class="ticks">{items}</ul>
         <button type="button" class="pkg-all" aria-expanded="false"><span>Vedi tutte le caratteristiche</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
@@ -185,7 +196,7 @@ STEPS = [('Iscriviti o parlane prima', 'Scegli il pacchetto e iscriviti subito, 
          ('Nutrizione, se vuoi', 'Aggiungi il coaching nutrizionale 1-to-1 con la nostra nutrizionista sportiva Marine Lenehan (WorldTour Pro): macro giornalieri, carboidrati per ora e note nello stesso calendario.')]
 how = ''.join(f'<li class="cn-day"><div class="cn-num"><span><small>STEP</small>{i + 1}</span></div><div class="panel cn-box"><h3 class="h-sm">{E(t)}</h3><p>{E(d)}</p></div></li>' for i, (t, d) in enumerate(STEPS))
 NUT_Q = ('Posso lavorare 1-to-1 con una nutrizionista?', ['Sì. Puoi aggiungere il coaching nutrizionale con la nostra nutrizionista sportiva, Marine Lenehan: WorldTour Pro con LIDL-TREK, 2 volte campionessa nazionale irlandese e campionessa del mondo amatori gravel 2024. Scrive i tuoi macro giornalieri, i carboidrati per ora e le note nutrizionali nello stesso calendario del tuo allenamento, rivede il tuo diario alimentare e pianifica l’alimentazione in gara e il gut training. Il prezzo dipende da ciò che ti serve ed è concordato con Marine.'])
-faq = faq_live + [NUT_Q]
+faq = faq_live + [GUAR_IT_Q, NUT_Q]   # Matteo 18 Nov: guarantee question
 faq_html = ''.join(f'<details{" open" if i == 0 else ""}><summary><h3>{E(q)}</h3></summary>' + ''.join(f'<p>{E(p)}</p>' for p in ps) + '</details>' for i, (q, ps) in enumerate(faq))
 nums_html = ''.join(f'<div class="stat"><h3 class="n" data-count="{E(n)}">{E(n)}</h3><h4 class="l">{E(l)}</h4></div>' for n, l in nums)
 chips = lambda xs, cls: f'<ul class="{cls}">' + ''.join(f'<li>{md(x)}</li>' for x in xs) + '</ul>'
@@ -225,6 +236,7 @@ MAIN = f'''<div class="hero hero-sm">
     <div class="head"><div><div class="eyebrow">Scegli il tuo pacchetto</div><h2>PACCHETTI DI PREPARAZIONE</h2><div class="bar"></div></div></div>
     <div class="pkgs">{cards}</div>
     <p class="terms"><b>Iscrivendoti a uno dei nostri pacchetti, accetti i nostri Termini e Condizioni. Consulta i Termini e Condizioni <a href="{C}/terms-conditions/" {EXT}>QUI</a></b></p>
+    {GUAR_IT_BOX}
     {P.hub_section('it')}
     <div class="vk-logos cn-tp">
       <a class="vk-lock" href="https://joinvekta.com/partnerships" {EXT} aria-label="{E(live_alt('SDFASDFASDF'))}"><img src="{LOGO}" alt="" loading="lazy" width="64" height="64"><svg class="vk-x" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg><img src="{P.VKLOGO}" alt="{E(live_alt('SDFASDFASDF'))}" loading="lazy" width="531" height="139"></a>
