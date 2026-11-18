@@ -631,7 +631,16 @@ def talent():
         <li>{ic(I['user'])}<span>For riders aged 15 to 22</span></li>
         <li>{ic(I['chat'])}<span>A video call or face to face interview might be requested before getting started</span></li>
         <li>{ic(I['star'])}<span>Limited availability</span></li>
-      </ul>'''
+      </ul>
+      <div class="panel tl-next">   <!-- Matteo 18 Nov: more details under the photo, next to the longer application form -->
+        <div class="eyebrow">After you apply</div>
+        <ol>
+          <li><b>I read every application myself</b><span>Your power numbers, racing history and goals.</span></li>
+          <li><b>If you fit, we talk</b><span>A short video call or a face-to-face chat.</span></li>
+          <li><b>You join at the talent price</b><span>€119.20 a month, 20% off the Advanced Package.</span></li>
+        </ol>
+        <p class="tl-tip">Tip: the more you tell me (power numbers, results, races), the better I can judge.</p>
+      </div>'''
     MAIN = f'''<div class="hero hero-sm tl-hero">
   <img src="{img('imgi_17_JKPi1bTj', 'talent-hero-ras')}" alt="{E(live_alt('imgi_17_JKPi1bTj'))}" style="object-position:60% 30%">
   <div class="in">
@@ -994,6 +1003,14 @@ a.ct-card:hover { border-color: rgba(0,154,68,.7); }
 .bf-gal .bf-g, .bf-gal .bf-g img { width: 100%; height: 100%; }
 .bf-gal img { object-fit: cover; }
 .bf-info { padding: 22px; display: grid; gap: 14px; }
+.tl-next { margin-top: 18px; padding: 22px; }
+.tl-next .eyebrow { margin: 0 0 12px; }
+.tl-next ol { list-style: none; counter-reset: tn; margin: 0; padding: 0; display: grid; gap: 14px; }
+.tl-next li { counter-increment: tn; position: relative; padding-left: 42px; display: grid; gap: 2px; }
+.tl-next li::before { content: counter(tn); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font: 700 13px var(--body); }
+.tl-next li b { color: var(--text); font-size: 15.5px; }
+.tl-next li span { color: var(--text-2); font-size: 14px; }
+.tl-tip { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--border); color: var(--text-3); font-size: 13px; }
 .bf-info h3 { margin: 0; }
 .bf-cost { padding-top: 12px; border-top: 1px solid var(--border); color: var(--text-2); }
 .bf-cost b { color: var(--text); }

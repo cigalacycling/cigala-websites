@@ -542,6 +542,14 @@ a.ct-card:hover { border-color: rgba(0,154,68,.7); }
 .bf-gal .bf-g, .bf-gal .bf-g img { width: 100%; height: 100%; }
 .bf-gal img { object-fit: cover; }
 .bf-info { padding: 22px; display: grid; gap: 14px; }
+.tl-next { margin-top: 18px; padding: 22px; }
+.tl-next .eyebrow { margin: 0 0 12px; }
+.tl-next ol { list-style: none; counter-reset: tn; margin: 0; padding: 0; display: grid; gap: 14px; }
+.tl-next li { counter-increment: tn; position: relative; padding-left: 42px; display: grid; gap: 2px; }
+.tl-next li::before { content: counter(tn); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--green); color: #fff; font: 700 13px var(--body); }
+.tl-next li b { color: var(--text); font-size: 15.5px; }
+.tl-next li span { color: var(--text-2); font-size: 14px; }
+.tl-tip { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--border); color: var(--text-3); font-size: 13px; }
 .bf-info h3 { margin: 0; }
 .bf-cost { padding-top: 12px; border-top: 1px solid var(--border); color: var(--text-2); }
 .bf-cost b { color: var(--text); }
@@ -735,6 +743,7 @@ a.tl-aj { text-decoration: none; }
       <a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a>
       <a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
     </nav>
+    <a class="nav-login" href="https://coaching.cigalacycling.com/athletes/" target="_blank" rel="noopener" aria-label="Athlete login" title="Athlete login"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></a>
     <a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book Consultation</a>
     <details class="burger" id="menu-mobile">
       <summary>Menu</summary>
@@ -745,6 +754,7 @@ a.tl-aj { text-decoration: none; }
         <details class="sub"><summary>Services</summary><div class="sub-links"><a href="https://coaching.cigalacycling.com/testing/" target="_blank" rel="noopener">INSCYD Testing</a><a href="https://coaching.cigalacycling.com/nutrition/" target="_blank" rel="noopener">Nutrition</a><a href="https://coaching.cigalacycling.com/bike-fitting/" target="_blank" rel="noopener">Bike Fit</a><a href="https://coaching.cigalacycling.com/talent-scout/" target="_blank" rel="noopener">Talent Programme</a><a href="https://coaching.cigalacycling.com/club-talk/" target="_blank" rel="noopener">Workshops</a><a href="https://coaching.cigalacycling.com/tools/" target="_blank" rel="noopener">Free Training Tools</a></div></details>
         <details class="sub"><summary>Results</summary><div class="sub-links"><a href="https://coaching.cigalacycling.com/testimonials/" target="_blank" rel="noopener">Testimonials</a><a href="https://coaching.cigalacycling.com/case-studies/" target="_blank" rel="noopener">Case Studies</a></div></details>
         <a href="https://coaching.cigalacycling.com/blog/" target="_blank" rel="noopener">Blog</a><a href="https://tours.cigalacycling.com/" target="_blank" rel="noopener">Bike Tours</a><a href="https://retail.cigalacycling.com/" target="_blank" rel="noopener">Shop</a><a href="https://coaching.cigalacycling.com/contact/" target="_blank" rel="noopener">Contact</a>
+        <div class="mob-ctas"><a class="btn btn-go" href="https://calendly.com/cigalacycling" target="_blank" rel="noopener">Book a free consultation</a><a class="mob-login" href="https://coaching.cigalacycling.com/athletes/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>Athlete login</a></div>
       </nav>
     </details>
   </div>
@@ -840,7 +850,16 @@ a.tl-aj { text-decoration: none; }
         <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg><span>For riders aged 15 to 22</span></li>
         <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg><span>A video call or face to face interview might be requested before getting started</span></li>
         <li><svg class="sv-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg><span>Limited availability</span></li>
-      </ul></div><!--/side-->
+      </ul>
+      <div class="panel tl-next">   <!-- Matteo 18 Nov: more details under the photo, next to the longer application form -->
+        <div class="eyebrow">After you apply</div>
+        <ol>
+          <li><b>I read every application myself</b><span>Your power numbers, racing history and goals.</span></li>
+          <li><b>If you fit, we talk</b><span>A short video call or a face-to-face chat.</span></li>
+          <li><b>You join at the talent price</b><span>€119.20 a month, 20% off the Advanced Package.</span></li>
+        </ol>
+        <p class="tl-tip">Tip: the more you tell me (power numbers, results, races), the better I can judge.</p>
+      </div></div><!--/side-->
     <div>
       <div class="eyebrow">Apply to the programme</div>
       <h2 class="h-sec">LET'S WORK TOGETHER</h2>
@@ -877,6 +896,7 @@ a.tl-aj { text-decoration: none; }
     <span>© 2026 Cigala Cycling Ltd · Registered in Ireland No. 675577 · VAT IE3699893CH</span>
     <a href="https://coaching.cigalacycling.com/terms-conditions/" target="_blank" rel="noopener">Terms &amp; Conditions</a>
     <a href="https://coaching.cigalacycling.com/privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a>
+    <a href="https://coaching.cigalacycling.com/athletes/" target="_blank" rel="noopener">Athlete login</a>
     <details class="intl-dd"><summary>International coaching</summary>
       <ul class="intl"><li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-uk/" target="_blank" rel="noopener">Cycling Coach UK</a></h2></li><li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-usa/" target="_blank" rel="noopener">Cycling Coach USA</a></h2></li><li><h2><a href="https://coaching.cigalacycling.com/cycling-coach-canada/" target="_blank" rel="noopener">Cycling Coach Canada</a></h2></li><li><h2><a href="https://coaching.cigalacycling.com/preparatore-di-ciclismo-italia/" target="_blank" rel="noopener">Preparatore di Ciclismo Italia</a></h2></li></ul>
     </details>
