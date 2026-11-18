@@ -569,3 +569,8 @@ Matteo created a "Claude live" application password on coaching.cigalacycling.co
   5. The pages were pushed from the staging build, with the domain swapped.
 - Checked on live: 6 pages × 390/820/1440 px, no sideways scrolling, 1 H1, no broken images. Title, meta, canonical, robots, H1/H2 and alt texts are unchanged against crawl-live-2026-11-16. The only schema change is the BreadcrumbList added on 16 Nov.
 - Page order of Individual Packages reviewed; no change needed.
+
+## 18 Nov 2026: package cards, catch-up call up front (Matteo)
+- Advanced and Premium cards on Individual, UK, USA and Canada: "Monthly/Weekly catch up call or when needed" swapped with "Race & Pacing Strategy". The catch-up call is now line 6 (visible); race strategy moves under "See all". No wording changed.
+- Triathlon is unchanged: its catch-up call was already visible (line 9) and race strategy leads there on purpose.
+- Live and staging: only the two <li> lines in each card were swapped in the page data (backup live-coaching/backup/catchup-swap/). The rest of each page is untouched, because the hub section on those pages is now handled by the athlete-hub chat. Builder: tools/build_coaching_packages.py card().

@@ -115,6 +115,10 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
     if key != 'basic': inc.insert(4, HUB)   # right after the nutrition consult, so it shows without "See all"
     AZ = 'Adaptive Training Zones changing weekly'   # now a coached-only line (not in Basic), so show it with the other differences
     if key != 'basic' and AZ in inc: inc.remove(AZ); inc.insert(11, AZ)
+    # Matteo 18 Nov: the catch-up call up front, in the place of Race & Pacing Strategy (which moves under "See all")
+    CU = next((x for x in inc if 'catch up call' in x.lower()), None)
+    if key != 'basic' and CU and 'Race Strategy' in inc:
+        i, j = inc.index('Race Strategy'), inc.index(CU); inc[i], inc[j] = inc[j], inc[i]
     LBL = {'Race Strategy': 'Race & Pacing Strategy',   # Matteo 15 Nov: pacing on the same line
            'Access to World Class Nutritionist & Mental Coach': 'Access to work 1-to-1 with our World Class Nutritionist & Mental Coach'}
     items = ''.join(f'<li{" class=\"more\"" if i >= SHOW else ""}>{E(LBL.get(x, x))}</li>' for i, x in enumerate(inc))
