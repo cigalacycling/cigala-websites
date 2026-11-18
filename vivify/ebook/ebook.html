@@ -1,0 +1,417 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Breakfasts to Ignite Your Potential | Vivify Sports</title><link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"><style>
+@page{size:A4;margin:0}
+:root{--bg:#0C2226;--teal:#19444B;--panel:#123338;--border:rgba(177,216,221,.16);--text:#f4f8f8;--text-2:#d2e1e3;--text-3:#8fb0b4;--aqua:#B1D8DD;--lime:#80A315;--lime-text:#9cc21f}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+body{font:10.5pt/1.6 Montserrat,sans-serif;color:var(--text-2);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;padding:18mm 18mm 22mm;page-break-after:always;break-after:page;
+ background:radial-gradient(140mm 90mm at 100% 0,rgba(177,216,221,.08),transparent 70%),radial-gradient(120mm 90mm at 0 100%,rgba(128,163,21,.07),transparent 70%),var(--bg)}
+.page:last-child{page-break-after:auto;break-after:auto}
+h1,h2,h3{font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;color:var(--text);margin:0;line-height:1.05;letter-spacing:.01em}
+p{margin:0 0 3.2mm;text-align:justify;hyphens:auto}
+.eyebrow{display:block;font:600 8pt/1.4 Montserrat,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--lime-text);margin:0 0 2.5mm}
+.eyebrow.small{margin-top:7mm}
+.pt{font-size:34pt;margin-bottom:6mm}
+.pt::after,.ch::after{content:"";display:block;width:16mm;height:1mm;background:var(--aqua);border-radius:1mm;margin-top:4mm}
+.foot{flex:none!important;position:absolute;left:18mm;right:18mm;bottom:9mm;display:flex;justify-content:space-between;border-top:1px solid var(--border);padding-top:2.5mm;font:600 7pt/1 Montserrat,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
+.foot b{color:var(--aqua);font-weight:600}
+/* cover */
+.cover{padding:0}
+.cover-photos{display:grid;grid-template-columns:1fr 1.25fr 1fr;height:132mm;gap:0}
+.cover-photos img{width:100%;height:100%;object-fit:cover}
+.cover-photos::after{content:"";position:absolute;left:0;right:0;top:80mm;height:53mm;background:linear-gradient(transparent,var(--bg))}
+.cover-body{position:relative;padding:0 18mm;margin-top:-8mm;z-index:2}
+.cover .logo{width:30mm;margin-bottom:8mm}
+.cover h1{font-size:52pt;line-height:.98;margin:2mm 0 6mm}
+.cover h1 em{font-style:normal;color:var(--aqua)}
+.lead{font-size:13pt;color:var(--text);text-align:left}
+.by{font:600 9pt/1.4 Montserrat,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-top:10mm;border-top:1px solid var(--border);padding-top:5mm;text-align:left}
+/* contents */
+.toc{list-style:none;margin:2mm 0 0;padding:0}
+.toc li{display:grid;grid-template-columns:14mm 1fr 14mm;align-items:center;padding:3.6mm 0;border-bottom:1px solid var(--border)}
+.toc .no{font:400 17pt/1 Anton,sans-serif;color:var(--lime-text)}
+.toc b{display:block;font:400 14pt/1.15 Anton,sans-serif;text-transform:uppercase;color:var(--text)}
+.toc small{display:block;color:var(--text-3);font-size:8.5pt;margin-top:1mm}
+.toc .pg{text-align:right;font:600 11pt/1 Montserrat,sans-serif;color:var(--aqua)}
+/* balanced */
+.dense p{font-size:9.6pt;margin-bottom:2.6mm}
+.groups{display:grid;grid-template-columns:1fr 1fr;gap:3mm;margin:3mm 0 5mm}
+.groups div{background:var(--panel);border:1px solid var(--border);border-radius:3mm;padding:3.5mm 4.5mm;border-top:1mm solid var(--lime)}
+.groups h3{font-size:12pt;margin-bottom:1.5mm}
+.groups p{margin:0;text-align:left}
+.sub{font-size:15pt;margin:4mm 0 2.5mm;color:var(--aqua)}
+.callout,.tip{background:rgba(128,163,21,.12);border-left:1mm solid var(--lime);border-radius:0 3mm 3mm 0;padding:3.5mm 5mm;margin:3mm 0}
+.callout b,.tip b{display:block;font:600 8pt/1.4 Montserrat,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--lime-text);margin-bottom:1mm}
+.callout p,.tip p{margin:0}
+.dots{margin:3mm 0 0;padding-left:5mm;font-size:9.2pt}
+.dots li{margin-bottom:1.4mm;text-align:justify}
+.dots li::marker{color:var(--lime-text)}
+/* macros */
+.mac{display:grid;grid-template-columns:repeat(4,1fr);gap:2.5mm;margin:2mm 0 3mm}
+.mac div{background:var(--panel);border:1px solid var(--border);border-radius:3mm;text-align:center;padding:2.6mm 1mm}
+.mac b{display:block;font:400 17pt/1 Anton,sans-serif;color:var(--text)}
+.mac span{display:block;font:600 6.8pt/1 Montserrat,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--aqua);margin-top:1.6mm}
+.mac div:first-child{background:var(--aqua);border-color:var(--aqua)}
+.mac div:first-child b{color:var(--bg)}.mac div:first-child span{color:var(--teal)}
+/* author */
+.author{display:grid;grid-template-columns:62mm 1fr;gap:9mm;align-items:start}
+.author img{width:100%;border-radius:4mm;border:1px solid var(--border)}
+.author p{font-size:11.5pt}
+.enjoy{font:400 22pt/1 Anton,sans-serif!important;text-transform:uppercase;color:var(--aqua);margin-top:5mm}
+.quote{margin-top:12mm;background:var(--panel);border:1px solid var(--border);border-radius:4mm;padding:7mm 8mm}
+.quote .link{font-weight:600;color:var(--aqua);margin:0}
+/* chapter */
+.ch-no{position:absolute;right:14mm;top:6mm;font:400 120pt/1 Anton,sans-serif;color:rgba(177,216,221,.08)}
+.ch{font-size:40pt;margin:0 0 4mm;max-width:150mm}
+.ch-sub{font-size:12.5pt;color:var(--aqua);font-weight:500;text-align:left}
+.ch-intro{font-size:11pt;max-width:165mm}
+.chapter>*{flex:0 0 auto}
+.ch-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:4mm;flex:1 1 0!important;min-height:0}
+.ch-list li{display:grid;grid-template-columns:48% 1fr 9mm;grid-template-rows:100%;gap:4mm;align-items:center;background:var(--panel);border:1px solid var(--border);border-radius:3mm;padding:2.5mm;overflow:hidden;min-height:0}
+.ch-list.n3 li,.ch-list.n5 li:last-child{grid-column:span 2}
+.ch-list.n3{grid-template-columns:1fr}
+.ch-list img{width:100%;height:100%;object-fit:cover;border-radius:2mm}
+.ch-list b{display:block;font:400 11.5pt/1.15 Anton,sans-serif;text-transform:uppercase;color:var(--text)}
+.ch-list small{display:block;font-size:8pt;color:var(--text-3);margin-top:1.2mm}
+.ch-list em{font:600 10pt/1 Montserrat,sans-serif;font-style:normal;color:var(--aqua);text-align:right;padding-right:2mm}
+.ch-list.n3 li,.ch-list.n5 li:last-child{grid-template-columns:55% 1fr 10mm}.ch-list.n3 b{font-size:15pt}
+/* recipe */
+.recipe,.chapter{display:flex;flex-direction:column}
+.recipe{padding-top:14mm}
+.recipe>*{flex:0 0 auto}
+.photo{flex:1 1 0!important;min-height:66mm;border-radius:4mm;overflow:hidden;margin-bottom:6mm;border:1px solid var(--border)}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.rt{font-size:27pt;margin:0 0 1.5mm}
+.serves{font-size:9pt;color:var(--text-3);margin-bottom:3mm;text-align:left}
+.cols{display:grid;grid-template-columns:62mm 1fr;gap:7mm;margin-top:2mm}
+.cols h3{font-size:12pt;color:var(--aqua);margin-bottom:2.5mm;letter-spacing:.06em}
+.ing{background:var(--panel);border:1px solid var(--border);border-radius:3mm;padding:4mm 4.5mm}
+.ing ul{list-style:none;margin:0;padding:0;font-size:10pt;line-height:1.45}
+.ing li{padding:1.1mm 0 1.1mm 4mm;position:relative;border-bottom:1px solid rgba(177,216,221,.08)}
+.ing li:last-child{border:0}
+.ing li::before{content:"";position:absolute;left:0;top:2.9mm;width:1.6mm;height:1.6mm;border-radius:50%;background:var(--lime)}
+.meth ol{list-style:none;margin:0;padding:0;counter-reset:s;font-size:10.2pt;line-height:1.55}
+.meth li{counter-increment:s;position:relative;padding-left:9mm;margin-bottom:2.4mm;text-align:justify;hyphens:auto}
+.meth li::before{content:counter(s);position:absolute;left:0;top:.2mm;width:6mm;height:6mm;border-radius:50%;background:var(--teal);color:var(--aqua);font:600 8pt/6mm Montserrat,sans-serif;text-align:center}
+.tip{margin-top:4mm}
+.spacer{height:6mm}
+.tip p{font-size:9.4pt}
+.note{font-size:8pt;color:var(--text-3);font-style:italic;margin-top:3mm;text-align:left}
+/* final */
+.cta{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin:8mm 0}
+.cta a{display:block;text-decoration:none;background:var(--panel);border:1px solid var(--border);border-top:1mm solid var(--aqua);border-radius:3mm;padding:6mm}
+.cta b{display:block;color:var(--text);font-weight:500;font-size:10.5pt;line-height:1.5}
+.cta em{display:block;font-style:normal;font-weight:600;color:var(--aqua);margin-top:4mm;font-size:9pt}
+.end{text-align:center;margin-top:16mm}
+.end .logo{width:34mm;margin:0 auto 4mm;display:block}
+.end p{text-align:center;font:600 8.5pt/1.4 Montserrat,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--text-3)}
+.credits{position:absolute;left:18mm;right:18mm;bottom:20mm;font-size:7.2pt;color:var(--text-3);text-align:center}
+</style></head><body><section class="page cover">
+<div class="cover-photos"><img src="img/cover-chia.jpg" alt="Raspberry chia seed puddings in glasses"><img src="img/cover-pancakes.jpg" alt="Stack of blueberry pancakes"><img src="img/cover-smoothie.jpg" alt="Berry smoothie in a jar"></div>
+<div class="cover-body">
+ <img class="logo" src="../site/img/vivify-logo-white.webp" alt="Vivify Sports">
+ <span class="eyebrow">Recipe e-book · 39 recipes</span>
+ <h1>Breakfasts<br>to ignite<br><em>your potential</em></h1>
+ <p class="lead">Recipes for energy, recovery and performance</p>
+ <p class="by">Marine Lenehan · Sports Nutritionist</p>
+</div></section>
+<section class="page "><span class="eyebrow">Inside this book</span><h2 class="pt">Contents</h2><ol class="toc"><li><span class="no">—</span><span class="tt"><b>Build a balanced breakfast</b><small>The four food groups, protein at breakfast and how to read the recipes</small></span><span class="pg">3</span></li><li><span class="no">—</span><span class="tt"><b>A word on the author</b><small>Marine, sports nutritionist</small></span><span class="pg">4</span></li><li><span class="no">01</span><span class="tt"><b>Chia seed puddings</b><small>3 recipes</small></span><span class="pg">5</span></li><li><span class="no">02</span><span class="tt"><b>Overnight oats</b><small>5 recipes</small></span><span class="pg">9</span></li><li><span class="no">03</span><span class="tt"><b>Porridge &amp; warm grains</b><small>6 recipes</small></span><span class="pg">15</span></li><li><span class="no">04</span><span class="tt"><b>Granola &amp; breakfast bowls</b><small>3 recipes</small></span><span class="pg">22</span></li><li><span class="no">05</span><span class="tt"><b>Pancakes &amp; French toast</b><small>6 recipes</small></span><span class="pg">26</span></li><li><span class="no">06</span><span class="tt"><b>Toasts, breads &amp; spreads</b><small>5 recipes</small></span><span class="pg">33</span></li><li><span class="no">07</span><span class="tt"><b>Eggs &amp; savoury breakfasts</b><small>6 recipes</small></span><span class="pg">39</span></li><li><span class="no">08</span><span class="tt"><b>Smoothies &amp; smoothie bowls</b><small>5 recipes</small></span><span class="pg">46</span></li><li><span class="no">—</span><span class="tt"><b>A final note on fuelling</b><small>Real food, flexible portions</small></span><span class="pg">52</span></li></ol><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 2</span></div></section>
+<section class="page dense"><span class="eyebrow">Before you start</span><h2 class="pt">Build a balanced breakfast</h2>
+<p>A useful breakfast combines foods that support your training and help you meet your overall nutritional needs. Think in terms of four groups:</p>
+<div class="groups">
+ <div><h3>Protein-rich foods</h3><p>Eggs, Greek yogurt, skyr, cottage cheese, milk, tofu and fish.</p></div>
+ <div><h3>Carbohydrate foods</h3><p>Oats, wholegrain bread, fruit, quinoa, potatoes and cereals.</p></div>
+ <div><h3>Fruit &amp; vegetables</h3><p>Berries, banana, apples, spinach, tomatoes and peppers.</p></div>
+ <div><h3>Healthy fats</h3><p>Nuts, seeds, olive oil, nut butter and avocado.</p></div>
+</div>
+<h3 class="sub">Protein at breakfast</h3>
+<p>Including a protein-rich food at breakfast is one practical way to distribute protein across the day. A broad target of around 25–40 g at a main meal can be useful for many athletes, but needs vary with body size, training load, total daily intake and individual goals. Not every breakfast needs to hit the same number.</p>
+<p>You can build a protein-containing breakfast without supplements: combine dairy foods, eggs, fish or tofu with oats, bread, fruit and other toppings. If a breakfast is naturally lower in protein, add a side of yogurt, milk or eggs rather than forcing every recipe to be a high-protein meal.</p>
+<div class="callout"><b>Training soon?</b><p>If you have 1.5–3 hours before training, choose a breakfast that provides carbohydrate and sits comfortably. If you have only 30–60 minutes, a smaller, easier-to-digest option may work better. Reduce fibre and fat close to exercise if they cause gastrointestinal discomfort. Match portion size to the session and your own tolerance.</p></div>
+<h3 class="sub">How to read the recipes</h3>
+<div class="mac"><div><b>420</b><span>kcal</span></div><div><b>28 g</b><span>protein</span></div><div><b>44 g</b><span>carbs</span></div><div><b>14 g</b><span>fat</span></div></div>
+<ul class="dots">
+ <li>Recipes use everyday ingredients and no protein powder. Use the stated portions as a starting point and adjust quantities to appetite and training demands.</li>
+ <li>Every recipe shows calories, protein, carbs and fat per serving, calculated from the ingredient quantities listed.</li>
+ <li>Where a range is given, values use the midpoint. Optional items and toppings without a quantity are not counted.</li>
+ <li>Values are estimates based on typical ingredient data. Brands differ, so check labels and weigh ingredients for the most accurate numbers.</li>
+</ul><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 3</span></div></section>
+<section class="page "><span class="eyebrow">Meet your nutritionist</span><h2 class="pt">A word on the author</h2>
+<div class="author"><img src="img/marine.jpg" alt="Marine Lenehan, sports nutritionist, in a UCI rainbow-stripe jersey">
+<div>
+<p>Marine is an experienced sports nutritionist who brings you these breakfast recipes to ignite your potential.</p>
+<p>The recommendations for living a healthy life sound simple: eat well, be regularly active, get proper sleep and practise self-care. But you probably know it is easier said than done, and life can get in the way.</p>
+<p>With Marine’s healthy recipes you will feel full and ready to start your day with joy and energy.</p>
+<p class="enjoy">Enjoy!</p>
+</div></div>
+<div class="quote"><span class="eyebrow">Healthy habits to ignite your potential</span>
+<p>Vivify Sports helps cyclists, triathletes and active people fuel their training with real food: personalised nutrition coaching in English, French and Italian, online and in Ireland.</p>
+<p class="link">vivifysports.com</p></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 4</span></div></section>
+<section class="page chapter"><div class="ch-no">01</div><span class="eyebrow">Chapter 01</span><h2 class="ch">Chia seed puddings</h2>
+<p class="ch-sub">Fibre, plant omega-3 and make-ahead convenience</p><p class="ch-intro">Chia seeds absorb liquid and thicken as they rest. Prepare these puddings the night before, then add yogurt and toppings in the morning.</p>
+<span class="eyebrow small">In this chapter</span><ul class="ch-list n3"><li><img src="img/raspberry-chia.jpg" alt=""><span><b>Raspberry Chia Seed Pudding</b><small>330 kcal · 17 g protein</small></span><em>6</em></li><li><img src="img/mango-chia.jpg" alt=""><span><b>Mango Chia Seed Pudding</b><small>310 kcal · 17 g protein</small></span><em>7</em></li><li><img src="img/banana-chia.jpg" alt=""><span><b>Banana &amp; Cinnamon Chia Pudding</b><small>305 kcal · 17 g protein</small></span><em>8</em></li></ul><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 5</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/raspberry-chia.jpg" alt="Raspberry Chia Seed Pudding"></div>
+<span class="eyebrow">Chia seed puddings</span><h2 class="rt">Raspberry Chia Seed Pudding</h2><p class="serves">Serves 2 · values per serving</p>
+<div class="mac big"><div><b>330</b><span>kcal</span></div><div><b>17 g</b><span>protein</span></div><div><b>25 g</b><span>carbs</span></div><div><b>18 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>125 g raspberries, fresh or frozen</li><li>160 ml milk of choice</li><li>1 tsp maple syrup</li><li>24 g chia seeds</li><li>200 g thick Greek yogurt or skyr</li><li>30 g walnuts or granola</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Blend the raspberries with the milk and maple syrup until smooth.</li><li>Stir in the chia seeds and divide between two jars.</li><li>Refrigerate for at least 2 hours, preferably overnight.</li><li>Serve over the Greek yogurt or skyr and finish with walnuts or granola.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>For a higher-protein version, use thick Greek yogurt or skyr rather than coconut yogurt.</p></div><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 6</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/mango-chia.jpg" alt="Mango Chia Seed Pudding"></div>
+<span class="eyebrow">Chia seed puddings</span><h2 class="rt">Mango Chia Seed Pudding</h2><p class="serves">Serves 2 · values per serving</p>
+<div class="mac big"><div><b>310</b><span>kcal</span></div><div><b>17 g</b><span>protein</span></div><div><b>37 g</b><span>carbs</span></div><div><b>10 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>200 g mango flesh</li><li>160 ml milk of choice</li><li>24 g chia seeds</li><li>200 g Greek yogurt or skyr</li><li>30 g granola or chopped nuts</li><li>Squeeze of lime, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Blend the mango and milk until smooth.</li><li>Stir in the chia seeds and a squeeze of lime, if using.</li><li>Divide between two jars and chill for at least 2 hours.</li><li>Layer over Greek yogurt or skyr and top with granola or nuts.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>Coconut yogurt can be used for flavour, but it generally contributes less protein than dairy Greek yogurt or skyr.</p></div><p class="note">Not counted in the macros: squeeze of lime, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 7</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/banana-chia.jpg" alt="Banana &amp; Cinnamon Chia Pudding"></div>
+<span class="eyebrow">Chia seed puddings</span><h2 class="rt">Banana &amp; Cinnamon Chia Pudding</h2><p class="serves">Serves 2 · values per serving</p>
+<div class="mac big"><div><b>305</b><span>kcal</span></div><div><b>17 g</b><span>protein</span></div><div><b>36 g</b><span>carbs</span></div><div><b>10 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>1 ripe banana (about 120 g)</li><li>160 ml milk</li><li>24 g chia seeds</li><li>200 g natural Greek yogurt</li><li>½ tsp cinnamon</li><li>30 g granola or chopped nuts</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Blend the banana, milk and cinnamon.</li><li>Stir in the chia seeds and divide between two jars.</li><li>Refrigerate for at least 2 hours, preferably overnight.</li><li>Serve with Greek yogurt and granola or nuts.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 8</span></div></section>
+<section class="page chapter"><div class="ch-no">02</div><span class="eyebrow">Chapter 02</span><h2 class="ch">Overnight oats</h2>
+<p class="ch-sub">No cooking, endless variations</p><p class="ch-intro">Overnight oats are an easy way to combine carbohydrate-rich oats with dairy, fruit, seeds and nuts. Mix the base in a jar and refrigerate overnight.</p>
+<span class="eyebrow small">In this chapter</span><ul class="ch-list n5"><li><img src="img/almond-banana-oats.jpg" alt=""><span><b>Almond &amp; Banana Overnight Oats</b><small>510 kcal · 27 g protein</small></span><em>10</em></li><li><img src="img/strawberry-oats.jpg" alt=""><span><b>Strawberry &amp; Cream Overnight Oats</b><small>395 kcal · 25 g protein</small></span><em>11</em></li><li><img src="img/tiramisu-oats.jpg" alt=""><span><b>Tiramisu Overnight Oats</b><small>435 kcal · 26 g protein</small></span><em>12</em></li><li><img src="img/choc-pb-oats.jpg" alt=""><span><b>Chocolate, Peanut Butter &amp; Banana Oats</b><small>555 kcal · 30 g protein</small></span><em>13</em></li><li><img src="img/new-apple-pie-overnight-oats.jpg" alt=""><span><b>Apple Pie Overnight Oats</b><small>510 kcal · 26 g protein</small></span><em>14</em></li></ul><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 9</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/almond-banana-oats.jpg" alt="Almond &amp; Banana Overnight Oats"></div>
+<span class="eyebrow">Overnight oats</span><h2 class="rt">Almond &amp; Banana Overnight Oats</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>510</b><span>kcal</span></div><div><b>27 g</b><span>protein</span></div><div><b>62 g</b><span>carbs</span></div><div><b>17 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>40 g rolled oats</li><li>150 g thick Greek yogurt or skyr</li><li>80–100 ml milk</li><li>1 tbsp chia seeds (about 12 g)</li><li>½ tsp almond extract</li><li>1 tsp honey or maple syrup</li><li>½ banana, sliced</li><li>10 g chopped almonds</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Mix the oats, yogurt, milk, chia seeds, almond extract and honey in a jar.</li><li>Cover and refrigerate overnight.</li><li>Loosen with a splash of milk if needed.</li><li>Top with banana and almonds before serving.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>Use a thick yogurt and adjust the milk to get the texture you prefer.</p></div><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 10</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/strawberry-oats.jpg" alt="Strawberry &amp; Cream Overnight Oats"></div>
+<span class="eyebrow">Overnight oats</span><h2 class="rt">Strawberry &amp; Cream Overnight Oats</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>395</b><span>kcal</span></div><div><b>25 g</b><span>protein</span></div><div><b>47 g</b><span>carbs</span></div><div><b>12 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>40 g rolled oats</li><li>150 g Greek yogurt or skyr</li><li>80 ml milk</li><li>1 tbsp chia seeds</li><li>½ tsp vanilla extract</li><li>100 g strawberries, chopped</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Combine the oats, yogurt, milk, chia seeds and vanilla.</li><li>Fold through half the strawberries.</li><li>Cover and refrigerate overnight.</li><li>Top with the remaining strawberries.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 11</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/tiramisu-oats.jpg" alt="Tiramisu Overnight Oats"></div>
+<span class="eyebrow">Overnight oats</span><h2 class="rt">Tiramisu Overnight Oats</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>435</b><span>kcal</span></div><div><b>26 g</b><span>protein</span></div><div><b>42 g</b><span>carbs</span></div><div><b>18 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>40 g rolled oats</li><li>150 g Greek yogurt or skyr</li><li>60–80 ml milk</li><li>1 tbsp chia seeds</li><li>1 cooled espresso shot</li><li>1 tsp cocoa powder</li><li>10 g chopped hazelnuts or almonds</li><li>½ tsp maple syrup, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Mix the oats, yogurt, milk, chia seeds, espresso and maple syrup.</li><li>Cover and refrigerate overnight.</li><li>Dust with cocoa and finish with chopped nuts.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>Choose decaffeinated coffee if you prefer to limit caffeine.</p></div><p class="note">Not counted in the macros: ½ tsp maple syrup, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 12</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/choc-pb-oats.jpg" alt="Chocolate, Peanut Butter &amp; Banana Oats"></div>
+<span class="eyebrow">Overnight oats</span><h2 class="rt">Chocolate, Peanut Butter &amp; Banana Oats</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>555</b><span>kcal</span></div><div><b>30 g</b><span>protein</span></div><div><b>64 g</b><span>carbs</span></div><div><b>20 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>40 g rolled oats</li><li>150 g Greek yogurt or skyr</li><li>80 ml milk</li><li>1 tbsp chia seeds</li><li>1 tsp cocoa powder</li><li>1 tbsp peanut butter</li><li>½–1 banana, sliced</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Stir together the oats, yogurt, milk, chia seeds and cocoa.</li><li>Refrigerate overnight.</li><li>Top with peanut butter and sliced banana.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 13</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-apple-pie-overnight-oats.jpg" alt="Apple Pie Overnight Oats"></div>
+<span class="eyebrow">Overnight oats</span><h2 class="rt">Apple Pie Overnight Oats</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>510</b><span>kcal</span></div><div><b>26 g</b><span>protein</span></div><div><b>60 g</b><span>carbs</span></div><div><b>18 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>40 g rolled oats</li><li>150 g Greek yogurt or skyr</li><li>80 ml milk</li><li>1 tbsp chia seeds</li><li>1 small apple, grated</li><li>½ tsp cinnamon</li><li>1 tsp maple syrup</li><li>10 g chopped walnuts</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Combine the oats, yogurt, milk and chia seeds.</li><li>Stir through the grated apple, cinnamon and maple syrup.</li><li>Cover and refrigerate overnight.</li><li>Top with walnuts before serving.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 14</span></div></section>
+<section class="page chapter"><div class="ch-no">03</div><span class="eyebrow">Chapter 03</span><h2 class="ch">Porridge &amp; warm grains</h2>
+<p class="ch-sub">Oats, rice and quinoa: warm, filling and ready to fuel training</p><p class="ch-intro">Porridge is easy to adapt to appetite and training demands. Stir yogurt through after cooking rather than boiling it, to keep the texture creamy.</p>
+<span class="eyebrow small">In this chapter</span><ul class="ch-list n6"><li><img src="img/greek-yogurt-porridge.jpg" alt=""><span><b>Creamy Greek Yogurt Porridge</b><small>415 kcal · 24 g protein</small></span><em>16</em></li><li><img src="img/berry-nut-porridge.jpg" alt=""><span><b>Berry &amp; Nut Porridge</b><small>495 kcal · 27 g protein</small></span><em>17</em></li><li><img src="img/baked-banana-porridge.jpg" alt=""><span><b>Baked Banana Porridge</b><small>295 kcal · 12 g protein</small></span><em>18</em></li><li><img src="img/new-spinach-feta-oats.jpg" alt=""><span><b>Savoury Spinach &amp; Feta Oats</b><small>385 kcal · 18 g protein</small></span><em>19</em></li><li><img src="img/new-rice-porridge.jpg" alt=""><span><b>Creamy Cinnamon Rice Porridge</b><small>460 kcal · 24 g protein</small></span><em>20</em></li><li><img src="img/new-quinoa-berry-bowl.jpg" alt=""><span><b>Warm Quinoa &amp; Berry Bowl</b><small>325 kcal · 17 g protein</small></span><em>21</em></li></ul><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 15</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/greek-yogurt-porridge.jpg" alt="Creamy Greek Yogurt Porridge"></div>
+<span class="eyebrow">Porridge &amp; warm grains</span><h2 class="rt">Creamy Greek Yogurt Porridge</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>415</b><span>kcal</span></div><div><b>24 g</b><span>protein</span></div><div><b>59 g</b><span>carbs</span></div><div><b>10 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>50 g rolled oats</li><li>200 ml milk</li><li>Pinch of salt</li><li>100 g thick Greek yogurt or skyr</li><li>½ banana or 80 g berries</li><li>Cinnamon, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Add the oats, milk and salt to a saucepan.</li><li>Cook gently for 4–6 minutes, stirring until creamy.</li><li>Remove from the heat and allow to cool for a minute.</li><li>Stir through the yogurt and top with fruit and cinnamon.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>Add extra milk or fruit when you need a larger carbohydrate serving.</p></div><p class="note">Macros calculated with the banana option. Not counted in the macros: cinnamon, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 16</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/berry-nut-porridge.jpg" alt="Berry &amp; Nut Porridge"></div>
+<span class="eyebrow">Porridge &amp; warm grains</span><h2 class="rt">Berry &amp; Nut Porridge</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>495</b><span>kcal</span></div><div><b>27 g</b><span>protein</span></div><div><b>58 g</b><span>carbs</span></div><div><b>17 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>50 g rolled oats</li><li>200 ml milk</li><li>100 g mixed berries</li><li>15 g chopped nuts</li><li>100 g Greek yogurt or skyr</li><li>1 tsp honey, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Cook the oats with the milk over a medium-low heat until creamy.</li><li>Warm the berries in a small pan or microwave.</li><li>Spoon the porridge into a bowl and add the yogurt.</li><li>Top with berries, nuts and honey.</li></ol></div></div>
+<p class="note">Not counted in the macros: 1 tsp honey, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 17</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/baked-banana-porridge.jpg" alt="Baked Banana Porridge"></div>
+<span class="eyebrow">Porridge &amp; warm grains</span><h2 class="rt">Baked Banana Porridge</h2><p class="serves">Serves 2 · values per serving</p>
+<div class="mac big"><div><b>295</b><span>kcal</span></div><div><b>12 g</b><span>protein</span></div><div><b>45 g</b><span>carbs</span></div><div><b>7 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>80 g rolled oats</li><li>1 ripe banana, mashed</li><li>1 egg</li><li>180 ml milk</li><li>½ tsp baking powder</li><li>½ tsp cinnamon</li><li>Handful of berries</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Heat the oven to 180°C and lightly grease a small baking dish.</li><li>Mix the oats, mashed banana, egg, milk, baking powder and cinnamon.</li><li>Fold through the berries and pour into the dish.</li><li>Bake for 22–28 minutes until set and lightly golden.</li><li>Serve warm with Greek yogurt or skyr.</li></ol></div></div>
+<p class="note">The Greek yogurt or skyr served alongside is not counted in the macros.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 18</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-spinach-feta-oats.jpg" alt="Savoury Spinach &amp; Feta Oats"></div>
+<span class="eyebrow">Porridge &amp; warm grains</span><h2 class="rt">Savoury Spinach &amp; Feta Oats</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>385</b><span>kcal</span></div><div><b>18 g</b><span>protein</span></div><div><b>34 g</b><span>carbs</span></div><div><b>20 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>50 g rolled oats</li><li>200 ml water or milk</li><li>1 egg</li><li>30 g feta, crumbled</li><li>Handful of spinach</li><li>Black pepper</li><li>1 tsp olive oil</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Cook the oats with water or milk until creamy.</li><li>Wilt the spinach in a small pan with the olive oil.</li><li>Poach or fry the egg to your preference.</li><li>Top the oats with spinach, feta and egg; season with black pepper.</li></ol></div></div>
+<p class="note">Macros calculated with water.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 19</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-rice-porridge.jpg" alt="Creamy Cinnamon Rice Porridge"></div>
+<span class="eyebrow">Porridge &amp; warm grains</span><h2 class="rt">Creamy Cinnamon Rice Porridge</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>460</b><span>kcal</span></div><div><b>24 g</b><span>protein</span></div><div><b>72 g</b><span>carbs</span></div><div><b>8 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>50 g pudding rice (short-grain)</li><li>300 ml milk of choice, plus extra to adjust</li><li>½ tsp cinnamon</li><li>1 tsp honey or maple syrup</li><li>100 g Greek yogurt or skyr, to serve</li><li>80 g berries or ½ banana, to serve</li><li>Pinch of salt</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Add the pudding rice, milk, cinnamon and salt to a small saucepan.</li><li>Bring to a gentle simmer, then cook over a low heat for 25–30 minutes, stirring often, until the rice is soft and creamy. Add a splash more milk if it gets too thick.</li><li>Stir in the honey or maple syrup.</li><li>Serve warm with Greek yogurt or skyr and fruit.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>A gentle, versatile option for variety and easy-to-adjust carbohydrate. Pudding rice releases its starch as it cooks, which gives the creamy texture.</p></div><p class="note">Macros calculated with the berries option.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 20</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-quinoa-berry-bowl.jpg" alt="Warm Quinoa &amp; Berry Bowl"></div>
+<span class="eyebrow">Porridge &amp; warm grains</span><h2 class="rt">Warm Quinoa &amp; Berry Bowl</h2><p class="serves">Serves 2 · values per bowl</p>
+<div class="mac big"><div><b>325</b><span>kcal</span></div><div><b>17 g</b><span>protein</span></div><div><b>42 g</b><span>carbs</span></div><div><b>10 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>200 g cooked quinoa</li><li>150 ml milk</li><li>½ tsp cinnamon</li><li>150 g Greek yogurt</li><li>120 g mixed berries</li><li>20 g flaked almonds</li><li>2 tsp honey</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Warm the cooked quinoa with the milk and cinnamon in a saucepan for 3–4 minutes.</li><li>Divide between two bowls.</li><li>Top with yogurt, berries and almonds.</li><li>Drizzle with honey.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 21</span></div></section>
+<section class="page chapter"><div class="ch-no">04</div><span class="eyebrow">Chapter 04</span><h2 class="ch">Granola &amp; breakfast bowls</h2>
+<p class="ch-sub">Build a bowl around what you need</p><p class="ch-intro">Granola adds crunch and energy. Pair it with yogurt, milk or skyr and fruit for a simple breakfast that can be adjusted to your appetite.</p>
+<span class="eyebrow small">In this chapter</span><ul class="ch-list n3"><li><img src="img/granola.jpg" alt=""><span><b>Crunchy Homemade Granola</b><small>195 kcal · 5 g protein</small></span><em>23</em></li><li><img src="img/berries-granola-bowl.jpg" alt=""><span><b>Berries, Granola &amp; Honey Bowl</b><small>390 kcal · 26 g protein</small></span><em>24</em></li><li><img src="img/tropical-bowl.jpg" alt=""><span><b>Tropical Yogurt Bowl</b><small>445 kcal · 26 g protein</small></span><em>25</em></li></ul><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 22</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/granola.jpg" alt="Crunchy Homemade Granola"></div>
+<span class="eyebrow">Granola &amp; breakfast bowls</span><h2 class="rt">Crunchy Homemade Granola</h2><p class="serves">Makes about 20 portions · values per portion (about 40 g)</p>
+<div class="mac big"><div><b>195</b><span>kcal</span></div><div><b>5 g</b><span>protein</span></div><div><b>21 g</b><span>carbs</span></div><div><b>10 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>400 g rolled oats</li><li>120 g almonds, roughly chopped</li><li>60 g pumpkin seeds</li><li>1 tsp cinnamon</li><li>Pinch of salt</li><li>90 g melted coconut oil or olive oil</li><li>100 g honey</li><li>1 tsp vanilla extract</li><li>75 g dried berries or raisins</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Heat the oven to 160°C fan and line a large tray with baking paper.</li><li>Mix the oats, almonds, seeds, cinnamon and salt.</li><li>Stir together the oil, honey and vanilla, then mix through the dry ingredients.</li><li>Spread on the tray and bake for 25–30 minutes, stirring once, until golden.</li><li>Cool completely before stirring through the dried fruit. Store in an airtight container.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>Serve with Greek yogurt or skyr and fresh fruit. Granola is energy-dense, so choose a portion that suits your needs.</p></div><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 23</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/berries-granola-bowl.jpg" alt="Berries, Granola &amp; Honey Bowl"></div>
+<span class="eyebrow">Granola &amp; breakfast bowls</span><h2 class="rt">Berries, Granola &amp; Honey Bowl</h2><p class="serves">Serves 1 · values per bowl</p>
+<div class="mac big"><div><b>390</b><span>kcal</span></div><div><b>26 g</b><span>protein</span></div><div><b>46 g</b><span>carbs</span></div><div><b>12 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>200–250 g plain Greek yogurt or skyr</li><li>100 g mixed berries</li><li>30–40 g granola</li><li>1 tsp honey</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Spoon the yogurt into a bowl.</li><li>Top with berries and granola.</li><li>Finish with honey.</li></ol></div></div>
+<p class="note">Ranges are calculated at the midpoint.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 24</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/tropical-bowl.jpg" alt="Tropical Yogurt Bowl"></div>
+<span class="eyebrow">Granola &amp; breakfast bowls</span><h2 class="rt">Tropical Yogurt Bowl</h2><p class="serves">Serves 1 · values per bowl</p>
+<div class="mac big"><div><b>445</b><span>kcal</span></div><div><b>26 g</b><span>protein</span></div><div><b>42 g</b><span>carbs</span></div><div><b>19 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>200–250 g Greek yogurt or skyr</li><li>½ banana, sliced</li><li>80 g chopped mango</li><li>10 g coconut flakes</li><li>15 g cashews</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Spoon the yogurt into a bowl.</li><li>Arrange the banana and mango over the top.</li><li>Finish with coconut flakes and cashews.</li></ol></div></div>
+<p class="note">Ranges are calculated at the midpoint.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 25</span></div></section>
+<section class="page chapter"><div class="ch-no">05</div><span class="eyebrow">Chapter 05</span><h2 class="ch">Pancakes &amp; French toast</h2>
+<p class="ch-sub">Carbohydrate-rich favourites with satisfying toppings</p><p class="ch-intro">Pancakes and French toast can be useful before or after training. Add yogurt, eggs, cottage cheese or milk to make the meal more substantial.</p>
+<span class="eyebrow small">In this chapter</span><ul class="ch-list n6"><li><img src="img/classic-pancakes.jpg" alt=""><span><b>Classic Fluffy American Pancakes</b><small>310 kcal · 9 g protein</small></span><em>27</em></li><li><img src="img/oat-pancakes.jpg" alt=""><span><b>Oat Pancakes</b><small>435 kcal · 17 g protein</small></span><em>28</em></li><li><img src="img/cottage-banana-pancakes.jpg" alt=""><span><b>Cottage Cheese &amp; Banana Pancakes</b><small>310 kcal · 19 g protein</small></span><em>29</em></li><li><img src="img/blueberry-pancakes.jpg" alt=""><span><b>Fluffy Buttermilk Blueberry Pancakes</b><small>350 kcal · 13 g protein</small></span><em>30</em></li><li><img src="img/new-greek-yogurt-pancakes.jpg" alt=""><span><b>Fluffy Greek Yogurt Pancakes</b><small>460 kcal · 22 g protein</small></span><em>31</em></li><li><img src="img/french-toast.jpg" alt=""><span><b>French Toast with Greek Yogurt &amp; Berries</b><small>370 kcal · 23 g protein</small></span><em>32</em></li></ul><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 26</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/classic-pancakes.jpg" alt="Classic Fluffy American Pancakes"></div>
+<span class="eyebrow">Pancakes &amp; French toast</span><h2 class="rt">Classic Fluffy American Pancakes</h2><p class="serves">Makes 8–10 pancakes; serves 3–4 · values per serving (2–3 pancakes)</p>
+<div class="mac big"><div><b>310</b><span>kcal</span></div><div><b>9 g</b><span>protein</span></div><div><b>47 g</b><span>carbs</span></div><div><b>9 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>200 g plain flour</li><li>2 tbsp caster sugar</li><li>2 tsp baking powder</li><li>¼ tsp bicarbonate of soda</li><li>Pinch of salt</li><li>1 egg</li><li>250 ml buttermilk</li><li>30 g melted butter, cooled</li><li>½ tsp vanilla extract</li><li>Butter or oil, for cooking</li><li>Maple syrup and fresh berries, to serve</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Whisk together the flour, sugar, baking powder, bicarbonate of soda and salt.</li><li>In another bowl, whisk the egg, buttermilk, melted butter and vanilla.</li><li>Pour the wet ingredients into the dry ingredients and fold gently until just combined. A few small lumps are fine.</li><li>Rest the batter for 5 minutes while heating a lightly greased pan over medium-low heat.</li><li>Add small ladles of batter. Cook until bubbles appear on the surface and the edges look set, then flip and cook until golden and cooked through.</li><li>Serve warm with maple syrup and berries.</li></ol></div></div>
+<p class="note">Calculated for 4 servings. Not counted in the macros: maple syrup and fresh berries, to serve.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 27</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/oat-pancakes.jpg" alt="Oat Pancakes"></div>
+<span class="eyebrow">Pancakes &amp; French toast</span><h2 class="rt">Oat Pancakes</h2><p class="serves">Serves 2 · values per serving</p>
+<div class="mac big"><div><b>435</b><span>kcal</span></div><div><b>17 g</b><span>protein</span></div><div><b>54 g</b><span>carbs</span></div><div><b>17 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>130 g oat flour</li><li>1½ tsp baking powder</li><li>2 eggs</li><li>120 ml milk</li><li>1 tbsp honey</li><li>1 tbsp melted coconut oil or olive oil</li><li>1 tsp vanilla</li><li>½ tsp cinnamon</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Mix the oat flour, baking powder and cinnamon.</li><li>Whisk the eggs, milk, honey, oil and vanilla.</li><li>Combine wet and dry ingredients without overmixing.</li><li>Cook in a lightly oiled pan until golden on both sides.</li><li>Serve with fruit and yogurt.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 28</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/cottage-banana-pancakes.jpg" alt="Cottage Cheese &amp; Banana Pancakes"></div>
+<span class="eyebrow">Pancakes &amp; French toast</span><h2 class="rt">Cottage Cheese &amp; Banana Pancakes</h2><p class="serves">Makes 8 small pancakes; serves 2 · values per serving (4 pancakes)</p>
+<div class="mac big"><div><b>310</b><span>kcal</span></div><div><b>19 g</b><span>protein</span></div><div><b>35 g</b><span>carbs</span></div><div><b>10 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>150 g cottage cheese</li><li>2 eggs</li><li>1 ripe banana</li><li>60 g rolled oats or oat flour</li><li>½ tsp baking powder</li><li>½ tsp cinnamon</li><li>A little oil for the pan</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Blend the cottage cheese, eggs and banana until smooth.</li><li>Add the oats, baking powder and cinnamon; pulse until combined.</li><li>Rest the batter for 5 minutes.</li><li>Cook small pancakes in a lightly oiled non-stick pan over medium-low heat, 2–3 minutes per side.</li><li>Serve with berries or yogurt.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>Keep the pancakes small so they are easier to turn.</p></div><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 29</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/blueberry-pancakes.jpg" alt="Fluffy Buttermilk Blueberry Pancakes"></div>
+<span class="eyebrow">Pancakes &amp; French toast</span><h2 class="rt">Fluffy Buttermilk Blueberry Pancakes</h2><p class="serves">Makes 10–12; serves 4 · values per serving (3 pancakes)</p>
+<div class="mac big"><div><b>350</b><span>kcal</span></div><div><b>13 g</b><span>protein</span></div><div><b>58 g</b><span>carbs</span></div><div><b>7 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>250 g plain flour</li><li>2 tsp baking powder</li><li>½ tsp bicarbonate of soda</li><li>Pinch of salt</li><li>2 eggs</li><li>400 ml buttermilk</li><li>1 tsp vanilla extract</li><li>150 g blueberries</li><li>1 tbsp olive oil</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Mix the flour, baking powder, bicarbonate of soda and salt in a bowl.</li><li>Whisk the eggs, buttermilk, vanilla and oil in a jug.</li><li>Fold wet ingredients into dry until just combined; fold in blueberries.</li><li>Cook portions in a lightly oiled pan over medium-low heat until bubbles form, then flip and cook through.</li><li>Serve with fruit and Greek yogurt.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 30</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-greek-yogurt-pancakes.jpg" alt="Fluffy Greek Yogurt Pancakes"></div>
+<span class="eyebrow">Pancakes &amp; French toast</span><h2 class="rt">Fluffy Greek Yogurt Pancakes</h2><p class="serves">Makes 8 small pancakes; serves 2 · values per serving (4 pancakes)</p>
+<div class="mac big"><div><b>460</b><span>kcal</span></div><div><b>22 g</b><span>protein</span></div><div><b>69 g</b><span>carbs</span></div><div><b>10 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>150 g plain flour</li><li>150 g thick Greek yogurt</li><li>2 eggs</li><li>80 ml milk</li><li>1 tbsp honey or maple syrup</li><li>1½ tsp baking powder</li><li>½ tsp vanilla extract</li><li>A little oil or butter for the pan</li><li>Berries and extra Greek yogurt, to serve</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Whisk the Greek yogurt, eggs, milk, honey and vanilla until smooth.</li><li>In a separate bowl, mix the flour and baking powder.</li><li>Fold the wet ingredients into the dry ingredients until just combined. Do not overmix; the batter will be thick.</li><li>Heat a lightly greased non-stick pan over medium-low heat. Spoon in the batter to make small pancakes.</li><li>Cook for 2–3 minutes until bubbles appear and the edges begin to set. Flip and cook for another 1–2 minutes.</li><li>Serve with berries and a spoonful of Greek yogurt.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>Soft, simple pancakes made with everyday ingredients.</p></div><p class="note">Not counted in the macros: berries and extra Greek yogurt, to serve.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 31</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/french-toast.jpg" alt="French Toast with Greek Yogurt &amp; Berries"></div>
+<span class="eyebrow">Pancakes &amp; French toast</span><h2 class="rt">French Toast with Greek Yogurt &amp; Berries</h2><p class="serves">Serves 2 · values per serving</p>
+<div class="mac big"><div><b>370</b><span>kcal</span></div><div><b>23 g</b><span>protein</span></div><div><b>43 g</b><span>carbs</span></div><div><b>12 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>4 slices wholegrain or sourdough bread</li><li>2 eggs</li><li>80 ml milk</li><li>½ tsp cinnamon</li><li>½ tsp vanilla</li><li>1 tsp butter or oil</li><li>150 g Greek yogurt</li><li>100 g berries</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Whisk the eggs, milk, cinnamon and vanilla in a shallow dish.</li><li>Dip each slice of bread into the mixture, allowing it to absorb briefly.</li><li>Cook in a lightly buttered pan for 2–3 minutes per side until golden and cooked through.</li><li>Serve with Greek yogurt and berries.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 32</span></div></section>
+<section class="page chapter"><div class="ch-no">06</div><span class="eyebrow">Chapter 06</span><h2 class="ch">Toasts, breads &amp; spreads</h2>
+<p class="ch-sub">Simple staples and batch-friendly bakes</p><p class="ch-intro">Bread-based breakfasts are quick to assemble and easy to adapt. Add eggs, cottage cheese, yogurt or fish when you want a more protein-rich option.</p>
+<span class="eyebrow small">In this chapter</span><ul class="ch-list n5"><li><img src="img/new-avocado-toast.jpg" alt=""><span><b>Cottage Cheese &amp; Avocado Toast</b><small>375 kcal · 20 g protein</small></span><em>34</em></li><li><img src="img/salmon-toast.jpg" alt=""><span><b>Cottage Cheese &amp; Smoked Salmon Toast</b><small>400 kcal · 38 g protein</small></span><em>35</em></li><li><img src="img/banana-bread.jpg" alt=""><span><b>Banana Bread</b><small>225 kcal · 5 g protein</small></span><em>36</em></li><li><img src="img/new-pb-banana-toast.jpg" alt=""><span><b>Peanut Butter &amp; Banana Toast</b><small>400 kcal · 13 g protein</small></span><em>37</em></li><li><img src="img/new-ricotta-blueberry-toast.jpg" alt=""><span><b>Ricotta &amp; Blueberry Jam Toast</b><small>420 kcal · 18 g protein</small></span><em>38</em></li></ul><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 33</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-avocado-toast.jpg" alt="Cottage Cheese &amp; Avocado Toast"></div>
+<span class="eyebrow">Toasts, breads &amp; spreads</span><h2 class="rt">Cottage Cheese &amp; Avocado Toast</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>375</b><span>kcal</span></div><div><b>20 g</b><span>protein</span></div><div><b>43 g</b><span>carbs</span></div><div><b>14 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>2 slices wholegrain toast</li><li>100 g cottage cheese</li><li>½ avocado</li><li>Lemon juice</li><li>Black pepper</li><li>Cherry tomatoes or radish, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Toast the bread.</li><li>Mash the avocado with lemon juice and black pepper.</li><li>Spread cottage cheese over the toast and add the avocado.</li><li>Finish with tomatoes or sliced radish.</li></ol></div></div>
+<p class="note">Not counted in the macros: cherry tomatoes or radish, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 34</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/salmon-toast.jpg" alt="Cottage Cheese &amp; Smoked Salmon Toast"></div>
+<span class="eyebrow">Toasts, breads &amp; spreads</span><h2 class="rt">Cottage Cheese &amp; Smoked Salmon Toast</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>400</b><span>kcal</span></div><div><b>38 g</b><span>protein</span></div><div><b>37 g</b><span>carbs</span></div><div><b>11 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>2 slices wholegrain bread</li><li>100 g cottage cheese</li><li>75–100 g smoked salmon</li><li>Spring onion or dill</li><li>Lemon and black pepper</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Toast the bread if preferred.</li><li>Spread cottage cheese over each slice.</li><li>Add the smoked salmon and finish with herbs, lemon and black pepper.</li></ol></div></div>
+<p class="note">Ranges are calculated at the midpoint.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 35</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/banana-bread.jpg" alt="Banana Bread"></div>
+<span class="eyebrow">Toasts, breads &amp; spreads</span><h2 class="rt">Banana Bread</h2><p class="serves">Makes 1 loaf; 10 slices · values per slice</p>
+<div class="mac big"><div><b>225</b><span>kcal</span></div><div><b>5 g</b><span>protein</span></div><div><b>30 g</b><span>carbs</span></div><div><b>9 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>75 g melted coconut oil or neutral oil</li><li>130 g maple syrup</li><li>2 eggs</li><li>225 g mashed ripe banana</li><li>60 ml milk</li><li>1 tsp vanilla extract</li><li>1 tsp bicarbonate of soda</li><li>½ tsp salt</li><li>1 tsp cinnamon</li><li>230 g spelt flour</li><li>60 g chopped walnuts, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Heat the oven to 180°C and line a loaf tin.</li><li>Whisk the oil and maple syrup; beat in the eggs, mashed banana, milk and vanilla.</li><li>Stir in bicarbonate of soda, salt and cinnamon.</li><li>Fold in the spelt flour just until combined; add walnuts if using.</li><li>Pour into the tin and bake for 45–55 minutes, until a skewer comes out clean.</li><li>Cool before slicing.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>Serve with Greek yogurt or cottage cheese if you want to add protein to the meal.</p></div><p class="note">Not counted in the macros: 60 g chopped walnuts, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 36</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-pb-banana-toast.jpg" alt="Peanut Butter &amp; Banana Toast"></div>
+<span class="eyebrow">Toasts, breads &amp; spreads</span><h2 class="rt">Peanut Butter &amp; Banana Toast</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>400</b><span>kcal</span></div><div><b>13 g</b><span>protein</span></div><div><b>62 g</b><span>carbs</span></div><div><b>11 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>2 slices wholegrain toast</li><li>1 tbsp peanut butter</li><li>1 banana, sliced</li><li>Cinnamon, optional</li><li>150 g Greek yogurt on the side, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Toast the bread.</li><li>Spread with peanut butter and top with banana.</li><li>Add cinnamon and serve with yogurt if desired.</li></ol></div></div>
+<p class="note">Not counted in the macros: cinnamon, optional; 150 g Greek yogurt on the side, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 37</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-ricotta-blueberry-toast.jpg" alt="Ricotta &amp; Blueberry Jam Toast"></div>
+<span class="eyebrow">Toasts, breads &amp; spreads</span><h2 class="rt">Ricotta &amp; Blueberry Jam Toast</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>420</b><span>kcal</span></div><div><b>18 g</b><span>protein</span></div><div><b>61 g</b><span>carbs</span></div><div><b>12 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>2 slices sourdough or wholegrain bread</li><li>80 g ricotta</li><li>100 g blueberries, fresh or frozen</li><li>1 tsp honey or maple syrup</li><li>½ tsp lemon juice</li><li>Pinch of lemon zest, optional</li><li>Pinch of cinnamon, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Add the blueberries and honey or maple syrup to a small saucepan.</li><li>Cook over a low-medium heat for 4–6 minutes, stirring and lightly crushing the berries until they become jammy. Add a splash of water if needed.</li><li>Stir in the lemon juice and leave to cool slightly.</li><li>Toast the bread and spread with ricotta.</li><li>Spoon the warm blueberry mixture over the ricotta and finish with lemon zest or cinnamon, if using.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>A simple sweet toast with creamy ricotta and homemade fruit topping.</p></div><p class="note">Not counted in the macros: pinch of lemon zest, optional; pinch of cinnamon, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 38</span></div></section>
+<section class="page chapter"><div class="ch-no">07</div><span class="eyebrow">Chapter 07</span><h2 class="ch">Eggs &amp; savoury breakfasts</h2>
+<p class="ch-sub">A savoury start with flexible portions</p><p class="ch-intro">Eggs, tofu, fish and dairy foods make useful savoury breakfast ingredients. Add bread, potatoes or other carbohydrate foods to match the session ahead.</p>
+<span class="eyebrow small">In this chapter</span><ul class="ch-list n6"><li><img src="img/new-egg-muffins.jpg" alt=""><span><b>Spinach &amp; Feta Egg Muffins</b><small>220 kcal · 17 g protein</small></span><em>40</em></li><li><img src="img/new-tofu-scramble.jpg" alt=""><span><b>Tofu Scramble on Toast</b><small>485 kcal · 33 g protein</small></span><em>41</em></li><li><img src="img/salmon-scrambled.jpg" alt=""><span><b>Smoked Salmon &amp; Scrambled Egg Toast</b><small>435 kcal · 32 g protein</small></span><em>42</em></li><li><img src="img/new-quesadilla.jpg" alt=""><span><b>Breakfast Quesadilla</b><small>415 kcal · 23 g protein</small></span><em>43</em></li><li><img src="img/new-sweet-potato-hash.jpg" alt=""><span><b>Sweet Potato &amp; Egg Hash</b><small>355 kcal · 16 g protein</small></span><em>44</em></li><li><img src="img/omelette.jpg" alt=""><span><b>Classic Fluffy Omelette</b><small>250 kcal · 19 g protein</small></span><em>45</em></li></ul><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 39</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-egg-muffins.jpg" alt="Spinach &amp; Feta Egg Muffins"></div>
+<span class="eyebrow">Eggs &amp; savoury breakfasts</span><h2 class="rt">Spinach &amp; Feta Egg Muffins</h2><p class="serves">Makes 6; serves 3 · values per serving (2 muffins)</p>
+<div class="mac big"><div><b>220</b><span>kcal</span></div><div><b>17 g</b><span>protein</span></div><div><b>4 g</b><span>carbs</span></div><div><b>16 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>6 eggs</li><li>100 g spinach</li><li>60 g feta</li><li>80 g cherry tomatoes, quartered</li><li>Black pepper</li><li>Olive oil for greasing</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Heat the oven to 180°C and grease a 6-hole muffin tin.</li><li>Wilt the spinach in a pan, then squeeze out excess liquid and chop.</li><li>Whisk the eggs with pepper; stir in spinach, feta and tomatoes.</li><li>Divide between the muffin holes and bake for 18–22 minutes until set.</li><li>Serve warm or refrigerate for up to 3 days.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 40</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-tofu-scramble.jpg" alt="Tofu Scramble on Toast"></div>
+<span class="eyebrow">Eggs &amp; savoury breakfasts</span><h2 class="rt">Tofu Scramble on Toast</h2><p class="serves">Serves 2 · values per serving</p>
+<div class="mac big"><div><b>485</b><span>kcal</span></div><div><b>33 g</b><span>protein</span></div><div><b>42 g</b><span>carbs</span></div><div><b>21 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>300 g firm tofu, crumbled</li><li>1 tbsp olive oil</li><li>10 g nutritional yeast</li><li>80 g spinach</li><li>100 g cherry tomatoes</li><li>½ tsp turmeric</li><li>½ tsp smoked paprika</li><li>4 slices wholegrain toast</li><li>Salt and pepper</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Heat the oil and cook the tomatoes for 2 minutes.</li><li>Add tofu, turmeric, paprika and nutritional yeast; cook for 5 minutes, stirring.</li><li>Stir in spinach until wilted and season to taste.</li><li>Serve on wholegrain toast.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 41</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/salmon-scrambled.jpg" alt="Smoked Salmon &amp; Scrambled Egg Toast"></div>
+<span class="eyebrow">Eggs &amp; savoury breakfasts</span><h2 class="rt">Smoked Salmon &amp; Scrambled Egg Toast</h2><p class="serves">Serves 2 · values per serving</p>
+<div class="mac big"><div><b>435</b><span>kcal</span></div><div><b>32 g</b><span>protein</span></div><div><b>34 g</b><span>carbs</span></div><div><b>19 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>4 slices wholegrain toast</li><li>4 eggs</li><li>2 tbsp milk</li><li>1 tsp butter</li><li>100 g smoked salmon</li><li>Chives or dill</li><li>Black pepper</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Whisk the eggs with the milk.</li><li>Melt the butter over a low heat and cook the eggs gently, stirring until softly set.</li><li>Serve over toast with smoked salmon, herbs and black pepper.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 42</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-quesadilla.jpg" alt="Breakfast Quesadilla"></div>
+<span class="eyebrow">Eggs &amp; savoury breakfasts</span><h2 class="rt">Breakfast Quesadilla</h2><p class="serves">Serves 2 · values per serving</p>
+<div class="mac big"><div><b>415</b><span>kcal</span></div><div><b>23 g</b><span>protein</span></div><div><b>35 g</b><span>carbs</span></div><div><b>20 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>2 wholegrain tortillas</li><li>3 eggs</li><li>80 g black beans, drained</li><li>40 g grated cheddar</li><li>Handful of spinach</li><li>½ red pepper, diced</li><li>1 tsp olive oil</li><li>Salsa to serve</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Heat the oil in a pan and soften the pepper.</li><li>Add spinach and black beans; cook until warmed through.</li><li>Scramble the eggs in the pan until just set.</li><li>Divide the filling between the tortillas, add cheese and fold in half.</li><li>Toast in a dry pan for 1–2 minutes per side until crisp and the cheese melts.</li><li>Serve with salsa.</li></ol></div></div>
+<p class="note">Not counted in the macros: salsa to serve.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 43</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-sweet-potato-hash.jpg" alt="Sweet Potato &amp; Egg Hash"></div>
+<span class="eyebrow">Eggs &amp; savoury breakfasts</span><h2 class="rt">Sweet Potato &amp; Egg Hash</h2><p class="serves">Serves 2 · values per serving</p>
+<div class="mac big"><div><b>355</b><span>kcal</span></div><div><b>16 g</b><span>protein</span></div><div><b>36 g</b><span>carbs</span></div><div><b>16 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>300 g sweet potato, diced</li><li>1 tbsp olive oil</li><li>100 g red pepper, diced</li><li>60 g onion, diced</li><li>4 eggs</li><li>1 tsp smoked paprika</li><li>Parsley, salt and pepper</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Boil or microwave the sweet potato for 5 minutes until just tender; drain.</li><li>Heat the oil and cook the onion and pepper for 3 minutes.</li><li>Add sweet potato and paprika; cook for 8–10 minutes until golden.</li><li>Make four wells, add the eggs, cover and cook until the whites are set.</li><li>Finish with parsley and black pepper.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 44</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/omelette.jpg" alt="Classic Fluffy Omelette"></div>
+<span class="eyebrow">Eggs &amp; savoury breakfasts</span><h2 class="rt">Classic Fluffy Omelette</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>250</b><span>kcal</span></div><div><b>19 g</b><span>protein</span></div><div><b>2 g</b><span>carbs</span></div><div><b>19 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>3 eggs</li><li>1 tbsp milk or water</li><li>1 tsp butter</li><li>Salt and freshly ground black pepper</li><li>Chopped chives or parsley, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Crack the eggs into a bowl. Add the milk or water, a pinch of salt and a little pepper.</li><li>Whisk with a fork until the yolks and whites are fully combined and slightly frothy.</li><li>Melt the butter in a small non-stick frying pan over medium-low heat, tilting to coat the base.</li><li>Pour in the eggs. As the edges begin to set, gently draw them towards the centre with a spatula, tilting the pan so uncooked egg flows into the gaps.</li><li>When the omelette is mostly set but still slightly glossy on top, fold it in half.</li><li>Cook for another 20–30 seconds, then slide onto a plate. Finish with herbs if using.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>A simple, versatile egg breakfast that can be served with toast.</p></div><p class="note">Macros calculated with milk. Not counted in the macros: chopped chives or parsley, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 45</span></div></section>
+<section class="page chapter"><div class="ch-no">08</div><span class="eyebrow">Chapter 08</span><h2 class="ch">Smoothies &amp; smoothie bowls</h2>
+<p class="ch-sub">Quick fuel and easy-to-adjust portions</p><p class="ch-intro">Smoothies can be useful when appetite or time is limited. Blending fruit does not remove its carbohydrate content; pair smoothies with a protein-rich ingredient when they are intended to replace a meal.</p>
+<span class="eyebrow small">In this chapter</span><ul class="ch-list n5"><li><img src="img/banoffee.jpg" alt=""><span><b>Banoffee Smoothie</b><small>445 kcal · 29 g protein</small></span><em>47</em></li><li><img src="img/green-smoothie.jpg" alt=""><span><b>Green Pineapple &amp; Yogurt Smoothie</b><small>280 kcal · 19 g protein</small></span><em>48</em></li><li><img src="img/tropical-smoothie.jpg" alt=""><span><b>Tropical Yogurt Smoothie</b><small>390 kcal · 25 g protein</small></span><em>49</em></li><li><img src="img/athlete-smoothie.jpg" alt=""><span><b>The Athlete’s Banana &amp; Blueberry Smoothie</b><small>615 kcal · 33 g protein</small></span><em>50</em></li><li><img src="img/new-smoothie-bowl.jpg" alt=""><span><b>Berry Recovery Smoothie Bowl</b><small>455 kcal · 25 g protein</small></span><em>51</em></li></ul><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 46</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/banoffee.jpg" alt="Banoffee Smoothie"></div>
+<span class="eyebrow">Smoothies &amp; smoothie bowls</span><h2 class="rt">Banoffee Smoothie</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>445</b><span>kcal</span></div><div><b>29 g</b><span>protein</span></div><div><b>46 g</b><span>carbs</span></div><div><b>16 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>1 banana</li><li>170 g skyr or thick Greek yogurt</li><li>200 ml milk</li><li>1 tbsp almond or peanut butter</li><li>½ tsp cinnamon</li><li>1 tsp honey, optional</li><li>Ice, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Add all ingredients to a blender.</li><li>Blend until smooth and creamy.</li><li>Add more milk to thin or ice to thicken.</li></ol></div></div>
+<p class="note">Not counted in the macros: 1 tsp honey, optional; ice, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 47</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/green-smoothie.jpg" alt="Green Pineapple &amp; Yogurt Smoothie"></div>
+<span class="eyebrow">Smoothies &amp; smoothie bowls</span><h2 class="rt">Green Pineapple &amp; Yogurt Smoothie</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>280</b><span>kcal</span></div><div><b>19 g</b><span>protein</span></div><div><b>38 g</b><span>carbs</span></div><div><b>6 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>30 g spinach</li><li>120 g frozen pineapple</li><li>½ banana</li><li>170 g skyr or Greek yogurt</li><li>150–200 ml water or milk</li><li>1 tsp ground flaxseed</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Add all ingredients to a blender.</li><li>Blend until completely smooth.</li><li>Adjust the liquid to your preferred consistency.</li></ol></div></div>
+<p class="note">Macros calculated with water.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 48</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/tropical-smoothie.jpg" alt="Tropical Yogurt Smoothie"></div>
+<span class="eyebrow">Smoothies &amp; smoothie bowls</span><h2 class="rt">Tropical Yogurt Smoothie</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>390</b><span>kcal</span></div><div><b>25 g</b><span>protein</span></div><div><b>43 g</b><span>carbs</span></div><div><b>13 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>60 g pineapple</li><li>60 g mango</li><li>140–170 g Greek yogurt</li><li>40 g nectarine</li><li>150 ml milk or water</li><li>1 tbsp cashews</li><li>1 tbsp rolled oats</li><li>1 tsp flaxseed</li><li>Mint, optional</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Place all ingredients in a blender.</li><li>Blend until smooth and creamy.</li><li>Add extra liquid if needed and serve immediately.</li></ol></div></div>
+<p class="note">Macros calculated with milk and the yogurt range at the midpoint. Not counted in the macros: mint, optional.</p><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 49</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/athlete-smoothie.jpg" alt="The Athlete’s Banana &amp; Blueberry Smoothie"></div>
+<span class="eyebrow">Smoothies &amp; smoothie bowls</span><h2 class="rt">The Athlete’s Banana &amp; Blueberry Smoothie</h2><p class="serves">Serves 1 · values per serving</p>
+<div class="mac big"><div><b>615</b><span>kcal</span></div><div><b>33 g</b><span>protein</span></div><div><b>80 g</b><span>carbs</span></div><div><b>18 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>40 g rolled oats</li><li>1 banana</li><li>80 g blueberries</li><li>170 g Greek yogurt or skyr</li><li>150 ml milk</li><li>1 tbsp peanut butter</li><li>½ tsp cinnamon</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Add all ingredients to a blender.</li><li>Blend until smooth, scraping down the sides if needed.</li><li>Add more milk for a thinner smoothie.</li></ol></div></div>
+<div class="tip"><b>Vivify tip</b><p>Increase the oats or add toast alongside when you need more carbohydrate.</p></div><div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 50</span></div></section>
+<section class="page recipe"><div class="photo"><img src="img/new-smoothie-bowl.jpg" alt="Berry Recovery Smoothie Bowl"></div>
+<span class="eyebrow">Smoothies &amp; smoothie bowls</span><h2 class="rt">Berry Recovery Smoothie Bowl</h2><p class="serves">Serves 1 · values per bowl</p>
+<div class="mac big"><div><b>455</b><span>kcal</span></div><div><b>25 g</b><span>protein</span></div><div><b>58 g</b><span>carbs</span></div><div><b>14 g</b><span>fat</span></div></div>
+<div class="cols"><div class="ing"><h3>Ingredients</h3><ul><li>150 g frozen mixed berries</li><li>1 small banana</li><li>170 g skyr or thick Greek yogurt</li><li>30–50 ml milk</li><li>20 g granola</li><li>10 g pumpkin seeds</li></ul></div>
+<div class="meth"><h3>Method</h3><ol><li>Blend the berries, banana, yogurt and a little milk until thick.</li><li>Spoon into a bowl.</li><li>Top with granola and pumpkin seeds.</li></ol></div></div>
+<div class="spacer"></div><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 51</span></div></section>
+<section class="page final"><span class="eyebrow">Real food, flexible portions</span><h2 class="pt">A final note on fuelling</h2>
+<p>There is no single perfect breakfast. The best option is one that you enjoy, tolerate well and can fit around your training, appetite and schedule. On harder or longer training days, increase the carbohydrate portion or add an extra side. On lighter days, choose portions that leave you comfortably satisfied.</p>
+<p>Whole foods first does not mean supplements are never useful. It simply means these recipes are designed to work without protein powder, using familiar ingredients that also bring other nutrients, flavour and texture.</p>
+<div class="cta">
+ <a href="https://vivifysports.com/blog/"><span class="eyebrow">Keep cooking</span><b>More recipes, fuelling tips and articles from Marine on the Vivify Sports blog.</b><em>vivifysports.com/blog</em></a>
+ <a href="https://vivifysports.com/sports-nutritionist-ireland/"><span class="eyebrow">Personalised recipes</span><b>For personalised recipes and nutrition coaching for all diets.</b><em>vivifysports.com/sports-nutritionist-ireland</em></a>
+</div>
+<div class="end"><img class="logo" src="../site/img/vivify-logo-white.webp" alt="Vivify Sports"><p>Healthy habits to ignite your potential</p></div>
+<p class="credits">Photography: Marine Lenehan / Vivify Sports. Additional photos are free-to-use public-domain (CC0) images from the WordPress Photo Directory and Openverse.
+© Vivify Sports. For personal use only; please do not share or resell.</p><div class="foot"><span><b>Vivify Sports</b> · Breakfasts to ignite your potential</span><span>vivifysports.com · 52</span></div></section></body></html>

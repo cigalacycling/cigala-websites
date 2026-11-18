@@ -162,3 +162,9 @@ node tools/vivify_board.js
 python3 -I tools/vivify_board_pdf.py
 ```
 The board PNGs in `vivify/board/` are gitignored.
+
+## E-book: Breakfasts to Ignite Your Potential
+- Build: `python3 tools/vivify_ebook.py` -> `vivify/ebook/Breakfasts-to-Ignite-Your-Potential.pdf` (52 pages, A4, website style).
+- Text and macros are unchanged from Marine's PDF (`vivify/ebook/source-text.txt` -> `recipes.json`).
+- Marine's photos are kept. The 13 recipes that had placeholders use CC0 / public-domain photos (`img/new-*.jpg`, sources in `photo-credits.json`).
+- Status: waiting for Marine's approval. Do NOT upload it to the site until she approves. After that, add a hidden /ebook-download/ page and set the Stripe payment link's after-payment redirect to it.
