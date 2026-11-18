@@ -721,7 +721,8 @@ def countries_html():
     cs = json.load(open(ROOT + 'coaching/athlete-countries.json'))
     flag = lambda c: conv(f'tourspages/img/flag-{c}{"-square" if c in ("ch", "si") else ""}.webp', f'flag-{c}')
     lis = ''.join(f'<li><img src="{flag(c["cc"])}" alt="Flag of {c["name"]}" title="{c["name"]}" width="40" height="40" loading="lazy"><span>{c["name"]}</span></li>' for c in cs)
-    return f'<div class="ctry"><p class="ctry-t">Athletes coached in <b>{len(cs)} countries</b></p><ul class="ctry-f">{lis}</ul></div>'
+    # Matteo 18 Nov: past tense, no years ("athletes I coached in the past")
+    return f'<div class="ctry"><p class="ctry-t">I’ve coached athletes from <b>{len(cs)} countries</b></p><ul class="ctry-f">{lis}</ul></div>'
 COUNTRIES_CSS = '''<style>
 .ctry { margin-top: 30px; padding: 22px 24px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255,255,255,.025); text-align: center; }
 .ctry-t { margin: 0 0 16px; font-size: 15px; color: var(--text-2); letter-spacing: .02em; }
