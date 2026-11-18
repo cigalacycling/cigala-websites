@@ -247,12 +247,19 @@ add_action('rest_api_init', function () {
             // Matteo 18 Nov: open that exact session (athlete link format he gave: /me/activity/<id>/overview); calendar only if the id is missing
             $go = !empty($notify['activity']) ? 'https://app.joinvekta.com/me/activity/' . rawurlencode($notify['activity']) . '/overview' : 'https://app.joinvekta.com/me/calendar';
             // Matteo 18 Nov: Vekta's app already buzzes their phone, so the hub only adds the line to their bell (no second buzz); the 3-hour email stays as the safety net
-            if (function_exists('cc_inbox_add')) cc_inbox_add($uid, $T[$l] ?? $T['en'], wp_trim_words($notify['text'], 20), $go, 'cc-vx-' . $notify['activity']);
+            // ...unless the athlete switched "phone notification from the hub" on in their Settings
+            if (get_user_meta($uid, 'cc_vx_push_on', true) || !function_exists('cc_inbox_add')) cc_push_user($uid, $T[$l] ?? $T['en'], wp_trim_words($notify['text'], 20), $go, 'cc-vx-' . $notify['activity']);
+            else cc_inbox_add($uid, $T[$l] ?? $T['en'], wp_trim_words($notify['text'], 20), $go, 'cc-vx-' . $notify['activity']);
             cc_vx_mail_queue($uid, $notify, $go);
         }
         return ['ok' => $hit];
     }]);
     // the athlete's own switch (in their notifications panel): email me when Matteo replies on Vekta
+    register_rest_route('cc/v1', '/vx-push', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {
+        $uid = get_current_user_id();
+        if ($r['on']) update_user_meta($uid, 'cc_vx_push_on', 1); else delete_user_meta($uid, 'cc_vx_push_on');
+        return ['ok' => true, 'on' => (bool) get_user_meta($uid, 'cc_vx_push_on', true)];
+    }]);
     register_rest_route('cc/v1', '/vx-mail', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {
         $uid = get_current_user_id();
         if ($r['on']) delete_user_meta($uid, 'cc_vx_mail_off'); else update_user_meta($uid, 'cc_vx_mail_off', 1);
@@ -268,6 +275,8 @@ function cc_vx_mail_w($k, $l) {
     static $W = [
         'opt' => ['en' => 'Email me when Matteo replies to my workouts in Vekta', 'it' => 'Mandami un’email quando Matteo risponde ai miei allenamenti su Vekta', 'pt' => 'Envia-me um email quando o Matteo responder aos meus treinos no Vekta', 'sl' => 'Pošlji mi e-pošto, ko Matteo odgovori na moje treninge v Vekti', 'sk' => 'Pošli mi e-mail, keď Matteo odpovie na moje tréningy vo Vekte'],
         'optc' => ['en' => 'Only if you haven’t seen my reply after 3 hours, at most once a day.', 'it' => 'Solo se non hai visto la mia risposta dopo 3 ore, al massimo una volta al giorno.', 'pt' => 'Só se não tiveres visto a minha resposta após 3 horas, no máximo uma vez por dia.', 'sl' => 'Samo če mojega odgovora ne vidiš v 3 urah, največ enkrat na dan.', 'sk' => 'Iba ak moju odpoveď neuvidíš do 3 hodín, najviac raz za deň.'],
+        'push' => ['en' => 'Phone notification from the hub when Matteo replies to my workouts', 'it' => 'Notifica sul telefono dall’area quando Matteo risponde ai miei allenamenti', 'pt' => 'Notificação no telemóvel da área quando o Matteo responder aos meus treinos', 'sl' => 'Obvestilo na telefon iz središča, ko Matteo odgovori na moje treninge', 'sk' => 'Upozornenie v telefóne zo zóny, keď Matteo odpovie na moje tréningy'],
+        'pushc' => ['en' => 'Vekta already notifies you. Turn this on if you’d like a second reminder.', 'it' => 'Vekta ti avvisa già. Attivala se vuoi un secondo promemoria.', 'pt' => 'O Vekta já te avisa. Ativa isto se quiseres um segundo lembrete.', 'sl' => 'Vekta te že obvesti. Vklopi to, če želiš še en opomnik.', 'sk' => 'Vekta ťa už upozorní. Zapni to, ak chceš ďalšiu pripomienku.'],
         'hi' => ['en' => 'Hi %s,', 'it' => 'Ciao %s,', 'pt' => 'Olá %s,', 'sl' => 'Živjo %s,', 'sk' => 'Ahoj %s,'],
         'p1' => ['en' => 'I replied to your workout in Vekta:', 'it' => 'Ho risposto al tuo allenamento su Vekta:', 'pt' => 'Respondi ao teu treino no Vekta:', 'sl' => 'Odgovoril sem na tvoj trening v Vekti:', 'sk' => 'Odpovedal som na tvoj tréning vo Vekte:'],
         'btn' => ['en' => 'Open it in Vekta', 'it' => 'Aprilo su Vekta', 'pt' => 'Abrir no Vekta', 'sl' => 'Odpri v Vekti', 'sk' => 'Otvoriť vo Vekte'],
@@ -316,7 +325,9 @@ add_filter('cc_settings_notify', function ($html, $uid, $coach) {
     if ($coach) return $html;
     if (function_exists('cc_ath_page_of') && function_exists('cc_ath_tp') && cc_ath_tp(cc_ath_page_of($uid))) return $html;   // TrainingPeaks athletes never see Vekta
     $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en'; $on = !get_user_meta($uid, 'cc_vx_mail_off', true);
-    return $html . '<label class="bell-opt"><input type="checkbox"' . ($on ? ' checked' : '') . ' data-api="' . esc_url(rest_url('cc/v1/vx-mail')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"><span><b>' . esc_html(cc_vx_mail_w('opt', $l)) . '</b><small>' . esc_html(cc_vx_mail_w('optc', $l)) . '</small></span></label>'
+    $pon = (bool) get_user_meta($uid, 'cc_vx_push_on', true);
+    return $html . '<label class="bell-opt"><input type="checkbox"' . ($pon ? ' checked' : '') . ' data-api="' . esc_url(rest_url('cc/v1/vx-push')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"><span><b>' . esc_html(cc_vx_mail_w('push', $l)) . '</b><small>' . esc_html(cc_vx_mail_w('pushc', $l)) . '</small></span></label>'
+        . '<label class="bell-opt"><input type="checkbox"' . ($on ? ' checked' : '') . ' data-api="' . esc_url(rest_url('cc/v1/vx-mail')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"><span><b>' . esc_html(cc_vx_mail_w('opt', $l)) . '</b><small>' . esc_html(cc_vx_mail_w('optc', $l)) . '</small></span></label>'
         . '<style>html body .bell-opt{display:flex;align-items:flex-start;gap:10px;margin:0;padding:8px 0;cursor:pointer}html body .bell-opt input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:#12a150}'
         . 'html body .bell-opt span{flex:1;min-width:0;display:grid;gap:3px}html body .bell-opt b{font-size:15px;line-height:1.35;color:#fff;font-weight:600}html body .bell-opt small{font-size:14px;line-height:1.4;color:#b8bec8}</style>'
         . '<script>document.addEventListener("change",function(e){var c=e.target;if(!c.closest||!c.closest(".bell-opt"))return;fetch(c.dataset.api,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":c.dataset.nonce},body:JSON.stringify({on:c.checked?1:0})}).catch(function(){c.checked=!c.checked;});});</script>';
