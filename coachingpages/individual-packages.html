@@ -648,6 +648,10 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .hb-chips span::before { content: "✓"; color: var(--green-text); font-weight: 700; margin-right: 7px; }
 .hb3 .hb-tour { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; max-width: 1000px; margin: 0 auto; }   /* v3: three phones */
 .hb4 .hb-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 36px; margin-top: 22px; }   /* v4: compact */
+.hb4-tour { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; max-width: 760px; margin: 26px auto 0; gap: 22px; } .hb4-tour figcaption { text-align: center; }
+.hb4-wide { display: block; width: 100%; height: auto; margin: 26px 0 0; border-radius: 14px; }
+.hb4-fan { display: block; width: 100%; max-width: 900px; height: auto; margin: 10px auto 0; }
+@media (max-width: 560px) { .hb4-tour { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px; overflow: visible; margin-right: 0; padding-right: 0; } .hb4-tour figcaption b { font-size: 13px; } }
 .hb4-pic img { display: block; width: 100%; height: auto; }
 @media (max-width: 900px) { .hb4 .hb-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
 @media (max-width: 900px) { .hb3 .hb-tour { grid-template-columns: repeat(3, minmax(230px, 1fr)); margin-right: -16px; } }

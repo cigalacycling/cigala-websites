@@ -23,7 +23,19 @@ const CSS = `*{margin:0;box-sizing:border-box}body{background:transparent}
 .lap .base:before{content:"";position:absolute;left:50%;top:0;width:150px;height:9px;transform:translateX(-50%);background:#14161a;border-radius:0 0 10px 10px}`;
 // v3 (Matteo 18 Nov: "less detail so it cannot be copied" + "high quality pictures"): screens scr3-*.png at DPR 3 (phones) / 2 (laptop),
 // laptop = the hub with the season-plan teaser (no focus/coach notes), 3 phones only (reports, goals, library). Output v3-*.png at 2x.
-if (process.argv.includes('--v3')) (async () => {
+// Option pictures for the section's second row (Matteo 18 Nov: "maybe another picture below"): fan of 3 phones, and the periodisation teaser banner.
+if (process.argv.includes('--extras')) (async () => {
+  const b = await chromium.launch(); const p = await b.newPage({ deviceScaleFactor: 2 });
+  await p.setViewportSize({ width: 1500, height: 1000 });
+  const ph = (f, w, x, y, r, z) => `<div style="position:absolute;left:${x}px;top:${y}px;transform:rotate(${r}deg);z-index:${z}">${PHONE(u('scr3-' + f + '.png'), w)}</div>`;
+  await p.setContent(`<style>${CSS}</style><div style="position:relative;width:1500px;height:1000px">${ph('reports', 400, 170, 120, -8, 1)}${ph('library', 400, 930, 120, 8, 1)}${ph('goals', 430, 535, 40, 0, 2)}</div>`, { waitUntil: 'load' });
+  await p.screenshot({ path: D + pre + 'x-fan.png', omitBackground: true }); console.log('made', pre + 'x-fan');
+  const E = path.resolve(__dirname, '..', 'coaching/athlete-area/examples') + '/';
+  await p.setViewportSize({ width: 1100, height: 800 }); await p.goto('file://' + E + pre + 'season-plan-teaser.html', { waitUntil: 'networkidle' }); await p.evaluate(() => document.fonts.ready);
+  const card = p.locator('h2', { hasText: /Periodi/i }).locator('xpath=..'); await card.screenshot({ path: D + pre + 'x-banner.png' }); console.log('made', pre + 'x-banner');
+  await b.close();
+})();
+else if (process.argv.includes('--v3')) (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ deviceScaleFactor: 2 });
   await p.setViewportSize({ width: 2200, height: 1400 });
   await p.setContent(`<style>${CSS}</style><div style="position:relative;width:2200px;height:1400px">
