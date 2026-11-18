@@ -22,6 +22,14 @@ function cc_ph_w($k) {
     return $W[$k][$l] ?? $W[$k]['en'];
 }
 function cc_ph_url($pid) { $id = (int) get_post_meta((int) $pid, 'cc_photo', true); return $id && get_post($id) ? wp_get_attachment_url($id) : ''; }
+// Matteo 18 Nov: the laptop puts the athlete's photo beside their name on their reports (coach login only; the file stays private)
+add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/athlete-photo', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $id = (int) get_post_meta((int) $r['page'], 'cc_photo', true); $f = $id ? get_attached_file($id) : '';
+        if (!$f || !is_readable($f)) return new WP_Error('cc_none', 'No photo', ['status' => 404]);
+        return ['mime' => get_post_mime_type($id) ?: 'image/jpeg', 'b64' => base64_encode(file_get_contents($f))];
+    }]);
+});
 // Matteo 17 Nov: athlete pages are private, so WordPress put "Private: " before every athlete name (Alan Holland showed as "PH").
 // Athlete names never carry that prefix: initials, notifications, lists and boards.
 add_filter('private_title_format', function ($fmt, $post) { return ($post && get_post_type($post) === 'cc_athlete') ? '%s' : $fmt; }, 10, 2);
