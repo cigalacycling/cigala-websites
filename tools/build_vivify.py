@@ -104,6 +104,7 @@ PAY = {'healthy': 'https://pay.gocardless.com/BRT0004V6AWJMPG', 'happy': 'https:
        'performing': 'https://pay.gocardless.com/BRT00045M0SDGT2', 'yoga_monthly': 'https://pay.gocardless.com/BRT0002A1NBMZ4S'}
 EMAIL, PHONE, PHONE_TEL = 'marine@vivifysports.com', '+353 87 224 7402', '+353872247402'
 IG = 'https://www.instagram.com/vivifysports/'
+VAT = 'IE8879803O'   # Marine 18 Nov (Irish E-Commerce Regulations: VAT number on the website)
 EBOOK_PAY = 'https://buy.stripe.com/bJe7sN9augIR63nb6w8k800'   # Marine's Stripe payment link, 5.99 EUR (17 Nov)
 ASSESSMENT_PAY = 'https://cal.com/marine-lenehan/nutritional-assessment'   # Nutritional Assessment: Cal.com paid event, pay + book in one step (17 Nov; was Stripe aFa4gBbiC3W563nb6w8k801)
 FOLLOWUP_PAY = 'https://cal.com/marine-lenehan/30min'     # Follow-up Consultation: Cal.com paid event (17 Nov; was Stripe aFa3cx72m9gp1N7gqQ8k802)
@@ -601,7 +602,7 @@ def shell(file, body, schema=None):
    <li>{ICON['star']}<a href="{GBP}" target="_blank" rel="noopener">Google reviews</a></li></ul>
    <a class="social" href="{IG}" aria-label="Vivify Sports on Instagram">{ICON['ig']}</a></div>
  </div>
- <div class="wrap bottom"><span>© 2023 by Vivify Sports</span><a href="privacy-policy.html">Privacy Policy</a></div>
+ <div class="wrap bottom"><span>© 2023 by Vivify Sports<span class="sep"> · </span><span>VAT number</span> {VAT}</span><a href="privacy-policy.html">Privacy Policy</a></div>
 </footer>
 </body></html>""")
 
@@ -703,7 +704,7 @@ def home():
 """
     schema = {"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Vivify Sports", "url": LIVE,
               "email": EMAIL, "telephone": PHONE, "areaServed": "Worldwide", "address": {"@type": "PostalAddress", "addressLocality": "Wicklow", "addressCountry": "IE"},
-              "founder": {"@type": "Person", "name": "Marine Lenehan", "jobTitle": "Sports Nutritionist"}, "sameAs": [IG, GBP]}
+              "founder": {"@type": "Person", "name": "Marine Lenehan", "jobTitle": "Sports Nutritionist"}, "sameAs": [IG, GBP], "vatID": VAT}
     return shell('index.html', body, schema)
 
 # ---------------------------------------------------------------- ABOUT

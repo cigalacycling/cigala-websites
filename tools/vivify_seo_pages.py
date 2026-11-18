@@ -285,7 +285,7 @@ def build(b):
 {cta('Based in Wicklow', 'Book a free 30-minute discovery call, or ask about a talk for your club.', 'Book your free call', DISC)}"""
     local = {"@type": "ProfessionalService", "name": "Vivify Sports", "url": LIVE, "email": b.EMAIL, "telephone": b.PHONE,
              "address": {"@type": "PostalAddress", "addressLocality": "Wicklow", "addressRegion": "Co. Wicklow", "addressCountry": "IE"},
-             "areaServed": ["County Wicklow", "County Dublin", "Ireland"], "founder": {"@id": LIVE + "/#marine"}, "sameAs": [b.IG, b.GBP]}
+             "areaServed": ["County Wicklow", "County Dublin", "Ireland"], "founder": {"@id": LIVE + "/#marine"}, "sameAs": [b.IG, b.GBP], "vatID": b.VAT}
     page('sports-nutritionist-dublin.html', body, [local, faq_schema])
 
     # ------------------------------------------------------------ WOMEN'S CYCLING NUTRITION
