@@ -386,6 +386,10 @@ function cc_ath_inner() {
     if ($coach && in_array($_GET['lang'] ?? '', ['it', 'en'], true)) $GLOBALS['cc_ath_lang'] = $_GET['lang'];
     $lang = $GLOBALS['cc_ath_lang'];
     $first = $me->first_name ?: $me->display_name;
+    // Matteo 18 Nov: his coach home reads MATTEO / Coach / CIGALA, also when the account has no surname saved
+    $cparts = preg_split('/\s+/', trim($me->display_name ?: $first));
+    $cfirst = $me->first_name ?: ($cparts[0] ?? 'Matteo');
+    $clast = $me->last_name ?: (count($cparts) > 1 ? implode(' ', array_slice($cparts, 1)) : 'Cigala');
     // personal numbers: days since the login was made, and reports in their page
     $vu = $view ? get_userdata((int) get_post_meta($view, 'cc_user', true)) : null;
     $since = $vu ? $vu->user_registered : $me->user_registered;
@@ -396,9 +400,9 @@ function cc_ath_inner() {
         // Matteo 17 Nov: the athlete's own round photo by the greeting (initials + camera until they add one; tap to add or change)
         . (!$coach && $view && function_exists('cc_ph_widget') ? '<div class="ath-hello">' . cc_ph_widget($view, 72, true, 'ath-me-ph') : '')
         // Matteo 17 Nov: the comma stays glued to the greeting (it slipped out of sight on phones)
-        . '<h1><span class="ath-gw"><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>,</span> ' . '<span class="ath-nm">' . ($coach && $me->last_name
-            ? '<span class="ath-nm-stack"><span>' . esc_html($first) . '</span><span class="ath-coach-tag">Coach</span><span>' . esc_html($me->last_name) . '</span></span>'
-            : ($coach ? '<span class="ath-coach-tag">Coach</span>&nbsp;' : '') . esc_html($first)) . '</span></h1>'
+        . '<h1><span class="ath-gw"><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>,</span> ' . '<span class="ath-nm">' . ($coach
+            ? '<span class="ath-nm-stack"><span>' . esc_html($cfirst) . '</span><span class="ath-coach-tag">Coach</span><span>' . esc_html($clast) . '</span></span>'
+            : esc_html($first)) . '</span></h1>'
         . (!$coach && $view && function_exists('cc_ph_widget') ? '</div>' . cc_ph_assets() : '')
         // Matteo 17 Nov: his own view drops the athlete line; both get live chips instead (what is new, the next race)
         . ($coach ? '' : '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>')
