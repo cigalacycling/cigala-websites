@@ -62,6 +62,7 @@ function cc_pc_one($p, $since) {
         'language' => $u ? cc_ath_lang_code($uid) : null, 'language_name' => $u ? (CC_REPORT_LANGS[cc_ath_lang_code($uid)] ?? null) : null,
         'nationality' => $nat !== '' ? strtoupper($nat) : null, 'flag_emoji' => cc_pc_flag_emoji($nat !== '' ? $nat : ($u ? cc_ath_lang_code($uid) : ''), $nat !== ''),
         'nationality_name' => $nat !== '' && defined('CC_F_COUNTRIES') ? (CC_F_COUNTRIES[$nat] ?? null) : null,
+        'photo' => function_exists('cc_ph_url') ? (cc_ph_url($p->ID) ?: null) : null,   // Matteo 18 Nov: the athlete's face on their reports
         'form' => ['status' => $u && function_exists('cc_f_status') ? cc_f_status($uid) : null, 'signed_at' => $signed['at'] ?? null, 'kind' => $signed['kind'] ?? null],
         'availability' => $av ? ['data' => $av, 'updated' => $avu ?: null, 'status' => $avu > $avseen ? 'new' : 'seen'] : null,
         'goals' => $g ? ['short' => $g['short'] ?? '', 'long' => $g['long'] ?? '', 'events' => array_map(function ($e) {   // Matteo 17 Nov: route for the race day simulation (file: GET /cc/v1/route?id=route_id; link: route_link)

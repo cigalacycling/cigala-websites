@@ -70,6 +70,11 @@ add_action('rest_api_init', function () {
     }]);
     register_rest_route('cc/v1', '/reports', ['methods' => 'GET', 'callback' => 'cc_r_list_rest', 'permission_callback' => 'cc_ath_is_coach']);
     // Matteo 18 Nov: mark a review as the renewal one: publishing it sends no "report ready" email or notification (his Gmail renewal email covers it)
+    // Matteo 18 Nov: "race plan, race recaps, weekly reports, since you joined should be automatic" = his Reports-board switch, set from the laptop on his word
+    register_rest_route('cc/v1', '/auto-publish', ['methods' => 'GET,POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        if ($r->get_method() === 'POST') update_option('cc_r_race_auto', $r['on'] ? 1 : 0, false);
+        return ['on' => (bool) get_option('cc_r_race_auto'), 'types' => CC_R_SELF];
+    }]);
     register_rest_route('cc/v1', '/report-renewal', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
         $id = (int) $r['id']; if (get_post_type($id) !== 'cc_report') return new WP_Error('cc_none', 'No such report', ['status' => 404]);
         if ($r['off']) delete_post_meta($id, 'cc_renewal'); else update_post_meta($id, 'cc_renewal', 1);
