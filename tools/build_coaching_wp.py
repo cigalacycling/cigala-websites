@@ -341,6 +341,13 @@ if COACH_NL_URL:
     pop = re.sub(r'<p class="nl-d">.*?</p>', '<p class="nl-d">Training tips, news, blogs and deals on coaching, bike tours and our shop.</p>', pop, count=1)
     # the OpenWidget chat (loaded after Accept) sat above the pop-up on phones and covered the email field (main chat, 15 Nov)
     pop += '<style>#nl-pop{z-index:2147483647!important}#nl-pop .nl-t{font-family:Anton,Impact,"Arial Narrow",sans-serif!important}</style>'
+    # Matteo 18 Nov, phone: "the pop-up, I don't see it fully". Safari's bottom bar (floating on new iPhones) covers a sheet
+    # stuck to the bottom edge, and env(safe-area-inset-bottom) is 0 without viewport-fit=cover. On phones: a centred card
+    # with room around it, scrolling inside if the screen is short, so nothing is ever hidden.
+    pop += ('<style>@media (max-width:640px){#nl-pop{align-items:center!important;padding:16px 12px calc(16px + env(safe-area-inset-bottom,0px))!important}'
+            '#nl-pop .nl-back{background:rgba(0,0,0,.6)!important}'
+            '#nl-pop .nl-box{border-radius:14px!important;border:1px solid rgba(255,255,255,.14)!important;border-top:3px solid #009a44!important;'
+            'padding:24px 16px 18px!important;max-height:calc(100dvh - 40px);overflow-y:auto;-webkit-overflow-scrolling:touch}}</style>')
     widgets.append(html_widget(pop))
 # ---------- exit pop-up (Matteo 16 Nov: "I follow your advice and design that you recommend"), ported from Tours ----------
 # One box in the footer library; the wording comes from the page path (JS map below), and it only runs on the sales pages:
