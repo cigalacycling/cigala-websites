@@ -632,7 +632,7 @@ def talent():
         <li>{ic(I['chat'])}<span>A video call or face to face interview might be requested before getting started</span></li>
         <li>{ic(I['star'])}<span>Limited availability</span></li>
       </ul>
-      <div class="panel tl-next">   <!-- Matteo 18 Nov: more details under the photo, next to the longer application form -->
+      <div class="panel tl-next">
         <div class="eyebrow">After you apply</div>
         <ol>
           <li><b>I read every application myself</b><span>Your power numbers, racing history and goals.</span></li>

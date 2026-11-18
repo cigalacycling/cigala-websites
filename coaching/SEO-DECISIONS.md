@@ -596,3 +596,11 @@ Matteo created a "Claude live" application password on coaching.cigalacycling.co
 - It still emails matteo@ with the subject "Talent Programme application (Coaching website)". All fields are in the email.
 - Code: tools/build_coaching_wp.py (form fields keyed on the subject), plus CSS so small fields sit side by side (4 or 3 per row; 2 per row on phones). Other forms are unchanged (contact checked).
 - Checked at 390/820/1440: 16px fields, no sideways scrolling, 1 H1. Waiting for Matteo's go for live.
+
+## 18 Nov 2026 (evening): LIVE: countries flags, money-back guarantee, talent application form
+- Matteo's go (18 Nov): countries box "leave it there. I like it"; guarantee "perfectly fine"; talent programme "also perfect".
+- Pushed with tools/coaching_live_push_181126.py: backups in live-coaching/backup/guarantee-talent-countries/; only the changed widgets were swapped, after checking every other widget matched the staging build; 32 kit CSS rules appended; 28 flags uploaded to live media (live-coaching/countries-flags-media.json).
+- Home (2924): flags box under the reviews. Individual (3338): guarantee badge on Advanced and Premium, box under the T&C line, FAQ; Basic button same height. Talent (896): application form.
+- HELD BACK: the talent "After you apply" panel under the photo (new copy, on staging only, waiting for Matteo's OK). To put it live: python3 -I tools/coaching_live_push_181126.py --with-panel (re-take the 896 backup first).
+- Live crawl before/after (102 URLs): titles, metas, H1/H2, schema unchanged; only addition: 28 flag alt texts on the home page. Checked at 390/820/1440: no sideways scroll, 1 H1, 16px fields; contact form unchanged.
+- Countries box: kept on the home page only (Matteo: "you choose"), so it doesn't repeat across pages.
