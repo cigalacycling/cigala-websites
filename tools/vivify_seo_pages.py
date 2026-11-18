@@ -88,7 +88,7 @@ def build(b):
            ('Do you work with elite and professional riders?',
             '<p>Yes. Marine races in the WorldTour with LIDL-TREK and works with riders up to elite level: race calendars and stage races, high-carbohydrate race fuelling, safe body composition, training camps and batch-tested supplements.</p>'),
            ('Do I need to be in Ireland?',
-            '<p>No. Coaching is online. Marine currently coaches athletes in the USA, Canada, Ireland and Finland, and has coached athletes in France, Italy and the Netherlands. Plans are priced in euro and US dollars.</p>')]
+            '<p>No. Coaching is online. Marine currently coaches athletes in the USA, Canada, Ireland and Finland, and has coached athletes in France, Italy, the Netherlands and Austria. Plans are priced in euro and US dollars.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Cycling nutrition', 'Common questions')
     body = f"""
 {hero('Sports Nutritionist · Ireland & Online', 'Cycling Nutritionist',
@@ -216,11 +216,26 @@ def build(b):
            ('Can I pay in US dollars?',
             '<p>Yes. Every option is priced in euro and US dollars. For example, the Nutritional Assessment is 100€ / 120 US$.</p>'),
            ('Which athletes do you work with?',
-            '<p>Endurance athletes, mainly cyclists, triathletes and runners, from first events to elite level. Marine currently coaches athletes in the USA, Canada, Ireland and Finland, and has coached athletes in France, Italy and the Netherlands.</p>'),
+            '<p>Endurance athletes, mainly cyclists, triathletes and runners, from first events to elite level. Marine currently coaches athletes in the USA, Canada, Ireland and Finland, and has coached athletes in France, Italy, the Netherlands and Austria.</p>'),
            ('Can I try it before committing?',
             '<p>Yes. The first step is a free 30-minute discovery call.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Working online', 'Common questions')
-    flags = [('USA', 'Coaching now'), ('Canada', 'Coaching now'), ('Ireland', 'Coaching now'), ('Finland', 'Coaching now')]
+    # Marine 18 Nov: flags of every country she coaches now or has coached (drawn as SVG so they look the same everywhere)
+    F = {
+     'Ireland': '<rect width="10" height="20" fill="#169B62"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#FF883E"/>',
+     'USA': ''.join(f'<rect y="{i*20/13:.3f}" width="30" height="{20/13:.3f}" fill="{"#B22234" if i % 2 == 0 else "#fff"}"/>' for i in range(13))
+            + '<rect width="12" height="10.77" fill="#3C3B6E"/>' + ''.join(f'<circle cx="{1.5+x*2.25:.2f}" cy="{1.4+y*2:.2f}" r=".45" fill="#fff"/>' for y in range(5) for x in range(5)),
+     'Canada': '<rect width="30" height="20" fill="#fff"/><rect width="7.5" height="20" fill="#D52B1E"/><rect x="22.5" width="7.5" height="20" fill="#D52B1E"/>'
+               '<path d="M15 4.2l1.1 2.2 1.3-.5-.6 3.4 1.8-1.8.4 1.1 2.2-.4-.8 2.4.9.5-3.6 2.8.3 1.3-2.4-.4V18h-1.2v-3.2l-2.4.4.3-1.3-3.6-2.8.9-.5-.8-2.4 2.2.4.4-1.1 1.8 1.8-.6-3.4 1.3.5z" fill="#D52B1E"/>',
+     'Finland': '<rect width="30" height="20" fill="#fff"/><rect x="8.2" width="5.5" height="20" fill="#003580"/><rect y="7.3" width="30" height="5.5" fill="#003580"/>',
+     'Italy': '<rect width="10" height="20" fill="#009246"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#CE2B37"/>',
+     'France': '<rect width="10" height="20" fill="#0055A4"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#EF4135"/>',
+     'Netherlands': '<rect width="30" height="6.67" fill="#AE1C28"/><rect y="6.67" width="30" height="6.67" fill="#fff"/><rect y="13.33" width="30" height="6.67" fill="#21468B"/>',
+     'Austria': '<rect width="30" height="6.67" fill="#C8102E"/><rect y="6.67" width="30" height="6.67" fill="#fff"/><rect y="13.33" width="30" height="6.67" fill="#C8102E"/>'}
+    flags = [(c, 'Coaching now') for c in ['Ireland', 'USA', 'Canada', 'Finland']] + [(c, 'Past clients') for c in ['Italy', 'France', 'Netherlands', 'Austria']]
+    def flag(c):
+        return f'<svg class="flag" viewBox="0 0 30 20" width="54" height="36" role="img" aria-label="Flag of {c}">{F[c]}</svg>'
+
     body = f"""
 {hero('Worldwide · Online', 'Online Sports Nutritionist',
       'Personal nutrition coaching from an MSc sports nutritionist and WorldTour cyclist, wherever you live and train. Currently coaching athletes in the USA, Canada, Ireland and Finland.')}
@@ -232,8 +247,9 @@ def build(b):
   {ticks(['Free 30-minute discovery call', 'Nutritional assessment by video call', 'Weekly plan from your TrainingPeaks or Vekta training load', 'Food diary review in MyFitnessPal', 'WhatsApp support on every 3-month plan', 'Prices in euro and US dollars'])}</div>
 </div></section>
 <section style="padding-top:8px"><div class="wrap">
- {head('Where Marine coaches', 'Athletes on both sides of the Atlantic', tag='h2', center=True, lead='Currently coaching athletes in the USA, Canada, Ireland and Finland. Past clients in France, Italy and the Netherlands.')}
- <div class="g4" style="margin-top:28px">{''.join(f'<div class="pcard panel center"><span class="h3">{c}</span><p class="muted" style="margin:0">{n}</p></div>' for c, n in flags)}</div>
+ {head('Where Marine coaches', 'Athletes on both sides of the Atlantic', tag='h2', center=True, lead='Currently coaching athletes in Ireland, the USA, Canada and Finland. Past clients in Italy, France, the Netherlands and Austria.')}
+ <div class="g4" style="margin-top:28px">{''.join(f'<div class="pcard panel center flagcard">{flag(c)}<span class="h3">{c}</span><p class="muted" style="margin:0;text-align:center">{n}</p></div>' for c, n in flags)}</div>
+<style>.flagcard{{display:flex;flex-direction:column;align-items:center;gap:10px}}.flagcard .flag{{border-radius:4px;box-shadow:0 0 0 1px rgba(255,255,255,.18)}}</style>
 </div></section>
 <section style="padding-top:24px"><div class="wrap">{head('Coaching options', 'Plans in euro and US dollars', center=True)}<div style="margin-top:24px">{plans_strip()}</div></div></section>
 {creds()}
