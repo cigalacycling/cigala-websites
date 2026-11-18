@@ -54,7 +54,9 @@ function cc_vx_item($pid, $u, $queued) {
     $face = function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '';
     $uid = (int) get_post_meta($pid, 'cc_user', true); $lang = $uid && function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en';
     $speech = ['en' => 'en-IE', 'it' => 'it-IT', 'pt' => 'pt-PT', 'sl' => 'sl-SI', 'sk' => 'sk-SK'][$lang] ?? 'en-IE';   // Matteo 18 Nov: dictate in the athlete's language
-    $o = '<div class="vx-msg" id="' . esc_attr(cc_vx_anchor($u['key'])) . '" data-key="' . esc_attr($u['key']) . '" data-lang="' . esc_attr($speech) . '"><p class="vx-ses">' . cc_vx_session_line($u['session'] ?? []) . cc_vx_session_more($u['session'] ?? []) . '</p>'
+    // Matteo 18 Nov: one tap to the session in Vekta (the link format he gave: workspace "cigala-cycling")
+    $vk = !empty($u['activity']) ? ' <a class="vx-open" href="' . esc_url('https://app.joinvekta.com/cigala-cycling/activity/' . rawurlencode($u['activity']) . '/overview') . '" target="_blank" rel="noopener">Open in Vekta ↗</a>' : '';
+    $o = '<div class="vx-msg" id="' . esc_attr(cc_vx_anchor($u['key'])) . '" data-key="' . esc_attr($u['key']) . '" data-lang="' . esc_attr($speech) . '"><p class="vx-ses">' . cc_vx_session_line($u['session'] ?? []) . $vk . cc_vx_session_more($u['session'] ?? []) . '</p>'
        . '<div class="vx-b"><span class="nt-rh">' . $face . '<b>' . esc_html(get_the_title($pid)) . '</b> <small>' . esc_html(cc_vx_when($u['at'] ?? '')) . ($u['kind'] === 'description' ? ' · ride description' : '') . '</small></span>'
        . '<p>' . nl2br(esc_html($u['text'])) . '</p></div>';
     if ($queued) $o .= '<p class="vx-st">' . ($queued === 'sent' ? '✅ Posted in Vekta' : '⏳ Your reply is queued: your laptop posts it in Vekta within about 15 minutes') . '</p>';
@@ -73,6 +75,7 @@ function cc_vx_assets() {
         . 'html .cc .vx-r{display:grid;gap:8px;margin-top:10px}html .cc .vx-r textarea{width:100%;box-sizing:border-box;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0b0d0f;color:#fff}'
         . 'html .cc .vx-more{display:block;margin-top:4px}html .cc .vx-f,html .cc .vx-p{display:block;font-size:14px;color:#b8bec8;line-height:1.45}html .cc .vx-p b{color:#d0d6e0;margin:0}'
         . 'html .cc .vx-p i{font-style:normal;font-weight:600}html .cc .vx-p i.ok{color:#2bd47a}html .cc .vx-p i.lo{color:#f0bf00}html .cc .vx-np{opacity:.8}'
+        . 'html .cc .vx-open{margin-left:8px;font-size:14px;font-weight:600;color:#FFD400!important;text-decoration:none;white-space:nowrap}html .cc .vx-open:hover{text-decoration:underline}'
         . 'html .cc .vx-dl{margin:0;font-size:14px;color:#b8bec8;font-weight:600}html .cc .vx-bt{display:flex;flex-wrap:wrap;gap:8px}html .cc .vx-r .btn{justify-self:start;width:auto;margin:0}html .cc .vx-m{font-size:15px;color:#2bd47a;font-weight:600}html .cc .vx-m.err{color:#ff7a73}html .cc .vx-st{margin:10px 0 0;font-size:15px;color:#2bd47a;font-weight:600}'
         . 'html .cc .vx-list{display:grid;gap:6px;margin:6px 0 14px}html .cc .vx-list p{margin:0;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.03);font-size:15px;color:#d0d6e0}html .cc .vx-list b{color:#fff;margin-right:6px}html .cc .vx-list span{color:#b8bec8}'
         . 'html .cc .vx-none{color:#2bd47a;font-weight:600;font-size:16px}'
