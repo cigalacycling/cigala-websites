@@ -137,6 +137,14 @@ add_action('rest_api_init', function () {
         if (!$id) return new WP_Error('cc_fail', 'Could not save', ['status' => 500]);
         $a = cc_bt_get($pid); $a[] = ['at' => time(), 'date' => cc_av_date((string) $r->get_param('date')) ?: null, 'file' => $id, 'share' => $r->get_param('share') ? 1 : 0]; cc_bt_put($pid, $a);
         if (function_exists('cc_push_coaches')) cc_push_coaches('🩸 Blood test from ' . get_the_title($pid), 'New blood test uploaded' . ($r->get_param('share') ? ' (shared with the nutritionist)' : ''), add_query_arg('board', 'blood', home_url('/' . CC_ATH_SLUG . '/')), 'cc-blood', $pid);
+        // Matteo 18 Nov: a shared test also reaches the nutritionist (email, plus her phone if she turned notifications on)
+        if ($r->get_param('share')) foreach (get_users(['role' => 'cc_nutritionist']) as $n) {
+            if (function_exists('cc_push_user')) cc_push_user($n->ID, '🩸 Blood test shared by ' . get_the_title($pid), 'Open it in the hub and reply there.', home_url('/' . CC_ATH_SLUG . '/'), 'cc-blood');
+            $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $n->user_email;   // staging: never a real person
+            if (is_email($to) && function_exists('cc_ath_mail_shell')) { $GLOBALS['cc_ath_lang'] = 'en';
+                wp_mail($to, 'New blood test shared with you: ' . get_the_title($pid), cc_ath_mail_shell('Hi ' . esc_html($n->first_name ?: $n->display_name) . ',', esc_html(get_the_title($pid)) . ' has shared a new blood test with you in the Cigala Cycling Coaching hub. Open it there and reply under it: the athlete and Matteo will see your reply.', 'Open the hub', home_url('/' . CC_ATH_SLUG . '/'), '', 'Thank you,', 'Nutrition'),
+                        ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']); }
+        }
         return ['ok' => true];
     }]);
     register_rest_route('cc/v1', '/blood-delete', ['methods' => 'POST', 'permission_callback' => $own, 'callback' => function (WP_REST_Request $r) {

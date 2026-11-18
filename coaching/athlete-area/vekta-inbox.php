@@ -159,6 +159,7 @@ add_action('rest_api_init', function () {
             $un = array_map(function ($u) { return ['key' => sanitize_text_field($u['key'] ?? ''), 'activity' => sanitize_text_field($u['activity'] ?? ''), 'kind' => ($u['kind'] ?? '') === 'description' ? 'description' : 'comment',
                 'text' => sanitize_textarea_field($u['text'] ?? ''), 'at' => sanitize_text_field($u['at'] ?? ''),
                 'thread' => array_map(function ($t) { return ['who' => sanitize_text_field($t['who'] ?? ''), 'text' => sanitize_textarea_field($t['text'] ?? '')]; }, array_slice((array) ($u['thread'] ?? []), 0, 6)),
+                'detail' => mb_substr(sanitize_textarea_field((string) ($u['detail'] ?? '')), 0, 2500),   // the ride analysis for the drafts (plan, laps, peaks)
                 'session' => cc_vx_clean_session((array) ($u['session'] ?? []))]; }, array_slice((array) ($a['unanswered'] ?? []), 0, 30));
             $out[$pid] = ['vekta_id' => sanitize_text_field($a['vekta_id'] ?? ''), 'sessions' => $ses, 'unanswered' => array_values(array_filter($un, function ($u) { return $u['key'] !== '' && $u['text'] !== ''; }))];
         }
@@ -200,7 +201,7 @@ add_action('rest_api_init', function () {
             if (isset($q[$u['key']]) || !cc_vx_open($u)) continue;
             $uid = (int) get_post_meta($pid, 'cc_user', true);
             $out[] = ['key' => $u['key'], 'page' => (int) $pid, 'athlete' => get_the_title($pid), 'first_name' => $uid ? get_userdata($uid)->first_name : '', 'language' => $uid ? cc_ath_lang_code($uid) : 'en',
-                      'kind' => $u['kind'], 'text' => $u['text'], 'at' => $u['at'], 'thread' => $u['thread'] ?? [], 'session' => $u['session'], 'draft' => $dr[$u['key']] ?? null];
+                      'kind' => $u['kind'], 'text' => $u['text'], 'at' => $u['at'], 'thread' => $u['thread'] ?? [], 'session' => $u['session'], 'detail' => $u['detail'] ?? '', 'draft' => $dr[$u['key']] ?? null];
         }
         return $out;
     }]);
