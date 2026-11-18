@@ -176,3 +176,10 @@ The board PNGs in `vivify/board/` are gitignored.
 - `python3 tools/vivify_blog_wp.py`: /blog/ is now a block page (header/hero/filters + Query Loop of all published posts + footer), not Elementor. New posts appear when published.
 - Do NOT push blog.html with build_vivify_wp.py any more (it would bring back the fixed list): build_vivify_wp.py skips it.
 - Imported posts got their Wix card text as excerpt and a featured image where missing.
+
+## Monthly blog draft (Marine, 18 Nov)
+- Marine owns the site and asked for one draft post a month, emailed to marine@vivifysports.com by her own WordPress.
+- `python3 tools/vivify_blog_draft.py vivify/blog-drafts/<slug>.json`: creates a DRAFT (never published) with the Vivify post layout, sets Yoast title/meta, then calls the Code Snippets REST route vivify/v1/notify-draft (snippet #6) which wp_mails Marine preview + edit links.
+- Scheduled task "Vivify monthly blog draft" (trig_016E6F18ywgFaTpZxdbu3jv4): every Monday 08:47 Dublin, acts only on the first Monday of the month.
+- First draft (test): "Winter Cycling Nutrition..." (post 1070), 18 Nov.
+- After go-live: change SITE in tools/build_vivify_wp.py to https://www.vivifysports.com and save the WordPress app password for that host on the environment, or the monthly job can't reach the site.
