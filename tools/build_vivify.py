@@ -195,7 +195,7 @@ nav.main a,nav.main .ddt{display:flex;align-items:center;gap:5px;color:var(--tex
 nav.main .ddt svg{transition:transform .2s}
 nav.main .dd{position:relative}
 nav.main .sub{position:absolute;top:100%;left:0;min-width:240px;flex-direction:column;gap:0;padding:10px;background:rgba(12,34,38,.98);border:1px solid var(--border-strong);border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .18s,transform .18s,visibility .18s}
-nav.main .sub a{text-transform:none;letter-spacing:0;font-size:14px;font-weight:500;padding:11px 12px;border-radius:8px}
+nav.main .sub a{text-transform:uppercase;letter-spacing:.06em;font-size:13px;font-weight:600;padding:11px 12px;border-radius:8px}
 nav.main .sub a:hover{background:rgba(177,216,221,.08)}
 nav.main .sub a::after{display:none}
 nav.main .dd:hover .sub,nav.main .dd:focus-within .sub{opacity:1;visibility:visible;transform:none}

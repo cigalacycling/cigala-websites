@@ -58,7 +58,15 @@ def main(path, email=True):
     a = json.load(open(path))
     slug = a['slug']
     assert len(a['meta_description']) <= 160, 'meta description too long'
-    hero = upload_image(a['image']['file'], a['image']['alt'], slug) if a.get('image') else None
+    hero = None
+    if a.get('image'):
+        m = st.get(slug + ':media')   # re-run: reuse the photo already uploaded
+        if m and m.get('file') == a['image']['file']:
+            hero = {'id': m['id'], 'url': m['url'], 'alt': a['image']['alt']}
+            P.api('POST', f"/media/{m['id']}", {'alt_text': a['image']['alt']})
+        else:
+            hero = upload_image(a['image']['file'], a['image']['alt'], slug)
+            st[slug + ':media'] = {'id': hero['id'], 'url': hero['url'], 'file': a['image']['file']}
     body = BV.fix_typos(blocks(a['body']))
     words = len(re.sub(r'<[^>]+>', ' ', body).split())
     read = f'{max(1, math.ceil(words / 220))} min read'
