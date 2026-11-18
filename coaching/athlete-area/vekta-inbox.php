@@ -8,6 +8,7 @@
 
 function cc_vx_data() { $d = get_option('cc_vx_data', []); return is_array($d) ? $d : []; }
 function cc_vx_outbox() { $o = get_option('cc_vx_outbox', []); return is_array($o) ? $o : []; }
+function cc_vx_drafts() { $d = get_option('cc_vx_drafts', []); return is_array($d) ? $d : []; }
 function cc_vx_dismissed() { $d = get_option('cc_vx_dismissed', []); return is_array($d) ? $d : []; }   // "No reply needed" (Matteo 18 Nov)
 function cc_vx_open($u) { static $q = null, $d = null; if ($q === null) { $q = cc_vx_queued_ids(); $d = cc_vx_dismissed(); } return !isset($d[$u['key']]); }
 function cc_vx_open_count() {
@@ -32,8 +33,10 @@ function cc_vx_item($pid, $u, $queued) {
        . '<div class="vx-b"><span class="nt-rh">' . $face . '<b>' . esc_html(get_the_title($pid)) . '</b> <small>' . esc_html(cc_vx_when($u['at'] ?? '')) . ($u['kind'] === 'description' ? ' · ride description' : '') . '</small></span>'
        . '<p>' . nl2br(esc_html($u['text'])) . '</p></div>';
     if ($queued) $o .= '<p class="vx-st">' . ($queued === 'sent' ? '✅ Posted in Vekta' : '⏳ Your reply is queued: your laptop posts it in Vekta within about 15 minutes') . '</p>';
-    else $o .= '<div class="vx-r"><textarea rows="2" placeholder="Reply on this session in Vekta…" aria-label="Reply"></textarea><div class="vx-bt"><button type="button" class="btn btn-go vx-send">Send to Vekta</button>'
-             . '<button type="button" class="btn btn-ghost vx-skip">No reply needed</button></div><span class="vx-m" role="status"></span></div>';
+    else { $dr = cc_vx_drafts()[$u['key']] ?? '';   // Matteo 18 Nov: a draft in his style, ready to edit (Claude task 8:00 / 18:00)
+        $o .= '<div class="vx-r">' . ($dr !== '' ? '<p class="vx-dl">✍️ Draft in your style: edit it, then send</p>' : '')
+            . '<textarea rows="' . ($dr !== '' ? 3 : 2) . '" placeholder="Reply on this session in Vekta…" aria-label="Reply">' . esc_textarea($dr) . '</textarea><div class="vx-bt"><button type="button" class="btn btn-go vx-send">Send to Vekta</button>'
+            . '<button type="button" class="btn btn-ghost vx-skip">No reply needed</button></div><span class="vx-m" role="status"></span></div>'; }
     return $o . '</div>';
 }
 function cc_vx_assets() {
@@ -43,7 +46,7 @@ function cc_vx_assets() {
         . 'html .cc .vx-ses{margin:0 0 8px;font-size:15px;color:#d0d6e0}html .cc .vx-ses b{color:#fff;margin-right:6px}html .cc .vx-ses span{color:#b8bec8}'
         . 'html .cc .vx-b{padding:10px 12px;border-left:3px solid #b8bec8;background:rgba(255,255,255,.04);border-radius:0 10px 10px 0}html .cc .vx-b p{margin:4px 0 0;font-size:16px;color:#e6e9ee}html .cc .vx-b small{color:#b8bec8;font-size:14px}'
         . 'html .cc .vx-r{display:grid;gap:8px;margin-top:10px}html .cc .vx-r textarea{width:100%;box-sizing:border-box;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0b0d0f;color:#fff}'
-        . 'html .cc .vx-bt{display:flex;flex-wrap:wrap;gap:8px}html .cc .vx-r .btn{justify-self:start;width:auto;margin:0}html .cc .vx-m{font-size:15px;color:#2bd47a;font-weight:600}html .cc .vx-m.err{color:#ff7a73}html .cc .vx-st{margin:10px 0 0;font-size:15px;color:#2bd47a;font-weight:600}'
+        . 'html .cc .vx-dl{margin:0;font-size:14px;color:#b8bec8;font-weight:600}html .cc .vx-bt{display:flex;flex-wrap:wrap;gap:8px}html .cc .vx-r .btn{justify-self:start;width:auto;margin:0}html .cc .vx-m{font-size:15px;color:#2bd47a;font-weight:600}html .cc .vx-m.err{color:#ff7a73}html .cc .vx-st{margin:10px 0 0;font-size:15px;color:#2bd47a;font-weight:600}'
         . 'html .cc .vx-list{display:grid;gap:6px;margin:6px 0 14px}html .cc .vx-list p{margin:0;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.03);font-size:15px;color:#d0d6e0}html .cc .vx-list b{color:#fff;margin-right:6px}html .cc .vx-list span{color:#b8bec8}'
         . 'html .cc .vx-none{color:#2bd47a;font-weight:600;font-size:16px}</style>'
         . '<script>(function(){document.addEventListener("click",function(e){var k=e.target.closest(".vx-skip");if(!k)return;var m=k.closest(".vx-msg");k.disabled=true;'
@@ -58,6 +61,19 @@ function cc_vx_sync_line() {
     $at = (int) get_option('cc_vx_at', 0);
     return '<p class="vx-sync">' . ($at ? 'Updated ' . esc_html(human_time_diff($at, time())) . ' ago from your laptop (every 15 minutes while it is on).' : 'Waiting for the first update from your laptop.') . '</p>';
 }
+
+/* Matteo 18 Nov: an icon beside every coach tool (the Vekta logo for Vekta messages), added last so it covers every module's link */
+add_filter('cc_ath_coach_links', function ($html) {
+    $map = ['vekta' => 'logo-vekta', 'notes' => 'mic', 'results' => 'trophy', 'reports' => 'reports', 'forms' => 'doc', 'availability' => 'calendar',
+            'goals' => 'peaks', 'contracts' => 'people', 'news' => 'bolt', 'ideas' => 'idea'];
+    $html = preg_replace_callback('~<a class="av-boardlink" href="([^"]*)">~', function ($m) use ($map) {
+        $b = preg_match('~[?&](?:amp;)?board=([a-z]+)~', html_entity_decode($m[1]), $x) ? $x[1] : '';
+        return $m[0] . (function_exists('cc_ath_icon') ? cc_ath_icon($map[$b] ?? 'link', 'ath-jic') : '');
+    }, $html);
+    return $html . '<style>html .cc .ath-coach-tools .av-boardlink .ath-jic{flex:none;width:24px;height:24px;border-radius:7px;display:inline-grid;place-items:center;background:rgba(18,161,80,.15);border:1px solid rgba(43,212,122,.35)}'
+        . 'html .cc .ath-coach-tools .av-boardlink .ath-jic svg{width:14px;height:14px;fill:none;stroke:#2bd47a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}'
+        . 'html .cc .ath-coach-tools .av-boardlink .ath-jic.ath-logo{background-size:cover;background-position:center;border:0}</style>';
+}, 999);
 
 /* the board: every comment waiting for an answer, newest first, by athlete */
 add_filter('cc_ath_coach_links', function ($html) {
@@ -102,17 +118,29 @@ add_action('rest_api_init', function () {
                 'sport' => sanitize_key($s['sport'] ?? ''), 'dur' => (int) ($s['dur'] ?? 0), 'avg_w' => (int) ($s['avg_w'] ?? 0), 'np' => (int) ($s['np'] ?? 0),
                 'stim' => sanitize_text_field($s['stim'] ?? ''), 'rpe' => is_numeric($s['rpe'] ?? null) ? 0 + $s['rpe'] : null, 'feeling' => is_numeric($s['feeling'] ?? null) ? 0 + $s['feeling'] : null]; }, array_slice((array) ($a['sessions'] ?? []), 0, 15));
             $un = array_map(function ($u) { return ['key' => sanitize_text_field($u['key'] ?? ''), 'activity' => sanitize_text_field($u['activity'] ?? ''), 'kind' => ($u['kind'] ?? '') === 'description' ? 'description' : 'comment',
-                'text' => sanitize_textarea_field($u['text'] ?? ''), 'at' => sanitize_text_field($u['at'] ?? ''), 'session' => [
+                'text' => sanitize_textarea_field($u['text'] ?? ''), 'at' => sanitize_text_field($u['at'] ?? ''),
+                'thread' => array_map(function ($t) { return ['who' => sanitize_text_field($t['who'] ?? ''), 'text' => sanitize_textarea_field($t['text'] ?? '')]; }, array_slice((array) ($u['thread'] ?? []), 0, 6)),
+                'session' => [
                     'date' => sanitize_text_field($u['session']['date'] ?? ''), 'name' => sanitize_text_field($u['session']['name'] ?? ''), 'sport' => sanitize_key($u['session']['sport'] ?? ''),
                     'dur' => (int) ($u['session']['dur'] ?? 0), 'avg_w' => (int) ($u['session']['avg_w'] ?? 0), 'np' => (int) ($u['session']['np'] ?? 0), 'stim' => sanitize_text_field($u['session']['stim'] ?? ''),
                     'rpe' => is_numeric($u['session']['rpe'] ?? null) ? 0 + $u['session']['rpe'] : null, 'feeling' => is_numeric($u['session']['feeling'] ?? null) ? 0 + $u['session']['feeling'] : null]]; }, array_slice((array) ($a['unanswered'] ?? []), 0, 30));
             $out[$pid] = ['vekta_id' => sanitize_text_field($a['vekta_id'] ?? ''), 'sessions' => $ses, 'unanswered' => array_values(array_filter($un, function ($u) { return $u['key'] !== '' && $u['text'] !== ''; }))];
         }
+        // Matteo 18 Nov: each NEW waiting message also goes to his notification centre (bell + phone), like notes and results
+        $before = []; foreach (cc_vx_data() as $a) foreach ((array) $a['unanswered'] as $u) $before[$u['key']] = 1;
+        $fresh = [];
+        if ($before) foreach ($out as $pid => $a) foreach ($a['unanswered'] as $u) if (!isset($before[$u['key']])) $fresh[] = [$pid, $u];
         update_option('cc_vx_data', $out, false); update_option('cc_vx_at', time(), false);
+        if ($fresh && function_exists('cc_push_coaches')) {
+            $board = add_query_arg('board', 'vekta', home_url('/' . CC_ATH_SLUG . '/'));
+            if (count($fresh) > 6) cc_push_coaches(count($fresh) . ' new Vekta messages', 'From ' . implode(', ', array_unique(array_map(function ($f) { return get_the_title($f[0]); }, array_slice($fresh, 0, 4)))) . '…', $board, 'cc-vekta');
+            else foreach ($fresh as [$pid, $u]) cc_push_coaches('Vekta: ' . get_the_title($pid) . ($u['session']['name'] ? ' · ' . $u['session']['name'] : ''), wp_trim_words($u['text'], 18), $board, 'cc-vekta', $pid);
+        }
         // forget sent replies once the laptop no longer lists their comment as waiting
         $still = []; foreach ($out as $a) foreach ($a['unanswered'] as $u) $still[$u['key']] = 1;
         update_option('cc_vx_outbox', array_values(array_filter(cc_vx_outbox(), function ($o) use ($still) { return $o['status'] === 'queued' || ($o['status'] === 'failed') || isset($still[$o['key']]); })), false);
         update_option('cc_vx_dismissed', array_intersect_key(cc_vx_dismissed(), $still), false);   // forget dismissals the laptop no longer lists
+        update_option('cc_vx_drafts', array_intersect_key(cc_vx_drafts(), $still), false);
         return ['ok' => true, 'athletes' => count($out), 'waiting' => cc_vx_open_count()];
     }]);
     // Matteo's reply from the hub: queued for the laptop
@@ -128,6 +156,22 @@ add_action('rest_api_init', function () {
         }
         return new WP_Error('cc_none', 'That comment is no longer waiting', ['status' => 404]);
     }]);
+    // for the drafting task: what is waiting (with the conversation, athlete's language) and which already has a draft
+    register_rest_route('cc/v1', '/vekta-waiting', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
+        $q = cc_vx_queued_ids(); $dr = cc_vx_drafts(); $out = [];
+        foreach (cc_vx_data() as $pid => $a) foreach ((array) $a['unanswered'] as $u) {
+            if (isset($q[$u['key']]) || !cc_vx_open($u)) continue;
+            $uid = (int) get_post_meta($pid, 'cc_user', true);
+            $out[] = ['key' => $u['key'], 'page' => (int) $pid, 'athlete' => get_the_title($pid), 'first_name' => $uid ? get_userdata($uid)->first_name : '', 'language' => $uid ? cc_ath_lang_code($uid) : 'en',
+                      'kind' => $u['kind'], 'text' => $u['text'], 'at' => $u['at'], 'thread' => $u['thread'] ?? [], 'session' => $u['session'], 'draft' => $dr[$u['key']] ?? null];
+        }
+        return $out;
+    }]);
+    register_rest_route('cc/v1', '/vekta-drafts', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $d = cc_vx_drafts(); $n = 0;
+        foreach ((array) $r->get_param('drafts') as $k => $t) { $k = sanitize_text_field((string) $k); $t = trim(sanitize_textarea_field((string) $t)); if ($k !== '' && $t !== '' && mb_strlen($t) <= 1500) { $d[$k] = $t; $n++; } }
+        update_option('cc_vx_drafts', $d, false); return ['ok' => true, 'saved' => $n];
+    }]);
     register_rest_route('cc/v1', '/vekta-dismiss', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
         $key = sanitize_text_field((string) $r['key']); if ($key === '') return new WP_Error('cc_bad', 'No key', ['status' => 400]);
         $d = cc_vx_dismissed(); $d[$key] = time(); update_option('cc_vx_dismissed', $d, false); return ['ok' => true];
@@ -135,7 +179,7 @@ add_action('rest_api_init', function () {
     // coach-only check of what the board and an athlete's panel render (used to test without a browser login)
     register_rest_route('cc/v1', '/vekta-preview', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
         $pid = (int) $r['page'];
-        return ['board' => apply_filters('cc_ath_board', '', 'vekta'), 'athlete' => $pid ? apply_filters('cc_ath_before_reports', '', $pid, true) : '', 'chips' => function_exists('cc_ath_live_chips') ? cc_ath_live_chips(0, true, 0) : ''];
+        return ['board' => apply_filters('cc_ath_board', '', 'vekta'), 'athlete' => $pid ? apply_filters('cc_ath_before_reports', '', $pid, true) : '', 'chips' => function_exists('cc_ath_live_chips') ? cc_ath_live_chips(0, true, 0) : '', 'tools' => apply_filters('cc_ath_coach_links', '')];
     }]);
     register_rest_route('cc/v1', '/vekta-outbox', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
         return array_values(array_filter(cc_vx_outbox(), function ($o) { return $o['status'] === 'queued'; }));
