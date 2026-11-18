@@ -227,7 +227,8 @@ add_action('rest_api_init', function () {
     // coach-only check of what the board and an athlete's panel render (used to test without a browser login)
     register_rest_route('cc/v1', '/vekta-preview', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
         $pid = (int) $r['page'];
-        return ['board' => apply_filters('cc_ath_board', '', 'vekta'), 'athlete' => $pid ? apply_filters('cc_ath_before_reports', '', $pid, true) : '', 'chips' => function_exists('cc_ath_live_chips') ? cc_ath_live_chips(0, true, 0) : '', 'tools' => apply_filters('cc_ath_coach_links', '')];
+        // ?board=reports etc. for the laptop's checks
+        return ['board' => apply_filters('cc_ath_board', '', sanitize_key((string) ($r['board'] ?? '')) ?: 'vekta'), 'athlete' => $pid ? apply_filters('cc_ath_before_reports', '', $pid, true) : '', 'chips' => function_exists('cc_ath_live_chips') ? cc_ath_live_chips(0, true, 0) : '', 'tools' => apply_filters('cc_ath_coach_links', '')];
     }]);
     register_rest_route('cc/v1', '/vekta-outbox', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
         return array_values(array_filter(cc_vx_outbox(), function ($o) { return $o['status'] === 'queued'; }));
