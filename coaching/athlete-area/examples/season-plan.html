@@ -9,10 +9,23 @@
 <div class="card"><h2>Periodisation</h2><div class="tl">
 <div class="months"><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span></div>
 <div class="ph"><div style="grid-column:1/13;background:#4f8fd6">Base · aerobic &amp; strength</div><div style="grid-column:13/21;background:#9b7bea">Build 1 · threshold</div><div style="grid-column:21/23;background:linear-gradient(135deg,#F2F3F5,#C0C4CC 55%,#8E939C);color:#15171a">B</div><div style="grid-column:23/29;background:#f08a29">Build 2 · climbing</div><div style="grid-column:29/31;background:#2bd47a">Taper</div><div style="grid-column:31/32;background:linear-gradient(135deg,#F3D774,#D4AF37 55%,#A8841F);color:#1a1406;font-size:11px">A</div><div style="grid-column:32/41;background:#7a828c">Recovery &amp; transition</div></div>
-<div class="hrs" id="h"></div>
+<div id="pz" style="margin-top:22px"></div>
 </div>
-<div class="lg"><span><b style="background:#4f8fd6"></b>Base</span><span><b style="background:#9b7bea"></b>Build 1</span><span><b style="background:#f08a29"></b>Build 2</span><span><b style="background:#2bd47a"></b>Taper</span><span><b style="background:#D4AF37"></b>A race</span><span><b style="background:#C0C4CC"></b>B race</span><span style="margin-left:auto">Bars: weekly hours</span></div></div>
+<div class="lg"><span><b style="background:linear-gradient(90deg,#4f8fd6,#9b7bea,#f08a29,#2bd47a)"></b>Training load by block</span><span><b style="background:#2bd47a;height:4px;vertical-align:3px"></b>Fitness</span><span><b style="background:repeating-linear-gradient(90deg,#ff8fa3 0 5px,transparent 5px 9px);height:3px;vertical-align:3px"></b>Fatigue</span><span><b style="background:#D4AF37;border-radius:50%"></b>A race</span><span><b style="background:#C0C4CC;border-radius:50%"></b>B race</span></div></div>
 <div class="grid g2" style="margin-top:14px"><div class="card"><h2>Focus by block</h2><ul><li><b>Base:</b> long Zone 2 rides, gym twice a week, cadence work</li><li><b>Build 1:</b> sweet spot and threshold, Critical Power test in March</li><li><b>Build 2:</b> long climbs at race pace, fuelling practice at 90 g/h</li><li><b>Taper:</b> volume down 40%, keep the intensity sharp</li></ul></div>
 <div class="card"><h2>Coach's note</h2><div class="note">The Gran Fondo in May is a dress rehearsal: same bike, same food, same pacing. We arrive at the Étape fresh, not tired.</div></div></div>
 <div class="bfoot"><div class="l"><img src="logo.png" alt=""><div><b>Cigala Cycling Coaching</b><div class="tg">Train smarter. Ride faster.</div></div></div><div class="r"><img src="signature.png" alt="Matteo Cigala signature"><small>Matteo Cigala · Head Coach</small></div></div><div class="foot"><span>Example report · not a real athlete</span><span>coaching.cigalacycling.com</span></div></div>
-<script>var h=[5,6,6,4,7,7,8,5,7,8,8,5,8,9,9,6,9,10,10,6,7,4,10,11,12,7,11,12,8,6,3,4,5,5,4,5,6,5,6,6],e=document.getElementById('h');h.forEach(function(x,i){var b=document.createElement('i');b.style.height=(x/12*100)+'%';if(i===30)b.style.background='#D4AF37';else if(i===21)b.style.background='#C0C4CC';else if(i>=28&&i<30)b.style.background='#2bd47a';e.appendChild(b)})</script></body></html>
+<script>(function(){
+var load=[5,6,6,4,7,7,8,5,7,8,8,5,8,9,9,6,9,10,10,6,7,4,10,11,12,7,11,12,8,6,3,4,5,5,4,5,6,5,6,6];
+function col(i){return i<12?'#4f8fd6':i<20?'#9b7bea':i<22?(i==21?'#C0C4CC':'#9b7bea'):i<28?'#f08a29':i<30?'#2bd47a':i==30?'#D4AF37':'#7a828c';}
+var W=1000,H=250,T=30,B=20,n=load.length,bw=W/n,mx=13,y=function(v){return T+(H-T-B)*(1-v/mx);};
+var ctl=[],atl=[],c=4,a=4;load.forEach(function(v){c+=(v-c)/5.5;a+=(v-a)/1.6;ctl.push(c);atl.push(a);});
+var s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="display:block;overflow:visible">';
+for(var g=1;g<4;g++)s+='<line x1="0" x2="'+W+'" y1="'+(T+(H-T-B)*g/4)+'" y2="'+(T+(H-T-B)*g/4)+'" stroke="rgba(255,255,255,.06)"/>';
+load.forEach(function(v,i){s+='<rect x="'+(i*bw+bw*.18)+'" y="'+y(v)+'" width="'+bw*.64+'" height="'+(H-B-y(v))+'" rx="3" fill="'+col(i)+'" opacity="'+(i==21||i==30?1:.38)+'"/>';});
+function path(arr){return arr.map(function(v,i){return (i?'L':'M')+(i*bw+bw/2).toFixed(1)+' '+y(v).toFixed(1);}).join(' ');}
+s+='<path d="'+path(ctl)+' L'+((n-1)*bw+bw/2)+' '+(H-B)+' L'+(bw/2)+' '+(H-B)+'Z" fill="rgba(43,212,122,.10)"/>';
+s+='<path d="'+path(atl)+'" fill="none" stroke="#ff8fa3" stroke-width="2" stroke-dasharray="5 5" opacity=".8"/>';
+s+='<path d="'+path(ctl)+'" fill="none" stroke="#2bd47a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+[[21,'B','#C0C4CC','Gran Fondo'],[30,'A','#D4AF37','Étape du Tour']].forEach(function(r){var x=r[0]*bw+bw/2;s+='<line x1="'+x+'" x2="'+x+'" y1="'+(T-4)+'" y2="'+(H-B)+'" stroke="'+r[2]+'" stroke-width="2" stroke-dasharray="3 4"/><circle cx="'+x+'" cy="'+(T-14)+'" r="13" fill="'+r[2]+'"/><text x="'+x+'" y="'+(T-9.5)+'" text-anchor="middle" font-family="Montserrat" font-weight="700" font-size="13" fill="#15171a">'+r[1]+'</text><text x="'+(x+18)+'" y="'+(T-9.5)+'" font-family="Montserrat" font-weight="600" font-size="12" fill="#fff">'+r[3]+'</text>';});
+s+='</svg>';document.getElementById('pz').innerHTML=s;})();</script></body></html>
