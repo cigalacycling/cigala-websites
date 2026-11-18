@@ -185,7 +185,9 @@ header.site.scrolled .logo img{height:44px;width:auto}
 header.site.scrolled .topbar{max-height:0}
 @media (max-width:640px){.topbar .tb-sep,.topbar span:nth-of-type(3){display:none}}
 .logo img{height:54px;width:auto}
-nav.main{margin-left:auto}
+nav.main{margin:0;flex:1;display:flex;justify-content:center}   /* Marine 18 Nov: menu centred */
+@media (min-width:1101px){header.site .hdr{display:grid;grid-template-columns:1fr auto 1fr;gap:16px}
+ header.site .hdr .logo{justify-self:start}header.site .hdr .hdr-cta{justify-self:end}nav.main{flex:none}}
 nav.main > ul{gap:0!important}
 nav.main ul{display:flex;gap:4px;list-style:none;margin:0;padding:0}
 nav.main a,nav.main .ddt{display:flex;align-items:center;gap:5px;color:var(--text);text-decoration:none;font:600 12px/1 Montserrat,sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:12px 9px;position:relative;white-space:nowrap;background:none;border:0;cursor:pointer}
