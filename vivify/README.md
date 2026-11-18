@@ -171,3 +171,8 @@ The board PNGs in `vivify/board/` are gitignored.
 - Stripe redirect: done by Marine (18 Nov), to the staging URL. Change it to the vivifysports.com URL at go-live.
 - Noindex: Code Snippets plugin (installed with Marine's OK, 18 Nov), snippet #5 "Hide e-book download page from Google" filters wpseo_robots + wpseo_exclude_from_sitemap_by_post_ids for page 1025.
 - Go-live: the staging site is noindex site-wide (Settings > Reading > Discourage search engines). Untick it at go-live, then check the download page still says noindex and every other page is indexable. Re-run the upload script after a menu/header change so the page header stays current.
+
+## Blog page lists posts automatically (18 Nov)
+- `python3 tools/vivify_blog_wp.py`: /blog/ is now a block page (header/hero/filters + Query Loop of all published posts + footer), not Elementor. New posts appear when published.
+- Do NOT push blog.html with build_vivify_wp.py any more (it would bring back the fixed list): build_vivify_wp.py skips it.
+- Imported posts got their Wix card text as excerpt and a featured image where missing.

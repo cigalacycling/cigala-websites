@@ -18,7 +18,8 @@ LIVE = 'https://www.vivifysports.com'
 MEDIA = json.load(open(V + 'wp-media.json'))
 STATE = V + 'wp-pages.json'
 st = json.load(open(STATE)) if os.path.exists(STATE) else {}
-SKIP = {'post-carbohydrate-fueling-endurance-sports.html'}   # posts are imported as WordPress posts
+SKIP = {'post-carbohydrate-fueling-endurance-sports.html',   # posts are imported as WordPress posts
+        'blog.html'}   # /blog/ lists posts automatically: tools/vivify_blog_wp.py
 CSS = open(V + 'site/vivify.css').read() + r"""
 /* WordPress / Hello Elementor / Elementor overrides */
 .vv-root .e-con,.vv-root .e-con-inner{padding:0!important;gap:0!important;--padding-top:0;--padding-bottom:0}
