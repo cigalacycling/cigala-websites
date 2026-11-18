@@ -19,6 +19,28 @@ function cc_vx_open_count() {
 function cc_vx_queued_ids() { $q = []; foreach (cc_vx_outbox() as $o) if (in_array($o['status'], ['queued', 'sent'], true)) $q[$o['key']] = $o['status']; return $q; }
 function cc_vx_dur($s) { $s = (int) $s; return $s >= 3600 ? floor($s / 3600) . 'h' . str_pad((string) floor(($s % 3600) / 60), 2, '0', STR_PAD_LEFT) : floor($s / 60) . ' min'; }
 function cc_vx_when($iso) { $t = strtotime((string) $iso); return $t ? date_i18n('D j M', $t + (int) (get_option('gmt_offset') * HOUR_IN_SECONDS)) : ''; }
+function cc_vx_clean_session($s) {
+    $n = function ($k) use ($s) { return is_numeric($s[$k] ?? null) ? 0 + $s[$k] : null; };
+    $o = ['id' => sanitize_text_field($s['id'] ?? ''), 'date' => sanitize_text_field($s['date'] ?? ''), 'name' => sanitize_text_field($s['name'] ?? ''), 'sport' => sanitize_key($s['sport'] ?? ''),
+          'dur' => (int) ($s['dur'] ?? 0), 'avg_w' => (int) ($s['avg_w'] ?? 0), 'np' => (int) ($s['np'] ?? 0), 'stim' => sanitize_text_field($s['stim'] ?? ''),
+          'rpe' => $n('rpe'), 'feeling' => $n('feeling'), 'km' => $n('km'), 'elev' => $n('elev'), 'hr' => $n('hr'), 'kj' => $n('kj')];
+    if (!empty($s['plan']) && is_array($s['plan'])) { $p = $s['plan'];
+        $o['plan'] = ['title' => sanitize_text_field($p['title'] ?? ''), 'dur' => (int) ($p['dur'] ?? 0), 'avg_w' => (int) ($p['avg_w'] ?? 0), 'kj' => (int) ($p['kj'] ?? 0),
+                      'dur_pct' => is_numeric($p['dur_pct'] ?? null) ? (int) $p['dur_pct'] : null, 'kj_pct' => is_numeric($p['kj_pct'] ?? null) ? (int) $p['kj_pct'] : null]; }
+    return $o;
+}
+// Matteo 18 Nov: under the session line, the plan vs what was done and a few facts (deep analysis stays in Vekta)
+function cc_vx_session_more($s) {
+    $f = array_filter([!empty($s['km']) ? $s['km'] . ' km' : '', !empty($s['elev']) ? number_format_i18n($s['elev']) . ' m' : '', !empty($s['hr']) ? 'HR ' . (int) $s['hr'] : '', !empty($s['kj']) ? number_format_i18n($s['kj']) . ' kJ' : '']);
+    $o = $f ? '<span class="vx-f">' . esc_html(implode(' · ', $f)) . '</span>' : '';
+    if (!empty($s['plan'])) { $p = $s['plan'];
+        $pl = array_filter([$p['dur'] ? cc_vx_dur($p['dur']) : '', $p['avg_w'] ? $p['avg_w'] . ' W' : '', $p['kj'] ? number_format_i18n($p['kj']) . ' kJ' : '']);
+        $done = array_filter([$p['dur_pct'] !== null ? $p['dur_pct'] . '% of the time' : '', $p['kj_pct'] !== null ? $p['kj_pct'] . '% of the work' : '']);
+        $ok = ($p['dur_pct'] ?? 100) >= 90 && ($p['kj_pct'] ?? 100) >= 90;
+        $o .= '<span class="vx-p"><b>Plan:</b> ' . esc_html(($p['title'] ?: 'planned session') . ($pl ? ' · ' . implode(' · ', $pl) : '')) . ($done ? ' <i class="' . ($ok ? 'ok' : 'lo') . '">→ done ' . esc_html(implode(', ', $done)) . '</i>' : '') . '</span>';
+    } else $o .= '<span class="vx-p vx-np">Not a planned session</span>';
+    return '<span class="vx-more">' . $o . '</span>';
+}
 function cc_vx_session_line($s) {
     $bits = [cc_vx_when($s['date'] ?? ''), cc_vx_dur($s['dur'] ?? 0)];
     if (!empty($s['avg_w'])) $bits[] = (int) $s['avg_w'] . ' W' . (!empty($s['np']) ? ' (NP ' . (int) $s['np'] . ')' : '');
@@ -29,7 +51,7 @@ function cc_vx_session_line($s) {
 }
 function cc_vx_item($pid, $u, $queued) {
     $face = function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '';
-    $o = '<div class="vx-msg" data-key="' . esc_attr($u['key']) . '"><p class="vx-ses">' . cc_vx_session_line($u['session'] ?? []) . '</p>'
+    $o = '<div class="vx-msg" data-key="' . esc_attr($u['key']) . '"><p class="vx-ses">' . cc_vx_session_line($u['session'] ?? []) . cc_vx_session_more($u['session'] ?? []) . '</p>'
        . '<div class="vx-b"><span class="nt-rh">' . $face . '<b>' . esc_html(get_the_title($pid)) . '</b> <small>' . esc_html(cc_vx_when($u['at'] ?? '')) . ($u['kind'] === 'description' ? ' · ride description' : '') . '</small></span>'
        . '<p>' . nl2br(esc_html($u['text'])) . '</p></div>';
     if ($queued) $o .= '<p class="vx-st">' . ($queued === 'sent' ? '✅ Posted in Vekta' : '⏳ Your reply is queued: your laptop posts it in Vekta within about 15 minutes') . '</p>';
@@ -46,6 +68,8 @@ function cc_vx_assets() {
         . 'html .cc .vx-ses{margin:0 0 8px;font-size:15px;color:#d0d6e0}html .cc .vx-ses b{color:#fff;margin-right:6px}html .cc .vx-ses span{color:#b8bec8}'
         . 'html .cc .vx-b{padding:10px 12px;border-left:3px solid #b8bec8;background:rgba(255,255,255,.04);border-radius:0 10px 10px 0}html .cc .vx-b p{margin:4px 0 0;font-size:16px;color:#e6e9ee}html .cc .vx-b small{color:#b8bec8;font-size:14px}'
         . 'html .cc .vx-r{display:grid;gap:8px;margin-top:10px}html .cc .vx-r textarea{width:100%;box-sizing:border-box;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0b0d0f;color:#fff}'
+        . 'html .cc .vx-more{display:block;margin-top:4px}html .cc .vx-f,html .cc .vx-p{display:block;font-size:14px;color:#b8bec8;line-height:1.45}html .cc .vx-p b{color:#d0d6e0;margin:0}'
+        . 'html .cc .vx-p i{font-style:normal;font-weight:600}html .cc .vx-p i.ok{color:#2bd47a}html .cc .vx-p i.lo{color:#f0bf00}html .cc .vx-np{opacity:.8}'
         . 'html .cc .vx-dl{margin:0;font-size:14px;color:#b8bec8;font-weight:600}html .cc .vx-bt{display:flex;flex-wrap:wrap;gap:8px}html .cc .vx-r .btn{justify-self:start;width:auto;margin:0}html .cc .vx-m{font-size:15px;color:#2bd47a;font-weight:600}html .cc .vx-m.err{color:#ff7a73}html .cc .vx-st{margin:10px 0 0;font-size:15px;color:#2bd47a;font-weight:600}'
         . 'html .cc .vx-list{display:grid;gap:6px;margin:6px 0 14px}html .cc .vx-list p{margin:0;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.03);font-size:15px;color:#d0d6e0}html .cc .vx-list b{color:#fff;margin-right:6px}html .cc .vx-list span{color:#b8bec8}'
         . 'html .cc .vx-none{color:#2bd47a;font-weight:600;font-size:16px}</style>'
@@ -72,7 +96,8 @@ add_filter('cc_ath_coach_links', function ($html) {
     }, $html);
     return $html . '<style>html .cc .ath-coach-tools .av-boardlink .ath-jic{flex:none;width:24px;height:24px;border-radius:7px;display:inline-grid;place-items:center;background:rgba(18,161,80,.15);border:1px solid rgba(43,212,122,.35)}'
         . 'html .cc .ath-coach-tools .av-boardlink .ath-jic svg{width:14px;height:14px;fill:none;stroke:#2bd47a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}'
-        . 'html .cc .ath-coach-tools .av-boardlink .ath-jic.ath-logo{background-size:cover;background-position:center;border:0}</style>';
+        . 'html .cc .ath-coach-tools .av-boardlink .ath-jic.ath-logo{background-size:cover;background-position:center;border:0}'
+        . 'html .cc .ath-coach-tools .av-boardlink .ath-jic.logo-vekta{background-color:#FFD400;background-size:68%;background-repeat:no-repeat}</style>';   // Matteo 18 Nov: Vekta yellow
 }, 999);
 
 /* the board: every comment waiting for an answer, newest first, by athlete */
@@ -102,7 +127,7 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     $q = cc_vx_queued_ids();
     $o = '<section class="ath-s" id="vekta"><h2>Vekta · latest sessions</h2>' . cc_vx_sync_line();
     $ses = array_slice((array) ($a['sessions'] ?? []), 0, 10);
-    $o .= $ses ? '<div class="vx-list">' . implode('', array_map(function ($s) { return '<p>' . cc_vx_session_line($s) . '</p>'; }, $ses)) . '</div>' : '<p class="av-lede">No sessions in the last 21 days.</p>';
+    $o .= $ses ? '<div class="vx-list">' . implode('', array_map(function ($s) { return '<p>' . cc_vx_session_line($s) . cc_vx_session_more($s) . '</p>'; }, $ses)) . '</div>' : '<p class="av-lede">No sessions in the last 21 days.</p>';
     $un = array_filter((array) ($a['unanswered'] ?? []), 'cc_vx_open');
     if ($un) { $o .= '<h3 class="av-sub">Waiting for your answer</h3>'; foreach ($un as $u) $o .= cc_vx_item($view, $u, $q[$u['key']] ?? ''); }
     return $html . $o . '</section>' . cc_vx_assets() . (function_exists('cc_nt_css') ? cc_nt_css() : '');
@@ -114,16 +139,11 @@ add_action('rest_api_init', function () {
         $in = (array) $r->get_param('athletes'); $out = [];
         foreach ($in as $a) {
             $pid = (int) ($a['page'] ?? 0); if (get_post_type($pid) !== 'cc_athlete') continue;
-            $ses = array_map(function ($s) { return ['id' => sanitize_text_field($s['id'] ?? ''), 'date' => sanitize_text_field($s['date'] ?? ''), 'name' => sanitize_text_field($s['name'] ?? ''),
-                'sport' => sanitize_key($s['sport'] ?? ''), 'dur' => (int) ($s['dur'] ?? 0), 'avg_w' => (int) ($s['avg_w'] ?? 0), 'np' => (int) ($s['np'] ?? 0),
-                'stim' => sanitize_text_field($s['stim'] ?? ''), 'rpe' => is_numeric($s['rpe'] ?? null) ? 0 + $s['rpe'] : null, 'feeling' => is_numeric($s['feeling'] ?? null) ? 0 + $s['feeling'] : null]; }, array_slice((array) ($a['sessions'] ?? []), 0, 15));
+            $ses = array_map('cc_vx_clean_session', array_slice((array) ($a['sessions'] ?? []), 0, 15));
             $un = array_map(function ($u) { return ['key' => sanitize_text_field($u['key'] ?? ''), 'activity' => sanitize_text_field($u['activity'] ?? ''), 'kind' => ($u['kind'] ?? '') === 'description' ? 'description' : 'comment',
                 'text' => sanitize_textarea_field($u['text'] ?? ''), 'at' => sanitize_text_field($u['at'] ?? ''),
                 'thread' => array_map(function ($t) { return ['who' => sanitize_text_field($t['who'] ?? ''), 'text' => sanitize_textarea_field($t['text'] ?? '')]; }, array_slice((array) ($u['thread'] ?? []), 0, 6)),
-                'session' => [
-                    'date' => sanitize_text_field($u['session']['date'] ?? ''), 'name' => sanitize_text_field($u['session']['name'] ?? ''), 'sport' => sanitize_key($u['session']['sport'] ?? ''),
-                    'dur' => (int) ($u['session']['dur'] ?? 0), 'avg_w' => (int) ($u['session']['avg_w'] ?? 0), 'np' => (int) ($u['session']['np'] ?? 0), 'stim' => sanitize_text_field($u['session']['stim'] ?? ''),
-                    'rpe' => is_numeric($u['session']['rpe'] ?? null) ? 0 + $u['session']['rpe'] : null, 'feeling' => is_numeric($u['session']['feeling'] ?? null) ? 0 + $u['session']['feeling'] : null]]; }, array_slice((array) ($a['unanswered'] ?? []), 0, 30));
+                'session' => cc_vx_clean_session((array) ($u['session'] ?? []))]; }, array_slice((array) ($a['unanswered'] ?? []), 0, 30));
             $out[$pid] = ['vekta_id' => sanitize_text_field($a['vekta_id'] ?? ''), 'sessions' => $ses, 'unanswered' => array_values(array_filter($un, function ($u) { return $u['key'] !== '' && $u['text'] !== ''; }))];
         }
         // Matteo 18 Nov: each NEW waiting message also goes to his notification centre (bell + phone), like notes and results
@@ -186,8 +206,16 @@ add_action('rest_api_init', function () {
     }]);
     register_rest_route('cc/v1', '/vekta-outbox-done', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
         $id = sanitize_text_field((string) $r['id']); $ob = cc_vx_outbox(); $hit = false;
-        foreach ($ob as &$o) if ($o['id'] === $id) { $o['status'] = $r['ok'] ? 'sent' : 'failed'; $o['done_at'] = time(); $o['vekta_comment'] = sanitize_text_field((string) $r['vekta_comment']); $o['error'] = sanitize_text_field((string) $r['error']); $hit = true; }
+        $notify = null;
+        foreach ($ob as &$o) if ($o['id'] === $id) { $o['status'] = $r['ok'] ? 'sent' : 'failed'; $o['done_at'] = time(); $o['vekta_comment'] = sanitize_text_field((string) $r['vekta_comment']); $o['error'] = sanitize_text_field((string) $r['error']); $hit = true; if ($r['ok']) $notify = $o; }
         unset($o); update_option('cc_vx_outbox', $ob, false);
+        // Matteo 18 Nov: Vekta's own alert is easy to miss, so the athlete also gets a hub notification (bell + phone), in their language.
+        // "workout", not "ride": they also run, swim or do gym sessions. Tapping it opens their Vekta calendar.
+        if ($notify && function_exists('cc_push_user') && ($uid = (int) get_post_meta((int) $notify['page'], 'cc_user', true))) {
+            $T = ['en' => 'Matteo replied to your workout', 'it' => 'Matteo ha risposto al tuo allenamento', 'pt' => 'O Matteo respondeu ao teu treino', 'sl' => 'Matteo je odgovoril na tvoj trening'];
+            $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en';
+            cc_push_user($uid, $T[$l] ?? $T['en'], wp_trim_words($notify['text'], 20), 'https://app.joinvekta.com/me/calendar', 'cc-vx-' . $notify['activity']);
+        }
         return ['ok' => $hit];
     }]);
 });
