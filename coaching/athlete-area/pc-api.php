@@ -69,6 +69,9 @@ function cc_pc_one($p, $since) {
                              elseif (!empty($e['route_id'])) { $e['route_url'] = wp_get_attachment_url((int) $e['route_id']); $e['route_file_api'] = rest_url('cc/v1/route?id=' . (int) $e['route_id']); }
                              return $e; }, $g['events'] ?? []), 'from_form' => $g['from_form'] ?? '',
                          'updated' => $gu ?: null, 'changed_by' => !empty($g['by_coach']) && (int) $g['by_coach'] === $gu ? 'matteo' : 'athlete', 'status' => $gu > $gseen ? 'new' : 'seen'] : null,
+        // Matteo 18 Nov (hub announcement): who already has their login details
+        'login' => $u ? ['user' => $uid, 'welcome_sent' => (string) get_user_meta($uid, 'cc_welcome_sent', true) ?: null, 'password_set' => (string) get_user_meta($uid, 'cc_pw_set', true) ?: null,
+                         'registered' => $u->user_registered, 'last_login' => (int) get_user_meta($uid, 'cc_last_login', true) ?: null] : null,
         'season_published' => $season, 'live_pages' => $live,   // live_pages: season / prediction / snapshot, latest published + whether new versions go live automatically
     ];
 }
