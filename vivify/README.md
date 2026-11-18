@@ -168,4 +168,6 @@ The board PNGs in `vivify/board/` are gitignored.
 - Text and macros are unchanged from Marine's PDF (`vivify/ebook/source-text.txt` -> `recipes.json`).
 - Marine's photos are kept. The 13 recipes that had placeholders use CC0 / public-domain photos (`img/new-*.jpg`, sources in `photo-credits.json`).
 - Status: approved by Marine (18 Nov) and uploaded: `python3 tools/vivify_ebook_upload.py` (PDF + cover + hidden page /ebook-download-<token>/, state in `vivify/wp-ebook.json`).
-- To do (Marine): Stripe payment link -> After payment -> redirect to the download page; Yoast on that page -> Advanced -> not in search results (the API can't set noindex). Re-run the upload script after a menu/header change so the page header stays current.
+- Stripe redirect: done by Marine (18 Nov), to the staging URL. Change it to the vivifysports.com URL at go-live.
+- Noindex: Code Snippets plugin (installed with Marine's OK, 18 Nov), snippet #5 "Hide e-book download page from Google" filters wpseo_robots + wpseo_exclude_from_sitemap_by_post_ids for page 1025.
+- Go-live: the staging site is noindex site-wide (Settings > Reading > Discourage search engines). Untick it at go-live, then check the download page still says noindex and every other page is indexable. Re-run the upload script after a menu/header change so the page header stays current.
