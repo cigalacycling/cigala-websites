@@ -132,6 +132,7 @@ nav.main li.lang a::after{display:none}
 .tgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:24px}   /* Marine 18 Nov: rows, last row centred */
 .tcard{flex:0 1 calc((100% - 48px)/3);margin:0;padding:28px;position:relative}
 @media (max-width:980px){.tcard{flex-basis:calc((100% - 24px)/2)}}@media (max-width:640px){.tcard{flex-basis:100%}}
+.tgrid.single .tcard{flex-basis:100%}   /* one review on its own (Women's page) */
 .tcard .who{display:flex;gap:14px;align-items:center;margin-bottom:16px}
 .tcard .who img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--border-strong)}
 .tcard h2,.tcard .name{font:700 15px/1.3 Montserrat,sans-serif;text-transform:none;color:var(--text);letter-spacing:0}

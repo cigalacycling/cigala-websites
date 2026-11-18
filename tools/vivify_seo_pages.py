@@ -27,7 +27,7 @@ def build(b):
         cards = ''.join(f"""<article class="tcard panel"><span class="q">{ICON['quote']}</span>
  <div class="who">{img(p, a, w=64, h=64)}<div><p class="name">{e(n)} <span class="sport">{e(s)}</span></p></div></div>
  <blockquote>{e(q)}</blockquote></article>""" for p, a, n, s, q in people(names))
-        return f'<section style="padding-top:24px"><div class="wrap">{head("Client stories", title, tag=None, center=True)}<div class="tgrid" style="{'columns:1;max-width:460px;margin:32px auto 0' if len(people(names)) == 1 else 'margin-top:32px'}">{cards}</div></div></section>'
+        return f'<section style="padding-top:24px"><div class="wrap">{head("Client stories", title, tag=None, center=True)}<div class="tgrid{' single' if len(people(names)) == 1 else ''}" style="{'max-width:520px;margin:32px auto 0' if len(people(names)) == 1 else 'margin-top:32px'}">{cards}</div></div></section>'
 
     def posts(slugs, title='Read Marine’s articles'):
         allp = {(p['url'] or '').rsplit('/', 1)[-1]: p for p in b.blog_posts()}
