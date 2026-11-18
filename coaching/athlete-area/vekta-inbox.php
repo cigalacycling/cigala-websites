@@ -49,15 +49,18 @@ function cc_vx_session_line($s) {
     if (!empty($s['feeling'])) $bits[] = 'feel ' . $s['feeling'] . '/5';
     return '<b>' . esc_html($s['name'] ?: (!empty($s['plan']['title']) ? $s['plan']['title'] : ucfirst((string) ($s['sport'] ?? 'Session')))) . '</b> <span>' . esc_html(implode(' · ', array_filter($bits))) . '</span>';
 }
+function cc_vx_anchor($key) { return 'vx-' . preg_replace('/[^a-z0-9_-]+/i', '-', (string) $key); }   // Matteo 18 Nov: a notification jumps to its comment
 function cc_vx_item($pid, $u, $queued) {
     $face = function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '';
-    $o = '<div class="vx-msg" data-key="' . esc_attr($u['key']) . '"><p class="vx-ses">' . cc_vx_session_line($u['session'] ?? []) . cc_vx_session_more($u['session'] ?? []) . '</p>'
+    $uid = (int) get_post_meta($pid, 'cc_user', true); $lang = $uid && function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en';
+    $speech = ['en' => 'en-IE', 'it' => 'it-IT', 'pt' => 'pt-PT', 'sl' => 'sl-SI', 'sk' => 'sk-SK'][$lang] ?? 'en-IE';   // Matteo 18 Nov: dictate in the athlete's language
+    $o = '<div class="vx-msg" id="' . esc_attr(cc_vx_anchor($u['key'])) . '" data-key="' . esc_attr($u['key']) . '" data-lang="' . esc_attr($speech) . '"><p class="vx-ses">' . cc_vx_session_line($u['session'] ?? []) . cc_vx_session_more($u['session'] ?? []) . '</p>'
        . '<div class="vx-b"><span class="nt-rh">' . $face . '<b>' . esc_html(get_the_title($pid)) . '</b> <small>' . esc_html(cc_vx_when($u['at'] ?? '')) . ($u['kind'] === 'description' ? ' · ride description' : '') . '</small></span>'
        . '<p>' . nl2br(esc_html($u['text'])) . '</p></div>';
     if ($queued) $o .= '<p class="vx-st">' . ($queued === 'sent' ? '✅ Posted in Vekta' : '⏳ Your reply is queued: your laptop posts it in Vekta within about 15 minutes') . '</p>';
     else { $dr = cc_vx_drafts()[$u['key']] ?? '';   // Matteo 18 Nov: a draft in his style, ready to edit (Claude task 8:00 / 18:00)
         $o .= '<div class="vx-r">' . ($dr !== '' ? '<p class="vx-dl">✍️ Draft in your style: edit it, then send</p>' : '')
-            . '<textarea rows="' . ($dr !== '' ? 3 : 2) . '" placeholder="Reply on this session in Vekta…" aria-label="Reply">' . esc_textarea($dr) . '</textarea><div class="vx-bt"><button type="button" class="btn btn-go vx-send">Send to Vekta</button>'
+            . '<textarea rows="' . ($dr !== '' ? 3 : 2) . '" placeholder="Reply on this session in Vekta…" aria-label="Reply">' . esc_textarea($dr) . '</textarea><div class="vx-bt"><button type="button" class="btn btn-go vx-send">Send to Vekta</button><button type="button" class="btn btn-ghost vx-dict" aria-pressed="false">🎙 Dictate</button>'
             . '<button type="button" class="btn btn-ghost vx-skip">No reply needed</button></div><span class="vx-m" role="status"></span></div>'; }
     return $o . '</div>';
 }
@@ -72,7 +75,20 @@ function cc_vx_assets() {
         . 'html .cc .vx-p i{font-style:normal;font-weight:600}html .cc .vx-p i.ok{color:#2bd47a}html .cc .vx-p i.lo{color:#f0bf00}html .cc .vx-np{opacity:.8}'
         . 'html .cc .vx-dl{margin:0;font-size:14px;color:#b8bec8;font-weight:600}html .cc .vx-bt{display:flex;flex-wrap:wrap;gap:8px}html .cc .vx-r .btn{justify-self:start;width:auto;margin:0}html .cc .vx-m{font-size:15px;color:#2bd47a;font-weight:600}html .cc .vx-m.err{color:#ff7a73}html .cc .vx-st{margin:10px 0 0;font-size:15px;color:#2bd47a;font-weight:600}'
         . 'html .cc .vx-list{display:grid;gap:6px;margin:6px 0 14px}html .cc .vx-list p{margin:0;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.03);font-size:15px;color:#d0d6e0}html .cc .vx-list b{color:#fff;margin-right:6px}html .cc .vx-list span{color:#b8bec8}'
-        . 'html .cc .vx-none{color:#2bd47a;font-weight:600;font-size:16px}</style>'
+        . 'html .cc .vx-none{color:#2bd47a;font-weight:600;font-size:16px}'
+        . 'html .cc .vx-msg.vx-hl{border-color:#2bd47a;box-shadow:0 0 0 3px rgba(43,212,122,.25);transition:box-shadow .4s}html .cc .vx-dict.on{background:#12a150;color:#fff;border-color:#12a150}</style>'
+        // Matteo 18 Nov: tapping a notification lands on that comment (highlighted); "Dictate" types what he says, in the athlete's language
+        . '<script>(function(){function go(){var h=location.hash;if(h.indexOf("#vx-")!==0)return;var el=document.getElementById(h.slice(1));if(!el)return;el.scrollIntoView({block:"center"});el.classList.add("vx-hl");setTimeout(function(){el.classList.remove("vx-hl");},4000);}'
+        . 'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go();addEventListener("hashchange",go);'
+        . 'var SR=window.SpeechRecognition||window.webkitSpeechRecognition,cur=null;'
+        . 'document.addEventListener("click",function(e){var b=e.target.closest(".vx-dict");if(!b)return;var m=b.closest(".vx-msg"),t=m.querySelector("textarea"),s=m.querySelector(".vx-m");'
+        . 'if(!SR){s.className="vx-m";s.textContent="Dictation is not available here: tap the box and use the microphone on your keyboard.";t.focus();return;}'
+        . 'if(cur){cur.stop();return;}var r=new SR();cur=r;r.lang=m.dataset.lang||"en-IE";r.continuous=true;r.interimResults=false;'
+        . 'b.classList.add("on");b.setAttribute("aria-pressed","true");b.textContent="■ Stop";s.className="vx-m";s.textContent="Listening…";'
+        . 'r.onresult=function(ev){for(var i=ev.resultIndex;i<ev.results.length;i++)if(ev.results[i].isFinal){var x=ev.results[i][0].transcript.trim();if(x)t.value=(t.value.trim()?t.value.trim()+" ":"")+x;}};'
+        . 'r.onerror=function(ev){s.className="vx-m err";s.textContent=ev.error==="not-allowed"?"Allow the microphone for this site, then try again.":"Dictation stopped. Try again.";};'
+        . 'r.onend=function(){cur=null;b.classList.remove("on");b.setAttribute("aria-pressed","false");b.textContent="🎙 Dictate";if(s.textContent==="Listening…")s.textContent="";};'   // no automatic restart (iPhone)
+        . 'try{r.start();}catch(x){cur=null;}});})();</script>'
         . '<script>(function(){document.addEventListener("click",function(e){var k=e.target.closest(".vx-skip");if(!k)return;var m=k.closest(".vx-msg");k.disabled=true;'
         . 'fetch(' . wp_json_encode(rest_url('cc/v1/vekta-dismiss')) . ',{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":' . wp_json_encode(wp_create_nonce('wp_rest')) . '},body:JSON.stringify({key:m.dataset.key})})'
         . '.then(function(r){if(!r.ok)throw 0;m.style.transition="opacity .25s";m.style.opacity="0";setTimeout(function(){m.remove();},260);}).catch(function(){k.disabled=false;});});'
@@ -154,7 +170,7 @@ add_action('rest_api_init', function () {
         if ($fresh && function_exists('cc_push_coaches')) {
             $board = add_query_arg('board', 'vekta', home_url('/' . CC_ATH_SLUG . '/'));
             if (count($fresh) > 6) cc_push_coaches(count($fresh) . ' new Vekta messages', 'From ' . implode(', ', array_unique(array_map(function ($f) { return get_the_title($f[0]); }, array_slice($fresh, 0, 4)))) . '…', $board, 'cc-vekta');
-            else foreach ($fresh as [$pid, $u]) cc_push_coaches('Vekta: ' . get_the_title($pid) . ($u['session']['name'] ? ' · ' . $u['session']['name'] : ''), wp_trim_words($u['text'], 18), $board, 'cc-vekta', $pid);
+            else foreach ($fresh as [$pid, $u]) cc_push_coaches('Vekta: ' . get_the_title($pid) . ($u['session']['name'] ? ' · ' . $u['session']['name'] : ''), wp_trim_words($u['text'], 18), $board . '#' . cc_vx_anchor($u['key']), 'cc-vekta', $pid);
         }
         // forget sent replies once the laptop no longer lists their comment as waiting
         $still = []; foreach ($out as $a) foreach ($a['unanswered'] as $u) $still[$u['key']] = 1;
