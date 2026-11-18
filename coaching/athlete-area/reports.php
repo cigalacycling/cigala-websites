@@ -306,7 +306,19 @@ add_filter('cc_ath_board', function ($html, $board) {
         . 'if(act==="testmail"||act==="stopauto"){if(b){b.textContent=DONE[act];}return;}'
         . 'if(row){row.style.transition="opacity .3s";row.style.opacity=".45";row.querySelector(".rp-acts").innerHTML="<span class=\"rp-done\">"+(DONE[act]||"✓ Done")+"</span>";var c=row.querySelector("input.rp-pick");if(c)c.remove();}})'
         . '.catch(function(){if(b){b.disabled=false;b.textContent="Try again";}});});})();</script>'
-        . '<style>html .cc .rp-done{font-size:15px;font-weight:700;color:#2bd47a;white-space:nowrap}</style>';
+        . '<style>html .cc .rp-done{font-size:15px;font-weight:700;color:#2bd47a;white-space:nowrap}</style>'
+        // Matteo 18 Nov: Preview / Open shows the report in a window over the board (no new tab); Esc or ✕ closes it
+        . '<div class="rp-modal" id="rp-modal" hidden><div class="rp-mbar"><b id="rp-mt"></b><a id="rp-mnew" target="_blank" rel="noopener">Open in a new tab ↗</a><button type="button" id="rp-mx" aria-label="Close">✕</button></div><iframe id="rp-mf" title="Report preview"></iframe></div>'
+        . '<style>html .rp-modal{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.78);display:flex;flex-direction:column;padding:14px}html .rp-modal[hidden]{display:none}'
+        . 'html .rp-mbar{display:flex;align-items:center;gap:14px;padding:0 4px 10px;color:#fff;font-size:16px}html .rp-mbar b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}'
+        . 'html .rp-mbar a{color:#2bd47a;font-size:15px;font-weight:600;white-space:nowrap}html #rp-mx{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:#111;color:#fff;font-size:20px;cursor:pointer;flex:none}'
+        . 'html .rp-modal iframe{flex:1;width:100%;max-width:1100px;margin:0 auto;border:0;border-radius:14px;background:#0b0d0f;box-shadow:0 10px 40px rgba(0,0,0,.6)}@media(max-width:600px){html .rp-modal{padding:8px}html .rp-mbar a{display:none}}</style>'
+        . '<script>(function(){var m=document.getElementById("rp-modal"),f=document.getElementById("rp-mf");if(!m)return;document.body.appendChild(m);'
+        . 'function close(){m.hidden=true;f.src="about:blank";document.documentElement.style.overflow="";}'
+        . 'document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest(".rp-row a[target=_blank]");if(!a||e.ctrlKey||e.metaKey||e.shiftKey)return;e.preventDefault();'
+        . 'var row=a.closest(".rp-row"),t=row&&row.querySelector(".rp-what b");document.getElementById("rp-mt").textContent=t?t.textContent:"";document.getElementById("rp-mnew").href=a.href;'
+        . 'f.src=a.href;m.hidden=false;document.documentElement.style.overflow="hidden";});'
+        . 'document.getElementById("rp-mx").addEventListener("click",close);m.addEventListener("click",function(e){if(e.target===m)close();});addEventListener("keydown",function(e){if(e.key==="Escape"&&!m.hidden)close();});})();</script>';
     return $o . '</section>';
 }, 10, 2);
 add_action('admin_post_cc_report_admin', function () {
