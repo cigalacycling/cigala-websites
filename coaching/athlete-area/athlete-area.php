@@ -401,13 +401,15 @@ function cc_ath_inner() {
         $list = array_merge(get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_demo', 'meta_value' => '1']), $list);
         // Matteo 17 Nov: a calmer athlete list: one tidy grid (same-size rows, every face or initials), a search box, and folded away while he looks at one athlete
         $cur = ($view && $view !== $mine) ? get_the_title($view) : '';
-        $o .= '<div class="ath-coach"><details class="ath-roster"' . ($cur === '' ? ' open' : '') . '><summary><span class="ath-ro-h">Your athletes <small>' . count($list) . '</small></span>'
-            . ($cur !== '' ? '<span class="ath-ro-cur">' . (function_exists('cc_ph_widget') ? cc_ph_widget($view, 26, false, 'ath-lf') : '') . esc_html($cur) . '</span><span class="ath-ro-ch">Change athlete</span>' : '') . '</summary>'
+        // Matteo 18 Nov: a Show / Hide button on the list; on his home page it remembers his choice (starts hidden)
+        $o .= '<div class="ath-coach"><details class="ath-roster' . ($cur === '' ? ' ath-ro-home' : '') . '"><summary><span class="ath-ro-h">Your athletes <small>' . count($list) . '</small></span>'
+            . ($cur !== '' ? '<span class="ath-ro-cur">' . (function_exists('cc_ph_widget') ? cc_ph_widget($view, 26, false, 'ath-lf') : '') . esc_html($cur) . '</span><span class="ath-ro-ch">Change athlete</span>' : '<span class="ath-ro-tg"><span class="ath-ro-s">Show ▾</span><span class="ath-ro-x">Hide ▴</span></span>') . '</summary>'
             . '<input type="search" class="ath-ro-q" placeholder="Find an athlete…" aria-label="Find an athlete" autocomplete="off"><div class="ath-list">';
         foreach ($list as $p) $o .= '<a href="' . esc_url(add_query_arg('view', $p->ID, $url)) . '"' . ($view === $p->ID ? ' aria-current="page"' : '') . ' data-q="' . esc_attr(strtolower(remove_accents($p->post_title))) . '">' . (function_exists('cc_ph_widget') ? cc_ph_widget($p->ID, 30, false, 'ath-lf') : '') . '<span class="ath-ln">' . esc_html($p->post_title) . '</span>'
             . cc_ath_flag_for($p->ID) . (get_post_meta($p->ID, 'cc_demo', true) ? ' <small style="opacity:.75">demo</small>' : '') . '</a>';
         $o .= ($list ? '</div>' : '<span>No athletes yet.</span></div>') . '</details>'
-            . '<script>(function(){var q=document.querySelector(".ath-ro-q");if(!q)return;q.addEventListener("input",function(){var v=q.value.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim();'
+            . '<script>(function(){var d=document.querySelector(".ath-roster.ath-ro-home");if(d){try{if(localStorage.getItem("cc_roster_open")==="1")d.open=true;}catch(x){}d.addEventListener("toggle",function(){try{localStorage.setItem("cc_roster_open",d.open?"1":"0");}catch(x){}});}})();'
+            . '(function(){var q=document.querySelector(".ath-ro-q");if(!q)return;q.addEventListener("input",function(){var v=q.value.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim();'
             . 'document.querySelectorAll(".ath-roster .ath-list a").forEach(function(a){a.hidden=v!==""&&a.dataset.q.indexOf(v)<0;});});})();</script>' . (function_exists('cc_ph_assets') ? cc_ph_assets() : '') . (($tl = apply_filters('cc_ath_coach_links', '')) !== '' ? '<div class="ath-coach-tools"><span class="ath-coach-tl">Your coach tools</span>' . $tl . '</div>' : '') . '</div>';
         // coach-only pages (e.g. ?board=availability, from availability.php); empty unless a module adds one
         $board = isset($_GET['board']) ? sanitize_key($_GET['board']) : '';
@@ -1091,6 +1093,9 @@ html .cc .ath-ro-h small { font-family: var(--body); font-size: 14px; font-weigh
 html .cc .ath-ro-cur { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; color: #fff; }
 html .cc .ath-ro-ch { margin-left: auto; font-size: 15px; font-weight: 600; color: #2bd47a; }
 html .cc .ath-roster[open] .ath-ro-cur, html .cc .ath-roster[open] .ath-ro-ch { display: none; }
+html .cc .ath-ro-tg { margin-left: auto; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(43,212,122,.55); font-size: 15px; font-weight: 600; color: #2bd47a; }
+html .cc .ath-roster .ath-ro-x, html .cc .ath-roster[open] .ath-ro-s { display: none; }
+html .cc .ath-roster[open] .ath-ro-x { display: inline; }
 html .cc .ath-ro-q { display: block; width: 100%; max-width: 360px; margin: 14px 0 12px; padding: 10px 14px; font-size: 16px; color: #fff; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16); border-radius: 10px; }
 html .cc .ath-ro-q:focus { outline: none; border-color: #12a150; }
 html .cc .ath-roster .ath-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 6px; }

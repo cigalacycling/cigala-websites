@@ -72,7 +72,7 @@ function cc_vx_assets() {
         . 'html .cc .vx-msg{padding:12px 14px;margin:0 0 10px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}'
         . 'html .cc .vx-ses{margin:0 0 8px;font-size:15px;color:#d0d6e0}html .cc .vx-ses b{color:#fff;margin-right:6px}html .cc .vx-ses span{color:#b8bec8}'
         . 'html .cc .vx-b{padding:10px 12px;border-left:3px solid #b8bec8;background:rgba(255,255,255,.04);border-radius:0 10px 10px 0}html .cc .vx-b p{margin:4px 0 0;font-size:16px;color:#e6e9ee}html .cc .vx-b small{color:#b8bec8;font-size:14px}'
-        . 'html .cc .vx-r{display:grid;gap:8px;margin-top:10px}html .cc .vx-r textarea{width:100%;box-sizing:border-box;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0b0d0f;color:#fff}'
+        . 'html .cc .vx-r{display:grid;gap:8px;margin-top:10px}html .cc .vx-r textarea{width:100%;box-sizing:border-box;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0b0d0f;color:#fff;line-height:1.5;min-height:96px;resize:vertical;overflow:hidden}'
         . 'html .cc .vx-more{display:block;margin-top:4px}html .cc .vx-f,html .cc .vx-p{display:block;font-size:14px;color:#b8bec8;line-height:1.45}html .cc .vx-p b{color:#d0d6e0;margin:0}'
         . 'html .cc .vx-p i{font-style:normal;font-weight:600}html .cc .vx-p i.ok{color:#2bd47a}html .cc .vx-p i.lo{color:#f0bf00}html .cc .vx-np{opacity:.8}'
         . 'html .cc .vx-open{margin-left:8px;font-size:14px;font-weight:600;color:#FFD400!important;text-decoration:none;white-space:nowrap}html .cc .vx-open:hover{text-decoration:underline}'
@@ -82,13 +82,16 @@ function cc_vx_assets() {
         . 'html .cc .vx-msg.vx-hl{border-color:#2bd47a;box-shadow:0 0 0 3px rgba(43,212,122,.25);transition:box-shadow .4s}html .cc .vx-dict.on{background:#12a150;color:#fff;border-color:#12a150}</style>'
         // Matteo 18 Nov: tapping a notification lands on that comment (highlighted); "Dictate" types what he says, in the athlete's language
         . '<script>(function(){function go(){var h=location.hash;if(h.indexOf("#vx-")!==0)return;var el=document.getElementById(h.slice(1));if(!el)return;el.scrollIntoView({block:"center"});el.classList.add("vx-hl");setTimeout(function(){el.classList.remove("vx-hl");},4000);}'
-        . 'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go();addEventListener("hashchange",go);'
+        // Matteo 18 Nov: the reply box grows to show the whole draft (long drafts were hard to read on the phone)
+        . 'function fit(t){t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px";}function fitAll(){document.querySelectorAll(".vx-r textarea").forEach(fit);}'
+        . 'document.addEventListener("input",function(e){if(e.target.matches&&e.target.matches(".vx-r textarea"))fit(e.target);});addEventListener("resize",fitAll);document.addEventListener("toggle",fitAll,true);'
+        . 'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){fitAll();go();});else{fitAll();go();}addEventListener("load",fitAll);addEventListener("hashchange",go);'
         . 'var SR=window.SpeechRecognition||window.webkitSpeechRecognition,cur=null;'
         . 'document.addEventListener("click",function(e){var b=e.target.closest(".vx-dict");if(!b)return;var m=b.closest(".vx-msg"),t=m.querySelector("textarea"),s=m.querySelector(".vx-m");'
         . 'if(!SR){s.className="vx-m";s.textContent="Dictation is not available here: tap the box and use the microphone on your keyboard.";t.focus();return;}'
         . 'if(cur){cur.stop();return;}var r=new SR();cur=r;r.lang=m.dataset.lang||"en-IE";r.continuous=true;r.interimResults=false;'
         . 'b.classList.add("on");b.setAttribute("aria-pressed","true");b.textContent="■ Stop";s.className="vx-m";s.textContent="Listening…";'
-        . 'r.onresult=function(ev){for(var i=ev.resultIndex;i<ev.results.length;i++)if(ev.results[i].isFinal){var x=ev.results[i][0].transcript.trim();if(x)t.value=(t.value.trim()?t.value.trim()+" ":"")+x;}};'
+        . 'r.onresult=function(ev){for(var i=ev.resultIndex;i<ev.results.length;i++)if(ev.results[i].isFinal){var x=ev.results[i][0].transcript.trim();if(x){t.value=(t.value.trim()?t.value.trim()+" ":"")+x;fit(t);}}};'
         . 'r.onerror=function(ev){s.className="vx-m err";s.textContent=ev.error==="not-allowed"?"Allow the microphone for this site, then try again.":"Dictation stopped. Try again.";};'
         . 'r.onend=function(){cur=null;b.classList.remove("on");b.setAttribute("aria-pressed","false");b.textContent="🎙 Dictate";if(s.textContent==="Listening…")s.textContent="";};'   // no automatic restart (iPhone)
         . 'try{r.start();}catch(x){cur=null;}});})();</script>'
