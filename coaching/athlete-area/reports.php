@@ -302,7 +302,7 @@ add_filter('cc_ath_board', function ($html, $board) {
         . 'document.addEventListener("submit",function(e){var f=e.target;if(!f.classList||!f.classList.contains("rp-act")||e.defaultPrevented)return;e.preventDefault();'
         . 'var row=f.closest(".rp-row"),act=(f.querySelector("input[name=act]")||{}).value,b=f.querySelector("button");if(b){b.disabled=true;b.textContent="…";}'
         . 'try{sessionStorage.removeItem(K);}catch(x){}'
-        . 'fetch(f.action,{method:"POST",body:new FormData(f),credentials:"same-origin"}).then(function(r){if(!r.ok)throw 0;'
+        . 'fetch(f.action,{method:"POST",body:new FormData(f),credentials:"same-origin",redirect:"manual"}).then(function(r){if(!(r.ok||r.type==="opaqueredirect"||(r.status>=300&&r.status<400)))throw 0;'
         . 'if(act==="testmail"||act==="stopauto"){if(b){b.textContent=DONE[act];}return;}'
         . 'if(row){row.style.transition="opacity .3s";row.style.opacity=".45";row.querySelector(".rp-acts").innerHTML="<span class=\"rp-done\">"+(DONE[act]||"✓ Done")+"</span>";var c=row.querySelector("input.rp-pick");if(c)c.remove();}})'
         . '.catch(function(){if(b){b.disabled=false;b.textContent="Try again";}});});})();</script>'
