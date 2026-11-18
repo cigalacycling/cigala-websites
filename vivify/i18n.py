@@ -89,7 +89,7 @@ TR = {
  'Triathlon Nutritionist': ('Nutrition triathlon', 'Nutrizione per il triathlon'),
  "Women's Cycling Nutrition": ('Nutrition sportive féminine', 'Nutrizione per le cicliste'),
  'Race Fuelling Plan': ('Plan de ravitaillement', 'Piano di alimentazione in gara'),
- 'Online, Worldwide': ('En ligne, partout', 'Online, ovunque'),
+ 'Online, Worldwide': ('Partout dans le monde', 'Online, ovunque'),
  'Dublin & Wicklow': ('Dublin et Wicklow', 'Dublino e Wicklow'),
  'Get in touch': ('Contact', 'Contatti'),
  'Wicklow, Ireland': ('Wicklow, Irlande', 'Wicklow, Irlanda'),
