@@ -122,7 +122,7 @@ function cc_gc_tell($i, $kind, $why = '', $sim = false) {
     $h .= '<table style="border-collapse:collapse;margin:0 0 16px">'; foreach ($rows as $r) if ($r[1] !== '') $h .= '<tr><td style="padding:3px 16px 3px 0;color:#555">' . $e($r[0]) . '</td><td style="padding:3px 0"><b>' . $e($r[1]) . '</b></td></tr>'; $h .= '</table>';
     if ($kind === 'created' || $kind === 'test') {
         $h .= '<p style="margin:0 0 6px"><b>' . ($kind === 'created' ? 'Done by the hub' : 'The hub would do') . '</b></p><ul style="margin:0 0 14px;padding-left:18px"><li>Hub login and their own page' . ($kind === 'created' ? ' ✔' : '') . '</li><li>Welcome email in their language' . ($kind === 'created' ? ' (' . $e($i['welcome'] ?? '') . ')' : '') . '</li><li>Rider form first, where they choose their app: Vekta (the invitation with the code goes out by itself) or TrainingPeaks (you get an email to invite them there)</li></ul>'
-            . '<p style="margin:0 0 6px"><b>Your to-do</b></p><ul style="margin:0 0 14px;padding-left:18px"><li>☐ <b>Skool:</b> invite <b>' . $e($i['email']) . '</b> to the Cigala Cycling Collective, then tap <b>“Skool invite sent”</b> on ' . (!empty($i['page']) ? '<a href="' . esc_url(add_query_arg('view', (int) $i['page'], home_url('/' . CC_ATH_SLUG . '/'))) . '">their hub page</a>' : 'their hub page') . ': your community welcome email goes to them in their language</li><li>☐ Assessment once their rider form is signed (the hub emails you when it is)</li></ul>';
+            . '<p style="margin:0 0 6px"><b>Your to-do</b></p><ul style="margin:0 0 14px;padding-left:18px"><li>☐ <b>Skool:</b> invite <b>' . $e($i['email']) . '</b> to the Cigala Cycling Collective, then tap <b>“Skool invite sent”</b> on ' . (!empty($i['page']) ? '<a href="' . esc_url(add_query_arg('view', (int) $i['page'], home_url('/' . CC_ATH_SLUG . '/'))) . '">their hub page</a>' : 'their hub page') . ': your community welcome email goes to them (Italian or English)</li><li>☐ Assessment once their rider form is signed (the hub emails you when it is)</li></ul>';
     }
     $h .= '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open Contracts</a></p></div>';
     if ($sim) { $GLOBALS['cc_gc_last_mail'] = ['subject' => $title, 'html' => $h]; return; }
@@ -340,6 +340,64 @@ add_action('admin_post_cc_gc_set', function () {
     wp_safe_redirect(add_query_arg(['board' => 'contracts', 'gc' => $r], home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
 
+/* ---------- 14-day money-back guarantee (Matteo 18 Nov 2026) ----------
+ * New GoCardless sign-ups see it in Settings (⚙) for their first 14 days: a full refund, no questions asked.
+ * "Ask for a refund" doesn't cancel anything by itself: Matteo gets an email + notification and handles it personally
+ * (refund + cancel in GoCardless), so it stays a conversation. After day 14 the section disappears by itself. */
+function cc_gt_w($k, $l) {
+    static $W = [
+        'h' => ['en' => '14-day money-back guarantee', 'it' => 'Garanzia soddisfatti o rimborsati di 14 giorni', 'pt' => 'Garantia de reembolso de 14 dias', 'sl' => '14-dnevna garancija vračila denarja', 'sk' => '14-dňová záruka vrátenia peňazí'],
+        'txt' => ['en' => 'Not happy with your coaching in the first 14 days? You get a full refund, no questions asked. Your guarantee runs until %s.', 'it' => 'Non sei soddisfatto del coaching nei primi 14 giorni? Ti rimborso tutto, senza domande. La garanzia vale fino al %s.', 'pt' => 'Não estás satisfeito com o coaching nos primeiros 14 dias? Recebes o reembolso total, sem perguntas. A tua garantia é válida até %s.', 'sl' => 'Nisi zadovoljen s treniranjem v prvih 14 dneh? Dobiš celotno vračilo, brez vprašanj. Garancija velja do %s.', 'sk' => 'Nie si spokojný s tréningom počas prvých 14 dní? Dostaneš späť celú sumu, bez otázok. Záruka platí do %s.'],
+        'note' => ['en' => 'Anything you’d like to tell me? (optional)', 'it' => 'Vuoi dirmi qualcosa? (facoltativo)', 'pt' => 'Queres dizer-me alguma coisa? (opcional)', 'sl' => 'Mi želiš kaj povedati? (neobvezno)', 'sk' => 'Chceš mi niečo povedať? (nepovinné)'],
+        'btn' => ['en' => 'Ask for a refund', 'it' => 'Chiedi il rimborso', 'pt' => 'Pedir o reembolso', 'sl' => 'Zahtevaj vračilo', 'sk' => 'Požiadať o vrátenie peňazí'],
+        'ask' => ['en' => 'Send Matteo your refund request? He’ll get back to you personally.', 'it' => 'Inviare a Matteo la richiesta di rimborso? Ti risponderà personalmente.', 'pt' => 'Enviar ao Matteo o pedido de reembolso? Ele responde-te pessoalmente.', 'sl' => 'Pošljem Matteu zahtevo za vračilo? Odgovoril ti bo osebno.', 'sk' => 'Poslať Matteovi žiadosť o vrátenie peňazí? Ozve sa ti osobne.'],
+        'done' => ['en' => 'Request sent. Matteo will get back to you personally.', 'it' => 'Richiesta inviata. Matteo ti risponderà personalmente.', 'pt' => 'Pedido enviado. O Matteo vai responder-te pessoalmente.', 'sl' => 'Zahteva poslana. Matteo ti bo odgovoril osebno.', 'sk' => 'Žiadosť odoslaná. Matteo sa ti ozve osobne.'],
+    ];
+    return $W[$k][$l] ?? $W[$k]['en'];
+}
+function cc_gt_signup($pid) {   // when their 14 days started (GoCardless sign-ups only); 0 = no guarantee shown
+    if (strpos(home_url(), '//staging.') !== false && isset($_GET['cc_demo_guarantee'])) return time() - 3 * DAY_IN_SECONDS;   // staging preview only
+    if (!get_post_meta($pid, 'cc_gc_sub', true)) return 0;
+    $c = json_decode((string) get_post_meta($pid, 'cc_contract', true), true); $t = !empty($c['signup']) ? strtotime($c['signup']) : 0;
+    if (!$t && ($uid = (int) get_post_meta($pid, 'cc_user', true)) && ($u = get_userdata($uid))) $t = strtotime($u->user_registered . ' UTC');
+    return $t;
+}
+add_filter('cc_settings_extra', function ($html, $uid, $coach) {
+    if ($coach || !function_exists('cc_ath_page_of')) return $html;
+    $pid = cc_ath_page_of($uid); $t = $pid ? cc_gt_signup($pid) : 0; if (!$t) return $html;
+    $end = $t + 14 * DAY_IN_SECONDS; if (time() > $end) return $html;
+    $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en';
+    $date = function_exists('cc_r_date') ? cc_r_date($end) : date_i18n('j M Y', $end);
+    $sent = get_post_meta($pid, 'cc_refund_req', true);
+    return $html . '<div class="set-sec gt"><p class="set-h">' . esc_html(cc_gt_w('h', $l)) . '</p><p class="gt-t">🛡️ ' . esc_html(sprintf(cc_gt_w('txt', $l), $date)) . '</p>'
+        . ($sent ? '<p class="gt-done">✓ ' . esc_html(cc_gt_w('done', $l)) . '</p>'
+                 : '<textarea class="gt-n" rows="2" placeholder="' . esc_attr(cc_gt_w('note', $l)) . '"></textarea><button type="button" class="gt-b" data-api="' . esc_url(rest_url('cc/v1/refund-request')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-ask="' . esc_attr(cc_gt_w('ask', $l)) . '" data-done="' . esc_attr(cc_gt_w('done', $l)) . '">' . esc_html(cc_gt_w('btn', $l)) . '</button>')
+        . '</div><style>html body .gt-t{margin:0 0 10px;font-size:15px;line-height:1.5;color:#d0d6e0}html body .gt-n{display:block;width:100%;box-sizing:border-box;margin:0 0 10px;padding:9px 11px;font:16px Montserrat,system-ui,sans-serif;color:#fff;background:#15181c;border:1px solid rgba(255,255,255,.18);border-radius:10px}'
+        . 'html body .gt-b{padding:9px 14px;font:600 15px Montserrat,system-ui,sans-serif;color:#fff;background:transparent;border:1px solid rgba(255,255,255,.35);border-radius:10px;cursor:pointer}html body .gt-done{margin:0;font-size:15px;font-weight:600;color:#2bd47a}</style>'
+        . '<script>(function(){var b=document.querySelector(".gt-b");if(!b||b.dataset.on)return;b.dataset.on=1;b.addEventListener("click",function(){if(!confirm(b.dataset.ask))return;var n=b.parentNode.querySelector(".gt-n");b.disabled=true;'
+        . 'fetch(b.dataset.api,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":b.dataset.nonce},body:JSON.stringify({text:n?n.value:""})}).then(function(r){if(!r.ok)throw 0;var p=document.createElement("p");p.className="gt-done";p.textContent="✓ "+b.dataset.done;if(n)n.remove();b.replaceWith(p);}).catch(function(){b.disabled=false;});});})();</script>';
+}, 10, 3);
+add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/refund-request', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {
+        $uid = get_current_user_id(); $pid = function_exists('cc_ath_page_of') ? cc_ath_page_of($uid) : 0; $t = $pid ? cc_gt_signup($pid) : 0;
+        if (!$t || time() > $t + 14 * DAY_IN_SECONDS) return new WP_Error('cc_gt', 'The 14 days are over', ['status' => 400]);
+        $text = sanitize_textarea_field((string) $r['text']); $u = get_userdata($uid); $name = get_the_title($pid);
+        update_post_meta($pid, 'cc_refund_req', ['at' => time(), 'text' => $text]);
+        $day = 1 + (int) floor((time() - $t) / DAY_IN_SECONDS);
+        $h = '<div style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;color:#222"><h2>Refund request: ' . esc_html($name) . '</h2>'
+           . '<p>' . esc_html($name) . ' asked for a refund under the 14-day money-back guarantee (day ' . $day . ' of 14).</p>'
+           . ($text !== '' ? '<p style="padding:10px 14px;border-left:3px solid #009a44;background:#f3f5f7">' . nl2br(esc_html($text)) . '</p>' : '<p><i>No message added.</i></p>')
+           . '<p><b>To do:</b> talk to them, then refund the payment and cancel the subscription in GoCardless. Nothing has been cancelled yet.</p>'
+           . '<p>Email: <a href="mailto:' . esc_attr($u->user_email) . '">' . esc_html($u->user_email) . '</a></p>'
+           . '<p style="margin:20px 0 0"><a href="' . esc_url(add_query_arg('view', $pid, home_url('/' . CC_ATH_SLUG . '/'))) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open their hub page</a></p></div>';
+        $hd = ['Content-Type: text/html; charset=UTF-8', 'Reply-To: ' . $name . ' <' . $u->user_email . '>'];
+        if (function_exists('cc_ath_coach_wrap')) $h = cc_ath_coach_wrap($h);
+        if (function_exists('cc_av_notify_to') && cc_av_notify_to()) wp_mail(cc_av_notify_to(), 'Refund request (14-day guarantee): ' . $name, $h, $hd);
+        if (function_exists('cc_push_coaches')) cc_push_coaches('🛡️ Refund request: ' . $name, $text !== '' ? wp_trim_words($text, 18) : '14-day money-back guarantee, day ' . $day, add_query_arg('view', $pid, home_url('/' . CC_ATH_SLUG . '/')), 'cc-refund', $pid);
+        return ['ok' => true];
+    }]);
+});
+
 /* ---------- Skool community welcome (Matteo 18 Nov 2026) ----------
  * Skool can't send its invitation automatically: Matteo invites the new athlete on Skool himself, then taps
  * "Skool invite sent" on their page (coach view). That sends HIS community welcome email ("I've just invited you…"),
@@ -427,7 +485,8 @@ function cc_skool_w($l) {
 }
 function cc_skool_mail($uid, $to = null) {
     $u = get_userdata((int) $uid); if (!$u) return new WP_Error('nouser', 'No such user');
-    $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($u->ID) : 'en'; $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = $l; $W = cc_skool_w($l);
+    // Matteo 18 Nov: a personal note from him about an English-speaking community: Italian for Italian athletes, English for everyone else
+    $l = (function_exists('cc_ath_user_lang') && cc_ath_user_lang($u->ID) === 'it') ? 'it' : 'en'; $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = $l; $W = cc_skool_w($l);
     $li = ''; foreach ($W['li'] as $x) $li .= '<li style="margin:0 0 8px">' . $x . '</li>';
     $p1 = $W['p1'] . '</p><p style="margin:0 0 16px">' . $W['p2'] . '</p><ul style="margin:0 0 16px;padding-left:20px">' . $li . '</ul><p style="margin:0 0 16px">' . $W['mem'] . '</p><p style="margin:0 0 16px">' . $W['start'];
     $small = '<p style="margin:22px 0 10px;font-size:15px;color:#454a52">' . $W['share'] . '<br><a href="' . esc_url(CC_SKOOL_URL) . '" style="color:#12a150">' . esc_html(CC_SKOOL_URL) . '</a></p>';
@@ -451,7 +510,7 @@ add_action('rest_api_init', function () {
 add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     if (!$coach || !$view || !get_post_meta($view, 'cc_skool_due', true) || get_post_meta($view, 'cc_skool_sent', true)) return $html;
     $uid = (int) get_post_meta($view, 'cc_user', true); $u = $uid ? get_userdata($uid) : null; if (!$u) return $html;
-    return $html . '<div class="sk-card"><p><b>Skool</b><span>Invite <b>' . esc_html($u->user_email) . '</b> to the Cigala Cycling Collective on Skool, then tap the button: your community welcome email goes to ' . esc_html($u->first_name ?: $u->display_name) . ' in their language.</span></p>'
+    return $html . '<div class="sk-card"><p><b>Skool</b><span>Invite <b>' . esc_html($u->user_email) . '</b> to the Cigala Cycling Collective on Skool, then tap the button: your community welcome email goes to ' . esc_html($u->first_name ?: $u->display_name) . ' (Italian for Italian athletes, English for everyone else).</span></p>'
         . '<a class="btn btn-ghost" href="' . esc_url(CC_SKOOL_URL) . '" target="_blank" rel="noopener">Open Skool</a><button type="button" class="btn btn-go sk-go" data-page="' . (int) $view . '" data-api="' . esc_url(rest_url('cc/v1/skool-sent')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '">Skool invite sent: email them</button><span class="sk-m" role="status"></span></div>'
         . '<style>html .cc .sk-card{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(43,212,122,.35);background:rgba(18,161,80,.08)}html .cc .sk-card p{margin:0;flex:1 1 260px;font-size:15px;color:#d0d6e0}html .cc .sk-card p>b{display:block;color:#fff;font-size:16px}html .cc .sk-card .btn{width:auto;margin:0}html .cc .sk-m{flex-basis:100%;font-size:15px;color:#2bd47a;font-weight:600}html .cc .sk-m:empty{display:none}</style>'
         . '<script>(function(){var b=document.querySelector(".sk-go");if(!b)return;b.addEventListener("click",function(){var m=b.parentNode.querySelector(".sk-m");b.disabled=true;m.textContent="…";'
