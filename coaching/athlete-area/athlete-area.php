@@ -1042,6 +1042,7 @@ html .cc h1 .ath-greet { color: var(--green-text, #2bd47a); font-family: var(--h
 html .cc h1 .ath-coach-tag { font-size: .45em; color: #b8bec8; letter-spacing: .04em; vertical-align: text-top; margin-right: .15em; }
 /* Matteo 18 Nov: his coach home reads MATTEO, then a small "Coach" just below, then CIGALA in the same style as Matteo */
 html .cc h1 .ath-nm-stack { display: inline-flex; flex-direction: column; align-items: flex-start; vertical-align: top; line-height: 1; }
+html .cc .ath-hero h1 .ath-nm .ath-nm-stack > span:not(.ath-coach-tag) { font-family: var(--head) !important; font-weight: 400 !important; text-transform: uppercase; color: #fff; line-height: 1.02; }
 html .cc h1 .ath-nm-stack .ath-coach-tag { margin: .12em 0 .1em; line-height: 1.1; }   /* raised, on the left of the name */   /* Matteo 17 Nov: a small "Coach" before his name, nothing else changed */
 html .cc .ath-lede { color: var(--text-2); font-size: 17px; line-height: 1.55; margin: 0 0 22px; max-width: 600px; }
 html .cc .ath-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px; }
