@@ -210,11 +210,11 @@ def _hb_extra(T, _SC, pre):   # a second picture under the compact section (Matt
     if x == 'a':
         return '<div class="hb-tour hb4-tour">' + ''.join(f'<figure class="hb-tp"><img src="{conv(_SC + "v3-phone-" + k + ".png", "hub-tour-v3-" + pre + k, 1040)}" alt="{T["alt_tour"].format(t=t)}" loading="lazy" width="1040" height="2160"><figcaption><b>{t}</b></figcaption></figure>' for k, t, d in T['tour3']) + '</div>'
     if x == 'b':
-        return f'<img class="hb4-wide" src="{conv(_SC + pre + "x-banner.png", "hub-x-banner" + ("-" + pre.rstrip("-") if pre else ""), 2000)}" alt="{T["alt_hero"]}" loading="lazy" width="2000" height="609">'
+        return f'<img class="hb4-wide" src="{conv(_SC + "x-banner.png", "hub-x-banner" + ("-" + pre.rstrip("-") if pre else ""), 2000)}" alt="{T["alt_hero"]}" loading="lazy" width="2000" height="609">'
     if x == 'c':
         li = ''.join(f'<li>{x}</li>' for x in T['xl'])
         return (f'<div class="hb4-x"><div class="hb4-xt"><p class="hb4-xh">{T["xh"]}</p><p>{T["xp"]}</p><ul>{li}</ul></div>'
-                f'<img class="hb4-fan" src="{conv(_SC + pre + "x-fan.png", "hub-x-fan2" + ("-" + pre.rstrip("-") if pre else ""), 2000)}" alt="{T["alt_tour"].format(t=T["tour3"][1][1])}" loading="lazy" width="2000" height="1333"></div>')
+                f'<img class="hb4-fan" src="{conv(_SC + "x-fan.png", "hub-x-fan2" + ("-" + pre.rstrip("-") if pre else ""), 2000)}" alt="{T["alt_tour"].format(t=T["tour3"][1][1])}" loading="lazy" width="2000" height="1333"></div>')
     return ''
 HB_EXTRA = 'c'   # Matteo 18 Nov: C (fanned phones) with a short text beside it
 def _hb4_size():
