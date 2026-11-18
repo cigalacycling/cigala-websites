@@ -758,24 +758,42 @@ def about():
 
 # ---------------------------------------------------------------- PHILOSOPHY
 def philosophy():
-    P = [('IMPROVED ENERGY LEVELS AND PERFORMACE', ['In order for our bodies to perform and feel good, the food we choose is very important. While some food make us feel awesome, some foods can actually make us feel depleted. Having the right diet can actually be a game changer in terms of performance.']),
-         ('WEIGHT MANAGEMENT', ['Whether you are trying to loose or gain weight, VIVIFY SPORTS will have the personalized solution for you. Each body is built differently and has different needs.',
-                                'Weight is determined by the quantity of energy (aka calories) we eat  &amp; how satisfied these foods make us feel. Unfortunately, certain foods in our environment which we tend to consume in excess like refined carbs, sugar &amp;  fats tend to be high in calorie density &amp; low in satiety : causing us to eat more calories.',
-                                'Looking on the bright side, foods like protein, fiber, fruit, vegetables,.. have the opposite combination as they are lower in calorie density and also higher in satiety....causing us to naturally eat less.',
-                                '<b class="callout-inline">BALANCE IS THE KEY</b>']),
-         ('STRONGER &amp; LEANER  MUSCLES', ['We often tend to forget about Protein but proteins are the building blocks for our muscles.']),
-         ('STRENGHTENING OF THE IMMUNE SYSTEM', ['The immune system is our body’s defence system against external elements such as viruses, bacteria, and fungi. It has been proven that physical activity, following adequate training, activates it, thus strengthening our barriers. But, the high demands of competitive or recreational sport, can cause the immune system to be suppressed. This is what is called immunosuppression. VIVIFY SPORTS will help you avoid this natural immunodepression.',
-                                                 'A balanced diet is the key to a healthy and performing body.']),
-         ('A HEALTHY GUT', ['Gut health is directly related to athletic performance. Athletes should consider improving their gut health as this can result in reductions in gastrointestinal stress while training/ competing (such as cramping, nausea, bloating, etc), better carbohydrate absorption, optimized immune function, and inflammation regulation.'])]
-    cards = ''.join(f'<div class="pcard panel"{" style=%sgrid-column:span 2%s" % (chr(34), chr(34)) if i == 1 else ""}><span class="num">{i+1}</span><span class="h3">{t}</span>' + ''.join(f'<p>{p}</p>' for p in ps) + '</div>' for i, (t, ps) in enumerate(P))
+    # Marine 18 Nov: "update the description of each of my pillars to optimise SEO and look scientific". Same five pillars,
+    # rewritten from current sports nutrition consensus (sources listed on the page). Titles: typos fixed, keywords added.
+    P = [('IMPROVED ENERGY LEVELS AND PERFORMANCE', [
+            'Carbohydrate is the main fuel for moderate- and high-intensity exercise, and your body can only store a limited amount of it as glycogen in your muscles and liver. When your intake does not match the work you do, energy levels, training quality and recovery all suffer.',
+            'We match your carbohydrate intake to your training load, from around 3–5 g per kg of body weight on light days to 6–10 g/kg on heavy endurance days, and plan what you eat before, during and after your sessions. Fuelling the work you do is one of the simplest and most effective ways to perform better.']),
+         ('WEIGHT MANAGEMENT &amp; BODY COMPOSITION', [
+            'Whether you are trying to lose or gain weight, VIVIFY SPORTS will have the personalized solution for you. Each body is built differently and has different needs.',
+            'Body weight is regulated by energy balance: the energy you eat compared with the energy you use. Highly processed foods rich in refined carbohydrates, added sugar and fat are high in energy density and low in satiety, so it is easy to eat more than you need. Foods rich in protein and fibre, such as lean protein, vegetables, fruit, legumes and whole grains, are lower in energy density and more filling, so you naturally eat less without feeling hungry.',
+            'For athletes, the goal is to change body composition without harming health or performance: a moderate energy deficit with weight loss of around 0.5–1% of body weight per week, a higher protein intake to protect muscle, and enough carbohydrate around key sessions. Eating too little for the training you do (low energy availability) can lead to Relative Energy Deficiency in Sport (REDs), which affects hormones, bone health, immunity and performance.',
+            '<b class="callout-inline">BALANCE IS THE KEY</b>']),
+         ('STRONGER &amp; LEANER MUSCLES', [
+            'Protein provides the amino acids your body uses to repair and build muscle after training. Most athletes benefit from around 1.4–2.0 g of protein per kg of body weight per day, spread across 3–5 meals of roughly 0.3 g/kg (about 20–40 g) each, including a serving in the hours after training.',
+            'Leucine-rich sources such as dairy, eggs, meat, fish and soy are particularly effective. Combined with strength training and enough total energy, this supports muscle repair, strength and a leaner body composition.']),
+         ('STRENGTHENING THE IMMUNE SYSTEM', [
+            'Regular, moderate exercise supports your immune system. But periods of heavy training, competition, travel, poor sleep and low energy intake can temporarily weaken your immune defences and raise the risk of illness, particularly upper respiratory infections.',
+            'Nutrition helps you stay healthy: eating enough overall energy, taking in carbohydrate during long and intense sessions, adequate protein, a wide variety of fruit and vegetables, and correcting deficiencies such as vitamin D or iron when blood tests show they are low. Fewer days lost to illness means more consistent training, and consistency is what builds performance.',
+            'A balanced diet is the key to a healthy and performing body.']),
+         ('A HEALTHY GUT', [
+            'Gut health is directly linked to athletic performance. During endurance exercise, blood flow is diverted away from the gut, which is why many athletes experience cramping, nausea or bloating, especially when taking in carbohydrate.',
+            'The good news is that the gut is trainable: practising your race fuelling in training increases how much carbohydrate you can absorb and reduces gastrointestinal symptoms. Day to day, a varied diet rich in fibre and plant foods supports a healthy gut microbiome, which plays a role in immune function and inflammation. Before key races, fibre and FODMAP intake can be adjusted to keep your stomach settled.'])]
+    SOURCES = ['Thomas, Erdman &amp; Burke (2016). Nutrition and athletic performance: ACSM, Academy of Nutrition and Dietetics and Dietitians of Canada joint position statement.',
+               'Jäger et al. (2017). International Society of Sports Nutrition position stand: protein and exercise.',
+               'Mountjoy et al. (2023). IOC consensus statement on Relative Energy Deficiency in Sport (REDs).',
+               'Walsh (2018). Recommendations to maintain immune health in athletes. European Journal of Sport Science.',
+               'Jeukendrup (2017). Training the gut for athletes. Sports Medicine.']
+    cards = ''.join(f'<div class="pcard panel"{" style=%sgrid-column:span 2%s" % (chr(34), chr(34)) if i == 4 else ""}><span class="num">{i+1}</span><span class="h3">{t}</span>' + ''.join(f'<p>{p}</p>' for p in ps) + '</div>' for i, (t, ps) in enumerate(P))
     body = f"""
 <section class="page-hero"><div class="wrap">
  <p class="bigquote" style="font-size:clamp(26px,3.6vw,44px)">"Our food should be our medicine and <span>our medicine should be our food</span>"</p>
  <p class="eyebrow" style="margin-top:18px">Hippocrates</p>
 </div></section>
 <section style="padding-top:8px"><div class="wrap">
- {head('Sports nutrition philosophy', 'THE VIVIFY SPORTS METHOD', tag='h1', center=True, lead="At Vivify sports, we don't believe in dieting and the main goal is to make healthy eating simple and every meal enjoyable.", cls='h2')}
- <div class="g3 phil" style="margin-top:40px">{cards}</div>
+ {head('Sports nutrition philosophy', 'THE VIVIFY SPORTS METHOD', tag='h1', center=True, lead="At Vivify sports, we don't believe in dieting and the main goal is to make healthy eating simple and every meal enjoyable. Every recommendation is based on current sports nutrition science and adapted to your sport, your training and your life.", cls='h2')}
+ <div class="g2 phil" style="margin-top:40px;align-items:stretch">{cards}</div>
+ <div class="panel" style="padding:22px 26px;margin-top:28px"><span class="eyebrow">Based on current research</span>
+  <ul style="margin:6px 0 0;padding-left:20px;font-size:13.5px;color:var(--text-3)">{''.join(f'<li style="margin:4px 0">{x}</li>' for x in SOURCES)}</ul></div>
 </div></section>
 <style>.callout-inline{{display:inline-block;color:var(--on-aqua);background:var(--aqua);padding:8px 14px;border-radius:8px;font:700 13px Montserrat,sans-serif;letter-spacing:.14em}}
 @media (max-width:980px){{.phil>div{{grid-column:auto!important}}}}</style>
