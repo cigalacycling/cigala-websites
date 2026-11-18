@@ -72,7 +72,7 @@ function cc_ath_flag_cc($cc, $name) {   // a round flag like the Tours site (emb
     if (isset($SVG[$cc])) return ' <img class="ath-flag" src="data:image/svg+xml;base64,' . base64_encode($SVG[$cc]) . '" alt="' . $n . '" title="' . $n . '" width="14" height="14">';
     if (isset($IMG[$cc])) return ' <img class="ath-flag" src="data:image/webp;base64,' . $IMG[$cc] . '" alt="' . $n . '" title="' . $n . '" width="14" height="14">';
     // Matteo 18 Nov (Katka, Slovakia): every other country gets a flag drawn for a round frame (emblems centred), never the emoji,
-    // so anyone who signs up from anywhere has a properly centred flag. Pinned version of the open circle-flags set.
+    // so anyone who signs up from anywhere has a properly centred flag (live 18 Nov). Pinned version of the open circle-flags set.
     if ($cc === 'gb-nir') $cc = 'gb';
     if (preg_match('/^[a-z]{2}(-[a-z]{3})?$/', $cc)) return ' <img class="ath-flag" src="https://cdn.jsdelivr.net/gh/HatScripts/circle-flags@2.7.0/flags/' . $cc . '.svg" alt="' . $n . '" title="' . $n . '" width="14" height="14" loading="lazy">';
     if (!preg_match('/^[a-z]{2}$/', $cc)) return '';
@@ -591,6 +591,7 @@ function cc_ath_live_chips($view, $coach, $nrep) {
             $n = count(array_filter($unread, function ($x) use ($tag) { return ($x['tag'] ?? '') === $tag || strpos((string) ($x['tag'] ?? ''), $tag . '-') === 0; }));
             if ($n) $o .= $chip($n, $n === 1 ? $one : $many, add_query_arg('board', $board, $hub), 'ath-chip-go');
         }
+        if (function_exists('cc_vx_open_count') && ($n = cc_vx_open_count())) $o .= $chip($n, $n === 1 ? 'Vekta message' : 'Vekta messages', add_query_arg('board', 'vekta', $hub), 'ath-chip-go');   // waiting in Vekta (laptop sync)
         if ($o === '') $o = '<span class="ath-chip ath-chip-ok">✓ All caught up</span>';
         return '<div class="ath-chips ath-live">' . $o . '</div>';
     }
