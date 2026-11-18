@@ -305,7 +305,8 @@ add_filter('cc_ath_board', function ($html, $board) {
         . 'fetch(f.action,{method:"POST",body:new FormData(f),credentials:"same-origin",redirect:"manual"}).then(function(r){if(!(r.ok||r.type==="opaqueredirect"||(r.status>=300&&r.status<400)))throw 0;'
         . 'if(act==="testmail"||act==="stopauto"){if(b){b.textContent=DONE[act];}return;}'
         . 'if(row){row.style.transition="opacity .3s";row.style.opacity=".45";row.querySelector(".rp-acts").innerHTML="<span class=\"rp-done\">"+(DONE[act]||"✓ Done")+"</span>";var c=row.querySelector("input.rp-pick");if(c)c.remove();}})'
-        . '.catch(function(){if(b){b.disabled=false;b.textContent="Try again";}});});})();</script>'
+        // if the in-place call fails, fall back to the normal submit (page reloads at the same spot), so the click always works
+        . '.catch(function(){try{sessionStorage.setItem(K,String(window.scrollY));}catch(x){}HTMLFormElement.prototype.submit.call(f);});});})();</script>'
         . '<style>html .cc .rp-done{font-size:15px;font-weight:700;color:#2bd47a;white-space:nowrap}</style>'
         // Matteo 18 Nov: Preview / Open shows the report in a window over the board (no new tab); Esc or ✕ closes it
         . '<div class="rp-modal" id="rp-modal" hidden><div class="rp-mbar"><b id="rp-mt"></b><a id="rp-mnew" target="_blank" rel="noopener">Open in a new tab ↗</a><button type="button" id="rp-mx" aria-label="Close">✕</button></div><iframe id="rp-mf" title="Report preview"></iframe></div>'
