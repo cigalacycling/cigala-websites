@@ -671,7 +671,7 @@ def who_i_help():
            ('race-fuelling-plan.html', 'Race day', 'A fuelling plan for your event', ('0e1488-45f685e5e5e54029b7cf7b5211aa', 'Cyclist eating an energy bar during a ride')),
            ('online-sports-nutritionist.html', 'Worldwide', 'Online coaching, wherever you train', ('0e1488-a22022be24dc4c7893882498f30', 'Cyclist with a gravel bike on a hilltop'))]
     return ('<section style="padding-top:24px"><div class="wrap">' + head('Who Marine works with', 'Nutrition for endurance athletes', tag=None, center=True)
-                  + '<div class="g4" style="margin-top:32px">' + ''.join(f'<a class="scard panel" href="{h}"><div class="ph">{img(ph[0], ph[1], w=640, h=480)}</div><div class="tx"><span class="eyebrow">{e(d)}</span><span class="h3">{e(t)}</span><span class="go">Learn more {ICON["arrow"]}</span></div></a>' for h, t, d, ph in who)
+                  + '<div class="g4" style="margin-top:32px">' + ''.join(f'<a class="scard panel" href="{h}"><div class="tx"><span class="eyebrow">{e(d)}</span><span class="h3">{e(t)}</span><span class="go">Learn more {ICON["arrow"]}</span></div></a>' for h, t, d, ph in who)
                   + '</div></div></section>')
 
 def home():
@@ -760,7 +760,6 @@ def about():
  <p>Whether you're preparing for your first endurance event or competing at an advanced level, my goal is to give you the knowledge, confidence and nutritional support to perform at your best.</p>
  <p>My aim is to make nutrition easier to understand, easier to implement and more effective in everyday life.</p></div>
 </div></section>
-{who_i_help()}
 <section class="center" style="padding-top:32px"><div class="wrap">
  <p class="bigquote">“You are unique, <span>simply and wonderfully you.</span>”</p>
  <p class="lead" style="margin-top:24px">Your uniqueness is your power. I believe in working with, not against, your body. Together, we’ll uncover what energizes you, makes you feel strong, and keeps you in sync with your goals.</p>
