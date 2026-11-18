@@ -25,7 +25,7 @@ function cc_pc_nat($pid) {   // the athlete's own answer in the rider form wins;
     return (string) (!empty($p['nat']) ? $p['nat'] : get_post_meta($pid, 'cc_nat', true));
 }
 function cc_pc_flag_emoji($code, $is_nat = true) {   // for the laptop's pages: the athlete's flag (nationality, else their language's country)
-    $c = strtolower((string) $code); if (!$is_nat) $c = ['it' => 'it', 'sl' => 'si', 'pt' => 'pt', 'es' => 'es', 'fr' => 'fr', 'hr' => 'hr', 'de' => 'de', 'nl' => 'nl', 'pl' => 'pl', 'cs' => 'cz', 'da' => 'dk', 'sv' => 'se', 'no' => 'no', 'fi' => 'fi', 'ga' => 'ie'][$c] ?? '';
+    $c = strtolower((string) $code); if (!$is_nat) $c = ['it' => 'it', 'sl' => 'si', 'sk' => 'sk', 'pt' => 'pt', 'es' => 'es', 'fr' => 'fr', 'hr' => 'hr', 'de' => 'de', 'nl' => 'nl', 'pl' => 'pl', 'cs' => 'cz', 'da' => 'dk', 'sv' => 'se', 'no' => 'no', 'fi' => 'fi', 'ga' => 'ie'][$c] ?? '';
     if (in_array($c, ['gb-eng', 'gb-sct', 'gb-wls'], true)) { $f = mb_chr(0x1F3F4, 'UTF-8'); foreach (str_split(str_replace('-', '', $c)) as $ch) $f .= mb_chr(0xE0000 + ord($ch), 'UTF-8'); return $f . mb_chr(0xE007F, 'UTF-8'); }
     if ($c === 'gb-nir') $c = 'gb';
     if (!preg_match('/^[a-z]{2}$/', $c)) return null;

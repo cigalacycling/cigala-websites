@@ -103,8 +103,8 @@ function cc_gc_handle($s, $c, $sim = false, $force = false) {   // $force: Matte
 }
 function cc_gc_lang($c) {   // GoCardless' customer language, else the country's
     $l = strtolower((string) ($c['language'] ?? '')); $cc = strtoupper((string) ($c['country_code'] ?? ''));
-    if (in_array($l, ['it', 'pt', 'sl'], true)) return $l;
-    $by = ['IT' => 'it', 'SM' => 'it', 'PT' => 'pt', 'BR' => 'pt', 'SI' => 'sl'];
+    if (in_array($l, ['it', 'pt', 'sl', 'sk'], true)) return $l;
+    $by = ['IT' => 'it', 'SM' => 'it', 'PT' => 'pt', 'BR' => 'pt', 'SI' => 'sl', 'SK' => 'sk'];
     return $by[$cc] ?? 'en';
 }
 

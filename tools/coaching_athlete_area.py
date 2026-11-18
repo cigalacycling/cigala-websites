@@ -202,7 +202,20 @@ HUB_T = {
         'Training tools': 'Orodja za trening', 'Carbs per hour': 'Ogljikovi hidrati na uro', 'Critical Power': 'Critical Power', 'Sweat rate': 'Stopnja potenja', 'Climb time': 'ÄŒas vzpona',
         'Gear &amp; speed': 'Prestave in hitrost', 'Swim pace (CSS)': 'Tempo plavanja (CSS)',
         'Worth reading': 'Vredno branja', 'New on the blog': 'Novo na blogu', 'Training': 'Trening', 'Fuelling': 'Prehrana', 'Recovery': 'Regeneracija', 'Race week': 'Teden tekme',
-        'soon': 'Core, vaje in fitnes: PDF-ji bodo kmalu tukaj.'}}
+        'soon': 'Core, vaje in fitnes: PDF-ji bodo kmalu tukaj.'},
+ # Slovak (Matteo 18 Nov 2026, Katka Bratekova): draft by Claude, a native speaker should glance at it
+ 'sk': {'Quick links': 'Rýchle odkazy', 'Book a catch-up call': 'Rezervuj si hovor', 'Nutrition consult with Marine': 'Konzultácia o výžive s Marine',
+        'Community on Skool': 'Komunita na Skoole',
+        'skool': 'Komunita na Skoole je pre športovcov, ktorých trénujem, zadarmo. Ešte ti neprišla pozvánka? <a href="mailto:matteo@cigalacycling.com?subject=Skool%20invitation">Pošli mi e-mail</a> a pošlem ti ju (pozri sa aj do spamu, niekedy skončí tam).',
+        'Your training apps': 'Tvoje tréningové aplikácie', 'vekta': 'Tvoj plán je vo Vekte a synchronizuje sa s tvojím Garminom, Wahoo alebo Zwiftom.', 'Open my Vekta calendar': 'Otvoriť môj kalendár vo Vekte',
+        'Training guides': 'Tréningová knižnica', 'Strength and core': 'Sila a core', 'Nutrition, with Marine Lenehan': 'Výživa, s Marine Lenehan',
+        'Stretches &amp; Core': 'Strečing a core', 'Gym Circuit: Winter, first month': 'Kruhový tréning v posilňovni: zima, prvý mesiac',
+        'Gym Circuit: Winter, second and third month': 'Kruhový tréning v posilňovni: zima, druhý a tretí mesiac', 'Gym Circuit: In season': 'Kruhový tréning v posilňovni: počas sezóny',
+        'Nutritional Guide': 'Sprievodca výživou', 'Supplement List': 'Zoznam doplnkov výživy', 'in English': 'v angličtine',
+        'Training tools': 'Tréningové nástroje', 'Carbs per hour': 'Sacharidy za hodinu', 'Critical Power': 'Critical Power', 'Sweat rate': 'Miera potenia', 'Climb time': 'Čas stúpania',
+        'Gear &amp; speed': 'Prevody a rýchlosť', 'Swim pace (CSS)': 'Plavecké tempo (CSS)',
+        'Worth reading': 'Oplatí sa prečítať', 'New on the blog': 'Nové na blogu', 'Training': 'Tréning', 'Fuelling': 'Jedlo a pitie', 'Recovery': 'Regenerácia', 'Race week': 'Pretekový týždeň',
+        'soon': 'Core, cviky a posilňovňa: PDF súbory tu budú čoskoro.'}}
 def upload_guides_lang(hub_id, L, files_json=None):   # the translated PDFs (<name>-PT.pdf / -SL.pdf) into that language's hub, privately
     fj = files_json or FILES; ids = json.load(open(fj)) if os.path.exists(fj) else {}
     for _, items in GUIDES:
@@ -277,8 +290,8 @@ if __name__ == '__main__':
         upload_guides_it(hub_it[0]['id'])
         req(f'{B}/wp/v2/cc_athlete/{hub_it[0]["id"]}', {'content': HUB_IT()}, 'POST')
     print('hub it', hub_it[0].get('id'), hub_it[0].get('message', ''))
-    if '--availability' in sys.argv:   # the Portuguese and Slovenian hubs go with hub-i18n.php
-        for L, name in (('pt', 'Portuguese'), ('sl', 'Slovenian')):
+    if '--availability' in sys.argv:   # the Portuguese, Slovenian and Slovak hubs go with hub-i18n.php
+        for L, name in (('pt', 'Portuguese'), ('sl', 'Slovenian'), ('sk', 'Slovak')):
             hl = [p for p in shared if p['meta'].get('cc_lang') == L]
             if not hl:
                 hl = [req(f'{B}/wp/v2/cc_athlete', {'title': f'Shared hub ({name} athletes)', 'status': 'private', 'content': hub_lang(L), 'meta': {'cc_shared': True, 'cc_lang': L}}, 'POST')]

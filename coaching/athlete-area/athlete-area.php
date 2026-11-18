@@ -50,7 +50,7 @@ add_action('init', function () {
     register_meta('user', 'cc_report_lang', ['type' => 'string', 'single' => true, 'show_in_rest' => true, 'auth_callback' => function () { return current_user_can('edit_users'); }]);
     register_post_meta('cc_athlete', 'cc_lang', ['type' => 'string', 'single' => true, 'show_in_rest' => true, 'auth_callback' => function () { return current_user_can('edit_pages'); }]);
 });
-const CC_REPORT_LANGS = ['en' => 'English', 'it' => 'Italiano', 'sl' => 'Slovenščina', 'de' => 'Deutsch', 'fr' => 'Français', 'es' => 'Español',
+const CC_REPORT_LANGS = ['en' => 'English', 'it' => 'Italiano', 'sl' => 'Slovenščina', 'sk' => 'Slovenčina', 'de' => 'Deutsch', 'fr' => 'Français', 'es' => 'Español',
     'nl' => 'Nederlands', 'pt' => 'Português', 'pl' => 'Polski', 'hr' => 'Hrvatski', 'cs' => 'Čeština', 'da' => 'Dansk', 'sv' => 'Svenska', 'no' => 'Norsk', 'fi' => 'Suomi', 'ga' => 'Gaeilge'];
 // Matteo 16 Nov: ONE "Athlete language" per athlete. The hub, their reports and the availability box use it.
 // The hub interface needs that language in cc_t() (English and Italian today); otherwise it shows in English.
@@ -80,7 +80,7 @@ function cc_ath_flag_cc($cc, $name) {   // a round flag like the Tours site (emb
     return ' <span class="ath-flag ath-flag-e" role="img" aria-label="' . $n . '" title="' . $n . '"><span>' . $f . '</span></span>';
 }
 function cc_ath_flag($lc) {   // by language, when the athlete has not given a nationality yet; nothing for English
-    $cc = ['it' => 'it', 'sl' => 'si', 'pt' => 'pt', 'es' => 'es', 'fr' => 'fr', 'hr' => 'hr', 'ga' => 'ie', 'de' => 'de', 'nl' => 'nl', 'pl' => 'pl', 'cs' => 'cz', 'da' => 'dk', 'sv' => 'se', 'no' => 'no', 'fi' => 'fi'][$lc] ?? '';
+    $cc = ['it' => 'it', 'sl' => 'si', 'sk' => 'sk', 'pt' => 'pt', 'es' => 'es', 'fr' => 'fr', 'hr' => 'hr', 'ga' => 'ie', 'de' => 'de', 'nl' => 'nl', 'pl' => 'pl', 'cs' => 'cz', 'da' => 'dk', 'sv' => 'se', 'no' => 'no', 'fi' => 'fi'][$lc] ?? '';
     return $cc === '' ? '' : cc_ath_flag_cc($cc, CC_REPORT_LANGS[$lc] ?? $lc);
 }
 function cc_ath_flag_for($pid) {   // Matteo 17 Nov: the nationality from the rider form, else the language
@@ -112,6 +112,9 @@ function cc_ath_user_lang($uid) { $l = cc_ath_lang_code($uid); return in_array($
 function cc_Ln($n, $en1, $it1, $en, $it) {   // plural: Slovenian has its own forms for 2 and 5+ (keys "sl2:" / "sl5:" in hub-i18n.php)
     if (($GLOBALS['cc_ath_lang'] ?? 'en') === 'sl' && function_exists('cc_hub_dict')) { $d = cc_hub_dict('sl'); $m = $n % 100;
         if ($m === 2 && isset($d['sl2:' . $en])) return $d['sl2:' . $en]; if (($m === 0 || $m >= 5) && isset($d['sl5:' . $en])) return $d['sl5:' . $en]; }
+    // Slovak: its own forms for 2-4 and for 5 and more (keys "sk2:" / "sk5:" in hub-i18n.php)
+    if (($GLOBALS['cc_ath_lang'] ?? 'en') === 'sk' && function_exists('cc_hub_dict') && $n !== 1) { $d = cc_hub_dict('sk');
+        if ($n >= 2 && $n <= 4 && isset($d['sk2:' . $en])) return $d['sk2:' . $en]; if (($n === 0 || $n >= 5) && isset($d['sk5:' . $en])) return $d['sk5:' . $en]; }
     return $n === 1 ? cc_L($en1, $it1) : cc_L($en, $it);
 }
 // Matteo 17 Nov: every hub text in the athlete's language. cc_L(English, Italian); other languages come from cc_hub_dict() (hub-i18n.php, keyed by the English text).
@@ -384,7 +387,9 @@ function cc_ath_inner() {
         // Matteo 17 Nov: the athlete's own round photo by the greeting (initials + camera until they add one; tap to add or change)
         . (!$coach && $view && function_exists('cc_ph_widget') ? '<div class="ath-hello">' . cc_ph_widget($view, 72, true, 'ath-me-ph') : '')
         // Matteo 17 Nov: the comma stays glued to the greeting (it slipped out of sight on phones)
-        . '<h1><span class="ath-gw"><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>,</span> ' . '<span class="ath-nm">' . ($coach ? '<span class="ath-coach-tag">Coach</span>&nbsp;' : '') . esc_html($first) . '</span></h1>'
+        . '<h1><span class="ath-gw"><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>,</span> ' . '<span class="ath-nm">' . ($coach && $me->last_name
+            ? '<span class="ath-nm-stack"><span>' . esc_html($first) . '</span><span class="ath-coach-tag">Coach</span><span>' . esc_html($me->last_name) . '</span></span>'
+            : ($coach ? '<span class="ath-coach-tag">Coach</span>&nbsp;' : '') . esc_html($first)) . '</span></h1>'
         . (!$coach && $view && function_exists('cc_ph_widget') ? '</div>' . cc_ph_assets() : '')
         // Matteo 17 Nov: his own view drops the athlete line; both get live chips instead (what is new, the next race)
         . ($coach ? '' : '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>')
@@ -577,16 +582,20 @@ function cc_ath_sections($html) {
  * Matteo: what is waiting for him (new notes, results, forms, ideas, signups), each opening its board. */
 function cc_ath_live_w($k, $n = 0) {
     static $W = [
-        'today' => ['en' => 'Today', 'it' => 'Oggi', 'pt' => 'Hoje', 'sl' => 'Danes'],
-        'tomorrow' => ['en' => 'Tomorrow', 'it' => 'Domani', 'pt' => 'Amanhã', 'sl' => 'Jutri'],
-        'day' => ['en' => ['day', 'days'], 'it' => ['giorno', 'giorni'], 'pt' => ['dia', 'dias'], 'sl' => ['dan', 'dni']],
-        'new' => ['en' => ['new notification', 'new notifications'], 'it' => ['nuova notifica', 'nuove notifiche'], 'pt' => ['nova notificação', 'novas notificações'], 'sl' => ['novo obvestilo', 'nova obvestila']],
-        'rep' => ['en' => ['report in your folder', 'reports in your folder'], 'it' => ['report nella tua cartella', 'report nella tua cartella'], 'pt' => ['relatório na tua pasta', 'relatórios na tua pasta'], 'sl' => ['poročilo v tvoji mapi', 'poročil v tvoji mapi']],
+        'today' => ['en' => 'Today', 'it' => 'Oggi', 'pt' => 'Hoje', 'sl' => 'Danes', 'sk' => 'Dnes'],
+        'tomorrow' => ['en' => 'Tomorrow', 'it' => 'Domani', 'pt' => 'Amanhã', 'sl' => 'Jutri', 'sk' => 'Zajtra'],
+        'day' => ['en' => ['day', 'days'], 'it' => ['giorno', 'giorni'], 'pt' => ['dia', 'dias'], 'sl' => ['dan', 'dni'], 'sk' => ['deň', 'dní']],
+        'new' => ['en' => ['new notification', 'new notifications'], 'it' => ['nuova notifica', 'nuove notifiche'], 'pt' => ['nova notificação', 'novas notificações'], 'sl' => ['novo obvestilo', 'nova obvestila'], 'sk' => ['nové upozornenie', 'nových upozornení']],
+        'rep' => ['en' => ['report in your folder', 'reports in your folder'], 'it' => ['report nella tua cartella', 'report nella tua cartella'], 'pt' => ['relatório na tua pasta', 'relatórios na tua pasta'], 'sl' => ['poročilo v tvoji mapi', 'poročil v tvoji mapi'], 'sk' => ['report v tvojom priečinku', 'reportov v tvojom priečinku']],
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en'; $v = $W[$k][$l] ?? $W[$k]['en'];
     if (!is_array($v)) return $v;
     if ($k === 'day' && $l === 'sl') return $n === 1 ? 'dan' : ($n === 2 ? 'dneva' : ($n <= 4 ? 'dnevi' : 'dni'));
     if ($k === 'new' && $l === 'sl') return $n === 1 ? 'novo obvestilo' : ($n === 2 ? 'novi obvestili' : ($n <= 4 ? 'nova obvestila' : 'novih obvestil'));
+    // Slovak (Matteo 18 Nov, Katka): 1 / 2-4 / 5 and more
+    if ($k === 'day' && $l === 'sk') return $n === 1 ? 'deň' : ($n >= 2 && $n <= 4 ? 'dni' : 'dní');
+    if ($k === 'new' && $l === 'sk') return $n === 1 ? 'nové upozornenie' : ($n >= 2 && $n <= 4 ? 'nové upozornenia' : 'nových upozornení');
+    if ($k === 'rep' && $l === 'sk') return $n === 1 ? 'report v tvojom priečinku' : ($n >= 2 && $n <= 4 ? 'reporty v tvojom priečinku' : 'reportov v tvojom priečinku');
     return $n === 1 ? $v[0] : $v[1];
 }
 function cc_ath_live_chips($view, $coach, $nrep) {
@@ -741,76 +750,76 @@ add_filter('wp_mail_from_name', function ($n) { return ($n === '' || $n === 'Wor
 /* Words for the summary cards and their pages (Matteo 17 Nov), in the athlete's hub language; English for any other. */
 function cc_ath_w($k, $lang = null) {
     static $W = [
-        'back' => ['en' => 'Back to my hub', 'it' => 'Torna al mio hub', 'pt' => 'Voltar ao meu hub', 'sl' => 'Nazaj v moj hub'],
-        'av_change' => ['en' => 'Change my availability', 'it' => 'Cambia la mia disponibilità', 'pt' => 'Alterar a minha disponibilidade', 'sl' => 'Spremeni mojo razpoložljivost'],
-        'av_set' => ['en' => 'Set my availability', 'it' => 'Imposta la mia disponibilità', 'pt' => 'Definir a minha disponibilidade', 'sl' => 'Nastavi mojo razpoložljivost'],
+        'back' => ['en' => 'Back to my hub', 'it' => 'Torna al mio hub', 'pt' => 'Voltar ao meu hub', 'sl' => 'Nazaj v moj hub', 'sk' => 'Späť do mojej zóny'],
+        'av_change' => ['en' => 'Change my availability', 'it' => 'Cambia la mia disponibilità', 'pt' => 'Alterar a minha disponibilidade', 'sl' => 'Spremeni mojo razpoložljivost', 'sk' => 'Zmeniť moju dostupnosť'],
+        'av_set' => ['en' => 'Set my availability', 'it' => 'Imposta la mia disponibilità', 'pt' => 'Definir a minha disponibilidade', 'sl' => 'Nastavi mojo razpoložljivost', 'sk' => 'Nastaviť moju dostupnosť'],
         'av_once' => ['en' => 'Please set your availability here once, so everything is in one place. After that, change it only when your week changes.',
                       'it' => 'Imposta qui la tua disponibilità una volta, così tutto è in un unico posto. Poi cambiala solo quando cambia la tua settimana.',
                       'pt' => 'Define aqui a tua disponibilidade uma vez, para estar tudo num só sítio. Depois, muda-a só quando a tua semana mudar.',
-                      'sl' => 'Tukaj enkrat nastavi svojo razpoložljivost, da bo vse na enem mestu. Potem jo spremeni le, ko se tvoj teden spremeni.'],
+                      'sl' => 'Tukaj enkrat nastavi svojo razpoložljivost, da bo vse na enem mestu. Potem jo spremeni le, ko se tvoj teden spremeni.', 'sk' => 'Nastav si tu raz svoju dostupnosť, nech je všetko na jednom mieste. Potom ju zmeň, len keď sa ti zmení týždeň.'],
         'av_lede' => ['en' => 'Your usual week and anything coming up. Change it whenever things change, and I adjust your plan in Vekta.',
                       'it' => 'La tua settimana tipo e quello che arriva. Cambiala quando le cose cambiano e io adatto il tuo piano in Vekta.',
                       'pt' => 'A tua semana habitual e o que vem aí. Muda-a sempre que algo mudar e eu ajusto o teu plano no Vekta.',
-                      'sl' => 'Tvoj običajni teden in kar prihaja. Spremeni ga, ko se kaj spremeni, in jaz prilagodim tvoj načrt v Vekti.'],
-        'updated' => ['en' => 'updated %s', 'it' => 'aggiornata il %s', 'pt' => 'atualizada a %s', 'sl' => 'posodobljeno %s'],
-        'changes' => ['en' => '%d change coming up|%d changes coming up', 'it' => '%d cambiamento in arrivo|%d cambiamenti in arrivo', 'pt' => '%d alteração a caminho|%d alterações a caminho', 'sl' => '%d sprememba|%d sprememb'],
-        'gl_change' => ['en' => 'Add or change my goals & events', 'it' => 'Aggiungi o cambia obiettivi ed eventi', 'pt' => 'Adicionar ou alterar objetivos e eventos', 'sl' => 'Dodaj ali spremeni cilje in dogodke'],
-        'gl_next' => ['en' => 'Next', 'it' => 'Prossimo', 'pt' => 'Próximo', 'sl' => 'Naslednji'],
+                      'sl' => 'Tvoj običajni teden in kar prihaja. Spremeni ga, ko se kaj spremeni, in jaz prilagodim tvoj načrt v Vekti.', 'sk' => 'Tvoj bežný týždeň a to, čo ťa čaká. Zmeň ho vždy, keď sa niečo zmení, a ja ti upravím plán vo Vekte.'],
+        'updated' => ['en' => 'updated %s', 'it' => 'aggiornata il %s', 'pt' => 'atualizada a %s', 'sl' => 'posodobljeno %s', 'sk' => 'aktualizované %s'],
+        'changes' => ['en' => '%d change coming up|%d changes coming up', 'it' => '%d cambiamento in arrivo|%d cambiamenti in arrivo', 'pt' => '%d alteração a caminho|%d alterações a caminho', 'sl' => '%d sprememba|%d sprememb', 'sk' => '%d zmena na obzore|Zmeny na obzore: %d'],
+        'gl_change' => ['en' => 'Add or change my goals & events', 'it' => 'Aggiungi o cambia obiettivi ed eventi', 'pt' => 'Adicionar ou alterar objetivos e eventos', 'sl' => 'Dodaj ali spremeni cilje in dogodke', 'sk' => 'Pridať alebo zmeniť ciele a podujatia'],
+        'gl_next' => ['en' => 'Next', 'it' => 'Prossimo', 'pt' => 'Próximo', 'sl' => 'Naslednji', 'sk' => 'Najbližšie'],
         // Matteo 17 Nov: route question in each race + the race day plan card
         'rt_ask' => ['en' => 'Do you have a GPX file of the route? Add it and you’ll get your race day simulation for this event.',
                      'it' => 'Hai il file GPX del percorso? Aggiungilo e riceverai la simulazione del giorno di gara per questo evento.',
                      'pt' => 'Tens o ficheiro GPX do percurso? Adiciona-o e vais receber a simulação do dia de prova para este evento.',
-                     'sl' => 'Imaš GPX datoteko proge? Dodaj jo in prejel boš simulacijo dneva tekme za ta dogodek.'],
-        'rt_upload' => ['en' => 'Add the route file (.gpx, .fit or .tcx)', 'it' => 'Aggiungi il file del percorso (.gpx, .fit o .tcx)', 'pt' => 'Adicionar o ficheiro do percurso (.gpx, .fit ou .tcx)', 'sl' => 'Dodaj datoteko proge (.gpx, .fit ali .tcx)'],
+                     'sl' => 'Imaš GPX datoteko proge? Dodaj jo in prejel boš simulacijo dneva tekme za ta dogodek.', 'sk' => 'Máš GPX súbor trate? Pridaj ho a dostaneš simuláciu pretekového dňa pre toto podujatie.'],
+        'rt_upload' => ['en' => 'Add the route file (.gpx, .fit or .tcx)', 'it' => 'Aggiungi il file del percorso (.gpx, .fit o .tcx)', 'pt' => 'Adicionar o ficheiro do percurso (.gpx, .fit ou .tcx)', 'sl' => 'Dodaj datoteko proge (.gpx, .fit ali .tcx)', 'sk' => 'Pridať súbor trate (.gpx, .fit alebo .tcx)'],
         'rt_link' => ['en' => 'Or paste a link to the route (a GPX file works best; a RideWithGPS link is fine too)', 'it' => 'Oppure incolla il link del percorso (meglio il file GPX; va bene anche un link RideWithGPS)',
-                      'pt' => 'Ou cola o link do percurso (o ficheiro GPX é o melhor; um link RideWithGPS também serve)', 'sl' => 'Ali prilepi povezavo do proge (najbolje je GPX datoteka; ustreza tudi povezava RideWithGPS)'],
-        'rt_start' => ['en' => 'Start time', 'it' => 'Orario di partenza', 'pt' => 'Hora de partida', 'sl' => 'Čas starta'],
-        'rt_remove' => ['en' => 'Change the file', 'it' => 'Cambia il file', 'pt' => 'Mudar o ficheiro', 'sl' => 'Zamenjaj datoteko'],
-        'rt_up' => ['en' => 'Uploading…', 'it' => 'Caricamento…', 'pt' => 'A carregar…', 'sl' => 'Nalagam…'],
+                      'pt' => 'Ou cola o link do percurso (o ficheiro GPX é o melhor; um link RideWithGPS também serve)', 'sl' => 'Ali prilepi povezavo do proge (najbolje je GPX datoteka; ustreza tudi povezava RideWithGPS)', 'sk' => 'Alebo vlož odkaz na trať (najlepšie funguje GPX súbor; odkaz z RideWithGPS je tiež v poriadku)'],
+        'rt_start' => ['en' => 'Start time', 'it' => 'Orario di partenza', 'pt' => 'Hora de partida', 'sl' => 'Čas starta', 'sk' => 'Čas štartu'],
+        'rt_remove' => ['en' => 'Change the file', 'it' => 'Cambia il file', 'pt' => 'Mudar o ficheiro', 'sl' => 'Zamenjaj datoteko', 'sk' => 'Zmeniť súbor'],
+        'rt_up' => ['en' => 'Uploading…', 'it' => 'Caricamento…', 'pt' => 'A carregar…', 'sl' => 'Nalagam…', 'sk' => 'Nahrávam…'],
         'rt_bad' => ['en' => 'That file didn’t upload. Please use a .gpx, .fit or .tcx file under 15 MB.', 'it' => 'Il file non è stato caricato. Usa un file .gpx, .fit o .tcx sotto i 15 MB.',
-                     'pt' => 'O ficheiro não foi carregado. Usa um ficheiro .gpx, .fit ou .tcx com menos de 15 MB.', 'sl' => 'Datoteka se ni naložila. Uporabi datoteko .gpx, .fit ali .tcx, manjšo od 15 MB.'],
-        'rt_ok' => ['en' => 'Route added', 'it' => 'Percorso aggiunto', 'pt' => 'Percurso adicionado', 'sl' => 'Proga dodana'],
-        'mic' => ['en' => 'Speak instead of typing', 'it' => 'Parla invece di scrivere', 'pt' => 'Fala em vez de escrever', 'sl' => 'Govori namesto tipkanja'],
+                     'pt' => 'O ficheiro não foi carregado. Usa um ficheiro .gpx, .fit ou .tcx com menos de 15 MB.', 'sl' => 'Datoteka se ni naložila. Uporabi datoteko .gpx, .fit ali .tcx, manjšo od 15 MB.', 'sk' => 'Súbor sa nenahral. Použi súbor .gpx, .fit alebo .tcx menší ako 15 MB.'],
+        'rt_ok' => ['en' => 'Route added', 'it' => 'Percorso aggiunto', 'pt' => 'Percurso adicionado', 'sl' => 'Proga dodana', 'sk' => 'Trať pridaná'],
+        'mic' => ['en' => 'Speak instead of typing', 'it' => 'Parla invece di scrivere', 'pt' => 'Fala em vez de escrever', 'sl' => 'Govori namesto tipkanja', 'sk' => 'Hovor namiesto písania'],
         'mic_on' => ['en' => 'Listening… speak now, tap the microphone again to stop.', 'it' => 'Ti ascolto… parla ora, tocca di nuovo il microfono per fermare.',
-                     'pt' => 'A ouvir… fala agora, toca outra vez no microfone para parar.', 'sl' => 'Poslušam… govori zdaj, za konec znova tapni mikrofon.'],
+                     'pt' => 'A ouvir… fala agora, toca outra vez no microfone para parar.', 'sl' => 'Poslušam… govori zdaj, za konec znova tapni mikrofon.', 'sk' => 'Počúvam… hovor, a keď skončíš, znova ťukni na mikrofón.'],
         'mic_denied' => ['en' => 'Please allow the microphone for this page, then tap it again.', 'it' => 'Consenti l’uso del microfono per questa pagina, poi toccalo di nuovo.',
-                         'pt' => 'Permite o microfone nesta página e depois toca outra vez.', 'sl' => 'Dovoli mikrofon za to stran in ga nato znova tapni.'],
+                         'pt' => 'Permite o microfone nesta página e depois toca outra vez.', 'sl' => 'Dovoli mikrofon za to stran in ga nato znova tapni.', 'sk' => 'Povoľ mikrofón pre túto stránku a potom naň znova ťukni.'],
         'mic_none' => ['en' => 'Speaking didn’t work here. You can use the microphone on your phone’s keyboard instead.', 'it' => 'La dettatura qui non ha funzionato. Puoi usare il microfono della tastiera del telefono.',
-                       'pt' => 'Ditar não funcionou aqui. Podes usar o microfone do teclado do telemóvel.', 'sl' => 'Narekovanje tu ni delovalo. Uporabiš lahko mikrofon na tipkovnici telefona.'],
+                       'pt' => 'Ditar não funcionou aqui. Podes usar o microfone do teclado do telemóvel.', 'sl' => 'Narekovanje tu ni delovalo. Uporabiš lahko mikrofon na tipkovnici telefona.', 'sk' => 'Diktovanie tu nefungovalo. Môžeš použiť mikrofón na klávesnici telefónu.'],
         'rc_hint' => ['en' => 'Racing soon? Add your race with its route (GPX) and you’ll get your race day plan: the power for every climb and your finish time. It goes into your Vekta calendar too.',
                       'it' => 'Hai una gara in arrivo? Aggiungila con il percorso (GPX) e riceverai il tuo piano per il giorno di gara: la potenza per ogni salita e il tempo all’arrivo. Finisce anche nel tuo calendario Vekta.',
                       'pt' => 'Tens uma prova em breve? Adiciona-a com o percurso (GPX) e vais receber o teu plano para o dia de prova: a potência para cada subida e o teu tempo final. Também vai para o teu calendário Vekta.',
-                      'sl' => 'Kmalu tekmuješ? Dodaj tekmo s progo (GPX) in prejel boš načrt za dan tekme: moč za vsak vzpon in končni čas. Pojavi se tudi v tvojem koledarju Vekta.'],
-        'rc_title' => ['en' => 'Race day plan', 'it' => 'Piano per il giorno di gara', 'pt' => 'Plano para o dia de prova', 'sl' => 'Načrt za dan tekme'],
+                      'sl' => 'Kmalu tekmuješ? Dodaj tekmo s progo (GPX) in prejel boš načrt za dan tekme: moč za vsak vzpon in končni čas. Pojavi se tudi v tvojem koledarju Vekta.', 'sk' => 'Čoskoro pretekáš? Pridaj preteky s traťou (GPX) a dostaneš plán na pretekový deň: výkon na každé stúpanie a tvoj cieľový čas. Objaví sa aj v tvojom kalendári Vekta.'],
+        'rc_title' => ['en' => 'Race day plan', 'it' => 'Piano per il giorno di gara', 'pt' => 'Plano para o dia de prova', 'sl' => 'Načrt za dan tekme', 'sk' => 'Plán na pretekový deň'],
         'rc_text' => ['en' => 'Get a plan for your race: the power for every climb and your finish time. Add your race here with its route, and it goes into your Vekta calendar too. For road, gravel and sportive events.',
                       'it' => 'Ricevi un piano per la tua gara: la potenza per ogni salita e il tuo tempo all’arrivo. Aggiungi qui la tua gara con il percorso: finisce anche nel tuo calendario Vekta. Per gare su strada, gravel e granfondo.',
                       'pt' => 'Recebe um plano para a tua prova: a potência para cada subida e o teu tempo final. Adiciona aqui a tua prova com o percurso, e ela também vai para o teu calendário Vekta. Para provas de estrada, gravel e gran fondo.',
-                      'sl' => 'Prejmi načrt za svojo tekmo: moč za vsak vzpon in tvoj končni čas. Tukaj dodaj svojo tekmo s progo in pojavila se bo tudi v tvojem koledarju Vekta. Za cestne, gravel in maratonske dogodke.'],
-        'rc_btn' => ['en' => 'Add my race and route', 'it' => 'Aggiungi la mia gara e il percorso', 'pt' => 'Adicionar a minha prova e o percurso', 'sl' => 'Dodaj mojo tekmo in progo'],
+                      'sl' => 'Prejmi načrt za svojo tekmo: moč za vsak vzpon in tvoj končni čas. Tukaj dodaj svojo tekmo s progo in pojavila se bo tudi v tvojem koledarju Vekta. Za cestne, gravel in maratonske dogodke.', 'sk' => 'Získaj plán na svoje preteky: výkon na každé stúpanie a tvoj cieľový čas. Pridaj sem svoje preteky s traťou a objavia sa aj v tvojom kalendári Vekta. Pre cestné preteky, gravel a cyklomaratóny.'],
+        'rc_btn' => ['en' => 'Add my race and route', 'it' => 'Aggiungi la mia gara e il percorso', 'pt' => 'Adicionar a minha prova e o percurso', 'sl' => 'Dodaj mojo tekmo in progo', 'sk' => 'Pridať moje preteky a trať'],
         'tp_card' => ['en' => 'Your training is in TrainingPeaks: your plan, your workouts and your calendar. Add your availability, races and goals there, in your TrainingPeaks calendar, so I see them when I plan your training.',
                       'it' => 'Il tuo allenamento è su TrainingPeaks: il piano, gli allenamenti e il calendario. Aggiungi lì la tua disponibilità, le gare e gli obiettivi, nel tuo calendario TrainingPeaks, così li vedo quando pianifico il tuo allenamento.',
                       'pt' => 'O teu treino está no TrainingPeaks: o plano, os treinos e o calendário. Adiciona lá a tua disponibilidade, provas e objetivos, no teu calendário TrainingPeaks, para eu os ver quando planeio o teu treino.',
-                      'sl' => 'Tvoj trening je v TrainingPeaks: načrt, treningi in koledar. Tja dodaj svojo razpoložljivost, tekme in cilje, v svoj koledar TrainingPeaks, da jih vidim, ko načrtujem tvoj trening.'],
+                      'sl' => 'Tvoj trening je v TrainingPeaks: načrt, treningi in koledar. Tja dodaj svojo razpoložljivost, tekme in cilje, v svoj koledar TrainingPeaks, da jih vidim, ko načrtujem tvoj trening.', 'sk' => 'Tvoj tréning je v TrainingPeaks: plán, tréningy aj kalendár. Pridaj tam, do svojho kalendára TrainingPeaks, aj svoju dostupnosť, preteky a ciele, aby som ich videl, keď ti plánujem tréning.'],
         'wl_app' => ['en' => 'Your first step: choose your password and fill in the short rider form. In it you choose your training app. If you go with Vekta (recommended), Vekta emails you a code to join me there.',
                      'it' => 'Il primo passo: scegli la password e compila il breve modulo atleta. Lì scegli l’app con cui allenarti. Se scegli Vekta (consigliata), Vekta ti invia via email un codice per raggiungermi.',
                      'pt' => 'O primeiro passo: escolhe a tua palavra-passe e preenche o pequeno formulário de atleta. Nele escolhes a app de treino. Se escolheres o Vekta (recomendada), o Vekta envia-te por email um código para te juntares a mim.',
-                     'sl' => 'Prvi korak: izberi geslo in izpolni kratek obrazec za kolesarja. V njem izbereš aplikacijo za trening. Če izbereš Vekta (priporočeno), ti Vekta po e-pošti pošlje kodo, da se mi pridružiš.'],
-        'vk_open' => ['en' => 'Open Vekta', 'it' => 'Apri Vekta', 'pt' => 'Abrir o Vekta', 'sl' => 'Odpri Vekta'],
-        'vk_title' => ['en' => 'Join me on Vekta', 'it' => 'Raggiungimi su Vekta', 'pt' => 'Junta-te a mim no Vekta', 'sl' => 'Pridruži se mi na Vekta'],
+                     'sl' => 'Prvi korak: izberi geslo in izpolni kratek obrazec za kolesarja. V njem izbereš aplikacijo za trening. Če izbereš Vekta (priporočeno), ti Vekta po e-pošti pošlje kodo, da se mi pridružiš.', 'sk' => 'Prvý krok: vyber si heslo a vyplň krátky formulár pre cyklistu. V ňom si zvolíš aplikáciu na tréning. Ak zvolíš Vektu (odporúčam), Vekta ti pošle e-mailom kód na pripojenie ku mne.'],
+        'vk_open' => ['en' => 'Open Vekta', 'it' => 'Apri Vekta', 'pt' => 'Abrir o Vekta', 'sl' => 'Odpri Vekta', 'sk' => 'Otvoriť Vektu'],
+        'vk_title' => ['en' => 'Join me on Vekta', 'it' => 'Raggiungimi su Vekta', 'pt' => 'Junta-te a mim no Vekta', 'sl' => 'Pridruži se mi na Vekta', 'sk' => 'Pridaj sa ku mne vo Vekte'],
         'vk_text' => ['en' => 'Vekta is sending you an email with a code to join me. Download the Vekta app, sign in with your Google or Apple account and enter the code. Then, in Vekta, connect your devices (Garmin, Wahoo, COROS, Hammerhead, Zwift) and your wearables such as WHOOP or Oura, so I can see your training and recovery. Can’t find the email? Check your spam folder, or message me.',
                       'it' => 'Vekta ti sta inviando un’email con un codice per raggiungermi. Scarica l’app Vekta, accedi con il tuo account Google o Apple e inserisci il codice. Poi, in Vekta, collega i tuoi dispositivi (Garmin, Wahoo, COROS, Hammerhead, Zwift) e i dispositivi indossabili come WHOOP o Oura, così vedo i tuoi allenamenti e il recupero. Non trovi l’email? Controlla lo spam, oppure scrivimi.',
                       'pt' => 'O Vekta está a enviar-te um email com um código para te juntares a mim. Descarrega a app Vekta, entra com a tua conta Google ou Apple e introduz o código. Depois, no Vekta, liga os teus dispositivos (Garmin, Wahoo, COROS, Hammerhead, Zwift) e os teus wearables como WHOOP ou Oura, para eu ver os teus treinos e a tua recuperação. Não encontras o email? Vê a pasta de spam, ou envia-me uma mensagem.',
-                      'sl' => 'Vekta ti pošilja e-pošto s kodo, da se mi pridružiš. Prenesi aplikacijo Vekta, prijavi se z Google ali Apple računom in vnesi kodo. Nato v Vekti poveži svoje naprave (Garmin, Wahoo, COROS, Hammerhead, Zwift) in nosljive naprave, kot sta WHOOP ali Oura, da vidim tvoj trening in regeneracijo. Ne najdeš e-pošte? Preveri mapo z neželeno pošto ali mi piši.'],
-        'tp_open' => ['en' => 'Open TrainingPeaks', 'it' => 'Apri TrainingPeaks', 'pt' => 'Abrir o TrainingPeaks', 'sl' => 'Odpri TrainingPeaks'],
+                      'sl' => 'Vekta ti pošilja e-pošto s kodo, da se mi pridružiš. Prenesi aplikacijo Vekta, prijavi se z Google ali Apple računom in vnesi kodo. Nato v Vekti poveži svoje naprave (Garmin, Wahoo, COROS, Hammerhead, Zwift) in nosljive naprave, kot sta WHOOP ali Oura, da vidim tvoj trening in regeneracijo. Ne najdeš e-pošte? Preveri mapo z neželeno pošto ali mi piši.', 'sk' => 'Vekta ti posiela e-mail s kódom na pripojenie ku mne. Stiahni si aplikáciu Vekta, prihlás sa cez Google alebo Apple účet a zadaj kód. Potom vo Vekte prepoj svoje zariadenia (Garmin, Wahoo, COROS, Hammerhead, Zwift) a nositeľné zariadenia ako WHOOP či Oura, aby som videl tvoj tréning a regeneráciu. Nevieš nájsť e-mail? Pozri sa do spamu alebo mi napíš.'],
+        'tp_open' => ['en' => 'Open TrainingPeaks', 'it' => 'Apri TrainingPeaks', 'pt' => 'Abrir o TrainingPeaks', 'sl' => 'Odpri TrainingPeaks', 'sk' => 'Otvoriť TrainingPeaks'],
         'tp_empty' => ['en' => 'Your assessment and reviews will appear here. I will let you know when there is something new.',
                        'it' => 'Qui troverai la tua valutazione e le tue revisioni. Ti avviso io quando c’è qualcosa di nuovo.',
                        'pt' => 'A tua avaliação e as tuas revisões vão aparecer aqui. Eu aviso-te quando houver algo novo.',
-                       'sl' => 'Tu se bodo pojavili tvoja ocena in pregledi. Sporočil ti bom, ko bo kaj novega.'],
-        'gl_more' => ['en' => '+%d more', 'it' => 'altri %d', 'pt' => 'mais %d', 'sl' => 'še %d'],
+                       'sl' => 'Tu se bodo pojavili tvoja ocena in pregledi. Sporočil ti bom, ko bo kaj novega.', 'sk' => 'Tu sa objaví tvoje hodnotenie a prehľady. Dám ti vedieť, keď tu bude niečo nové.'],
+        'gl_more' => ['en' => '+%d more', 'it' => 'altri %d', 'pt' => 'mais %d', 'sl' => 'še %d', 'sk' => 'a ešte %d'],
         'gl_none' => ['en' => 'No events yet. Add your races, sportives and camps: I plan your training around them.',
                       'it' => 'Ancora nessun evento. Aggiungi gare, granfondo e ritiri: pianifico il tuo allenamento intorno a loro.',
                       'pt' => 'Ainda sem eventos. Adiciona as tuas provas, gran fondos e estágios: planeio o teu treino à volta deles.',
-                      'sl' => 'Še ni dogodkov. Dodaj tekme, maratone in priprave: trening načrtujem okoli njih.'],
+                      'sl' => 'Še ni dogodkov. Dodaj tekme, maratone in priprave: trening načrtujem okoli njih.', 'sk' => 'Zatiaľ žiadne podujatia. Pridaj svoje preteky, cyklomaratóny a sústredenia: tréning naplánujem okolo nich.'],
     ];
     $l = $lang ?: ($GLOBALS['cc_ath_lang'] ?? 'en');
     return $W[$k][$l] ?? $W[$k]['en'];
@@ -1030,7 +1039,10 @@ html .cc .ath-hero-txt:has(.ath-coach-tag) { align-self: end; padding-bottom: 64
 html .cc .ath-hero h1 { font-size: clamp(36px, 6.4vw, 66px); line-height: 1; margin: 8px 0 12px; }
 html .cc .ath-hero h1 .ath-nm { font-family: var(--head); font-weight: 400; text-transform: uppercase; letter-spacing: inherit; color: #fff; }   /* the name keeps the Anton headline */
 html .cc h1 .ath-greet { color: var(--green-text, #2bd47a); font-family: var(--head); }
-html .cc h1 .ath-coach-tag { font-size: .45em; color: #b8bec8; letter-spacing: .04em; vertical-align: text-top; margin-right: .15em; }   /* raised, on the left of the name */   /* Matteo 17 Nov: a small "Coach" before his name, nothing else changed */
+html .cc h1 .ath-coach-tag { font-size: .45em; color: #b8bec8; letter-spacing: .04em; vertical-align: text-top; margin-right: .15em; }
+/* Matteo 18 Nov: his coach home reads MATTEO, then a small "Coach" just below, then CIGALA in the same style as Matteo */
+html .cc h1 .ath-nm-stack { display: inline-flex; flex-direction: column; align-items: flex-start; vertical-align: top; line-height: 1; }
+html .cc h1 .ath-nm-stack .ath-coach-tag { margin: .12em 0 .1em; line-height: 1.1; }   /* raised, on the left of the name */   /* Matteo 17 Nov: a small "Coach" before his name, nothing else changed */
 html .cc .ath-lede { color: var(--text-2); font-size: 17px; line-height: 1.55; margin: 0 0 22px; max-width: 600px; }
 html .cc .ath-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px; }
 html .cc .ath-chip { display: inline-flex; align-items: baseline; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text-2); font-size: 13.5px; }

@@ -9,34 +9,34 @@ if (!defined('ABSPATH')) return;
 
 function cc_nw_w($k) {
     static $W = [
-        'g_title' => ['en' => 'How to use your hub', 'it' => 'Come usare la tua area', 'pt' => 'Como usar a tua área', 'sl' => 'Kako uporabljati svoje središče'],
+        'g_title' => ['en' => 'How to use your hub', 'it' => 'Come usare la tua area', 'pt' => 'Como usar a tua área', 'sl' => 'Kako uporabljati svoje središče', 'sk' => 'Ako používať svoju zónu'],
         'g_train_v' => ['en' => '🚴 <b>Your training</b> (plan, workouts, comments on a specific ride): in <a href="https://app.joinvekta.com/" target="_blank" rel="noopener">Vekta</a>', 'it' => '🚴 <b>Il tuo allenamento</b> (piano, allenamenti, commenti su un’uscita specifica): su <a href="https://app.joinvekta.com/" target="_blank" rel="noopener">Vekta</a>',
-                        'pt' => '🚴 <b>O teu treino</b> (plano, treinos, comentários sobre um treino específico): no <a href="https://app.joinvekta.com/" target="_blank" rel="noopener">Vekta</a>', 'sl' => '🚴 <b>Tvoj trening</b> (načrt, treningi, komentarji k določeni vožnji): v <a href="https://app.joinvekta.com/" target="_blank" rel="noopener">Vekti</a>'],
+                        'pt' => '🚴 <b>O teu treino</b> (plano, treinos, comentários sobre um treino específico): no <a href="https://app.joinvekta.com/" target="_blank" rel="noopener">Vekta</a>', 'sl' => '🚴 <b>Tvoj trening</b> (načrt, treningi, komentarji k določeni vožnji): v <a href="https://app.joinvekta.com/" target="_blank" rel="noopener">Vekti</a>', 'sk' => '🚴 <b>Tvoj tréning</b> (plán, tréningy, komentáre ku konkrétnej jazde): vo <a href="https://app.joinvekta.com/" target="_blank" rel="noopener">Vekte</a>'],
         'g_train_t' => ['en' => '🚴 <b>Your training</b> (plan, workouts, comments on a specific ride): in <a href="https://app.trainingpeaks.com/" target="_blank" rel="noopener">TrainingPeaks</a>', 'it' => '🚴 <b>Il tuo allenamento</b> (piano, allenamenti, commenti su un’uscita specifica): su <a href="https://app.trainingpeaks.com/" target="_blank" rel="noopener">TrainingPeaks</a>',
-                        'pt' => '🚴 <b>O teu treino</b> (plano, treinos, comentários sobre um treino específico): no <a href="https://app.trainingpeaks.com/" target="_blank" rel="noopener">TrainingPeaks</a>', 'sl' => '🚴 <b>Tvoj trening</b> (načrt, treningi, komentarji k določeni vožnji): v <a href="https://app.trainingpeaks.com/" target="_blank" rel="noopener">TrainingPeaks</a>'],
+                        'pt' => '🚴 <b>O teu treino</b> (plano, treinos, comentários sobre um treino específico): no <a href="https://app.trainingpeaks.com/" target="_blank" rel="noopener">TrainingPeaks</a>', 'sl' => '🚴 <b>Tvoj trening</b> (načrt, treningi, komentarji k določeni vožnji): v <a href="https://app.trainingpeaks.com/" target="_blank" rel="noopener">TrainingPeaks</a>', 'sk' => '🚴 <b>Tvoj tréning</b> (plán, tréningy, komentáre ku konkrétnej jazde): v <a href="https://app.trainingpeaks.com/" target="_blank" rel="noopener">TrainingPeaks</a>'],
         'g_note' => ['en' => '🎙 <b>How your week is going</b>: <a href="#notes">Leave me a note</a> (text or voice)', 'it' => '🎙 <b>Come va la tua settimana</b>: <a href="#notes">Lasciami un messaggio</a> (testo o vocale)',
-                     'pt' => '🎙 <b>Como está a correr a tua semana</b>: <a href="#notes">Deixa-me uma mensagem</a> (texto ou voz)', 'sl' => '🎙 <b>Kako gre tvoj teden</b>: <a href="#notes">Pusti mi sporočilo</a> (besedilo ali glas)'],
+                     'pt' => '🎙 <b>Como está a correr a tua semana</b>: <a href="#notes">Deixa-me uma mensagem</a> (texto ou voz)', 'sl' => '🎙 <b>Kako gre tvoj teden</b>: <a href="#notes">Pusti mi sporočilo</a> (besedilo ali glas)', 'sk' => '🎙 <b>Ako ti ide týždeň</b>: <a href="#notes">Nechaj mi správu</a> (text alebo hlas)'],
         'g_res' => ['en' => '🏆 <b>A result you are proud of</b>: <a href="#results">Share a result</a>', 'it' => '🏆 <b>Un risultato di cui sei fiero</b>: <a href="#results">Condividi un risultato</a>',
-                    'pt' => '🏆 <b>Um resultado de que te orgulhas</b>: <a href="#results">Partilha um resultado</a>', 'sl' => '🏆 <b>Rezultat, na katerega si ponosen</b>: <a href="#results">Deli rezultat</a>'],
+                    'pt' => '🏆 <b>Um resultado de que te orgulhas</b>: <a href="#results">Partilha um resultado</a>', 'sl' => '🏆 <b>Rezultat, na katerega si ponosen</b>: <a href="#results">Deli rezultat</a>', 'sk' => '🏆 <b>Výsledok, ktorý ťa teší</b>: <a href="#results">Pochváľ sa výsledkom</a>'],
         // Matteo 18 Nov: blood tests, private, kept as history
         'g_blood' => ['en' => '🩸 <b>Your blood tests</b>: <a href="#blood">upload them privately</a>, kept as your history', 'it' => '🩸 <b>Le tue analisi del sangue</b>: <a href="#blood">caricale in privato</a>, restano come tuo storico',
-                      'pt' => '🩸 <b>As tuas análises ao sangue</b>: <a href="#blood">carrega-as em privado</a>, ficam como o teu histórico', 'sl' => '🩸 <b>Tvoji krvni izvidi</b>: <a href="#blood">naloži jih zasebno</a>, ostanejo kot tvoja zgodovina'],
+                      'pt' => '🩸 <b>As tuas análises ao sangue</b>: <a href="#blood">carrega-as em privado</a>, ficam como o teu histórico', 'sl' => '🩸 <b>Tvoji krvni izvidi</b>: <a href="#blood">naloži jih zasebno</a>, ostanejo kot tvoja zgodovina', 'sk' => '🩸 <b>Tvoje krvné testy</b>: <a href="#blood">nahraj ich súkromne</a>, zostanú ako tvoja história'],
         'g_av' => ['en' => '📅 <b>Your availability and races</b>: keep <a href="#availability">your availability</a> and <a href="#goals">your races</a> up to date here. They go into your Vekta calendar automatically.',
                    'it' => '📅 <b>La tua disponibilità e le gare</b>: tieni aggiornate qui <a href="#availability">la tua disponibilità</a> e <a href="#goals">le tue gare</a>. Finiscono automaticamente nel tuo calendario Vekta.',
                    'pt' => '📅 <b>A tua disponibilidade e as provas</b>: mantém aqui atualizadas <a href="#availability">a tua disponibilidade</a> e <a href="#goals">as tuas provas</a>. Passam automaticamente para o teu calendário Vekta.',
-                   'sl' => '📅 <b>Tvoja razpoložljivost in tekme</b>: tu sproti posodabljaj <a href="#availability">svojo razpoložljivost</a> in <a href="#goals">svoje tekme</a>. Samodejno se prenesejo v tvoj koledar Vekta.'],
+                   'sl' => '📅 <b>Tvoja razpoložljivost in tekme</b>: tu sproti posodabljaj <a href="#availability">svojo razpoložljivost</a> in <a href="#goals">svoje tekme</a>. Samodejno se prenesejo v tvoj koledar Vekta.', 'sk' => '📅 <b>Tvoja dostupnosť a preteky</b>: tu priebežne aktualizuj <a href="#availability">svoju dostupnosť</a> a <a href="#goals">svoje preteky</a>. Automaticky sa prenesú do tvojho kalendára Vekta.'],
         'g_rep' => ['en' => '📄 <b>Your reports and guides</b>: <a href="#reports">your reports</a> and the training guides, all here', 'it' => '📄 <b>I tuoi report e le guide</b>: <a href="#reports">i tuoi report</a> e le guide di allenamento, tutto qui',
-                    'pt' => '📄 <b>Os teus relatórios e guias</b>: <a href="#reports">os teus relatórios</a> e os guias de treino, tudo aqui', 'sl' => '📄 <b>Tvoja poročila in vodiči</b>: <a href="#reports">tvoja poročila</a> in vodiči za trening, vse tukaj'],
+                    'pt' => '📄 <b>Os teus relatórios e guias</b>: <a href="#reports">os teus relatórios</a> e os guias de treino, tudo aqui', 'sl' => '📄 <b>Tvoja poročila in vodiči</b>: <a href="#reports">tvoja poročila</a> in vodiči za trening, vse tukaj', 'sk' => '📄 <b>Tvoje reporty a návody</b>: <a href="#reports">tvoje reporty</a> a tréningové návody, všetko tu'],
         'g_wa' => ['en' => '💬 <b>Something urgent</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">WhatsApp me</a>', 'it' => '💬 <b>Qualcosa di urgente</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">scrivimi su WhatsApp</a>',
-                   'pt' => '💬 <b>Algo urgente</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">envia-me WhatsApp</a>', 'sl' => '💬 <b>Nekaj nujnega</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">piši mi na WhatsApp</a>'],
-        'news' => ['en' => 'News from Matteo', 'it' => 'Novità da Matteo', 'pt' => 'Novidades do Matteo', 'sl' => 'Novice od Mattea'],
-        'got' => ['en' => 'Got it', 'it' => 'Ok, letto', 'pt' => 'Entendido', 'sl' => 'Razumem'],
-        'more' => ['en' => 'Find out more', 'it' => 'Scopri di più', 'pt' => 'Saber mais', 'sl' => 'Več o tem'],
-        'blog' => ['en' => 'New on the blog', 'it' => 'Nuovo sul blog', 'pt' => 'Novo no blog', 'sl' => 'Novo na blogu'],
+                   'pt' => '💬 <b>Algo urgente</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">envia-me WhatsApp</a>', 'sl' => '💬 <b>Nekaj nujnega</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">piši mi na WhatsApp</a>', 'sk' => '💬 <b>Niečo súrne</b>: <a href="https://wa.me/353834777697" target="_blank" rel="noopener">napíš mi na WhatsApp</a>'],
+        'news' => ['en' => 'News from Matteo', 'it' => 'Novità da Matteo', 'pt' => 'Novidades do Matteo', 'sl' => 'Novice od Mattea', 'sk' => 'Novinky od Mattea'],
+        'got' => ['en' => 'Got it', 'it' => 'Ok, letto', 'pt' => 'Entendido', 'sl' => 'Razumem', 'sk' => 'Rozumiem'],
+        'more' => ['en' => 'Find out more', 'it' => 'Scopri di più', 'pt' => 'Saber mais', 'sl' => 'Več o tem', 'sk' => 'Zistiť viac'],
+        'blog' => ['en' => 'New on the blog', 'it' => 'Nuovo sul blog', 'pt' => 'Novo no blog', 'sl' => 'Novo na blogu', 'sk' => 'Nové na blogu'],
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
 }
-const CC_NW_LANGS = ['en', 'it', 'pt', 'sl'];
+const CC_NW_LANGS = ['en', 'it', 'pt', 'sl', 'sk'];
 // Matteo 17 Nov: each athlete's time zone (sent by their browser when they open the hub), for event times in emails / notifications
 add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/tz', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {
@@ -48,10 +48,10 @@ add_action('rest_api_init', function () {
 function cc_nw_when($utc, $uid, $l) {
     $tz = $uid ? (string) get_user_meta($uid, 'cc_tz', true) : ''; $known = $tz !== '';
     try { $d = new DateTime('@' . (int) $utc); $d->setTimezone(new DateTimeZone($known ? $tz : 'Europe/Dublin')); } catch (Exception $e) { return ''; }
-    $loc = ['en' => 'en_GB', 'it' => 'it_IT', 'pt' => 'pt_PT', 'sl' => 'sl_SI'][$l] ?? 'en_GB';
+    $loc = ['en' => 'en_GB', 'it' => 'it_IT', 'pt' => 'pt_PT', 'sl' => 'sl_SI', 'sk' => 'sk_SK'][$l] ?? 'en_GB';
     if (class_exists('IntlDateFormatter')) { $f = new IntlDateFormatter($loc, IntlDateFormatter::FULL, IntlDateFormatter::SHORT, $d->getTimezone()->getName(), null, 'EEEE d MMMM, HH:mm'); $s = $f->format($d); }
     else $s = $d->format('l j F, H:i');
-    $suffix = $known ? ['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas'][$l] ?? 'your time' : ['en' => 'Irish time', 'it' => 'ora irlandese', 'pt' => 'hora da Irlanda', 'sl' => 'irski čas'][$l] ?? 'Irish time';
+    $suffix = $known ? ['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas', 'sk' => 'tvoj čas'][$l] ?? 'your time' : ['en' => 'Irish time', 'it' => 'ora irlandese', 'pt' => 'hora da Irlanda', 'sl' => 'irski čas', 'sk' => 'írsky čas'][$l] ?? 'Irish time';
     return '🕗 ' . $s . ' (' . $suffix . ')';
 }
 function cc_nw_all() { $a = get_option('cc_news', []); return is_array($a) ? $a : []; }
@@ -83,13 +83,13 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
         $o .= '<div class="nw-card" data-id="' . esc_attr($n['id']) . '" hidden>' . (!empty($n['img']) ? '<img src="' . esc_url($n['img']) . '" alt="">' : '')
             . '<div><p class="nw-eb">📣 ' . esc_html(cc_nw_w('news')) . ' · ' . esc_html(date_i18n('j M', (int) $n['at'])) . '</p><b>' . esc_html($t['title'] ?? '') . '</b>'
             // the event time: Irish time from the server, then the browser rewrites it in the viewer's own time zone
-            . (!empty($n['when']) ? '<p class="nw-when" data-utc="' . (int) $n['when'] . '" data-loc="' . esc_attr(['en' => 'en-GB', 'it' => 'it-IT', 'pt' => 'pt-PT', 'sl' => 'sl-SI'][$l] ?? 'en-GB') . '" data-mine="' . esc_attr(['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas'][$l] ?? 'your time') . '">'
+            . (!empty($n['when']) ? '<p class="nw-when" data-utc="' . (int) $n['when'] . '" data-loc="' . esc_attr(['en' => 'en-GB', 'it' => 'it-IT', 'pt' => 'pt-PT', 'sl' => 'sl-SI', 'sk' => 'sk-SK'][$l] ?? 'en-GB') . '" data-mine="' . esc_attr(['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas', 'sk' => 'tvoj čas'][$l] ?? 'your time') . '">'
                 . esc_html(cc_nw_when($n['when'], 0, $l)) . '</p>' : '')
             . (($t['body'] ?? '') !== '' ? '<p>' . nl2br(esc_html($t['body'])) . '</p>' : '')
             . '<span class="nw-acts">' . (!empty($n['url']) ? '<a class="btn btn-go" href="' . esc_url($n['url']) . '" target="_blank" rel="noopener">' . esc_html(($t['btn'] ?? '') !== '' ? $t['btn'] : cc_nw_w('more')) . '</a>' : '')
             . '<button type="button" class="btn btn-ghost nw-got">' . esc_html(cc_nw_w('got')) . '</button></span></div></div>'
             // after "Got it": a slim one-line reminder that opens it again (Matteo 17 Nov: keep reminding until it is over)
-            . '<button type="button" class="nw-mini" data-id="' . esc_attr($n['id']) . '" hidden>📣 <b>' . esc_html($t['title'] ?? '') . '</b>' . (!empty($n['when']) ? ' <span class="nw-when nw-when-mini" data-utc="' . (int) $n['when'] . '" data-loc="' . esc_attr(['en' => 'en-GB', 'it' => 'it-IT', 'pt' => 'pt-PT', 'sl' => 'sl-SI'][$l] ?? 'en-GB') . '" data-mine="' . esc_attr(['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas'][$l] ?? 'your time') . '"></span>' : '') . '<i aria-hidden="true">›</i></button>';
+            . '<button type="button" class="nw-mini" data-id="' . esc_attr($n['id']) . '" hidden>📣 <b>' . esc_html($t['title'] ?? '') . '</b>' . (!empty($n['when']) ? ' <span class="nw-when nw-when-mini" data-utc="' . (int) $n['when'] . '" data-loc="' . esc_attr(['en' => 'en-GB', 'it' => 'it-IT', 'pt' => 'pt-PT', 'sl' => 'sl-SI', 'sk' => 'sk-SK'][$l] ?? 'en-GB') . '" data-mine="' . esc_attr(['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas', 'sk' => 'tvoj čas'][$l] ?? 'your time') . '"></span>' : '') . '<i aria-hidden="true">›</i></button>';
     }
     return $html . $o
         . '<style>html .cc .nw-guide{margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}html .cc .nw-guide summary{cursor:pointer;font-weight:700;font-size:16px;color:#fff;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}'
@@ -117,7 +117,7 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
 
 /* ---------- posting: News board and POST /wp-json/cc/v1/news ---------- */
 function cc_nw_post($in) {   // ['aud', 'url', 'img', 'push', 't' => [lang => [title, body, btn]]] -> the item, or WP_Error
-    $aud = (string) ($in['aud'] ?? 'all'); if (!in_array($aud, ['all', 'vekta', 'tp'], true) && !preg_match('/^(lang:(en|it|pt|sl)|page:\d+)$/', $aud)) $aud = 'all';
+    $aud = (string) ($in['aud'] ?? 'all'); if (!in_array($aud, ['all', 'vekta', 'tp'], true) && !preg_match('/^(lang:(en|it|pt|sl|sk)|page:\d+)$/', $aud)) $aud = 'all';
     if (strpos($aud, 'page:') === 0) { $pu = (int) get_post_meta((int) substr($aud, 5), 'cc_user', true); $need = [$pu ? cc_ath_lang_code($pu) : 'en']; }
     else $need = strpos($aud, 'lang:') === 0 ? [substr($aud, 5)] : CC_NW_LANGS;
     $t = [];
@@ -166,8 +166,8 @@ add_filter('cc_ath_board', function ($html, $board) {
        . ($r === 'ok' ? '<p class="rp-smtp-m">Posted.</p>' : '') . ($r === 'bad' ? '<p class="rp-smtp-m" style="color:#ff4a3d">' . esc_html($err) . '</p>' : '')
        . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" class="nw-form"><input type="hidden" name="action" value="cc_news">' . wp_nonce_field('cc_news', '_wpnonce', false, false)
        . '<label>Who sees it <select name="aud"><option value="all">Everyone</option><option value="vekta">Vekta athletes</option><option value="tp">TrainingPeaks athletes</option>'
-       . '<option value="lang:en">English readers</option><option value="lang:it">Italian readers</option><option value="lang:pt">Portuguese readers</option><option value="lang:sl">Slovenian readers</option></select></label>';
-    foreach (['en' => 'English', 'it' => 'Italiano', 'pt' => 'Português', 'sl' => 'Slovenščina'] as $l => $nm)
+       . '<option value="lang:en">English readers</option><option value="lang:it">Italian readers</option><option value="lang:pt">Portuguese readers</option><option value="lang:sl">Slovenian readers</option><option value="lang:sk">Slovak readers</option></select></label>';
+    foreach (['en' => 'English', 'it' => 'Italiano', 'pt' => 'Português', 'sl' => 'Slovenščina', 'sk' => 'Slovenčina'] as $l => $nm)
         $o .= '<fieldset><legend>' . $nm . '</legend><input name="t[' . $l . '][title]" maxlength="140" placeholder="Title"><textarea name="t[' . $l . '][body]" rows="3" placeholder="Message"></textarea><input name="t[' . $l . '][btn]" maxlength="40" placeholder="Button text (optional)"></fieldset>';
     $o .= '<label>Event date &amp; time, Irish time (optional): each athlete sees it in their own time zone <input name="when" type="datetime-local"></label>'
        . '<label>Button link (optional) <input name="url" type="url" placeholder="https://"></label><label class="nw-tick"><input type="checkbox" name="push" value="1" checked> Also send a phone notification</label>'

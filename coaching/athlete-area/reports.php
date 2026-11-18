@@ -166,14 +166,16 @@ function cc_r_published($pid) {
 }
 function cc_r_date($ts, $long = false) {   // "17 Nov 2026" in the hub language (the site itself is in English)
     static $M = ['it' => ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'], 'pt' => ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'],
-                 'sl' => ['jan.','feb.','mar.','apr.','maj','jun.','jul.','avg.','sep.','okt.','nov.','dec.']];
+                 'sl' => ['jan.','feb.','mar.','apr.','maj','jun.','jul.','avg.','sep.','okt.','nov.','dec.'],
+                 'sk' => ['jan.','feb.','mar.','apr.','máj','jún.','júl.','aug.','sep.','okt.','nov.','dec.']];
     static $F = ['it' => ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'],
                  'pt' => ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],
-                 'sl' => ['januar','februar','marec','april','maj','junij','julij','avgust','september','oktober','november','december']];
+                 'sl' => ['januar','februar','marec','april','maj','junij','julij','avgust','september','oktober','november','december'],
+                 'sk' => ['január','február','marec','apríl','máj','jún','júl','august','september','október','november','december']];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en';
     if ($long) return isset($F[$l]) ? $F[$l][(int) date_i18n('n', $ts) - 1] . ' ' . date_i18n('Y', $ts) : date_i18n('F Y', $ts);   // "May 2027"
     if (!isset($M[$l])) return date_i18n('j M Y', $ts);
-    return ($l === 'sl' ? date_i18n('j.', $ts) : date_i18n('j', $ts)) . ' ' . $M[$l][(int) date_i18n('n', $ts) - 1] . ' ' . date_i18n('Y', $ts);
+    return (in_array($l, ['sl', 'sk'], true) ? date_i18n('j.', $ts) : date_i18n('j', $ts)) . ' ' . $M[$l][(int) date_i18n('n', $ts) - 1] . ' ' . date_i18n('Y', $ts);
 }
 function cc_r_unseen($uid, $rid) { return !in_array($rid, (array) get_user_meta($uid, 'cc_seen_reports', true), true); }
 add_filter('cc_ath_before_reports', function ($html, $view, $coach) {

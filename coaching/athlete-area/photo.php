@@ -8,15 +8,15 @@ if (!defined('ABSPATH')) return;
 
 function cc_ph_w($k) {
     static $W = [
-        'add' => ['en' => 'Add your photo', 'it' => 'Aggiungi la tua foto', 'pt' => 'Adicionar a tua foto', 'sl' => 'Dodaj svojo fotografijo'],
-        'change' => ['en' => 'Change your photo', 'it' => 'Cambia la tua foto', 'pt' => 'Mudar a tua foto', 'sl' => 'Zamenjaj fotografijo'],
-        'form' => ['en' => 'A photo of you (optional)', 'it' => 'Una tua foto (facoltativa)', 'pt' => 'Uma foto tua (opcional)', 'sl' => 'Tvoja fotografija (neobvezno)'],
-        'form_hint' => ['en' => 'It shows in your hub, and helps me put a face to your name.', 'it' => 'Compare nella tua area e mi aiuta ad associare un volto al tuo nome.', 'pt' => 'Aparece na tua área e ajuda-me a associar um rosto ao teu nome.', 'sl' => 'Prikaže se v tvojem središču in mi pomaga, da imenu dodam obraz.'],
-        'up' => ['en' => 'Uploading…', 'it' => 'Caricamento…', 'pt' => 'A carregar…', 'sl' => 'Nalagam…'],
-        'ok' => ['en' => 'Photo saved', 'it' => 'Foto salvata', 'pt' => 'Foto guardada', 'sl' => 'Fotografija shranjena'],
-        'remove' => ['en' => 'Remove photo', 'it' => 'Rimuovi la foto', 'pt' => 'Remover a foto', 'sl' => 'Odstrani fotografijo'],
-        'removed' => ['en' => 'Photo removed', 'it' => 'Foto rimossa', 'pt' => 'Foto removida', 'sl' => 'Fotografija odstranjena'],
-        'bad' => ['en' => 'That photo did not upload. Please try another one.', 'it' => 'La foto non è stata caricata. Prova con un’altra.', 'pt' => 'A foto não foi carregada. Tenta outra.', 'sl' => 'Fotografija se ni naložila. Poskusi z drugo.'],
+        'add' => ['en' => 'Add your photo', 'it' => 'Aggiungi la tua foto', 'pt' => 'Adicionar a tua foto', 'sl' => 'Dodaj svojo fotografijo', 'sk' => 'Pridaj svoju fotku'],
+        'change' => ['en' => 'Change your photo', 'it' => 'Cambia la tua foto', 'pt' => 'Mudar a tua foto', 'sl' => 'Zamenjaj fotografijo', 'sk' => 'Zmeň svoju fotku'],
+        'form' => ['en' => 'A photo of you (optional)', 'it' => 'Una tua foto (facoltativa)', 'pt' => 'Uma foto tua (opcional)', 'sl' => 'Tvoja fotografija (neobvezno)', 'sk' => 'Tvoja fotka (nepovinné)'],
+        'form_hint' => ['en' => 'It shows in your hub, and helps me put a face to your name.', 'it' => 'Compare nella tua area e mi aiuta ad associare un volto al tuo nome.', 'pt' => 'Aparece na tua área e ajuda-me a associar um rosto ao teu nome.', 'sl' => 'Prikaže se v tvojem središču in mi pomaga, da imenu dodam obraz.', 'sk' => 'Zobrazí sa v tvojej zóne a pomôže mi spojiť si tvoje meno s tvárou.'],
+        'up' => ['en' => 'Uploading…', 'it' => 'Caricamento…', 'pt' => 'A carregar…', 'sl' => 'Nalagam…', 'sk' => 'Nahrávam…'],
+        'ok' => ['en' => 'Photo saved', 'it' => 'Foto salvata', 'pt' => 'Foto guardada', 'sl' => 'Fotografija shranjena', 'sk' => 'Fotka uložená'],
+        'remove' => ['en' => 'Remove photo', 'it' => 'Rimuovi la foto', 'pt' => 'Remover a foto', 'sl' => 'Odstrani fotografijo', 'sk' => 'Odstrániť fotku'],
+        'removed' => ['en' => 'Photo removed', 'it' => 'Foto rimossa', 'pt' => 'Foto removida', 'sl' => 'Fotografija odstranjena', 'sk' => 'Fotka odstránená'],
+        'bad' => ['en' => 'That photo did not upload. Please try another one.', 'it' => 'La foto non è stata caricata. Prova con un’altra.', 'pt' => 'A foto não foi carregada. Tenta outra.', 'sl' => 'Fotografija se ni naložila. Poskusi z drugo.', 'sk' => 'Fotka sa nenahrala. Skús inú.'],
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en';
     return $W[$k][$l] ?? $W[$k]['en'];

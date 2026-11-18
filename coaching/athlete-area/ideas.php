@@ -6,14 +6,14 @@ if (!defined('ABSPATH')) return;
 
 function cc_idea_w($k) {
     static $W = [
-        'title' => ['en' => 'Ideas for your hub', 'it' => 'Idee per il tuo hub', 'pt' => 'Ideias para o teu hub', 'sl' => 'Ideje za tvoj hub'],
+        'title' => ['en' => 'Ideas for your hub', 'it' => 'Idee per il tuo hub', 'pt' => 'Ideias para o teu hub', 'sl' => 'Ideje za tvoj hub', 'sk' => 'Nápady pre tvoju zónu'],
         'lede' => ['en' => 'Is there a report, a feature or anything else you would like to see here? Tell me, I read every idea.',
                    'it' => 'C’è un report, una funzione o altro che vorresti vedere qui? Dimmelo, leggo ogni idea.',
                    'pt' => 'Há algum relatório, funcionalidade ou outra coisa que gostarias de ver aqui? Diz-me, leio todas as ideias.',
-                   'sl' => 'Bi tukaj rad videl kakšno poročilo, funkcijo ali kaj drugega? Povej mi, preberem vsako idejo.'],
-        'ph' => ['en' => 'Your idea…', 'it' => 'La tua idea…', 'pt' => 'A tua ideia…', 'sl' => 'Tvoja ideja…'],
-        'send' => ['en' => 'Send my idea', 'it' => 'Invia la mia idea', 'pt' => 'Enviar a minha ideia', 'sl' => 'Pošlji mojo idejo'],
-        'thanks' => ['en' => 'Thank you! Your idea reached me.', 'it' => 'Grazie! La tua idea mi è arrivata.', 'pt' => 'Obrigado! A tua ideia chegou até mim.', 'sl' => 'Hvala! Tvoja ideja je prišla do mene.'],
+                   'sl' => 'Bi tukaj rad videl kakšno poročilo, funkcijo ali kaj drugega? Povej mi, preberem vsako idejo.', 'sk' => 'Chýba ti tu nejaký report, funkcia alebo niečo iné? Povedz mi, čítam každý nápad.'],
+        'ph' => ['en' => 'Your idea…', 'it' => 'La tua idea…', 'pt' => 'A tua ideia…', 'sl' => 'Tvoja ideja…', 'sk' => 'Tvoj nápad…'],
+        'send' => ['en' => 'Send my idea', 'it' => 'Invia la mia idea', 'pt' => 'Enviar a minha ideia', 'sl' => 'Pošlji mojo idejo', 'sk' => 'Poslať môj nápad'],
+        'thanks' => ['en' => 'Thank you! Your idea reached me.', 'it' => 'Grazie! La tua idea mi è arrivata.', 'pt' => 'Obrigado! A tua ideia chegou até mim.', 'sl' => 'Hvala! Tvoja ideja je prišla do mene.', 'sk' => 'Ďakujem! Tvoj nápad ku mne dorazil.'],
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en';
     return $W[$k][$l] ?? $W[$k]['en'];

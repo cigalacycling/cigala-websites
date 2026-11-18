@@ -6,30 +6,30 @@
 
 function cc_bt_w($k) {
     static $W = [
-        'title' => ['en' => 'Blood tests', 'it' => 'Analisi del sangue', 'pt' => 'Análises ao sangue', 'sl' => 'Krvne preiskave'],
+        'title' => ['en' => 'Blood tests', 'it' => 'Analisi del sangue', 'pt' => 'Análises ao sangue', 'sl' => 'Krvne preiskave', 'sk' => 'Krvné testy'],
         // Matteo 18 Nov: Marine reviews shared tests, but she is not the athlete's own nutritionist: one-to-one nutrition is a separate sign-up
         'lede' => ['en' => 'Upload your blood test results here (PDF or photo). Your files are private and kept here as your history, so we can follow how your values change over time. Only Matteo sees them, and Marine Lenehan, our sports nutritionist, if you tick the box: she can take a look and reply to you right here. Working one-to-one with Marine on your nutrition is a separate service: just ask if you would like it.',
                    'it' => 'Carica qui i risultati delle tue analisi del sangue (PDF o foto). I tuoi file sono privati e restano qui come tuo storico, così possiamo seguire come cambiano i valori nel tempo. Li vede solo Matteo, e Marine Lenehan, la nostra nutrizionista sportiva, se spunti la casella: può darci un’occhiata e risponderti direttamente qui. Lavorare individualmente con Marine sulla tua alimentazione è un servizio a parte: chiedi pure se ti interessa.',
                    'pt' => 'Carrega aqui os resultados das tuas análises ao sangue (PDF ou foto). Os teus ficheiros são privados e ficam aqui como o teu histórico, para acompanharmos como os valores mudam ao longo do tempo. Só o Matteo os vê, e a Marine Lenehan, a nossa nutricionista desportiva, se marcares a caixa: ela pode dar uma vista de olhos e responder-te aqui mesmo. Trabalhar individualmente com a Marine na tua alimentação é um serviço à parte: pergunta se tiveres interesse.',
-                   'sl' => 'Tukaj naloži izvide krvnih preiskav (PDF ali fotografijo). Tvoje datoteke so zasebne in ostanejo tukaj kot tvoja zgodovina, da lahko spremljamo, kako se vrednosti spreminjajo. Vidi jih samo Matteo, in Marine Lenehan, naša športna nutricionistka, če označiš polje: lahko jih pregleda in ti odgovori kar tukaj. Individualno delo z Marine na tvoji prehrani je ločena storitev: vprašaj, če te zanima.'],
-        'reply' => ['en' => 'Reply', 'it' => 'Rispondi', 'pt' => 'Responder', 'sl' => 'Odgovori'],
-        'send_r' => ['en' => 'Send', 'it' => 'Invia', 'pt' => 'Enviar', 'sl' => 'Pošlji'],
-        'you' => ['en' => 'You', 'it' => 'Tu', 'pt' => 'Tu', 'sl' => 'Ti'],
-        'marine_rep' => ['en' => 'Marine replied about your blood test', 'it' => 'Marine ha risposto sulle tue analisi', 'pt' => 'A Marine respondeu sobre as tuas análises', 'sl' => 'Marine je odgovorila glede tvojih izvidov'],
-        'matteo_rep' => ['en' => 'Matteo replied about your blood test', 'it' => 'Matteo ha risposto sulle tue analisi', 'pt' => 'O Matteo respondeu sobre as tuas análises', 'sl' => 'Matteo je odgovoril glede tvojih izvidov'],
-        'file' => ['en' => 'Choose the file', 'it' => 'Scegli il file', 'pt' => 'Escolhe o ficheiro', 'sl' => 'Izberi datoteko'],
-        'date' => ['en' => 'Date of the test', 'it' => 'Data delle analisi', 'pt' => 'Data das análises', 'sl' => 'Datum preiskave'],
-        'share' => ['en' => 'Share with Marine, our sports nutritionist, so she can take a look', 'it' => 'Condividi con Marine, la nostra nutrizionista sportiva, per un suo parere', 'pt' => 'Partilhar com a Marine, a nossa nutricionista desportiva, para ela dar uma vista de olhos', 'sl' => 'Deli z Marine, našo športno nutricionistko, da jih pregleda'],
-        'send' => ['en' => 'Upload', 'it' => 'Carica', 'pt' => 'Carregar', 'sl' => 'Naloži'],
-        'sending' => ['en' => 'Uploading…', 'it' => 'Caricamento…', 'pt' => 'A carregar…', 'sl' => 'Nalaganje…'],
-        'done' => ['en' => 'Uploaded. Thank you!', 'it' => 'Caricato. Grazie!', 'pt' => 'Carregado. Obrigado!', 'sl' => 'Naloženo. Hvala!'],
-        'bad' => ['en' => 'Please choose a PDF or a photo (up to 10 MB).', 'it' => 'Scegli un PDF o una foto (fino a 10 MB).', 'pt' => 'Escolhe um PDF ou uma foto (até 10 MB).', 'sl' => 'Izberi PDF ali fotografijo (do 10 MB).'],
-        'err' => ['en' => 'Not uploaded. Please try again.', 'it' => 'Non caricato. Riprova.', 'pt' => 'Não carregado. Tenta de novo.', 'sl' => 'Ni naloženo. Poskusi znova.'],
-        'yours' => ['en' => 'Your uploads', 'it' => 'I tuoi caricamenti', 'pt' => 'Os teus envios', 'sl' => 'Tvoji nalaganja'],
-        'open' => ['en' => 'Open', 'it' => 'Apri', 'pt' => 'Abrir', 'sl' => 'Odpri'],
-        'del' => ['en' => 'Delete', 'it' => 'Elimina', 'pt' => 'Apagar', 'sl' => 'Izbriši'],
-        'delq' => ['en' => 'Delete this blood test?', 'it' => 'Eliminare queste analisi?', 'pt' => 'Apagar estas análises?', 'sl' => 'Izbrišem to preiskavo?'],
-        'shared' => ['en' => 'shared with Marine', 'it' => 'condivise con Marine', 'pt' => 'partilhadas com a Marine', 'sl' => 'deljeno z Marine'],
+                   'sl' => 'Tukaj naloži izvide krvnih preiskav (PDF ali fotografijo). Tvoje datoteke so zasebne in ostanejo tukaj kot tvoja zgodovina, da lahko spremljamo, kako se vrednosti spreminjajo. Vidi jih samo Matteo, in Marine Lenehan, naša športna nutricionistka, če označiš polje: lahko jih pregleda in ti odgovori kar tukaj. Individualno delo z Marine na tvoji prehrani je ločena storitev: vprašaj, če te zanima.', 'sk' => 'Sem nahraj výsledky krvných testov (PDF alebo fotku). Tvoje súbory sú súkromné a zostávajú tu ako tvoja história, aby sme mohli sledovať, ako sa hodnoty časom menia. Vidí ich len Matteo a Marine Lenehan, naša športová nutričná poradkyňa, ak zaškrtneš políčko: môže sa na ne pozrieť a odpovedať ti priamo tu. Individuálna spolupráca s Marine na tvojej výžive je samostatná služba: ak ťa zaujíma, stačí sa opýtať.'],
+        'reply' => ['en' => 'Reply', 'it' => 'Rispondi', 'pt' => 'Responder', 'sl' => 'Odgovori', 'sk' => 'Odpovedať'],
+        'send_r' => ['en' => 'Send', 'it' => 'Invia', 'pt' => 'Enviar', 'sl' => 'Pošlji', 'sk' => 'Odoslať'],
+        'you' => ['en' => 'You', 'it' => 'Tu', 'pt' => 'Tu', 'sl' => 'Ti', 'sk' => 'Ty'],
+        'marine_rep' => ['en' => 'Marine replied about your blood test', 'it' => 'Marine ha risposto sulle tue analisi', 'pt' => 'A Marine respondeu sobre as tuas análises', 'sl' => 'Marine je odgovorila glede tvojih izvidov', 'sk' => 'Marine odpovedala na tvoj krvný test'],
+        'matteo_rep' => ['en' => 'Matteo replied about your blood test', 'it' => 'Matteo ha risposto sulle tue analisi', 'pt' => 'O Matteo respondeu sobre as tuas análises', 'sl' => 'Matteo je odgovoril glede tvojih izvidov', 'sk' => 'Matteo odpovedal na tvoj krvný test'],
+        'file' => ['en' => 'Choose the file', 'it' => 'Scegli il file', 'pt' => 'Escolhe o ficheiro', 'sl' => 'Izberi datoteko', 'sk' => 'Vybrať súbor'],
+        'date' => ['en' => 'Date of the test', 'it' => 'Data delle analisi', 'pt' => 'Data das análises', 'sl' => 'Datum preiskave', 'sk' => 'Dátum testu'],
+        'share' => ['en' => 'Share with Marine, our sports nutritionist, so she can take a look', 'it' => 'Condividi con Marine, la nostra nutrizionista sportiva, per un suo parere', 'pt' => 'Partilhar com a Marine, a nossa nutricionista desportiva, para ela dar uma vista de olhos', 'sl' => 'Deli z Marine, našo športno nutricionistko, da jih pregleda', 'sk' => 'Zdieľať s Marine, našou športovou nutričnou poradkyňou, aby sa na to pozrela'],
+        'send' => ['en' => 'Upload', 'it' => 'Carica', 'pt' => 'Carregar', 'sl' => 'Naloži', 'sk' => 'Nahrať'],
+        'sending' => ['en' => 'Uploading…', 'it' => 'Caricamento…', 'pt' => 'A carregar…', 'sl' => 'Nalaganje…', 'sk' => 'Nahrávam…'],
+        'done' => ['en' => 'Uploaded. Thank you!', 'it' => 'Caricato. Grazie!', 'pt' => 'Carregado. Obrigado!', 'sl' => 'Naloženo. Hvala!', 'sk' => 'Nahrané. Ďakujem!'],
+        'bad' => ['en' => 'Please choose a PDF or a photo (up to 10 MB).', 'it' => 'Scegli un PDF o una foto (fino a 10 MB).', 'pt' => 'Escolhe um PDF ou uma foto (até 10 MB).', 'sl' => 'Izberi PDF ali fotografijo (do 10 MB).', 'sk' => 'Vyber PDF alebo fotku (do 10 MB).'],
+        'err' => ['en' => 'Not uploaded. Please try again.', 'it' => 'Non caricato. Riprova.', 'pt' => 'Não carregado. Tenta de novo.', 'sl' => 'Ni naloženo. Poskusi znova.', 'sk' => 'Nenahralo sa. Skús to znova.'],
+        'yours' => ['en' => 'Your uploads', 'it' => 'I tuoi caricamenti', 'pt' => 'Os teus envios', 'sl' => 'Tvoji nalaganja', 'sk' => 'Tvoje nahrané súbory'],
+        'open' => ['en' => 'Open', 'it' => 'Apri', 'pt' => 'Abrir', 'sl' => 'Odpri', 'sk' => 'Otvoriť'],
+        'del' => ['en' => 'Delete', 'it' => 'Elimina', 'pt' => 'Apagar', 'sl' => 'Izbriši', 'sk' => 'Vymazať'],
+        'delq' => ['en' => 'Delete this blood test?', 'it' => 'Eliminare queste analisi?', 'pt' => 'Apagar estas análises?', 'sl' => 'Izbrišem to preiskavo?', 'sk' => 'Vymazať tento krvný test?'],
+        'shared' => ['en' => 'shared with Marine', 'it' => 'condivise con Marine', 'pt' => 'partilhadas com a Marine', 'sl' => 'deljeno z Marine', 'sk' => 'zdieľané s Marine'],
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
 }
@@ -72,7 +72,8 @@ function cc_bt_assets() {
     static $done = false; if ($done) return ''; $done = true;
     $api = esc_url(rest_url('cc/v1/blood')); $nonce = esc_attr(wp_create_nonce('wp_rest'));
     return '<style>html .cc .bt-form{display:grid;gap:12px;max-width:520px}html .cc .bt-form label{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}'
-        . 'html .cc .bt-form input[type=file]{font:16px var(--body);color:#d0d6e0}html .cc .bt-tick{display:flex!important;align-items:center;gap:10px;font-weight:500!important}html .cc .bt-tick input{width:22px;height:22px;accent-color:#12a150}'
+        . 'html .cc .bt-form input[type=file]{font:16px var(--body);color:#d0d6e0}html .cc .bt-tick{display:flex!important;align-items:flex-start;gap:10px;font-weight:500!important;white-space:normal;line-height:1.45}html .cc .bt-tick input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:#12a150}html .cc .bt-tick span{flex:1;min-width:0;overflow-wrap:anywhere}'
+        . 'html .cc .bt-form input[type=date]{width:100%;max-width:230px;box-sizing:border-box;padding:10px 12px;font:16px var(--body);border-radius:10px}'
         . 'html .cc .bt-form .btn{justify-self:start;width:auto;margin:0}html .cc .bt-msg{font-size:15px;font-weight:600;color:#2bd47a;margin:0}html .cc .bt-msg.err{color:#ff7a73}html .cc .bt-msg:empty{display:none}'
         . 'html .cc .bt-row{display:flex;align-items:center;gap:12px;padding:10px 12px;margin:8px 0 0;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}'
         . 'html .cc .bt-ic{font-size:20px}html .cc .bt-t{display:grid;flex:1;min-width:0}html .cc .bt-t b{color:#fff;font-size:16px}html .cc .bt-t small{color:#b8bec8;font-size:14px}'
@@ -101,7 +102,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     $o = '<section class="ath-s bt" id="blood"><h2>' . cc_ath_icon('sweat', 'ath-hic') . esc_html(cc_bt_w('title')) . '</h2><p class="av-lede">' . esc_html(cc_bt_w('lede')) . '</p>'
        . '<form class="bt-form" data-w="' . esc_attr(wp_json_encode($W)) . '"><label>' . esc_html(cc_bt_w('file')) . '<input type="file" accept="application/pdf,image/*" required></label>'
        . '<label>' . esc_html(cc_bt_w('date')) . '<input type="date" max="' . esc_attr(current_time('Y-m-d')) . '"></label>'
-       . '<label class="bt-tick"><input type="checkbox"> ' . esc_html(cc_bt_w('share')) . '</label><button type="submit" class="btn btn-go">' . esc_html(cc_bt_w('send')) . '</button><p class="bt-msg" role="status"></p></form>';
+       . '<label class="bt-tick"><input type="checkbox"><span>' . esc_html(cc_bt_w('share')) . '</span></label><button type="submit" class="btn btn-go">' . esc_html(cc_bt_w('send')) . '</button><p class="bt-msg" role="status"></p></form>';
     if ($list) $o .= '<h3 class="av-sub">' . esc_html(cc_bt_w('yours')) . '</h3>' . implode('', array_map(function ($b) use ($view) { return cc_bt_row($view, $b, false); }, $list));
     return $html . $o . '</section>' . cc_bt_assets();
 }, 17, 3);
