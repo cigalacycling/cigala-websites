@@ -134,6 +134,15 @@ function cc_ath_lang_field($user = null) {
 add_action('user_new_form', function ($type) { if ($type === 'add-new-user') cc_ath_lang_field(); });
 add_action('show_user_profile', 'cc_ath_lang_field');
 add_action('edit_user_profile', 'cc_ath_lang_field');
+// Matteo 18 Nov: set an athlete's hub language from the laptop on his word (same as the Language field on their user page)
+add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/athlete-lang', ['methods' => 'POST', 'permission_callback' => function () { return current_user_can('edit_users'); }, 'callback' => function (WP_REST_Request $r) {
+        $uid = (int) $r['user']; $l = sanitize_key((string) $r['lang']);
+        if (!get_userdata($uid) || !isset(CC_REPORT_LANGS[$l])) return new WP_Error('cc_bad', 'Unknown user or language', ['status' => 400]);
+        update_user_meta($uid, 'cc_lang', $l); delete_user_meta($uid, 'cc_report_lang');
+        return ['ok' => true, 'user' => $uid, 'lang' => cc_ath_lang_code($uid)];
+    }]);
+});
 function cc_ath_lang_save($uid) {
     if (!isset($_POST['cc_lang']) || !current_user_can('edit_users')) return;
     $l = sanitize_key($_POST['cc_lang']);
