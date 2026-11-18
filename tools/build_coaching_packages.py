@@ -166,7 +166,13 @@ HUB_T = {
           ('goals', 'Goals &amp; events', 'Your races and goals in one place. Add a route and you get a race-day plan.'),
           ('note', 'Talk to me', 'Leave me a note or a voice message about how your week is going.')],
     chips=['Season plan', 'Training library', 'Free calculators', 'Nutrition guides', 'Works like an app on your phone'],
-    alt_hero='The Cigala Athlete Hub on a laptop (season plan) and on a phone (welcome screen)', alt_tour='The Cigala Athlete Hub on a phone: {t}'),
+    alt_hero='The Cigala Athlete Hub on a laptop (season plan) and on a phone (welcome screen)', alt_tour='The Cigala Athlete Hub on a phone: {t}',
+    # v3 (Matteo 18 Nov: "less information, so people can't copy it" + sharper pictures): 3 phones, no open example reports
+    tour3=[('reports', 'Your reports', 'Race-day plans, progress reports and reviews from me, with a “New” badge.'),
+           ('goals', 'Goals &amp; races', 'Your races in gold, silver and bronze, with a countdown to the next one.'),
+           ('library', 'Training library', 'Training and nutrition guides and video routines, in your language.')],
+    chips3=['Season plan', 'Availability', 'Notes &amp; voice messages', 'Free calculators', 'Works like an app on your phone'],
+    note3='Screens from a made-up athlete. Your own hub shows your own plan and reports.'),
  'it': dict(eb='Incluso in Avanzato e Premium', h='LA TUA AREA ATLETA PERSONALE',
     p='Ogni atleta Avanzato e Premium ha un’area online privata, sul telefono e sul computer: il tuo piano di stagione, i tuoi report e tutto ciò che ti serve da me, in un unico posto.',
     pts=[('Il tuo piano di stagione', 'I blocchi, le tue gare e i tuoi obiettivi in una sola pagina, aggiornati ogni volta che il piano cambia.'),
@@ -185,7 +191,12 @@ HUB_T = {
           ('goals', 'Obiettivi e gare', 'Le tue gare e i tuoi obiettivi in un unico posto. Aggiungi il percorso e ricevi il piano gara.'),
           ('note', 'Parla con me', 'Lasciami una nota o un messaggio vocale su come va la settimana.')],
     chips=['Piano di stagione', 'Biblioteca di allenamento', 'Calcolatori gratuiti', 'Guide alimentari', 'Funziona come un’app sul telefono'],
-    alt_hero='L’area atleta Cigala sul computer (piano di stagione) e sul telefono (schermata di benvenuto)', alt_tour='L’area atleta Cigala sul telefono: {t}'),
+    alt_hero='L’area atleta Cigala sul computer (piano di stagione) e sul telefono (schermata di benvenuto)', alt_tour='L’area atleta Cigala sul telefono: {t}',
+    tour3=[('reports', 'I tuoi report', 'Piani gara, report sui progressi e revisioni, con il badge “Nuovo”.'),
+           ('goals', 'Obiettivi e gare', 'Le tue gare in oro, argento e bronzo, con il conto alla rovescia alla prossima.'),
+           ('library', 'Biblioteca di allenamento', 'Guide di allenamento e alimentazione e video, nella tua lingua.')],
+    chips3=['Piano di stagione', 'Disponibilità', 'Note e messaggi vocali', 'Calcolatori gratuiti', 'Funziona come un’app sul telefono'],
+    note3='Schermate di un atleta inventato. Nella tua area trovi il tuo piano e i tuoi report.'),
 }
 HUB_ICONS = [_hic('<path d="m3 20 6-10 4 6 3-4 5 8z"/>'), _hic('<path d="M4 19V5m0 14h16M8 15l4-4 3 3 5-6"/>'),
              _hic('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/>'), _hic('<path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6"/>')]
@@ -197,6 +208,19 @@ def hub_section(lang='en'):
                  f'<span class="hb-shot"><img src="{conv(_HX + pre + f + ".png", "hub-report-v3-" + pre + f + "-thumb", 900)}" alt="{T["alt_ex"].format(t=t.lower())}" loading="lazy" width="900" height="760"></span>'
                  f'<b>{t}</b><small>{d}</small><i>{T["view"]}</i></a>' for f, (t, d) in zip(HUB_FILES, T['ex']))
     _SC = 'coaching/athlete-area/showcase/' + pre
+    if os.path.exists(ROOT + _SC + 'v3-hero.png'):   # v3 (Matteo 18 Nov): sharper (2x renders), less to copy: no open example reports
+        tour = ''.join(f'<figure class="hb-tp"><img src="{conv(_SC + "v3-phone-" + k + ".png", "hub-tour-v3-" + pre + k, 1040)}" alt="{T["alt_tour"].format(t=t)}" loading="lazy" width="1040" height="2160">'
+                       f'<figcaption><b>{t}</b>{d}</figcaption></figure>' for k, t, d in T['tour3'])
+        chips = ''.join(f'<span>{c}</span>' for c in T['chips3'])
+        return f'''<div class="hb hb2 hb3">
+      <div class="hb-head"><div class="eyebrow">{T['eb']}</div><h3 class="hb-h">{T['h']}</h3><div class="bar"></div>
+        <p>{T['p']}</p></div>
+      <img class="hb-hero" src="{conv(_SC + 'v3-hero.png', 'hub-hero-v3' + ('-' + pre.rstrip('-') if pre else ''), 2800)}" alt="{T['alt_hero']}" loading="lazy" width="2800" height="1782">
+      <p class="hb-sub">{T['inside']}</p>
+      <div class="hb-tour">{tour}</div>
+      <div class="hb-chips">{chips}</div>
+      <p class="hb-note">{T['note3']}</p>
+    </div>'''
     if os.path.exists(ROOT + _SC + 'hero.png'):   # v2 (Matteo 18 Nov: "nicer pictures of what is inside, on a phone and a laptop")
         tour = ''.join(f'<figure class="hb-tp"><img src="{conv(_SC + "phone-" + k + ".png", "hub-tour-" + pre + k, 520)}" alt="{T["alt_tour"].format(t=t)}" loading="lazy" width="520" height="1080">'
                        f'<figcaption><b>{t}</b>{d}</figcaption></figure>' for k, t, d in T['tour'])
@@ -701,6 +725,9 @@ PCSS = '''<style>
 .hb-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
 .hb-chips span { padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px; background: rgba(255,255,255,.03); color: var(--text-2); font-size: 13.5px; }
 .hb-chips span::before { content: "✓"; color: var(--green-text); font-weight: 700; margin-right: 7px; }
+.hb3 .hb-tour { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; max-width: 1000px; margin: 0 auto; }   /* v3: three phones */
+@media (max-width: 900px) { .hb3 .hb-tour { grid-template-columns: repeat(3, minmax(230px, 1fr)); margin-right: -16px; } }
+@media (max-width: 560px) { .hb3 .hb-tour { grid-template-columns: repeat(3, minmax(220px, 76%)); } }
 @media (max-width: 900px) { .hb-tour { grid-template-columns: repeat(4, minmax(220px, 1fr)); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; margin-right: -16px; padding-right: 16px; } .hb-tp { scroll-snap-align: start; } }
 @media (max-width: 560px) { .hb-tour { grid-template-columns: repeat(4, minmax(200px, 72%)); } }
 @media (max-width: 900px) { .hb-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } .hb-exs { grid-template-columns: minmax(0, 1fr); } .hb-devices { padding: 0 40px 30px 0; } }

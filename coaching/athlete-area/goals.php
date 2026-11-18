@@ -6,6 +6,7 @@
 if (!defined('ABSPATH')) return;
 
 const CC_G_TYPES = ['race' => 'Race', 'sportive' => 'Sportive / Gran Fondo', 'camp' => 'Camp or trip', 'other' => 'Other'];
+function cc_r_date_safe($ts) { return function_exists('cc_r_date') ? cc_r_date($ts) : date_i18n('j M Y', $ts); }   // dates in the athlete's language (reports.php)
 function cc_g_get($pid) { $g = json_decode((string) get_post_meta($pid, 'cc_goals', true), true); return is_array($g) ? $g : null; }
 function cc_g_clean($in, $pid = 0) {
     $in = is_array($in) ? $in : [];
@@ -133,8 +134,11 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     $today = current_time('Y-m-d'); $ev = array_values(array_filter($g['events'] ?? [], function ($e) use ($today) { return $e['date'] >= $today; }));
     $o = '<section class="ath-s gl gl-sum" id="goals"><h2>' . cc_ath_icon('peaks', 'ath-hic') . esc_html(cc_f('My goals & events')) . '</h2><div class="av-sumbox"><div class="av-sumt">';
     if ($ev) {
-        foreach (array_slice($ev, 0, 2) as $i => $e)
-            $o .= '<p class="gl-sumev"><span class="gl-prio ' . esc_attr($e['prio']) . '">' . esc_html($e['prio']) . '</span><b>' . esc_html($e['name']) . '</b> · ' . esc_html(date_i18n('j M Y', strtotime($e['date'] . ' 12:00'))) . '</p>';
+        $show = array_slice($ev, 0, 2);   // the next two, but the next A race (the main goal) always shows (Matteo 18 Nov)
+        $nextA = null; foreach ($ev as $e) if ($e['prio'] === 'A') { $nextA = $e; break; }
+        if ($nextA && !in_array($nextA, $show, true)) $show = [$ev[0], $nextA];
+        foreach ($show as $i => $e)
+            $o .= '<p class="gl-sumev"><span class="gl-prio ' . esc_attr($e['prio']) . '">' . esc_html($e['prio']) . '</span><b>' . esc_html($e['name']) . '</b> <span class="gl-sumd">· ' . esc_html(cc_r_date_safe(strtotime($e['date'] . ' 12:00'))) . '</span></p>';
         if (count($ev) > 2) $o .= '<small>' . esc_html(sprintf(cc_ath_w('gl_more', $lang), count($ev) - 2)) . '</small>';
     } else $o .= '<p>' . esc_html(cc_ath_w('gl_none', $lang)) . '</p>';
     if (($g['short'] ?? '') !== '') $o .= '<small>' . esc_html(cc_f('Short-term goal (1 year)')) . ': ' . esc_html(wp_trim_words($g['short'], 18)) . '</small>';

@@ -1107,7 +1107,7 @@ html .cc .ath-flag-e { display: inline-grid; place-items: center; width: 14px; h
 html .cc .ath-flag-e span { font-size: 20px; line-height: 1; }
 html .cc .ath form.ath-lang { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 0 14px; vertical-align: middle; }
 html .cc .ath-lang label { font-size: 13px; color: var(--text-3); margin: 0; }
-html .cc .ath-lang select { font-size: 16px; padding: 5px 28px 5px 10px; min-height: 38px; height: auto; width: auto; border-radius: 8px; margin: 0; }   /* Matteo 17 Nov: as before, a touch slimmer; no fixed height so the language always shows */
+html .cc .ath-lang select { font-size: 16px; padding: 5px 28px 5px 10px; min-height: 38px; height: auto; width: auto; min-width: 8.5em; max-width: 100%; border-radius: 8px; margin: 0; }   /* Matteo 17 Nov: as before, a touch slimmer; no fixed height so the language always shows */
 html .cc img.ath-flag { width: 14px; height: 14px; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 1px 4px rgba(0,0,0,.4); margin: 0; flex: none; }
 html .cc .ath-coach-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.1); }
 html .cc .ath-coach-tl { flex-basis: 100%; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); }
@@ -1161,7 +1161,7 @@ html .cc .av-sumbox { display: flex; flex-wrap: wrap; align-items: center; justi
 html .cc .av-sumt { margin: 0; flex: 1 1 260px; min-width: 0; } html .cc .av-sumt p { margin: 0 0 6px; }
 html .cc .av-sumt small { display: block; color: var(--text-3); font-size: 13px; margin-top: 4px; }
 html .cc .av-sumbox .btn { margin: 0; max-width: 100%; white-space: normal; height: auto; text-align: center; }
-html .cc .gl-sumev { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+html .cc .gl-sumev { display: block; } html .cc .gl-sumev .gl-prio { display: inline-grid; margin-right: 8px; vertical-align: -4px; } html .cc .gl-sumd { white-space: nowrap; color: var(--text-3); }   /* the date stays with the race name */
 html .cc .gl-prio { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font: 700 12px/1 var(--body); color: #1a1a1a; flex: none; }
 html .cc .gl-prio-a { background: linear-gradient(135deg, #F3D774, #D4AF37 55%, #A8841F); } html .cc .gl-prio-b { background: linear-gradient(135deg, #F2F3F5, #C0C4CC 55%, #8E939C); } html .cc .gl-prio-c { background: linear-gradient(135deg, #E9A86B, #CD7F32 55%, #9A5A1F); }
 html .cc .ath-back { margin: 18px 0 0; }   /* Matteo 17 Nov: the back link was hard to see: now a green pill */

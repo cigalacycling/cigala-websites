@@ -2393,5 +2393,25 @@
   "id": 7631,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-tour-note.webp",
   "alt": "The Cigala Athlete Hub on a phone: Talk to me"
+ },
+ "img/hub-hero-v3.webp": {
+  "id": 7643,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-hero-v3-scaled.webp",
+  "alt": "The Cigala Athlete Hub on a laptop (season plan) and on a phone (welcome screen)"
+ },
+ "img/hub-tour-v3-reports.webp": {
+  "id": 7644,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-tour-v3-reports.webp",
+  "alt": "The Cigala Athlete Hub on a phone: Your reports"
+ },
+ "img/hub-tour-v3-goals.webp": {
+  "id": 7645,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-tour-v3-goals.webp",
+  "alt": "The Cigala Athlete Hub on a phone: Goals & races"
+ },
+ "img/hub-tour-v3-library.webp": {
+  "id": 7646,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-tour-v3-library.webp",
+  "alt": "The Cigala Athlete Hub on a phone: Training library"
  }
 }

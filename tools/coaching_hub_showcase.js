@@ -3,7 +3,7 @@
 // showcase/phone-*.png (each screen inside an iPhone frame). Made by: node tools/coaching_hub_showcase.js [it]
 const { chromium } = require('playwright'); const fs = require('fs'); const path = require('path');
 const D = path.resolve(__dirname, '..', 'coaching/athlete-area/showcase') + '/';
-const pre = process.argv[2] === 'it' ? 'it-' : '';
+const pre = process.argv.includes('it') ? 'it-' : '';
 const u = f => 'data:image/png;base64,' + fs.readFileSync(D + pre + f).toString('base64');
 const SB = '<div class="sb"><b>9:41</b><span><i class="sig"></i><i class="wifi"></i><i class="bat"></i></span></div>';
 const PHONE = (src, w) => `<div class="ph" style="width:${w}px"><div class="scr">${SB}<img src="${src}"></div><i class="island"></i></div>`;
@@ -21,7 +21,23 @@ const CSS = `*{margin:0;box-sizing:border-box}body{background:transparent}
 .lap .lid img{display:block;width:100%;border-radius:4px}
 .lap .base{height:24px;margin:0 -70px;background:linear-gradient(#3a3e45,#1b1d21);border-radius:0 0 18px 18px;position:relative}
 .lap .base:before{content:"";position:absolute;left:50%;top:0;width:150px;height:9px;transform:translateX(-50%);background:#14161a;border-radius:0 0 10px 10px}`;
-(async () => {
+// v3 (Matteo 18 Nov: "less detail so it cannot be copied" + "high quality pictures"): screens scr3-*.png at DPR 3 (phones) / 2 (laptop),
+// laptop = the hub with the season-plan teaser (no focus/coach notes), 3 phones only (reports, goals, library). Output v3-*.png at 2x.
+if (process.argv.includes('--v3')) (async () => {
+  const b = await chromium.launch(); const p = await b.newPage({ deviceScaleFactor: 2 });
+  await p.setViewportSize({ width: 2200, height: 1400 });
+  await p.setContent(`<style>${CSS}</style><div style="position:relative;width:2200px;height:1400px">
+    <div class="lap" style="left:110px;top:90px;width:1720px"><div class="lid"><img src="${u('scr3-laptop.png')}"></div><div class="base"></div></div>
+    <div style="position:absolute;right:120px;top:300px">${PHONE(u('scr3-home.png'), 470)}</div></div>`, { waitUntil: 'load' });
+  await p.screenshot({ path: D + pre + 'v3-hero.png', omitBackground: true }); console.log('made', pre + 'v3-hero');
+  await p.setViewportSize({ width: 520, height: 1080 });
+  for (const f of ['reports', 'goals', 'library']) {
+    await p.setContent(`<style>${CSS}</style><div style="padding:30px 30px 70px">${PHONE(u('scr3-' + f + '.png'), 460)}</div>`, { waitUntil: 'load' });
+    await p.screenshot({ path: D + pre + 'v3-phone-' + f + '.png', omitBackground: true }); console.log('made', pre + 'v3-phone-' + f);
+  }
+  await b.close();
+})();
+else (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ deviceScaleFactor: 1 });
   // hero: laptop with the season plan + phone with the hub welcome
   await p.setViewportSize({ width: 2200, height: 1400 });
