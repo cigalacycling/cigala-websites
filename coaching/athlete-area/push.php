@@ -171,7 +171,7 @@ add_filter('cc_ath_hero_links', function ($html, $coach) {
     $unread = cc_inbox_unread($uid);
     return $html . ' <span class="bell-w"><button type="button" class="ath-bell" aria-label="' . esc_attr(cc_inbox_w('title')) . '" aria-expanded="false" data-api="' . esc_url(rest_url('cc/v1/inbox-read')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-n="' . $unread . '">'
         . '<svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>' . ($unread ? '<i>' . min(99, $unread) . '</i>' : '') . '</button>'
-        . '<div class="bell-p" hidden><p class="bell-h">' . esc_html(cc_inbox_w('title')) . '</p>' . apply_filters('cc_bell_extra', '', $uid, $coach) . '<div class="bell-l">' . cc_inbox_items($uid) . '</div></div></span>' . (function_exists('cc_ph_assets') ? cc_ph_assets() : '')
+        . '<div class="bell-p" hidden><p class="bell-h">' . esc_html(cc_inbox_w('title')) . '</p><div class="bell-l">' . cc_inbox_items($uid) . '</div></div></span>' . (function_exists('cc_ph_assets') ? cc_ph_assets() : '')
         // Matteo 17 Nov: top-right corner of the header (like apps); the list opens on top of the page (the header clips what sticks out)
         . '<style>html .cc .bell-w{position:absolute;top:14px;right:14px;z-index:5}html .cc .ath-bell{box-shadow:0 4px 14px rgba(0,0,0,.5);position:relative;width:44px;height:44px;min-height:0;padding:0;margin:0;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(12,14,16,.85);display:grid;place-items:center;cursor:pointer}'
         . 'html .cc .ath-bell svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linejoin:round}html .cc .ath-bell i{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#E10600;color:#fff;font:700 12px/20px var(--body);font-style:normal;text-align:center}'
@@ -197,6 +197,51 @@ add_filter('cc_ath_hero_links', function ($html, $coach) {
         . 'document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")fresh();});addEventListener("pageshow",function(e){if(e.persisted)fresh();});addEventListener("focus",fresh);'
         . '})();</script>';
 }, 30, 2);
+/* ---------- Settings (Matteo 18 Nov 2026): a gear next to the bell, like in an app ----------
+ * Language, notifications (phone + "email me when Matteo replies on Vekta"), change password, log out. They used to sit in
+ * the header as a row of links; now the header shows only the bell and the gear. */
+function cc_set_w($k) {
+    static $W = [
+        'set' => ['en' => 'Settings', 'it' => 'Impostazioni', 'pt' => 'Definições', 'sl' => 'Nastavitve', 'sk' => 'Nastavenia'],
+        'phone' => ['en' => 'Phone notifications', 'it' => 'Notifiche sul telefono', 'pt' => 'Notificações no telemóvel', 'sl' => 'Obvestila na telefonu', 'sk' => 'Upozornenia v telefóne'],
+        'phone_on' => ['en' => 'On for this phone', 'it' => 'Attive su questo telefono', 'pt' => 'Ativas neste telemóvel', 'sl' => 'Vklopljena na tem telefonu', 'sk' => 'Zapnuté v tomto telefóne'],
+        'acc' => ['en' => 'Account', 'it' => 'Account', 'pt' => 'Conta', 'sl' => 'Račun', 'sk' => 'Účet'],
+    ];
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
+}
+add_filter('cc_ath_hero_links', function ($html, $coach) {
+    $uid = get_current_user_id(); if (!$uid) return $html;
+    $logout = wp_logout_url(home_url('/' . CC_ATH_SLUG . '/'));
+    $lang = (!$coach && function_exists('cc_ath_lang_switch')) ? '<div class="set-sec">' . cc_ath_lang_switch() . '</div>' : '';
+    $notify = '<div class="set-sec"><p class="set-h">' . esc_html(cc_inbox_w('title')) . '</p>'
+        . '<div class="set-row set-push"><span>' . esc_html(cc_set_w('phone')) . '</span><span class="set-pst" hidden>✓ ' . esc_html(cc_set_w('phone_on')) . '</span><button type="button" class="btn btn-go set-pon">' . esc_html(cc_push_w('on')) . '</button></div>'
+        . apply_filters('cc_settings_notify', '', $uid, $coach) . '</div>';
+    $acc = '<div class="set-sec"><p class="set-h">' . esc_html(cc_set_w('acc')) . '</p>'
+        . (function_exists('cc_pw_change_url') ? '<a class="set-a" href="' . esc_url(cc_pw_change_url()) . '">' . esc_html(cc_L('Change password', 'Cambia password')) . '</a>' : '')
+        . '<a class="set-a" href="' . esc_url($logout) . '">' . esc_html(cc_t('Log out')) . '</a></div>';
+    return $html . '<span class="set-w"><button type="button" class="ath-gear" aria-label="' . esc_attr(cc_set_w('set')) . '" aria-expanded="false">'
+        . '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>'
+        . '<div class="set-p" hidden><p class="bell-h">' . esc_html(cc_set_w('set')) . '</p>' . $lang . $notify . $acc . '</div></span>'
+        . '<style>html .cc .set-w{position:absolute;top:14px;right:68px;z-index:5}html .cc .ath-gear{box-shadow:0 4px 14px rgba(0,0,0,.5);width:44px;height:44px;min-height:0;padding:0;margin:0;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(12,14,16,.85);display:grid;place-items:center;cursor:pointer}'
+        . 'html .cc .ath-gear svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linejoin:round}'
+        . 'html body .set-p{font-family:Montserrat,system-ui,sans-serif;position:fixed;z-index:99990;width:min(360px,calc(100vw - 32px));max-height:75vh;overflow:auto;padding:8px 14px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:#0b0d0f;box-shadow:0 18px 40px rgba(0,0,0,.6);color:#d0d6e0}html body .set-p[hidden]{display:none}'
+        . 'html body .set-p .bell-h{margin:4px 0 6px}html body .set-sec{padding:10px 0;border-top:1px solid rgba(255,255,255,.1)}html body .set-h{margin:0 0 6px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#b8bec8;font-weight:700}'
+        . 'html body .set-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;font-size:15px;color:#fff;font-weight:600}html body .set-row .btn{width:auto;margin:0;padding:9px 14px;font:600 15px Montserrat,system-ui,sans-serif;min-height:0;background:#12a150!important;color:#fff!important;border:0!important;border-radius:10px;cursor:pointer;white-space:nowrap}html body .set-row .btn[hidden]{display:none}html body .set-pst{color:#2bd47a;font-size:14px;font-weight:600}'
+        . 'html body .set-a{display:block;padding:9px 0;font-size:16px;color:#fff;text-decoration:none;font-weight:600}html body .set-a:hover{color:#2bd47a}'
+        . 'html body .set-p form.ath-lang{display:flex!important;align-items:center;justify-content:space-between;gap:10px;margin:0!important}html body .set-p form.ath-lang label{font-size:15px!important;color:#fff;font-weight:600;margin:0}html body .set-p form.ath-lang select{font-size:16px;min-height:38px;padding:5px 28px 5px 10px;border-radius:8px;background:#15181c;color:#fff;border:1px solid rgba(255,255,255,.18)}</style>'
+        . '<script>(function(){var g=document.querySelector(".ath-gear");if(!g||g.dataset.on)return;g.dataset.on=1;var w=g.parentNode,p=w.querySelector(".set-p");document.body.appendChild(p);'
+        . 'var hero=g.closest(".ath-hero");if(hero&&w.parentNode!==hero)hero.appendChild(w);'
+        . 'function place(){var r=g.getBoundingClientRect(),pw=p.offsetWidth||340;p.style.top=Math.round(r.bottom+8)+"px";p.style.left=Math.max(16,Math.min(window.innerWidth-pw-16,Math.round(r.right-pw+56)))+"px";}'
+        . 'addEventListener("resize",function(){if(!p.hidden)place();});addEventListener("scroll",function(){if(!p.hidden)place();},{passive:true});'
+        . 'g.addEventListener("click",function(e){e.stopPropagation();var bp=document.querySelector(".bell-p");if(bp)bp.hidden=true;p.hidden=!p.hidden;g.setAttribute("aria-expanded",!p.hidden);if(!p.hidden){place();phone();}});'
+        . 'document.addEventListener("click",function(e){if(!p.hidden&&!p.contains(e.target)&&e.target!==g){p.hidden=true;g.setAttribute("aria-expanded","false");}});'
+        . 'var bl=document.querySelector(".ath-bell");if(bl)bl.addEventListener("click",function(){p.hidden=true;g.setAttribute("aria-expanded","false");});'
+        // phone notifications: shows "On for this phone", or a button that brings back the "Turn on notifications" card
+        . 'function phone(){var st=p.querySelector(".set-pst"),b=p.querySelector(".set-pon");if(!("serviceWorker" in navigator)||!("Notification" in window)){st.hidden=true;return;}'
+        . 'navigator.serviceWorker.getRegistration().then(function(r){return r&&r.pushManager?r.pushManager.getSubscription():null;}).then(function(s){var on=!!s&&Notification.permission==="granted";st.hidden=!on;b.hidden=on;}).catch(function(){});}'
+        . 'p.querySelector(".set-pon").addEventListener("click",function(){try{localStorage.removeItem("cc_push_no");}catch(x){}var c=document.querySelector(".ath-push");p.hidden=true;if(c){c.hidden=false;c.scrollIntoView({block:"center",behavior:"smooth"});}else location.reload();});'
+        . '})();</script>';
+}, 31, 2);
 add_action('rest_api_init', function () {
     register_rest_route('cc/v1', '/inbox-read', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function () {
         $uid = get_current_user_id(); $in = get_user_meta($uid, 'cc_inbox', true); $in = is_array($in) ? $in : [];

@@ -270,7 +270,7 @@ function cc_vx_mail_w($k, $l) {
         'hi' => ['en' => 'Hi %s,', 'it' => 'Ciao %s,', 'pt' => 'Olá %s,', 'sl' => 'Živjo %s,', 'sk' => 'Ahoj %s,'],
         'p1' => ['en' => 'I replied to your workout in Vekta:', 'it' => 'Ho risposto al tuo allenamento su Vekta:', 'pt' => 'Respondi ao teu treino no Vekta:', 'sl' => 'Odgovoril sem na tvoj trening v Vekti:', 'sk' => 'Odpovedal som na tvoj tréning vo Vekte:'],
         'btn' => ['en' => 'Open it in Vekta', 'it' => 'Aprilo su Vekta', 'pt' => 'Abrir no Vekta', 'sl' => 'Odpri v Vekti', 'sk' => 'Otvoriť vo Vekte'],
-        'off' => ['en' => 'Don’t want these emails? Untick the box in your hub notifications (the bell).', 'it' => 'Non vuoi queste email? Togli la spunta nelle notifiche della tua area (la campanella).', 'pt' => 'Não queres estes emails? Desmarca a caixa nas notificações da tua área (o sino).', 'sl' => 'Ne želiš teh e-poštnih sporočil? Odznači polje v obvestilih v svojem območju (zvonček).', 'sk' => 'Nechceš tieto e-maily? Zruš zaškrtnutie v upozorneniach vo svojej zóne (zvonček).'],
+        'off' => ['en' => 'Don’t want these emails? Switch them off in your hub: Settings (⚙) › Notifications.', 'it' => 'Non vuoi queste email? Disattivale nella tua area: Impostazioni (⚙) › Notifiche.', 'pt' => 'Não queres estes emails? Desliga-os na tua área: Definições (⚙) › Notificações.', 'sl' => 'Ne želiš teh e-poštnih sporočil? Izklopi jih v svojem območju: Nastavitve (⚙) › Obvestila.', 'sk' => 'Nechceš tieto e-maily? Vypni ich vo svojej zóne: Nastavenia (⚙) › Upozornenia.'],
     ];
     return $W[$k][$l] ?? $W[$k]['en'];
 }
@@ -310,11 +310,12 @@ function cc_vx_mail_run() {
 add_action('cc_vx_mail_tick', 'cc_vx_mail_run');
 add_action('init', function () { if (!wp_next_scheduled('cc_vx_mail_tick')) wp_schedule_event(time() + 600, 'hourly', 'cc_vx_mail_tick'); });
 // the switch, at the bottom of the athlete's notifications panel (not in Matteo's own)
-add_filter('cc_bell_extra', function ($html, $uid, $coach) {
+// Matteo 18 Nov: the switch lives in the settings gear (push.php), under Notifications, not in the bell
+add_filter('cc_settings_notify', function ($html, $uid, $coach) {
     if ($coach) return $html;
     $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en'; $on = !get_user_meta($uid, 'cc_vx_mail_off', true);
     return $html . '<label class="bell-opt"><input type="checkbox"' . ($on ? ' checked' : '') . ' data-api="' . esc_url(rest_url('cc/v1/vx-mail')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"><span><b>' . esc_html(cc_vx_mail_w('opt', $l)) . '</b><small>' . esc_html(cc_vx_mail_w('optc', $l)) . '</small></span></label>'
-        . '<style>html body .bell-opt{display:flex;align-items:flex-start;gap:10px;margin:0 4px 8px;padding:6px 8px 12px;border-bottom:1px solid rgba(255,255,255,.12);cursor:pointer}html body .bell-opt input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:#12a150}'
+        . '<style>html body .bell-opt{display:flex;align-items:flex-start;gap:10px;margin:0;padding:8px 0;cursor:pointer}html body .bell-opt input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:#12a150}'
         . 'html body .bell-opt span{flex:1;min-width:0;display:grid;gap:3px}html body .bell-opt b{font-size:15px;line-height:1.35;color:#fff;font-weight:600}html body .bell-opt small{font-size:14px;line-height:1.4;color:#b8bec8}</style>'
         . '<script>document.addEventListener("change",function(e){var c=e.target;if(!c.closest||!c.closest(".bell-opt"))return;fetch(c.dataset.api,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":c.dataset.nonce},body:JSON.stringify({on:c.checked?1:0})}).catch(function(){c.checked=!c.checked;});});</script>';
 }, 10, 3);

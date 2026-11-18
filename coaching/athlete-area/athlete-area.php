@@ -107,7 +107,7 @@ add_action('admin_post_cc_my_lang', function () {
     if (isset(CC_REPORT_LANGS[$l])) { update_user_meta(get_current_user_id(), 'cc_lang', $l); delete_user_meta(get_current_user_id(), 'cc_report_lang'); }
     wp_safe_redirect(home_url('/' . CC_ATH_SLUG . '/')); exit;
 });
-add_filter('cc_ath_hero_links', function ($html, $coach) { return $coach ? $html : $html . cc_ath_lang_switch(); }, 20, 2);
+// Matteo 18 Nov: the language switch moved into the settings gear next to the bell (push.php)
 function cc_ath_user_lang($uid) { $l = cc_ath_lang_code($uid); return in_array($l, CC_UI_LANGS, true) || (function_exists('cc_hub_dict') && cc_hub_dict($l)) ? $l : 'en'; }
 function cc_Ln($n, $en1, $it1, $en, $it) {   // plural: Slovenian has its own forms for 2 and 5+ (keys "sl2:" / "sl5:" in hub-i18n.php)
     if (($GLOBALS['cc_ath_lang'] ?? 'en') === 'sl' && function_exists('cc_hub_dict')) { $d = cc_hub_dict('sl'); $m = $n % 100;
@@ -411,7 +411,7 @@ function cc_ath_inner() {
         // Matteo 17 Nov: his own view drops the athlete line; both get live chips instead (what is new, the next race)
         . ($coach ? '' : '<p class="ath-lede">' . cc_t('Everything for your coaching in one place. Train smarter. Ride faster.') . '</p>')
         . cc_ath_live_chips($coach ? 0 : $view, $coach, $coach ? 0 : $nrep)
-        . '<div class="ath-links"><a class="ath-out" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a>' . apply_filters('cc_ath_hero_links', '', $coach) . '</div></div>'   // Matteo 17 Nov: the links in one tidy row
+        . '<div class="ath-links">' . apply_filters('cc_ath_hero_links', '', $coach) . '</div></div>'   // Matteo 17 Nov: the links in one tidy row
         . '<div class="ath-hero-me">' . cc_ath_sig_photo() . '</div></header>';
     // Matteo 17 Nov: "Change my availability" / "Add or change my goals & events" open their own page (?my=availability|goals); the hub shows a short summary
     $sub = (!$coach && $view && isset($_GET['my'])) ? sanitize_key($_GET['my']) : '';

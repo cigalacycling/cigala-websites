@@ -48,10 +48,8 @@ function cc_pw_mail($u) {
 }
 
 /* ---------- change password, inside the hub ---------- */
-add_filter('cc_ath_hero_links', function ($html, $coach) {
-    if ($coach) return $html;
-    return $html . ' <a class="ath-out" href="' . esc_url(add_query_arg('cc_pw', 'change', home_url('/' . CC_ATH_SLUG . '/'))) . '#pw">' . esc_html(cc_pw_t('Change password', 'Cambia password')) . '</a>';
-}, 10, 2);
+// Matteo 18 Nov: "Change password" now lives in the settings gear next to the bell (push.php), like in an app
+function cc_pw_change_url() { return add_query_arg('cc_pw', 'change', home_url('/' . CC_ATH_SLUG . '/')) . '#pw'; }
 add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     if ($coach || !isset($_GET['cc_pw'])) return $html;
     $err = ['wrong' => cc_pw_t('Your current password is not right.', 'La password attuale non è corretta.'), 'short' => cc_pw_t('Use at least 8 characters.', 'Usa almeno 8 caratteri.'),
