@@ -542,6 +542,7 @@ function cc_f_strip_health($pid) {
     update_post_meta($pid, 'cc_health_removed', time());
 }
 add_action('delete_user', function ($uid) {   // before athlete-area.php turns the page into "Former athlete: …"
+    if (!empty($GLOBALS['cc_keep_record'])) return;   // still coached (Basic, no login): health answers are kept
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_user', 'meta_value' => (int) $uid, 'numberposts' => -1, 'fields' => 'ids']) as $pid) {
         update_post_meta($pid, 'cc_ended', time()); cc_f_strip_health($pid);
     }
@@ -573,6 +574,19 @@ add_action('rest_api_init', function () {
         if ($uid && !cc_f_end($pid)) return new WP_Error('cc_end', 'Could not remove the login', ['status' => 500]);
         if (get_post_meta($pid, 'cc_user', true)) delete_post_meta($pid, 'cc_user');
         return ['login_removed' => (bool) $uid, 'deleted' => cc_f_purge($pid)];
+    }]);
+    // Matteo 18 Nov (Laura Mc Quaid): a Basic athlete keeps no hub login. Removes the login only; the record stays as a Basic
+    // athlete (contract, form, health answers kept, not "Former"), like Basic records made without a login. Name must match.
+    register_rest_route('cc/v1', '/athlete-to-basic', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $pid = (int) $r['page']; if (get_post_type($pid) !== 'cc_athlete') return new WP_Error('cc_none', 'No such athlete page', ['status' => 404]);
+        if (trim((string) $r['name']) === '' || trim((string) $r['name']) !== get_post_field('post_title', $pid)) return new WP_Error('cc_name', 'Name does not match this page', ['status' => 409]);
+        $uid = (int) get_post_meta($pid, 'cc_user', true); $u = $uid ? get_userdata($uid) : null;
+        if (!$u) return new WP_Error('cc_nologin', 'This athlete has no login', ['status' => 409]);
+        if (user_can($u, 'edit_posts')) return new WP_Error('cc_coach', 'Never a coach or editor', ['status' => 403]);
+        require_once ABSPATH . 'wp-admin/includes/user.php';
+        $GLOBALS['cc_keep_record'] = true; $ok = wp_delete_user($uid, get_current_user_id()); $GLOBALS['cc_keep_record'] = false;
+        update_post_meta($pid, 'cc_basic', 1);
+        return ['login_removed' => (bool) $ok, 'record_kept' => get_post_type($pid) === 'cc_athlete', 'basic' => true];
     }]);
 });
 function cc_f_bulkbar($id, $act, $text, $confirm) {

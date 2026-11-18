@@ -220,6 +220,7 @@ add_action('add_user_role', function ($uid, $role) { if ($role === 'subscriber')
 add_action('delete_user', function ($uid) {
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_user', 'meta_value' => (int) $uid, 'numberposts' => -1]) as $p) {
         delete_post_meta($p->ID, 'cc_user');
+        if (!empty($GLOBALS['cc_keep_record'])) continue;   // login removed but still coached (e.g. moved to Basic): not a former athlete
         wp_update_post(['ID' => $p->ID, 'post_author' => get_current_user_id() ?: $p->post_author,
                         'post_title' => 'Former athlete: ' . preg_replace('/^Former athlete: /', '', $p->post_title)]);
     }
