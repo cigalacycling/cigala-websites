@@ -201,6 +201,12 @@ HUB_T = {
 HUB_ICONS = [_hic('<path d="m3 20 6-10 4 6 3-4 5 8z"/>'), _hic('<path d="M4 19V5m0 14h16M8 15l4-4 3 3 5-6"/>'),
              _hic('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/>'), _hic('<path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6"/>')]
 HUB_FILES = ['season-plan', 'progress-report', 'race-plan']
+def _hb4_size():
+    from PIL import Image as _I
+    f = ROOT + 'coaching/athlete-area/showcase/v4-hero.png'
+    if not os.path.exists(f): return 2400, 1500
+    w, h = _I.open(f).size; return 2400, round(h * 2400 / w)
+HB4_W, HB4_H = _hb4_size()
 def hub_section(lang='en'):
     T = HUB_T[lang]; pre = '' if lang == 'en' else lang + '-'
     pts = ''.join(f'<li><span class="hb-ic">{ic}</span><span><b>{t}</b>{d}</span></li>' for ic, (t, d) in zip(HUB_ICONS, T['pts']))
@@ -208,6 +214,17 @@ def hub_section(lang='en'):
                  f'<span class="hb-shot"><img src="{conv(_HX + pre + f + ".png", "hub-report-v3-" + pre + f + "-thumb", 900)}" alt="{T["alt_ex"].format(t=t.lower())}" loading="lazy" width="900" height="760"></span>'
                  f'<b>{t}</b><small>{d}</small><i>{T["view"]}</i></a>' for f, (t, d) in zip(HUB_FILES, T['ex']))
     _SC = 'coaching/athlete-area/showcase/' + pre
+    if os.path.exists(ROOT + _SC + 'v3-hero.png') and not os.environ.get('CC_HUB_V3_TOUR'):   # v4 (Matteo 18 Nov: "a mix of the original and the new one, compact")
+        # the original layout (pictures left, the 4 live points right) with the new sharp laptop + phone picture; no tour, no example reports
+        return f'''<div class="hb hb4">
+      <div class="hb-head"><div class="eyebrow">{T['eb']}</div><h3 class="hb-h">{T['h']}</h3><div class="bar"></div>
+        <p>{T['p']}</p></div>
+      <div class="hb-grid">
+        <div class="hb4-pic"><img src="{conv(_SC + 'v4-hero.png', 'hub-hero-v4' + ('-' + pre.rstrip('-') if pre else ''), 2400)}" alt="{T['alt_hero']}" loading="lazy" width="{HB4_W}" height="{HB4_H}"></div>
+        <ul class="hb-pts">{pts}</ul>
+      </div>
+      <p class="hb-note">{T['note']}</p>
+    </div>'''
     if os.path.exists(ROOT + _SC + 'v3-hero.png'):   # v3 (Matteo 18 Nov): sharper (2x renders), less to copy: no open example reports
         tour = ''.join(f'<figure class="hb-tp"><img src="{conv(_SC + "v3-phone-" + k + ".png", "hub-tour-v3-" + pre + k, 1040)}" alt="{T["alt_tour"].format(t=t)}" loading="lazy" width="1040" height="2160">'
                        f'<figcaption><b>{t}</b>{d}</figcaption></figure>' for k, t, d in T['tour3'])
@@ -726,6 +743,9 @@ PCSS = '''<style>
 .hb-chips span { padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px; background: rgba(255,255,255,.03); color: var(--text-2); font-size: 13.5px; }
 .hb-chips span::before { content: "✓"; color: var(--green-text); font-weight: 700; margin-right: 7px; }
 .hb3 .hb-tour { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; max-width: 1000px; margin: 0 auto; }   /* v3: three phones */
+.hb4 .hb-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 36px; margin-top: 22px; }   /* v4: compact */
+.hb4-pic img { display: block; width: 100%; height: auto; }
+@media (max-width: 900px) { .hb4 .hb-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
 @media (max-width: 900px) { .hb3 .hb-tour { grid-template-columns: repeat(3, minmax(230px, 1fr)); margin-right: -16px; } }
 @media (max-width: 560px) { .hb3 .hb-tour { grid-template-columns: repeat(3, minmax(220px, 76%)); } }
 @media (max-width: 900px) { .hb-tour { grid-template-columns: repeat(4, minmax(220px, 1fr)); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; margin-right: -16px; padding-right: 16px; } .hb-tp { scroll-snap-align: start; } }
