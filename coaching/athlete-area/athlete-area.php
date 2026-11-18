@@ -309,7 +309,8 @@ add_filter('login_redirect', function ($to, $req, $user) {
     if ($user instanceof WP_User && !user_can($user, 'edit_posts')) return $req && strpos($req, '/' . CC_ATH_SLUG) !== false ? $req : home_url('/' . CC_ATH_SLUG . '/');
     return $to;
 }, 20, 3);
-add_filter('auth_cookie_expiration', function ($len, $uid, $remember) { return ($remember && !user_can($uid, 'edit_posts')) ? YEAR_IN_SECONDS : $len; }, 10, 3);
+// athletes stay logged in for a year; Matteo 18 Nov: his coach account 90 days (it can change the whole site, so shorter), when "Keep me logged in" is ticked
+add_filter('auth_cookie_expiration', function ($len, $uid, $remember) { return $remember ? (user_can($uid, 'edit_posts') ? 90 * DAY_IN_SECONDS : YEAR_IN_SECONDS) : $len; }, 10, 3);
 add_action('wp_login_failed', function () {   // a wrong password goes back to the athlete page, not to the WordPress login screen
     $r = wp_get_referer();
     if ($r && strpos($r, '/' . CC_ATH_SLUG) !== false) { wp_safe_redirect(add_query_arg('login', 'failed', home_url('/' . CC_ATH_SLUG . '/'))); exit; }
