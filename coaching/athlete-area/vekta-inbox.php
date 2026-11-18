@@ -246,7 +246,8 @@ add_action('rest_api_init', function () {
             $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en';
             // Matteo 18 Nov: open that exact session (athlete link format he gave: /me/activity/<id>/overview); calendar only if the id is missing
             $go = !empty($notify['activity']) ? 'https://app.joinvekta.com/me/activity/' . rawurlencode($notify['activity']) . '/overview' : 'https://app.joinvekta.com/me/calendar';
-            cc_push_user($uid, $T[$l] ?? $T['en'], wp_trim_words($notify['text'], 20), $go, 'cc-vx-' . $notify['activity']);
+            // Matteo 18 Nov: Vekta's app already buzzes their phone, so the hub only adds the line to their bell (no second buzz); the 3-hour email stays as the safety net
+            if (function_exists('cc_inbox_add')) cc_inbox_add($uid, $T[$l] ?? $T['en'], wp_trim_words($notify['text'], 20), $go, 'cc-vx-' . $notify['activity']);
             cc_vx_mail_queue($uid, $notify, $go);
         }
         return ['ok' => $hit];

@@ -51,6 +51,12 @@ function cc_push_one($sub, $msg) {   // returns HTTP status (0 on local failure)
     return is_wp_error($r) ? 0 : (int) wp_remote_retrieve_response_code($r);
 }
 // one person's phones; gone phones (404/410) are forgotten
+// Matteo 18 Nov: a line in the bell only, no phone buzz (Vekta replies: Vekta's own app already buzzes the phone)
+function cc_inbox_add($uid, $title, $body, $url, $tag = '', $from = 0) {
+    $in = get_user_meta((int) $uid, 'cc_inbox', true); $in = is_array($in) ? $in : [];
+    array_unshift($in, ['at' => time(), 'title' => wp_strip_all_tags($title), 'body' => wp_strip_all_tags($body), 'url' => esc_url_raw($url), 'read' => 0, 'tag' => (string) $tag, 'from' => (int) $from]);
+    update_user_meta((int) $uid, 'cc_inbox', array_slice($in, 0, 40));
+}
 function cc_push_user($uid, $title, $body, $url, $tag = '', $from = 0) {
     // Matteo 17 Nov: every notification also goes to their notification centre (the bell in the hub), phone or not
     // $from: the athlete page it is about (their face shows in Matteo's bell; athletes always see Matteo's face)
