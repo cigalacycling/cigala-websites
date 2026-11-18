@@ -67,14 +67,6 @@
   "creator": null,
   "link": "https://www.rawpixel.com/image/5969213/blueberries"
  },
- "sweet-potato-hash": {
-  "src": "ov",
-  "url": "https://live.staticflickr.com/8768/17043359102_2784ea73e3_b.jpg",
-  "link": "https://www.flickr.com/photos/35034347371@N01/17043359102",
-  "license": "cc0",
-  "creator": "roland",
-  "desc": "epic is your matchstick coffee breakfast hash"
- },
  "pb-banana-toast": {
   "src": "ov",
   "url": "https://images.rawpixel.com/editor_1024/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvc3YxOTQzNjItaW1hZ2Uta3d2dWlkNXUuanBn.jpg",
@@ -88,5 +80,11 @@
   "license": "cc0",
   "creator": "",
   "link": "https://wordpress.org/photos/photo/194697966c/"
+ },
+ "shakshuka": {
+  "src": "ov",
+  "license": "cc0",
+  "creator": null,
+  "link": "https://www.rawpixel.com/image/5924077/photo-image-public-domain-food-free"
  }
 }

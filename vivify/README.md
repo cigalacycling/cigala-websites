@@ -167,4 +167,5 @@ The board PNGs in `vivify/board/` are gitignored.
 - Build: `python3 tools/vivify_ebook.py` -> `vivify/ebook/Breakfasts-to-Ignite-Your-Potential.pdf` (52 pages, A4, website style).
 - Text and macros are unchanged from Marine's PDF (`vivify/ebook/source-text.txt` -> `recipes.json`).
 - Marine's photos are kept. The 13 recipes that had placeholders use CC0 / public-domain photos (`img/new-*.jpg`, sources in `photo-credits.json`).
-- Status: waiting for Marine's approval. Do NOT upload it to the site until she approves. After that, add a hidden /ebook-download/ page and set the Stripe payment link's after-payment redirect to it.
+- Status: approved by Marine (18 Nov) and uploaded: `python3 tools/vivify_ebook_upload.py` (PDF + cover + hidden page /ebook-download-<token>/, state in `vivify/wp-ebook.json`).
+- To do (Marine): Stripe payment link -> After payment -> redirect to the download page; Yoast on that page -> Advanced -> not in search results (the API can't set noindex). Re-run the upload script after a menu/header change so the page header stays current.

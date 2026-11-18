@@ -1022,14 +1022,14 @@ def ebook():
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
   <div class="portrait" style="grid-column:span 2">{img('0e1488-02b9e172b6554125b220ca537b76', 'Blueberry Buttermilk Pancakes', lazy=False, w=1364, h=762)}</div>
   <div class="portrait">{img('0e1488-8cee9e1e3ac743dd828b4bd69d89', 'Raspberry Chia Seed pudding', w=1343, h=761)}</div>
-  <div class="panel center" style="display:flex;flex-direction:column;justify-content:center;padding:18px"><span class="h2" style="font-size:54px;color:var(--aqua)">30</span><span class="eyebrow" style="margin:6px 0 0">recipes</span></div>
+  <div class="panel center" style="display:flex;flex-direction:column;justify-content:center;padding:18px"><span class="h2" style="font-size:54px;color:var(--aqua)">38</span><span class="eyebrow" style="margin:6px 0 0">recipes</span></div>
  </div>
  <div><span class="eyebrow">E-Book</span><h1 style="font-size:clamp(38px,5vw,62px)">BREAKFATS TO IGNITE YOUR POTENTIAL</h1><span class="bar"></span>
   <p style="font:600 18px/1.5 Montserrat,sans-serif;color:var(--text);font-style:italic">"Healthy recipes to keep you fuelled &amp; happy "</p>
   <p>A downloadable book to inspire your mornings. From sweet to savoury, there are recipes for every pallet.</p>
   <p>Breakfast lives up to its reputation as the most important meal of the day. Your first meal of the day can have long lasting effects throughout your day and on your long-term health.</p>
   <p style="color:var(--text);font-weight:700;margin-bottom:6px">What's included ?</p>
-  {ticks(['30 recipes', 'Method', 'Ingredients list', 'Nutritional information'])}
+  {ticks(['38 recipes', 'Method', 'Ingredients list', 'Nutritional information'])}
   <div style="display:flex;align-items:center;gap:22px;margin-top:26px;flex-wrap:wrap"><span class="h2" style="font-size:44px">5.99€</span>
    <a class="btn btn-primary" href="{EBOOK_PAY}" target="_blank" rel="noopener">Buy now {ICON['arrow']}</a></div></div>
 </div></section>"""

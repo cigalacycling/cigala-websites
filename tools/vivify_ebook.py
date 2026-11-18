@@ -17,6 +17,18 @@ e = html.escape
 
 # --- Marine's edits (review of the first draft)
 R = [r for r in R if r['title'] != 'Savoury Spinach & Feta Oats']          # recipe removed
+SHAKSHUKA = {'cat': 'EGGS & SAVOURY BREAKFASTS', 'title': 'Classic Shakshuka', 'serves': 'Serves 2 · values per serving',
+ 'macros': ['465', '27g', '44g', '20g'],
+ 'ing': ['1 tbsp olive oil', '1 onion, diced (about 100 g)', '½ red and ½ green pepper, diced (about 150 g)', '2 garlic cloves, chopped',
+         '1 tsp ground cumin, 1 tsp sweet paprika and ½ tsp ground coriander', 'Pinch of chilli flakes, optional',
+         '400 g tin chopped tomatoes', '120 g cooked chickpeas, drained', '4 eggs', 'Fresh parsley and mint, salt and black pepper', '2 slices wholegrain or sourdough bread, to serve'],
+ 'method': ['Heat the olive oil in a large frying pan over a medium heat. Add the onion and peppers and cook for 5–6 minutes until soft.',
+            'Add the garlic and spices and cook for 1 minute, stirring, until fragrant.',
+            'Stir in the tomatoes and chickpeas, season with salt and pepper, and simmer for 8–10 minutes until the sauce thickens.',
+            'Make four wells in the sauce and crack an egg into each. Cover and cook over a low heat for 5–8 minutes, until the whites are set and the yolks are still soft.',
+            'Finish with parsley, mint and black pepper. Serve with the bread for dipping.'],
+ 'notes': ['VIVIFY TIP Chickpeas and bread add carbs for training days; top with feta or Greek yogurt for extra protein.']}
+R = [SHAKSHUKA if r['title'] == 'Sweet Potato & Egg Hash' else r for r in R]   # Marine: replace the hash with a classic shakshuka
 LACTOSE = 'VIVIFY TIP For a lactose-free version, replace the Greek yogurt with coconut yogurt.'
 for r in R:
     if r['cat'] == 'CHIA SEED PUDDINGS':
@@ -40,7 +52,7 @@ PHOTO = {
  'Banana Bread': 'banana-bread', 'Peanut Butter & Banana Toast': 'new-pb-banana-toast', 'Ricotta & Blueberry Jam Toast': 'new-ricotta-blueberry-toast',
  'Spinach & Feta Egg Muffins': 'new-egg-muffins', 'Tofu Scramble on Toast': 'new-tofu-scramble',
  'Smoked Salmon & Scrambled Egg Toast': 'salmon-scrambled', 'Breakfast Quesadilla': 'new-quesadilla',
- 'Sweet Potato & Egg Hash': 'new-sweet-potato-hash', 'Classic Fluffy Omelette': 'new-omelette',
+ 'Classic Shakshuka': 'new-shakshuka', 'Classic Fluffy Omelette': 'new-omelette',
  'Banoffee Smoothie': 'banoffee', 'Green Pineapple & Yogurt Smoothie': 'green-smoothie', 'Tropical Yogurt Smoothie': 'tropical-smoothie',
  'The Athlete’s Banana & Blueberry Smoothie': 'athlete-smoothie', 'Berry Recovery Smoothie Bowl': 'new-smoothie-bowl',
 }
@@ -165,7 +177,7 @@ for k, (t, s, intro, rs) in enumerate(CH):
         page(f'''<div class="photo"><img src="{img(ph)}"{pos(ph)} alt="{e(r['title'])}"></div>
 <span class="eyebrow">{e(t)}</span><h2 class="rt">{e(r['title'])}</h2><p class="serves">{e(r['serves'])}</p>
 {macros(r['macros'], True)}
-<div class="cols"><div class="ing"><h3>Ingredients</h3><ul>{''.join(f'<li>{e(x)}</li>' for x in r['ing'])}</ul></div>
+<div class="cols{' wide' if len(r['ing']) > 10 else ''}"><div class="ing"><h3>Ingredients</h3><ul>{''.join(f'<li>{e(x)}</li>' for x in r['ing'])}</ul></div>
 <div class="meth"><h3>Method</h3><ol>{''.join(f'<li>{e(x)}</li>' for x in r['method'])}</ol></div></div>
 {tips}{f'<p class="note">{small}</p>' if small else ''}<div class="spacer"></div>''', 'recipe')
 
@@ -263,7 +275,7 @@ p{margin:0 0 3.2mm;text-align:justify;hyphens:auto}
 .recipe,.chapter{display:flex;flex-direction:column}
 .recipe{padding-top:14mm}
 .recipe>*{flex:0 0 auto}
-.photo{flex:1 1 0!important;min-height:66mm;border-radius:4mm;overflow:hidden;margin-bottom:6mm;border:1px solid var(--border)}
+.photo{flex:1 1 0!important;min-height:40mm;border-radius:4mm;overflow:hidden;margin-bottom:6mm;border:1px solid var(--border)}
 .photo img{width:100%;height:100%;object-fit:cover;display:block}
 .rt{font-size:27pt;margin:0 0 1.5mm}
 .serves{font-size:9pt;color:var(--text-3);margin-bottom:3mm;text-align:left}
@@ -277,6 +289,9 @@ p{margin:0 0 3.2mm;text-align:justify;hyphens:auto}
 .meth ol{list-style:none;margin:0;padding:0;counter-reset:s;font-size:10.2pt;line-height:1.55}
 .meth li{counter-increment:s;position:relative;padding-left:9mm;margin-bottom:2.4mm;text-align:justify;hyphens:auto}
 .meth li::before{content:counter(s);position:absolute;left:0;top:.2mm;width:6mm;height:6mm;border-radius:50%;background:var(--teal);color:var(--aqua);font:600 8pt/6mm Montserrat,sans-serif;text-align:center}
+.cols.wide{grid-template-columns:1fr;gap:4mm}
+.cols.wide .ing ul{columns:2;column-gap:8mm}
+.cols.wide .ing li{break-inside:avoid}
 .tip{margin-top:4mm}
 .spacer{height:6mm}
 .tip p{font-size:9.4pt}
