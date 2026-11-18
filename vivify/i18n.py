@@ -94,7 +94,6 @@ TR = {
  'Get in touch': ('Contact', 'Contatti'),
  'Wicklow, Ireland': ('Wicklow, Irlande', 'Wicklow, Irlanda'),
  'Google reviews': ('Avis Google', 'Recensioni Google'),
- 'VAT number': ('N° TVA', 'Partita IVA'),
  '© 2023 by Vivify Sports': ('© 2023 Vivify Sports', '© 2023 Vivify Sports'),
  'Privacy Policy': ('Politique de confidentialité (en anglais)', 'Privacy policy (in inglese)'),
  # about

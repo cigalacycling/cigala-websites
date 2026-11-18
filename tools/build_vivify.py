@@ -602,7 +602,7 @@ def shell(file, body, schema=None):
    <li>{ICON['star']}<a href="{GBP}" target="_blank" rel="noopener">Google reviews</a></li></ul>
    <a class="social" href="{IG}" aria-label="Vivify Sports on Instagram">{ICON['ig']}</a></div>
  </div>
- <div class="wrap bottom"><span>© 2023 by Vivify Sports<span class="sep"> · </span><span>VAT number</span> {VAT}</span><a href="privacy-policy.html">Privacy Policy</a></div>
+ <div class="wrap bottom"><span>© 2023 by Vivify Sports<span class="sep"> · </span>VAT {VAT}</span>   <a href="privacy-policy.html">Privacy Policy</a></div>
 </footer>
 </body></html>""")
 
