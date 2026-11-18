@@ -142,7 +142,7 @@ def card(key, h2, term, price, per, sub, buttons, badge='', cls=''):
         <p class="pkg-for">{FOR[key]}</p>
         <div class="pkg-price"><b>{price}</b><span>{per}</span></div>
         <p class="pkg-sub">{sub}</p>
-        <div class="pkg-buy">{buttons}{GUAR_BADGE if 'pay.gocardless.com' in buttons else ''}<a class="pkg-call" href="{CAL}" {EXT}>Not sure? Book a free consultation →</a></div>
+        <div class="pkg-buy">{buttons}{GUAR_BADGE if key in ('advanced', 'premium') else ''}<a class="pkg-call" href="{CAL}" {EXT}>Not sure? Book a free consultation →</a></div>
         <div class="pkg-lab">What you get</div>
         <ul class="ticks">{items}</ul>
         <button type="button" class="pkg-all" aria-expanded="false"><span>See all features</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button>
@@ -579,7 +579,7 @@ PCSS = '''<style>
 .pkg-price b { font: 400 54px/1 var(--head); color: var(--text); }
 .pkg-price span { color: var(--text-3); font-weight: 600; }
 .pkg-sub { font-size: 13px; color: var(--text-3); margin: 8px 0 18px; }
-.pkg-buy { display: grid; gap: 8px; }
+.pkg-buy { display: grid; gap: 8px; align-content: start; }   /* Matteo 18 Nov: the Basic button stretched taller to match the cards with the guarantee line */
 .pay { width: 100%; text-align: center; }
 .pay-note { display: block; font-size: 12.5px; color: var(--text-3); text-align: center; }
 .pkg-lab { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--green-text); }   /* Matteo 15 Nov: stands out from the grey notes */
