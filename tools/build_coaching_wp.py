@@ -147,6 +147,14 @@ html .cc .burger details.sub > summary.is-current { box-shadow: inset 3px 0 0 va
   .cc-contact .photo.rider { aspect-ratio: 16 / 10; }
 }
 .cc-form .elementor-field-group { padding: 0 0 14px !important; width: 100% !important; max-width: 100% !important; flex: 0 0 100% !important; }
+.cc-form .elementor-form-fields-wrapper { display: flex; flex-wrap: wrap; margin: 0 -5px !important; }
+.cc-form .elementor-form-fields-wrapper > .elementor-field-group { padding-left: 5px !important; padding-right: 5px !important; box-sizing: border-box; }
+/* Talent application (Matteo 18 Nov): small fields side by side */
+.cc-form .elementor-field-group.elementor-col-25 { width: 25% !important; max-width: 25% !important; flex: 0 0 25% !important; }
+.cc-form .elementor-field-group.elementor-col-33 { width: 33.333% !important; max-width: 33.333% !important; flex: 0 0 33.333% !important; }
+@media (max-width: 767px) { .cc-form .elementor-field-group.elementor-sm-50 { width: 50% !important; max-width: 50% !important; flex: 0 0 50% !important; } }
+.cc-form .elementor-field-type-html { line-height: 1.45 !important; }
+.cc-form .tl-plab { margin: 6px 0 0 !important; font-size: 13px !important; line-height: 1.45 !important; color: #8a8f98; }
 .cc-form .elementor-field-label { font: 600 12px Montserrat, system-ui, sans-serif !important; letter-spacing: .08em; text-transform: uppercase; color: #8a8f98 !important; padding-bottom: 6px; }
 .cc-form .elementor-field-textual { font: 400 16px/1.4 Montserrat, system-ui, sans-serif !important; color: #f7f8f8 !important; background: rgba(255,255,255,.04) !important; border: 1px solid rgba(255,255,255,.14) !important; border-radius: 8px !important; padding: 12px 14px !important; }
 .cc-form .elementor-field-textual:focus { outline: 2px solid #009a44 !important; outline-offset: 1px; }
@@ -484,6 +492,24 @@ def build_page(key):
             if hint:
                 for f in ff:
                     if f.get('field_type') == 'textarea': f['placeholder'] = html.unescape(hint.group(1))
+            # Matteo 18 Nov: the Talent Programme form is an application: details, best power (W/kg) and racing history,
+            # so he can decide who fits the programme. Text fields for the power values (decimals like 5.4; a number field would refuse them).
+            if subj and 'Talent Programme application' in subj.group(1):
+                def F(cid, label, ph, ftype='text', width='33', wm='100', req='', rows=None):
+                    d = {'custom_id': cid, 'field_type': ftype, 'field_label': label, 'placeholder': ph, 'required': req, 'width': width, 'width_mobile': wm, '_id': 'tl' + cid[:5]}
+                    if rows: d['rows'] = rows
+                    return d
+                extra = [F('age', 'Age', 'Age *', 'number', '25', '50', 'true'), F('country', 'Country', 'Country *', 'text', '25', '50', 'true'),
+                         F('team', 'Team / club', 'Team / club', 'text', '25', '50'), F('weight', 'Weight (kg)', 'Weight (kg)', 'number', '25', '50'),
+                         {'custom_id': 'power_lab', 'field_type': 'html', 'field_label': 'Best power', 'field_html': '<p class="tl-plab">Your best power in W/kg (from Strava, TrainingPeaks, Garmin…, leave blank if you don’t know)</p>', 'width': '100', '_id': 'tlplab'}]
+                extra += [F('wkg_' + k, f'W/kg {lab}', f'{lab} W/kg', 'text', '33', '50') for k, lab in [('5s', '5 s'), ('15s', '15 s'), ('1m', '1 min'), ('5m', '5 min'), ('20m', '20 min'), ('60m', '1 hour')]]
+                extra += [F('history', 'Racing history', 'Racing history: years racing, best results, races this season *', 'textarea', '100', '100', 'true', 4)]
+                ti = next(i for i, f in enumerate(ff) if f.get('field_type') == 'textarea')
+                ff[ti:ti] = extra
+                ff[ti + len(extra)]['placeholder'] = 'Anything else? Your goals, current coach, questions'
+                ff[ti + len(extra)]['required'] = ''
+                st['button_text'] = 'Send my application'
+                st['success_message'] = 'Thanks! Your application is in. I review every one and will get back to you.'
             if 'data-lang="it"' in b:   # the Italian page: Italian placeholders and button
                 IT = {'name': 'Nome *', 'email': 'Email *', 'phone': 'Telefono (con prefisso) *'}
                 for f in ff:

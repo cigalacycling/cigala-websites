@@ -586,3 +586,13 @@ Matteo created a "Claude live" application password on coaching.cigalacycling.co
 - Box under the T&C line: "Try your coaching risk-free. If you’re not happy in your first 14 days on Advanced or Premium, you get a full refund, no questions asked. Just ask from your Athlete Hub."
 - New FAQ "Is there a money-back guarantee?" (an H3; the H2 set is unchanged).
 - New copy: waiting for Matteo's OK on the wording, and on whether Basic is included, before live. tools/build_coaching_packages.py (GUAR_*). The UK/USA/Canada pages share the card builder and will get the badge on their next rebuild.
+
+## 18 Nov 2026: Talent Programme application form (Matteo), STAGING
+- The existing form at the bottom of /talent-scout/ ("Apply to the programme" links to it) becomes an application:
+  - details: name, email, phone, age*, country*, team/club, weight;
+  - best power in W/kg at 5 s, 15 s, 1 min, 5 min, 20 min and 1 hour (optional; text fields so decimals work);
+  - racing history*, and "Anything else?".
+- Button "Send my application", success message "Thanks! Your application is in. I review every one and will get back to you."
+- It still emails matteo@ with the subject "Talent Programme application (Coaching website)". All fields are in the email.
+- Code: tools/build_coaching_wp.py (form fields keyed on the subject), plus CSS so small fields sit side by side (4 or 3 per row; 2 per row on phones). Other forms are unchanged (contact checked).
+- Checked at 390/820/1440: 16px fields, no sideways scrolling, 1 H1. Waiting for Matteo's go for live.
