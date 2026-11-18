@@ -651,6 +651,14 @@ h2, h3, .h-sec, .h-sm, .h-long, footer .tag-line { line-height: 1.14; }
 .hb4-tour { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; max-width: 760px; margin: 26px auto 0; gap: 22px; } .hb4-tour figcaption { text-align: center; }
 .hb4-wide { display: block; width: 100%; height: auto; margin: 26px 0 0; border-radius: 14px; }
 .hb4-fan { display: block; width: 100%; max-width: 900px; height: auto; margin: 10px auto 0; }
+.hb4-x { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 36px; align-items: center; margin-top: 30px; }   /* text left, phones right (the row above is the other way round) */
+.hb4-x .hb4-fan { margin: 0; max-width: none; }
+.hb4-xh { margin: 0 0 10px; font: 400 clamp(26px, 3.2vw, 36px)/1.05 var(--head); text-transform: uppercase; color: var(--text); letter-spacing: .01em; }
+.hb4-xt > p:not(.hb4-xh) { margin: 0 0 14px; color: var(--text-2); }
+.hb4-xt ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.hb4-xt li { position: relative; padding-left: 28px; color: var(--text-2); font-size: 15px; }
+.hb4-xt li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 6px; display: grid; place-items: center; background: var(--green-wash); color: var(--green-text); font-weight: 700; font-size: 12px; }
+@media (max-width: 900px) { .hb4-x { grid-template-columns: minmax(0, 1fr); gap: 14px; } .hb4-x .hb4-fan { order: -1; } }
 @media (max-width: 560px) { .hb4-tour { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px; overflow: visible; margin-right: 0; padding-right: 0; } .hb4-tour figcaption b { font-size: 13px; } }
 .hb4-pic img { display: block; width: 100%; height: auto; }
 @media (max-width: 900px) { .hb4 .hb-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
@@ -885,7 +893,7 @@ html.sig-ok .sigph img.signature.go { animation: sig-write 2.2s cubic-bezier(.55
         <div class="hb4-pic"><img src="img/hub-hero-v4.webp" alt="The Cigala Athlete Hub on a laptop (season plan) and on a phone (welcome screen)" loading="lazy" width="2400" height="1484"></div>
         <ul class="hb-pts"><li><span class="hb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 20 6-10 4 6 3-4 5 8z"/></svg></span><span><b>Your season plan</b>The blocks, your races and your goals on one page, updated whenever the plan changes.</span></li><li><span class="hb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5m0 14h16M8 15l4-4 3 3 5-6"/></svg></span><span><b>Personal reports</b>Progress reports, race-day plans and reviews, with a "New" badge when I publish one.</span></li><li><span class="hb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/></svg></span><span><b>Your week &amp; your events</b>Tell me your availability and your goals in a few taps, so the plan fits your life.</span></li><li><span class="hb-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6"/></svg></span><span><b>Guides &amp; tools</b>Training and nutrition guides plus the free calculators, all in one place, no sign-up.</span></li></ul>
       </div>
-      <p class="hb-note">Examples with a made-up athlete. Your own hub shows your own plan and reports.</p>
+      <div class="hb4-x"><div class="hb4-xt"><p class="hb4-xh">Coaching, taken to the next level</p><p>Your plan, your reports, your races and your messages to me, all in one place on your phone. I see what you add straight away, and it shapes your training.</p><ul><li>A countdown to your next race, with your goals in gold, silver and bronze</li><li>Notes and voice messages to me, whenever you need</li><li>Works like an app on your phone</li></ul></div><img class="hb4-fan" src="img/hub-x-fan.webp" alt="The Cigala Athlete Hub on a phone: Goals &amp; races" loading="lazy" width="2000" height="1333"></div><p class="hb-note">Examples with a made-up athlete. Your own hub shows your own plan and reports.</p>
     </div>
 
 

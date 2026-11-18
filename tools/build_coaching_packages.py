@@ -172,7 +172,9 @@ HUB_T = {
            ('goals', 'Goals &amp; races', 'Your races in gold, silver and bronze, with a countdown to the next one.'),
            ('library', 'Training library', 'Training and nutrition guides and video routines, in your language.')],
     chips3=['Season plan', 'Availability', 'Notes &amp; voice messages', 'Free calculators', 'Works like an app on your phone'],
-    note3='Screens from a made-up athlete. Your own hub shows your own plan and reports.'),
+    note3='Screens from a made-up athlete. Your own hub shows your own plan and reports.',
+    xh='Coaching, taken to the next level', xp='Your plan, your reports, your races and your messages to me, all in one place on your phone. I see what you add straight away, and it shapes your training.',
+    xl=['A countdown to your next race, with your goals in gold, silver and bronze', 'Notes and voice messages to me, whenever you need', 'Works like an app on your phone']),
  'it': dict(eb='Incluso in Avanzato e Premium', h='LA TUA AREA ATLETA PERSONALE',
     p='Ogni atleta Avanzato e Premium ha un’area online privata, sul telefono e sul computer: il tuo piano di stagione, i tuoi report e tutto ciò che ti serve da me, in un unico posto.',
     pts=[('Il tuo piano di stagione', 'I blocchi, le tue gare e i tuoi obiettivi in una sola pagina, aggiornati ogni volta che il piano cambia.'),
@@ -196,7 +198,9 @@ HUB_T = {
            ('goals', 'Obiettivi e gare', 'Le tue gare in oro, argento e bronzo, con il conto alla rovescia alla prossima.'),
            ('library', 'Biblioteca di allenamento', 'Guide di allenamento e alimentazione e video, nella tua lingua.')],
     chips3=['Piano di stagione', 'Disponibilità', 'Note e messaggi vocali', 'Calcolatori gratuiti', 'Funziona come un’app sul telefono'],
-    note3='Schermate di un atleta inventato. Nella tua area trovi il tuo piano e i tuoi report.'),
+    note3='Schermate di un atleta inventato. Nella tua area trovi il tuo piano e i tuoi report.',
+    xh='Il coaching, a un altro livello', xp='Il tuo piano, i tuoi report, le tue gare e i tuoi messaggi per me, tutto in un unico posto sul telefono. Vedo subito quello che aggiungi e lo uso per il tuo allenamento.',
+    xl=['Il conto alla rovescia alla prossima gara, con i tuoi obiettivi in oro, argento e bronzo', 'Note e messaggi vocali per me, quando ti servono', 'Funziona come un’app sul telefono']),
 }
 HUB_ICONS = [_hic('<path d="m3 20 6-10 4 6 3-4 5 8z"/>'), _hic('<path d="M4 19V5m0 14h16M8 15l4-4 3 3 5-6"/>'),
              _hic('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/>'), _hic('<path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6"/>')]
@@ -208,9 +212,11 @@ def _hb_extra(T, _SC, pre):   # a second picture under the compact section (Matt
     if x == 'b':
         return f'<img class="hb4-wide" src="{conv(_SC + pre + "x-banner.png", "hub-x-banner" + ("-" + pre.rstrip("-") if pre else ""), 2000)}" alt="{T["alt_hero"]}" loading="lazy" width="2000" height="609">'
     if x == 'c':
-        return f'<img class="hb4-fan" src="{conv(_SC + pre + "x-fan.png", "hub-x-fan" + ("-" + pre.rstrip("-") if pre else ""), 2000)}" alt="{T["alt_hero"]}" loading="lazy" width="2000" height="1333">'
+        li = ''.join(f'<li>{x}</li>' for x in T['xl'])
+        return (f'<div class="hb4-x"><div class="hb4-xt"><p class="hb4-xh">{T["xh"]}</p><p>{T["xp"]}</p><ul>{li}</ul></div>'
+                f'<img class="hb4-fan" src="{conv(_SC + pre + "x-fan.png", "hub-x-fan" + ("-" + pre.rstrip("-") if pre else ""), 2000)}" alt="{T["alt_tour"].format(t=T["tour3"][1][1])}" loading="lazy" width="2000" height="1333"></div>')
     return ''
-HB_EXTRA = ''   # chosen by Matteo
+HB_EXTRA = 'c'   # Matteo 18 Nov: C (fanned phones) with a short text beside it
 def _hb4_size():
     from PIL import Image as _I
     f = ROOT + 'coaching/athlete-area/showcase/v4-hero.png'
@@ -757,6 +763,14 @@ PCSS = '''<style>
 .hb4-tour { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; max-width: 760px; margin: 26px auto 0; gap: 22px; } .hb4-tour figcaption { text-align: center; }
 .hb4-wide { display: block; width: 100%; height: auto; margin: 26px 0 0; border-radius: 14px; }
 .hb4-fan { display: block; width: 100%; max-width: 900px; height: auto; margin: 10px auto 0; }
+.hb4-x { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 36px; align-items: center; margin-top: 30px; }   /* text left, phones right (the row above is the other way round) */
+.hb4-x .hb4-fan { margin: 0; max-width: none; }
+.hb4-xh { margin: 0 0 10px; font: 400 clamp(26px, 3.2vw, 36px)/1.05 var(--head); text-transform: uppercase; color: var(--text); letter-spacing: .01em; }
+.hb4-xt > p:not(.hb4-xh) { margin: 0 0 14px; color: var(--text-2); }
+.hb4-xt ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.hb4-xt li { position: relative; padding-left: 28px; color: var(--text-2); font-size: 15px; }
+.hb4-xt li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 6px; display: grid; place-items: center; background: var(--green-wash); color: var(--green-text); font-weight: 700; font-size: 12px; }
+@media (max-width: 900px) { .hb4-x { grid-template-columns: minmax(0, 1fr); gap: 14px; } .hb4-x .hb4-fan { order: -1; } }
 @media (max-width: 560px) { .hb4-tour { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 8px; overflow: visible; margin-right: 0; padding-right: 0; } .hb4-tour figcaption b { font-size: 13px; } }
 .hb4-pic img { display: block; width: 100%; height: auto; }
 @media (max-width: 900px) { .hb4 .hb-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
