@@ -385,7 +385,7 @@ TR = {
  '30 min call + PDF plan': ('Appel de 30 min + plan en PDF', 'Chiamata di 30 min + piano in PDF'),
  # header, Cigala style (17 Nov)
  'Free 30-minute discovery call': ('Appel découverte gratuit de 30 minutes', 'Chiamata conoscitiva gratuita di 30 minuti'),
- 'Online coaching in English, French & Italian': ('Coaching en ligne en français, anglais et italien', 'Coaching online in italiano, inglese e francese'),
+ 'Online coaching in English, French & Italian': ('Coaching en ligne en Français, Anglais et Italien', 'Coaching online in italiano, inglese e francese'),
  'Book now →': ('Réserver →', 'Prenota →'),
  'Book a Free Call': ('Appel gratuit', 'Chiamata gratuita'),
  'Coaching': ('Coaching', 'Coaching'),
