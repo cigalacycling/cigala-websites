@@ -813,12 +813,19 @@ def coaching():
     # Compare table, Cigala Coaching style (Marine 17 Nov): the three plans, short text, ✓ / ✗, popular column highlighted
     Y, N = '<span class="y" aria-label="Included">✓</span>', '<span class="n" aria-label="Not included">✗</span>'
     rows = [('Length', '3 months', '3 months', '3 months'),
+            ('Initial assessment call', Y, Y, Y),   # Marine 18 Nov: rows added and confirmed by her
+            ('Plan adjusted to your training load <small>(TrainingPeaks, Vekta)</small>', Y, Y, Y),
             ('Number of calls', '3 calls over 3 months', '5 calls over 3 months', 'Unlimited'),
             ('WhatsApp support', Y, Y, 'Daily'),
             ('Weekly Macro Plan <small>(based on your training load)</small>', Y, N, Y),
             ('Weekly Meal Plan <small>(based on your training load)</small>', N, Y, Y),
-            ('Food Diary Analysis', 'Weekly', 'Weekly', 'Daily'),   # Marine 17 Nov: weekly on the Happy plan
+            ('Food diary review <small>(MyFitnessPal)</small>', 'Weekly', 'Weekly', 'Daily'),
+            ('Daily hydration plan', N, Y, Y),
+            ('Race fuelling plan', N, Y, Y),
+            ('Sweat rate test', Y, Y, Y),
             ('Advice on healthy nutritional habits', Y, Y, Y),
+            ('Healthy recipes', N, Y, Y),
+            ('Gut health support', N, Y, Y),
             ('Vitamins &amp; minerals requirements', N, N, Y),
             ('Supplements requirements', Y, Y, Y),
             ('Sports-specific requirements', N, Y, Y),
