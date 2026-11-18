@@ -289,7 +289,12 @@ add_action('wp_head', function () {
 }, 1);
 
 /* ---------- logins: athletes never see wp-admin and stay logged in for a year ---------- */
-add_filter('show_admin_bar', function ($s) { return current_user_can('edit_posts') ? $s : false; });
+add_filter('show_admin_bar', function ($s) {
+    if (!current_user_can('edit_posts')) return false;
+    // Matteo 18 Nov: no WordPress toolbar in the hub, for him either (the app looks like the athletes' app); the rest of the site keeps it
+    if (strpos((string) ($_SERVER['REQUEST_URI'] ?? ''), '/' . CC_ATH_SLUG . '/') === 0 || isset($_GET['cc_report'])) return false;
+    return $s;
+});
 add_action('admin_init', function () {   // athletes stay out of wp-admin; admin-post.php is let through for their own nonce-checked forms (language)
     if (!current_user_can('edit_posts') && !wp_doing_ajax() && is_user_logged_in() && ($GLOBALS['pagenow'] ?? '') !== 'admin-post.php') { wp_safe_redirect(home_url('/' . CC_ATH_SLUG . '/')); exit; }
 });
