@@ -7,10 +7,11 @@
 function cc_bt_w($k) {
     static $W = [
         'title' => ['en' => 'Blood tests', 'it' => 'Analisi del sangue', 'pt' => 'Análises ao sangue', 'sl' => 'Krvne preiskave'],
-        'lede' => ['en' => 'Upload your blood test results here (PDF or photo). Your files are private and kept here as your history, so we can follow how your values change over time. Only Matteo sees them, and our nutritionist Marine if you tick the box: she can reply to you right here. Everything is deleted when your coaching ends.',
-                   'it' => 'Carica qui i risultati delle tue analisi del sangue (PDF o foto). I tuoi file sono privati e restano qui come tuo storico, così possiamo seguire come cambiano i valori nel tempo. Li vede solo Matteo, e la nostra nutrizionista Marine se spunti la casella: ti può rispondere direttamente qui. Tutto viene cancellato quando finisce il coaching.',
-                   'pt' => 'Carrega aqui os resultados das tuas análises ao sangue (PDF ou foto). Os teus ficheiros são privados e ficam aqui como o teu histórico, para acompanharmos como os valores mudam ao longo do tempo. Só o Matteo os vê, e a nossa nutricionista Marine se marcares a caixa: ela pode responder-te aqui mesmo. Tudo é apagado quando o coaching termina.',
-                   'sl' => 'Tukaj naloži izvide krvnih preiskav (PDF ali fotografijo). Tvoje datoteke so zasebne in ostanejo tukaj kot tvoja zgodovina, da lahko spremljamo, kako se vrednosti spreminjajo. Vidi jih samo Matteo, in naša nutricionistka Marine, če označiš polje: odgovori ti lahko kar tukaj. Vse se izbriše, ko se coaching konča.'],
+        // Matteo 18 Nov: Marine reviews shared tests, but she is not the athlete's own nutritionist: one-to-one nutrition is a separate sign-up
+        'lede' => ['en' => 'Upload your blood test results here (PDF or photo). Your files are private and kept here as your history, so we can follow how your values change over time. Only Matteo sees them, and Marine Lenehan, our sports nutritionist, if you tick the box: she can take a look and reply to you right here. Working one-to-one with Marine on your nutrition is a separate service: just ask if you would like it. Everything is deleted when your coaching ends.',
+                   'it' => 'Carica qui i risultati delle tue analisi del sangue (PDF o foto). I tuoi file sono privati e restano qui come tuo storico, così possiamo seguire come cambiano i valori nel tempo. Li vede solo Matteo, e Marine Lenehan, la nostra nutrizionista sportiva, se spunti la casella: può darci un’occhiata e risponderti direttamente qui. Lavorare individualmente con Marine sulla tua alimentazione è un servizio a parte: chiedi pure se ti interessa. Tutto viene cancellato quando finisce il coaching.',
+                   'pt' => 'Carrega aqui os resultados das tuas análises ao sangue (PDF ou foto). Os teus ficheiros são privados e ficam aqui como o teu histórico, para acompanharmos como os valores mudam ao longo do tempo. Só o Matteo os vê, e a Marine Lenehan, a nossa nutricionista desportiva, se marcares a caixa: ela pode dar uma vista de olhos e responder-te aqui mesmo. Trabalhar individualmente com a Marine na tua alimentação é um serviço à parte: pergunta se tiveres interesse. Tudo é apagado quando o coaching termina.',
+                   'sl' => 'Tukaj naloži izvide krvnih preiskav (PDF ali fotografijo). Tvoje datoteke so zasebne in ostanejo tukaj kot tvoja zgodovina, da lahko spremljamo, kako se vrednosti spreminjajo. Vidi jih samo Matteo, in Marine Lenehan, naša športna nutricionistka, če označiš polje: lahko jih pregleda in ti odgovori kar tukaj. Individualno delo z Marine na tvoji prehrani je ločena storitev: vprašaj, če te zanima. Vse se izbriše, ko se coaching konča.'],
         'reply' => ['en' => 'Reply', 'it' => 'Rispondi', 'pt' => 'Responder', 'sl' => 'Odgovori'],
         'send_r' => ['en' => 'Send', 'it' => 'Invia', 'pt' => 'Enviar', 'sl' => 'Pošlji'],
         'you' => ['en' => 'You', 'it' => 'Tu', 'pt' => 'Tu', 'sl' => 'Ti'],
@@ -18,7 +19,7 @@ function cc_bt_w($k) {
         'matteo_rep' => ['en' => 'Matteo replied about your blood test', 'it' => 'Matteo ha risposto sulle tue analisi', 'pt' => 'O Matteo respondeu sobre as tuas análises', 'sl' => 'Matteo je odgovoril glede tvojih izvidov'],
         'file' => ['en' => 'Choose the file', 'it' => 'Scegli il file', 'pt' => 'Escolhe o ficheiro', 'sl' => 'Izberi datoteko'],
         'date' => ['en' => 'Date of the test', 'it' => 'Data delle analisi', 'pt' => 'Data das análises', 'sl' => 'Datum preiskave'],
-        'share' => ['en' => 'Share with my nutritionist', 'it' => 'Condividi con la mia nutrizionista', 'pt' => 'Partilhar com a minha nutricionista', 'sl' => 'Deli z mojo nutricionistko'],
+        'share' => ['en' => 'Share with Marine, our sports nutritionist, so she can take a look', 'it' => 'Condividi con Marine, la nostra nutrizionista sportiva, per un suo parere', 'pt' => 'Partilhar com a Marine, a nossa nutricionista desportiva, para ela dar uma vista de olhos', 'sl' => 'Deli z Marine, našo športno nutricionistko, da jih pregleda'],
         'send' => ['en' => 'Upload', 'it' => 'Carica', 'pt' => 'Carregar', 'sl' => 'Naloži'],
         'sending' => ['en' => 'Uploading…', 'it' => 'Caricamento…', 'pt' => 'A carregar…', 'sl' => 'Nalaganje…'],
         'done' => ['en' => 'Uploaded. Thank you!', 'it' => 'Caricato. Grazie!', 'pt' => 'Carregado. Obrigado!', 'sl' => 'Naloženo. Hvala!'],
@@ -28,7 +29,7 @@ function cc_bt_w($k) {
         'open' => ['en' => 'Open', 'it' => 'Apri', 'pt' => 'Abrir', 'sl' => 'Odpri'],
         'del' => ['en' => 'Delete', 'it' => 'Elimina', 'pt' => 'Apagar', 'sl' => 'Izbriši'],
         'delq' => ['en' => 'Delete this blood test?', 'it' => 'Eliminare queste analisi?', 'pt' => 'Apagar estas análises?', 'sl' => 'Izbrišem to preiskavo?'],
-        'shared' => ['en' => 'shared with the nutritionist', 'it' => 'condivise con la nutrizionista', 'pt' => 'partilhadas com a nutricionista', 'sl' => 'deljeno z nutricionistko'],
+        'shared' => ['en' => 'shared with Marine', 'it' => 'condivise con Marine', 'pt' => 'partilhadas com a Marine', 'sl' => 'deljeno z Marine'],
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
 }
