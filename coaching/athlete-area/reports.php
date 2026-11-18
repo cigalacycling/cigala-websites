@@ -145,7 +145,9 @@ add_action('template_redirect', function () {
     header('Content-Length: ' . filesize($file));
     readfile($file); exit;
 }, 1);
-function cc_r_url($rid) { return add_query_arg('cc_report', $rid, home_url('/' . CC_ATH_SLUG . '/')); }
+// Matteo 18 Nov: in the phone app a PDF opened inside /athletes/ (the app's own scope) had no way back. Outside that scope the phone
+// opens it in its viewer with "Done" (iPhone) or "✕" (Android). The handler below answers ?cc_report= on any address, so old links still work.
+function cc_r_url($rid) { return add_query_arg('cc_report', $rid, home_url('/')); }
 
 /* ---------- the athlete's hub ---------- */
 function cc_r_published($pid) {
