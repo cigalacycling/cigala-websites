@@ -294,6 +294,9 @@ add_filter('cc_ath_board', function ($html, $board) {
                 . cc_r_btn($p->ID, 'testmail', 'Send me a test email') . cc_r_btn($p->ID, 'unpublish', 'Unpublish') . cc_r_btn($p->ID, 'delete', 'Delete') . '</div></div>'; }
         $o .= '</details>';
     }
+    // Matteo 18 Nov: after Publish / Delete / any button here, come back to the same spot on the board, not the top of the page
+    $o .= '<script>(function(){var K="cc_rp_y";try{var y=sessionStorage.getItem(K);if(y!==null){sessionStorage.removeItem(K);var go=function(){window.scrollTo(0,+y);};go();addEventListener("load",go);}}catch(x){}'
+        . 'document.addEventListener("submit",function(e){var f=e.target;if(!f.closest||!(f.closest(".ath-s")&&/admin-post\.php/.test(f.action||"")))return;try{sessionStorage.setItem(K,String(window.scrollY));}catch(x){}},true);})();</script>';
     return $o . '</section>';
 }, 10, 2);
 add_action('admin_post_cc_report_admin', function () {
