@@ -123,7 +123,7 @@ function cc_gc_tell($i, $kind, $why = '', $sim = false) {
     $h .= '<table style="border-collapse:collapse;margin:0 0 16px">'; foreach ($rows as $r) if ($r[1] !== '') $h .= '<tr><td style="padding:3px 16px 3px 0;color:#555">' . $e($r[0]) . '</td><td style="padding:3px 0"><b>' . $e($r[1]) . '</b></td></tr>'; $h .= '</table>';
     if ($kind === 'created' || $kind === 'test') {
         $h .= '<p style="margin:0 0 6px"><b>' . ($kind === 'created' ? 'Done by the hub' : 'The hub would do') . '</b></p><ul style="margin:0 0 14px;padding-left:18px"><li>Hub login and their own page' . ($kind === 'created' ? ' ✔' : '') . '</li><li>Welcome email in their language' . ($kind === 'created' ? ' (' . $e($i['welcome'] ?? '') . ')' : '') . '</li><li>Rider form first, where they choose their app: Vekta (the invitation with the code goes out by itself) or TrainingPeaks (you get an email to invite them there)</li></ul>'
-            . '<p style="margin:0 0 6px"><b>Your to-do</b></p><ul style="margin:0 0 14px;padding-left:18px"><li>☐ <b>Skool:</b> invite <b>' . $e($i['email']) . '</b> to the Cigala Cycling Collective, then tap <b>“Skool invite sent”</b> on ' . (!empty($i['page']) ? '<a href="' . esc_url(add_query_arg('view', (int) $i['page'], home_url('/' . CC_ATH_SLUG . '/'))) . '">their hub page</a>' : 'their hub page') . ': your community welcome email goes to them (Italian or English)</li><li>☐ Assessment once their rider form is signed (the hub emails you when it is)</li></ul>';
+            . '<p style="margin:0 0 6px"><b>Your to-do</b></p><ul style="margin:0 0 14px;padding-left:18px"><li>☐ <b>Skool:</b> invite <b>' . $e($i['email']) . '</b> to the Cigala Cycling Collective, then tap <b>“Skool invite sent”</b> on ' . (!empty($i['page']) ? '<a href="' . esc_url(add_query_arg('view', (int) $i['page'], home_url('/' . CC_ATH_SLUG . '/'))) . '">their hub page</a>' : 'their hub page') . ': your community welcome email goes to them in their language</li><li>☐ Assessment once their rider form is signed (the hub emails you when it is)</li></ul>';
     }
     $h .= '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open Contracts</a></p></div>';
     if ($sim) { $GLOBALS['cc_gc_last_mail'] = ['subject' => $title, 'html' => $h]; return; }
@@ -421,10 +421,10 @@ function cc_skool_w($l) {
                        '👥 <b>Group Rides</b>: online rides on Zwift, or real-life road and gravel rides.',
                        '❓ <b>Live Q&amp;A Sessions</b>: monthly Q&amp;A sessions with me and Marine.',
                        '💰 <b>Discounts &amp; Perks</b>: special offers on cycling gear and services for members.'],
-              'mem' => '<b>Free for you</b> for as long as you’re coached by me: simply accept the invitation sent to your email. Some extras, such as nutrition eBooks and the monthly yoga classes, may involve an extra cost.',
-              'share' => 'You can also invite friends and fellow cyclists with this link:',
+              'mem' => '<b>Free for you</b> for as long as you’re coached by me. <b>Important:</b> to get your free access, join through the <b>invitation email from Skool</b> (it comes from Skool, not from me; check your spam too). Don’t join through the public link below: that one is for paying members. Some extras, such as nutrition eBooks and the monthly yoga classes, may involve an extra cost.',
+              'share' => 'You can also invite friends and fellow cyclists with this link. For them, membership is $9 a month or $99 a year:',
               'start' => '<b>Getting started:</b> once you’ve joined, introduce yourself. Tell us where you’re from, share your cycling goals and post a picture of your bike!',
-              'btn' => 'Open the community'],
+              'btn' => 'Open Skool'],
      'it' => ['subj' => 'Benvenuto nella nostra community | Cigala Cycling Collective', 'hi' => 'Ciao %s,',
               'p1' => 'ti ho appena invitato nella nostra <b>Cigala Cycling Collective</b>: controlla la tua casella email (anche lo spam) e accetta l’invito!',
               'p2' => 'La Cigala Cycling Collective è il tuo punto di riferimento per ciclismo, coaching, alimentazione e community. Un posto per restare in contatto, motivato e costante. Su Skool condividiamo articoli, sessioni di domande e risposte dal vivo, eventi, uscite e molto altro.',
@@ -436,10 +436,10 @@ function cc_skool_w($l) {
                        '👥 <b>Uscite di gruppo</b>: uscite online su Zwift o dal vivo su strada e gravel.',
                        '❓ <b>Domande e risposte dal vivo</b>: ogni mese con me e Marine.',
                        '💰 <b>Sconti e vantaggi</b>: offerte speciali su attrezzatura e servizi per i membri.'],
-              'mem' => '<b>Gratis per te</b> finché ti alleni con me: basta accettare l’invito che hai ricevuto via email. Alcuni extra, come gli eBook di alimentazione e le lezioni mensili di yoga, possono avere un costo aggiuntivo.',
-              'share' => 'Puoi invitare anche amici e compagni di uscite con questo link:',
+              'mem' => '<b>Gratis per te</b> finché ti alleni con me. <b>Importante:</b> per avere l’accesso gratuito, entra tramite l’<b>email di invito di Skool</b> (arriva da Skool, non da me; controlla anche lo spam). Non entrare dal link pubblico qui sotto: quello è per i membri a pagamento. Alcuni extra, come gli eBook di alimentazione e le lezioni mensili di yoga, possono avere un costo aggiuntivo.',
+              'share' => 'Puoi invitare anche amici e compagni di uscite con questo link. Per loro l’iscrizione costa 9 $ al mese o 99 $ all’anno:',
               'start' => '<b>Per iniziare:</b> appena entri, presentati. Raccontaci da dove vieni, i tuoi obiettivi in bici e pubblica una foto della tua bici!',
-              'btn' => 'Apri la community'],
+              'btn' => 'Apri Skool'],
      'pt' => ['subj' => 'Bem-vindo à nossa comunidade | Cigala Cycling Collective', 'hi' => 'Olá %s,',
               'p1' => 'acabei de te convidar para a nossa <b>Cigala Cycling Collective</b>: vê a tua caixa de email (e a pasta de spam) e aceita o convite!',
               'p2' => 'A Cigala Cycling Collective é o teu ponto de encontro para ciclismo, coaching, nutrição e comunidade. Um sítio para te manteres ligado, motivado e consistente. No Skool partilhamos artigos, sessões de perguntas e respostas ao vivo, eventos, treinos em grupo e muito mais.',
@@ -451,10 +451,10 @@ function cc_skool_w($l) {
                        '👥 <b>Treinos em grupo</b>: online no Zwift ou ao vivo, de estrada e gravel.',
                        '❓ <b>Perguntas e respostas ao vivo</b>: todos os meses comigo e com a Marine.',
                        '💰 <b>Descontos e vantagens</b>: ofertas especiais em material e serviços para membros.'],
-              'mem' => '<b>Grátis para ti</b> enquanto treinares comigo: basta aceitares o convite que recebeste por email. Alguns extras, como os eBooks de nutrição e as aulas mensais de yoga, podem ter um custo adicional.',
-              'share' => 'Também podes convidar amigos e colegas de treino com este link:',
+              'mem' => '<b>Grátis para ti</b> enquanto treinares comigo. <b>Importante:</b> para teres o acesso gratuito, entra através do <b>email de convite do Skool</b> (vem do Skool, não de mim; vê também o spam). Não entres pelo link público abaixo: esse é para membros pagantes. Alguns extras, como os eBooks de nutrição e as aulas mensais de yoga, podem ter um custo adicional.',
+              'share' => 'Também podes convidar amigos e colegas de treino com este link. Para eles, a inscrição custa 9 $ por mês ou 99 $ por ano:',
               'start' => '<b>Para começar:</b> quando entrares, apresenta-te. Diz-nos de onde és, os teus objetivos no ciclismo e publica uma foto da tua bicicleta!',
-              'btn' => 'Abrir a comunidade'],
+              'btn' => 'Abrir o Skool'],
      'sl' => ['subj' => 'Dobrodošel v naši skupnosti | Cigala Cycling Collective', 'hi' => 'Živjo %s,',
               'p1' => 'pravkar sem te povabil v našo skupnost <b>Cigala Cycling Collective</b>: preveri svoj e-poštni predal (tudi vsiljeno pošto) in sprejmi povabilo!',
               'p2' => 'Cigala Cycling Collective je tvoje središče za kolesarjenje, treniranje, prehrano in skupnost. Prostor, kjer ostaneš povezan, motiviran in dosleden. Na Skoolu delimo članke, vprašanja in odgovore v živo, dogodke, skupinske vožnje in še veliko več.',
@@ -466,10 +466,10 @@ function cc_skool_w($l) {
                        '👥 <b>Skupinske vožnje</b>: na spletu v Zwiftu ali v živo na cesti in makadamu.',
                        '❓ <b>Vprašanja in odgovori v živo</b>: vsak mesec z mano in Marine.',
                        '💰 <b>Popusti in ugodnosti</b>: posebne ponudbe za opremo in storitve za člane.'],
-              'mem' => '<b>Zate brezplačno</b>, dokler treniraš z mano: samo sprejmi povabilo, ki si ga dobil po e-pošti. Nekateri dodatki, kot so e-knjige o prehrani in mesečne vadbe joge, so lahko plačljivi.',
-              'share' => 'Povabiš lahko tudi prijatelje in sotekače s to povezavo:',
+              'mem' => '<b>Zate brezplačno</b>, dokler treniraš z mano. <b>Pomembno:</b> za brezplačen dostop se pridruži prek <b>e-poštnega povabila od Skoola</b> (pride od Skoola, ne od mene; preveri tudi vsiljeno pošto). Ne pridruži se prek javne povezave spodaj: ta je za plačljive člane. Nekateri dodatki, kot so e-knjige o prehrani in mesečne vadbe joge, so lahko plačljivi.',
+              'share' => 'Povabiš lahko tudi prijatelje in sotekače s to povezavo. Zanje članarina stane 9 $ na mesec ali 99 $ na leto:',
               'start' => '<b>Za začetek:</b> ko se pridružiš, se predstavi. Povej nam, od kod si, kakšni so tvoji kolesarski cilji, in objavi fotografijo svojega kolesa!',
-              'btn' => 'Odpri skupnost'],
+              'btn' => 'Odpri Skool'],
      'sk' => ['subj' => 'Vitaj v našej komunite | Cigala Cycling Collective', 'hi' => 'Ahoj %s,',
               'p1' => 'práve som ťa pozval do našej komunity <b>Cigala Cycling Collective</b>: pozri si svoju e-mailovú schránku (aj spam) a prijmi pozvánku!',
               'p2' => 'Cigala Cycling Collective je tvoje miesto pre všetko o cyklistike, tréningu, výžive a komunite. Miesto, kde zostaneš v kontakte, motivovaný a dôsledný. Na Skoole zdieľame články, živé otázky a odpovede, podujatia, spoločné jazdy a oveľa viac.',
@@ -481,21 +481,21 @@ function cc_skool_w($l) {
                        '👥 <b>Spoločné jazdy</b>: online vo Zwifte alebo naživo na ceste a šotoline.',
                        '❓ <b>Otázky a odpovede naživo</b>: každý mesiac so mnou a s Marine.',
                        '💰 <b>Zľavy a výhody</b>: špeciálne ponuky na výbavu a služby pre členov.'],
-              'mem' => '<b>Pre teba zadarmo</b>, kým trénuješ so mnou: stačí prijať pozvánku, ktorá ti prišla e-mailom. Niektoré doplnky, napríklad e-knihy o výžive a mesačné lekcie jogy, môžu byť spoplatnené.',
-              'share' => 'Kamarátov a spolujazdcov môžeš pozvať aj cez tento odkaz:',
+              'mem' => '<b>Pre teba zadarmo</b>, kým trénuješ so mnou. <b>Dôležité:</b> aby si mal prístup zadarmo, pridaj sa cez <b>pozvánku e-mailom od Skoolu</b> (príde od Skoolu, nie odo mňa; pozri sa aj do spamu). Nepridávaj sa cez verejný odkaz nižšie: ten je pre platiacich členov. Niektoré doplnky, napríklad e-knihy o výžive a mesačné lekcie jogy, môžu byť spoplatnené.',
+              'share' => 'Kamarátov a spolujazdcov môžeš pozvať aj cez tento odkaz. Pre nich je členstvo 9 $ mesačne alebo 99 $ ročne:',
               'start' => '<b>Ako začať:</b> keď sa pridáš, predstav sa. Napíš nám, odkiaľ si, aké máš cyklistické ciele, a pridaj fotku svojho bicykla!',
-              'btn' => 'Otvoriť komunitu'],
+              'btn' => 'Otvoriť Skool'],
     ];
     return $W[$l] ?? $W['en'];
 }
 function cc_skool_mail($uid, $to = null) {
     $u = get_userdata((int) $uid); if (!$u) return new WP_Error('nouser', 'No such user');
-    // Matteo 18 Nov: a personal note from him about an English-speaking community: Italian for Italian athletes, English for everyone else
-    $l = (function_exists('cc_ath_user_lang') && cc_ath_user_lang($u->ID) === 'it') ? 'it' : 'en'; $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = $l; $W = cc_skool_w($l);
+    // Matteo 18 Nov (later): it comes from the hub, so it goes in the athlete's own language like everything else
+    $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($u->ID) : 'en'; $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = $l; $W = cc_skool_w($l);
     $li = ''; foreach ($W['li'] as $x) $li .= '<li style="margin:0 0 8px">' . $x . '</li>';
     $p1 = $W['p1'] . '</p><p style="margin:0 0 16px">' . $W['p2'] . '</p><ul style="margin:0 0 16px;padding-left:20px">' . $li . '</ul><p style="margin:0 0 16px">' . $W['mem'] . '</p><p style="margin:0 0 16px">' . $W['start'];
     $small = '<p style="margin:22px 0 10px;font-size:15px;color:#454a52">' . $W['share'] . '<br><a href="' . esc_url(CC_SKOOL_URL) . '" style="color:#12a150">' . esc_html(CC_SKOOL_URL) . '</a></p>';
-    $h = cc_ath_mail_shell(sprintf($W['hi'], esc_html($u->first_name ?: $u->display_name)), $p1, esc_html($W['btn']), CC_SKOOL_URL, $small, null, 'Cigala Cycling Collective');
+    $h = cc_ath_mail_shell(sprintf($W['hi'], esc_html($u->first_name ?: $u->display_name)), $p1, esc_html($W['btn']), 'https://www.skool.com/', $small, null, 'Cigala Cycling Collective');
     $GLOBALS['cc_ath_lang'] = $keep;
     $ok = wp_mail($to ?: $u->user_email, ($to ? 'TEST · ' : '') . $W['subj'], $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
     return $ok ? ['sent' => true, 'to' => $to ?: $u->user_email] : new WP_Error('mail', 'wp_mail failed');
@@ -515,7 +515,7 @@ add_action('rest_api_init', function () {
 add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     if (!$coach || !$view || !get_post_meta($view, 'cc_skool_due', true) || get_post_meta($view, 'cc_skool_sent', true)) return $html;
     $uid = (int) get_post_meta($view, 'cc_user', true); $u = $uid ? get_userdata($uid) : null; if (!$u) return $html;
-    return $html . '<div class="sk-card"><p><b>Skool</b><span>Invite <b>' . esc_html($u->user_email) . '</b> to the Cigala Cycling Collective on Skool, then tap the button: your community welcome email goes to ' . esc_html($u->first_name ?: $u->display_name) . ' (Italian for Italian athletes, English for everyone else).</span></p>'
+    return $html . '<div class="sk-card"><p><b>Skool</b><span>Invite <b>' . esc_html($u->user_email) . '</b> to the Cigala Cycling Collective on Skool, then tap the button: your community welcome email goes to ' . esc_html($u->first_name ?: $u->display_name) . ' (in their language).</span></p>'
         . '<button type="button" class="btn btn-ghost sk-copy" data-email="' . esc_attr($u->user_email) . '" onclick="var b=this;navigator.clipboard&&navigator.clipboard.writeText(b.dataset.email).then(function(){b.textContent=\'✓ Copied\';setTimeout(function(){b.textContent=\'Copy email\';},2000);});">Copy email</button>'
         . '<a class="btn btn-ghost" href="' . esc_url(CC_SKOOL_URL) . '" target="_blank" rel="noopener">Open Skool</a><button type="button" class="btn btn-go sk-go" data-page="' . (int) $view . '" data-api="' . esc_url(rest_url('cc/v1/skool-sent')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '">Skool invite sent: email them</button><span class="sk-m" role="status"></span></div>'
         . '<style>html .cc .sk-card{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(43,212,122,.35);background:rgba(18,161,80,.08)}html .cc .sk-card p{margin:0;flex:1 1 260px;font-size:15px;color:#d0d6e0}html .cc .sk-card p>b{display:block;color:#fff;font-size:16px}html .cc .sk-card .btn{width:auto;margin:0}html .cc .sk-m{flex-basis:100%;font-size:15px;color:#2bd47a;font-weight:600}html .cc .sk-m:empty{display:none}</style>'
