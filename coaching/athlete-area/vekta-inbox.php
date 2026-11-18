@@ -313,6 +313,7 @@ add_action('init', function () { if (!wp_next_scheduled('cc_vx_mail_tick')) wp_s
 // Matteo 18 Nov: the switch lives in the settings gear (push.php), under Notifications, not in the bell
 add_filter('cc_settings_notify', function ($html, $uid, $coach) {
     if ($coach) return $html;
+    if (function_exists('cc_ath_page_of') && function_exists('cc_ath_tp') && cc_ath_tp(cc_ath_page_of($uid))) return $html;   // TrainingPeaks athletes never see Vekta
     $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en'; $on = !get_user_meta($uid, 'cc_vx_mail_off', true);
     return $html . '<label class="bell-opt"><input type="checkbox"' . ($on ? ' checked' : '') . ' data-api="' . esc_url(rest_url('cc/v1/vx-mail')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '"><span><b>' . esc_html(cc_vx_mail_w('opt', $l)) . '</b><small>' . esc_html(cc_vx_mail_w('optc', $l)) . '</small></span></label>'
         . '<style>html body .bell-opt{display:flex;align-items:flex-start;gap:10px;margin:0;padding:8px 0;cursor:pointer}html body .bell-opt input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:#12a150}'
