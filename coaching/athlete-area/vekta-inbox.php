@@ -238,7 +238,9 @@ add_action('rest_api_init', function () {
         if ($notify && function_exists('cc_push_user') && ($uid = (int) get_post_meta((int) $notify['page'], 'cc_user', true))) {
             $T = ['en' => 'Matteo replied to your workout', 'it' => 'Matteo ha risposto al tuo allenamento', 'pt' => 'O Matteo respondeu ao teu treino', 'sl' => 'Matteo je odgovoril na tvoj trening'];
             $l = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en';
-            cc_push_user($uid, $T[$l] ?? $T['en'], wp_trim_words($notify['text'], 20), 'https://app.joinvekta.com/me/calendar', 'cc-vx-' . $notify['activity']);
+            // Matteo 18 Nov: open that exact session (athlete link format he gave: /me/activity/<id>/overview); calendar only if the id is missing
+            $go = !empty($notify['activity']) ? 'https://app.joinvekta.com/me/activity/' . rawurlencode($notify['activity']) . '/overview' : 'https://app.joinvekta.com/me/calendar';
+            cc_push_user($uid, $T[$l] ?? $T['en'], wp_trim_words($notify['text'], 20), $go, 'cc-vx-' . $notify['activity']);
         }
         return ['ok' => $hit];
     }]);
