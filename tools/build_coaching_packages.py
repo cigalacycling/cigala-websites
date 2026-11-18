@@ -155,7 +155,14 @@ HUB_T = {
         ('Race-day plan', 'Pacing climb by climb, fuelling and a predicted finish time.')],
     view='View example →', alt_ex='Example {t} in the Cigala Athlete Hub (made-up athlete)',
     alt_desk='The Cigala Athlete Hub on a laptop: welcome, season plan and reports', alt_phone='The Cigala Athlete Hub on a phone: new reports from the coach',
-    note='Examples with a made-up athlete. Your own hub shows your own plan and reports.'),
+    note='Examples with a made-up athlete. Your own hub shows your own plan and reports.',
+    inside='What’s inside', exh='Example reports',
+    tour=[('reports', 'Your reports', 'Progress reports, race-day plans and reviews from me, each with a “New” badge.'),
+          ('availability', 'Your week', 'Set your usual week and any changes, and I plan your training around your life.'),
+          ('goals', 'Goals &amp; events', 'Your races and goals in one place. Add a route and you get a race-day plan.'),
+          ('note', 'Talk to me', 'Leave me a note or a voice message about how your week is going.')],
+    chips=['Season plan', 'Training library', 'Free calculators', 'Nutrition guides', 'Works like an app on your phone'],
+    alt_hero='The Cigala Athlete Hub on a laptop (season plan) and on a phone (welcome screen)', alt_tour='The Cigala Athlete Hub on a phone: {t}'),
  'it': dict(eb='Incluso in Avanzato e Premium', h='LA TUA AREA ATLETA PERSONALE',
     p='Ogni atleta Avanzato e Premium ha un’area online privata, sul telefono e sul computer: il tuo piano di stagione, i tuoi report e tutto ciò che ti serve da me, in un unico posto.',
     pts=[('Il tuo piano di stagione', 'I blocchi, le tue gare e i tuoi obiettivi in una sola pagina, aggiornati ogni volta che il piano cambia.'),
@@ -167,7 +174,14 @@ HUB_T = {
         ('Piano gara', 'Ritmo salita per salita, alimentazione e tempo finale previsto.')],
     view='Vedi l’esempio →', alt_ex='Esempio di {t} nell’area atleta Cigala (atleta inventato)',
     alt_desk='L’area atleta Cigala sul computer: benvenuto, piano di stagione e report', alt_phone='L’area atleta Cigala sul telefono: nuovi report dal coach',
-    note='Esempi con un atleta inventato. Nella tua area trovi il tuo piano e i tuoi report.'),
+    note='Esempi con un atleta inventato. Nella tua area trovi il tuo piano e i tuoi report.',
+    inside='Cosa trovi dentro', exh='Report di esempio',
+    tour=[('reports', 'I tuoi report', 'Report sui progressi, piani gara e revisioni, ognuno con il badge “Nuovo”.'),
+          ('availability', 'La tua settimana', 'Imposta la tua settimana tipo e i cambi: organizzo gli allenamenti intorno alla tua vita.'),
+          ('goals', 'Obiettivi e gare', 'Le tue gare e i tuoi obiettivi in un unico posto. Aggiungi il percorso e ricevi il piano gara.'),
+          ('note', 'Parla con me', 'Lasciami una nota o un messaggio vocale su come va la settimana.')],
+    chips=['Piano di stagione', 'Biblioteca di allenamento', 'Calcolatori gratuiti', 'Guide alimentari', 'Funziona come un’app sul telefono'],
+    alt_hero='L’area atleta Cigala sul computer (piano di stagione) e sul telefono (schermata di benvenuto)', alt_tour='L’area atleta Cigala sul telefono: {t}'),
 }
 HUB_ICONS = [_hic('<path d="m3 20 6-10 4 6 3-4 5 8z"/>'), _hic('<path d="M4 19V5m0 14h16M8 15l4-4 3 3 5-6"/>'),
              _hic('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/>'), _hic('<path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h6"/>')]
@@ -178,6 +192,22 @@ def hub_section(lang='en'):
     ex = ''.join(f'<a class="hb-ex" href="{conv(_HX + pre + f + ".png", "hub-report-v3-" + pre + f)}" target="_blank" rel="noopener">'
                  f'<span class="hb-shot"><img src="{conv(_HX + pre + f + ".png", "hub-report-v3-" + pre + f + "-thumb", 900)}" alt="{T["alt_ex"].format(t=t.lower())}" loading="lazy" width="900" height="760"></span>'
                  f'<b>{t}</b><small>{d}</small><i>{T["view"]}</i></a>' for f, (t, d) in zip(HUB_FILES, T['ex']))
+    _SC = 'coaching/athlete-area/showcase/' + pre
+    if os.path.exists(ROOT + _SC + 'hero.png'):   # v2 (Matteo 18 Nov: "nicer pictures of what is inside, on a phone and a laptop")
+        tour = ''.join(f'<figure class="hb-tp"><img src="{conv(_SC + "phone-" + k + ".png", "hub-tour-" + pre + k, 520)}" alt="{T["alt_tour"].format(t=t)}" loading="lazy" width="520" height="1080">'
+                       f'<figcaption><b>{t}</b>{d}</figcaption></figure>' for k, t, d in T['tour'])
+        chips = ''.join(f'<span>{c}</span>' for c in T['chips'])
+        return f'''<div class="hb hb2">
+      <div class="hb-head"><div class="eyebrow">{T['eb']}</div><h3 class="hb-h">{T['h']}</h3><div class="bar"></div>
+        <p>{T['p']}</p></div>
+      <img class="hb-hero" src="{conv(_SC + 'hero.png', 'hub-hero-' + pre.rstrip('-') if pre else 'hub-hero', 2200)}" alt="{T['alt_hero']}" loading="lazy" width="2200" height="1400">
+      <p class="hb-sub">{T['inside']}</p>
+      <div class="hb-tour">{tour}</div>
+      <div class="hb-chips">{chips}</div>
+      <p class="hb-sub">{T['exh']}</p>
+      <div class="hb-exs">{ex}</div>
+      <p class="hb-note">{T['note']}</p>
+    </div>'''
     return f'''<div class="hb">
       <div class="hb-head"><div class="eyebrow">{T['eb']}</div><h3 class="hb-h">{T['h']}</h3><div class="bar"></div>
         <p>{T['p']}</p></div>
@@ -656,6 +686,19 @@ PCSS = '''<style>
 .hb-ex small { color: var(--text-3); font-size: 14px; padding: 0 4px; }
 .hb-ex i { font-style: normal; color: var(--green-text); font-weight: 600; font-size: 14px; padding: 4px 4px 0; }
 .hb-note { margin: 14px 0 0; color: var(--text-3); font-size: 13px; }
+.hb2 .hb-hero { display: block; width: 100%; height: auto; margin: 26px 0 8px; }
+.hb-sub { margin: 34px 0 16px; font: 600 13px/1.2 var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--green-text); }
+.hb-tour { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.hb-tp { margin: 0; display: grid; gap: 10px; align-content: start; }
+.hb-tp img { display: block; width: 100%; height: auto; margin-bottom: -38px; transition: transform .3s; }
+.hb-tp:hover img { transform: translateY(-4px); }
+.hb-tp figcaption { position: relative; display: grid; gap: 4px; color: var(--text-2); font-size: 14.5px; font-style: normal; padding: 0 14px; }
+.hb-tp figcaption b { color: var(--text); font-size: 16px; }
+.hb-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.hb-chips span { padding: 8px 14px; border: 1px solid var(--border); border-radius: 999px; background: rgba(255,255,255,.03); color: var(--text-2); font-size: 13.5px; }
+.hb-chips span::before { content: "✓"; color: var(--green-text); font-weight: 700; margin-right: 7px; }
+@media (max-width: 900px) { .hb-tour { grid-template-columns: repeat(4, minmax(220px, 1fr)); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; margin-right: -16px; padding-right: 16px; } .hb-tp { scroll-snap-align: start; } }
+@media (max-width: 560px) { .hb-tour { grid-template-columns: repeat(4, minmax(200px, 72%)); } }
 @media (max-width: 900px) { .hb-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } .hb-exs { grid-template-columns: minmax(0, 1fr); } .hb-devices { padding: 0 40px 30px 0; } }
 </style>'''
 PJS = '''<script>

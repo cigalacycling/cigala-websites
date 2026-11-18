@@ -2368,5 +2368,30 @@
   "id": 7592,
   "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-report-v3-it-race-plan.webp",
   "alt": "Esempio di piano gara nell’area atleta Cigala (atleta inventato)"
+ },
+ "img/hub-hero.webp": {
+  "id": 7627,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-hero.webp",
+  "alt": "The Cigala Athlete Hub on a laptop (season plan) and on a phone (welcome screen)"
+ },
+ "img/hub-tour-reports.webp": {
+  "id": 7628,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-tour-reports.webp",
+  "alt": "The Cigala Athlete Hub on a phone: Your reports"
+ },
+ "img/hub-tour-availability.webp": {
+  "id": 7629,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-tour-availability.webp",
+  "alt": "The Cigala Athlete Hub on a phone: Your week"
+ },
+ "img/hub-tour-goals.webp": {
+  "id": 7630,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-tour-goals.webp",
+  "alt": "The Cigala Athlete Hub on a phone: Goals & events"
+ },
+ "img/hub-tour-note.webp": {
+  "id": 7631,
+  "url": "https://staging.coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-coaching-hub-tour-note.webp",
+  "alt": "The Cigala Athlete Hub on a phone: Talk to me"
  }
 }
