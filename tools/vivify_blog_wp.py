@@ -43,7 +43,6 @@ header = re.search(r'<a class="skip".*?</header>', s, re.S).group(0)
 footer = re.search(r'<footer class="site">.*?</footer>', s, re.S).group(0)
 hero = re.search(r'<section class="page-hero".*?</section>', s, re.S).group(0)
 filters = re.search(r'<div class="filters".*?</div>', s, re.S).group(0)
-logo = next(v['url'] for k, v in W.MEDIA.items() if k.startswith(B.LOGO))
 CSS = W.CSS + """
 /* Blog page: WordPress Query Loop styled like the Vivify cards */
 .vv-blog .wp-block-post-template{list-style:none;margin:0;padding:0}
@@ -52,7 +51,7 @@ CSS = W.CSS + """
 .vv-blog .wp-block-post-featured-image{margin:0;aspect-ratio:16/10;overflow:hidden;background:var(--teal)}
 .vv-blog .wp-block-post-featured-image img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .vv-blog .wp-block-post:hover .wp-block-post-featured-image img{transform:scale(1.05)}
-.vv-blog .wp-block-post:not(:has(.wp-block-post-featured-image))::before{content:"";display:block;aspect-ratio:16/10;background:var(--teal) url(LOGO) center/90px no-repeat}
+.vv-blog .wp-block-post:not(:has(.wp-block-post-featured-image))::before{content:"";display:block;aspect-ratio:16/10;background:var(--teal)}   /* Marine 19 Nov: no old logo as placeholder */
 .vv-blog .tx{padding:20px 22px 24px;display:flex;flex-direction:column;flex:1;gap:0}
 .vv-blog .wp-block-post-title{font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:21px;line-height:1.18;margin:0 0 10px;color:var(--text)}
 .vv-blog .wp-block-post-title a{color:inherit;text-decoration:none}
@@ -61,7 +60,7 @@ CSS = W.CSS + """
 .vv-blog .wp-block-post-excerpt__excerpt{font-size:14px;color:var(--text-2);margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-align:justify;hyphens:auto}
 .vv-blog .wp-block-post-excerpt__more-text{display:none}
 .vv-blog .wp-block-post-date{margin-top:auto;font-size:12px;color:var(--text-3);letter-spacing:.06em;text-transform:uppercase}
-""".replace('LOGO', logo)
+"""
 cats = [(n, rx) for n, rx in B.CATS]
 script = ("<script>(function(){var C=" + json.dumps([rx for _, rx in cats]) + ";"
           "document.querySelectorAll('.vv-blog .wp-block-post').forEach(function(li){var t=(li.querySelector('.wp-block-post-title')||{}).textContent||'';"

@@ -187,3 +187,9 @@ The board PNGs in `vivify/board/` are gitignored.
 ## SEO extras (19 Nov)
 - Code Snippets #7 "English / French language tags (hreflang)": French pages get lang="fr-FR"; each EN/FR pair links both ways (+ x-default EN). Page IDs EN=>FR: 64=>372, 65=>373, 80=>374, 69=>375, 68=>376. Add new pairs there when more pages are translated (Italian: add hreflang="it").
 - Go-live: check https://www.vivifysports.com/robots.txt. The staging host serves "User-agent: Googlebot / Disallow: /" (Hostinger temporary domain); the real domain must not.
+
+## 19 Nov design round 2
+- Every blog post has a photo (3 CC0 photos for posts that had none: NO_IMG_FIX in build_vivify.py); no old square logo as placeholder anywhere (it had a white line on the right).
+- Site icon (browser tab): V mark on dark teal, vivify/site-icon-512.png, set as WordPress site_icon.
+- E-book page: new cover + two inside pages (alts of the two live images kept). Workshops, Contact, FAQ: photo headers. Free call page: Marine's photo, 3 steps, who it is for.
+- Background: flowing wavy lines (our own SVG), whole site + feature box + CTA panels.

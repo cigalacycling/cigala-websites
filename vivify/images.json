@@ -1093,5 +1093,79 @@
    1440,
    1181
   ]
+ },
+ "blog-post-exercise-fatigue": {
+  "webp": "webp/blog-post-exercise-fatigue.webp",
+  "alts": [
+   "Mountain bikers sitting and resting after a long ride"
+  ],
+  "size": [
+   1024,
+   683
+  ],
+  "credit": "ov pdm makeitkenya https://www.flickr.com/photos/132740829@N02/22703397592"
+ },
+ "blog-intermittent-fasting": {
+  "webp": "webp/blog-intermittent-fasting.webp",
+  "alts": [
+   "Vintage alarm clock, timing meals for intermittent fasting"
+  ],
+  "size": [
+   1024,
+   762
+  ],
+  "credit": "ov cc0 Image Catalog https://www.flickr.com/photos/132795455@N08/20979939428"
+ },
+ "blog-tart-cherry-recovery": {
+  "webp": "webp/blog-tart-cherry-recovery.webp",
+  "alts": [
+   "Glass of dark cherries, a natural recovery food for athletes"
+  ],
+  "size": [
+   1440,
+   1920
+  ],
+  "credit": "wp cc0  https://wordpress.org/photos/photo/915685c7e4/"
+ },
+ "workshop-nutrition-talk": {
+  "webp": "webp/workshop-nutrition-talk.webp",
+  "alts": [
+   "Speaker holding an apple during a nutrition talk"
+  ],
+  "size": [
+   1024,
+   826
+  ],
+  "credit": "ov pdm USDAgov https://www.flickr.com/photos/41284017@N08/32255704304"
+ },
+ "ebook-cover": {
+  "webp": "webp/ebook-cover.webp",
+  "alts": [
+   "Cover of the Vivify Sports e-book Breakfasts to Ignite Your Potential"
+  ],
+  "size": [
+   1075,
+   1521
+  ]
+ },
+ "ebook-page-raspberry-chia": {
+  "webp": "webp/ebook-page-raspberry-chia.webp",
+  "alts": [
+   "Raspberry Chia Seed pudding"
+  ],
+  "size": [
+   1075,
+   1521
+  ]
+ },
+ "ebook-page-blueberry-pancakes": {
+  "webp": "webp/ebook-page-blueberry-pancakes.webp",
+  "alts": [
+   "Blueberry Buttermilk Pancakes"
+  ],
+  "size": [
+   1075,
+   1521
+  ]
  }
 }

@@ -36,7 +36,7 @@ def build(b):
             p = allp.get(s)
             if not p:
                 continue
-            ph = img(p['img'], p['title'], w=640, h=400) if p['img'] else img(b.LOGO, b.LOGO_ALT, w=90, h=85, style='margin:auto;padding-top:40px')
+            ph = img(p['img'], p['title'], w=640, h=400) if p['img'] else ''
             cards += f'<a class="bcard panel" href="{p["url"]}"><div class="ph">{ph}</div><div class="tx"><h3 class="h3" style="font-size:19px;margin-bottom:10px">{e(p["title"])}</h3><div class="meta"><span>{e(p["read"])}</span></div></div></a>'
         return f'<section style="padding-top:24px"><div class="wrap">{head("From the blog", title, tag=None, center=True)}<div class="bgrid" style="margin-top:28px">{cards}</div></div></section>'
 
@@ -348,7 +348,8 @@ def build(b):
             '<p>Yes, without crash diets. Clients have lost weight while gaining energy and power. The focus is on sustainable habits and fuelling your training properly.</p>')]
     faq_html, faq_schema = faq_block(qas, 'Vivify Sports', 'Your questions')
     body = f"""
-{hero('Questions &amp; answers', 'Sports Nutrition FAQ', 'Everything you need to know before working with Vivify Sports. Can’t find your answer? Get in touch.', btn=('Contact Marine', 'contact.html'))}
+{hero('Questions &amp; answers', 'Sports Nutrition FAQ', 'Everything you need to know before working with Vivify Sports. Can’t find your answer? Get in touch.', photo='0e1488-94c8f6c2bc35403c89535101d7f', alt='Cyclist drinking from a bottle during a race', btn=('Contact Marine', 'contact.html'))}
+<style>.hero img{{object-position:50% 15%}}</style>
 {faq_html.replace('style="padding-top:24px"', 'style="padding-top:0"', 1)}
 {cta('Still have a question?', 'Book a free 30-minute call and ask Marine directly.', 'Book your free call', DISC)}"""
     page('faq.html', body, [faq_schema])
