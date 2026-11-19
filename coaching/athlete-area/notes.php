@@ -90,7 +90,7 @@ function cc_nt_delbtn($pid, $at, $ri = -1) {
 function cc_nt_item($n, $forCoach, $pid = 0) {
     $who = $forCoach && $pid ? get_the_title($pid) : '';
     $byMe = ($n['from'] ?? '') === 'coach';   // a message Matteo started himself (Matteo 18 Nov)
-    $o = '<div class="nt-item' . ($byMe ? ' nt-bym' : '') . '"' . ($pid ? ' data-lp="' . (int) $pid . '" data-la="' . (int) $n['at'] . '" data-lr="-1"' : '') . '>' . ($byMe ? '<span class="nt-rh"><img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt=""><b>' . esc_html($forCoach ? 'Your message' : cc_nt_w('from_m')) . '</b></span>' : '') . '<small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at'])) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), date_i18n('j M', strtotime($n['day'] . ' 12:00')))) : '') . '</small>'
+    $o = '<div class="nt-item' . ($byMe ? ' nt-bym' : '') . '"' . ($pid ? ' id="nt-' . (int) $pid . '-' . (int) $n['at'] . '"' : '') . ($pid ? ' data-lp="' . (int) $pid . '" data-la="' . (int) $n['at'] . '" data-lr="-1"' : '') . '>' . ($byMe ? '<span class="nt-rh"><img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt=""><b>' . esc_html($forCoach ? 'Your message' : cc_nt_w('from_m')) . '</b></span>' : '') . '<small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at'])) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), date_i18n('j M', strtotime($n['day'] . ' 12:00')))) : '') . '</small>'
        . ($pid ? cc_nt_delbtn($pid, $n['at']) : '');
     if (($u = cc_nt_url($n['audio'] ?? 0))) $o .= cc_nt_player($u);
     if (($n['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($n['text'])) . '</p>';
@@ -140,9 +140,15 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
 }, 15, 3);
 function cc_nt_css() {
     static $done = false; if ($done) return ''; $done = true;
-    return '<style>html .cc .nt-box{display:grid;gap:12px}html .cc .nt-box textarea{width:100%;min-height:96px;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
+    // Matteo 19 Nov: a notification opens the exact note (#nt-<page>-<time>): scrolled to the middle of the screen and highlighted
+    $jump = '<style>html .cc .nt-item.nt-hl{box-shadow:0 0 0 3px rgba(43,212,122,.55);border-radius:12px;transition:box-shadow .4s}</style>'
+        . '<script>(function(){function go(){var h=location.hash;if(h.indexOf("#nt-")!==0)return;var el=document.getElementById(h.slice(1));if(!el)return;'
+        . 'var d=el.closest("details");if(d)d.open=true;el.scrollIntoView({block:"center"});el.classList.add("nt-hl");setTimeout(function(){el.classList.remove("nt-hl");},5000);}'
+        . 'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){go();setTimeout(go,700);});else{go();setTimeout(go,700);}addEventListener("hashchange",go);})();</script>';
+    return $jump . '<style>html .cc .nt-box{display:grid;gap:12px}html .cc .nt-box textarea{width:100%;min-height:96px;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
         . 'html .cc .nt-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}html .cc .nt-rec{display:inline-flex;align-items:center;gap:10px}'
-        . 'html .cc .nt-rec .nt-mic{display:inline-block!important}html .cc .nt-rec.on .nt-mic{stroke:#fff}'   // Matteo 17 Nov: dark button as before, only the microphone in greenhtml .cc .nt-rec .nt-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}'
+        // Matteo 17 Nov: dark button as before, only the microphone in green
+        . 'html .cc .nt-rec .nt-mic{display:inline-block!important}html .cc .nt-rec.on .nt-mic{stroke:#fff}html .cc .nt-rec .nt-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}'
         . 'html .cc .nt-rec.on{background:#ca212a!important;border-color:#ca212a!important;color:#fff!important;animation:ntpulse 1.2s ease-in-out infinite}@keyframes ntpulse{0%,100%{box-shadow:0 0 0 0 rgba(202,33,42,.6)}50%{box-shadow:0 0 0 8px rgba(202,33,42,0)}}'
         . 'html .cc .nt-st{font-size:15px;color:#d0d6e0}html .cc .nt-st button{background:none;border:0;color:#ff7a73;text-decoration:underline;font:inherit;cursor:pointer;padding:0;margin-left:8px}'
         . 'html .cc .nt-day{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}html .cc .nt-day input{font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;max-width:220px}'
@@ -289,7 +295,7 @@ add_action('rest_api_init', function () {
             $to = strpos(home_url(), '//staging.') !== false ? (string) get_option('cc_staging_notify', '') : $u->user_email;   // staging: never an athlete
             $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), esc_html($u->first_name ?: $u->display_name)), esc_html(cc_nt_w('new_p')), esc_html(cc_nt_w('mail_btn')), home_url('/' . CC_ATH_SLUG . '/') . '#notes');
             if (is_email($to)) wp_mail($to, cc_nt_w('new_subj'), $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
-            if (function_exists('cc_push_user')) cc_push_user($uid, cc_nt_w('new_subj'), $text !== '' ? wp_trim_words($text, 18) : '🎙 ' . cc_nt_w('voice'), home_url('/' . CC_ATH_SLUG . '/') . '#notes', 'cc-msg');
+            if (function_exists('cc_push_user')) cc_push_user($uid, cc_nt_w('new_subj'), $text !== '' ? wp_trim_words($text, 18) : '🎙 ' . cc_nt_w('voice'), home_url('/' . CC_ATH_SLUG . '/') . '#nt-' . $pid . '-' . end($ns)['at'], 'cc-msg');
             $GLOBALS['cc_ath_lang'] = $keep;
         }
         return ['ok' => true];
@@ -319,7 +325,7 @@ function cc_nt_save(WP_REST_Request $r) {
     $n = ['at' => time(), 'text' => $text, 'tr' => $aid ? $tr : '', 'audio' => (int) $aid, 'day' => $day ?: null, 'replies' => []]; $ns[] = $n;
     cc_nt_put($pid, $ns); update_post_meta($pid, 'cc_notes_updated', time());
     cc_nt_mail($pid, $uid, $n);
-    if (function_exists('cc_push_coaches')) cc_push_coaches('Note from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : ($tr !== '' ? '🎙 ' . wp_trim_words($tr, 18) : '🎙 Voice note'), add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')), 'cc-note', $pid);
+    if (function_exists('cc_push_coaches')) cc_push_coaches('Note from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : ($tr !== '' ? '🎙 ' . wp_trim_words($tr, 18) : '🎙 Voice note'), add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')) . '#nt-' . $pid . '-' . $n['at'], 'cc-note', $pid);
     return ['ok' => true];
 }
 function cc_nt_delete(WP_REST_Request $r) {   // a note (ri -1) or one reply; athletes only their own, Matteo anything; the recordings go too
@@ -348,7 +354,7 @@ function cc_nt_reply(WP_REST_Request $r) {   // a reply in the thread: Matteo (s
         $tr = cc_av_str($r->get_param('transcript'), 2000);
         $ns[$i]['replies'][] = ['at' => time(), 'text' => $text, 'audio' => (int) $aid, 'from' => 'athlete', 'tr' => $aid ? $tr : '']; cc_nt_put($pid, $ns); update_post_meta($pid, 'cc_notes_updated', time());
         cc_nt_mail($pid, get_current_user_id(), ['text' => $text, 'tr' => $aid ? $tr : '', 'audio' => (int) $aid, 'day' => null], true);
-        if (function_exists('cc_push_coaches')) cc_push_coaches('Reply from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : '🎙 Voice note', add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')), 'cc-note', $pid);
+        if (function_exists('cc_push_coaches')) cc_push_coaches('Reply from ' . get_the_title($pid), $text !== '' ? wp_trim_words($text, 18) : '🎙 Voice note', add_query_arg('board', 'notes', home_url('/' . CC_ATH_SLUG . '/')) . '#nt-' . $pid . '-' . $at, 'cc-note', $pid);
         return ['ok' => true];
     }
     $ns[$i]['replies'][] = ['at' => time(), 'text' => $text, 'audio' => (int) $aid, 'from' => 'coach']; cc_nt_put($pid, $ns);
@@ -359,7 +365,7 @@ function cc_nt_reply(WP_REST_Request $r) {   // a reply in the thread: Matteo (s
         $h = cc_ath_mail_shell(sprintf(cc_L('Hi %s,', 'Ciao %s,'), esc_html($u->first_name ?: $u->display_name)), esc_html(cc_nt_w('mail_p')), esc_html(cc_nt_w('mail_btn')), home_url('/' . CC_ATH_SLUG . '/') . '#notes');
         if (is_email($to)) wp_mail($to, cc_nt_w('mail_subj'), $h, ['Content-Type: text/html; charset=UTF-8', 'From: Matteo Cigala <coaching@cigalacycling.com>', 'Reply-To: Matteo Cigala <matteo@cigalacycling.com>']);
         // and on their phone, if they turned notifications on (push.php)
-        if (function_exists('cc_push_user')) cc_push_user($uid, cc_nt_w('mail_subj'), $text !== '' ? wp_trim_words($text, 18) : '🎙 ' . cc_nt_w('voice'), home_url('/' . CC_ATH_SLUG . '/') . '#notes', 'cc-reply');
+        if (function_exists('cc_push_user')) cc_push_user($uid, cc_nt_w('mail_subj'), $text !== '' ? wp_trim_words($text, 18) : '🎙 ' . cc_nt_w('voice'), home_url('/' . CC_ATH_SLUG . '/') . '#nt-' . $pid . '-' . $at, 'cc-reply');
         $GLOBALS['cc_ath_lang'] = $keep;
     }
     return ['ok' => true];

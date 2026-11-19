@@ -257,6 +257,7 @@ function cc_fd_item($it) {
     $na = str_replace(',', '.', (string) ($it['na'] ?? ''));
     if ($na !== '' && is_numeric($na) && (float) $na >= 0) $o['na'] = round(min((float) $na, 50000), 1);
     if (in_array($it['st'] ?? '', ['r', 'c'], true)) $o['st'] = $it['st'];
+    if (preg_match('/^[a-z0-9]{4,20}$/', (string) ($it['pl'] ?? ''))) $o['pl'] = $it['pl'];   // mealplan.php: logged from Marine's planned item
     return $o['n'] === '' ? null : $o;
 }
 /* what the client sends for a day: the slots only (photos are set by their own route, replies by theirs) */
@@ -336,7 +337,12 @@ function cc_fd_mw($fem = false) {
     $o['lang'] = $GLOBALS['cc_ath_lang'] ?? 'en'; return $o;
 }
 /* iron screening (female athletes, gender from Vekta; never for TrainingPeaks athletes or unknown gender) */
-function cc_fd_female($pid, $vx = null) { if (cc_ath_tp($pid)) return false; $vx = $vx ?? cc_fd_vx($pid); return ($vx['sex'] ?? '') === 'f'; }
+/* Matteo 19 Nov: no Vekta gender (TrainingPeaks athletes, or not sent yet) -> the rider form's Gender answer (post meta cc_profile) */
+function cc_fd_female($pid, $vx = null) {
+    $vx = cc_ath_tp($pid) ? [] : ($vx ?? cc_fd_vx($pid)); $s = (string) ($vx['sex'] ?? '');
+    if ($s === '') { $a = json_decode((string) get_post_meta((int) $pid, 'cc_profile', true), true); $s = is_array($a) ? (string) ($a['gender'] ?? '') : ''; }
+    return $s === 'f';
+}
 /* "My cycle" (opt-in, female athletes only; Matteo 19 Nov 2026): post meta cc_fd_cycle = {on, p: [[start, end|null], ...]}.
    Never in emails or notifications; deleted with the diary when coaching ends, or by the athlete at any time. */
 function cc_fd_cycle($pid) {
@@ -450,7 +456,9 @@ function cc_fd_athlete($pid) {
             'foods' => esc_url_raw(add_query_arg('v', get_option('cc_food_db_v', '0'), rest_url('cc/v1/foods'))),
             'u' => ['day' => $u('food-day'), 'save' => $u('food-day'), 'photo' => $u('food-photo'), 'photodel' => $u('food-photo-del'), 'mine' => $u('food-mine'), 'kg' => $u('food-kg'), 'reply' => $u('food-reply'), 'fav' => $u('food-fav'), 'cycle' => $u('food-cycle'), 'seen' => $u('food-seen')]];
     return '<section class="ath-s fd" id="food"><h2>' . cc_ath_icon('food', 'ath-hic') . esc_html(cc_fd_w('title')) . '</h2><p class="fd-lede">' . esc_html(cc_fd_w('lede')) . '</p>'
-        . '<div class="fd-app" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"><div class="fd-day"></div><div class="fd-trbox"></div><div class="fd-cycbox"></div><div class="fd-minebox"></div><div class="fd-thbox"></div></div></section>' . cc_fd_css() . cc_fd_sjs() . cc_fd_js();
+        . '<div class="fd-app" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"><div class="fd-day"></div><div class="fd-trbox"></div><div class="fd-cycbox"></div><div class="fd-minebox"></div><div class="fd-thbox"></div></div></section>' . cc_fd_css() . cc_fd_sjs() . cc_fd_js()
+        . apply_filters('cc_fd_after_app', '', (int) $pid, $date);   // mealplan.php: Marine's planned meals in the diary
+
 }
 function cc_fd_coach_card($pid) {
     $on = cc_fd_on($pid); $days = $on ? cc_fd_days($pid) : [];
@@ -571,6 +579,7 @@ function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer, $mine = [], $fem = 
     $o = str_replace('%IRONTAG%', ($fem && $has && $ir['low']) ? ' <span class="fd-lowfe">Low iron</span>' : '', $o);
     if (!$tp && $vx) $o .= '<div class="fd-vx">' . cc_fd_training_html($vx, $date, 'Training this day') . cc_fd_training_html($vx, $next, 'Training next day')
         . cc_fd_notes_html($vx, $date, 'Your nutrition note this day') . cc_fd_notes_html($vx, $next, 'Your nutrition note next day') . '</div>';
+    $o .= apply_filters('cc_fd_review_day_extra', '', (int) $pid, $date, $viewer);   // mealplan.php: planned vs eaten
     return $o . '<div class="fd-th">' . cc_fd_thread_html($pid, $date, $d['r'] ?? [], $viewer) . '</div></article>';
 }
 function cc_fd_week_ahead($vx, $pid = 0, $viewer = '') {
@@ -601,6 +610,7 @@ function cc_fd_review($pid, $viewer) {
         if ($n >= 1) $o .= '<p class="fd-ironsum">Iron below 14 mg on <b>' . $n . '</b> of the last ' . $k . ' logged day' . ($k === 1 ? '' : 's') . ' (days with 3+ meals logged and enough iron data).</p>';
     }
     $o .= '<div class="fd-top">' . cc_fd_blood_box($pid, $viewer) . ($tp ? '' : cc_fd_trends_box($pid, $vx, $cy)) . '</div>';
+    $o .= apply_filters('cc_fd_review_plan', '', (int) $pid, $viewer);   // mealplan.php: plan the coming days
     if (!$tp && $vx) $o .= cc_fd_week_ahead($vx, $pid, $viewer);
     $t0 = strtotime(current_time('Y-m-d') . ' 12:00') - $off * 14 * DAY_IN_SECONDS;
     for ($i = 0; $i < 14; $i++) $o .= cc_fd_day_html($pid, gmdate('Y-m-d', $t0 - $i * DAY_IN_SECONDS), $vx, $tp, $kg, $viewer, $mine, $fem, $cy);
@@ -1199,11 +1209,11 @@ if(s.ask){var af=s.ask.f;return '<div class="fd-search"><div class="fd-ask"><b>'
 if(s.pick){var p=s.pick,it={k:p.k,c:p.c,p:p.p,f:p.f,g:s.g};
 return '<div class="fd-search"><div class="fd-pick"><b>'+esc(p.n)+rcb(p.st)+tag(p.mine)+'</b><label>'+esc(W.grams)+' <input type="number" class="fd-pg" inputmode="decimal" min="1" max="5000" step="1" value="'+esc(s.g)+'"></label><span class="fd-pp">'+esc(macro(it))+'</span><div class="fd-row"><button type="button" class="btn btn-go" data-act="pickadd">'+esc(W.addit)+'</button><button type="button" class="fd-link" data-act="unpick">'+esc(W.cancel)+'</button></div></div></div>';}
 return '<div class="fd-search"><p class="fd-wh">'+esc(W.weigh_h)+'</p><input type="search" class="fd-q" placeholder="'+esc(W.search)+'" value="'+esc(s.q)+'" autocomplete="off" enterkeyhint="search">'+(s.q.trim()?"":chipsHtml())+'<div class="fd-res">'+resultsHtml()+'</div><p class="fd-credit">'+esc(C.credit)+'</p><button type="button" class="fd-link" data-act="cancel" style="justify-self:start">'+esc(W.cancel)+'</button></div>';}
-function slotHtml(k,label){var s=slot(k),t=tot(s.i),open=S.open[k]!==undefined?S.open[k]:(s.i.length>0||!!s.n||!!s.phu||+s.d>0);
-var h='<details class="fd-slot" data-slot="'+k+'"'+(open?" open":"")+'><summary><span class="fd-sl">'+esc(label)+'</span><span class="fd-st" data-tt="'+k+'">'+sumTxt(s,t)+'</span></summary><div class="fd-sb">';
+function slotHtml(k,label){var s=slot(k),t=tot(s.i),open=S.open[k]!==undefined?S.open[k]:(s.i.length>0||!!s.n||!!s.phu||+s.d>0||!!(window.ccMpHas&&window.ccMpHas(S.date,k)));
+var h='<details class="fd-slot" data-slot="'+k+'"'+(open?" open":"")+'><summary><span class="fd-sl">'+esc(label)+'</span><span class="fd-st" data-tt="'+k+'">'+sumTxt(s,t)+'</span></summary><div class="fd-sb">'+(window.ccMpSlot?window.ccMpSlot(S.date,k):"");
 if(k==="bike"){var rv=C.rides&&C.rides[S.date];h+=rv>0?'<p class="fd-hint">'+esc(W.ride_rec.replace("%s",hm(rv).replace(":","h")))+'</p>':'<label class="fd-drk">'+esc(W.ride_t)+' <input type="text" inputmode="decimal" data-f="r" placeholder="2:30" value="'+esc(hm(s.r))+'" maxlength="5"></label>';}
 h+='<label class="fd-time">'+esc(W.time)+' <input type="time" data-f="t" value="'+esc(s.t||"")+'"></label>';
-if(s.i.length){h+='<ul class="fd-items">'+s.i.map(function(it,ix){return '<li'+(S.just===k+":"+ix?' class="fd-new"':'')+'><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+'</b><small data-it="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-f="g" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-star'+(isFav(it.id)?' on':'')+'" data-act="star" data-ix="'+ix+'" aria-label="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'" title="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'">'+starI(isFav(it.id))+'</button><button type="button" class="fd-x" data-act="rm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">'+XI+'</button></li>';}).join("")+'</ul>';
+if(s.i.length){h+='<ul class="fd-items">'+s.i.map(function(it,ix){return '<li'+(S.just===k+":"+ix?' class="fd-new"':'')+'><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+(window.ccMpTag?window.ccMpTag(it):"")+'</b><small data-it="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-f="g" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-star'+(isFav(it.id)?' on':'')+'" data-act="star" data-ix="'+ix+'" aria-label="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'" title="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'">'+starI(isFav(it.id))+'</button><button type="button" class="fd-x" data-act="rm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">'+XI+'</button></li>';}).join("")+'</ul>';
 h+='<p class="fd-stot" data-stot="'+k+'">'+esc(W.slot_total+": "+macroT(t))+'</p>';}
 h+='<p class="fd-sx" data-sx="'+k+'">'+sxTxt(k,s,t)+'</p><div class="fd-gg" data-gg="'+k+'">'+gaugesHtml(k,s,t)+'</div>';
 h+=(S.srch&&S.srch.ctx==="slot"&&S.srch.slot===k)?searchHtml():'<div class="fd-row"><button type="button" class="btn btn-go" data-act="add">'+esc(W.add)+'</button><button type="button" class="fd-link" data-act="copyslot">'+esc(W.copy_y)+'</button></div>';
@@ -1227,12 +1237,12 @@ return '<div class="nt-rep'+(x.from==="athlete"?" nt-rep-a":"")+'"><span class="
 return '<div class="fd-thread">'+(r.length?'<h3>'+esc(W.thread)+'</h3>'+h:"")+'<details class="nt-replyd"><summary>'+esc(r.length?W.reply:W.ask)+'</summary><div class="fd-rbox"><textarea rows="3"></textarea><button type="button" class="btn btn-go" data-act="send">'+esc(W.send_r)+'</button></div></details></div>';}
 function render(){var d=new Date(S.date+"T12:00:00"),lbl=d.toLocaleDateString(C.lang,{weekday:"long",day:"numeric",month:"long"}),isT=S.date===today();
 var h='<div class="fd-nav"><button type="button" class="fd-arrow" data-act="prev" aria-label="'+esc(W.prev)+'">‹</button><div class="fd-date"><b>'+esc(lbl)+'</b>'+(isT?'<small>'+esc(W.today)+'</small>':'<button type="button" class="fd-link" data-act="today">'+esc(W.gotoday)+'</button>')+'</div><button type="button" class="fd-arrow" data-act="next" aria-label="'+esc(W.next)+'"'+(S.date>=shift(today(),7)?" disabled":"")+'>›</button></div>';
-h='<div class="fd-stick">'+h+'<p class="fd-slim">'+slimHtml()+'</p></div><p class="fd-status" role="status"></p>';
+h='<div class="fd-stick">'+h+'<p class="fd-slim">'+slimHtml()+'</p></div><p class="fd-status" role="status"></p>'+(window.ccMpTop?window.ccMpTop(S.date):"");
 C.slots.forEach(function(sv){h+=slotHtml(sv[0],sv[1]);});
 /* Matteo 19 Nov: per-kg numbers are for Marine and the coach only; the weight box shows only when there is no Vekta weight (last 60 days) */
 var wb=C.vkg?"":'<label class="fd-kg">'+esc(W.weight_n)+' <input type="number" class="fd-kgi" inputmode="decimal" min="25" max="250" step="0.1" value="'+esc(S.kg)+'"></label>';
 h+='<div class="fd-tot"><h3>'+esc(W.day_total)+'</h3>'+(hasAny()?ringHtml(dayTot()):'')+'<div class="fd-totv">'+totV()+'</div>'+wb+'<button type="button" class="fd-link fd-copyday" data-act="copyday">'+esc(W.copy_day)+'</button></div>'+microHtml();
-root.querySelector(".fd-day").innerHTML=h;root.querySelector(".fd-thbox").innerHTML=threadHtml();S.just=null;renderMine();renderCyc();microRefresh();watchThread();}
+root.querySelector(".fd-day").innerHTML=h;root.querySelector(".fd-thbox").innerHTML=threadHtml();S.just=null;renderMine();renderCyc();microRefresh();watchThread();if(window.ccMpAfter){window.ccMpAfter(S.date);}}
 function refreshNums(){C.slots.forEach(function(sv){var k=sv[0],s=slot(k),t=tot(s.i),el=root.querySelector('[data-tt="'+k+'"]');if(el){el.innerHTML=sumTxt(s,t);}
 var st=root.querySelector('[data-stot="'+k+'"]');if(st){st.textContent=W.slot_total+": "+macroT(t);}
 var sl=root.querySelector('.fd-slot[data-slot="'+k+'"]');if(sl){s.i.forEach(function(it,ix){var sm=sl.querySelector('[data-it="'+ix+'"]');if(sm){sm.textContent=macro(it);}});}});
@@ -1323,6 +1333,7 @@ if(fi.size>10485760||!/^image\//.test(fi.type||"")&&!/\.(heic|heif|jpe?g|png|web
 status(W.uploading);flush().then(function(){var fd=new FormData();fd.append("file",fi);fd.append("date",S.date);fd.append("slot",k);fd.append("page",C.page);return send(C.u.photo,fd);})
 .then(function(j){var s=slot(k);s.ph=j.id;s.phu=j.url;S.open[k]=true;render();status(W.saved);}).catch(function(){status(W.err,true);});});
 if(C.trends){root.querySelector(".fd-trbox").innerHTML='<details class="fd-trd"'+(OPEN.tr?" open":"")+'><summary>'+esc(W.mytrends)+'</summary><div><p class="fd-muted">'+esc(W.tr_lede)+'</p><div class="fd-trends" data-tr="'+esc(JSON.stringify(C.trends))+'"></div></div></details>';}
+window.ccFd={root:root,render:render,flush:flush,status:status,date:function(){return S.date;},setDay:function(d){S.day=d;render();},add:function(k){S.srch={ctx:"slot",slot:k,q:"",pick:null,g:100};S.open[k]=true;render();focusQ();loadDB().then(refreshRes);var sl=root.querySelector('.fd-slot[data-slot="'+k+'"]');if(sl){sl.scrollIntoView({block:"start"});}}};
 render();
 if(OPEN.tr&&window.ccFdTrends){var tre=root.querySelector(".fd-trends[data-tr]");if(tre){setTimeout(function(){window.ccFdTrends(tre);},0);}}
 if(C.female&&window.ccFdM){window.ccFdM.load(C.micro).then(function(M){S.M=M;var tv=root.querySelector(".fd-totv");if(tv){tv.innerHTML=totV();}}).catch(function(){});}

@@ -51,9 +51,9 @@ function cc_f_steps_all() {
           // Matteo 17 Nov: new athletes choose their training app (only asked when they are not on Vekta or TrainingPeaks yet)
           ['app', 'radio', 'Which app will you train with?', 'opts' => ['vekta' => 'Vekta (recommended)', 'trainingpeaks' => 'TrainingPeaks'], 'only' => 'full', 'req' => 1, 'askapp' => 1],
         ]],
-        ['p', 'Emergency contact', 'Someone I can call in an emergency.', 'fields' => [
-          ['ec_first', 'text', 'First name', 'req' => 1, 'half' => 1], ['ec_last', 'text', 'Surname', 'req' => 1, 'half' => 1],
-          ['ec_rel', 'text', 'Relationship to you', 'ph' => 'e.g. partner, parent', 'half' => 1, 'req' => 1], ['ec_mobile', 'tel', 'Mobile', 'req' => 1, 'half' => 1],
+        ['p', 'Emergency contact (optional)', 'Optional. Useful if you join one of our bike tours, training camps or group rides.', 'fields' => [
+          ['ec_first', 'text', 'First name', 'opt' => 1, 'half' => 1], ['ec_last', 'text', 'Surname', 'opt' => 1, 'half' => 1],
+          ['ec_rel', 'text', 'Relationship to you', 'ph' => 'e.g. partner, parent', 'half' => 1, 'opt' => 1], ['ec_mobile', 'tel', 'Mobile', 'opt' => 1, 'half' => 1],
           ['ec_home', 'tel', 'Home telephone', 'opt' => 1, 'half' => 1], ['ec_work', 'tel', 'Work telephone', 'opt' => 1, 'half' => 1],
         ]]]],
       ['numbers', 'Your numbers', 'both', [

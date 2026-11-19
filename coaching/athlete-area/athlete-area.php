@@ -355,6 +355,7 @@ function cc_ath_inner() {
         if (isset($_GET['cc_set'])) return $o . cc_ath_setpw_html() . '</div>';   // link from the welcome email
         if (isset($_GET['cc_forgot']) && ($fp = apply_filters('cc_ath_forgot_page', '')) !== '') return $o . $fp . '</div>';   // passwords.php
         $next = isset($_GET['next']) ? add_query_arg('cc_file', (int) $_GET['next'], $url) : $url;
+        if (isset($_GET['mpr']) && preg_match('/^R[A-Za-z0-9]{3,24}$/', (string) $_GET['mpr'])) $next = add_query_arg('mpr', (string) $_GET['mpr'], $url);   // mealplan.php: a recipe link from Marine's Vekta note opens after login
         $o .= '<div class="ath-login"><p class="eyebrow">' . cc_t('Coached athletes') . '</p><h1>' . cc_t('Athlete login') . '</h1>'
             . '<p class="ath-lede">' . cc_t('Your training guides, links and your own reports, all in one place.') . '</p>';
         if (isset($_GET['login'])) $o .= '<p class="ath-err" role="alert">' . cc_t(cc_ath_selfpw() ? 'That email or password is not right. Try again, or tap “Forgot your password?” below to choose a new one.' : 'That username or password is not right. Try again, or message me and I will reset it.') . '</p>';
