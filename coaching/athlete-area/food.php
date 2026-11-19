@@ -190,6 +190,39 @@ function cc_fd_w($k) {
                         'Ferro hoje: %s mg de 14 mg. Ideias ricas em ferro: carne vermelha, lentilhas e feijão, espinafres ou couve kale com vitamina C (p. ex. sumo de laranja), cereais de pequeno-almoço fortificados.',
                         'Železo danes: %s mg od 14 mg. Ideje, bogate z železom: rdeče meso, leča in fižol, špinača ali ohrovt z vitaminom C (npr. pomarančni sok), obogateni kosmiči za zajtrk.',
                         'Železo dnes: %s mg zo 14 mg. Nápady bohaté na železo: červené mäso, šošovica a fazuľa, špenát alebo kel s vitamínom C (napr. pomarančový džús), obohatené raňajkové cereálie.'],
+        /* 19 Nov 2026 (nutrition backlog 1-4): water vs other drinks, portions, voice logging, Marine's day targets */
+        'water' => ['Water (ml)', 'Acqua (ml)', 'Água (ml)', 'Voda (ml)', 'Voda (ml)'],
+        'water_h' => ['Other drinks (coffee, juice, milk, sports drink…): add them as foods above.', 'Altre bevande (caffè, succo, latte, bevanda sportiva…): aggiungile come alimenti qui sopra.', 'Outras bebidas (café, sumo, leite, bebida desportiva…): adiciona-as como alimentos acima.', 'Druge pijače (kava, sok, mleko, športni napitek…): dodaj jih zgoraj kot živila.', 'Iné nápoje (káva, džús, mlieko, športový nápoj…): pridaj ich vyššie ako potraviny.'],
+        'w_tile' => ['Water', 'Acqua', 'Água', 'Voda', 'Voda'],
+        'od_tile' => ['Other drinks', 'Altre bevande', 'Outras bebidas', 'Druge pijače', 'Iné nápoje'],
+        'tf_tile' => ['Total fluids', 'Liquidi totali', 'Líquidos totais', 'Tekočina skupaj', 'Tekutiny spolu'],
+        'amount' => ['Amount', 'Quantità', 'Quantidade', 'Količina', 'Množstvo'],
+        'unit' => ['Unit', 'Unità di misura', 'Unidade', 'Enota', 'Jednotka'],
+        'un_g' => ['g', 'g', 'g', 'g', 'g'], 'un_u' => ['unit', 'unità', 'unidade', 'kos', 'kus'], 'un_s' => ['small', 'piccolo', 'pequeno', 'majhen', 'malý'],
+        'un_m' => ['medium', 'medio', 'médio', 'srednji', 'stredný'], 'un_l' => ['large', 'grande', 'grande', 'velik', 'veľký'], 'un_sl' => ['slice', 'fetta', 'fatia', 'rezina', 'plátok'],
+        'un_pot' => ['pot', 'vasetto', 'copo', 'lonček', 'téglik'], 'un_tsp' => ['tsp', 'cucchiaino', 'colher de chá', 'čajna žlička', 'čajová lyžička'],
+        'un_tbsp' => ['tbsp', 'cucchiaio', 'colher de sopa', 'jedilna žlica', 'polievková lyžica'], 'un_cup' => ['cup', 'tazza', 'chávena', 'skodelica', 'šálka'],
+        'un_can' => ['can', 'lattina', 'lata', 'pločevinka', 'plechovka'], 'un_btl' => ['bottle', 'bottiglia', 'garrafa', 'steklenica', 'fľaša'],
+        'v_btn' => ['Say what you ate', 'Di’ cosa hai mangiato', 'Diz o que comeste', 'Povej, kaj si jedel', 'Povedz, čo si jedol'],
+        'v_listen' => ['Listening… say e.g. “two slices of toast with jam and a banana”', 'Ti ascolto… di’ per es. “due fette di pane con marmellata e una banana”', 'A ouvir… diz p. ex. “duas fatias de pão com doce e uma banana”', 'Poslušam… reci npr. “dve rezini kruha z marmelado in banana”', 'Počúvam… povedz napr. „dva plátky chleba s džemom a banán“'],
+        'v_text' => ['What you ate (you can edit it or type it)', 'Cosa hai mangiato (puoi modificarlo o scriverlo)', 'O que comeste (podes editar ou escrever)', 'Kaj si jedel (lahko popraviš ali napišeš)', 'Čo si jedol (môžeš to upraviť alebo napísať)'],
+        'v_read' => ['Find these foods', 'Trova questi alimenti', 'Encontrar estes alimentos', 'Poišči ta živila', 'Nájsť tieto potraviny'],
+        'v_again' => ['Speak again', 'Parla di nuovo', 'Falar de novo', 'Govori znova', 'Hovoriť znova'],
+        'v_right' => ['Is this right?', 'È giusto?', 'Está certo?', 'Je to prav?', 'Je to správne?'],
+        'v_logall' => ['Log all', 'Registra tutto', 'Registar tudo', 'Zapiši vse', 'Zapísať všetko'],
+        'v_none' => ['No food found for “%s”. Try another word.', 'Nessun alimento trovato per “%s”. Prova un’altra parola.', 'Nenhum alimento encontrado para “%s”. Tenta outra palavra.', 'Za “%s” ni živila. Poskusi z drugo besedo.', 'Pre „%s“ sa nenašla potravina. Skús iné slovo.'],
+        'v_nosup' => ['Voice input isn’t available in this browser. Tip: tap the box below and use the microphone on your keyboard, then tap “Find these foods”.', 'L’input vocale non è disponibile in questo browser. Consiglio: tocca il riquadro qui sotto e usa il microfono della tastiera, poi tocca “Trova questi alimenti”.', 'A entrada por voz não está disponível neste navegador. Dica: toca na caixa abaixo e usa o microfone do teclado; depois toca em “Encontrar estes alimentos”.', 'Glasovni vnos v tem brskalniku ni na voljo. Namig: tapni polje spodaj in uporabi mikrofon na tipkovnici, nato tapni “Poišči ta živila”.', 'Hlasový vstup v tomto prehliadači nie je dostupný. Tip: ťukni do poľa nižšie a použi mikrofón na klávesnici, potom ťukni na „Nájsť tieto potraviny“.'],
+        'v_err' => ['I didn’t catch that. Try again or type it below.', 'Non ho capito. Riprova o scrivilo qui sotto.', 'Não percebi. Tenta de novo ou escreve abaixo.', 'Nisem razumel. Poskusi znova ali napiši spodaj.', 'Nerozumel som. Skús znova alebo to napíš nižšie.'],
+        'v_food' => ['Food', 'Alimento', 'Alimento', 'Živilo', 'Potravina'],
+        'tg_of' => ['%1$s of %2$s kcal', '%1$s di %2$s kcal', '%1$s de %2$s kcal', '%1$s od %2$s kcal', '%1$s z %2$s kcal'],
+        'tg_eat' => ['You’ve eaten', 'Hai mangiato', 'Já comeste', 'Pojedel si', 'Zjedol si'],
+        'tg_your' => ['of your', 'delle tue', 'das tuas', 'od svojih', 'z tvojich'],
+        'tg_go' => ['%s to go', 'ancora %s', 'faltam %s', 'še %s', 'ešte %s'],
+        'tg_done' => ['%s kcal reached ✓', '%s kcal raggiunte ✓', '%s kcal alcançadas ✓', '%s kcal doseženih ✓', '%s kcal splnených ✓'],
+        'tg_mac' => ['%1$s of %2$s g', '%1$s di %2$s g', '%1$s de %2$s g', '%1$s od %2$s g', '%1$s z %2$s g'],
+        'tg_ml' => ['%1$s of %2$s ml', '%1$s di %2$s ml', '%1$s de %2$s ml', '%1$s od %2$s ml', '%1$s z %2$s ml'],
+        'tg_meal' => ['Your target', 'Il tuo obiettivo', 'O teu objetivo', 'Tvoj cilj', 'Tvoj cieľ'],
+        'tg_title' => ['Today’s targets from Marine', 'Obiettivi di oggi da Marine', 'Objetivos de hoje da Marine', 'Današnji cilji od Marine', 'Dnešné ciele od Marine'],
     ];
     static $I = ['en' => 0, 'it' => 1, 'pt' => 2, 'sl' => 3, 'sk' => 4];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en';
@@ -258,6 +291,8 @@ function cc_fd_item($it) {
     if ($na !== '' && is_numeric($na) && (float) $na >= 0) $o['na'] = round(min((float) $na, 50000), 1);
     if (in_array($it['st'] ?? '', ['r', 'c'], true)) $o['st'] = $it['st'];
     if (preg_match('/^[a-z0-9]{4,20}$/', (string) ($it['pl'] ?? ''))) $o['pl'] = $it['pl'];   // mealplan.php: logged from Marine's planned item
+    if (in_array($it['u'] ?? '', ['u', 's', 'm', 'l', 'sl', 'pot', 'tsp', 'tbsp', 'cup', 'can', 'btl'], true) && ($q = cc_fd_num($it['q'] ?? 0, 100)) > 0) { $o['u'] = $it['u']; $o['q'] = $q; }   // portion as logged, e.g. 1 medium (the grams stay in g)
+    if (!empty($it['dr'])) $o['dr'] = 1;   // a drink (counted as ml of other drinks)
     return $o['n'] === '' ? null : $o;
 }
 /* what the client sends for a day: the slots only (photos are set by their own route, replies by theirs) */
@@ -269,7 +304,7 @@ function cc_fd_clean_slots($in, $old) {
         $items = [];
         foreach (array_slice((array) ($s['i'] ?? []), 0, 60) as $it) { $c = cc_fd_item($it); if ($c) $items[] = $c; }
         $o = ['t' => $t, 'n' => mb_substr(trim(sanitize_textarea_field((string) ($s['n'] ?? ''))), 0, 1000), 'i' => $items];
-        $ml = (int) round(cc_fd_num($s['d'] ?? 0, 10000)); if ($ml > 0) $o['d'] = $ml;   // drinks in ml
+        $ml = (int) round(cc_fd_num($s['d'] ?? 0, 10000)); if ($ml > 0) $o['d'] = $ml;   // water in ml (named "drinks" before 19 Nov 2026; those values count as water)
         if ($k === 'bike') { $rt = (int) round(cc_fd_num($s['r'] ?? 0, 1440)); if ($rt > 0) $o['r'] = $rt; }   // ride time in minutes (typed by the athlete)
         if (!empty($old[$k]['ph'])) $o['ph'] = (int) $old[$k]['ph'];
         if ($o['t'] !== '' || $o['n'] !== '' || $o['i'] || !empty($o['ph']) || $ml > 0) $out[$k] = $o;
@@ -284,7 +319,20 @@ function cc_fd_tot($items) {
     return $t;
 }
 function cc_fd_daytot($day) { $all = []; foreach ((array) ($day['s'] ?? []) as $s) foreach ((array) ($s['i'] ?? []) as $it) $all[] = $it; return cc_fd_tot($all); }
-function cc_fd_dayml($day) { $ml = 0; foreach ((array) ($day['s'] ?? []) as $s) $ml += (int) ($s['d'] ?? 0); return $ml; }
+function cc_fd_dayml($day) { $f = cc_fd_fluids($day); return $f[0] + $f[1]; }
+/* 19 Nov 2026: [water ml, other drinks ml]. Water = the slot's "Water (ml)" field (before 19 Nov it was "Drinks (ml)": those values count as water)
+   + foods of the Water family; other drinks = grams of drink foods (juice, coffee, milk, sports drinks...; 1 g taken as 1 ml) */
+function cc_fd_fluids($day) {
+    $w = 0; $o = 0;
+    foreach ((array) ($day['s'] ?? []) as $s) { $w += (int) ($s['d'] ?? 0);
+        foreach ((array) ($s['i'] ?? []) as $it) { $k = function_exists('cc_np_drink') ? cc_np_drink($it) : (!empty($it['dr']) ? 'd' : ''); if ($k === 'w') $w += (float) ($it['g'] ?? 0); elseif ($k) $o += (float) ($it['g'] ?? 0); } }
+    return [(int) round($w), (int) round($o)];
+}
+/* "1 medium (118 g)" when the athlete logged a portion, else "118 g" */
+function cc_fd_amount($it) {
+    $g = cc_fd_f1($it['g'] ?? 0) . ' g'; if (empty($it['u']) || empty($it['q'])) return $g;
+    return cc_fd_f1($it['q']) . ((float) $it['q'] == 1 ? ' ' : ' × ') . cc_fd_w('un_' . $it['u']) . ' (' . $g . ')';
+}
 /* weight used for g/kg: the latest Vekta weight (last 60 days, sent by Matteo's laptop) when there is one, else the athlete's own entry.
    TrainingPeaks athletes never get a Vekta weight. */
 function cc_fd_kgv($pid) {
@@ -300,7 +348,7 @@ function cc_fd_targets($vx) {
     foreach ((array) ($vx['notes'] ?? []) as $n) {
         $txt = ($n['t'] ?? '') . ' ' . ($n['c'] ?? ''); $d = $n['d'] ?? ''; if (!$d) continue;
         if (preg_match('/(\d{2,3})\s*(?:-\s*\d{2,3}\s*)?g(?:rams?)?\s*(?:of\s+)?(?:carbs?|carbohydrates?|cho)?\s*(?:\/\s*h(?:r|our)?\b|per\s+hour|an\s+hour|each\s+hour|every\s+hour)/i', $txt, $m)) $o[$d]['c'] = (int) $m[1];
-        if (preg_match('/(\d{3,4})\s*ml\s*(?:of\s+\w+\s+)?(?:\/\s*h(?:r|our)?\b|per\s+hour|an\s+hour|each\s+hour|every\s+hour)/i', $txt, $m)) $o[$d]['ml'] = (int) $m[1];
+        if (preg_match('/(\d{3,4})\s*ml\s*(?:(?:of\s+)?\w+\s+)?(?:\/\s*h(?:r|our)?\b|per\s+hour|an\s+hour|each\s+hour|every\s+hour)/i', $txt, $m)) $o[$d]['ml'] = (int) $m[1];
     }
     return $o;
 }
@@ -441,7 +489,9 @@ function cc_fd_athlete($pid) {
                        'none_mine', 'thread', 'ask', 'reply', 'send_r', 'sent_err', 'you', 'drinks', 'drinks_h', 'fluids', 'per_h', 'ride', 'sodium', 'na_inc', 'vk_weight', 'vk_weight_h',
                        'b_raw', 'b_cooked', 'ask_rc', 'w_raw', 'w_cooked', 'weigh_h', 'micro', 'mytrends', 'tr_lede',
                        'iron_line', 'iron_note', 'incomplete', 'cyc_title', 'cyc_consent', 'cyc_on', 'cyc_start', 'cyc_end', 'cyc_unset', 'cyc_off', 'cyc_offq', 'cyc_day', 'ph_m', 'ph_f', 'ph_o', 'ph_l', 'cyc_len', 'cyc_def', 'cyc_starts',
-                       'recent', 'favs', 'star_add', 'star_rm', 'copy_y', 'copy_day', 'copy_q', 'copy_none', 'ride_t', 'ride_rec', 'g_h', 'ml_h', 'target', 'streak', 'add_short', 'new_msg', 'of_energy'] as $k) $W[$k] = cc_fd_w($k);
+                       'recent', 'favs', 'star_add', 'star_rm', 'copy_y', 'copy_day', 'copy_q', 'copy_none', 'ride_t', 'ride_rec', 'g_h', 'ml_h', 'target', 'streak', 'add_short', 'new_msg', 'of_energy',
+                       'water', 'water_h', 'w_tile', 'od_tile', 'tf_tile', 'amount', 'unit', 'un_g', 'un_u', 'un_s', 'un_m', 'un_l', 'un_sl', 'un_pot', 'un_tsp', 'un_tbsp', 'un_cup', 'un_can', 'un_btl',
+                       'v_btn', 'v_listen', 'v_text', 'v_read', 'v_again', 'v_right', 'v_logall', 'v_none', 'v_nosup', 'v_err', 'v_food', 'tg_of', 'tg_go', 'tg_done', 'tg_mac', 'tg_title', 'tg_eat', 'tg_your', 'tg_ml', 'tg_meal'] as $k) $W[$k] = cc_fd_w($k);
     // ?fd=today (the header chip): the diary on the athlete's own today, scrolled into view
     $go = ($_GET['fd'] ?? '') === 'today';
     $slots = []; foreach (CC_FD_SLOTS as $k) $slots[] = [$k, cc_fd_w($k)];
@@ -455,8 +505,9 @@ function cc_fd_athlete($pid) {
             'recent' => cc_fd_recent($pid), 'fav' => array_map(function ($it) use ($pid) { return cc_fd_fresh_item($it, cc_fd_own_idx(cc_fd_mine($pid))); }, cc_fd_fav($pid)), 'streak' => cc_fd_streak($pid), 'targets' => (object) ($tp ? [] : cc_fd_targets($vx)), 'today' => current_time('Y-m-d'),
             'foods' => esc_url_raw(add_query_arg('v', get_option('cc_food_db_v', '0'), rest_url('cc/v1/foods'))),
             'u' => ['day' => $u('food-day'), 'save' => $u('food-day'), 'photo' => $u('food-photo'), 'photodel' => $u('food-photo-del'), 'mine' => $u('food-mine'), 'kg' => $u('food-kg'), 'reply' => $u('food-reply'), 'fav' => $u('food-fav'), 'cycle' => $u('food-cycle'), 'seen' => $u('food-seen')]];
+    $cfg = apply_filters('cc_fd_athlete_cfg', $cfg, (int) $pid, $date);   // nutrition-plus.php: Marine's day targets
     return '<section class="ath-s fd" id="food"><h2>' . cc_ath_icon('food', 'ath-hic') . esc_html(cc_fd_w('title')) . '</h2><p class="fd-lede">' . esc_html(cc_fd_w('lede')) . '</p>'
-        . '<div class="fd-app" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"><div class="fd-day"></div><div class="fd-trbox"></div><div class="fd-cycbox"></div><div class="fd-minebox"></div><div class="fd-thbox"></div></div></section>' . cc_fd_css() . cc_fd_sjs() . cc_fd_js()
+        . '<div class="fd-app" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"><div class="fd-day"></div><div class="fd-trbox"></div><div class="fd-cycbox"></div><div class="fd-minebox"></div><div class="fd-thbox"></div></div></section>' . cc_fd_css() . cc_fd_sjs() . (function_exists('cc_np_pjs') ? cc_np_pjs() : '') . cc_fd_js()
         . apply_filters('cc_fd_after_app', '', (int) $pid, $date);   // mealplan.php: Marine's planned meals in the diary
 
 }
@@ -543,18 +594,18 @@ function cc_fd_ring($t) {
 }
 function cc_fd_rc_badge($st) { return in_array($st, ['r', 'c'], true) ? ' <span class="fd-rc fd-rc-' . $st . '">' . esc_html(cc_fd_w($st === 'r' ? 'b_raw' : 'b_cooked')) . '</span>' : ''; }
 function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer, $mine = [], $fem = false, $cy = null) {
-    $d = cc_fd_get($pid, $date); $t = cc_fd_daytot($d); $ml = cc_fd_dayml($d); $has = false; $ir = $fem ? cc_fd_iron($d, $mine) : null;
+    $d = cc_fd_get($pid, $date); $t = cc_fd_daytot($d); $fl = cc_fd_fluids($d); $ml = $fl[0] + $fl[1]; $has = false; $ir = $fem ? cc_fd_iron($d, $mine) : null;
     $ts = strtotime($date . ' 12:00'); $next = gmdate('Y-m-d', $ts + DAY_IN_SECONDS);
     $ride = $tp ? 0 : (cc_fd_rides($vx)[$date] ?? 0); $tg = $tp ? [] : (cc_fd_targets($vx)[$date] ?? []);
     $o = '<article class="fd-rd" id="fd-' . esc_attr($date) . '"><h3>' . esc_html(date_i18n('l j F', $ts)) . ($date === current_time('Y-m-d') ? ' <small>today</small>' : '') . ($cy ? cc_fd_phase_chip($cy, $date) : '') . '%IRONTAG%</h3>';
     $sl = '';
     foreach (CC_FD_SLOTS as $k) {
         $s = $d['s'][$k] ?? null; if (!$s) continue;
-        $has = true; $st = cc_fd_tot($s['i'] ?? []); $sml = (int) ($s['d'] ?? 0);
+        $has = true; $st = cc_fd_tot($s['i'] ?? []); $sfl = cc_fd_fluids(['s' => [$s]]); $sml = $sfl[0] + $sfl[1];
         $sl .= '<div class="fd-rs"><div class="fd-rsh"><b>' . esc_html(cc_fd_w($k)) . '</b>' . (!empty($s['t']) ? ' <span class="fd-time-b">' . esc_html($s['t']) . '</span>' : '')
              . (!empty($s['i']) ? '<span class="fd-rst">' . round($st['k']) . ' kcal · C ' . cc_fd_f1($st['c']) . ' · P ' . cc_fd_f1($st['p']) . ' · F ' . cc_fd_f1($st['f']) . '</span>' : '') . '</div>';
         $ex = [];
-        if ($sml) $ex[] = 'Drinks ' . number_format($sml) . ' ml';
+        if ($sml) $ex[] = 'Water ' . number_format($sfl[0]) . ' ml' . ($sfl[1] ? ' · other drinks ' . number_format($sfl[1]) . ' ml' : '');
         $rmin = $ride > 0 ? $ride : (int) ($s['r'] ?? 0);
         if ($k === 'bike' && !empty($s['i'])) $ex[] = 'Sodium: ' . number_format(round($st['na'])) . ' mg' . ($rmin > 0 ? ' · ≈ ' . number_format(round($st['na'] / ($rmin / 60))) . ' mg/h' : '');   // Marine 19 Nov: sodium only for training
         if ($k === 'bike' && $rmin > 0 && ($sml || $st['c'] > 0)) $ex[] = '<b>≈ ' . round($st['c'] / ($rmin / 60)) . ' g carbs/h</b>' . (!empty($tg['c']) ? ' (target ' . (int) $tg['c'] . ')' : '') . ' · <b>≈ ' . round($sml / ($rmin / 60)) . ' ml/h</b>' . (!empty($tg['ml']) ? ' (target ' . (int) $tg['ml'] . ')' : '') . ' · ride ' . esc_html(cc_fd_hm($rmin * 60)) . ($ride > 0 ? '' : ' (typed by the athlete)');
@@ -562,7 +613,7 @@ function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer, $mine = [], $fem = 
         if (!empty($s['i'])) {
             $sl .= '<ul class="fd-ri">';
             foreach ($s['i'] as $it) { $m = ((float) $it['g']) / 100;
-                $sl .= '<li><span>' . esc_html($it['n']) . cc_fd_rc_badge($it['st'] ?? '') . (!empty($it['m']) ? ' <span class="fd-tag">' . ($it['m'] === 'r' ? 'own recipe' : 'own food') . '</span>' : '') . '</span><small>' . cc_fd_f1($it['g']) . ' g · ' . round($it['k'] * $m) . ' kcal · C ' . cc_fd_f1($it['c'] * $m) . ' · P ' . cc_fd_f1($it['p'] * $m) . ' · F ' . cc_fd_f1($it['f'] * $m) . '</small></li>'; }
+                $sl .= '<li><span>' . esc_html($it['n']) . cc_fd_rc_badge($it['st'] ?? '') . (!empty($it['m']) ? ' <span class="fd-tag">' . ($it['m'] === 'r' ? 'own recipe' : 'own food') . '</span>' : '') . '</span><small>' . cc_fd_amount($it) . ' · ' . round($it['k'] * $m) . ' kcal · C ' . cc_fd_f1($it['c'] * $m) . ' · P ' . cc_fd_f1($it['p'] * $m) . ' · F ' . cc_fd_f1($it['f'] * $m) . '</small></li>'; }
             $sl .= '</ul>';
         }
         if (!empty($s['n'])) $sl .= '<p class="fd-rn">“' . nl2br(esc_html($s['n'])) . '”</p>';
@@ -570,9 +621,9 @@ function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer, $mine = [], $fem = 
         $sl .= '</div>';
     }
     if ($has) {
-        $o .= cc_fd_ring($t) . $sl . '<div class="fd-rtot"><b>Day total</b><span>' . round($t['k']) . ' kcal</span><span>Carbs ' . round($t['c']) . ' g' . ($kg ? ' (' . number_format($t['c'] / $kg, 1) . ' g/kg)' : '') . '</span>'
-            . '<span>Protein ' . round($t['p']) . ' g' . ($kg ? ' (' . number_format($t['p'] / $kg, 1) . ' g/kg)' : '') . '</span><span>Fat ' . round($t['f']) . ' g' . (($t['k'] > 0 || $kg) ? ' (' . implode(' · ', array_filter([$t['k'] > 0 ? round($t['f'] * 900 / $t['k']) . ' % of energy' : '', $kg ? number_format($t['f'] / $kg, 1) . ' g/kg' : ''])) . ')' : '') . '</span><span>Fibre ' . round($t['fi']) . ' g</span><span>Sugars ' . round($t['su']) . ' g</span>'
-            . '<span>Fluids ' . number_format($ml) . ' ml (' . cc_fd_f1($ml / 1000) . ' L)</span></div>'
+        $o .= cc_fd_ring($t) . $sl . '<div class="fd-rtot"><b>Day total</b>' . (function_exists('cc_np_macro_spans') ? cc_np_macro_spans($t, $kg, cc_np_alc($d, $mine)) : '<span>' . round($t['k']) . ' kcal</span>')
+            . '<span>Fibre ' . round($t['fi']) . ' g</span><span>Sugars ' . round($t['su']) . ' g</span>'
+            . '<span>Water ' . number_format($fl[0]) . ' ml</span><span>Other drinks ' . number_format($fl[1]) . ' ml</span><span>Total fluids ' . number_format($ml) . ' ml (' . cc_fd_f1($ml / 1000) . ' L)</span></div>'
             . ($fem ? '<p class="fd-ironl">' . esc_html(sprintf(cc_fd_w('iron_line'), cc_fd_f1($ir['fe']))) . ($ir['inc'] ? ' <small class="fd-inc">incomplete</small>' : '') . '</p>' : '')
             . cc_fd_micro_box($d, $mine, $fem);
     } else $o .= '<p class="fd-muted">Nothing logged.</p>';
@@ -610,6 +661,7 @@ function cc_fd_review($pid, $viewer) {
         if ($n >= 1) $o .= '<p class="fd-ironsum">Iron below 14 mg on <b>' . $n . '</b> of the last ' . $k . ' logged day' . ($k === 1 ? '' : 's') . ' (days with 3+ meals logged and enough iron data).</p>';
     }
     $o .= '<div class="fd-top">' . cc_fd_blood_box($pid, $viewer) . ($tp ? '' : cc_fd_trends_box($pid, $vx, $cy)) . '</div>';
+    $o .= apply_filters('cc_fd_review_top', '', (int) $pid, $viewer);   // nutrition-plus.php: carbs per hour and energy charts, omega-3 week
     $o .= apply_filters('cc_fd_review_plan', '', (int) $pid, $viewer);   // mealplan.php: plan the coming days
     if (!$tp && $vx) $o .= cc_fd_week_ahead($vx, $pid, $viewer);
     $t0 = strtotime(current_time('Y-m-d') . ' 12:00') - $off * 14 * DAY_IN_SECONDS;
@@ -857,7 +909,7 @@ add_action('rest_api_init', function () {
             $o = ['at' => time(), 'plan' => [], 'done' => [], 'notes' => []];
             foreach (array_slice((array) ($a['plan'] ?? []), 0, 80) as $x) if ($dd = $d($x['date'] ?? '')) $o['plan'][] = ['d' => $dd, 'n' => cc_fd_txt($x['name'] ?? '', 160), 'min' => (int) round(((float) ($x['dur'] ?? 0)) / 60), 'carb' => (int) ($x['carbs'] ?? 0)];
             foreach (array_slice((array) ($a['done'] ?? []), 0, 80) as $x) if ($dd = $d($x['date'] ?? '')) $o['done'][] = ['d' => $dd, 'n' => cc_fd_txt($x['name'] ?? '', 160), 'min' => (int) round(((float) ($x['dur'] ?? 0)) / 60), 'kj' => (int) ($x['kj'] ?? 0)];
-            foreach (array_slice((array) ($a['notes'] ?? []), 0, 80) as $x) if ($dd = $d($x['date'] ?? '')) $o['notes'][] = ['d' => $dd, 't' => cc_fd_txt($x['title'] ?? '', 200), 'c' => mb_substr(trim(sanitize_textarea_field((string) ($x['content'] ?? ''))), 0, 4000)];
+            foreach (array_slice((array) ($a['notes'] ?? []), 0, 80) as $x) if ($dd = $d($x['date'] ?? '')) $o['notes'][] = ['d' => $dd, 't' => cc_fd_txt($x['title'] ?? '', 200), 'c' => mb_substr(trim(sanitize_textarea_field((string) ($x['content'] ?? ''))), 0, 4000), 'tg' => function_exists('cc_np_clean_ntg') ? cc_np_clean_ntg($x['tg'] ?? null) : null];
             // latest body weight (last 60 days) and 84 days of weight / overnight HRV / resting HR for the trends
             $o['sex'] = ['female' => 'f', 'male' => 'm'][strtolower((string) ($a['gender'] ?? ''))] ?? '';   // for the iron screening and the cycle tracker
             $w = (array) ($a['weight'] ?? []); $wv = (float) ($w['value'] ?? 0);
@@ -869,6 +921,10 @@ add_action('rest_api_init', function () {
                 $row = [$dd, ($kg >= 25 && $kg <= 250) ? round($kg, 1) : null, ($hv > 0 && $hv < 400) ? round($hv) : null, ($hr > 20 && $hr < 150) ? round($hr) : null];
                 if ($row[1] || $row[2] || $row[3]) $o['tr'][] = $row;
             }
+            // 12 weeks of sessions for Marine's charts (carbs per hour and energy vs duration and intensity)
+            $o['acts'] = [];
+            foreach (array_slice((array) ($a['acts'] ?? []), 0, 400) as $x) if ($dd = $d($x['date'] ?? '')) $o['acts'][] = ['d' => $dd, 'sp' => cc_fd_txt($x['sport'] ?? '', 40), 'n' => cc_fd_txt($x['name'] ?? '', 120), 's' => (int) ($x['dur'] ?? 0),
+                'i' => is_numeric($x['intensity'] ?? null) ? round((float) $x['intensity'], 3) : null, 'kc' => is_numeric($x['calories'] ?? null) ? (int) round((float) $x['calories']) : null, 'kj' => (int) round((float) ($x['kj'] ?? 0))];
             update_post_meta($pid, 'cc_food_vx', wp_slash(wp_json_encode($o))); $n++;
         }
         return ['ok' => true, 'stored' => $n];
@@ -879,7 +935,7 @@ add_action('delete_user', function ($uid) {
     if (!empty($GLOBALS['cc_keep_record'])) return;
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_user', 'meta_value' => (int) $uid, 'numberposts' => -1, 'fields' => 'ids']) as $pid) {
         foreach (cc_fd_days($pid) as $d) { foreach ((array) (cc_fd_get($pid, $d)['s'] ?? []) as $s) if (!empty($s['ph'])) wp_delete_attachment((int) $s['ph'], true); delete_post_meta($pid, 'cc_fd_' . $d); }
-        foreach (['cc_food_mine', 'cc_food_kg', 'cc_food_vx', 'cc_fd_trends_off', 'cc_food_fav', 'cc_fd_cycle', 'cc_fd_seen'] as $k) delete_post_meta($pid, $k);
+        foreach (['cc_food_mine', 'cc_food_kg', 'cc_food_vx', 'cc_fd_trends_off', 'cc_food_fav', 'cc_fd_cycle', 'cc_fd_seen', 'cc_np_tg'] as $k) delete_post_meta($pid, $k);
     }
 }, 4);
 
@@ -990,6 +1046,24 @@ function cc_fd_css() {
         . 'html .cc .fd-rd h3 .fd-cchip{margin-left:8px}html .cc .fd-cyc{margin:14px 0 0;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.03)}html .cc .fd-cyc>summary{padding:12px 16px;cursor:pointer;color:#d0d6e0;font-weight:600;font-size:16px}'
         . 'html .cc .fd-cyc>div{padding:0 16px 14px;display:grid;gap:10px}html .cc .fd-cyc .btn{width:auto;margin:0;justify-self:start}html .cc .fd-cyc p{margin:0;color:#d0d6e0;font-size:15px}html .cc .fd-cyc small{color:#b8bec8;font-size:14px}'
         . 'html .cc .fd-cycs svg{display:block;width:100%;height:auto}'
+        /* 19 Nov 2026: portions, voice logging, day targets, fluids */
+        . 'html .cc .fd select{font:16px var(--body);min-height:44px;padding:8px 34px 8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27%3E%3Cpath d=%27M1 1l5 5 5-5%27 stroke=%27%23d0d6e0%27 stroke-width=%272%27 fill=%27none%27/%3E%3C/svg%3E") no-repeat right 12px center;color:#fff;-webkit-appearance:none;appearance:none;max-width:100%;box-sizing:border-box}'
+        . 'html .cc .fd-amt{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px}html .cc .fd .fd-amt input{width:96px;min-height:44px}html .cc .fd-amt label{display:flex;align-items:center;gap:8px;color:#d0d6e0;font-size:15px;font-weight:600}'
+        . 'html .cc .fd-ul select{min-width:0;max-width:230px}html .cc .fd-pgv{color:#c9f3da;font-size:15px;font-weight:600}html .cc .fd-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}'
+        . 'html .cc .fd-mic{white-space:nowrap}html .cc .fd-voice{display:grid;gap:10px;padding:12px;border-radius:12px;border:1px solid rgba(43,212,122,.35);background:rgba(18,161,80,.06);min-width:0}'
+        . 'html .cc .fd-vtl{display:grid;gap:6px;color:#d0d6e0;font-size:15px;font-weight:600}html .cc .fd .fd-vtl textarea{width:100%;min-height:64px}'
+        . 'html .cc .fd-vmsg{margin:0;color:#e6e9ee;font-size:16px;line-height:1.45;display:flex;gap:10px;align-items:flex-start}html .cc .fd-dot{flex:none;width:12px;height:12px;margin-top:6px;border-radius:50%;background:#2bd47a;animation:fdpulse 1s ease-in-out infinite}'
+        . '@keyframes fdpulse{50%{opacity:.25;transform:scale(.7)}}'
+        . 'html .cc .fd-vh{margin:4px 0 0;font-size:18px;color:#fff}html .cc .fd-vl{list-style:none;margin:0;padding:0;display:grid;gap:10px}'
+        . 'html .cc .fd-vl li{display:grid;gap:8px;padding:10px;border-radius:12px;background:rgba(0,0,0,.25);min-width:0}html .cc .fd-vrow{display:flex;gap:8px;align-items:center;min-width:0}'
+        . 'html .cc .fd-vfl{flex:1;min-width:0}html .cc .fd-vfl select{width:100%}html .cc .fd-vnf{display:flex!important;grid-template-columns:none;align-items:center;justify-content:space-between;gap:10px;color:#e6e9ee;font-size:15px}'
+        . 'html .cc .fd-tgbox:empty{display:none}html .cc .fd-tgt{margin:2px 0 12px;padding:14px 14px 12px;border-radius:12px;background:rgba(18,161,80,.07);border:1px solid rgba(43,212,122,.25)}'
+        . 'html .cc .fd-tge{margin:0;color:#d0d6e0;font-size:15px;text-align:center}html .cc .fd-tgk{margin:0 0 10px;color:#e6e9ee;font-size:18px;text-align:center;line-height:1.2}html .cc .fd-tgk b{color:#fff;font-size:34px;font-weight:800;letter-spacing:-.5px}html .cc .fd-tgk span{color:#e6e9ee;font-weight:600}'
+        . 'html .cc .fd-tgk.ok b{color:#2bd47a;font-size:24px}html .cc .fd-tggo{margin:8px 0 0;text-align:center;color:#c9f3da;font-size:16px;font-weight:600}html .cc .fd .fd-tgb.big{height:16px}'
+        . 'html .cc .fd-tgb{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}html .cc .fd-tgb i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#12a150,#2bd47a)}'
+        . 'html .cc .fd-tgm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 12px;margin-top:10px}html .cc .fd-tgm div{display:grid;gap:4px;min-width:0}'
+        . 'html .cc .fd-tgm span{color:#b8bec8;font-size:14px}html .cc .fd-tgm small{color:#d0d6e0;font-size:14px;white-space:nowrap}html .cc .fd-tgm .fd-tgb{height:6px}'
+        . 'html .cc .fd-fl{margin-top:8px}html .cc .fd-stg{margin:0 0 10px;padding:8px 10px;border-radius:10px;background:rgba(18,161,80,.08);border:1px solid rgba(43,212,122,.2);color:#e6e9ee;font-size:15px;line-height:1.5}html .cc .fd-stg b{color:#c9f3da}'
         . '</style>';
 }
 /* review pages (Matteo / Marine): replies, the package switch, adding an athlete by email */
@@ -1122,7 +1196,7 @@ function slot(k){if(!S.day.s||Array.isArray(S.day.s)){S.day.s={};}var s=S.day.s[
 var F=["k","c","p","f","fi","su"];
 function tot(items){var t={k:0,c:0,p:0,f:0,fi:0,su:0,na:0,nam:0};(items||[]).forEach(function(it){var m=(+it.g||0)/100;F.forEach(function(x){t[x]+=(+it[x]||0)*m;});if(m>0){if(it.na==null||it.na===""){t.nam++;}else{t.na+=(+it.na)*m;}}});return t;}
 function dayTot(){var a=[];C.slots.forEach(function(s){a=a.concat(slot(s[0]).i);});return tot(a);}
-function dayMl(){var ml=0;C.slots.forEach(function(s){ml+=+slot(s[0]).d||0;});return ml;}
+function dayMl(){var f=dayFl();return f[0]+f[1];}
 function macro(it){var m=(+it.g||0)/100;return fmt0(it.k*m)+" kcal · "+W.c_ab+" "+fmt(it.c*m)+" · "+W.p_ab+" "+fmt(it.p*m)+" · "+W.f_ab+" "+fmt(it.f*m);}
 function kgUsed(){return C.vkg?+C.vkg.v:(parseFloat(String(S.kg).replace(",","."))||0);}
 function sxTxt(k,s,t){var a=[],rm=rideMin(s);if(k==="bike"&&s.i.length){a.push(W.sodium+": "+fmt0(t.na)+" mg"+(rm>0?" · ≈ "+fmt0(t.na/(rm/60))+" mg/h":""));}
@@ -1133,7 +1207,7 @@ function rideMin(s){var r=C.rides&&C.rides[S.date];return r>0?r:(+s.r||0);}
 function gauge(label,val,unit,tg){var max=Math.max(tg?tg*1.3:0,val*1.1,unit==="ml"?800:100),pct=Math.min(100,val/max*100),ok=tg&&val>=tg;
 return '<div class="fd-gauge"><div class="fd-gh"><span>'+esc(label)+'</span><b>'+fmt0(val)+' '+unit+'/h</b></div><div class="fd-gbar"><i class="'+(ok?"ok":"")+'" style="width:'+pct.toFixed(1)+'%"></i>'+(tg?'<u style="left:'+(tg/max*100).toFixed(1)+'%"></u>':"")+'</div>'+(tg?'<small>'+esc(W.target.replace("%s",tg+" "+unit+"/h"))+(ok?" ✓":"")+'</small>':"")+'</div>';}
 function gaugesHtml(k,s,t){if(k!=="bike"){return "";}var rm=rideMin(s);if(!(rm>0)||(!s.i.length&&!(+s.d>0))){return "";}var h=rm/60,tg=(C.targets&&C.targets[S.date])||{};
-return gauge(W.g_h,t.c/h,"g",tg.c||0)+gauge(W.ml_h,(+s.d||0)/h,"ml",tg.ml||0);}
+return gauge(W.g_h,t.c/h,"g",tg.c||0)+gauge(W.ml_h,(slotFl(s)[0]+slotFl(s)[1])/h,"ml",tg.ml||0);}
 function isFav(id){return S.fav.some(function(f){return f.id===id;});}
 function ringParts(t){var kc=t.c*4,kp=t.p*4,kf=t.f*9,tt=kc+kp+kf,L=2*Math.PI*42,off=0;return [kc,kp,kf].map(function(v){var len=tt?v/tt*L:0,o={len:len,off:off,pct:tt?Math.round(v/tt*100):0};off+=len;return o;});}
 function ringHtml(t){var P=ringParts(t),L=2*Math.PI*42,col=["#7fb2ff","#c99bff","#f0b45a"],g=[t.c,t.p,t.f],nm=[W.carbs,W.protein,W.fat];
@@ -1178,7 +1252,7 @@ function macro100(f){return fmt0(f.k)+" kcal · "+W.c_ab+" "+fmt(f.c)+" · "+W.p
 function macroT(t){return fmt0(t.k)+" kcal · "+W.carbs+" "+fmt(t.c)+" g · "+W.protein+" "+fmt(t.p)+" g · "+W.fat+" "+fmt(t.f)+" g";}
 function tag(m){return m?' <span class="fd-tag">'+esc(m==="r"?W.myrecipe:W.myfood)+'</span>':"";}
 function loadDB(){if(DBP){return DBP;}DBP=fetch(C.foods,{credentials:"omit"}).then(function(r){if(!r.ok){throw r;}return r.json();}).then(function(d){
-DB=d.foods.map(function(r){return {id:r[0],n:r[2],fr:r[3]||"",k:r[4],c:r[5],p:r[6],f:r[7],fi:r[8]==null?0:r[8],su:r[9]==null?0:r[9],na:r[10]==null?null:r[10],st:r[11]||"",q:norm(r[2]+" | "+(r[3]||"")),qn:norm(r[2])};});
+DB=d.foods.map(function(r){return {id:r[0],n:r[2],fr:r[3]||"",k:r[4],c:r[5],p:r[6],f:r[7],fi:r[8]==null?0:r[8],su:r[9]==null?0:r[9],na:r[10]==null?null:r[10],st:r[11]||"",fm:r[12]==null?null:r[12],po:r[13]||null,q:norm(r[2]+" | "+(r[3]||"")),qn:norm(r[2])};});FAM=d.families||null;
 BYID={};DB.forEach(function(f){BYID[f.id]=f;});STAP=(d.staples||[]).map(function(s){return {re:new RegExp(s.rx),raw:s.raw,cooked:s.cooked};});return DB;}).catch(function(){DBP=null;DB=null;});return DBP;}
 var BYID={},STAP=[];
 function staple(f){if(!f||f.mine||(f.st!=="r"&&f.st!=="c")){return null;}for(var i=0;i<STAP.length;i++){if(STAP[i].re.test(f.qn)){return STAP[i];}}return null;}
@@ -1206,26 +1280,25 @@ return (S.near?'<p class="fd-muted">'+esc(W.closest)+'</p>':'')+'<ul class="fd-r
 return '<li><button type="button" data-act="pick" data-rx="'+ix+'"><span>'+esc(f.n)+rcb(f.st)+tag(f.mine)+'</span>'+(viaFr?'<i>'+esc(f.fr)+'</i>':'')+'<small>'+esc(macro100(f))+'</small></button></li>';}).join("")+'</ul>';}
 function searchHtml(){var s=S.srch;
 if(s.ask){var af=s.ask.f;return '<div class="fd-search"><div class="fd-ask"><b>'+esc(af.n)+rcb(af.st)+'</b><p>'+esc(W.ask_rc)+'</p><div class="fd-row"><button type="button" class="btn btn-go" data-act="rc" data-v="r">'+esc(W.w_raw)+'</button><button type="button" class="btn btn-go" data-act="rc" data-v="c">'+esc(W.w_cooked)+'</button><button type="button" class="fd-link" data-act="unpick">'+esc(W.cancel)+'</button></div></div></div>';}
-if(s.pick){var p=s.pick,it={k:p.k,c:p.c,p:p.p,f:p.f,g:s.g};
-return '<div class="fd-search"><div class="fd-pick"><b>'+esc(p.n)+rcb(p.st)+tag(p.mine)+'</b><label>'+esc(W.grams)+' <input type="number" class="fd-pg" inputmode="decimal" min="1" max="5000" step="1" value="'+esc(s.g)+'"></label><span class="fd-pp">'+esc(macro(it))+'</span><div class="fd-row"><button type="button" class="btn btn-go" data-act="pickadd">'+esc(W.addit)+'</button><button type="button" class="fd-link" data-act="unpick">'+esc(W.cancel)+'</button></div></div></div>';}
+if(s.pick){return pickHtml();}
 return '<div class="fd-search"><p class="fd-wh">'+esc(W.weigh_h)+'</p><input type="search" class="fd-q" placeholder="'+esc(W.search)+'" value="'+esc(s.q)+'" autocomplete="off" enterkeyhint="search">'+(s.q.trim()?"":chipsHtml())+'<div class="fd-res">'+resultsHtml()+'</div><p class="fd-credit">'+esc(C.credit)+'</p><button type="button" class="fd-link" data-act="cancel" style="justify-self:start">'+esc(W.cancel)+'</button></div>';}
 function slotHtml(k,label){var s=slot(k),t=tot(s.i),open=S.open[k]!==undefined?S.open[k]:(s.i.length>0||!!s.n||!!s.phu||+s.d>0||!!(window.ccMpHas&&window.ccMpHas(S.date,k)));
-var h='<details class="fd-slot" data-slot="'+k+'"'+(open?" open":"")+'><summary><span class="fd-sl">'+esc(label)+'</span><span class="fd-st" data-tt="'+k+'">'+sumTxt(s,t)+'</span></summary><div class="fd-sb">'+(window.ccMpSlot?window.ccMpSlot(S.date,k):"");
+var h='<details class="fd-slot" data-slot="'+k+'"'+(open?" open":"")+'><summary><span class="fd-sl">'+esc(label)+'</span><span class="fd-st" data-tt="'+k+'">'+sumTxt(s,t)+'</span></summary><div class="fd-sb">'+stgHtml(k)+(window.ccMpSlot?window.ccMpSlot(S.date,k):"");
 if(k==="bike"){var rv=C.rides&&C.rides[S.date];h+=rv>0?'<p class="fd-hint">'+esc(W.ride_rec.replace("%s",hm(rv).replace(":","h")))+'</p>':'<label class="fd-drk">'+esc(W.ride_t)+' <input type="text" inputmode="decimal" data-f="r" placeholder="2:30" value="'+esc(hm(s.r))+'" maxlength="5"></label>';}
 h+='<label class="fd-time">'+esc(W.time)+' <input type="time" data-f="t" value="'+esc(s.t||"")+'"></label>';
-if(s.i.length){h+='<ul class="fd-items">'+s.i.map(function(it,ix){return '<li'+(S.just===k+":"+ix?' class="fd-new"':'')+'><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+(window.ccMpTag?window.ccMpTag(it):"")+'</b><small data-it="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-f="g" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-star'+(isFav(it.id)?' on':'')+'" data-act="star" data-ix="'+ix+'" aria-label="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'" title="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'">'+starI(isFav(it.id))+'</button><button type="button" class="fd-x" data-act="rm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">'+XI+'</button></li>';}).join("")+'</ul>';
+if(s.i.length){h+='<ul class="fd-items">'+s.i.map(function(it,ix){return '<li'+(S.just===k+":"+ix?' class="fd-new"':'')+'><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+(window.ccMpTag?window.ccMpTag(it):"")+'</b><small data-it="'+ix+'">'+esc(itemSub(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-f="g" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-star'+(isFav(it.id)?' on':'')+'" data-act="star" data-ix="'+ix+'" aria-label="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'" title="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'">'+starI(isFav(it.id))+'</button><button type="button" class="fd-x" data-act="rm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">'+XI+'</button></li>';}).join("")+'</ul>';
 h+='<p class="fd-stot" data-stot="'+k+'">'+esc(W.slot_total+": "+macroT(t))+'</p>';}
 h+='<p class="fd-sx" data-sx="'+k+'">'+sxTxt(k,s,t)+'</p><div class="fd-gg" data-gg="'+k+'">'+gaugesHtml(k,s,t)+'</div>';
-h+=(S.srch&&S.srch.ctx==="slot"&&S.srch.slot===k)?searchHtml():'<div class="fd-row"><button type="button" class="btn btn-go" data-act="add">'+esc(W.add)+'</button><button type="button" class="fd-link" data-act="copyslot">'+esc(W.copy_y)+'</button></div>';
-h+='<label class="fd-drk">'+esc(W.drinks)+' <input type="number" inputmode="numeric" min="0" max="10000" step="50" data-f="d" value="'+esc(s.d||"")+'"><span class="fd-hint">'+esc(W.drinks_h)+'</span></label>';
+h+=(S.srch&&S.srch.ctx==="slot"&&S.srch.slot===k)?searchHtml():((S.voice&&S.voice.slot===k)?voiceHtml():'<div class="fd-row"><button type="button" class="btn btn-go" data-act="add">'+esc(W.add)+'</button><button type="button" class="btn btn-ghost fd-mic" data-act="voice">🎙 '+esc(W.v_btn)+'</button><button type="button" class="fd-link" data-act="copyslot">'+esc(W.copy_y)+'</button></div>');
+h+='<label class="fd-drk">'+esc(W.water)+' <input type="number" inputmode="numeric" min="0" max="10000" step="50" data-f="d" value="'+esc(s.d||"")+'"><span class="fd-hint">'+esc(W.water_h)+'</span></label>';
 h+='<label class="fd-note">'+esc(W.note)+'<textarea rows="2" data-f="n" placeholder="'+esc(W.note_ph)+'">'+esc(s.n||"")+'</textarea></label>';
 h+='<div class="fd-ph">'+(s.phu?'<a href="'+esc(s.phu)+'" target="_blank" rel="noopener"><img src="'+esc(s.phu)+'" alt=""></a>':"")+'<label class="btn btn-ghost fd-phb">'+esc(s.phu?W.photo_ch:W.photo)+'<input type="file" accept="image/*" hidden data-f="ph"></label>'+(s.phu?'<button type="button" class="fd-link" data-act="phdel">'+esc(W.photo_del)+'</button>':"")+'</div>';
 return h+'</div></details>';}
-function sumTxt(s,t){var a=[];if(s.t){a.push(s.t);}if(s.i.length){a.push(fmt0(t.k)+" kcal");}if(+s.d>0){a.push(fmt0(s.d)+" ml");}if(!a.length&&!s.n&&!s.phu){return '<span class="fd-addh">'+esc(W.add_short)+'</span>';}return esc(a.join(" · "));}
+function sumTxt(s,t){var a=[];if(s.t){a.push(s.t);}if(s.i.length){a.push(fmt0(t.k)+" kcal");}var fl=slotFl(s);if(fl[0]+fl[1]>0){a.push(fmt0(fl[0]+fl[1])+" ml");}if(!a.length&&!s.n&&!s.phu){return '<span class="fd-addh">'+esc(W.add_short)+'</span>';}return esc(a.join(" · "));}
 function totV(){var t=dayTot(),ml=dayMl();
 function tile(v,l,x,cl){return '<div><b>'+v+'</b><span>'+esc(l)+'</span>'+(x?'<em'+(cl?' class="fd-inc"':"")+'>'+x+'</em>':"")+'</div>';}
 return '<div class="fd-tiles">'+tile(fmt0(t.k),"kcal")+tile(fmt0(t.c)+" g",W.carbs)+tile(fmt0(t.p)+" g",W.protein)+tile(fmt0(t.f)+" g",W.fat)+tile(fmt0(t.fi)+" g",W.fibre)+tile(fmt0(t.su)+" g",W.sugars)
-+tile(fmt0(ml)+" ml",W.fluids,ml?(Math.round(ml/100)/10).toLocaleString(C.lang,{minimumFractionDigits:1,maximumFractionDigits:1})+" L":"")+'</div>'+ironHtml();}
++'</div><div class="fd-tiles fd-fl">'+tile(fmt0(dayFl()[0])+" ml",W.w_tile)+tile(fmt0(dayFl()[1])+" ml",W.od_tile)+tile(fmt0(ml)+" ml",W.tf_tile,ml?(Math.round(ml/100)/10).toLocaleString(C.lang,{minimumFractionDigits:1,maximumFractionDigits:1})+" L":"")+'</div>'+ironHtml();}
 function microItems(){var a=[];C.slots.forEach(function(sv){slot(sv[0]).i.forEach(function(it){a.push([it.id,+it.g||0,it.m||""]);});});return a;}
 function recipes(){var o={};S.mine.forEach(function(m){if(m.t==="r"){o[m.id]={ing:(m.ing||[]).map(function(i){return [i.id,+i.g||0,i.m||""];}),cw:+m.cw||0};}});return o;}
 function microSet(el){var t=dayTot();el.setAttribute("data-items",JSON.stringify(microItems()));el.setAttribute("data-mine",JSON.stringify(recipes()));el.setAttribute("data-na",JSON.stringify({v:Math.round(t.na),inc:t.nam,fi:Math.round(t.fi*10)/10}));}
@@ -1235,9 +1308,65 @@ function threadHtml(){var r=S.day.r||[];
 var h=r.map(function(x){var who=x.from==="athlete"?W.you:(x.from==="nutri"?"Marine":"Matteo");var d=new Date(x.at*1000);
 return '<div class="nt-rep'+(x.from==="athlete"?" nt-rep-a":"")+'"><span class="nt-rh"><b>'+esc(who)+'</b> <small>'+esc(d.toLocaleString(C.lang,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}))+'</small></span><p>'+esc(x.text).replace(/\n/g,"<br>")+'</p></div>';}).join("");
 return '<div class="fd-thread">'+(r.length?'<h3>'+esc(W.thread)+'</h3>'+h:"")+'<details class="nt-replyd"><summary>'+esc(r.length?W.reply:W.ask)+'</summary><div class="fd-rbox"><textarea rows="3"></textarea><button type="button" class="btn btn-go" data-act="send">'+esc(W.send_r)+'</button></div></details></div>';}
+var FAM=null,PK=["u","s","m","l","sl","pot","tsp","tbsp","cup","can","btl"];
+function drinkOf(it){if(!it||it.m){return "";}var f=BYID[it.id];if(f&&FAM&&f.fm!=null){var fa=FAM[f.fm];if(!fa||!fa[1]){return "";}return fa[0]==="Water"?"w":"d";}return it.dr?"d":"";}
+function slotFl(s){var w=+s.d||0,o=0;(s.i||[]).forEach(function(it){var k=drinkOf(it),g=+it.g||0;if(k==="w"){w+=g;}else if(k==="d"){o+=g;}});return [w,o];}
+function dayFl(){var a=[0,0];C.slots.forEach(function(sv){var f=slotFl(slot(sv[0]));a[0]+=f[0];a[1]+=f[1];});return a;}
+function porOf(f){if(!f){return null;}var b=BYID[f.id];return (b&&b.po)||f.po||null;}
+function porG(po,u){if(!po){return 0;}for(var i=0;i<po.length;i++){if(po[i][0]===u){return +po[i][1];}}return 0;}
+function unitLbl(u){return W["un_"+u]||u;}
+function amtTxt(it){var g=fmt(it.g)+" g";return it.u&&+it.q>0?fmt(it.q)+(+it.q===1?" ":" × ")+unitLbl(it.u)+" ("+g+")":"";}
+function itemSub(it){var a=amtTxt(it);return (a?a+" · ":"")+macro(it);}
+function unitOpts(po,u,gen){var h='<option value="g"'+(u==="g"?" selected":"")+'>'+esc(W.un_g)+'</option>';(po||[]).forEach(function(p){h+='<option value="'+p[0]+'"'+(u===p[0]?" selected":"")+'>'+esc(unitLbl(p[0])+" ("+fmt(p[1])+" g)")+'</option>';});return h;}
+function pickG(s){var q=parseFloat(String(s.q).replace(",","."))||0;return s.u==="g"?q:q*porG(porOf(s.pick),s.u);}
+function setPick(f,g,u,q){var s=S.srch;s.pick=f;var po=porOf(f);if(u&&u!=="g"&&porG(po,u)>0){s.u=u;s.q=q||1;}else if(g){s.u="g";s.q=g;}else if(po&&po.length){var pref=["m","u","sl","pot"],k=po[0][0];for(var i=0;i<pref.length;i++){if(porG(po,pref[i])>0){k=pref[i];break;}}s.u=k;s.q=1;}else{s.u="g";s.q=100;}s.g=pickG(s);}
+function pickHtml(){var s=S.srch,p=s.pick,po=porOf(p),g=pickG(s),it={k:p.k,c:p.c,p:p.p,f:p.f,g:g};
+return '<div class="fd-search"><div class="fd-pick"><b>'+esc(p.n)+rcb(p.st)+tag(p.mine)+'</b><div class="fd-amt"><label>'+esc(W.amount)+' <input type="number" class="fd-pq" inputmode="decimal" min="0" max="5000" step="any" value="'+esc(s.q)+'"></label><label class="fd-ul"><span class="fd-sr">'+esc(W.unit)+'</span><select class="fd-pu" aria-label="'+esc(W.unit)+'">'+unitOpts(po,s.u)+'</select></label>'+(s.u!=="g"?'<span class="fd-pgv">= '+esc(fmt(g))+' g</span>':'')+'</div><span class="fd-pp">'+esc(macro(it))+'</span><div class="fd-row"><button type="button" class="btn btn-go" data-act="pickadd">'+esc(W.addit)+'</button><button type="button" class="fd-link" data-act="unpick">'+esc(W.cancel)+'</button></div></div></div>';}
+function pickUpd(){var s=S.srch;s.g=pickG(s);var p=s.pick,pp=root.querySelector(".fd-pp"),gv=root.querySelector(".fd-pgv");if(pp){pp.textContent=macro({k:p.k,c:p.c,p:p.p,f:p.f,g:s.g});}if(gv){gv.textContent="= "+fmt(s.g)+" g";}}
+/* Marine's day targets (athlete-visible, positive wording only) */
+function tgHtml(){var tg=C.tg&&C.tg[S.date];if(!tg||!(+tg.k>0||+tg.c>0||+tg.p>0||+tg.f>0)){return "";}var t=dayTot(),h='<div class="fd-tgt" role="group" aria-label="'+esc(W.tg_title)+'">';
+function bar(v,max,cl){var pc=max>0?Math.min(100,v/max*100):0;return '<div class="fd-tgb'+(cl?" "+cl:"")+'"><i'+(v>=max?' class="ok"':'')+' style="width:'+pc.toFixed(1)+'%"></i></div>';}
+if(+tg.k>0){var k=Math.round(t.k),K=Math.round(+tg.k);
+if(k>=K){h+='<p class="fd-tgk ok"><b>'+esc(W.tg_done.replace("%s",fmt0(K)))+'</b></p>';}
+else{h+='<p class="fd-tge">'+esc(W.tg_eat)+'</p><p class="fd-tgk"><b>'+esc(fmt0(k))+'</b> <span>'+esc(W.tg_your)+' '+esc(fmt0(K))+' kcal</span></p>';}
+h+=bar(k,K,"big");if(k<K){h+='<p class="fd-tggo">'+esc(W.tg_go.replace("%s",fmt0(K-k)+" kcal"))+'</p>';}}
+var m=[["c",W.carbs],["p",W.protein],["f",W.fat]].filter(function(x){return (+tg[x[0]])>0;});
+if(m.length){h+='<div class="fd-tgm">'+m.map(function(x){var v=Math.round(t[x[0]]),T=Math.round(+tg[x[0]]);return '<div><span>'+esc(x[1])+'</span>'+bar(v,T)+'<small>'+esc(W.tg_mac.replace("%1$s",fmt0(v)).replace("%2$s",fmt0(T)))+(v>=T?" ✓":"")+'</small></div>';}).join("")+'</div>';}
+return h+'</div>';}
+function stgHtml(k){var tg=C.tg&&C.tg[S.date],st=tg&&tg.sl&&tg.sl[k];if(!st){return "";}var s=slot(k),t=tot(s.i),fl=slotFl(s),a=[];
+[["c",W.carbs],["p",W.protein],["f",W.fat]].forEach(function(x){var T=+st[x[0]]||0;if(T>0){var v=Math.round(t[x[0]]);a.push(x[1]+" "+W.tg_mac.replace("%1$s",fmt0(v)).replace("%2$s",fmt0(T))+(v>=T?" ✓":""));}});
+if(+st.w>0){var w=Math.round(fl[0]+fl[1]);a.push(W.w_tile+" "+W.tg_ml.replace("%1$s",fmt0(w)).replace("%2$s",fmt0(st.w))+(w>=st.w?" ✓":""));}
+return a.length?'<p class="fd-stg" data-stg="'+k+'"><b>'+esc(W.tg_meal)+':</b> '+esc(a.join(" · "))+'</p>':"";}
+function tgUpd(){C.slots.forEach(function(sv){var el=root.querySelector('[data-stg="'+sv[0]+'"]');if(el){el.outerHTML=stgHtml(sv[0])||'<p class="fd-stg" data-stg="'+sv[0]+'" hidden></p>';}});var el=root.querySelector(".fd-tgbox");if(el){el.innerHTML=tgHtml();}}
+/* voice logging: the browser's own speech recognition (no paid service); the text is parsed here and matched with the normal search */
+var SRC=window.SpeechRecognition||window.webkitSpeechRecognition,REC=null,VL={en:"en-IE",it:"it-IT",pt:"pt-PT",sl:"sl-SI",sk:"sk-SK"};
+function vParse(text){var P=window.ccNpParse;if(!P){return [];}return P.chunks(text,C.lang).map(function(c){return vRow(c.word,c.query,c.q,c.unit);});}
+function vRow(word,query,q,unit){var P=window.ccNpParse,res=search(query);if(!res.length&&query!==word){res=search(word);}res=P.best(res,unit,porOf).slice(0,5);var r={word:word,opts:res,fi:0,q:1,u:"g"};if(!res.length){return r;}vUnit(r,q,unit);return r;}
+function vUnit(r,q,unit){var x=window.ccNpParse.unitFor(porOf(r.opts[r.fi]),q,unit);r.u=x.u;r.q=x.q;}
+function vG(r){var f=r.opts[r.fi];return r.u==="g"?(+r.q||0):(+r.q||0)*porG(porOf(f),r.u);}
+function voiceHtml(){var v=S.voice,h='<div class="fd-voice">';
+if(v.msg){h+='<p class="fd-vmsg'+(v.listening?" on":"")+'" role="status">'+(v.listening?'<span class="fd-dot" aria-hidden="true"></span>':'')+esc(v.msg)+'</p>';}
+h+='<label class="fd-vtl">'+esc(W.v_text)+'<textarea class="fd-vt" rows="2">'+esc(v.text)+'</textarea></label><div class="fd-row">'+(SRC?'<button type="button" class="btn btn-ghost fd-mic" data-act="vlisten">🎙 '+esc(v.rows?W.v_again:W.v_btn)+'</button>':'')+'<button type="button" class="btn btn-ghost" data-act="vparse">'+esc(W.v_read)+'</button></div>';
+if(v.rows){var ok=v.rows.filter(function(r){return r.opts.length;});h+='<h4 class="fd-vh">'+esc(W.v_right)+'</h4><ul class="fd-vl">';
+v.rows.forEach(function(r,ix){if(!r.opts.length){h+='<li class="fd-vnf">'+esc(W.v_none.replace("%s",r.word))+'<button type="button" class="fd-x" data-act="vrm" data-vx="'+ix+'" aria-label="'+esc(W.remove)+'">'+XI+'</button></li>';return;}
+var f=r.opts[r.fi],po=porOf(f),g=vG(r);
+h+='<li><div class="fd-vrow"><label class="fd-vfl"><span class="fd-sr">'+esc(W.v_food)+'</span><select class="fd-vf" data-vx="'+ix+'" aria-label="'+esc(W.v_food+": "+r.word)+'">'+r.opts.map(function(o,j){return '<option value="'+j+'"'+(j===r.fi?" selected":"")+'>'+esc(o.n)+'</option>';}).join("")+'</select></label><button type="button" class="fd-x" data-act="vrm" data-vx="'+ix+'" aria-label="'+esc(W.remove)+'">'+XI+'</button></div>'
++'<div class="fd-amt"><label>'+esc(W.amount)+' <input type="number" class="fd-vq" data-vx="'+ix+'" inputmode="decimal" min="0" max="5000" step="any" value="'+esc(r.q)+'"></label><label class="fd-ul"><span class="fd-sr">'+esc(W.unit)+'</span><select class="fd-vu" data-vx="'+ix+'" aria-label="'+esc(W.unit)+'">'+unitOpts(po,r.u)+'</select></label><span class="fd-pgv" data-vg="'+ix+'">'+(r.u!=="g"?"= "+esc(fmt(g))+" g · ":"")+esc(fmt0(f.k*g/100))+' kcal</span></div></li>';});
+h+='</ul><div class="fd-row">'+(ok.length?'<button type="button" class="btn btn-go" data-act="vlog">'+esc(W.v_logall)+' ('+ok.length+')</button>':'')+'<button type="button" class="fd-link" data-act="vcancel">'+esc(W.cancel)+'</button></div>';}
+else{h+='<div class="fd-row"><button type="button" class="fd-link" data-act="vcancel">'+esc(W.cancel)+'</button></div>';}
+return h+'</div>';}
+function vRedraw(){var sl=root.querySelector('.fd-slot[data-slot="'+(S.voice&&S.voice.slot)+'"] .fd-voice');if(sl){var w=document.createElement("div");w.innerHTML=voiceHtml();sl.replaceWith(w.firstChild);}else{render();}}
+function vDo(){var v=S.voice;if(!v){return;}var tx=root.querySelector(".fd-vt");if(tx){v.text=tx.value;}if(!v.text.trim()){return;}v.msg="";loadDB().then(function(){if(S.voice!==v){return;}v.rows=vParse(v.text);vRedraw();});}
+function vListen(){var v=S.voice;if(!SRC){v.msg=W.v_nosup;vRedraw();var t0=root.querySelector(".fd-vt");if(t0){t0.focus();}return;}
+try{if(REC){REC.abort();}}catch(x){}REC=new SRC();REC.lang=VL[C.lang]||"en-IE";REC.interimResults=true;REC.maxAlternatives=1;REC.continuous=false;
+var fin="";v.listening=true;v.msg=W.v_listen;v.rows=null;v.text="";vRedraw();loadDB();
+REC.onresult=function(e){var it="";fin="";for(var i=0;i<e.results.length;i++){if(e.results[i].isFinal){fin+=e.results[i][0].transcript+" ";}else{it+=e.results[i][0].transcript;}}var tx=root.querySelector(".fd-vt");v.text=(fin+it).trim();if(tx){tx.value=v.text;}};
+REC.onerror=function(e){v.listening=false;v.msg=(e&&(e.error==="not-allowed"||e.error==="service-not-allowed"))?W.v_nosup:W.v_err;vRedraw();};
+REC.onend=function(){if(S.voice!==v){return;}var was=v.listening;v.listening=false;if(v.text.trim()){vDo();}else if(was){v.msg=W.v_err;vRedraw();}};
+try{REC.start();}catch(x){v.listening=false;v.msg=W.v_nosup;vRedraw();}}
 function render(){var d=new Date(S.date+"T12:00:00"),lbl=d.toLocaleDateString(C.lang,{weekday:"long",day:"numeric",month:"long"}),isT=S.date===today();
 var h='<div class="fd-nav"><button type="button" class="fd-arrow" data-act="prev" aria-label="'+esc(W.prev)+'">‹</button><div class="fd-date"><b>'+esc(lbl)+'</b>'+(isT?'<small>'+esc(W.today)+'</small>':'<button type="button" class="fd-link" data-act="today">'+esc(W.gotoday)+'</button>')+'</div><button type="button" class="fd-arrow" data-act="next" aria-label="'+esc(W.next)+'"'+(S.date>=shift(today(),7)?" disabled":"")+'>›</button></div>';
-h='<div class="fd-stick">'+h+'<p class="fd-slim">'+slimHtml()+'</p></div><p class="fd-status" role="status"></p>'+(window.ccMpTop?window.ccMpTop(S.date):"");
+h='<div class="fd-stick">'+h+'<p class="fd-slim">'+slimHtml()+'</p></div><div class="fd-tgbox">'+tgHtml()+'</div><p class="fd-status" role="status"></p>'+(window.ccMpTop?window.ccMpTop(S.date):"");
 C.slots.forEach(function(sv){h+=slotHtml(sv[0],sv[1]);});
 /* Matteo 19 Nov: per-kg numbers are for Marine and the coach only; the weight box shows only when there is no Vekta weight (last 60 days) */
 var wb=C.vkg?"":'<label class="fd-kg">'+esc(W.weight_n)+' <input type="number" class="fd-kgi" inputmode="decimal" min="25" max="250" step="0.1" value="'+esc(S.kg)+'"></label>';
@@ -1245,15 +1374,15 @@ h+='<div class="fd-tot"><h3>'+esc(W.day_total)+'</h3>'+(hasAny()?ringHtml(dayTot
 root.querySelector(".fd-day").innerHTML=h;root.querySelector(".fd-thbox").innerHTML=threadHtml();S.just=null;renderMine();renderCyc();microRefresh();watchThread();if(window.ccMpAfter){window.ccMpAfter(S.date);}}
 function refreshNums(){C.slots.forEach(function(sv){var k=sv[0],s=slot(k),t=tot(s.i),el=root.querySelector('[data-tt="'+k+'"]');if(el){el.innerHTML=sumTxt(s,t);}
 var st=root.querySelector('[data-stot="'+k+'"]');if(st){st.textContent=W.slot_total+": "+macroT(t);}
-var sl=root.querySelector('.fd-slot[data-slot="'+k+'"]');if(sl){s.i.forEach(function(it,ix){var sm=sl.querySelector('[data-it="'+ix+'"]');if(sm){sm.textContent=macro(it);}});}});
+var sl=root.querySelector('.fd-slot[data-slot="'+k+'"]');if(sl){s.i.forEach(function(it,ix){var sm=sl.querySelector('[data-it="'+ix+'"]');if(sm){sm.textContent=itemSub(it);}});}});
 C.slots.forEach(function(sv){var sx=root.querySelector('[data-sx="'+sv[0]+'"]');if(sx){var s2=slot(sv[0]);sx.innerHTML=sxTxt(sv[0],s2,tot(s2.i));}});
 C.slots.forEach(function(sv){var gg=root.querySelector('[data-gg="'+sv[0]+'"]');if(gg){var s3=slot(sv[0]);gg.innerHTML=gaugesHtml(sv[0],s3,tot(s3.i));}});
-var tv=root.querySelector(".fd-totv");if(tv){tv.innerHTML=totV();}ringUpd();slimUpd();microRefresh();}
+var tv=root.querySelector(".fd-totv");if(tv){tv.innerHTML=totV();}ringUpd();slimUpd();tgUpd();microRefresh();}
 function save(){S.dirty=true;status(W.saving);clearTimeout(S.timer);S.timer=setTimeout(flush,700);}
 function payload(){return {page:C.page,date:S.date,data:JSON.stringify(S.day.s||{})};}
 function flush(){clearTimeout(S.timer);if(!S.dirty){return Promise.resolve();}S.dirty=false;return send(C.u.save,payload()).then(function(){status(W.saved);}).catch(function(){S.dirty=true;status(W.err,true);});}
 addEventListener("pagehide",function(){if(!S.dirty){return;}var f=new FormData(),p=payload();for(var k in p){f.append(k,p[k]);}f.append("_wpnonce",C.nonce);try{navigator.sendBeacon(C.u.save,f);S.dirty=false;}catch(x){}});
-function go(ds){flush().then(function(){return send(C.u.day,{page:C.page,date:ds},"GET");}).then(function(d){S.date=ds;S.day=d;S.open={};S.srch=null;render();}).catch(function(){status(W.err,true);});}
+function go(ds){flush().then(function(){return send(C.u.day,{page:C.page,date:ds},"GET");}).then(function(d){S.date=ds;S.day=d;S.open={};S.srch=null;S.voice=null;render();}).catch(function(){status(W.err,true);});}
 function mineHtml(){var h='<details class="fd-mine"'+(S.mineOpen?" open":"")+'><summary>'+esc(W.mine)+'</summary><div class="fd-mb"><p class="fd-muted">'+esc(W.mine_lede)+'</p>';
 if(!S.mine.length&&!S.edit){h+='<p class="fd-muted">'+esc(W.none_mine)+'</p>';}
 S.mine.forEach(function(m){h+='<div class="fd-mrow"><div><b>'+esc(m.n)+tag(m.t)+'</b><small>'+esc(macro100(m))+'</small></div><button type="button" class="fd-link" data-act="medit" data-id="'+esc(m.id)+'">'+esc(W.edit)+'</button><button type="button" class="fd-link" data-act="mdel" data-id="'+esc(m.id)+'">'+esc(W.del)+'</button></div>';});
@@ -1279,13 +1408,22 @@ if(a==="prev"){go(shift(S.date,-1));}
 else if(a==="next"){go(shift(S.date,1));}
 else if(a==="today"){go(today());}
 else if(a==="tothread"){var th=root.querySelector(".fd-thread");if(th){th.scrollIntoView({behavior:"smooth",block:"start"});}markSeen();}
-else if(a==="add"||a==="adding"){S.srch={ctx:a==="add"?"slot":"ing",slot:k,q:"",pick:null,g:100};if(a==="add"){S.open[k]=true;}redraw();focusQ();loadDB().then(refreshRes);}
+else if(a==="add"||a==="adding"){S.voice=null;S.srch={ctx:a==="add"?"slot":"ing",slot:k,q:"",pick:null,g:100};if(a==="add"){S.open[k]=true;}redraw();focusQ();loadDB().then(refreshRes);}
 else if(a==="cancel"){S.srch=null;redraw();}
-else if(a==="pick"){var pf=S.res[+b.dataset.rx];if(staple(pf)){S.srch.ask={f:pf};redraw();}else{S.srch.pick=pf;redraw();var g=root.querySelector(".fd-pg");if(g){g.focus();g.select();}}}
-else if(a==="rc"){var af=S.srch.ask.f,sp=staple(af),want=b.dataset.v,tg=(af.st===want||!sp)?af:(BYID[want==="r"?sp.raw:sp.cooked]||af);S.srch.ask=null;S.srch.pick=tg;redraw();var g3=root.querySelector(".fd-pg");if(g3){g3.focus();g3.select();}}
+else if(a==="voice"){S.srch=null;S.voice={slot:k,text:"",rows:null,msg:SRC?"":W.v_nosup,listening:false};S.open[k]=true;render();if(SRC){vListen();}else{var vt=root.querySelector(".fd-vt");if(vt){vt.focus();}}}
+else if(a==="vlisten"){vListen();}
+else if(a==="vparse"){vDo();}
+else if(a==="vcancel"){try{if(REC){REC.abort();}}catch(x){}S.voice=null;render();}
+else if(a==="vrm"){S.voice.rows.splice(+b.dataset.vx,1);vRedraw();}
+else if(a==="vlog"){var vk=S.voice.slot,va=slot(vk).i,n0=va.length;S.voice.rows.forEach(function(r){if(!r.opts.length){return;}var f=r.opts[r.fi],g=Math.round(vG(r)*10)/10;if(!(g>0)){return;}
+var it={id:f.id,n:f.n,g:g,k:f.k,c:f.c,p:f.p,f:f.f,fi:f.fi||0,su:f.su||0};if(f.mine){it.m=f.mine;}if(f.na!=null&&f.na!==""){it.na=f.na;}if(f.st){it.st=f.st;}if(r.u!=="g"){it.u=r.u;it.q=+r.q||1;}if(drinkOf(it)==="d"){it.dr=1;}
+va.push(it);S.recent=[it].concat(S.recent.filter(function(x){return x.id!==it.id;})).slice(0,8);});
+try{if(REC){REC.abort();}}catch(x){}S.voice=null;if(va.length>n0){S.just=vk+":"+(va.length-1);}S.open[vk]=true;render();save();}
+else if(a==="pick"){var pf=S.res[+b.dataset.rx];if(staple(pf)){S.srch.ask={f:pf};redraw();}else{setPick(pf);redraw();var g=root.querySelector(".fd-pq");if(g){g.focus();g.select();}}}
+else if(a==="rc"){var af=S.srch.ask.f,sp=staple(af),want=b.dataset.v,tg=(af.st===want||!sp)?af:(BYID[want==="r"?sp.raw:sp.cooked]||af);S.srch.ask=null;setPick(tg);redraw();var g3=root.querySelector(".fd-pq");if(g3){g3.focus();g3.select();}}
 else if(a==="unpick"){S.srch.pick=null;S.srch.ask=null;redraw();focusQ();}
-else if(a==="pickadd"){var p=S.srch.pick,g2=parseFloat(String(S.srch.g).replace(",","."))||0;if(!(g2>0)){return;}
-var it={id:p.id,n:p.n,g:Math.round(g2*10)/10,k:p.k,c:p.c,p:p.p,f:p.f,fi:p.fi||0,su:p.su||0};if(p.mine){it.m=p.mine;}if(p.na!=null&&p.na!==""){it.na=p.na;}if(p.st){it.st=p.st;}
+else if(a==="pickadd"){var p=S.srch.pick,g2=pickG(S.srch);if(!(g2>0)){return;}
+var it={id:p.id,n:p.n,g:Math.round(g2*10)/10,k:p.k,c:p.c,p:p.p,f:p.f,fi:p.fi||0,su:p.su||0};if(p.mine){it.m=p.mine;}if(p.na!=null&&p.na!==""){it.na=p.na;}if(p.st){it.st=p.st;}if(S.srch.u&&S.srch.u!=="g"){it.u=S.srch.u;it.q=parseFloat(String(S.srch.q).replace(",","."))||1;}if(drinkOf(it)==="d"){it.dr=1;}
 S.recent=[it].concat(S.recent.filter(function(x){return x.id!==it.id;})).slice(0,8);
 if(S.srch.ctx==="slot"){var sk2=S.srch.slot,ar=slot(sk2).i;ar.push(it);S.just=sk2+":"+(ar.length-1);S.open[sk2]=true;S.srch=null;render();save();}else{S.edit.ing.push(it);S.srch=null;renderMine();}}
 else if(a==="rm"){var li=b.closest("li");if(li){li.classList.add("fd-out");}setTimeout(function(){slot(k).i.splice(+b.dataset.ix,1);render();save();},200);}
@@ -1294,7 +1432,7 @@ send(C.u.fav,{page:C.page,data:JSON.stringify(S.fav)}).then(function(j){S.fav=j.
 else if(a==="cyc"){var cv=b.dataset.v;if(cv==="off"&&!confirm(W.cyc_offq)){return;}b.disabled=true;
 send(C.u.cycle,{page:C.page,act:cv,date:S.date}).then(function(j){S.cyc=j.cycle;S.cycOpen=true;render();status(W.saved);}).catch(function(){b.disabled=false;status(W.err,true);});}
 else if(a==="chip"){var arr=b.dataset.src==="fav"?S.fav:S.recent,cf=arr[+b.dataset.i];if(!cf){return;}
-S.srch.pick={id:cf.id,n:cf.n,k:cf.k,c:cf.c,p:cf.p,f:cf.f,fi:cf.fi||0,su:cf.su||0,na:cf.na==null?null:cf.na,st:cf.st||"",mine:cf.m||""};S.srch.g=cf.g||100;redraw();var g4=root.querySelector(".fd-pg");if(g4){g4.focus();g4.select();}}
+setPick({id:cf.id,n:cf.n,k:cf.k,c:cf.c,p:cf.p,f:cf.f,fi:cf.fi||0,su:cf.su||0,na:cf.na==null?null:cf.na,st:cf.st||"",mine:cf.m||""},cf.u?0:(cf.g||100),cf.u,cf.q);redraw();var g4=root.querySelector(".fd-pq");if(g4){g4.focus();g4.select();}}
 else if(a==="copyslot"||a==="copyday"){if(a==="copyday"&&hasAny()&&!confirm(W.copy_q)){return;}b.disabled=true;
 flush().then(function(){return send(C.u.day,{page:C.page,date:shift(S.date,-1)},"GET");}).then(function(y){var ys=(y&&y.s&&!Array.isArray(y.s))?y.s:{},n=0;
 (a==="copyday"?C.slots.map(function(sv){return sv[0];}):[k]).forEach(function(sk3){var src=ys[sk3];if(!src||(!(src.i||[]).length&&!(+src.d>0))){return;}n++;var dst=slot(sk3),cp=JSON.parse(JSON.stringify(src.i||[]));
@@ -1316,9 +1454,11 @@ var ix=-1;S.mine.forEach(function(x,i){if(x.id===o.id){ix=i;}});if(ix>-1){S.mine
 var qt=null,kt=null;
 root.addEventListener("input",function(e){var el=e.target,sl=el.closest(".fd-slot"),k=sl?sl.dataset.slot:null,f=el.dataset.f,ef=el.dataset.e;
 if(el.classList.contains("fd-q")){S.srch.q=el.value;var cb=el.parentNode.querySelector(".fd-chipbox");if(cb){cb.hidden=!!el.value.trim();}clearTimeout(qt);qt=setTimeout(refreshRes,120);return;}
-if(el.classList.contains("fd-pg")){S.srch.g=el.value;var p=S.srch.pick,pp=root.querySelector(".fd-pp");if(pp){pp.textContent=macro({k:p.k,c:p.c,p:p.p,f:p.f,g:parseFloat(el.value)||0});}return;}
+if(el.classList.contains("fd-pq")){S.srch.q=el.value;pickUpd();return;}
+if(el.classList.contains("fd-vt")&&S.voice){S.voice.text=el.value;return;}
+if(el.classList.contains("fd-vq")&&S.voice){var vr=S.voice.rows[+el.dataset.vx];vr.q=el.value;var vf=vr.opts[vr.fi],vgg=vG(vr),vs=root.querySelector('[data-vg="'+el.dataset.vx+'"]');if(vs){vs.textContent=(vr.u!=="g"?"= "+fmt(vgg)+" g · ":"")+fmt0(vf.k*vgg/100)+" kcal";}return;}
 if(el.classList.contains("fd-kgi")){S.kg=el.value;refreshNums();clearTimeout(kt);kt=setTimeout(function(){send(C.u.kg,{page:C.page,kg:S.kg}).then(function(){status(W.saved);}).catch(function(){status(W.err,true);});},800);return;}
-if(f==="g"&&k){slot(k).i[+el.dataset.ix].g=parseFloat(el.value)||0;refreshNums();save();return;}
+if(f==="g"&&k){var gi=slot(k).i[+el.dataset.ix];gi.g=parseFloat(el.value)||0;delete gi.u;delete gi.q;refreshNums();save();return;}
 if(f==="t"&&k){slot(k).t=el.value;refreshNums();save();return;}
 if(f==="d"&&k){slot(k).d=Math.max(0,Math.round(parseFloat(el.value)||0));refreshNums();save();return;}
 if(f==="r"&&k){slot(k).r=Math.min(1440,pmin(el.value));refreshNums();save();return;}
@@ -1326,15 +1466,20 @@ if(f==="n"&&k){slot(k).n=el.value;save();return;}
 if(ef&&S.edit){if(ef==="ig"){S.edit.ing[+el.dataset.ix].g=parseFloat(el.value)||0;var sm=root.querySelector('[data-ing="'+el.dataset.ix+'"]');if(sm){sm.textContent=macro(S.edit.ing[+el.dataset.ix]);}}else{S.edit[ef]=el.value;}
 var rp=root.querySelector(".fd-rcp");if(rp&&S.edit.t==="r"){rp.textContent=W.per100+": "+macro100(recipeCalc(S.edit));}}
 });
-root.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList.contains("fd-pg")){e.preventDefault();var b=root.querySelector('[data-act="pickadd"]');if(b){b.click();}}
+root.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList.contains("fd-pq")){e.preventDefault();var b=root.querySelector('[data-act="pickadd"]');if(b){b.click();}}
 if(e.key==="Enter"&&e.target.classList.contains("fd-q")){e.preventDefault();var first=root.querySelector('.fd-rl [data-act="pick"]');if(first){first.click();}}});
-root.addEventListener("change",function(e){var el=e.target;if(el.dataset.f!=="ph"){return;}var sl=el.closest(".fd-slot"),k=sl.dataset.slot,fi=el.files[0];if(!fi){return;}
+root.addEventListener("change",function(e){var el=e.target;
+if(el.classList.contains("fd-pu")&&S.srch&&S.srch.pick){var og=pickG(S.srch);S.srch.u=el.value;S.srch.q=el.value==="g"?Math.round(og||100):1;S.srch.g=pickG(S.srch);redraw();var pq=root.querySelector(".fd-pq");if(pq){pq.focus();pq.select();}return;}
+if((el.classList.contains("fd-vf")||el.classList.contains("fd-vu"))&&S.voice){var r=S.voice.rows[+el.dataset.vx];if(!r){return;}
+if(el.classList.contains("fd-vf")){r.fi=+el.value;if(r.u!=="g"&&!(porG(porOf(r.opts[r.fi]),r.u)>0)){vUnit(r,null,null);}}else{var og2=vG(r);r.u=el.value;r.q=r.u==="g"?Math.round(og2||100):1;}vRedraw();return;}
+if(el.dataset.f!=="ph"){return;}var sl=el.closest(".fd-slot"),k=sl.dataset.slot,fi=el.files[0];if(!fi){return;}
 if(fi.size>10485760||!/^image\//.test(fi.type||"")&&!/\.(heic|heif|jpe?g|png|webp)$/i.test(fi.name)){status(W.photo_bad,true);return;}
 status(W.uploading);flush().then(function(){var fd=new FormData();fd.append("file",fi);fd.append("date",S.date);fd.append("slot",k);fd.append("page",C.page);return send(C.u.photo,fd);})
 .then(function(j){var s=slot(k);s.ph=j.id;s.phu=j.url;S.open[k]=true;render();status(W.saved);}).catch(function(){status(W.err,true);});});
 if(C.trends){root.querySelector(".fd-trbox").innerHTML='<details class="fd-trd"'+(OPEN.tr?" open":"")+'><summary>'+esc(W.mytrends)+'</summary><div><p class="fd-muted">'+esc(W.tr_lede)+'</p><div class="fd-trends" data-tr="'+esc(JSON.stringify(C.trends))+'"></div></div></details>';}
 window.ccFd={root:root,render:render,flush:flush,status:status,date:function(){return S.date;},setDay:function(d){S.day=d;render();},add:function(k){S.srch={ctx:"slot",slot:k,q:"",pick:null,g:100};S.open[k]=true;render();focusQ();loadDB().then(refreshRes);var sl=root.querySelector('.fd-slot[data-slot="'+k+'"]');if(sl){sl.scrollIntoView({block:"start"});}}};
 render();
+loadDB().then(function(){if(DB){refreshNums();}});
 if(OPEN.tr&&window.ccFdTrends){var tre=root.querySelector(".fd-trends[data-tr]");if(tre){setTimeout(function(){window.ccFdTrends(tre);},0);}}
 if(C.female&&window.ccFdM){window.ccFdM.load(C.micro).then(function(M){S.M=M;var tv=root.querySelector(".fd-totv");if(tv){tv.innerHTML=totV();}}).catch(function(){});}
 if(!C.fixed&&today()!==S.date){go(today());}
