@@ -95,6 +95,11 @@ function cc_ath_hub_langs() {   // languages the whole hub speaks: English, Ital
 }
 function cc_ath_lang_switch() {   // Matteo 17 Nov: the athlete can change the language Matteo picked; the form, hub and emails follow
     if (!is_user_logged_in() || cc_ath_is_coach()) return '';
+    if (cc_ath_demo_as()) {   // demo page: the same picker, but it only previews the hub in that language (?lang=); Matteo's own language is never changed
+        $cur = $GLOBALS['cc_ath_lang'] ?? 'en'; $opt = '';
+        foreach (cc_ath_hub_langs() as $l) $opt .= '<option value="' . esc_attr(add_query_arg('lang', $l)) . '"' . selected($cur, $l, false) . '>' . esc_html(CC_REPORT_LANGS[$l]) . '</option>';
+        return '<form class="ath-lang" onsubmit="return false"><label for="ath-lang">' . esc_html(cc_L('Language', 'Lingua')) . '</label><select id="ath-lang" onchange="location.href=this.value">' . $opt . '</select></form>';
+    }
     $cur = cc_ath_lang_code(get_current_user_id()); $ls = cc_ath_hub_langs(); if (!in_array($cur, $ls, true)) $ls[] = $cur;
     $opt = ''; foreach ($ls as $l) $opt .= '<option value="' . $l . '"' . selected($cur, $l, false) . '>' . esc_html(CC_REPORT_LANGS[$l]) . '</option>';
     return '<form class="ath-lang" method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_my_lang">' . wp_nonce_field('cc_my_lang', '_wpnonce', false, false)
@@ -183,6 +188,8 @@ function cc_t($s) {
 
 /* ---------- who is who ---------- */
 function cc_ath_page_of($uid, $create = false) {
+    // Matteo 19 Nov: on his demo page (athlete view, see cc_ath_demo_as) the demo page is "his own" page, for page requests only
+    if (!$create && $uid && ($d = cc_ath_demo_as()) && (int) $uid === get_current_user_id()) return $d;
     $q = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_user', 'meta_value' => (int) $uid, 'numberposts' => 1, 'fields' => 'ids']);
     if ($q) return (int) $q[0];
     if (!$create) return 0;
@@ -203,7 +210,23 @@ function cc_ath_shared_page($lang = 'en') {   // the shared hub in the athlete's
     }
     return $en;
 }
-function cc_ath_is_coach() { return current_user_can('edit_pages'); }
+function cc_ath_is_coach() { return current_user_can('edit_pages') && !cc_ath_demo_as(); }
+/* Matteo 19 Nov: his demo page ("Matteo Cigala", meta cc_demo) opened from his coach view renders EXACTLY as an athlete sees their hub,
+ * with a slim bar on top ("Demo · you're seeing what an athlete sees", back to the coach view). ?coach=1 shows the old coach view of it.
+ * Only for page requests to /athletes/?view=<demo page> by the coach: REST, admin-post, AJAX and cron stay coach (permissions unchanged),
+ * and nothing changes for real athletes or for his coach view of real athlete pages. Returns the demo page id, else 0. */
+function cc_ath_demo_as() {
+    if ((defined('REST_REQUEST') && REST_REQUEST) || is_admin() || wp_doing_ajax() || wp_doing_cron() || !did_action('init')) return 0;
+    static $v = null;
+    if ($v !== null) return $v;
+    $v = 0;
+    if (empty($_GET['view']) || isset($_GET['coach']) || isset($_GET['board']) || isset($_GET['cc_report']) || isset($_GET['cc_file'])) return $v;
+    if (strpos((string) ($_SERVER['REQUEST_URI'] ?? ''), '/' . CC_ATH_SLUG . '/') !== 0 || !is_user_logged_in() || !current_user_can('edit_pages')) return $v;
+    $pid = (int) $_GET['view'];
+    if ($pid && get_post_type($pid) === 'cc_athlete' && get_post_meta($pid, 'cc_demo', true)) $v = $pid;
+    return $v;
+}
+function cc_ath_viewer_uid() { return cc_ath_demo_as() ? 0 : get_current_user_id(); }   // whose notifications show: nobody's on the demo page
 // Matteo 17 Nov: athletes coached in TrainingPeaks (tick on the Contracts board). Their hub has no Availability, Goals & events or Vekta
 // section (they add those in TrainingPeaks); a TrainingPeaks card instead. The rider form stays.
 // Matteo 17 Nov: his demo page: a private athlete page with no login, filled from his own Vekta data ("me"); never counted, never emailed
@@ -218,7 +241,7 @@ add_action('rest_api_init', function () {
 function cc_ath_tp($pid) { return $pid && (bool) get_post_meta((int) $pid, 'cc_tp', true); }
 function cc_ath_can_see($pid) {
     if (!$pid || get_post_type($pid) !== 'cc_athlete' || !is_user_logged_in()) return false;
-    if (cc_ath_is_coach()) return true;
+    if (current_user_can('edit_pages')) return true;   // the coach (also while his demo page shows the athlete view)
     $me = get_current_user_id();
     $ok = get_post_meta($pid, 'cc_shared', true) ? (bool) cc_ath_page_of($me) : (int) get_post_meta($pid, 'cc_user', true) === $me;
     return (bool) apply_filters('cc_ath_can_see', $ok, $pid, $me);   // onboarding.php: closed until the rider form is done
@@ -312,6 +335,27 @@ add_action('wp_footer', function () {
         . ($coach ? 'a.style.display="none";' : 'a.href="https://wa.me/353834777697";a.target="_blank";a.rel="noopener";a.textContent="WhatsApp Matteo";a.setAttribute("aria-label","WhatsApp Matteo");')
         . '});}sw();addEventListener("DOMContentLoaded",sw);})();</script>' . "\n";
 }, 50);
+/* Matteo 19 Nov: the demo page in athlete view (cc_ath_demo_as): a slim fixed bar on top (English, it is only for him), and hub links on
+ * the page keep ?view=<demo> (and ?lang=) so "Change my availability", "back" etc. stay in the demo instead of opening his coach home. */
+add_action('wp_footer', function () {
+    if (!($d = cc_ath_demo_as())) return;
+    $hub = home_url('/' . CC_ATH_SLUG . '/');
+    echo '<div id="cc-demo-bar" role="note"><span><b>Demo</b> · you’re seeing what an athlete sees</span>'
+        . '<a href="' . esc_url(add_query_arg(['view' => $d, 'coach' => 1], $hub)) . '">Coach view of this page</a>'
+        . '<a class="go" href="' . esc_url($hub) . '">Back to coach view</a></div>'
+        . '<style>#cc-demo-bar{position:fixed;top:0;left:0;right:0;z-index:2147483000;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 16px;min-height:40px;padding:6px 16px;box-sizing:border-box;'
+        . 'background:#0b0d0f;border-bottom:1px solid rgba(43,212,122,.45);box-shadow:0 4px 14px rgba(0,0,0,.5);font:500 14px/1.3 Montserrat,system-ui,sans-serif;color:#d0d6e0;text-align:center}'
+        . '#cc-demo-bar b{color:#2bd47a;font-weight:700}#cc-demo-bar a{color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:3px;padding:6px 0}#cc-demo-bar a.go{color:#2bd47a}'
+        . 'html{scroll-padding-top:56px}body{padding-top:40px!important}.elementor-location-header{top:40px!important}'   // the site header is sticky: it stops under the bar
+        . '@media (max-width:600px){body{padding-top:62px!important}.elementor-location-header{top:62px!important}}</style>'
+        . '<script>(function(){var V="' . (int) $d . '",P="/' . CC_ATH_SLUG . '/",L=new URLSearchParams(location.search).get("lang");'
+        . 'function fix(a){if(!a||!a.getAttribute("href")||a.closest("#cc-demo-bar"))return;var u;try{u=new URL(a.href,location.href);}catch(e){return;}'
+        . 'if(u.origin!==location.origin||u.pathname.indexOf(P)!==0)return;var q=u.searchParams;'
+        . 'if(q.has("view")||q.has("board")||q.has("coach")||q.has("cc_report")||q.has("cc_file")||q.has("cc_sw"))return;'
+        . 'q.set("view",V);if(L&&!q.has("lang"))q.set("lang",L);a.href=u.toString();}'
+        . 'document.addEventListener("click",function(e){fix(e.target&&e.target.closest?e.target.closest("a[href]"):null);},true);'
+        . 'document.querySelectorAll("a[href]").forEach(fix);})();</script>' . "\n";
+}, 60);
 /* 19 Nov: logged in, the footer's "Athlete login" link is not needed (the header icon still opens the hub) */
 add_action('wp_head', function () {
     if (is_user_logged_in()) echo '<style>.legal a[href="/athletes/"],.legal a[href$="/athletes/"]{display:none!important}</style>' . "\n";
@@ -387,8 +431,12 @@ function cc_ath_inner() {
              . '<p><a class="btn btn-ghost" href="' . esc_url(wp_logout_url($url)) . '">' . cc_t('Log out') . '</a></p></div>';
     }
     // onboarding.php: until the rider form is done, an athlete sees only the form (empty without that module)
-    if (!$coach && ($gate = apply_filters('cc_ath_gate', '', $me, $mine)) !== '') return $o . $gate . '</div>';
+    if (!$coach && !cc_ath_demo_as() && ($gate = apply_filters('cc_ath_gate', '', $me, $mine)) !== '') return $o . $gate . '</div>';   // the demo page never shows the rider form
     $view = $mine;
+    if (cc_ath_demo_as()) {   // demo page: the page's own language (English unless set), ?lang= previews any hub language
+        $dl = sanitize_key($_GET['lang'] ?? ''); $pl = (string) get_post_meta($view, 'cc_lang', true);
+        $GLOBALS['cc_ath_lang'] = in_array($dl, cc_ath_hub_langs(), true) ? $dl : (in_array($pl, cc_ath_hub_langs(), true) ? $pl : 'en');
+    }
     if ($coach && isset($_GET['view']) && get_post_type((int) $_GET['view']) === 'cc_athlete') $view = (int) $_GET['view'];
     // the coach sees each athlete's page in that athlete's language; ?lang=it|en previews either hub
     if ($coach) $GLOBALS['cc_ath_lang'] = ($v = (int) get_post_meta($view, 'cc_user', true)) ? cc_ath_user_lang($v) : 'en';

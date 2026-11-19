@@ -57,7 +57,7 @@ function cc_td_card($view) {
     }
     // 3. the newest unread message from Matteo (his replies, his own messages, his answers on results and Vekta sessions)
     if (function_exists('cc_inbox_get')) {
-        foreach (cc_inbox_get(get_current_user_id()) as $x) {
+        foreach (cc_inbox_get(function_exists('cc_ath_viewer_uid') ? cc_ath_viewer_uid() : get_current_user_id()) as $x) {   // demo page: no inbox (never Matteo's own)
             if (!empty($x['read']) || (time() - (int) ($x['at'] ?? 0)) > 14 * DAY_IN_SECONDS) continue;
             $tag = (string) ($x['tag'] ?? '');
             if (!($tag === 'cc-msg' || $tag === 'cc-reply' || strpos($tag, 'cc-result-') === 0 || (!$tp && strpos($tag, 'cc-vx-') === 0))) continue;

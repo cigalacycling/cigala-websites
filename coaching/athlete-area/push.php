@@ -146,7 +146,8 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
 function cc_inbox_w($k) {
     static $W = ['title' => ['en' => 'Notifications', 'it' => 'Notifiche', 'pt' => 'Notificações', 'sl' => 'Obvestila', 'sk' => 'Upozornenia'],
                  'empty' => ['en' => 'Nothing yet. My replies, your new reports and news show up here.', 'it' => 'Ancora niente. Qui compaiono le mie risposte, i tuoi nuovi report e le novità.',
-                             'pt' => 'Ainda nada. Aqui aparecem as minhas respostas, os teus novos relatórios e as novidades.', 'sl' => 'Še nič. Tu se pojavijo moji odgovori, tvoja nova poročila in novice.', 'sk' => 'Zatiaľ nič. Tu sa objavia moje odpovede, tvoje nové reporty a novinky.']];
+                             'pt' => 'Ainda nada. Aqui aparecem as minhas respostas, os teus novos relatórios e as novidades.', 'sl' => 'Še nič. Tu se pojavijo moji odgovori, tvoja nova poročila in novice.', 'sk' => 'Zatiaľ nič. Tu sa objavia moje odpovede, tvoje nové reporty a novinky.'],
+                 'all' => ['en' => 'Mark all as read', 'it' => 'Segna tutte come lette', 'pt' => 'Marcar todas como lidas', 'sl' => 'Označi vse kot prebrano', 'sk' => 'Označiť všetko ako prečítané']];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
 }
 function cc_inbox_get($uid) { $in = get_user_meta((int) $uid, 'cc_inbox', true); return is_array($in) ? $in : []; }
@@ -171,22 +172,24 @@ function cc_inbox_items($uid) {
         // Her lines are recognised by 'who' => 'nutri' or by her name in the title ("Marine replied…", "A Marine respondeu…").
         $nutri = ($x['who'] ?? '') === 'nutri' || preg_match('/\bMarine\b/u', (string) $x['title']);
         $face = !$coach ? ($nutri ? $vivify : $matteo) : ($from && function_exists('cc_ph_widget') && get_post_type($from) === 'cc_athlete' ? cc_ph_widget($from, 40, false, 'bell-f') : $logo);
-        $items .= '<a class="bell-it' . (empty($x['read']) ? ' new' : '') . '" href="' . esc_url($x['url'] ?: home_url('/' . CC_ATH_SLUG . '/')) . '">' . $face . '<span class="bell-t"><b>' . esc_html(preg_replace('/\b(?:Private|Privato|Privado|Zasebno):\s*/u', '', (string) $x['title'])) . '</b>'
+        $items .= '<a class="bell-it' . (empty($x['read']) ? ' new" data-at="' . (int) $x['at'] . '" data-tag="' . esc_attr((string) ($x['tag'] ?? '')) : '') . '" href="' . esc_url($x['url'] ?: home_url('/' . CC_ATH_SLUG . '/')) . '">' . $face . '<span class="bell-t"><b>' . esc_html(preg_replace('/\b(?:Private|Privato|Privado|Zasebno):\s*/u', '', (string) $x['title'])) . '</b>'
             . ($x['body'] !== '' ? '<span>' . esc_html($x['body']) . '</span>' : '') . '<small>' . esc_html(cc_r_ago((int) $x['at'])) . '</small></span></a>';
     }
     return $items ?: '<p class="bell-e">' . esc_html(cc_inbox_w('empty')) . '</p>';
 }
 add_filter('cc_ath_hero_links', function ($html, $coach) {
     $uid = get_current_user_id(); if (!$uid) return $html;
+    // Matteo 19 Nov: on his demo page (athlete view) the bell is the demo athlete's: empty, and it never reads or marks his own coach inbox
+    $demo = function_exists('cc_ath_demo_as') && cc_ath_demo_as(); if ($demo) $uid = 0;
     $unread = cc_inbox_unread($uid);
-    return $html . ' <span class="bell-w"><button type="button" class="ath-bell" aria-label="' . esc_attr(cc_inbox_w('title')) . '" aria-expanded="false" data-api="' . esc_url(rest_url('cc/v1/inbox-read')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-n="' . $unread . '">'
+    return $html . ' <span class="bell-w"><button type="button" class="ath-bell" aria-label="' . esc_attr(cc_inbox_w('title')) . '" aria-expanded="false" data-api="' . esc_url(rest_url('cc/v1/inbox-read')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-n="' . $unread . '"' . ($demo ? ' data-demo="1"' : '') . '>'
         . '<svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>' . ($unread ? '<i>' . min(99, $unread) . '</i>' : '') . '</button>'
-        . '<div class="bell-p" hidden><p class="bell-h">' . esc_html(cc_inbox_w('title')) . '</p><div class="bell-l">' . cc_inbox_items($uid) . '</div></div></span>' . (function_exists('cc_ph_assets') ? cc_ph_assets() : '')
+        . '<div class="bell-p" hidden><p class="bell-h">' . esc_html(cc_inbox_w('title')) . '<button type="button" class="bell-all"' . ($unread ? '' : ' hidden') . '>' . esc_html(cc_inbox_w('all')) . '</button></p><div class="bell-l">' . cc_inbox_items($uid) . '</div></div></span>' . (function_exists('cc_ph_assets') ? cc_ph_assets() : '')
         // Matteo 17 Nov: top-right corner of the header (like apps); the list opens on top of the page (the header clips what sticks out)
         . '<style>html .cc .bell-w{position:absolute;top:14px;right:14px;z-index:5}html .cc .ath-bell{box-shadow:0 4px 14px rgba(0,0,0,.5);position:relative;width:44px;height:44px;min-height:0;padding:0;margin:0;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(12,14,16,.85);display:grid;place-items:center;cursor:pointer}'
         . 'html .cc .ath-bell svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linejoin:round}html .cc .ath-bell i{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#E10600;color:#fff;font:700 12px/20px var(--body);font-style:normal;text-align:center}'
         . 'html body .bell-p{font-family:Montserrat,system-ui,sans-serif;position:fixed;z-index:99990;width:min(360px,calc(100vw - 32px));max-height:65vh;overflow:auto;padding:8px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:#0b0d0f;box-shadow:0 18px 40px rgba(0,0,0,.6)}html body .bell-p[hidden]{display:none}'
-        . 'html body .bell-h{margin:4px 8px 8px;font-weight:700;color:#fff;font-size:16px}html body .bell-it{display:flex;align-items:flex-start;gap:12px;padding:10px;border-radius:10px;text-decoration:none;color:#d0d6e0}html body .bell-it:hover{background:rgba(255,255,255,.06)}'
+        . 'html body .bell-h{margin:4px 8px 8px;font-weight:700;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:space-between;gap:8px}html body .bell-all{min-height:44px;padding:0 10px;border:0;background:none;color:#2bd47a;font:600 14px/1.2 Montserrat,system-ui,sans-serif;cursor:pointer;text-decoration:underline}html body .bell-all[hidden]{display:none}html body .bell-it{display:flex;align-items:flex-start;gap:12px;padding:10px;border-radius:10px;text-decoration:none;color:#d0d6e0}html body .bell-it:hover{background:rgba(255,255,255,.06)}'
         . 'html body .bell-it .bell-f{flex:none;width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #2bd47a;--ph:40px}html body .bell-it .bell-f .ph-ini{font-size:14px}'
         . 'html body span.bell-f{display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,#12a150,#0b6b37);color:#fff;font-weight:700}html body span.bell-f img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}'
         . 'html body .bell-t{display:grid;gap:2px;min-width:0}html body .bell-it.new{background:rgba(18,161,80,.14)}html body .bell-it b{color:#fff;font-size:15px;line-height:1.3}html body .bell-t span{font-size:15px;line-height:1.4;color:#d0d6e0}'
@@ -196,14 +199,19 @@ add_filter('cc_ath_hero_links', function ($html, $coach) {
         . 'var hero=b.closest(".ath-hero");if(hero&&b.parentNode.parentNode!==hero)hero.appendChild(b.parentNode);'   // the bell sits in the header's own top-right corner (not the text column's)
         . 'function place(){var r=b.getBoundingClientRect(),w=p.offsetWidth||340;p.style.top=Math.round(r.bottom+8)+"px";p.style.left=Math.max(16,Math.min(window.innerWidth-w-16,Math.round(r.right-w)))+"px";}'
         . 'addEventListener("resize",function(){if(!p.hidden)place();});addEventListener("scroll",function(){if(!p.hidden)place();},{passive:true});'
-        . 'b.addEventListener("click",function(e){e.stopPropagation();p.hidden=!p.hidden;if(!p.hidden)place();b.setAttribute("aria-expanded",!p.hidden);if(!p.hidden){var i=b.querySelector("i");if(i){i.remove();fetch(b.dataset.api,{method:"POST",credentials:"same-origin",headers:{"X-WP-Nonce":b.dataset.nonce}});}try{if(navigator.clearAppBadge)navigator.clearAppBadge();}catch(x){}}});'
+        . 'b.addEventListener("click",function(e){e.stopPropagation();p.hidden=!p.hidden;if(!p.hidden)place();b.setAttribute("aria-expanded",!p.hidden);});'
+        // Matteo 20 Nov: opening the bell no longer clears everything; each line is marked read when tapped and the number goes down one by one
+        . 'function setn(n){var i=b.querySelector("i");if(n>0){if(!i){i=document.createElement("i");b.appendChild(i);}i.textContent=Math.min(99,n);}else if(i)i.remove();var a=p.querySelector(".bell-all");if(a)a.hidden=n<=0;shown=n;try{if(n>0&&navigator.setAppBadge)navigator.setAppBadge(n);else if(navigator.clearAppBadge)navigator.clearAppBadge();}catch(x){}}'
+        . 'function mark(body){if(b.dataset.demo)return;try{fetch(b.dataset.api,{method:"POST",keepalive:true,credentials:"same-origin",headers:{"X-WP-Nonce":b.dataset.nonce,"Content-Type":"application/json"},body:JSON.stringify(body||{})});}catch(x){}}'
+        . 'p.addEventListener("click",function(e){var a=e.target.closest(".bell-all");if(a){e.preventDefault();[].forEach.call(p.querySelectorAll(".bell-it.new"),function(x){x.classList.remove("new");});setn(0);mark({});return;}'
+        . 'var it=e.target.closest(".bell-it.new");if(!it)return;it.classList.remove("new");mark({at:+it.dataset.at,tag:it.dataset.tag||""});setn(p.querySelectorAll(".bell-it.new").length);});'
         . 'document.addEventListener("click",function(e){if(!p.hidden&&!p.contains(e.target)){p.hidden=true;b.setAttribute("aria-expanded","false");}});'
         // Matteo 17 Nov: opening the app from a notification brought back the old page. Each time the hub comes back on screen it asks for the
         // latest notifications; when something new arrived (and nothing is being typed or recorded) the page reloads to show it
         . 'var shown=+b.dataset.n||0,busy=function(){var a=document.activeElement;return (a&&/^(TEXTAREA|INPUT|SELECT)$/.test(a.tagName))||[].some.call(document.querySelectorAll(".nt-box textarea,.rs-rep,.rs-form textarea"),function(t){return t.value.trim()!=="";})||document.querySelector(".nt-rec.on");};'
-        . 'function fresh(){fetch(b.dataset.api.replace("inbox-read","inbox"),{credentials:"same-origin",cache:"no-store",headers:{"X-WP-Nonce":b.dataset.nonce}}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(!j)return;'
-        . 'p.querySelector(".bell-l").innerHTML=j.html;var i=b.querySelector("i");if(j.unread){if(!i){i=document.createElement("i");b.appendChild(i);}i.textContent=Math.min(99,j.unread);}else if(i)i.remove();'
-        . 'if(j.unread>shown&&!busy()){location.reload();}shown=j.unread;}).catch(function(){});}'
+        . 'function fresh(){if(b.dataset.demo)return;fetch(b.dataset.api.replace("inbox-read","inbox"),{credentials:"same-origin",cache:"no-store",headers:{"X-WP-Nonce":b.dataset.nonce}}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(!j)return;'
+        . 'p.querySelector(".bell-l").innerHTML=j.html;var was=shown;setn(j.unread);'
+        . 'if(j.unread>was&&!busy()){location.reload();}}).catch(function(){});}'
         . 'document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")fresh();});addEventListener("pageshow",function(e){if(e.persisted)fresh();});addEventListener("focus",fresh);'
         . '})();</script>';
 }, 30, 2);
@@ -253,9 +261,11 @@ add_filter('cc_ath_hero_links', function ($html, $coach) {
         . '})();</script>';
 }, 31, 2);
 add_action('rest_api_init', function () {
-    register_rest_route('cc/v1', '/inbox-read', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function () {
+    register_rest_route('cc/v1', '/inbox-read', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {
         $uid = get_current_user_id(); $in = get_user_meta($uid, 'cc_inbox', true); $in = is_array($in) ? $in : [];
-        foreach ($in as &$x) $x['read'] = 1; update_user_meta($uid, 'cc_inbox', $in); return ['ok' => true];
+        $at = (int) $r->get_param('at'); $tag = (string) $r->get_param('tag');
+        foreach ($in as &$x) { if (!$at || ((int) $x['at'] === $at && (string) ($x['tag'] ?? '') === $tag)) $x['read'] = 1; } unset($x);
+        update_user_meta($uid, 'cc_inbox', $in); return ['ok' => true, 'unread' => cc_inbox_unread($uid)];
     }]);
     register_rest_route('cc/v1', '/inbox', ['methods' => 'GET', 'permission_callback' => 'is_user_logged_in', 'callback' => function () {   // the bell, fresh
         $uid = get_current_user_id(); $GLOBALS['cc_ath_lang'] = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en';
