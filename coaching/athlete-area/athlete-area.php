@@ -649,6 +649,7 @@ function cc_ath_live_chips($view, $coach, $nrep) {
             : '<b class="ath-n" data-n="' . $d . '">' . $d . '</b> ' . esc_html(cc_ath_live_w('day', $d))) . ' <span class="ath-chip-nm">' . esc_html($e['name']) . '</span></a>';
         break;
     }
+    $o .= (string) apply_filters('cc_ath_live_chips_athlete', '', $view);   // e.g. food.php: "Log today's food" (package athletes)
     if ($n = count($unread)) $o .= $chip($n, cc_ath_live_w('new', $n), '#', 'ath-chip-go ath-chip-bell');
     if ($nrep) $o .= $chip($nrep, cc_ath_live_w('rep', $nrep), '#reports');
     return $o !== '' ? '<div class="ath-chips ath-live">' . $o . '</div>' : '';

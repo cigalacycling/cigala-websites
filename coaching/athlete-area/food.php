@@ -160,6 +160,9 @@ function cc_fd_w($k) {
         'target' => ['target %s', 'obiettivo %s', 'objetivo %s', 'cilj %s', 'cieľ %s'],
         'streak' => ['%d days logged in a row', '%d giorni registrati di fila', '%d dias registados seguidos', '%d dni zapored zapisanih', '%d dní zapísaných po sebe'],
         'add_short' => ['+ Add', '+ Aggiungi', '+ Adicionar', '+ Dodaj', '+ Pridať'],
+        'of_energy' => ['of energy', 'dell’energia', 'da energia', 'energije', 'energie'],
+        'new_msg' => ['New message from %s', 'Nuovo messaggio da %s', 'Nova mensagem de %s', 'Novo sporočilo od %s', 'Nová správa od %s'],
+        'log_today' => ['Log today’s food', 'Registra il cibo di oggi', 'Regista a comida de hoje', 'Zapiši današnjo hrano', 'Zapíš dnešné jedlo'],
         'cyc_title' => ['My cycle', 'Il mio ciclo', 'O meu ciclo', 'Moj cikel', 'Môj cyklus'],
         'cyc_consent' => ['Optional. Track your cycle so Marine can adapt your fuelling. Only you, Marine and Matteo can see it. You can turn it off and delete it any time.',
                           'Facoltativo. Registra il tuo ciclo così Marine può adattare la tua alimentazione. Lo vedete solo tu, Marine e Matteo. Puoi disattivarlo e cancellarlo in qualsiasi momento.',
@@ -197,9 +200,49 @@ function cc_fd_on($pid) { return $pid && (bool) get_post_meta((int) $pid, 'cc_nu
 function cc_fd_is_nutri() { return is_user_logged_in() && current_user_can('cc_nutrition') && !cc_ath_is_coach(); }
 function cc_fd_staff() { return cc_ath_is_coach() || cc_fd_is_nutri(); }
 function cc_fd_date($d) { return function_exists('cc_av_date') ? cc_av_date((string) $d) : (preg_match('/^\d{4}-\d{2}-\d{2}$/', (string) $d) ? (string) $d : ''); }
-function cc_fd_get($pid, $date) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_fd_' . $date, true), true); return is_array($a) ? $a : ['s' => [], 'r' => []]; }
+function cc_fd_get($pid, $date) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_fd_' . $date, true), true); return is_array($a) ? cc_fd_fresh_day($pid, $a) : ['s' => [], 'r' => []]; }
+/* Marine 19 Nov: a diary line keeps a copy of the food's values from the day it was added, so lines from before the sodium column had no sodium.
+   Every read now takes the values from the CURRENT food table (database foods, by id) or from the athlete's current own foods and recipes;
+   the stored copy is only the fallback when the id is gone. The state (raw / cooked) and the grams stay as logged. */
+function cc_fd_dbidx() {
+    static $ix = null; if ($ix !== null) return $ix; $ix = [];
+    $j = json_decode((string) get_option('cc_food_db', ''), true);
+    foreach ((array) ($j['foods'] ?? []) as $r) if (is_array($r) && isset($r[0], $r[4])) $ix[(string) $r[0]] = [(float) $r[4], (float) ($r[5] ?? 0), (float) ($r[6] ?? 0), (float) ($r[7] ?? 0), (float) ($r[8] ?? 0), (float) ($r[9] ?? 0), isset($r[10]) ? (float) $r[10] : null];
+    return $ix;
+}
+function cc_fd_fresh_item($it, $own) {
+    if (!is_array($it) || empty($it['id'])) return $it;
+    $id = (string) $it['id'];
+    if (!empty($it['m'])) { $m = $own[$id] ?? null; if (!$m) return $it; $v = [$m['k'] ?? 0, $m['c'] ?? 0, $m['p'] ?? 0, $m['f'] ?? 0, $m['fi'] ?? 0, $m['su'] ?? 0, (isset($m['na']) && $m['na'] !== '') ? $m['na'] : null]; }
+    else { $ix = cc_fd_dbidx(); if (!isset($ix[$id])) return $it; $v = $ix[$id]; }
+    foreach (['k', 'c', 'p', 'f', 'fi', 'su'] as $i => $f) $it[$f] = round((float) $v[$i], 1);
+    if ($v[6] === null) unset($it['na']); else $it['na'] = round((float) $v[6], 1);
+    return $it;
+}
+function cc_fd_own_idx($mine) { $o = []; foreach ((array) $mine as $m) if (!empty($m['id'])) $o[(string) $m['id']] = $m; return $o; }
+function cc_fd_fresh_day($pid, $a) {
+    $own = cc_fd_own_idx(cc_fd_mine($pid));
+    foreach ((array) ($a['s'] ?? []) as $k => $s) if (!empty($s['i']) && is_array($s['i'])) foreach ($s['i'] as $x => $it) $a['s'][$k]['i'][$x] = cc_fd_fresh_item($it, $own);
+    return $a;
+}
 function cc_fd_put($pid, $date, $a) { update_post_meta((int) $pid, 'cc_fd_' . $date, wp_slash(wp_json_encode($a))); }
-function cc_fd_mine($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_food_mine', true), true); return is_array($a) ? $a : []; }
+function cc_fd_mine_raw($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_food_mine', true), true); return is_array($a) ? $a : []; }
+/* own foods and recipes; a recipe's values per 100 g are worked out again from its ingredients' current values (same rule as the diary lines) */
+function cc_fd_mine($pid) {
+    static $c = []; $pid = (int) $pid; if (isset($c[$pid])) return $c[$pid];
+    $mine = cc_fd_mine_raw($pid); $own = [];
+    foreach ($mine as $m) if (is_array($m) && !empty($m['id']) && ($m['t'] ?? 'f') !== 'r') $own[(string) $m['id']] = $m;
+    foreach ($mine as $x => $m) {
+        if (!is_array($m) || ($m['t'] ?? '') !== 'r' || empty($m['ing'])) continue;
+        $sum = 0; $tot = ['k' => 0, 'c' => 0, 'p' => 0, 'f' => 0, 'fi' => 0, 'su' => 0]; $na = 0; $nam = 0;
+        foreach ($m['ing'] as $y => $i) { $i = cc_fd_fresh_item($i, $own); $m['ing'][$y] = $i; $g = (float) ($i['g'] ?? 0); if ($g <= 0) continue; $sum += $g;
+            foreach ($tot as $f => $_) $tot[$f] += (float) ($i[$f] ?? 0) * $g / 100; if (isset($i['na'])) $na += (float) $i['na'] * $g / 100; else $nam++; }
+        $w = (float) ($m['cw'] ?? 0); if ($w <= 0) $w = $sum;
+        if ($w > 0) { foreach ($tot as $f => $v) $m[$f] = round($v * 100 / $w, 1); $m['na'] = $nam ? null : round($na * 100 / $w, 1); }
+        $mine[$x] = $m;
+    }
+    return $c[$pid] = $mine;
+}
 function cc_fd_kg($pid) { $k = (float) get_post_meta((int) $pid, 'cc_food_kg', true); return $k > 0 ? $k : 0; }
 function cc_fd_vx($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_food_vx', true), true); return is_array($a) ? $a : []; }
 function cc_fd_num($v, $max) { $v = (float) str_replace(',', '.', (string) $v); return $v > 0 ? round(min($v, $max), 1) : 0; }
@@ -276,6 +319,7 @@ function cc_fd_streak($pid) {
     for ($i = 1; $i < 400; $i++) { $d = gmdate('Y-m-d', $t - $i * DAY_IN_SECONDS); if (!isset($set[$d]) || empty(cc_fd_get($pid, $d)['s'])) break; $n++; }
     return $n;
 }
+function cc_fd_seen($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_fd_seen', true), true); return is_array($a) ? $a : []; }   // per day: when the athlete last saw that day's messages
 function cc_fd_trends_on($pid) { return !get_post_meta((int) $pid, 'cc_fd_trends_off', true); }
 /* the 12-week trends (weight, HRV, resting HR per day) as the charts get them; null when no series has 3 points */
 function cc_fd_trend_data($vx) {
@@ -390,20 +434,22 @@ function cc_fd_athlete($pid) {
                        'none_mine', 'thread', 'ask', 'reply', 'send_r', 'sent_err', 'you', 'drinks', 'drinks_h', 'fluids', 'per_h', 'ride', 'sodium', 'na_inc', 'vk_weight', 'vk_weight_h',
                        'b_raw', 'b_cooked', 'ask_rc', 'w_raw', 'w_cooked', 'weigh_h', 'micro', 'mytrends', 'tr_lede',
                        'iron_line', 'iron_note', 'incomplete', 'cyc_title', 'cyc_consent', 'cyc_on', 'cyc_start', 'cyc_end', 'cyc_unset', 'cyc_off', 'cyc_offq', 'cyc_day', 'ph_m', 'ph_f', 'ph_o', 'ph_l', 'cyc_len', 'cyc_def', 'cyc_starts',
-                       'recent', 'favs', 'star_add', 'star_rm', 'copy_y', 'copy_day', 'copy_q', 'copy_none', 'ride_t', 'ride_rec', 'g_h', 'ml_h', 'target', 'streak', 'add_short'] as $k) $W[$k] = cc_fd_w($k);
+                       'recent', 'favs', 'star_add', 'star_rm', 'copy_y', 'copy_day', 'copy_q', 'copy_none', 'ride_t', 'ride_rec', 'g_h', 'ml_h', 'target', 'streak', 'add_short', 'new_msg', 'of_energy'] as $k) $W[$k] = cc_fd_w($k);
+    // ?fd=today (the header chip): the diary on the athlete's own today, scrolled into view
+    $go = ($_GET['fd'] ?? '') === 'today';
     $slots = []; foreach (CC_FD_SLOTS as $k) $slots[] = [$k, cc_fd_w($k)];
     $u = function ($p) { return esc_url_raw(rest_url('cc/v1/' . $p)); };
     $tp = cc_ath_tp($pid); $vx = $tp ? [] : cc_fd_vx($pid); $kv = cc_fd_kgv($pid); $fem = cc_fd_female($pid, $vx);
-    $cfg = ['page' => (int) $pid, 'date' => $date, 'fixed' => isset($_GET['fd']) ? 1 : 0, 'lang' => $GLOBALS['cc_ath_lang'] ?? 'en', 'nonce' => wp_create_nonce('wp_rest'), 'w' => $W, 'slots' => $slots,
+    $cfg = ['page' => (int) $pid, 'date' => $date, 'fixed' => (isset($_GET['fd']) && !$go) ? 1 : 0, 'scroll' => $go ? 1 : 0, 'seen' => (object) cc_fd_seen($pid),'lang' => $GLOBALS['cc_ath_lang'] ?? 'en', 'nonce' => wp_create_nonce('wp_rest'), 'w' => $W, 'slots' => $slots,
             'day' => cc_fd_out($pid, $date), 'mine' => cc_fd_mine($pid), 'kg' => cc_fd_kg($pid) ?: '', 'credit' => "Food data: ANSES-CIQUAL · USDA FoodData Central · McCance and Widdowson's CoFID (© Crown copyright, OGL)",
             /* TrainingPeaks athletes: no Vekta weight, rides or trends (and never the word Vekta) */
             'vkg' => $kv['src'] === 'vekta' ? ['v' => $kv['kg'], 'd' => $kv['d']] : null, 'rides' => (object) ($tp ? [] : cc_fd_rides($vx)),
             'trends' => (!$tp && cc_fd_trends_on($pid)) ? cc_fd_trend_data($vx) : null, 'micro' => cc_fd_micro_url(), 'mw' => cc_fd_mw($fem), 'female' => $fem ? 1 : 0, 'cycle' => $fem ? cc_fd_cycle($pid) : null,
-            'recent' => cc_fd_recent($pid), 'fav' => cc_fd_fav($pid), 'streak' => cc_fd_streak($pid), 'targets' => (object) ($tp ? [] : cc_fd_targets($vx)), 'today' => current_time('Y-m-d'),
+            'recent' => cc_fd_recent($pid), 'fav' => array_map(function ($it) use ($pid) { return cc_fd_fresh_item($it, cc_fd_own_idx(cc_fd_mine($pid))); }, cc_fd_fav($pid)), 'streak' => cc_fd_streak($pid), 'targets' => (object) ($tp ? [] : cc_fd_targets($vx)), 'today' => current_time('Y-m-d'),
             'foods' => esc_url_raw(add_query_arg('v', get_option('cc_food_db_v', '0'), rest_url('cc/v1/foods'))),
-            'u' => ['day' => $u('food-day'), 'save' => $u('food-day'), 'photo' => $u('food-photo'), 'photodel' => $u('food-photo-del'), 'mine' => $u('food-mine'), 'kg' => $u('food-kg'), 'reply' => $u('food-reply'), 'fav' => $u('food-fav'), 'cycle' => $u('food-cycle')]];
+            'u' => ['day' => $u('food-day'), 'save' => $u('food-day'), 'photo' => $u('food-photo'), 'photodel' => $u('food-photo-del'), 'mine' => $u('food-mine'), 'kg' => $u('food-kg'), 'reply' => $u('food-reply'), 'fav' => $u('food-fav'), 'cycle' => $u('food-cycle'), 'seen' => $u('food-seen')]];
     return '<section class="ath-s fd" id="food"><h2>' . cc_ath_icon('food', 'ath-hic') . esc_html(cc_fd_w('title')) . '</h2><p class="fd-lede">' . esc_html(cc_fd_w('lede')) . '</p>'
-        . '<div class="fd-app" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"><div class="fd-day"></div><div class="fd-minebox"></div><div class="fd-cycbox"></div><div class="fd-trbox"></div></div></section>' . cc_fd_css() . cc_fd_sjs() . cc_fd_js();
+        . '<div class="fd-app" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"><div class="fd-day"></div><div class="fd-trbox"></div><div class="fd-cycbox"></div><div class="fd-minebox"></div><div class="fd-thbox"></div></div></section>' . cc_fd_css() . cc_fd_sjs() . cc_fd_js();
 }
 function cc_fd_coach_card($pid) {
     $on = cc_fd_on($pid); $days = $on ? cc_fd_days($pid) : [];
@@ -426,6 +472,11 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     // the upgrade card only once Matteo launches the diary (option cc_fd_launched); until then athletes without the package see nothing
     return $html . (cc_fd_on($view) ? cc_fd_athlete($view) : (get_option('cc_fd_launched') ? cc_fd_upgrade() : ''));
 }, 18, 3);
+// header chip for package athletes (not Matteo, not athletes without the package): straight to today's diary
+add_filter('cc_ath_live_chips_athlete', function ($html, $view) {
+    if (!$view || cc_ath_is_coach() || !cc_fd_on($view)) return $html;
+    return $html . '<a class="ath-chip ath-chip-go ath-chip-food" href="' . esc_url(add_query_arg('fd', 'today', cc_fd_hub())) . '#food">🍽 ' . esc_html(cc_fd_w('log_today')) . '</a>';
+}, 10, 2);
 add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view && !$coach && cc_fd_on($view)) $nav[] = ['food', cc_fd_w('title')]; return $nav; }, 32, 3);
 
 /* ---------- Marine's and Matteo's review ---------- */
@@ -462,8 +513,11 @@ function cc_fd_thread_html($pid, $date, $replies, $viewer) {
         $label = $who === 'athlete' ? get_the_title($pid) : ($who === 'nutri' ? 'Marine' : 'Matteo');
         $o .= '<div class="nt-rep' . ($who === 'athlete' ? ' nt-rep-a' : '') . '"><span class="nt-rh">' . $face . '<b>' . esc_html($label) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small></span><p>' . nl2br(esc_html($r['text'])) . '</p></div>';
     }
-    return $o . '<details class="nt-replyd"><summary>Reply to ' . esc_html(get_the_title($pid)) . ' about this day</summary><div class="fd-r" data-page="' . (int) $pid . '" data-date="' . esc_attr($date) . '"><textarea rows="3"></textarea>'
-        . '<button type="button" class="btn btn-go fd-send">Send</button></div></details>';
+    // Matteo 19 Nov: one comment box per day, always open (Marine could not find the folded "Reply" link); the reply shows at once, no reload
+    $first = strtok(trim((string) get_the_title($pid)), ' ') ?: 'the athlete';
+    return '<div class="fd-thl">' . $o . '</div><div class="fd-r" data-page="' . (int) $pid . '" data-date="' . esc_attr($date) . '" data-who="' . ($viewer === 'nutri' ? 'Marine' : 'Matteo') . '">'
+        . '<textarea rows="2" aria-label="' . esc_attr('Comment to ' . $first . ' about this day') . '" placeholder="' . esc_attr('Write a comment to ' . $first . '…') . '"></textarea>'
+        . '<div class="fd-row"><button type="button" class="btn btn-go fd-send">Send</button><span class="fd-msg" role="status"></span></div></div>';
 }
 /* the small carbs / protein / fat ring (share of kcal) at the top of a day in the review */
 function cc_fd_ring($t) {
@@ -492,15 +546,14 @@ function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer, $mine = [], $fem = 
              . (!empty($s['i']) ? '<span class="fd-rst">' . round($st['k']) . ' kcal · C ' . cc_fd_f1($st['c']) . ' · P ' . cc_fd_f1($st['p']) . ' · F ' . cc_fd_f1($st['f']) . '</span>' : '') . '</div>';
         $ex = [];
         if ($sml) $ex[] = 'Drinks ' . number_format($sml) . ' ml';
-        if (!empty($s['i'])) $ex[] = 'Sodium ' . round($st['na']) . ' mg' . ($st['nam'] ? ' (incomplete)' : '');
         $rmin = $ride > 0 ? $ride : (int) ($s['r'] ?? 0);
+        if ($k === 'bike' && !empty($s['i'])) $ex[] = 'Sodium: ' . number_format(round($st['na'])) . ' mg' . ($rmin > 0 ? ' · ≈ ' . number_format(round($st['na'] / ($rmin / 60))) . ' mg/h' : '');   // Marine 19 Nov: sodium only for training
         if ($k === 'bike' && $rmin > 0 && ($sml || $st['c'] > 0)) $ex[] = '<b>≈ ' . round($st['c'] / ($rmin / 60)) . ' g carbs/h</b>' . (!empty($tg['c']) ? ' (target ' . (int) $tg['c'] . ')' : '') . ' · <b>≈ ' . round($sml / ($rmin / 60)) . ' ml/h</b>' . (!empty($tg['ml']) ? ' (target ' . (int) $tg['ml'] . ')' : '') . ' · ride ' . esc_html(cc_fd_hm($rmin * 60)) . ($ride > 0 ? '' : ' (typed by the athlete)');
         if ($ex) $sl .= '<p class="fd-rex">' . implode(' · ', $ex) . '</p>';
         if (!empty($s['i'])) {
             $sl .= '<ul class="fd-ri">';
             foreach ($s['i'] as $it) { $m = ((float) $it['g']) / 100;
-                $sl .= '<li><span>' . esc_html($it['n']) . cc_fd_rc_badge($it['st'] ?? '') . (!empty($it['m']) ? ' <span class="fd-tag">' . ($it['m'] === 'r' ? 'own recipe' : 'own food') . '</span>' : '') . '</span><small>' . cc_fd_f1($it['g']) . ' g · ' . round($it['k'] * $m) . ' kcal · C ' . cc_fd_f1($it['c'] * $m) . ' · P ' . cc_fd_f1($it['p'] * $m) . ' · F ' . cc_fd_f1($it['f'] * $m)
-                    . ' · Na ' . (isset($it['na']) ? round($it['na'] * $m) . ' mg' : '–') . '</small></li>'; }
+                $sl .= '<li><span>' . esc_html($it['n']) . cc_fd_rc_badge($it['st'] ?? '') . (!empty($it['m']) ? ' <span class="fd-tag">' . ($it['m'] === 'r' ? 'own recipe' : 'own food') . '</span>' : '') . '</span><small>' . cc_fd_f1($it['g']) . ' g · ' . round($it['k'] * $m) . ' kcal · C ' . cc_fd_f1($it['c'] * $m) . ' · P ' . cc_fd_f1($it['p'] * $m) . ' · F ' . cc_fd_f1($it['f'] * $m) . '</small></li>'; }
             $sl .= '</ul>';
         }
         if (!empty($s['n'])) $sl .= '<p class="fd-rn">“' . nl2br(esc_html($s['n'])) . '”</p>';
@@ -509,8 +562,8 @@ function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer, $mine = [], $fem = 
     }
     if ($has) {
         $o .= cc_fd_ring($t) . $sl . '<div class="fd-rtot"><b>Day total</b><span>' . round($t['k']) . ' kcal</span><span>Carbs ' . round($t['c']) . ' g' . ($kg ? ' (' . cc_fd_f1($t['c'] / $kg) . ' g/kg)' : '') . '</span>'
-            . '<span>Protein ' . round($t['p']) . ' g' . ($kg ? ' (' . cc_fd_f1($t['p'] / $kg) . ' g/kg)' : '') . '</span><span>Fat ' . round($t['f']) . ' g</span><span>Fibre ' . round($t['fi']) . ' g</span><span>Sugars ' . round($t['su']) . ' g</span>'
-            . '<span>Fluids ' . number_format($ml) . ' ml (' . cc_fd_f1($ml / 1000) . ' L)</span><span>Sodium ' . number_format(round($t['na'])) . ' mg' . ($t['nam'] ? ' <small class="fd-inc">sodium incomplete</small>' : '') . '</span></div>'
+            . '<span>Protein ' . round($t['p']) . ' g' . ($kg ? ' (' . cc_fd_f1($t['p'] / $kg) . ' g/kg)' : '') . '</span><span>Fat ' . round($t['f']) . ' g' . ($t['k'] > 0 ? ' · ' . round($t['f'] * 900 / $t['k']) . '% of energy' : '') . ($kg ? ' · ' . cc_fd_f1($t['f'] / $kg) . ' g/kg' : '') . '</span><span>Fibre ' . round($t['fi']) . ' g</span><span>Sugars ' . round($t['su']) . ' g</span>'
+            . '<span>Fluids ' . number_format($ml) . ' ml (' . cc_fd_f1($ml / 1000) . ' L)</span></div>'
             . ($fem ? '<p class="fd-ironl">' . esc_html(sprintf(cc_fd_w('iron_line'), cc_fd_f1($ir['fe']))) . ($ir['inc'] ? ' <small class="fd-inc">incomplete</small>' : '') . '</p>' : '')
             . cc_fd_micro_box($d, $mine, $fem);
     } else $o .= '<p class="fd-muted">Nothing logged.</p>';
@@ -519,13 +572,15 @@ function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer, $mine = [], $fem = 
         . cc_fd_notes_html($vx, $date, 'Your nutrition note this day') . cc_fd_notes_html($vx, $next, 'Your nutrition note next day') . '</div>';
     return $o . '<div class="fd-th">' . cc_fd_thread_html($pid, $date, $d['r'] ?? [], $viewer) . '</div></article>';
 }
-function cc_fd_week_ahead($vx) {
+function cc_fd_week_ahead($vx, $pid = 0, $viewer = '') {
     $o = ''; $t0 = strtotime(current_time('Y-m-d') . ' 12:00');
+    // Matteo 19 Nov: Marine can comment on the coming days too (one box per day; today has its own day below)
     for ($i = 0; $i < 7; $i++) {
         $d = gmdate('Y-m-d', $t0 + $i * DAY_IN_SECONDS); $p = cc_fd_vx_day($vx, $d, 'plan'); $n = cc_fd_vx_day($vx, $d, 'notes');
         $o .= '<div class="fd-wk"><b>' . esc_html(date_i18n('D j M', $t0 + $i * DAY_IN_SECONDS)) . '</b>'
             . ($p ? implode('', array_map(function ($x) { return '<span>' . cc_fd_plan_line($x) . '</span>'; }, $p)) : '<span class="fd-muted">Rest / nothing planned</span>')
             . ($n ? implode('', array_map(function ($x) { return '<details class="fd-wkn"><summary>🥗 ' . esc_html($x['t'] ?: 'Nutrition note') . '</summary>' . (!empty($x['c']) ? '<p>' . nl2br(esc_html($x['c'])) . '</p>' : '') . '</details>'; }, $n)) : '<span class="fd-warn-n">No nutrition note yet</span>')
+            . ($pid && $i > 0 ? '<div class="fd-wkc">' . cc_fd_thread_html($pid, $d, cc_fd_get($pid, $d)['r'] ?? [], $viewer) . '</div>' : '')
             . '</div>';
     }
     return '<div class="fd-week"><h3>Week ahead</h3><div class="fd-wkg">' . $o . '</div></div>';
@@ -545,7 +600,7 @@ function cc_fd_review($pid, $viewer) {
         if ($n >= 1) $o .= '<p class="fd-ironsum">Iron below 14 mg on <b>' . $n . '</b> of the last ' . $k . ' logged day' . ($k === 1 ? '' : 's') . ' (days with 3+ meals logged and enough iron data).</p>';
     }
     $o .= '<div class="fd-top">' . cc_fd_blood_box($pid, $viewer) . ($tp ? '' : cc_fd_trends_box($pid, $vx, $cy)) . '</div>';
-    if (!$tp && $vx) $o .= cc_fd_week_ahead($vx);
+    if (!$tp && $vx) $o .= cc_fd_week_ahead($vx, $pid, $viewer);
     $t0 = strtotime(current_time('Y-m-d') . ' 12:00') - $off * 14 * DAY_IN_SECONDS;
     for ($i = 0; $i < 14; $i++) $o .= cc_fd_day_html($pid, gmdate('Y-m-d', $t0 - $i * DAY_IN_SECONDS), $vx, $tp, $kg, $viewer, $mine, $fem, $cy);
     $o .= '<p class="fd-pager">' . ($off ? '<a class="btn btn-ghost" href="' . esc_url(add_query_arg('fo', $off - 1)) . '">Newer days</a> ' : '') . '<a class="btn btn-ghost" href="' . esc_url(add_query_arg('fo', $off + 1)) . '">Older days</a></p>';
@@ -709,6 +764,13 @@ add_action('rest_api_init', function () {
         update_post_meta($pid, 'cc_fd_cycle', wp_slash(wp_json_encode(['on' => 1, 'p' => $cy['p']])));
         return ['ok' => true, 'cycle' => cc_fd_cycle($pid)];
     }]);
+    // the athlete saw the messages under a day (thread scrolled into view): hides "New message from Marine" for that day
+    register_rest_route('cc/v1', '/food-seen', ['methods' => 'POST', 'permission_callback' => $mine, 'callback' => function (WP_REST_Request $r) use ($page) {
+        $pid = $page($r); $d = cc_fd_date($r->get_param('date')); if (!$pid || !$d) return new WP_Error('cc_bad', 'Date needed', ['status' => 400]);
+        $s = cc_fd_seen($pid); $s[$d] = time(); ksort($s); $s = array_slice($s, -120, null, true);
+        update_post_meta($pid, 'cc_fd_seen', wp_slash(wp_json_encode($s)));
+        return ['ok' => true, 'at' => $s[$d]];
+    }]);
     // favourite foods (starred on a diary line): the athlete's own list, up to 40
     register_rest_route('cc/v1', '/food-fav', ['methods' => 'POST', 'permission_callback' => $mine, 'callback' => function (WP_REST_Request $r) use ($page) {
         $pid = $page($r); $in = json_decode((string) $r->get_param('data'), true); if (!$pid || !is_array($in)) return new WP_Error('cc_bad', 'Data needed', ['status' => 400]);
@@ -806,7 +868,7 @@ add_action('delete_user', function ($uid) {
     if (!empty($GLOBALS['cc_keep_record'])) return;
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_user', 'meta_value' => (int) $uid, 'numberposts' => -1, 'fields' => 'ids']) as $pid) {
         foreach (cc_fd_days($pid) as $d) { foreach ((array) (cc_fd_get($pid, $d)['s'] ?? []) as $s) if (!empty($s['ph'])) wp_delete_attachment((int) $s['ph'], true); delete_post_meta($pid, 'cc_fd_' . $d); }
-        foreach (['cc_food_mine', 'cc_food_kg', 'cc_food_vx', 'cc_fd_trends_off', 'cc_food_fav', 'cc_fd_cycle'] as $k) delete_post_meta($pid, $k);
+        foreach (['cc_food_mine', 'cc_food_kg', 'cc_food_vx', 'cc_fd_trends_off', 'cc_food_fav', 'cc_fd_cycle', 'cc_fd_seen'] as $k) delete_post_meta($pid, $k);
     }
 }, 4);
 
@@ -888,8 +950,14 @@ function cc_fd_css() {
         . 'html .cc .fd-tc .fd-muted{margin:2px 0 6px}html .cc .fd-trd{margin:14px 0 0;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.03)}html .cc .fd-trd>summary{padding:12px 16px;cursor:pointer;color:#d0d6e0;font-weight:600;font-size:16px}html .cc .fd-trd>div{padding:0 16px 14px}'
         . 'html .cc .fd-rex{margin:4px 0 0;font-size:15px;color:#d0d6e0}html .cc .fd-rex b{color:#fff}html .cc .ath .fd-tc h4,html .cc .fd-tc h4{text-transform:none}'
         . 'html .cc .fd-status.ok{color:#2bd47a;font-weight:600;transition:opacity .6s}html .cc .fd-status.ok.fade{opacity:0}'
-        . 'html .cc .fd-nav{position:sticky;top:70px;z-index:6;background:rgba(10,12,14,.94);backdrop-filter:blur(6px);margin:4px -6px 6px;padding:6px;border-radius:12px}'
-        . 'html .cc .fd-dtop{display:grid;gap:8px;margin:0 0 12px}html .cc .fd-copyday{justify-self:start}'
+        /* 19 Nov 2026: open -> log. Sticky date bar + one slim summary line; day summary, folded sections and messages after the meals */
+        . 'html .cc .fd-stick{position:sticky;top:70px;z-index:6;background:rgba(10,12,14,.94);backdrop-filter:blur(6px);margin:4px -6px 8px;padding:6px 6px 8px;border-radius:12px}html .cc .fd-stick .fd-nav{margin:0 0 4px}'
+        . 'html .cc .fd-slim{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 10px;margin:0;font-size:15px;color:#d0d6e0;text-align:center}html .cc .fd-sm{color:#e6e9ee;font-weight:600;white-space:nowrap}'
+        . 'html .cc .fd-sk{color:#f3e2c4;font-weight:700;white-space:nowrap}html .cc .fd-slim .fd-cchip{vertical-align:0}html .cc .fd-newm{padding:2px 4px;font-size:15px;text-decoration:none;color:#2bd47a;white-space:nowrap}html .cc .fd-newm:hover{text-decoration:underline}'
+        . 'html .cc .fd-tot .fd-ringw{margin:0 0 12px;background:rgba(0,0,0,.2)}html .cc .fd-tot .fd-copyday{display:block;margin:12px 0 0;padding:4px 0}html .cc .fd-thbox .fd-thread{margin:22px 0 0}'
+        . 'html .cc .fd .fd-x,html .cc .fd .fd-star{flex:none;box-sizing:border-box;width:40px;height:40px;min-width:40px;min-height:40px;display:grid;place-items:center;padding:0;line-height:1;font-size:20px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:none;cursor:pointer}'
+        . 'html .cc .fd-r{margin-top:10px}html .cc .fd-r textarea{min-height:64px}html .cc .fd-r .fd-row .btn{margin:0}html .cc .fd-wkc{margin-top:8px;display:grid;gap:4px}html .cc .fd-wkc .nt-rep{margin-left:0}html .cc .fd-wkc .fd-r{margin-top:4px}html .cc .fd-wkc textarea{font-size:16px}'
+        . 'html .cc .fd-nw{white-space:nowrap}html .cc .fd .fd-x{color:#d0d6e0}html .cc .fd .fd-x svg,html .cc .fd .fd-star svg{display:block;pointer-events:none}'
         . 'html .cc .fd-streak{margin:0;font-size:16px;font-weight:600;color:#e6e9ee}'
         . 'html .cc .fd-ringw{display:flex;align-items:center;gap:16px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}html .cc .fd-ring{flex:none;width:110px;height:110px}'
         . 'html .cc .fd-ring circle{transition:stroke-dasharray .5s ease,stroke-dashoffset .5s ease}html .cc .fd-leg{list-style:none;margin:0;padding:0;display:grid;gap:6px;min-width:0;flex:1}'
@@ -923,7 +991,10 @@ function post(u,data){var f=new FormData();for(var k in data){f.append(k,data[k]
 document.addEventListener("click",function(e){
 var s=e.target.closest(".fd-send");
 if(s){var r=s.closest(".fd-r"),t=r.querySelector("textarea");if(!t.value.trim()){return;}s.disabled=true;
-post("%REPLY%",{page:r.dataset.page,date:r.dataset.date,text:t.value}).then(function(){var u=location.href.split("#")[0];location.replace(u+"#fd-"+r.dataset.date);location.reload();}).catch(function(){s.disabled=false;alert("Not sent. Please try again.");});return;}
+var msg=r.querySelector(".fd-msg");if(msg){msg.className="fd-msg";msg.textContent="Sending…";}
+post("%REPLY%",{page:r.dataset.page,date:r.dataset.date,text:t.value}).then(function(){var th=r.parentNode.querySelector(".fd-thl"),d=document.createElement("div"),now=new Date();
+d.className="nt-rep fd-just";d.innerHTML='<span class="nt-rh"><b></b> <small></small></span><p></p>';d.querySelector("b").textContent=r.dataset.who||"";d.querySelector("small").textContent=now.toLocaleString(undefined,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+d.querySelector("p").textContent=t.value;if(th){th.appendChild(d);}t.value="";s.disabled=false;if(msg){msg.className="fd-msg";msg.textContent="✓ Sent";}}).catch(function(e){s.disabled=false;if(msg){msg.className="fd-msg err";msg.textContent="Not sent"+(e&&e.message?" ("+e.message+")":"")+". Please try again.";}else{alert("Not sent. Please try again.");}});return;}
 var ts=e.target.closest(".fd-trsw");
 if(ts){var on2=!ts.classList.contains("on");ts.disabled=true;
 post("%TRENDS%",{page:ts.dataset.page,on:on2?1:0}).then(function(){location.reload();}).catch(function(){ts.disabled=false;alert("Not changed. Please try again.");});return;}
@@ -1018,7 +1089,11 @@ function cc_fd_js() {
 (function(){
 var root=document.querySelector(".fd-app");if(!root){return;}
 var C=JSON.parse(root.getAttribute("data-cfg")),W=C.w;
-var S={date:C.date,day:C.day,mine:C.mine||[],kg:C.kg||"",open:{},srch:null,edit:null,timer:null,dirty:false,mineOpen:false,res:[],fav:C.fav||[],recent:C.recent||[],just:null,cyc:C.cycle||null,M:null};
+var OPEN=(function(){try{return JSON.parse(localStorage.getItem("ccFdOpen")||"{}")||{};}catch(x){return {};}})();
+function keepOpen(k,v){OPEN[k]=v?1:0;try{localStorage.setItem("ccFdOpen",JSON.stringify(OPEN));}catch(x){}}
+var S={date:C.date,day:C.day,mine:C.mine||[],kg:C.kg||"",open:{},srch:null,edit:null,timer:null,dirty:false,mineOpen:!!OPEN.mine,microOpen:!!OPEN.micro,cycOpen:!!OPEN.cyc,res:[],fav:C.fav||[],recent:C.recent||[],just:null,cyc:C.cycle||null,M:null,seen:C.seen||{}};
+var XI='<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2.5 2.5l9 9M11.5 2.5l-9 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+function starI(on){return '<svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.4l1.98 4.1 4.52.6-3.3 3.13.83 4.47L8 11.55 3.97 13.7l.83-4.47L1.5 6.1l4.52-.6z" fill="'+(on?"currentColor":"none")+'" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>';}
 var DB=null,DBP=null;
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
 function fmt(x){x=Math.round((+x||0)*10)/10;return x.toLocaleString(C.lang,{maximumFractionDigits:1});}
@@ -1037,9 +1112,9 @@ var F=["k","c","p","f","fi","su"];
 function tot(items){var t={k:0,c:0,p:0,f:0,fi:0,su:0,na:0,nam:0};(items||[]).forEach(function(it){var m=(+it.g||0)/100;F.forEach(function(x){t[x]+=(+it[x]||0)*m;});if(m>0){if(it.na==null||it.na===""){t.nam++;}else{t.na+=(+it.na)*m;}}});return t;}
 function dayTot(){var a=[];C.slots.forEach(function(s){a=a.concat(slot(s[0]).i);});return tot(a);}
 function dayMl(){var ml=0;C.slots.forEach(function(s){ml+=+slot(s[0]).d||0;});return ml;}
-function macro(it){var m=(+it.g||0)/100;return fmt0(it.k*m)+" kcal · "+W.c_ab+" "+fmt(it.c*m)+" · "+W.p_ab+" "+fmt(it.p*m)+" · "+W.f_ab+" "+fmt(it.f*m)+" · Na\u00a0"+(it.na==null||it.na===""?"–":fmt0(it.na*m)+"\u00a0mg");}
+function macro(it){var m=(+it.g||0)/100;return fmt0(it.k*m)+" kcal · "+W.c_ab+" "+fmt(it.c*m)+" · "+W.p_ab+" "+fmt(it.p*m)+" · "+W.f_ab+" "+fmt(it.f*m);}
 function kgUsed(){return C.vkg?+C.vkg.v:(parseFloat(String(S.kg).replace(",","."))||0);}
-function sxTxt(k,s,t){var a=[],ml=+s.d||0;if(s.i.length){a.push(W.sodium+" "+fmt0(t.na)+" mg"+(t.nam?" ("+W.na_inc+")":""));}
+function sxTxt(k,s,t){var a=[],rm=rideMin(s);if(k==="bike"&&s.i.length){a.push(W.sodium+": "+fmt0(t.na)+" mg"+(rm>0?" · ≈ "+fmt0(t.na/(rm/60))+" mg/h":""));}
 return a.map(function(x){return x.charAt(0)==="<"?x:esc(x);}).join(" · ");}
 function hm(m){m=Math.round(+m||0);return m>0?Math.floor(m/60)+":"+String(m%60).padStart(2,"0"):"";}
 function pmin(v){v=String(v||"").trim().replace(",",".");if(!v){return 0;}var m=v.match(/^(\d{1,2})[:h.](\d{1,2})$/);if(m&&v.indexOf(".")<0){return (+m[1])*60+(+m[2]);}var x=parseFloat(v);return x>0?(x<=24?Math.round(x*60):Math.round(x)):0;}
@@ -1068,7 +1143,7 @@ function cycN(p){var n=0;for(var i=1;i<p.length;i++){var d=dn2(p[i][0])-dn2(p[i-
 function dn2(s){return Math.round(Date.parse(s+"T12:00:00Z")/864e5);}
 function phase(ds){var cy=S.cyc;if(!cy||!cy.on||!cy.p.length){return null;}var L=cycLen(cy.p),last=null;cy.p.forEach(function(x){if(x[0]<=ds){last=x;}});if(!last){return null;}
 var day=dn2(ds)-dn2(last[0])+1;if(day>L+10){return null;}var pl=last[1]?dn2(last[1])-dn2(last[0])+1:5,ov=L-14;return {day:day,ph:day<=pl?"m":(Math.abs(day-ov)<=1?"o":(day<ov?"f":"l"))};}
-function cycChip(){var p=phase(S.date);return p?'<p><span class="fd-cchip">'+esc(W.cyc_day.replace("%d",p.day)+" · "+W["ph_"+p.ph])+'</span></p>':"";}
+function cycChip(){var p=phase(S.date);return p?'<span class="fd-cchip">'+esc(W.cyc_day.replace("%d",p.day)+" · "+W["ph_"+p.ph])+'</span>':"";}
 function cycHtml(){if(!C.female){return "";}var cy=S.cyc||{on:0,p:[]},h='<details class="fd-cyc"'+(S.cycOpen?" open":"")+'><summary>'+esc(W.cyc_title)+'</summary><div><p>'+esc(W.cyc_consent)+'</p>';
 if(!cy.on){return h+'<button type="button" class="btn btn-ghost" data-act="cyc" data-v="on">'+esc(W.cyc_on)+'</button></div></details>';}
 var isS=cy.p.some(function(x){return x[0]===S.date;}),isE=cy.p.some(function(x){return x[1]===S.date;}),L=cycLen(cy.p);
@@ -1078,7 +1153,14 @@ if(cy.p.length){h+='<p><small>'+esc(W.cyc_starts)+': '+esc(cy.p.slice(-6).map(fu
 return h+'<button type="button" class="fd-link" data-act="cyc" data-v="off" style="justify-self:start">'+esc(W.cyc_off)+'</button></div></details>';}
 function renderCyc(){var b=root.querySelector(".fd-cycbox");if(b){b.innerHTML=cycHtml();}}
 function hasAny(){return C.slots.some(function(sv){return slot(sv[0]).i.length>0;});}
-function streakHtml(){if(S.date!==C.today){return "";}var n=(+C.streak||0)+(hasAny()?1:0);return n>=2?'<p class="fd-streak">🔥 '+esc(W.streak.replace("%d",n))+'</p>':"";}
+function streakHtml(){if(S.date!==C.today){return "";}var n=(+C.streak||0)+(hasAny()?1:0);return n>=2?'<span class="fd-sk" title="'+esc(W.streak.replace("%d",n))+'" aria-label="'+esc(W.streak.replace("%d",n))+'">🔥 '+n+'</span>':"";}
+function newMsg(){var r=S.day.r||[],seen=+(S.seen[S.date]||0),who="";r.forEach(function(x){if(x.from==="athlete"&&+x.at>seen){seen=+x.at;}});r.forEach(function(x){if(x.from!=="athlete"&&+x.at>seen){who=x.from==="nutri"?"Marine":"Matteo";}});return who;}
+function slimHtml(){var t=dayTot(),nm=newMsg();
+return '<span class="fd-sm">'+esc([fmt0(t.k)+" kcal",W.c_ab+" "+fmt0(t.c)+" g",W.p_ab+" "+fmt0(t.p)+" g",W.f_ab+" "+fmt0(t.f)+" g"].join(" · "))+'</span>'+streakHtml()+cycChip()+(nm?'<button type="button" class="fd-link fd-newm" data-act="tothread">💬 '+esc(W.new_msg.replace("%s",nm))+'</button>':"");}
+function slimUpd(){var el=root.querySelector(".fd-slim");if(el){el.innerHTML=slimHtml();}}
+function markSeen(){if(!newMsg()){return;}var mx=0;(S.day.r||[]).forEach(function(x){mx=Math.max(mx,+x.at||0);});S.seen[S.date]=mx;slimUpd();send(C.u.seen,{page:C.page,date:S.date}).catch(function(){});}
+var IO=null;function watchThread(){if(IO){IO.disconnect();IO=null;}var th=root.querySelector(".fd-thread");if(!th||!newMsg()||!window.IntersectionObserver){return;}
+IO=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){markSeen();if(IO){IO.disconnect();IO=null;}}});},{threshold:0.3});IO.observe(th);}
 function chipsHtml(){var h="";function row(lbl,src,arr){if(!arr.length){return "";}return '<p class="fd-chl">'+esc(lbl)+'</p><div class="fd-chips">'+arr.map(function(f,i){return '<button type="button" class="fd-chip" data-act="chip" data-src="'+src+'" data-i="'+i+'">'+(src==="fav"?"★ ":"")+esc(f.n)+'</button>';}).join("")+'</div>';}
 h+=row(W.favs,"fav",S.fav)+row(W.recent,"recent",S.recent);return h?'<div class="fd-chipbox">'+h+'</div>':"";}
 function macro100(f){return fmt0(f.k)+" kcal · "+W.c_ab+" "+fmt(f.c)+" · "+W.p_ab+" "+fmt(f.p)+" · "+W.f_ab+" "+fmt(f.f)+" / 100 g";}
@@ -1120,7 +1202,7 @@ function slotHtml(k,label){var s=slot(k),t=tot(s.i),open=S.open[k]!==undefined?S
 var h='<details class="fd-slot" data-slot="'+k+'"'+(open?" open":"")+'><summary><span class="fd-sl">'+esc(label)+'</span><span class="fd-st" data-tt="'+k+'">'+sumTxt(s,t)+'</span></summary><div class="fd-sb">';
 if(k==="bike"){var rv=C.rides&&C.rides[S.date];h+=rv>0?'<p class="fd-hint">'+esc(W.ride_rec.replace("%s",hm(rv).replace(":","h")))+'</p>':'<label class="fd-drk">'+esc(W.ride_t)+' <input type="text" inputmode="decimal" data-f="r" placeholder="2:30" value="'+esc(hm(s.r))+'" maxlength="5"></label>';}
 h+='<label class="fd-time">'+esc(W.time)+' <input type="time" data-f="t" value="'+esc(s.t||"")+'"></label>';
-if(s.i.length){h+='<ul class="fd-items">'+s.i.map(function(it,ix){return '<li'+(S.just===k+":"+ix?' class="fd-new"':'')+'><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+'</b><small data-it="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-f="g" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-star'+(isFav(it.id)?' on':'')+'" data-act="star" data-ix="'+ix+'" aria-label="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'" title="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'">'+(isFav(it.id)?'★':'☆')+'</button><button type="button" class="fd-x" data-act="rm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">×</button></li>';}).join("")+'</ul>';
+if(s.i.length){h+='<ul class="fd-items">'+s.i.map(function(it,ix){return '<li'+(S.just===k+":"+ix?' class="fd-new"':'')+'><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+'</b><small data-it="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-f="g" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-star'+(isFav(it.id)?' on':'')+'" data-act="star" data-ix="'+ix+'" aria-label="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'" title="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'">'+starI(isFav(it.id))+'</button><button type="button" class="fd-x" data-act="rm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">'+XI+'</button></li>';}).join("")+'</ul>';
 h+='<p class="fd-stot" data-stot="'+k+'">'+esc(W.slot_total+": "+macroT(t))+'</p>';}
 h+='<p class="fd-sx" data-sx="'+k+'">'+sxTxt(k,s,t)+'</p><div class="fd-gg" data-gg="'+k+'">'+gaugesHtml(k,s,t)+'</div>';
 h+=(S.srch&&S.srch.ctx==="slot"&&S.srch.slot===k)?searchHtml():'<div class="fd-row"><button type="button" class="btn btn-go" data-act="add">'+esc(W.add)+'</button><button type="button" class="fd-link" data-act="copyslot">'+esc(W.copy_y)+'</button></div>';
@@ -1131,8 +1213,8 @@ return h+'</div></details>';}
 function sumTxt(s,t){var a=[];if(s.t){a.push(s.t);}if(s.i.length){a.push(fmt0(t.k)+" kcal");}if(+s.d>0){a.push(fmt0(s.d)+" ml");}if(!a.length&&!s.n&&!s.phu){return '<span class="fd-addh">'+esc(W.add_short)+'</span>';}return esc(a.join(" · "));}
 function totV(){var t=dayTot(),kg=kgUsed(),ml=dayMl();
 function tile(v,l,x,cl){return '<div><b>'+v+'</b><span>'+esc(l)+'</span>'+(x?'<em'+(cl?' class="fd-inc"':"")+'>'+x+'</em>':"")+'</div>';}
-return '<div class="fd-tiles">'+tile(fmt0(t.k),"kcal")+tile(fmt0(t.c)+" g",W.carbs,kg?fmt(t.c/kg)+" g/kg":"")+tile(fmt0(t.p)+" g",W.protein,kg?fmt(t.p/kg)+" g/kg":"")+tile(fmt0(t.f)+" g",W.fat)+tile(fmt0(t.fi)+" g",W.fibre)+tile(fmt0(t.su)+" g",W.sugars)
-+tile(fmt0(ml)+" ml",W.fluids,ml?(Math.round(ml/100)/10).toLocaleString(C.lang,{minimumFractionDigits:1,maximumFractionDigits:1})+" L":"")+tile(fmt0(t.na)+" mg",W.sodium,t.nam?esc(W.na_inc):"",true)+'</div>'+ironHtml();}
+return '<div class="fd-tiles">'+tile(fmt0(t.k),"kcal")+tile(fmt0(t.c)+" g",W.carbs,kg?fmt(t.c/kg)+" g/kg":"")+tile(fmt0(t.p)+" g",W.protein,kg?fmt(t.p/kg)+" g/kg":"")+tile(fmt0(t.f)+" g",W.fat,(t.k>0?'<span class="fd-nw">'+Math.round(t.f*900/t.k)+"\u00a0% "+esc(W.of_energy)+'</span>':"")+(kg?(t.k>0?" · ":"")+'<span class="fd-nw">'+fmt(t.f/kg)+" g/kg</span>":""))+tile(fmt0(t.fi)+" g",W.fibre)+tile(fmt0(t.su)+" g",W.sugars)
++tile(fmt0(ml)+" ml",W.fluids,ml?(Math.round(ml/100)/10).toLocaleString(C.lang,{minimumFractionDigits:1,maximumFractionDigits:1})+" L":"")+'</div>'+ironHtml();}
 function microItems(){var a=[];C.slots.forEach(function(sv){slot(sv[0]).i.forEach(function(it){a.push([it.id,+it.g||0,it.m||""]);});});return a;}
 function recipes(){var o={};S.mine.forEach(function(m){if(m.t==="r"){o[m.id]={ing:(m.ing||[]).map(function(i){return [i.id,+i.g||0,i.m||""];}),cw:+m.cw||0};}});return o;}
 function microSet(el){var t=dayTot();el.setAttribute("data-items",JSON.stringify(microItems()));el.setAttribute("data-mine",JSON.stringify(recipes()));el.setAttribute("data-na",JSON.stringify({v:Math.round(t.na),inc:t.nam,fi:Math.round(t.fi*10)/10}));}
@@ -1143,20 +1225,19 @@ var h=r.map(function(x){var who=x.from==="athlete"?W.you:(x.from==="nutri"?"Mari
 return '<div class="nt-rep'+(x.from==="athlete"?" nt-rep-a":"")+'"><span class="nt-rh"><b>'+esc(who)+'</b> <small>'+esc(d.toLocaleString(C.lang,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}))+'</small></span><p>'+esc(x.text).replace(/\n/g,"<br>")+'</p></div>';}).join("");
 return '<div class="fd-thread">'+(r.length?'<h3>'+esc(W.thread)+'</h3>'+h:"")+'<details class="nt-replyd"><summary>'+esc(r.length?W.reply:W.ask)+'</summary><div class="fd-rbox"><textarea rows="3"></textarea><button type="button" class="btn btn-go" data-act="send">'+esc(W.send_r)+'</button></div></details></div>';}
 function render(){var d=new Date(S.date+"T12:00:00"),lbl=d.toLocaleDateString(C.lang,{weekday:"long",day:"numeric",month:"long"}),isT=S.date===today();
-var h='<div class="fd-nav"><button type="button" class="fd-arrow" data-act="prev" aria-label="'+esc(W.prev)+'">‹</button><div class="fd-date"><b>'+esc(lbl)+'</b>'+(isT?'<small>'+esc(W.today)+'</small>':'<button type="button" class="fd-link" data-act="today">'+esc(W.gotoday)+'</button>')+'</div><button type="button" class="fd-arrow" data-act="next" aria-label="'+esc(W.next)+'"'+(S.date>=today()?" disabled":"")+'>›</button></div><p class="fd-status" role="status"></p>';
-h+='<div class="fd-dtop">'+cycChip()+streakHtml()+(hasAny()?ringHtml(dayTot()):'')+'<button type="button" class="fd-link fd-copyday" data-act="copyday">'+esc(W.copy_day)+'</button></div>';
+var h='<div class="fd-nav"><button type="button" class="fd-arrow" data-act="prev" aria-label="'+esc(W.prev)+'">‹</button><div class="fd-date"><b>'+esc(lbl)+'</b>'+(isT?'<small>'+esc(W.today)+'</small>':'<button type="button" class="fd-link" data-act="today">'+esc(W.gotoday)+'</button>')+'</div><button type="button" class="fd-arrow" data-act="next" aria-label="'+esc(W.next)+'"'+(S.date>=shift(today(),7)?" disabled":"")+'>›</button></div>';
+h='<div class="fd-stick">'+h+'<p class="fd-slim">'+slimHtml()+'</p></div><p class="fd-status" role="status"></p>';
 C.slots.forEach(function(sv){h+=slotHtml(sv[0],sv[1]);});
 var wb=C.vkg?'<p class="fd-vkg">'+esc(W.vk_weight.replace("%1$s",fmt(C.vkg.v)).replace("%2$s",new Date(C.vkg.d+"T12:00:00").toLocaleDateString(C.lang,{day:"numeric",month:"short"})))+'</p><p class="fd-muted">'+esc(W.vk_weight_h)+'</p>'
 :'<label class="fd-kg">'+esc(W.weight)+' <input type="number" class="fd-kgi" inputmode="decimal" min="25" max="250" step="0.1" value="'+esc(S.kg)+'"></label><p class="fd-muted">'+esc(W.weight_h)+'</p>';
-h+='<div class="fd-tot"><h3>'+esc(W.day_total)+'</h3><div class="fd-totv">'+totV()+'</div>'+wb+'</div>'+microHtml();
-h+=threadHtml();
-root.querySelector(".fd-day").innerHTML=h;S.just=null;renderMine();renderCyc();microRefresh();}
+h+='<div class="fd-tot"><h3>'+esc(W.day_total)+'</h3>'+(hasAny()?ringHtml(dayTot()):'')+'<div class="fd-totv">'+totV()+'</div>'+wb+'<button type="button" class="fd-link fd-copyday" data-act="copyday">'+esc(W.copy_day)+'</button></div>'+microHtml();
+root.querySelector(".fd-day").innerHTML=h;root.querySelector(".fd-thbox").innerHTML=threadHtml();S.just=null;renderMine();renderCyc();microRefresh();watchThread();}
 function refreshNums(){C.slots.forEach(function(sv){var k=sv[0],s=slot(k),t=tot(s.i),el=root.querySelector('[data-tt="'+k+'"]');if(el){el.innerHTML=sumTxt(s,t);}
 var st=root.querySelector('[data-stot="'+k+'"]');if(st){st.textContent=W.slot_total+": "+macroT(t);}
 var sl=root.querySelector('.fd-slot[data-slot="'+k+'"]');if(sl){s.i.forEach(function(it,ix){var sm=sl.querySelector('[data-it="'+ix+'"]');if(sm){sm.textContent=macro(it);}});}});
 C.slots.forEach(function(sv){var sx=root.querySelector('[data-sx="'+sv[0]+'"]');if(sx){var s2=slot(sv[0]);sx.innerHTML=sxTxt(sv[0],s2,tot(s2.i));}});
 C.slots.forEach(function(sv){var gg=root.querySelector('[data-gg="'+sv[0]+'"]');if(gg){var s3=slot(sv[0]);gg.innerHTML=gaugesHtml(sv[0],s3,tot(s3.i));}});
-var tv=root.querySelector(".fd-totv");if(tv){tv.innerHTML=totV();}ringUpd();var sk=root.querySelector(".fd-streak");if(sk){var n=(+C.streak||0)+(hasAny()?1:0);sk.textContent="🔥 "+W.streak.replace("%d",n);}microRefresh();}
+var tv=root.querySelector(".fd-totv");if(tv){tv.innerHTML=totV();}ringUpd();slimUpd();microRefresh();}
 function save(){S.dirty=true;status(W.saving);clearTimeout(S.timer);S.timer=setTimeout(flush,700);}
 function payload(){return {page:C.page,date:S.date,data:JSON.stringify(S.day.s||{})};}
 function flush(){clearTimeout(S.timer);if(!S.dirty){return Promise.resolve();}S.dirty=false;return send(C.u.save,payload()).then(function(){status(W.saved);}).catch(function(){S.dirty=true;status(W.err,true);});}
@@ -1171,7 +1252,7 @@ function recipeCalc(e){var t=tot(e.ing),w=parseFloat(e.cw)||0,sum=e.ing.reduce(f
 function formHtml(){var e=S.edit,h='<div class="fd-form"><h4>'+esc(e.id?W.edit:(e.t==="r"?W.add_recipe:W.add_label))+'</h4><label>'+esc(W.name)+'<input type="text" data-e="n" value="'+esc(e.n)+'" maxlength="120"></label>';
 if(e.t==="f"){h+='<h4>'+esc(W.per100)+'</h4><div class="fd-nums">'+[["k","kcal"],["c",W.carbs+" (g)"],["p",W.protein+" (g)"],["f",W.fat+" (g)"],["fi",W.fibre+" (g), "+W.optional],["su",W.sugars+" (g), "+W.optional],["na",W.sodium+" (mg), "+W.optional]].map(function(x){return '<label>'+esc(x[1])+'<input type="number" inputmode="decimal" min="0" step="0.1" data-e="'+x[0]+'" value="'+esc(e[x[0]])+'"></label>';}).join("")+'</div>';}
 else{h+='<h4>'+esc(W.ingredients)+'</h4>';
-if(e.ing.length){h+='<ul class="fd-items">'+e.ing.map(function(it,ix){return '<li><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+'</b><small data-ing="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-e="ig" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-x" data-act="ingrm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">×</button></li>';}).join("")+'</ul>';}
+if(e.ing.length){h+='<ul class="fd-items">'+e.ing.map(function(it,ix){return '<li><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+'</b><small data-ing="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-e="ig" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-x" data-act="ingrm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">'+XI+'</button></li>';}).join("")+'</ul>';}
 h+=(S.srch&&S.srch.ctx==="ing")?searchHtml():'<button type="button" class="btn btn-ghost" data-act="adding" style="justify-self:start">'+esc(W.add_ing)+'</button>';
 var rc=recipeCalc(e);h+='<label>'+esc(W.cooked)+'<input type="number" inputmode="decimal" min="0" step="1" data-e="cw" value="'+esc(e.cw||"")+'" placeholder="'+esc(fmt0(rc.sum))+'" style="max-width:160px"><span class="fd-hint">'+esc(W.cooked_h)+'</span></label>';
 h+='<p class="fd-stot fd-rcp">'+esc(W.per100+": "+macro100(rc))+'</p>';}
@@ -1181,11 +1262,12 @@ function saveMine(){return send(C.u.mine,{page:C.page,data:JSON.stringify(S.mine
 function focusQ(){var q=root.querySelector(".fd-q");if(q){q.focus();}}
 function refreshRes(){var r=root.querySelector(".fd-res");if(r&&S.srch){r.innerHTML=resultsHtml();}}
 function redraw(){if(S.srch&&S.srch.ctx==="ing"){renderMine();}else{render();}}
-root.addEventListener("toggle",function(e){var t=e.target;if(t.classList&&t.classList.contains("fd-slot")){S.open[t.dataset.slot]=t.open;}else if(t.classList&&t.classList.contains("fd-mine")){S.mineOpen=t.open;}else if(t.classList&&t.classList.contains("fd-micro")){S.microOpen=t.open;}else if(t.classList&&t.classList.contains("fd-cyc")){S.cycOpen=t.open;}},true);
+root.addEventListener("toggle",function(e){var t=e.target;if(t.classList&&t.classList.contains("fd-slot")){S.open[t.dataset.slot]=t.open;}else if(t.classList&&t.classList.contains("fd-mine")){S.mineOpen=t.open;keepOpen("mine",t.open);}else if(t.classList&&t.classList.contains("fd-micro")){S.microOpen=t.open;keepOpen("micro",t.open);}else if(t.classList&&t.classList.contains("fd-cyc")){S.cycOpen=t.open;keepOpen("cyc",t.open);}else if(t.classList&&t.classList.contains("fd-trd")){keepOpen("tr",t.open);}},true);
 root.addEventListener("click",function(e){var b=e.target.closest("[data-act]");if(!b||!root.contains(b)){return;}var a=b.dataset.act,sl=b.closest(".fd-slot"),k=sl?sl.dataset.slot:null;
 if(a==="prev"){go(shift(S.date,-1));}
 else if(a==="next"){go(shift(S.date,1));}
 else if(a==="today"){go(today());}
+else if(a==="tothread"){var th=root.querySelector(".fd-thread");if(th){th.scrollIntoView({behavior:"smooth",block:"start"});}markSeen();}
 else if(a==="add"||a==="adding"){S.srch={ctx:a==="add"?"slot":"ing",slot:k,q:"",pick:null,g:100};if(a==="add"){S.open[k]=true;}redraw();focusQ();loadDB().then(refreshRes);}
 else if(a==="cancel"){S.srch=null;redraw();}
 else if(a==="pick"){var pf=S.res[+b.dataset.rx];if(staple(pf)){S.srch.ask={f:pf};redraw();}else{S.srch.pick=pf;redraw();var g=root.querySelector(".fd-pg");if(g){g.focus();g.select();}}}
@@ -1209,7 +1291,7 @@ if(a==="copyday"){dst.i=cp;dst.d=+src.d||0;if(src.r){dst.r=src.r;}}else{dst.i=ds
 if(!n){b.disabled=false;status(W.copy_none);return;}render();save();}).catch(function(){b.disabled=false;status(W.err,true);});}
 else if(a==="phdel"){flush().then(function(){return send(C.u.photodel,{page:C.page,date:S.date,slot:k});}).then(function(){var s=slot(k);delete s.ph;delete s.phu;render();}).catch(function(){status(W.err,true);});}
 else if(a==="send"){var box=b.closest(".fd-rbox"),t=box.querySelector("textarea");if(!t.value.trim()){return;}b.disabled=true;
-send(C.u.reply,{page:C.page,date:S.date,text:t.value}).then(function(j){S.day.r=j.r||[];render();}).catch(function(){b.disabled=false;status(W.sent_err,true);});}
+send(C.u.reply,{page:C.page,date:S.date,text:t.value}).then(function(j){S.day.r=j.r||[];render();markSeen();}).catch(function(){b.disabled=false;status(W.sent_err,true);});}
 else if(a==="newfood"||a==="newrecipe"){S.edit={t:a==="newfood"?"f":"r",id:"",n:"",k:"",c:"",p:"",f:"",fi:"",su:"",na:"",ing:[],cw:""};S.srch=null;S.mineOpen=true;renderMine();var n=root.querySelector('[data-e="n"]');if(n){n.focus();}}
 else if(a==="medit"){var m=S.mine.filter(function(x){return x.id===b.dataset.id;})[0];if(!m){return;}S.edit=JSON.parse(JSON.stringify(m));if(!S.edit.ing){S.edit.ing=[];}S.srch=null;S.mineOpen=true;renderMine();}
 else if(a==="mdel"){if(!confirm(W.delq)){return;}S.mine=S.mine.filter(function(x){return x.id!==b.dataset.id;});renderMine();saveMine();}
@@ -1239,11 +1321,12 @@ root.addEventListener("change",function(e){var el=e.target;if(el.dataset.f!=="ph
 if(fi.size>10485760||!/^image\//.test(fi.type||"")&&!/\.(heic|heif|jpe?g|png|webp)$/i.test(fi.name)){status(W.photo_bad,true);return;}
 status(W.uploading);flush().then(function(){var fd=new FormData();fd.append("file",fi);fd.append("date",S.date);fd.append("slot",k);fd.append("page",C.page);return send(C.u.photo,fd);})
 .then(function(j){var s=slot(k);s.ph=j.id;s.phu=j.url;S.open[k]=true;render();status(W.saved);}).catch(function(){status(W.err,true);});});
-if(C.trends){root.querySelector(".fd-trbox").innerHTML='<details class="fd-trd"><summary>'+esc(W.mytrends)+'</summary><div><p class="fd-muted">'+esc(W.tr_lede)+'</p><div class="fd-trends" data-tr="'+esc(JSON.stringify(C.trends))+'"></div></div></details>';}
+if(C.trends){root.querySelector(".fd-trbox").innerHTML='<details class="fd-trd"'+(OPEN.tr?" open":"")+'><summary>'+esc(W.mytrends)+'</summary><div><p class="fd-muted">'+esc(W.tr_lede)+'</p><div class="fd-trends" data-tr="'+esc(JSON.stringify(C.trends))+'"></div></div></details>';}
 render();
+if(OPEN.tr&&window.ccFdTrends){var tre=root.querySelector(".fd-trends[data-tr]");if(tre){setTimeout(function(){window.ccFdTrends(tre);},0);}}
 if(C.female&&window.ccFdM){window.ccFdM.load(C.micro).then(function(M){S.M=M;var tv=root.querySelector(".fd-totv");if(tv){tv.innerHTML=totV();}}).catch(function(){});}
 if(!C.fixed&&today()!==S.date){go(today());}
-if(C.fixed){var fe=document.getElementById("food");if(fe){setTimeout(function(){fe.scrollIntoView();},300);}}
+if(C.fixed||C.scroll){var fe=document.getElementById("food");if(fe){setTimeout(function(){fe.scrollIntoView();},300);}}
 })();
 JS;
     return '<script>' . str_replace(["\r", "\n"], ['', ' '], $js) . '</script>';
