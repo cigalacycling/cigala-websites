@@ -19,20 +19,20 @@ H2 = 'Mercure Saint-Lary **** · Saint-Lary-Soulan'
 H3 = 'Hotel Gallia **** · Lourdes'
 # (date, title, climbs, hotel, text, photo). No distances/elevation until Matteo confirms the routes.
 DAYS = [
- ('Sat 19 June', 'Arrival in Luchon & shake-out ride', '', H1,
-  'Welcome to the Pyrenees! Transfer from the airport to Bagnères-de-Luchon, the “Queen of the Pyrenees”. Bike set-up and fitting with our mechanics, then an easy shake-out ride in the valley to loosen the legs after the journey. Welcome briefing and first evening together.', 'meadow'),
+ ('Sat 19 June', 'Arrival in Luchon', '', H1,
+  'Welcome to the Pyrenees! Transfer from the airport to Bagnères-de-Luchon, the “Queen of the Pyrenees”. Bike set-up and fitting with our mechanics, welcome briefing and first evening together. No riding today: the legs stay fresh for the week ahead.', 'meadow'),
  ('Sun 20 June', 'Col de Portet d’Aspet & Col de Menté', 'Col de Portet d’Aspet · Col de Menté', H1,
-  'A loop from Luchon over two climbs full of Tour de France history: the steep Col de Portet d’Aspet and the Col de Menté, through quiet forests and remote mountain villages.', 'two'),
- ('Mon 21 June', 'Peyresourde & Col d’Azet to Saint-Lary', 'Col de Peyresourde · Col d’Azet', H2,
-  'Our first point-to-point stage, from base to base by bike. We leave Luchon on the Col de Peyresourde, a Tour de France classic, ride through the Val Louron and over the Col d’Azet, then descend into Saint-Lary-Soulan. Luggage travels with the support vehicle.', 'valley'),
- ('Tue 22 June', 'Col d’Aspin & Payolle loop', 'Col d’Aspin · Payolle (Hourquette d’Ancizan)', H2,
-  'From Saint-Lary we climb the Col d’Aspin. On the way down towards Payolle and the Tourmalet we turn left over the Hourquette d’Ancizan, a quiet high road with wide views, and come back down into the Saint-Lary valley.', 'hairpins'),
- ('Wed 23 June', 'Col du Portet & Lac de Cap de Long', 'Col du Portet · Lac de Cap de Long (option)', H3,
-  'The queen climb of this side of the range: the Col du Portet (2,215 m), one of the highest roads in the Pyrenees and a modern Tour de France summit finish. Riders who want more can add the climb to the Lac de Cap de Long dam. In the afternoon we transfer with the bikes to Lourdes.', 'goats'),
- ('Thu 24 June', 'Col du Tourmalet', 'Col du Tourmalet', H3,
-  'The legendary Col du Tourmalet (2,115 m), the most climbed pass in Tour de France history. A day to enjoy the climb, the summit and the long descent back down the valley.', 'tourmalet'),
- ('Fri 25 June', 'Col d’Aubisque & Hautacam', 'Col d’Aubisque · Hautacam', H3,
-  'The grand finale: up the Val d’Azun and along the famous balcony road to the Col d’Aubisque. Riders who still have legs finish on the slopes of Hautacam. Easier options are always available. Celebration dinner in the evening.', 'group'),
+  'Our first ride: a loop from Luchon over two climbs full of Tour de France history, the steep Col de Portet d’Aspet and the Col de Menté, through quiet forests and remote mountain villages.', 'two'),
+ ('Mon 21 June', 'Peyresourde & Azet to Saint-Lary, then Cap de Long', 'Col de Peyresourde · Col d’Azet · Lac de Cap de Long', H2,
+  'Our first point-to-point stage, from base to base by bike. We leave Luchon on the Col de Peyresourde, a Tour de France classic, and ride over the Col d’Azet into Saint-Lary-Soulan. From there we climb to the Lac de Cap de Long, high in the Néouvielle massif. Luggage travels with the support vehicle.', 'valley'),
+ ('Tue 22 June', 'Col d’Aspin & Col du Portet', 'Col d’Aspin · Col du Portet', H2,
+  'From Saint-Lary we ride the Col d’Aspin and turn at Payolle back towards the valley. Then the queen climb of this side of the range: the Col du Portet (2,215 m), one of the highest roads in the Pyrenees and a modern Tour de France summit finish.', 'hairpins'),
+ ('Wed 23 June', 'Hourquette d’Ancizan & Tourmalet to Lourdes', 'Hourquette d’Ancizan · Col du Tourmalet', H3,
+  'The big point-to-point day. We leave Saint-Lary over the Hourquette d’Ancizan, a quiet high road with wide views, drop to Payolle and climb the legendary Col du Tourmalet (2,115 m), the most climbed pass in Tour de France history. A long descent brings us to Lourdes.', 'tourmalet'),
+ ('Thu 24 June', 'Col d’Aubisque loop', 'Col d’Aubisque', H3,
+  'A loop from Lourdes up the Val d’Azun and along the famous balcony road to the Col d’Aubisque, with its giant bikes at the summit and some of the most scenic roads of the week.', 'goats'),
+ ('Fri 25 June', 'Hautacam', 'Hautacam', H3,
+  'The grand finale on the slopes of Hautacam, scene of many Tour de France battles, just outside Lourdes. Easier options are always available. Celebration dinner in the evening.', 'group'),
  ('Sat 26 June', 'Departure day', '', '',
   'After breakfast, transfer to the airport. See you next time!', None),
 ]
@@ -132,12 +132,11 @@ def xy(p):
     return 30 + (p[0] - x0) / (x1 - x0) * 640, 25 + (y1 - p[1]) / (y1 - y0) * 290
 allp = {**PTS, **COLS}
 P = lambda ks: ' '.join(('M' if i == 0 else 'L') + '%.1f %.1f' % xy(allp[k]) for i, k in enumerate(ks))
-svg = '<svg viewBox="0 0 700 340" role="img" aria-label="Schematic map: Luchon to Saint-Lary-Soulan by bike, then Lourdes, with the climbs of the week">'
-svg += f'<path d="{P(['Luchon', 'Col de Peyresourde', 'Col d’Azet', 'Saint-Lary'])}" fill="none" stroke="#009a44" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>'
-svg += f'<path d="{P(['Saint-Lary', 'Lourdes'])}" fill="none" stroke="#8a8f98" stroke-width="2.5" stroke-dasharray="6 6"/>'
+svg = '<svg viewBox="0 0 700 340" role="img" aria-label="Schematic map: Luchon to Saint-Lary-Soulan to Lourdes by bike, with the climbs of the week">'
+svg += f'<path d="{P(['Luchon', 'Col de Peyresourde', 'Col d’Azet', 'Saint-Lary', 'Hourquette d’Ancizan', 'Col du Tourmalet', 'Lourdes'])}" fill="none" stroke="#009a44" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>'
 lab = {'Col de Portet d’Aspet': (-60, 22), 'Col de Menté': (-40, -12), 'Col de Peyresourde': (-30, 28), 'Col d’Azet': (4, -10),
        'Col d’Aspin': (8, -6), 'Hourquette d’Ancizan': (-142, 4), 'Col du Portet': (-34, 24), 'Lac de Cap de Long': (-125, 6),
-       'Col du Tourmalet': (-96, -6), 'Col d’Aubisque': (-30, -12), 'Hautacam': (10, 4)}
+       'Col du Tourmalet': (-112, 4), 'Col d’Aubisque': (-30, -12), 'Hautacam': (-64, 4)}
 for k, p in COLS.items():
     x, y = xy(p); dx, dy = lab[k]
     svg += f'<path d="M{x:.1f} {y-7:.1f} L{x+6:.1f} {y+4:.1f} L{x-6:.1f} {y+4:.1f} Z" fill="#f0bf00"/>'
@@ -147,7 +146,7 @@ for i, k in enumerate(['Luchon', 'Saint-Lary', 'Lourdes'], 1):
     svg += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="13" fill="#E10600" stroke="#fff" stroke-width="2"/><text x="{x:.1f}" y="{y+4.5:.1f}" text-anchor="middle" font-family="Anton" font-size="14" fill="#fff">{i}</text>'
     off = {'Luchon': (18, 18), 'Saint-Lary': (-34, -22), 'Lourdes': (18, -8)}[k]
     svg += f'<text x="{x+off[0]:.1f}" y="{y+off[1]:.1f}" font-family="Anton" font-size="17" fill="#f7f8f8" letter-spacing=".5">{k.upper()}</text>'
-svg += '<text x="690" y="332" text-anchor="end" font-family="Montserrat" font-size="9.5" fill="#8a8f98">Schematic map · green: by bike between bases · dashed: transfer · day loops not drawn</text></svg>'
+svg += '<text x="690" y="332" text-anchor="end" font-family="Montserrat" font-size="9.5" fill="#8a8f98">Schematic map · green: by bike from base to base · day loops not drawn</text></svg>'
 
 pages = []
 pages.append(f'''<section class="page tours-cover">
@@ -170,7 +169,7 @@ pages.append(f'''<section class="page tours-cover">
 pages.append(f'''<section class="page">
 {RUN}{sec('Private group tour proposal', 'The Pyrenees, cols of legend')}
   <p class="lead">This itinerary focuses entirely on the French Pyrenees, combining some of the most iconic Tour de France climbs with spectacular mountain roads and three different accommodation bases.</p>
-  <p>The route is designed to explore different areas of the Pyrenees while incorporating point-to-point riding days, allowing us to travel between locations by bike rather than relying on vehicle transfers. Every day is fully supported by our guides and support vehicle, with easier options always available.</p>
+  <p>The route is designed to explore different areas of the Pyrenees while incorporating point-to-point riding days, allowing us to travel between locations by bike rather than relying on vehicle transfers. Every riding day is fully supported by our guides and support vehicle, with easier options always available.</p>
   <div class="glance">
     <div><b>{len(CLIMBS)}</b><span>Iconic climbs</span></div>
     <div><b>6</b><span>Days riding</span></div>
@@ -181,8 +180,8 @@ pages.append(f'''<section class="page">
   <h3>Three bases</h3><div class="bar"></div>
   <div class="bases">
     <div class="base"><div class="n">2 nights · 19–20 June</div><div class="anton">Alti Hotel <span class="st3">★★★</span></div><p>Bagnères-de-Luchon</p><p class="cl">Col de Menté · Col de Portet d’Aspet · Col de Peyresourde · Col d’Azet</p></div>
-    <div class="base"><div class="n">2 nights · 21–22 June</div><div class="anton">Mercure Saint-Lary <span class="st3">★★★★</span></div><p>Saint-Lary-Soulan</p><p class="cl">Col d’Aspin · Payolle · Col du Portet · Lac de Cap de Long</p></div>
-    <div class="base"><div class="n">3 nights · 23–25 June</div><div class="anton">Hotel Gallia <span class="st3">★★★★</span></div><p>Lourdes</p><p class="cl">Col du Tourmalet · Col d’Aubisque · Hautacam</p></div>
+    <div class="base"><div class="n">2 nights · 21–22 June</div><div class="anton">Mercure Saint-Lary <span class="st3">★★★★</span></div><p>Saint-Lary-Soulan</p><p class="cl">Lac de Cap de Long · Col d’Aspin · Col du Portet</p></div>
+    <div class="base"><div class="n">3 nights · 23–25 June</div><div class="anton">Hotel Gallia <span class="st3">★★★★</span></div><p>Lourdes</p><p class="cl">Hourquette d’Ancizan · Col du Tourmalet · Col d’Aubisque · Hautacam</p></div>
   </div>
 ''' + FOOT(2) + '</section>')
 
