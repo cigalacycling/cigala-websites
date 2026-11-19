@@ -201,3 +201,5 @@ The board PNGs in `vivify/board/` are gitignored.
 - Language switch EN · FR · IT on every page. Code Snippets #7 now covers all 19 page groups (lang attribute + hreflang en/fr/it + x-default). Re-generate it if pages are added.
 - Not translated on purpose: blog (posts are English; the Blog link goes to /blog/), e-book download page.
 - To check with Marine: the privacy policy (all three languages) still says the site is hosted on Wix.
+- Snippet #7 also sets og:locale per language (fr_FR / it_IT) via wpseo_locale. English stays Yoast's en_US on the home page (harmless).
+- Canonical tags: Yoast leaves them out while the site is noindex (staging). After go-live (Discourage search engines unticked) check that every page, EN/FR/IT, has a self-canonical.
