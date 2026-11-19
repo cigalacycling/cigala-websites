@@ -1239,16 +1239,23 @@ def discovery():
     return shell('free-sports-nutrition-consultation.html', body)
 
 def privacy():
-    rows = [l.split('\t', 1)[1] for l in open(V + 'text/privacy-policy.tsv') if '\t' in l]
-    out = []
-    for t in rows[1:]:
-        if re.match(r'^\d+\.', t) and len(t) < 90:
-            out.append(f'<p class="h3" style="margin:34px 0 10px">{e(t)}</p>')
-        else:
-            out.append(f'<p>{e(t)}</p>')
+    # Marine 19 Nov: new policy for the new website (vivify/privacy_2026.py, EN/FR/IT); the Wix text said the site was hosted on Wix
+    sys.path.insert(0, V)
+    import privacy_2026 as PV
+    out, ul = [], []
+    def flush():
+        if ul: out.append('<ul>' + ''.join(f'<li>{e(x)}</li>' for x in ul) + '</ul>'); ul.clear()
+    for kind, en, *_ in PV.ITEMS:
+        if kind != 'li': flush()
+        if kind == 'title': out.append(f'<p style="color:var(--text);font-weight:700;margin-bottom:4px">{e(en)}</p>')
+        elif kind == 'date': out.append(f'<p class="muted" style="font-size:14px">{e(en)}</p>')
+        elif kind == 'h': out.append(f'<p class="h3" style="margin:34px 0 10px">{e(en)}</p>')
+        elif kind == 'li': ul.append(en)
+        else: out.append(f'<p>{e(en)}</p>')
+    flush()
     body = f"""
 <section class="page-hero" style="padding-bottom:24px"><div class="wrap"><span class="eyebrow">Vivify Sports</span><h1>Privacy Policy</h1><span class="bar" style="margin:16px auto 0"></span></div></section>
-<section style="padding-top:8px"><div class="wrap article"><p style="color:var(--text);font-weight:700">{e(rows[0])}</p>{''.join(out)}</div></section>"""
+<section style="padding-top:8px"><div class="wrap article">{''.join(out)}</div></section>"""
     return shell('privacy-policy.html', body)
 
 EXTRA_CSS = r"""

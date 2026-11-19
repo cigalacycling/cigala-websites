@@ -637,3 +637,7 @@ META2 = {
       'Informativa sulla privacy di Vivify Sports: quali informazioni raccogliamo, perché, come vengono conservate e come contattarci.'),
  },
 }
+
+# privacy policy for the new website (19 Nov), from vivify/privacy_2026.py
+import privacy_2026 as _pv
+TR2.update({en: (fr, it) for _k, en, fr, it in _pv.ITEMS})

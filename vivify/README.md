@@ -200,6 +200,7 @@ The board PNGs in `vivify/board/` are gitignored.
 - New English text? `python3 tools/vivify_i18n_extract.py` lists what has no translation yet; add it to TR2, then `python3 tools/build_vivify.py && python3 tools/build_vivify_i18n.py`.
 - Language switch EN · FR · IT on every page. Code Snippets #7 now covers all 19 page groups (lang attribute + hreflang en/fr/it + x-default). Re-generate it if pages are added.
 - Not translated on purpose: blog (posts are English; the Blog link goes to /blog/), e-book download page.
-- To check with Marine: the privacy policy (all three languages) still says the site is hosted on Wix.
+- Privacy policy rewritten for the new site (Marine approved 19 Nov): vivify/privacy_2026.py, EN/FR/IT. Retention periods (2 years messages/coaching, 6 years accounts) are standard choices: Marine can change them there.
 - Snippet #7 also sets og:locale per language (fr_FR / it_IT) via wpseo_locale. English stays Yoast's en_US on the home page (harmless).
 - Canonical tags: Yoast leaves them out while the site is noindex (staging). After go-live (Discourage search engines unticked) check that every page, EN/FR/IT, has a self-canonical.
+- 19 Nov tests: EN/FR/IT contact forms each sent a test message ("Website test (EN/FR/IT)") to marine@vivifysports.com: all SENT. Cal.com/Stripe/GoCardless links can't be opened from this cloud environment (hosts not allowed): Marine clicks them once.
