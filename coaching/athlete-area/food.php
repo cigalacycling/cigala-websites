@@ -461,6 +461,12 @@ add_action('rest_api_init', function () {
         return ['ok' => true, 'r' => array_values($cur['r'])];
     }]);
     // Matteo's laptop: which athletes have the package (with their Vekta id), and their Vekta summary (sessions + Marine's nutrition notes)
+    // link Matteo's demo page to a Vekta test athlete (coach only; demo pages only)
+    register_rest_route('cc/v1', '/demo-vekta', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $pid = (int) $r['page']; if (!get_post_meta($pid, 'cc_demo', true)) return new WP_Error('cc_no', 'Not a demo page', ['status' => 400]);
+        $vid = sanitize_text_field((string) $r['vekta_id']); if ($vid === '') delete_post_meta($pid, 'cc_demo_vid'); else update_post_meta($pid, 'cc_demo_vid', $vid);
+        return ['ok' => true, 'page' => $pid, 'vekta_id' => $vid ?: null];
+    }]);
     // Matteo's launch switch: shows the "Food diary with Marine" upgrade card to athletes without the package
     register_rest_route('cc/v1', '/food-launch', ['methods' => 'GET,POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
         if ($r->get_method() === 'POST') update_option('cc_fd_launched', $r['on'] ? 1 : 0, false);
@@ -468,7 +474,8 @@ add_action('rest_api_init', function () {
     }]);
     register_rest_route('cc/v1', '/food-athletes', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
         $o = [];
-        foreach (cc_fd_pkg_pages() as $p) { $uid = (int) get_post_meta($p->ID, 'cc_user', true); $vid = $uid ? (string) get_user_meta($uid, 'cc_vekta_id', true) : '';
+        // Matteo 19 Nov: his demo page has no login, so it can carry a Vekta athlete id of its own (a Vekta test athlete) for testing
+        foreach (cc_fd_pkg_pages() as $p) { $uid = (int) get_post_meta($p->ID, 'cc_user', true); $vid = $uid ? (string) get_user_meta($uid, 'cc_vekta_id', true) : (string) get_post_meta($p->ID, 'cc_demo_vid', true);
             $o[] = ['page' => $p->ID, 'name' => $p->post_title, 'vekta_id' => ($vid !== '' && !cc_ath_tp($p->ID)) ? $vid : null, 'tp' => cc_ath_tp($p->ID)]; }
         return $o;
     }]);
