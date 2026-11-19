@@ -7,6 +7,12 @@ Job title: "nutritionniste" (France, used by doctors) and "nutrizionista" (Italy
 "spécialiste en nutrition sportive" / "esperta in nutrizione sportiva" with her MSc.
 """
 TR = {
+ '30-min PB at Ironman 70.3': ('Record personnel battu de 30 min sur Ironman 70.3', 'Record personale migliorato di 30 min all’Ironman 70.3'),
+ 'Over 13 kg lost before the Traka': ('Plus de 13 kg perdus avant la Traka', 'Oltre 13 kg persi prima della Traka'),
+ '6 kg in 4 months': ('6 kg en 4 mois', '6 kg in 4 mesi'),
+ 'No more cramping at the end of races': ('Plus de crampes en fin de course', 'Niente più crampi a fine gara'),
+ 'Fuelled for an ultra gravel race': ('Prêt pour une course gravel ultra', 'Pronto per una gara gravel ultra'),
+
  'Skip to Main Content': ('Aller au contenu principal', 'Vai al contenuto principale'),
  'Home': ('Accueil', 'Home'),
  'About': ('À propos', 'Chi sono'),

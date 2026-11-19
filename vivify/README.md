@@ -183,3 +183,7 @@ The board PNGs in `vivify/board/` are gitignored.
 - Scheduled task "Vivify monthly blog draft" (trig_016E6F18ywgFaTpZxdbu3jv4): every Monday 08:47 Dublin, acts only on the first Monday of the month.
 - First draft (test): "Winter Cycling Nutrition..." (post 1070), 18 Nov.
 - After go-live: change SITE in tools/build_vivify_wp.py to https://www.vivifysports.com and save the WordPress app password for that host on the environment, or the monthly job can't reach the site.
+
+## SEO extras (19 Nov)
+- Code Snippets #7 "English / French language tags (hreflang)": French pages get lang="fr-FR"; each EN/FR pair links both ways (+ x-default EN). Page IDs EN=>FR: 64=>372, 65=>373, 80=>374, 69=>375, 68=>376. Add new pairs there when more pages are translated (Italian: add hreflang="it").
+- Go-live: check https://www.vivifysports.com/robots.txt. The staging host serves "User-agent: Googlebot / Disallow: /" (Hostinger temporary domain); the real domain must not.

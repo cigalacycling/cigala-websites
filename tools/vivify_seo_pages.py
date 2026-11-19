@@ -360,14 +360,14 @@ def build(b):
 {b.testimonials(h2_names=False)}
 <style>.hero img{{object-position:50% 12%}}</style>
 <section style="padding-top:24px"><div class="wrap mfeature">
- <div class="portrait">{img('matteo-cigala-italia-podium', 'Matteo Cigala on the World Championships podium in the Italian national team kit, coached by Vivify Sports', w=1280, h=1600)}</div>
- <div><span class="eyebrow">Fuelled by Vivify Sports</span><h2>On the world podium in the Italian kit</h2><span class="bar"></span>
-  <p>Matteo Cigala, road and gravel racer from Italy, on the World Championships podium in the Italian national team kit. Marine plans his day-to-day nutrition and his race fuelling, so he arrives at the start line ready to perform.</p>
+ <div class="portrait">{img('matteo-cigala-gran-fondo-finish', 'Matteo Cigala crossing the finish line with arms raised at a UCI Gran Fondo World Series race in Italy', w=1440, h=1181, style='object-position:52% 50%')}</div>
+ <div><span class="eyebrow">Fuelled by Vivify Sports</span><h2>Racing to win, fuelled by Marine</h2><span class="bar"></span>
+  <p>Matteo Cigala, road and gravel racer from Italy, crossing the line at a UCI Gran Fondo World Series race, and on the World Championships podium in the Italian national team kit. Marine plans his day-to-day nutrition and his race fuelling, so he arrives at the start line ready to perform.</p>
   <p>Whether you race for your country or ride your first Gran Fondo, the approach is the same: fuel the work you do, recover well and make it sustainable.</p>
   <a class="btn btn-primary" href="sports-nutritionist-ireland.html">See coaching plans {ICON['arrow']}</a></div>
 </div></section>
 <section class="section-tight"><div class="wrap"><div class="pstrip three">
- <figure>{img('0e1488-94c8f6c2bc35403c89535101d7f', 'Cyclist drinking from a bottle during a race', w=600, h=750)}<figcaption>Race day</figcaption></figure>
+ <figure>{img('matteo-cigala-italia-podium', 'Matteo Cigala on the World Championships podium in the Italian national team kit, coached by Vivify Sports', w=1280, h=1600)}<figcaption>World podium, Italian kit</figcaption></figure>
  <figure>{img('0e1488-bea1a60dd96d43b4af51cddfa40', 'Gravel cyclist riding a forest trail', w=600, h=750)}<figcaption>Gravel</figcaption></figure>
  <figure>{img('nsplsh-586757424e557349764f45', 'Road cyclist racing on a time trial bike', w=600, h=750)}<figcaption>Road</figcaption></figure>
 </div></div></section>
