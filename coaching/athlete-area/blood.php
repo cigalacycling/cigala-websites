@@ -68,8 +68,8 @@ function cc_bt_row($pid, $b, $forCoach, $viewer = null) {
          . ($viewer === 'nutri' ? '' : '<button type="button" class="bt-del" data-page="' . (int) $pid . '" data-at="' . (int) $b['at'] . '" data-q="' . esc_attr($forCoach ? 'Delete this blood test?' : cc_bt_w('delq')) . '">' . esc_html($forCoach ? 'Delete' : cc_bt_w('del')) . '</button>')
          . '</div><div class="bt-th">' . cc_bt_thread($pid, $b, $viewer) . '</div>';
 }
-function cc_bt_assets() {
-    static $done = false; if ($done) return ''; $done = true;
+function cc_bt_assets($again = false) {   // $again: the food diary review prints them again when Marine's blood list (which printed them) is not shown
+    static $done = false; if ($done && !$again) return ''; $done = true;
     $api = esc_url(rest_url('cc/v1/blood')); $nonce = esc_attr(wp_create_nonce('wp_rest'));
     return '<style>html .cc .bt-form{display:grid;gap:12px;max-width:520px}html .cc .bt-form label{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}'
         . 'html .cc .bt-form input[type=file]{font:16px var(--body);color:#d0d6e0}html .cc .bt-tick{display:flex!important;align-items:flex-start;gap:10px;font-weight:500!important;white-space:normal;line-height:1.45}html .cc .bt-tick input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:#12a150}html .cc .bt-tick span{flex:1;min-width:0;overflow-wrap:anywhere}'

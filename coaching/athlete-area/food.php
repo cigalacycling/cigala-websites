@@ -108,6 +108,84 @@ function cc_fd_w($k) {
         'up_4' => ['Marine reviews your diary and replies right here, with feedback on fuelling before, during and after your rides and races.', 'Marine legge il tuo diario e ti risponde qui, con consigli su cosa mangiare prima, durante e dopo uscite e gare.', 'A Marine revê o teu diário e responde aqui mesmo, com feedback sobre a alimentação antes, durante e depois dos treinos e provas.', 'Marine pregleda tvoj dnevnik in ti odgovori kar tukaj, z nasveti o prehrani pred, med in po vožnjah in tekmah.', 'Marine si prezrie tvoj denník a odpovie ti priamo tu, so spätnou väzbou k jedlu pred, počas a po jazdách a pretekoch.'],
         'up_ask' => ['Ask Matteo to add it to your coaching.', 'Chiedi a Matteo di aggiungerlo al tuo coaching.', 'Pede ao Matteo para o juntar ao teu coaching.', 'Prosi Mattea, naj ga doda tvojemu coachingu.', 'Požiadaj Mattea, aby ho pridal k tvojmu coachingu.'],
         'up_btn' => ['Marine’s nutrition coaching', 'Il coaching nutrizionale di Marine', 'O coaching de nutrição da Marine', 'Marinino prehransko svetovanje', 'Nutričný koučing s Marine'],
+        /* 19 Nov 2026: hydration, sodium, weight from Vekta, raw/cooked, micronutrients, trends */
+        'drinks' => ['Drinks (ml)', 'Bevande (ml)', 'Bebidas (ml)', 'Pijača (ml)', 'Nápoje (ml)'],
+        'drinks_h' => ['Water, electrolyte drink, juice…', 'Acqua, bevanda salina, succo…', 'Água, bebida isotónica, sumo…', 'Voda, elektrolitski napitek, sok…', 'Voda, iontový nápoj, džús…'],
+        'fluids' => ['Fluids', 'Liquidi', 'Líquidos', 'Tekočina', 'Tekutiny'],
+        'per_h' => ['per hour', 'all’ora', 'por hora', 'na uro', 'za hodinu'],
+        'ride' => ['Your ride', 'La tua uscita', 'O teu treino', 'Tvoja vožnja', 'Tvoja jazda'],
+        'sodium' => ['Sodium', 'Sodio', 'Sódio', 'Natrij', 'Sodík'],
+        'na_inc' => ['sodium incomplete', 'sodio incompleto', 'sódio incompleto', 'natrij nepopoln', 'sodík neúplný'],
+        'vk_weight' => ['Weight from Vekta: %1$s kg (%2$s)', 'Peso da Vekta: %1$s kg (%2$s)', 'Peso do Vekta: %1$s kg (%2$s)', 'Teža iz Vekte: %1$s kg (%2$s)', 'Hmotnosť z Vekty: %1$s kg (%2$s)'],
+        'vk_weight_h' => ['Carbs and protein per kg use your latest weight.', 'Carboidrati e proteine per kg usano il tuo peso più recente.', 'Os hidratos e a proteína por kg usam o teu peso mais recente.', 'Ogljikovi hidrati in beljakovine na kg uporabljajo tvojo zadnjo težo.', 'Sacharidy a bielkoviny na kg používajú tvoju poslednú hmotnosť.'],
+        'b_raw' => ['RAW / DRY', 'CRUDO / SECCO', 'CRU / SECO', 'SUROVO / SUHO', 'SUROVÉ / SUCHÉ'],
+        'b_cooked' => ['COOKED', 'COTTO', 'COZINHADO', 'KUHANO', 'VARENÉ'],
+        'ask_rc' => ['Did you weigh it raw or cooked?', 'L’hai pesato crudo o cotto?', 'Pesaste cru ou cozinhado?', 'Si ga stehtal surovega ali kuhanega?', 'Vážil si to surové alebo uvarené?'],
+        'w_raw' => ['Raw / dry', 'Crudo / secco', 'Cru / seco', 'Surovo / suho', 'Surové / suché'],
+        'w_cooked' => ['Cooked', 'Cotto', 'Cozinhado', 'Kuhano', 'Uvarené'],
+        'weigh_h' => ['Weigh raw or cooked as you prefer, then pick the matching food.', 'Pesa crudo o cotto come preferisci, poi scegli l’alimento corrispondente.', 'Pesa cru ou cozinhado, como preferires, e escolhe o alimento correspondente.', 'Stehtaj surovo ali kuhano, kakor ti je ljubše, nato izberi ustrezno živilo.', 'Váž surové alebo uvarené, ako chceš, a potom vyber zodpovedajúcu potravinu.'],
+        'micro' => ['Micronutrients & electrolytes (day total)', 'Micronutrienti ed elettroliti (totale del giorno)', 'Micronutrientes e eletrólitos (total do dia)', 'Mikrohranila in elektroliti (skupaj za dan)', 'Mikroživiny a elektrolyty (spolu za deň)'],
+        'electro' => ['Electrolytes', 'Elettroliti', 'Eletrólitos', 'Elektroliti', 'Elektrolyty'],
+        'microh' => ['Micronutrients', 'Micronutrienti', 'Micronutrientes', 'Mikrohranila', 'Mikroživiny'],
+        'ri' => ['% of reference intake', '% dell’assunzione di riferimento', '% da dose de referência', '% referenčnega vnosa', '% referenčného príjmu'],
+        'ri_note' => ['Reference intakes for an average adult (EU). Needs can be higher on long rides.', 'Assunzioni di riferimento per un adulto medio (UE). Il fabbisogno può essere più alto nelle uscite lunghe.', 'Doses de referência para um adulto médio (UE). As necessidades podem ser maiores em treinos longos.', 'Referenčni vnosi za povprečno odraslo osebo (EU). Na dolgih vožnjah so potrebe lahko višje.', 'Referenčné príjmy pre priemerného dospelého (EÚ). Pri dlhých jazdách môže byť potreba vyššia.'],
+        'incomplete' => ['incomplete', 'incompleto', 'incompleto', 'nepopolno', 'neúplné'],
+        'inc_h' => ['“incomplete”: some foods have no value for it, so the real total is higher.', '“incompleto”: alcuni alimenti non hanno questo valore, quindi il totale reale è più alto.', '“incompleto”: alguns alimentos não têm este valor, por isso o total real é maior.', '“nepopolno”: nekatera živila te vrednosti nimajo, zato je dejanski seštevek višji.', '“neúplné”: niektoré potraviny túto hodnotu nemajú, takže skutočný súčet je vyšší.'],
+        'm_k' => ['Potassium', 'Potassio', 'Potássio', 'Kalij', 'Draslík'], 'm_mg' => ['Magnesium', 'Magnesio', 'Magnésio', 'Magnezij', 'Horčík'],
+        'm_ca' => ['Calcium', 'Calcio', 'Cálcio', 'Kalcij', 'Vápnik'], 'm_cl' => ['Chloride', 'Cloruro', 'Cloreto', 'Klorid', 'Chlorid'],
+        'm_fe' => ['Iron', 'Ferro', 'Ferro', 'Železo', 'Železo'], 'm_zn' => ['Zinc', 'Zinco', 'Zinco', 'Cink', 'Zinok'],
+        'm_vc' => ['Vitamin C', 'Vitamina C', 'Vitamina C', 'Vitamin C', 'Vitamín C'], 'm_vd' => ['Vitamin D', 'Vitamina D', 'Vitamina D', 'Vitamin D', 'Vitamín D'],
+        'm_b12' => ['Vitamin B12', 'Vitamina B12', 'Vitamina B12', 'Vitamin B12', 'Vitamín B12'], 'm_fol' => ['Folate', 'Folati', 'Folato', 'Folat', 'Folát'],
+        'm_va' => ['Vitamin A', 'Vitamina A', 'Vitamina A', 'Vitamin A', 'Vitamín A'], 'm_ve' => ['Vitamin E', 'Vitamina E', 'Vitamina E', 'Vitamin E', 'Vitamín E'],
+        'm_io' => ['Iodine', 'Iodio', 'Iodo', 'Jod', 'Jód'],
+        'mytrends' => ['My trends', 'I miei andamenti', 'As minhas tendências', 'Moji trendi', 'Moje trendy'],
+        'tr_lede' => ['The last 12 weeks. The dashed line is your own 28-day average.', 'Le ultime 12 settimane. La linea tratteggiata è la tua media degli ultimi 28 giorni.', 'As últimas 12 semanas. A linha tracejada é a tua média dos últimos 28 dias.', 'Zadnjih 12 tednov. Črtkana črta je tvoje povprečje zadnjih 28 dni.', 'Posledných 12 týždňov. Prerušovaná čiara je tvoj priemer za posledných 28 dní.'],
+        'tr_w' => ['Weight (kg)', 'Peso (kg)', 'Peso (kg)', 'Teža (kg)', 'Hmotnosť (kg)'],
+        'tr_hrv' => ['HRV (ms, overnight)', 'HRV (ms, notturna)', 'HRV (ms, noturna)', 'HRV (ms, ponoči)', 'HRV (ms, nočná)'],
+        'tr_rhr' => ['Resting heart rate (bpm)', 'Frequenza cardiaca a riposo (bpm)', 'Frequência cardíaca em repouso (bpm)', 'Srčni utrip v mirovanju (bpm)', 'Pokojová tepová frekvencia (bpm)'],
+        'tr_avg' => ['28-day average', 'media 28 giorni', 'média de 28 dias', 'povprečje 28 dni', 'priemer 28 dní'],
+        'nodata' => ['No data yet', 'Ancora nessun dato', 'Ainda sem dados', 'Še ni podatkov', 'Zatiaľ žiadne údaje'],
+        'recent' => ['Recent', 'Recenti', 'Recentes', 'Nedavno', 'Nedávne'],
+        'favs' => ['Favourites', 'Preferiti', 'Favoritos', 'Priljubljeni', 'Obľúbené'],
+        'star_add' => ['Add to favourites', 'Aggiungi ai preferiti', 'Adicionar aos favoritos', 'Dodaj med priljubljene', 'Pridať medzi obľúbené'],
+        'star_rm' => ['Remove from favourites', 'Togli dai preferiti', 'Remover dos favoritos', 'Odstrani iz priljubljenih', 'Odstrániť z obľúbených'],
+        'copy_y' => ['Copy from yesterday', 'Copia da ieri', 'Copiar de ontem', 'Kopiraj od včeraj', 'Kopírovať zo včera'],
+        'copy_day' => ['Copy whole day from yesterday', 'Copia tutto il giorno da ieri', 'Copiar o dia inteiro de ontem', 'Kopiraj ves dan od včeraj', 'Kopírovať celý deň zo včera'],
+        'copy_q' => ['Replace this day’s foods and drinks with yesterday’s? Notes and photos stay as they are.', 'Sostituire alimenti e bevande di questo giorno con quelli di ieri? Note e foto restano come sono.', 'Substituir os alimentos e bebidas deste dia pelos de ontem? As notas e fotos ficam como estão.', 'Zamenjam živila in pijačo tega dne z včerajšnjimi? Opombe in fotografije ostanejo.', 'Nahradiť jedlá a nápoje tohto dňa včerajšími? Poznámky a fotky zostanú.'],
+        'copy_none' => ['Nothing logged the day before.', 'Niente registrato il giorno prima.', 'Nada registado no dia anterior.', 'Prejšnji dan ni nič zapisano.', 'Deň predtým nie je nič zapísané.'],
+        'ride_t' => ['Ride time (h:mm)', 'Durata uscita (h:mm)', 'Duração do treino (h:mm)', 'Čas vožnje (h:mm)', 'Čas jazdy (h:mm)'],
+        'ride_rec' => ['From your recorded ride: %s', 'Dalla tua uscita registrata: %s', 'Do teu treino registado: %s', 'Iz zapisane vožnje: %s', 'Zo zaznamenanej jazdy: %s'],
+        'g_h' => ['Carbs per hour', 'Carboidrati all’ora', 'Hidratos por hora', 'Ogljikovi hidrati na uro', 'Sacharidy za hodinu'],
+        'ml_h' => ['Fluids per hour', 'Liquidi all’ora', 'Líquidos por hora', 'Tekočina na uro', 'Tekutiny za hodinu'],
+        'target' => ['target %s', 'obiettivo %s', 'objetivo %s', 'cilj %s', 'cieľ %s'],
+        'streak' => ['%d days logged in a row', '%d giorni registrati di fila', '%d dias registados seguidos', '%d dni zapored zapisanih', '%d dní zapísaných po sebe'],
+        'add_short' => ['+ Add', '+ Aggiungi', '+ Adicionar', '+ Dodaj', '+ Pridať'],
+        'cyc_title' => ['My cycle', 'Il mio ciclo', 'O meu ciclo', 'Moj cikel', 'Môj cyklus'],
+        'cyc_consent' => ['Optional. Track your cycle so Marine can adapt your fuelling. Only you, Marine and Matteo can see it. You can turn it off and delete it any time.',
+                          'Facoltativo. Registra il tuo ciclo così Marine può adattare la tua alimentazione. Lo vedete solo tu, Marine e Matteo. Puoi disattivarlo e cancellarlo in qualsiasi momento.',
+                          'Opcional. Regista o teu ciclo para que a Marine possa adaptar a tua alimentação. Só tu, a Marine e o Matteo o podem ver. Podes desativá-lo e apagá-lo a qualquer momento.',
+                          'Neobvezno. Beleži svoj cikel, da lahko Marine prilagodi tvojo prehrano. Vidite ga samo ti, Marine in Matteo. Kadar koli ga lahko izklopiš in izbrišeš.',
+                          'Nepovinné. Zaznamenávaj si cyklus, aby ti Marine mohla prispôsobiť stravovanie. Vidíš ho len ty, Marine a Matteo. Kedykoľvek ho môžeš vypnúť a vymazať.'],
+        'cyc_on' => ['Turn on', 'Attiva', 'Ativar', 'Vklopi', 'Zapnúť'],
+        'cyc_start' => ['My period started this day', 'Il ciclo è iniziato questo giorno', 'O período começou neste dia', 'Menstruacija se je začela ta dan', 'Menštruácia začala v tento deň'],
+        'cyc_end' => ['My period ended this day', 'Il ciclo è finito questo giorno', 'O período terminou neste dia', 'Menstruacija se je končala ta dan', 'Menštruácia skončila v tento deň'],
+        'cyc_unset' => ['Undo for this day', 'Annulla per questo giorno', 'Anular neste dia', 'Razveljavi za ta dan', 'Zrušiť pre tento deň'],
+        'cyc_off' => ['Turn off and delete my cycle data', 'Disattiva e cancella i dati del mio ciclo', 'Desativar e apagar os dados do meu ciclo', 'Izklopi in izbriši podatke o mojem ciklu', 'Vypnúť a vymazať údaje o mojom cykle'],
+        'cyc_offq' => ['Turn off and delete all your cycle data? This cannot be undone.', 'Disattivare e cancellare tutti i dati del ciclo? Non si può annullare.', 'Desativar e apagar todos os dados do ciclo? Não é possível anular.', 'Izklopim in izbrišem vse podatke o ciklu? Tega ni mogoče razveljaviti.', 'Vypnúť a vymazať všetky údaje o cykle? Nedá sa to vrátiť späť.'],
+        'cyc_day' => ['Day %d', 'Giorno %d', 'Dia %d', 'Dan %d', 'Deň %d'],
+        'ph_m' => ['Menstrual', 'Mestruale', 'Menstrual', 'Menstruacija', 'Menštruácia'],
+        'ph_f' => ['Follicular', 'Follicolare', 'Folicular', 'Folikularna', 'Folikulárna'],
+        'ph_o' => ['Ovulation (estimate)', 'Ovulazione (stima)', 'Ovulação (estimativa)', 'Ovulacija (ocena)', 'Ovulácia (odhad)'],
+        'ph_l' => ['Luteal', 'Luteale', 'Lútea', 'Lutealna', 'Luteálna'],
+        'cyc_len' => ['Average cycle: %d days', 'Ciclo medio: %d giorni', 'Ciclo médio: %d dias', 'Povprečen cikel: %d dni', 'Priemerný cyklus: %d dní'],
+        'cyc_def' => ['Average cycle: 28 days (used until 2 cycles are logged)', 'Ciclo medio: 28 giorni (finché non registri 2 cicli)', 'Ciclo médio: 28 dias (até registares 2 ciclos)', 'Povprečen cikel: 28 dni (dokler ne zabeležiš 2 ciklov)', 'Priemerný cyklus: 28 dní (kým nezaznamenáš 2 cykly)'],
+        'cyc_starts' => ['Period starts logged', 'Inizi del ciclo registrati', 'Inícios do período registados', 'Zabeleženi začetki menstruacije', 'Zaznamenané začiatky menštruácie'],
+        'iron_line' => ['Iron: %s mg of 14 mg', 'Ferro: %s mg su 14 mg', 'Ferro: %s mg de 14 mg', 'Železo: %s mg od 14 mg', 'Železo: %s mg zo 14 mg'],
+        'iron_note' => ['Iron today: %s mg of 14 mg. Iron-rich ideas: red meat, lentils and beans, spinach or kale with vitamin C (e.g. orange juice), fortified breakfast cereals.',
+                        'Ferro oggi: %s mg su 14 mg. Idee ricche di ferro: carne rossa, lenticchie e fagioli, spinaci o cavolo riccio con vitamina C (ad es. succo d’arancia), cereali per la colazione fortificati.',
+                        'Ferro hoje: %s mg de 14 mg. Ideias ricas em ferro: carne vermelha, lentilhas e feijão, espinafres ou couve kale com vitamina C (p. ex. sumo de laranja), cereais de pequeno-almoço fortificados.',
+                        'Železo danes: %s mg od 14 mg. Ideje, bogate z železom: rdeče meso, leča in fižol, špinača ali ohrovt z vitaminom C (npr. pomarančni sok), obogateni kosmiči za zajtrk.',
+                        'Železo dnes: %s mg zo 14 mg. Nápady bohaté na železo: červené mäso, šošovica a fazuľa, špenát alebo kel s vitamínom C (napr. pomarančový džús), obohatené raňajkové cereálie.'],
     ];
     static $I = ['en' => 0, 'it' => 1, 'pt' => 2, 'sl' => 3, 'sk' => 4];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en';
@@ -131,6 +209,10 @@ function cc_fd_item($it) {
     $o = ['id' => mb_substr(preg_replace('/[^A-Za-z0-9_-]/', '', (string) ($it['id'] ?? '')), 0, 40), 'n' => cc_fd_txt($it['n'] ?? '', 200), 'g' => cc_fd_num($it['g'] ?? 0, 5000)];
     foreach (['k' => 950, 'c' => 100, 'p' => 100, 'f' => 100, 'fi' => 100, 'su' => 100] as $f => $mx) $o[$f] = cc_fd_num($it[$f] ?? 0, $mx);
     if (in_array($it['m'] ?? '', ['f', 'r'], true)) $o['m'] = $it['m'];
+    // sodium mg per 100 g: only when known (missing stays missing, never 0); state of the food as weighed: r = raw / dry, c = cooked
+    $na = str_replace(',', '.', (string) ($it['na'] ?? ''));
+    if ($na !== '' && is_numeric($na) && (float) $na >= 0) $o['na'] = round(min((float) $na, 50000), 1);
+    if (in_array($it['st'] ?? '', ['r', 'c'], true)) $o['st'] = $it['st'];
     return $o['n'] === '' ? null : $o;
 }
 /* what the client sends for a day: the slots only (photos are set by their own route, replies by theirs) */
@@ -142,17 +224,133 @@ function cc_fd_clean_slots($in, $old) {
         $items = [];
         foreach (array_slice((array) ($s['i'] ?? []), 0, 60) as $it) { $c = cc_fd_item($it); if ($c) $items[] = $c; }
         $o = ['t' => $t, 'n' => mb_substr(trim(sanitize_textarea_field((string) ($s['n'] ?? ''))), 0, 1000), 'i' => $items];
+        $ml = (int) round(cc_fd_num($s['d'] ?? 0, 10000)); if ($ml > 0) $o['d'] = $ml;   // drinks in ml
+        if ($k === 'bike') { $rt = (int) round(cc_fd_num($s['r'] ?? 0, 1440)); if ($rt > 0) $o['r'] = $rt; }   // ride time in minutes (typed by the athlete)
         if (!empty($old[$k]['ph'])) $o['ph'] = (int) $old[$k]['ph'];
-        if ($o['t'] !== '' || $o['n'] !== '' || $o['i'] || !empty($o['ph'])) $out[$k] = $o;
+        if ($o['t'] !== '' || $o['n'] !== '' || $o['i'] || !empty($o['ph']) || $ml > 0) $out[$k] = $o;
     }
     return $out;
 }
 function cc_fd_tot($items) {
     $t = ['k' => 0, 'c' => 0, 'p' => 0, 'f' => 0, 'fi' => 0, 'su' => 0];
     foreach ((array) $items as $it) { $m = ((float) ($it['g'] ?? 0)) / 100; foreach ($t as $f => $_) $t[$f] += ((float) ($it[$f] ?? 0)) * $m; }
+    $t['na'] = 0; $t['nam'] = 0;   // sodium mg and the number of lines without a sodium value
+    foreach ((array) $items as $it) { $g = (float) ($it['g'] ?? 0); if ($g <= 0) continue; if (isset($it['na'])) $t['na'] += ((float) $it['na']) * $g / 100; else $t['nam']++; }
     return $t;
 }
 function cc_fd_daytot($day) { $all = []; foreach ((array) ($day['s'] ?? []) as $s) foreach ((array) ($s['i'] ?? []) as $it) $all[] = $it; return cc_fd_tot($all); }
+function cc_fd_dayml($day) { $ml = 0; foreach ((array) ($day['s'] ?? []) as $s) $ml += (int) ($s['d'] ?? 0); return $ml; }
+/* weight used for g/kg: the latest Vekta weight (last 60 days, sent by Matteo's laptop) when there is one, else the athlete's own entry.
+   TrainingPeaks athletes never get a Vekta weight. */
+function cc_fd_kgv($pid) {
+    if (!cc_ath_tp($pid)) { $vx = cc_fd_vx($pid); $w = $vx['kg'] ?? null;
+        if (is_array($w) && ($w['v'] ?? 0) > 0 && !empty($w['d']) && strtotime($w['d'] . ' 12:00') >= time() - 60 * DAY_IN_SECONDS) return ['kg' => (float) $w['v'], 'src' => 'vekta', 'd' => (string) $w['d']]; }
+    $k = cc_fd_kg($pid); return $k ? ['kg' => $k, 'src' => 'athlete', 'd' => ''] : ['kg' => 0, 'src' => '', 'd' => ''];
+}
+/* minutes ridden per day (done sessions from Vekta) for the "per hour" line of On the bike */
+function cc_fd_rides($vx) { $o = []; foreach ((array) ($vx['done'] ?? []) as $a) if (!empty($a['d']) && ($a['min'] ?? 0) > 0) $o[$a['d']] = ($o[$a['d']] ?? 0) + (int) $a['min']; return $o; }
+/* the carbs (g/h) and fluids (ml/h) targets Marine wrote in that day's nutrition note, e.g. "70 g/h", "80 g carbs per hour", "500 ml per hour" */
+function cc_fd_targets($vx) {
+    $o = [];
+    foreach ((array) ($vx['notes'] ?? []) as $n) {
+        $txt = ($n['t'] ?? '') . ' ' . ($n['c'] ?? ''); $d = $n['d'] ?? ''; if (!$d) continue;
+        if (preg_match('/(\d{2,3})\s*(?:-\s*\d{2,3}\s*)?g(?:rams?)?\s*(?:of\s+)?(?:carbs?|carbohydrates?|cho)?\s*(?:\/\s*h(?:r|our)?\b|per\s+hour|an\s+hour|each\s+hour|every\s+hour)/i', $txt, $m)) $o[$d]['c'] = (int) $m[1];
+        if (preg_match('/(\d{3,4})\s*ml\s*(?:of\s+\w+\s+)?(?:\/\s*h(?:r|our)?\b|per\s+hour|an\s+hour|each\s+hour|every\s+hour)/i', $txt, $m)) $o[$d]['ml'] = (int) $m[1];
+    }
+    return $o;
+}
+/* the last 8 different foods this athlete logged (newest first) and their favourites, for one-tap adding */
+function cc_fd_recent($pid) {
+    $o = []; $seen = [];
+    foreach (array_slice(cc_fd_days($pid), 0, 21) as $d) {
+        $day = cc_fd_get($pid, $d); $its = [];
+        foreach (array_reverse(CC_FD_SLOTS) as $k) foreach (array_reverse((array) ($day['s'][$k]['i'] ?? [])) as $it) $its[] = $it;
+        foreach ($its as $it) { $id = $it['id'] ?? ''; if ($id === '' || isset($seen[$id])) continue; $seen[$id] = 1; $o[] = $it; if (count($o) >= 8) return $o; }
+    }
+    return $o;
+}
+function cc_fd_fav($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_food_fav', true), true); return is_array($a) ? $a : []; }
+/* days logged in a row, counted up to yesterday; the page adds today once something is logged */
+function cc_fd_streak($pid) {
+    $set = array_flip(array_slice(cc_fd_days($pid), 0, 400)); $n = 0; $t = strtotime(current_time('Y-m-d') . ' 12:00');
+    for ($i = 1; $i < 400; $i++) { $d = gmdate('Y-m-d', $t - $i * DAY_IN_SECONDS); if (!isset($set[$d]) || empty(cc_fd_get($pid, $d)['s'])) break; $n++; }
+    return $n;
+}
+function cc_fd_trends_on($pid) { return !get_post_meta((int) $pid, 'cc_fd_trends_off', true); }
+/* the 12-week trends (weight, HRV, resting HR per day) as the charts get them; null when no series has 3 points */
+function cc_fd_trend_data($vx) {
+    $rows = array_values(array_filter((array) ($vx['tr'] ?? []), 'is_array')); if (!$rows) return null;
+    $n = [0, 0, 0]; foreach ($rows as $r) for ($i = 0; $i < 3; $i++) if (!empty($r[$i + 1])) $n[$i]++;
+    if (max($n) < 3) return null;
+    $to = current_time('Y-m-d');
+    return ['from' => gmdate('Y-m-d', strtotime($to . ' 12:00') - 83 * DAY_IN_SECONDS), 'to' => $to, 'days' => $rows, 'w' => cc_fd_tw()];
+}
+function cc_fd_tw() { $o = []; foreach (['tr_w', 'tr_hrv', 'tr_rhr', 'tr_avg', 'nodata'] as $k) $o[$k] = cc_fd_w($k); $o['lang'] = $GLOBALS['cc_ath_lang'] ?? 'en'; return $o; }
+function cc_fd_mw($fem = false) {
+    $o = ['loading' => cc_fd_w('loading')]; if ($fem) $o['fe14'] = cc_fd_w('iron_line'); foreach (['electro', 'microh', 'ri', 'ri_note', 'incomplete', 'inc_h', 'sodium', 'fibre', 'm_k', 'm_mg', 'm_ca', 'm_cl', 'm_fe', 'm_zn', 'm_vc', 'm_vd', 'm_b12', 'm_fol', 'm_va', 'm_ve', 'm_io'] as $k) $o[$k] = cc_fd_w($k);
+    $o['lang'] = $GLOBALS['cc_ath_lang'] ?? 'en'; return $o;
+}
+/* iron screening (female athletes, gender from Vekta; never for TrainingPeaks athletes or unknown gender) */
+function cc_fd_female($pid, $vx = null) { if (cc_ath_tp($pid)) return false; $vx = $vx ?? cc_fd_vx($pid); return ($vx['sex'] ?? '') === 'f'; }
+/* "My cycle" (opt-in, female athletes only; Matteo 19 Nov 2026): post meta cc_fd_cycle = {on, p: [[start, end|null], ...]}.
+   Never in emails or notifications; deleted with the diary when coaching ends, or by the athlete at any time. */
+function cc_fd_cycle($pid) {
+    $a = json_decode((string) get_post_meta((int) $pid, 'cc_fd_cycle', true), true);
+    if (!is_array($a) || empty($a['on'])) return ['on' => 0, 'p' => []];
+    $p = array_values(array_filter((array) ($a['p'] ?? []), function ($x) { return is_array($x) && cc_fd_date($x[0] ?? ''); }));
+    usort($p, function ($x, $y) { return strcmp($x[0], $y[0]); });
+    return ['on' => 1, 'p' => $p];
+}
+function cc_fd_cyc_len($p) {   // average of the gaps between starts (18-45 days); 28 until two cycles are logged
+    $g = []; for ($i = 1; $i < count($p); $i++) { $d = (int) round((strtotime($p[$i][0] . ' 12:00') - strtotime($p[$i - 1][0] . ' 12:00')) / DAY_IN_SECONDS); if ($d >= 18 && $d <= 45) $g[] = $d; }
+    return count($g) >= 2 ? (int) round(array_sum($g) / count($g)) : 28;
+}
+function cc_fd_phase($cy, $date) {   // ['day' => n, 'ph' => m|f|o|l] or null
+    if (empty($cy['on']) || !$cy['p']) return null; $L = cc_fd_cyc_len($cy['p']); $last = null;
+    foreach ($cy['p'] as $x) if ($x[0] <= $date) $last = $x;
+    if (!$last) return null;
+    $day = (int) round((strtotime($date . ' 12:00') - strtotime($last[0] . ' 12:00')) / DAY_IN_SECONDS) + 1; if ($day > $L + 10) return null;
+    $plen = !empty($last[1]) ? (int) round((strtotime($last[1] . ' 12:00') - strtotime($last[0] . ' 12:00')) / DAY_IN_SECONDS) + 1 : 5; $ov = $L - 14;
+    return ['day' => $day, 'ph' => $day <= $plen ? 'm' : (abs($day - $ov) <= 1 ? 'o' : ($day < $ov ? 'f' : 'l'))];
+}
+function cc_fd_phase_chip($cy, $date) { $p = cc_fd_phase($cy, $date); return $p ? ' <span class="fd-cchip">' . esc_html(sprintf(cc_fd_w('cyc_day'), $p['day']) . ' · ' . cc_fd_w('ph_' . $p['ph'])) . '</span>' : ''; }
+function cc_fd_micro_db() {
+    static $M = null; if ($M !== null) return $M;
+    $gz = (string) get_option('cc_food_micro_gz', ''); $raw = $gz !== '' ? (string) gzdecode(base64_decode($gz)) : (string) get_option('cc_food_micro', '');
+    $j = json_decode($raw, true); $M = is_array($j) && !empty($j['m']) ? $j : ['cols' => [], 'm' => []]; return $M;
+}
+/* iron of one food per 100 g: the table, or an own recipe computed from its ingredients; null when unknown */
+function cc_fd_fe100($id, $rec, $depth = 0) {
+    $M = cc_fd_micro_db(); $j = array_search('fe', $M['cols'], true); if ($j === false) return null;
+    if (isset($M['m'][$id])) { $v = $M['m'][$id][$j] ?? null; return $v === null ? null : (float) $v; }
+    $r = $rec[$id] ?? null; if (!$r || $depth > 2) return null;
+    $w = (float) ($r['cw'] ?? 0); $sum = 0; $fe = 0;
+    foreach ((array) ($r['ing'] ?? []) as $i) { $g = (float) ($i[1] ?? 0); $sum += $g; if ($g <= 0) continue; $v = cc_fd_fe100($i[0] ?? '', $rec, $depth + 1); if ($v === null) return null; $fe += $v * $g / 100; }
+    if ($w <= 0) $w = $sum; return $w > 0 ? $fe * 100 / $w : null;
+}
+/* a day's iron: total of the foods with a value; incomplete when more than 30 % of the grams have none; low = 3+ meals with food and under 14 mg */
+function cc_fd_iron($day, $mine) {
+    $rec = (array) cc_fd_recipes($mine); $fe = 0; $g = 0; $miss = 0; $slots = 0;
+    foreach ((array) ($day['s'] ?? []) as $s) {
+        if (!empty($s['i'])) $slots++;
+        foreach ((array) ($s['i'] ?? []) as $it) { $gr = (float) ($it['g'] ?? 0); if ($gr <= 0) continue; $g += $gr; $v = cc_fd_fe100($it['id'] ?? '', $rec); if ($v === null) $miss += $gr; else $fe += $v * $gr / 100; }
+    }
+    $inc = $g > 0 && $miss / $g > 0.3;
+    return ['fe' => $fe, 'inc' => $inc, 'slots' => $slots, 'low' => !$inc && $slots >= 3 && $fe < 14];
+}
+function cc_fd_micro_url() { return esc_url_raw(add_query_arg('v', get_option('cc_food_micro_v', '0'), rest_url('cc/v1/foods-micro'))); }
+/* own recipes for the micronutrient sums: {id: {ing: [[id, g, m]], cw}} */
+function cc_fd_recipes($mine) {
+    $o = []; foreach ((array) $mine as $m) if (($m['t'] ?? '') === 'r') $o[$m['id']] = ['ing' => array_map(function ($i) { return [$i['id'] ?? '', (float) ($i['g'] ?? 0), $i['m'] ?? '']; }, (array) ($m['ing'] ?? [])), 'cw' => (float) ($m['cw'] ?? 0)];
+    return (object) $o;
+}
+/* the folded "Micronutrients & electrolytes" line under a day (filled in the browser from the micronutrient table) */
+function cc_fd_micro_box($day, $mine, $fem = false) {
+    $items = []; foreach ((array) ($day['s'] ?? []) as $s) foreach ((array) ($s['i'] ?? []) as $it) $items[] = [$it['id'] ?? '', (float) ($it['g'] ?? 0), $it['m'] ?? ''];
+    $t = cc_fd_daytot($day);
+    return '<details class="fd-micro" data-url="' . esc_attr(cc_fd_micro_url()) . '" data-w="' . esc_attr(wp_json_encode(cc_fd_mw($fem))) . '" data-items="' . esc_attr(wp_json_encode($items)) . '" data-mine="' . esc_attr(wp_json_encode(cc_fd_recipes($mine)))
+        . '" data-na="' . esc_attr(wp_json_encode(['v' => round($t['na']), 'inc' => $t['nam'], 'fi' => round($t['fi'], 1)])) . '"><summary>' . esc_html(cc_fd_w('micro')) . '</summary><div class="fd-mt"></div></details>';
+}
 /* the day as the browser gets it: photo URLs added */
 function cc_fd_out($pid, $date) {
     $d = cc_fd_get($pid, $date); $s = [];
@@ -189,15 +387,23 @@ function cc_fd_athlete($pid) {
     $W = []; foreach (['time', 'add', 'search', 'grams', 'addit', 'remove', 'cancel', 'noresults', 'closest', 'loading', 'slot_total', 'day_total', 'carbs', 'protein', 'fat', 'fibre', 'sugars', 'c_ab', 'p_ab', 'f_ab',
                        'weight', 'weight_h', 'note', 'note_ph', 'photo', 'photo_ch', 'photo_del', 'photo_bad', 'uploading', 'saving', 'saved', 'err', 'prev', 'next', 'today', 'gotoday', 'mine', 'mine_lede',
                        'add_label', 'add_recipe', 'name', 'per100', 'optional', 'ingredients', 'add_ing', 'cooked', 'cooked_h', 'save', 'edit', 'del', 'delq', 'myfood', 'myrecipe', 'need', 'need_r',
-                       'none_mine', 'thread', 'ask', 'reply', 'send_r', 'sent_err', 'you'] as $k) $W[$k] = cc_fd_w($k);
+                       'none_mine', 'thread', 'ask', 'reply', 'send_r', 'sent_err', 'you', 'drinks', 'drinks_h', 'fluids', 'per_h', 'ride', 'sodium', 'na_inc', 'vk_weight', 'vk_weight_h',
+                       'b_raw', 'b_cooked', 'ask_rc', 'w_raw', 'w_cooked', 'weigh_h', 'micro', 'mytrends', 'tr_lede',
+                       'iron_line', 'iron_note', 'incomplete', 'cyc_title', 'cyc_consent', 'cyc_on', 'cyc_start', 'cyc_end', 'cyc_unset', 'cyc_off', 'cyc_offq', 'cyc_day', 'ph_m', 'ph_f', 'ph_o', 'ph_l', 'cyc_len', 'cyc_def', 'cyc_starts',
+                       'recent', 'favs', 'star_add', 'star_rm', 'copy_y', 'copy_day', 'copy_q', 'copy_none', 'ride_t', 'ride_rec', 'g_h', 'ml_h', 'target', 'streak', 'add_short'] as $k) $W[$k] = cc_fd_w($k);
     $slots = []; foreach (CC_FD_SLOTS as $k) $slots[] = [$k, cc_fd_w($k)];
     $u = function ($p) { return esc_url_raw(rest_url('cc/v1/' . $p)); };
+    $tp = cc_ath_tp($pid); $vx = $tp ? [] : cc_fd_vx($pid); $kv = cc_fd_kgv($pid); $fem = cc_fd_female($pid, $vx);
     $cfg = ['page' => (int) $pid, 'date' => $date, 'fixed' => isset($_GET['fd']) ? 1 : 0, 'lang' => $GLOBALS['cc_ath_lang'] ?? 'en', 'nonce' => wp_create_nonce('wp_rest'), 'w' => $W, 'slots' => $slots,
             'day' => cc_fd_out($pid, $date), 'mine' => cc_fd_mine($pid), 'kg' => cc_fd_kg($pid) ?: '', 'credit' => "Food data: ANSES-CIQUAL · USDA FoodData Central · McCance and Widdowson's CoFID (© Crown copyright, OGL)",
+            /* TrainingPeaks athletes: no Vekta weight, rides or trends (and never the word Vekta) */
+            'vkg' => $kv['src'] === 'vekta' ? ['v' => $kv['kg'], 'd' => $kv['d']] : null, 'rides' => (object) ($tp ? [] : cc_fd_rides($vx)),
+            'trends' => (!$tp && cc_fd_trends_on($pid)) ? cc_fd_trend_data($vx) : null, 'micro' => cc_fd_micro_url(), 'mw' => cc_fd_mw($fem), 'female' => $fem ? 1 : 0, 'cycle' => $fem ? cc_fd_cycle($pid) : null,
+            'recent' => cc_fd_recent($pid), 'fav' => cc_fd_fav($pid), 'streak' => cc_fd_streak($pid), 'targets' => (object) ($tp ? [] : cc_fd_targets($vx)), 'today' => current_time('Y-m-d'),
             'foods' => esc_url_raw(add_query_arg('v', get_option('cc_food_db_v', '0'), rest_url('cc/v1/foods'))),
-            'u' => ['day' => $u('food-day'), 'save' => $u('food-day'), 'photo' => $u('food-photo'), 'photodel' => $u('food-photo-del'), 'mine' => $u('food-mine'), 'kg' => $u('food-kg'), 'reply' => $u('food-reply')]];
+            'u' => ['day' => $u('food-day'), 'save' => $u('food-day'), 'photo' => $u('food-photo'), 'photodel' => $u('food-photo-del'), 'mine' => $u('food-mine'), 'kg' => $u('food-kg'), 'reply' => $u('food-reply'), 'fav' => $u('food-fav'), 'cycle' => $u('food-cycle')]];
     return '<section class="ath-s fd" id="food"><h2>' . cc_ath_icon('food', 'ath-hic') . esc_html(cc_fd_w('title')) . '</h2><p class="fd-lede">' . esc_html(cc_fd_w('lede')) . '</p>'
-        . '<div class="fd-app" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"><div class="fd-day"></div><div class="fd-minebox"></div></div></section>' . cc_fd_css() . cc_fd_js();
+        . '<div class="fd-app" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"><div class="fd-day"></div><div class="fd-minebox"></div><div class="fd-cycbox"></div><div class="fd-trbox"></div></div></section>' . cc_fd_css() . cc_fd_sjs() . cc_fd_js();
 }
 function cc_fd_coach_card($pid) {
     $on = cc_fd_on($pid); $days = $on ? cc_fd_days($pid) : [];
@@ -259,20 +465,42 @@ function cc_fd_thread_html($pid, $date, $replies, $viewer) {
     return $o . '<details class="nt-replyd"><summary>Reply to ' . esc_html(get_the_title($pid)) . ' about this day</summary><div class="fd-r" data-page="' . (int) $pid . '" data-date="' . esc_attr($date) . '"><textarea rows="3"></textarea>'
         . '<button type="button" class="btn btn-go fd-send">Send</button></div></details>';
 }
-function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer) {
-    $d = cc_fd_get($pid, $date); $t = cc_fd_daytot($d); $has = false;
+/* the small carbs / protein / fat ring (share of kcal) at the top of a day in the review */
+function cc_fd_ring($t) {
+    $v = [$t['c'] * 4, $t['p'] * 4, $t['f'] * 9]; $tt = array_sum($v); if ($tt <= 0) return '';
+    $L = 2 * M_PI * 42; $off = 0; $col = ['#7fb2ff', '#c99bff', '#f0b45a']; $nm = ['Carbs', 'Protein', 'Fat']; $g = [$t['c'], $t['p'], $t['f']];
+    $s = '<div class="fd-ringw sm"><svg class="fd-ring" viewBox="0 0 110 110" width="76" height="76" aria-hidden="true"><circle cx="55" cy="55" r="42" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="12"/>'; $leg = '';
+    foreach ($v as $i => $x) {
+        $len = $x / $tt * $L;
+        $s .= '<circle cx="55" cy="55" r="42" fill="none" stroke="' . $col[$i] . '" stroke-width="12" stroke-dasharray="' . round($len, 1) . ' ' . round($L, 1) . '" stroke-dashoffset="' . round(-$off, 1) . '" transform="rotate(-90 55 55)"/>';
+        $off += $len;
+        $leg .= '<li><i style="background:' . $col[$i] . '"></i><span>' . $nm[$i] . '</span><b>' . round($x / $tt * 100) . ' % · ' . round($g[$i]) . ' g</b></li>';
+    }
+    return $s . '<text x="55" y="62" text-anchor="middle" font-size="26" font-weight="700" fill="#fff">' . number_format(round($t['k'])) . '</text></svg><ul class="fd-leg">' . $leg . '</ul></div>';
+}
+function cc_fd_rc_badge($st) { return in_array($st, ['r', 'c'], true) ? ' <span class="fd-rc fd-rc-' . $st . '">' . esc_html(cc_fd_w($st === 'r' ? 'b_raw' : 'b_cooked')) . '</span>' : ''; }
+function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer, $mine = [], $fem = false, $cy = null) {
+    $d = cc_fd_get($pid, $date); $t = cc_fd_daytot($d); $ml = cc_fd_dayml($d); $has = false; $ir = $fem ? cc_fd_iron($d, $mine) : null;
     $ts = strtotime($date . ' 12:00'); $next = gmdate('Y-m-d', $ts + DAY_IN_SECONDS);
-    $o = '<article class="fd-rd" id="fd-' . esc_attr($date) . '"><h3>' . esc_html(date_i18n('l j F', $ts)) . ($date === current_time('Y-m-d') ? ' <small>today</small>' : '') . '</h3>';
+    $ride = $tp ? 0 : (cc_fd_rides($vx)[$date] ?? 0); $tg = $tp ? [] : (cc_fd_targets($vx)[$date] ?? []);
+    $o = '<article class="fd-rd" id="fd-' . esc_attr($date) . '"><h3>' . esc_html(date_i18n('l j F', $ts)) . ($date === current_time('Y-m-d') ? ' <small>today</small>' : '') . ($cy ? cc_fd_phase_chip($cy, $date) : '') . '%IRONTAG%</h3>';
     $sl = '';
     foreach (CC_FD_SLOTS as $k) {
         $s = $d['s'][$k] ?? null; if (!$s) continue;
-        $has = true; $st = cc_fd_tot($s['i'] ?? []);
+        $has = true; $st = cc_fd_tot($s['i'] ?? []); $sml = (int) ($s['d'] ?? 0);
         $sl .= '<div class="fd-rs"><div class="fd-rsh"><b>' . esc_html(cc_fd_w($k)) . '</b>' . (!empty($s['t']) ? ' <span class="fd-time-b">' . esc_html($s['t']) . '</span>' : '')
              . (!empty($s['i']) ? '<span class="fd-rst">' . round($st['k']) . ' kcal · C ' . cc_fd_f1($st['c']) . ' · P ' . cc_fd_f1($st['p']) . ' · F ' . cc_fd_f1($st['f']) . '</span>' : '') . '</div>';
+        $ex = [];
+        if ($sml) $ex[] = 'Drinks ' . number_format($sml) . ' ml';
+        if (!empty($s['i'])) $ex[] = 'Sodium ' . round($st['na']) . ' mg' . ($st['nam'] ? ' (incomplete)' : '');
+        $rmin = $ride > 0 ? $ride : (int) ($s['r'] ?? 0);
+        if ($k === 'bike' && $rmin > 0 && ($sml || $st['c'] > 0)) $ex[] = '<b>≈ ' . round($st['c'] / ($rmin / 60)) . ' g carbs/h</b>' . (!empty($tg['c']) ? ' (target ' . (int) $tg['c'] . ')' : '') . ' · <b>≈ ' . round($sml / ($rmin / 60)) . ' ml/h</b>' . (!empty($tg['ml']) ? ' (target ' . (int) $tg['ml'] . ')' : '') . ' · ride ' . esc_html(cc_fd_hm($rmin * 60)) . ($ride > 0 ? '' : ' (typed by the athlete)');
+        if ($ex) $sl .= '<p class="fd-rex">' . implode(' · ', $ex) . '</p>';
         if (!empty($s['i'])) {
             $sl .= '<ul class="fd-ri">';
             foreach ($s['i'] as $it) { $m = ((float) $it['g']) / 100;
-                $sl .= '<li><span>' . esc_html($it['n']) . (!empty($it['m']) ? ' <span class="fd-tag">' . ($it['m'] === 'r' ? 'own recipe' : 'own food') . '</span>' : '') . '</span><small>' . cc_fd_f1($it['g']) . ' g · ' . round($it['k'] * $m) . ' kcal · C ' . cc_fd_f1($it['c'] * $m) . ' · P ' . cc_fd_f1($it['p'] * $m) . ' · F ' . cc_fd_f1($it['f'] * $m) . '</small></li>'; }
+                $sl .= '<li><span>' . esc_html($it['n']) . cc_fd_rc_badge($it['st'] ?? '') . (!empty($it['m']) ? ' <span class="fd-tag">' . ($it['m'] === 'r' ? 'own recipe' : 'own food') . '</span>' : '') . '</span><small>' . cc_fd_f1($it['g']) . ' g · ' . round($it['k'] * $m) . ' kcal · C ' . cc_fd_f1($it['c'] * $m) . ' · P ' . cc_fd_f1($it['p'] * $m) . ' · F ' . cc_fd_f1($it['f'] * $m)
+                    . ' · Na ' . (isset($it['na']) ? round($it['na'] * $m) . ' mg' : '–') . '</small></li>'; }
             $sl .= '</ul>';
         }
         if (!empty($s['n'])) $sl .= '<p class="fd-rn">“' . nl2br(esc_html($s['n'])) . '”</p>';
@@ -280,9 +508,13 @@ function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer) {
         $sl .= '</div>';
     }
     if ($has) {
-        $o .= $sl . '<div class="fd-rtot"><b>Day total</b><span>' . round($t['k']) . ' kcal</span><span>Carbs ' . round($t['c']) . ' g' . ($kg ? ' (' . cc_fd_f1($t['c'] / $kg) . ' g/kg)' : '') . '</span>'
-            . '<span>Protein ' . round($t['p']) . ' g' . ($kg ? ' (' . cc_fd_f1($t['p'] / $kg) . ' g/kg)' : '') . '</span><span>Fat ' . round($t['f']) . ' g</span><span>Fibre ' . round($t['fi']) . ' g</span><span>Sugars ' . round($t['su']) . ' g</span></div>';
+        $o .= cc_fd_ring($t) . $sl . '<div class="fd-rtot"><b>Day total</b><span>' . round($t['k']) . ' kcal</span><span>Carbs ' . round($t['c']) . ' g' . ($kg ? ' (' . cc_fd_f1($t['c'] / $kg) . ' g/kg)' : '') . '</span>'
+            . '<span>Protein ' . round($t['p']) . ' g' . ($kg ? ' (' . cc_fd_f1($t['p'] / $kg) . ' g/kg)' : '') . '</span><span>Fat ' . round($t['f']) . ' g</span><span>Fibre ' . round($t['fi']) . ' g</span><span>Sugars ' . round($t['su']) . ' g</span>'
+            . '<span>Fluids ' . number_format($ml) . ' ml (' . cc_fd_f1($ml / 1000) . ' L)</span><span>Sodium ' . number_format(round($t['na'])) . ' mg' . ($t['nam'] ? ' <small class="fd-inc">sodium incomplete</small>' : '') . '</span></div>'
+            . ($fem ? '<p class="fd-ironl">' . esc_html(sprintf(cc_fd_w('iron_line'), cc_fd_f1($ir['fe']))) . ($ir['inc'] ? ' <small class="fd-inc">incomplete</small>' : '') . '</p>' : '')
+            . cc_fd_micro_box($d, $mine, $fem);
     } else $o .= '<p class="fd-muted">Nothing logged.</p>';
+    $o = str_replace('%IRONTAG%', ($fem && $has && $ir['low']) ? ' <span class="fd-lowfe">Low iron</span>' : '', $o);
     if (!$tp && $vx) $o .= '<div class="fd-vx">' . cc_fd_training_html($vx, $date, 'Training this day') . cc_fd_training_html($vx, $next, 'Training next day')
         . cc_fd_notes_html($vx, $date, 'Your nutrition note this day') . cc_fd_notes_html($vx, $next, 'Your nutrition note next day') . '</div>';
     return $o . '<div class="fd-th">' . cc_fd_thread_html($pid, $date, $d['r'] ?? [], $viewer) . '</div></article>';
@@ -300,17 +532,45 @@ function cc_fd_week_ahead($vx) {
 }
 function cc_fd_review($pid, $viewer) {
     $GLOBALS['cc_ath_lang'] = 'en';
-    $off = max(0, (int) ($_GET['fo'] ?? 0)); $tp = cc_ath_tp($pid); $vx = $tp ? [] : cc_fd_vx($pid); $kg = cc_fd_kg($pid);
+    $off = max(0, (int) ($_GET['fo'] ?? 0)); $tp = cc_ath_tp($pid); $vx = $tp ? [] : cc_fd_vx($pid); $kv = cc_fd_kgv($pid); $kg = $kv['kg']; $mine = cc_fd_mine($pid); $fem = cc_fd_female($pid, $vx); $cy = $fem ? cc_fd_cycle($pid) : null; if ($cy && empty($cy['on'])) $cy = null;
     $back = $viewer === 'nutri' ? cc_fd_hub() : add_query_arg('board', 'food', cc_fd_hub());
+    $wtxt = $kv['src'] === 'vekta' ? ' · weight used for g/kg: <b>' . cc_fd_f1($kg) . ' kg</b> (from Vekta, ' . esc_html(date_i18n('j M', strtotime($kv['d'] . ' 12:00'))) . ')'
+          : ($kv['src'] === 'athlete' ? ' · weight used for g/kg: <b>' . cc_fd_f1($kg) . ' kg</b> (entered by the athlete)' : ' · no weight' . ($tp ? ' entered by the athlete' : ' in Vekta (last 60 days) or entered by the athlete'));
     $o = '<section class="ath-s fd-rv"><p class="fd-back"><a href="' . esc_url($back) . '">← All food diaries</a></p>'
        . '<h2>' . (function_exists('cc_ph_face') ? cc_ph_face($pid, 36) . ' ' : '') . esc_html(get_the_title($pid)) . '</h2>'
-       . '<p class="fd-lede">Food diary, newest day first' . ($kg ? ' · weight ' . cc_fd_f1($kg) . ' kg (from the athlete)' : ' · no weight entered by the athlete') . '.'
+       . '<p class="fd-lede">Food diary, newest day first' . $wtxt . '.'
        . (!$tp && !empty($vx['at']) ? ' Training and nutrition notes updated ' . esc_html(human_time_diff((int) $vx['at'])) . ' ago.' : '') . '</p>' . cc_fd_switch($pid);
+    if ($fem) {   // iron below 14 mg on N of the last 7 logged days
+        $n = 0; $k = 0; foreach (cc_fd_days($pid) as $dd) { $day = cc_fd_get($pid, $dd); if (empty($day['s'])) continue; $k++; $ir = cc_fd_iron($day, $mine); if ($ir['low']) $n++; if ($k >= 7) break; }
+        if ($n >= 1) $o .= '<p class="fd-ironsum">Iron below 14 mg on <b>' . $n . '</b> of the last ' . $k . ' logged day' . ($k === 1 ? '' : 's') . ' (days with 3+ meals logged and enough iron data).</p>';
+    }
+    $o .= '<div class="fd-top">' . cc_fd_blood_box($pid, $viewer) . ($tp ? '' : cc_fd_trends_box($pid, $vx, $cy)) . '</div>';
     if (!$tp && $vx) $o .= cc_fd_week_ahead($vx);
     $t0 = strtotime(current_time('Y-m-d') . ' 12:00') - $off * 14 * DAY_IN_SECONDS;
-    for ($i = 0; $i < 14; $i++) $o .= cc_fd_day_html($pid, gmdate('Y-m-d', $t0 - $i * DAY_IN_SECONDS), $vx, $tp, $kg, $viewer);
+    for ($i = 0; $i < 14; $i++) $o .= cc_fd_day_html($pid, gmdate('Y-m-d', $t0 - $i * DAY_IN_SECONDS), $vx, $tp, $kg, $viewer, $mine, $fem, $cy);
     $o .= '<p class="fd-pager">' . ($off ? '<a class="btn btn-ghost" href="' . esc_url(add_query_arg('fo', $off - 1)) . '">Newer days</a> ' : '') . '<a class="btn btn-ghost" href="' . esc_url(add_query_arg('fo', $off + 1)) . '">Older days</a></p>';
-    return $o . '</section>' . cc_fd_css() . cc_fd_rjs() . (function_exists('cc_nt_css') ? cc_nt_css() : '') . (function_exists('cc_ph_assets') ? cc_ph_assets() : '');
+    return $o . '</section>' . cc_fd_css() . cc_fd_rjs() . cc_fd_sjs() . (function_exists('cc_nt_css') ? cc_nt_css() : '') . (function_exists('cc_ph_assets') ? cc_ph_assets() : '')
+        . (function_exists('cc_bt_assets') ? cc_bt_assets($viewer === 'nutri') : '');
+}
+/* blood tests next to the diary: Marine sees only the tests the athlete shared with her; Matteo sees all of them */
+function cc_fd_blood_box($pid, $viewer) {
+    if (!function_exists('cc_bt_get') || !function_exists('cc_bt_row')) return '';
+    $rows = '';
+    foreach (array_reverse(cc_bt_get($pid)) as $b) {
+        if ($viewer === 'nutri') { if (!empty($b['share'])) $rows .= cc_bt_row($pid, $b, false, 'nutri'); }
+        else $rows .= cc_bt_row($pid, $b, true);
+    }
+    return '<div class="fd-box fd-blood"><h3>Blood tests</h3>' . ($rows ?: '<p class="fd-muted">' . ($viewer === 'nutri' ? 'No blood tests shared yet.' : 'No blood tests uploaded yet.') . '</p>') . '</div>';
+}
+/* the 12-week trends (weight, HRV, resting HR) from Vekta, and the switch that shows them to the athlete */
+function cc_fd_trends_box($pid, $vx, $cy = null) {
+    $td = cc_fd_trend_data($vx); $on = cc_fd_trends_on($pid);
+    if ($td && $cy) $td['cyc'] = ['p' => $cy['p'], 'L' => cc_fd_cyc_len($cy['p']), 'label' => 'Cycle (shaded: period days)'];
+    return '<div class="fd-box fd-trw"><h3>Trends · last 12 weeks</h3>'
+        . ($td ? '<div class="fd-trends" data-tr="' . esc_attr(wp_json_encode($td)) . '"></div><p class="fd-muted">Dashed line: the athlete’s own 28-day average (HRV and resting HR). Updated ' . esc_html(human_time_diff((int) ($vx['at'] ?? time()))) . ' ago.</p>'
+               : '<p class="fd-muted">No data yet.</p>')
+        . '<p class="fd-sw"><button type="button" class="fd-pkg fd-trsw' . ($on ? ' on' : '') . '" role="switch" aria-checked="' . ($on ? 'true' : 'false') . '" data-page="' . (int) $pid . '"><span class="fd-knob"></span></button>'
+        . '<span>Show trends to the athlete: <b>' . ($on ? 'on' : 'off') . '</b></span></p></div>';
 }
 function cc_fd_pkg_pages() { return get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'meta_key' => 'cc_nutri_pkg', 'meta_value' => '1']); }
 function cc_fd_list($viewer) {
@@ -346,6 +606,20 @@ add_filter('cc_ath_board', function ($html, $board) {
 }, 10, 2);
 
 /* ---------- REST ---------- */
+/* one stored JSON table (option + gzip copy), open data, cached by the browser for a year (the URL carries the version) */
+function cc_fd_serve($opt) {
+    $gz = (string) get_option($opt . '_gz', ''); $raw = $gz === '' ? (string) get_option($opt, '') : '';
+    if ($gz === '' && $raw === '') return new WP_Error('cc_none', 'No food data yet', ['status' => 404]);
+    while (ob_get_level()) ob_end_clean();
+    header_remove('Expires'); header_remove('Pragma'); header_remove('Set-Cookie');
+    header('Content-Type: application/json; charset=utf-8'); header('Cache-Control: public, max-age=31536000, immutable'); header('Vary: Accept-Encoding');
+    if ($gz !== '') {
+        $b = base64_decode($gz);
+        if (strpos((string) ($_SERVER['HTTP_ACCEPT_ENCODING'] ?? ''), 'gzip') !== false) { header('Content-Encoding: gzip'); header('Content-Length: ' . strlen($b)); echo $b; exit; }
+        $raw = (string) gzdecode($b);
+    }
+    header('Content-Length: ' . strlen($raw)); echo $raw; exit;
+}
 add_action('rest_api_init', function () {
     $mine = function (WP_REST_Request $r) {   // the athlete's own page with the package on (Matteo may act on any page)
         if (cc_ath_is_coach()) return true;
@@ -354,26 +628,27 @@ add_action('rest_api_init', function () {
     };
     $page = function (WP_REST_Request $r) { return cc_ath_is_coach() ? (int) $r->get_param('page') : cc_ath_page_of(get_current_user_id()); };
     // the food database: open data, the same for everyone, cached by the browser for a year (the URL carries the version)
-    register_rest_route('cc/v1', '/foods', ['methods' => 'GET', 'permission_callback' => '__return_true', 'callback' => function () {
-        $gz = (string) get_option('cc_food_db_gz', ''); $raw = $gz === '' ? (string) get_option('cc_food_db', '') : '';
-        if ($gz === '' && $raw === '') return new WP_Error('cc_none', 'No food data yet', ['status' => 404]);
-        while (ob_get_level()) ob_end_clean();
-        header_remove('Expires'); header_remove('Pragma'); header_remove('Set-Cookie');
-        header('Content-Type: application/json; charset=utf-8'); header('Cache-Control: public, max-age=31536000, immutable'); header('Vary: Accept-Encoding');
-        if ($gz !== '') {
-            $b = base64_decode($gz);
-            if (strpos((string) ($_SERVER['HTTP_ACCEPT_ENCODING'] ?? ''), 'gzip') !== false) { header('Content-Encoding: gzip'); header('Content-Length: ' . strlen($b)); echo $b; exit; }
-            $raw = (string) gzdecode($b);
-        }
-        header('Content-Length: ' . strlen($raw)); echo $raw; exit;
-    }]);
+    register_rest_route('cc/v1', '/foods', ['methods' => 'GET', 'permission_callback' => '__return_true', 'callback' => function () { return cc_fd_serve('cc_food_db'); }]);
+    // micronutrients and electrolytes per food (a separate table, fetched only when someone opens the micronutrient line)
+    register_rest_route('cc/v1', '/foods-micro', ['methods' => 'GET', 'permission_callback' => '__return_true', 'callback' => function () { return cc_fd_serve('cc_food_micro'); }]);
     register_rest_route('cc/v1', '/food-db', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
-        $d = (string) $r->get_param('data'); $j = json_decode($d, true);
-        if (!is_array($j) || empty($j['foods']) || !is_array($j['foods'])) return new WP_Error('cc_bad', 'Not a food table', ['status' => 400]);
-        update_option('cc_food_db', $d, false);
-        update_option('cc_food_db_gz', function_exists('gzencode') ? base64_encode(gzencode($d, 9)) : '', false);
-        update_option('cc_food_db_v', substr(md5($d), 0, 10), false);
-        return ['ok' => true, 'foods' => count($j['foods']), 'bytes' => strlen($d), 'v' => get_option('cc_food_db_v')];
+        $o = ['ok' => true];
+        foreach (['data' => 'cc_food_db', 'micro' => 'cc_food_micro'] as $p => $opt) {
+            $d = (string) $r->get_param($p); if ($d === '') continue; $j = json_decode($d, true);
+            if (!is_array($j) || ($p === 'data' ? (empty($j['foods']) || !is_array($j['foods'])) : (empty($j['m']) || !is_array($j['m'])))) return new WP_Error('cc_bad', 'Not a food table: ' . $p, ['status' => 400]);
+            if ($p === 'data') update_option('cc_food_db', $d, false);
+            update_option($opt . '_gz', function_exists('gzencode') ? base64_encode(gzencode($d, 9)) : '', false);
+            if ($p === 'micro' && !function_exists('gzencode')) update_option('cc_food_micro', $d, false);
+            update_option($opt . '_v', substr(md5($d), 0, 10), false);
+            $o[$p] = ['rows' => count($p === 'data' ? $j['foods'] : $j['m']), 'bytes' => strlen($d), 'v' => get_option($opt . '_v')];
+        }
+        return $o;
+    }]);
+    register_rest_route('cc/v1', '/food-trends', ['methods' => 'POST', 'permission_callback' => 'cc_fd_staff', 'callback' => function (WP_REST_Request $r) {
+        $pid = (int) $r->get_param('page');
+        if (!$pid || get_post_type($pid) !== 'cc_athlete' || (cc_fd_is_nutri() && !cc_fd_on($pid))) return new WP_Error('cc_no', 'Not allowed', ['status' => 403]);
+        if ($r->get_param('on')) delete_post_meta($pid, 'cc_fd_trends_off'); else update_post_meta($pid, 'cc_fd_trends_off', 1);
+        return ['ok' => true, 'on' => cc_fd_trends_on($pid)];
     }]);
     register_rest_route('cc/v1', '/food-day', ['methods' => 'GET', 'permission_callback' => function (WP_REST_Request $r) use ($mine) { return cc_fd_is_nutri() ? cc_fd_on((int) $r->get_param('page')) : $mine($r); }, 'callback' => function (WP_REST_Request $r) use ($page) {
         $pid = cc_fd_is_nutri() ? (int) $r->get_param('page') : $page($r); $d = cc_fd_date($r->get_param('date'));
@@ -419,6 +694,27 @@ add_action('rest_api_init', function () {
         }
         update_post_meta($pid, 'cc_food_mine', wp_slash(wp_json_encode($out)));
         return ['ok' => true, 'mine' => $out];
+    }]);
+    // "My cycle": opt-in by the athlete herself (female athletes only); off deletes everything
+    register_rest_route('cc/v1', '/food-cycle', ['methods' => 'POST', 'permission_callback' => $mine, 'callback' => function (WP_REST_Request $r) use ($page) {
+        $pid = $page($r); if (!$pid || !cc_fd_female($pid)) return new WP_Error('cc_no', 'Not available', ['status' => 403]);
+        $act = (string) $r->get_param('act'); $d = cc_fd_date($r->get_param('date')); $cy = cc_fd_cycle($pid);
+        if ($act === 'off') { delete_post_meta($pid, 'cc_fd_cycle'); return ['ok' => true, 'cycle' => ['on' => 0, 'p' => []]]; }
+        if ($act === 'on') $cy['on'] = 1;
+        elseif (!$cy['on'] || !$d) return new WP_Error('cc_bad', 'Turn it on first', ['status' => 400]);
+        elseif ($act === 'start') { $cy['p'] = array_values(array_filter($cy['p'], function ($x) use ($d) { return abs(strtotime($x[0]) - strtotime($d)) > 3 * DAY_IN_SECONDS; })); $cy['p'][] = [$d, null]; }
+        elseif ($act === 'end') { $ix = -1; foreach ($cy['p'] as $i => $x) if ($x[0] <= $d) $ix = $i; if ($ix < 0 || strtotime($d) - strtotime($cy['p'][$ix][0]) > 14 * DAY_IN_SECONDS) return new WP_Error('cc_bad', 'No start before', ['status' => 400]); $cy['p'][$ix][1] = $d; }
+        elseif ($act === 'unset') { $o2 = []; foreach ($cy['p'] as $x) { if ($x[0] === $d) continue; if (($x[1] ?? null) === $d) $x[1] = null; $o2[] = $x; } $cy['p'] = $o2; }
+        usort($cy['p'], function ($x, $y) { return strcmp($x[0], $y[0]); }); $cy['p'] = array_slice($cy['p'], -60);
+        update_post_meta($pid, 'cc_fd_cycle', wp_slash(wp_json_encode(['on' => 1, 'p' => $cy['p']])));
+        return ['ok' => true, 'cycle' => cc_fd_cycle($pid)];
+    }]);
+    // favourite foods (starred on a diary line): the athlete's own list, up to 40
+    register_rest_route('cc/v1', '/food-fav', ['methods' => 'POST', 'permission_callback' => $mine, 'callback' => function (WP_REST_Request $r) use ($page) {
+        $pid = $page($r); $in = json_decode((string) $r->get_param('data'), true); if (!$pid || !is_array($in)) return new WP_Error('cc_bad', 'Data needed', ['status' => 400]);
+        $out = []; foreach (array_slice($in, 0, 40) as $m) { $c = cc_fd_item($m); if ($c) $out[] = $c; }
+        update_post_meta($pid, 'cc_food_fav', wp_slash(wp_json_encode($out)));
+        return ['ok' => true, 'fav' => $out];
     }]);
     register_rest_route('cc/v1', '/food-kg', ['methods' => 'POST', 'permission_callback' => $mine, 'callback' => function (WP_REST_Request $r) use ($page) {
         $pid = $page($r); $k = cc_fd_num($r->get_param('kg'), 250);
@@ -489,6 +785,17 @@ add_action('rest_api_init', function () {
             foreach (array_slice((array) ($a['plan'] ?? []), 0, 80) as $x) if ($dd = $d($x['date'] ?? '')) $o['plan'][] = ['d' => $dd, 'n' => cc_fd_txt($x['name'] ?? '', 160), 'min' => (int) round(((float) ($x['dur'] ?? 0)) / 60), 'carb' => (int) ($x['carbs'] ?? 0)];
             foreach (array_slice((array) ($a['done'] ?? []), 0, 80) as $x) if ($dd = $d($x['date'] ?? '')) $o['done'][] = ['d' => $dd, 'n' => cc_fd_txt($x['name'] ?? '', 160), 'min' => (int) round(((float) ($x['dur'] ?? 0)) / 60), 'kj' => (int) ($x['kj'] ?? 0)];
             foreach (array_slice((array) ($a['notes'] ?? []), 0, 80) as $x) if ($dd = $d($x['date'] ?? '')) $o['notes'][] = ['d' => $dd, 't' => cc_fd_txt($x['title'] ?? '', 200), 'c' => mb_substr(trim(sanitize_textarea_field((string) ($x['content'] ?? ''))), 0, 4000)];
+            // latest body weight (last 60 days) and 84 days of weight / overnight HRV / resting HR for the trends
+            $o['sex'] = ['female' => 'f', 'male' => 'm'][strtolower((string) ($a['gender'] ?? ''))] ?? '';   // for the iron screening and the cycle tracker
+            $w = (array) ($a['weight'] ?? []); $wv = (float) ($w['value'] ?? 0);
+            if ($wv >= 25 && $wv <= 250 && ($wd = $d($w['date'] ?? ''))) $o['kg'] = ['v' => round($wv, 1), 'd' => $wd];
+            $o['tr'] = [];
+            foreach (array_slice((array) ($a['days'] ?? []), 0, 100) as $x) {
+                if (!($dd = $d($x['date'] ?? ''))) continue;
+                $kg = (float) ($x['weight'] ?? 0); $hv = (float) ($x['hrv'] ?? 0); $hr = (float) ($x['rhr'] ?? 0);
+                $row = [$dd, ($kg >= 25 && $kg <= 250) ? round($kg, 1) : null, ($hv > 0 && $hv < 400) ? round($hv) : null, ($hr > 20 && $hr < 150) ? round($hr) : null];
+                if ($row[1] || $row[2] || $row[3]) $o['tr'][] = $row;
+            }
             update_post_meta($pid, 'cc_food_vx', wp_slash(wp_json_encode($o))); $n++;
         }
         return ['ok' => true, 'stored' => $n];
@@ -499,7 +806,7 @@ add_action('delete_user', function ($uid) {
     if (!empty($GLOBALS['cc_keep_record'])) return;
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_user', 'meta_value' => (int) $uid, 'numberposts' => -1, 'fields' => 'ids']) as $pid) {
         foreach (cc_fd_days($pid) as $d) { foreach ((array) (cc_fd_get($pid, $d)['s'] ?? []) as $s) if (!empty($s['ph'])) wp_delete_attachment((int) $s['ph'], true); delete_post_meta($pid, 'cc_fd_' . $d); }
-        foreach (['cc_food_mine', 'cc_food_kg', 'cc_food_vx'] as $k) delete_post_meta($pid, $k);
+        foreach (['cc_food_mine', 'cc_food_kg', 'cc_food_vx', 'cc_fd_trends_off', 'cc_food_fav', 'cc_fd_cycle'] as $k) delete_post_meta($pid, $k);
     }
 }, 4);
 
@@ -564,6 +871,46 @@ function cc_fd_css() {
         . 'html .cc .fd-vxb h4,html .cc .fd-form h4,html .cc .fd-rd h3 small{font-family:var(--body);letter-spacing:.02em}html .cc .fd-vxb h4{font-size:14px;font-weight:700}'
         . 'html .cc .ath .fd label,html .cc .ath .fd-rv label{font-size:15px;margin-top:0}html .cc .ath .fd .fd-g{font-size:15px;font-weight:500}'
         . 'html .cc .fd-th{margin-top:6px}html .cc .fd-r{display:grid;gap:8px}html .cc .fd-r textarea{width:100%}html .cc .fd-r .btn{justify-self:start;width:auto;margin:0}html .cc .fd-pager{margin-top:16px}'
+        /* 19 Nov 2026: drinks, sodium, raw/cooked, micronutrients, trends */
+        . 'html .cc .fd-drk{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:15px;color:#d0d6e0;font-weight:600}html .cc .fd .fd-drk input{width:110px}html .cc .fd-drk .fd-hint{flex-basis:100%}'
+        . 'html .cc .fd-sx{margin:0;font-size:15px;color:#d0d6e0}html .cc .fd-sx b{color:#fff}html .cc .fd-inc{color:#b8bec8;font-size:14px;font-weight:500;font-style:normal}'
+        . 'html .cc .fd-rc{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:6px;border:1px solid rgba(255,255,255,.28);color:#e6e9ee;font-size:14px;font-weight:700;letter-spacing:.03em;white-space:nowrap;vertical-align:1px}'
+        . 'html .cc .fd-rc-c{background:rgba(255,255,255,.1)}html .cc .fd-rc-r{background:transparent;border-style:dashed}'
+        . 'html .cc .fd-ask{display:grid;gap:10px}html .cc .fd-ask b{color:#fff;font-size:16px}html .cc .fd-ask p{margin:0;color:#fff;font-size:16px;font-weight:600}'
+        . 'html .cc .fd-wh{margin:0;color:#b8bec8;font-size:14px}'
+        . 'html .cc .fd-vkg{margin:14px 0 4px;color:#e6e9ee;font-size:16px;font-weight:600}'
+        . 'html .cc .fd-micro{margin:10px 0 0;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02)}html .cc .fd-micro>summary{cursor:pointer;padding:10px 12px;color:#d0d6e0;font-size:15px;font-weight:600}'
+        . 'html .cc .fd-mt{padding:0 12px 12px}html .cc .fd-mtab{width:100%;border-collapse:collapse;border:0;margin:0;font-size:15px;color:#e6e9ee;background:none}html .cc .fd-mtab tr,html .cc .fd-mtab th,html .cc .fd-mtab td{border:0;background:none}html .cc .fd-mtab th{text-align:left;color:#b8bec8;font-size:14px;font-weight:700;padding:10px 0 4px;letter-spacing:.02em}html .cc .fd-mtab th+th{text-align:right}'
+        . 'html .cc .fd-mtab td{padding:5px 0;border-top:1px solid rgba(255,255,255,.07)}html .cc .fd-mtab td+td{text-align:right;white-space:nowrap;padding-left:10px}html .cc .fd-mtab small{color:#b8bec8;font-size:14px}'
+        . 'html .cc .fd-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:12px;margin:8px 0 18px}html .cc .fd-box{padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);min-width:0}'
+        . 'html .cc .fd-box h3{margin:0 0 6px;font-size:18px}html .cc .ath .fd-box h3{font-size:20px!important}html .cc .fd-box .fd-sw{margin:10px 0 0;font-size:15px}'
+        . 'html .cc .fd-trends{display:grid;gap:12px}html .cc .fd-tc h4{margin:0 0 2px;font:700 15px var(--body);color:#e6e9ee;letter-spacing:.01em}html .cc .fd-tc svg{display:block;width:100%;height:auto;touch-action:pan-y}'
+        . 'html .cc .fd-tc .fd-muted{margin:2px 0 6px}html .cc .fd-trd{margin:14px 0 0;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.03)}html .cc .fd-trd>summary{padding:12px 16px;cursor:pointer;color:#d0d6e0;font-weight:600;font-size:16px}html .cc .fd-trd>div{padding:0 16px 14px}'
+        . 'html .cc .fd-rex{margin:4px 0 0;font-size:15px;color:#d0d6e0}html .cc .fd-rex b{color:#fff}html .cc .ath .fd-tc h4,html .cc .fd-tc h4{text-transform:none}'
+        . 'html .cc .fd-status.ok{color:#2bd47a;font-weight:600;transition:opacity .6s}html .cc .fd-status.ok.fade{opacity:0}'
+        . 'html .cc .fd-nav{position:sticky;top:70px;z-index:6;background:rgba(10,12,14,.94);backdrop-filter:blur(6px);margin:4px -6px 6px;padding:6px;border-radius:12px}'
+        . 'html .cc .fd-dtop{display:grid;gap:8px;margin:0 0 12px}html .cc .fd-copyday{justify-self:start}'
+        . 'html .cc .fd-streak{margin:0;font-size:16px;font-weight:600;color:#e6e9ee}'
+        . 'html .cc .fd-ringw{display:flex;align-items:center;gap:16px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}html .cc .fd-ring{flex:none;width:110px;height:110px}'
+        . 'html .cc .fd-ring circle{transition:stroke-dasharray .5s ease,stroke-dashoffset .5s ease}html .cc .fd-leg{list-style:none;margin:0;padding:0;display:grid;gap:6px;min-width:0;flex:1}'
+        . 'html .cc .fd-leg li{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:15px;color:#d0d6e0}html .cc .fd-leg i{flex:none;width:12px;height:12px;border-radius:50%}html .cc .fd-leg b{margin-left:auto;color:#fff;font-weight:600;white-space:nowrap}'
+        . 'html .cc .fd-ringw.sm{padding:6px 10px;gap:12px;margin:0 0 8px}html .cc .fd-ringw.sm .fd-ring{width:76px;height:76px}html .cc .fd-ringw.sm .fd-leg li{font-size:14px}'
+        . 'html .cc .fd-gg{display:grid;gap:10px}html .cc .fd-gg:empty{display:none}html .cc .fd-gauge{display:grid;gap:5px}html .cc .fd-gh{display:flex;justify-content:space-between;gap:10px;font-size:15px;color:#d0d6e0}html .cc .fd-gh b{color:#fff}'
+        . 'html .cc .fd-gbar{position:relative;height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:visible}html .cc .fd-gbar i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:#8a9099;transition:width .5s ease}html .cc .fd-gbar i.ok{background:#12a150}'
+        . 'html .cc .fd-gbar u{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:#e6e9ee;border-radius:2px}html .cc .fd-gauge small{color:#b8bec8;font-size:14px}'
+        . 'html .cc .fd-chipbox{display:grid;gap:6px}html .cc .fd-chipbox[hidden]{display:none}html .cc .fd-chl{margin:2px 0 0;color:#b8bec8;font-size:14px;font-weight:700}html .cc .fd-chips{display:flex;flex-wrap:wrap;gap:6px}'
+        . 'html .cc .fd-chip{max-width:100%;padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:#fff;font:500 15px var(--body);cursor:pointer;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}html .cc .fd-chip:hover{border-color:rgba(43,212,122,.6)}'
+        . 'html .cc .fd-star{flex:none;width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:none;color:#b8bec8;font-size:19px;line-height:1;cursor:pointer;padding:0}html .cc .fd-star.on{color:#f0c75a;border-color:rgba(240,199,90,.45)}'
+        . 'html .cc .fd-items li.fd-new{animation:fdIn .35s ease-out}html .cc .fd-items li.fd-out{transition:opacity .2s,transform .2s;opacity:0;transform:translateX(12px)}@keyframes fdIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}'
+        . 'html .cc .fd-addh{color:#2bd47a;font-weight:600}html .cc .fd .fd-slot .fd-row .btn{margin:0}'
+        . '@media (max-width:420px){html .cc .fd-items li{flex-wrap:wrap}html .cc .fd-in{flex-basis:100%}}'
+        . 'html .cc .fd-ironl{margin:10px 0 0;font-size:15px;color:#e6e9ee;font-weight:600}html .cc .fd-ironnote{margin:10px 0 0;padding:10px 12px;border-radius:12px;border:1px solid rgba(240,180,90,.35);background:rgba(240,180,90,.08);color:#f3e2c4;font-size:15px;line-height:1.5}'
+        . 'html .cc .fd-lowfe{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;border:1px solid rgba(240,180,90,.45);background:rgba(240,180,90,.1);color:#f3e2c4;font:600 14px var(--body);letter-spacing:0;vertical-align:3px;text-transform:none}'
+        . 'html .cc .fd-ironsum{margin:0 0 12px;padding:8px 12px;border-radius:12px;border:1px solid rgba(240,180,90,.3);background:rgba(240,180,90,.06);color:#f3e2c4;font-size:15px}'
+        . 'html .cc .fd-cchip{display:inline-block;padding:2px 10px;border-radius:999px;border:1px solid rgba(201,155,255,.4);background:rgba(201,155,255,.1);color:#eadcff;font:600 14px var(--body);letter-spacing:0;text-transform:none;vertical-align:3px;white-space:nowrap}'
+        . 'html .cc .fd-rd h3 .fd-cchip{margin-left:8px}html .cc .fd-cyc{margin:14px 0 0;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.03)}html .cc .fd-cyc>summary{padding:12px 16px;cursor:pointer;color:#d0d6e0;font-weight:600;font-size:16px}'
+        . 'html .cc .fd-cyc>div{padding:0 16px 14px;display:grid;gap:10px}html .cc .fd-cyc .btn{width:auto;margin:0;justify-self:start}html .cc .fd-cyc p{margin:0;color:#d0d6e0;font-size:15px}html .cc .fd-cyc small{color:#b8bec8;font-size:14px}'
+        . 'html .cc .fd-cycs svg{display:block;width:100%;height:auto}'
         . '</style>';
 }
 /* review pages (Matteo / Marine): replies, the package switch, adding an athlete by email */
@@ -577,6 +924,9 @@ document.addEventListener("click",function(e){
 var s=e.target.closest(".fd-send");
 if(s){var r=s.closest(".fd-r"),t=r.querySelector("textarea");if(!t.value.trim()){return;}s.disabled=true;
 post("%REPLY%",{page:r.dataset.page,date:r.dataset.date,text:t.value}).then(function(){var u=location.href.split("#")[0];location.replace(u+"#fd-"+r.dataset.date);location.reload();}).catch(function(){s.disabled=false;alert("Not sent. Please try again.");});return;}
+var ts=e.target.closest(".fd-trsw");
+if(ts){var on2=!ts.classList.contains("on");ts.disabled=true;
+post("%TRENDS%",{page:ts.dataset.page,on:on2?1:0}).then(function(){location.reload();}).catch(function(){ts.disabled=false;alert("Not changed. Please try again.");});return;}
 var p=e.target.closest(".fd-pkg");
 if(p){var on=!p.classList.contains("on");if(!on&&!confirm("Turn the Nutrition package off for this athlete? Their diary stays saved, but they and Marine will no longer see it.")){return;}p.disabled=true;
 post("%PKG%",{page:p.dataset.page,on:on?1:0}).then(function(){location.reload();}).catch(function(){p.disabled=false;alert("Not changed. Please try again.");});return;}
@@ -586,7 +936,78 @@ post("%PKG%",{email:em,on:1}).then(function(j){m.className="fd-msg";m.textConten
 });
 })();
 JS;
-    return '<script>' . str_replace(["\r", "\n", '%NONCE%', '%REPLY%', '%PKG%'], ['', '', $n, esc_url_raw(rest_url('cc/v1/food-reply')), esc_url_raw(rest_url('cc/v1/food-pkg'))], $js) . '</script>';
+    return '<script>' . str_replace(["\r", "\n", '%NONCE%', '%REPLY%', '%PKG%', '%TRENDS%'], ['', '', $n, esc_url_raw(rest_url('cc/v1/food-reply')), esc_url_raw(rest_url('cc/v1/food-pkg')), esc_url_raw(rest_url('cc/v1/food-trends'))], $js) . '</script>';
+}
+/* shared by the diary and the review pages: the micronutrient table (lazy) and the 12-week trend charts (inline SVG) */
+function cc_fd_sjs() {
+    static $done = false; if ($done) return ''; $done = true;
+    $js = <<<'JS'
+(function(){
+if(window.ccFdMicro){return;}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+var MP=null;
+function loadM(u){if(!MP){MP=fetch(u,{credentials:"omit"}).then(function(r){if(!r.ok){throw r;}return r.json();}).catch(function(e){MP=null;throw e;});}return MP;}
+function per100(M,id,mine,depth){var row=M.m[id];if(row){return M.cols.map(function(c,j){return row[j]==null?null:row[j];});}
+var r=mine&&mine[id];if(!r||depth>2){return null;}var w=+r.cw||0,sum=0;(r.ing||[]).forEach(function(i){sum+=+i[1]||0;});if(!(w>0)){w=sum;}if(!(w>0)){return null;}
+var out=M.cols.map(function(){return 0;});(r.ing||[]).forEach(function(i){var g=+i[1]||0;if(!(g>0)){return;}var v=per100(M,i[0],mine,depth+1);out.forEach(function(x,j){if(x===null){return;}if(!v||v[j]==null){out[j]=null;}else{out[j]=x+v[j]*g/100;}});});
+return out.map(function(x){return x===null?null:x*100/w;});}
+function fm(v){v=+v||0;return v>=100?Math.round(v).toLocaleString():(v>=10?(Math.round(v*10)/10).toLocaleString():(Math.round(v*100)/100).toLocaleString());}
+function micro(el){var W=JSON.parse(el.dataset.w),items=JSON.parse(el.dataset.items||"[]"),mine=JSON.parse(el.dataset.mine||"{}"),na=JSON.parse(el.dataset.na||"{}"),box=el.querySelector(".fd-mt");
+if(!box.innerHTML){box.innerHTML='<p class="fd-muted">'+esc(W.loading)+'</p>';}
+loadM(el.dataset.url).then(function(M){var tot=M.cols.map(function(){return 0;}),miss=M.cols.map(function(){return 0;}),any=M.cols.map(function(){return 0;});
+items.forEach(function(it){var g=+it[1]||0;if(!(g>0)){return;}var v=per100(M,it[0],mine,0);M.cols.forEach(function(c,j){if(!v||v[j]==null){miss[j]++;}else{tot[j]+=v[j]*g/100;any[j]++;}});});
+function row(name,val,unit,ri,inc){return '<tr><td>'+esc(name)+(inc?' <small>· '+esc(W.incomplete)+'</small>':'')+'</td><td>'+val+(unit?' '+esc(unit):'')+'</td><td>'+(ri==null?'<small>–</small>':esc(ri)+' %')+'</td></tr>';}
+function nut(c){var j=M.cols.indexOf(c);if(j<0){return "";}if(!any[j]){return row(W["m_"+c],'–',"",null,false);}
+if(c==="fe"&&W.fe14){return row(W.m_fe,esc(W.fe14.replace(/^[^:]*:\s*/,"").replace("%s",fm(tot[j]))),"",Math.round(tot[j]*100/M.ri[j]),miss[j]>0);}
+return row(W["m_"+c],fm(tot[j]),M.units[j],Math.round(tot[j]*100/M.ri[j]),miss[j]>0);}
+var h='<table class="fd-mtab"><tr><th>'+esc(W.electro)+'</th><th></th><th>'+esc(W.ri)+'</th></tr>'+row(W.sodium,fm(na.v||0),"mg",null,(na.inc||0)>0)+["k","mg","ca","cl"].map(nut).join("");
+h+='<tr><th>'+esc(W.microh)+'</th><th></th><th></th></tr>'+["fe","zn","vc","vd","b12","fol","va","ve","io"].map(nut).join("")+row(W.fibre,fm(na.fi||0),"g",null,false)+'</table>';
+h+='<p class="fd-muted">'+esc(W.ri_note)+(miss.some(function(x){return x>0;})||(na.inc||0)>0?' '+esc(W.inc_h):'')+'</p>';box.innerHTML=h;}).catch(function(){box.innerHTML="";el.open=false;});}
+window.ccFdMicro=micro;window.ccFdM={load:loadM,per100:per100};
+function dn(s){return Math.round(Date.parse(s+"T12:00:00Z")/864e5);}
+function dl(s,lang){return new Date(s+"T12:00:00").toLocaleDateString(lang||undefined,{day:"numeric",month:"short"});}
+function draw(c){var o=JSON.parse(c.dataset.tc),w=Math.max(240,Math.round(c.clientWidth||300)),h=160,pl=8,pr=58,pt=30,pb=28,P=o.p;
+var vs=P.map(function(p){return p[1];});if(o.avg!=null){vs.push(o.avg);}var dmn=Math.min.apply(0,P.map(function(p){return p[1];})),dmx=Math.max.apply(0,P.map(function(p){return p[1];}));
+var mn=Math.min.apply(0,vs),mx=Math.max.apply(0,vs),pad=Math.max((mx-mn)*0.18,o.pad);mn-=pad;mx+=pad;
+function X(d){return pl+(d-o.x0)/((o.x1-o.x0)||1)*(w-pl-pr);}function Y(v){return pt+(mx-v)/(mx-mn)*(h-pt-pb);}
+var q=P.map(function(p){return [X(p[0]),Y(p[1])];}),d="M"+q[0][0].toFixed(1)+" "+q[0][1].toFixed(1);
+for(var i=0;i<q.length-1;i++){var p0=q[i-1]||q[i],p1=q[i],p2=q[i+1],p3=q[i+2]||p2;d+=" C"+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+" "+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)+" "+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+" "+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)+" "+p2[0].toFixed(1)+" "+p2[1].toFixed(1);}
+var last=q[q.length-1],lp=P[P.length-1],gid="fdg"+Math.random().toString(36).slice(2);
+var s='<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" role="img" aria-label="'+esc(o.label)+'"><defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6e9ee" stop-opacity=".16"/><stop offset="1" stop-color="#e6e9ee" stop-opacity="0"/></linearGradient></defs>';
+s+='<line x1="'+pl+'" x2="'+(w-pr)+'" y1="'+(h-pb)+'" y2="'+(h-pb)+'" stroke="rgba(255,255,255,.12)"/>';
+s+='<path d="'+d+' L'+last[0].toFixed(1)+' '+(h-pb)+' L'+q[0][0].toFixed(1)+' '+(h-pb)+' Z" fill="url(#'+gid+')"/>';
+if(o.avg!=null){var ya=Y(o.avg).toFixed(1);s+='<line x1="'+pl+'" x2="'+(w-pr)+'" y1="'+ya+'" y2="'+ya+'" stroke="#b8bec8" stroke-width="1.5" stroke-dasharray="5 5"/><text x="'+(w-pr+6)+'" y="'+(+ya+5)+'" font-size="14" fill="#b8bec8">'+esc(fm2(o.avg,o.dec))+'</text>';}
+s+='<path d="'+d+'" fill="none" stroke="#e6e9ee" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>';
+s+='<circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="4" fill="#fff"/><text x="'+(last[0]+8).toFixed(1)+'" y="'+(o.avg!=null&&Math.abs(Y(o.avg)-last[1])<16?(last[1]+(last[1]<Y(o.avg)?-6:20)):(last[1]+5)).toFixed(1)+'" font-size="15" font-weight="700" fill="#fff">'+esc(fm2(lp[1],o.dec))+'</text>';
+s+='<text x="'+pl+'" y="'+(h-6)+'" font-size="14" fill="#b8bec8">'+esc(dl(o.from,o.lang))+'</text><text x="'+(w-pr)+'" y="'+(h-6)+'" font-size="14" fill="#b8bec8" text-anchor="end">'+esc(dl(o.to,o.lang))+'</text>';
+s+='<text x="'+pl+'" y="16" font-size="14" fill="#b8bec8">'+esc(fm2(dmn,o.dec)+" – "+fm2(dmx,o.dec))+'</text>';
+s+='<g class="fd-tip" style="display:none"><line y1="'+pt+'" y2="'+(h-pb)+'" stroke="rgba(255,255,255,.35)"/><circle r="4.5" fill="#fff"/><text y="16" font-size="14" font-weight="700" fill="#fff"></text></g><rect x="0" y="0" width="'+w+'" height="'+h+'" fill="transparent"/></svg>';
+c.innerHTML=s;var svg=c.querySelector("svg"),tip=svg.querySelector(".fd-tip");
+function show(ev){var r=svg.getBoundingClientRect(),mx2=(ev.clientX-r.left)*w/r.width,b=0;q.forEach(function(p,ix){if(Math.abs(p[0]-mx2)<Math.abs(q[b][0]-mx2)){b=ix;}});
+tip.style.display="";var ln=tip.querySelector("line"),ci=tip.querySelector("circle"),tx=tip.querySelector("text");ln.setAttribute("x1",q[b][0]);ln.setAttribute("x2",q[b][0]);ci.setAttribute("cx",q[b][0]);ci.setAttribute("cy",q[b][1]);
+tx.textContent=dl(P[b][2],o.lang)+" · "+fm2(P[b][1],o.dec)+" "+o.unit;var right=q[b][0]>w/2;tx.setAttribute("x",right?q[b][0]-6:q[b][0]+6);tx.setAttribute("text-anchor",right?"end":"start");}
+svg.addEventListener("pointermove",show);svg.addEventListener("pointerdown",show);svg.addEventListener("pointerleave",function(){tip.style.display="none";});}
+function fm2(v,dec){return (+v).toLocaleString(undefined,{minimumFractionDigits:dec,maximumFractionDigits:dec});}
+function trends(el){if(el.dataset.done){return;}var T=JSON.parse(el.dataset.tr),W=T.w,x0=dn(T.from),x1=dn(T.to),h="";
+[[1,W.tr_w,"kg",1,false,0.5],[2,W.tr_hrv,"ms",0,true,3],[3,W.tr_rhr,"bpm",0,true,2]].forEach(function(sr){var P=[];T.days.forEach(function(r){var v=r[sr[0]];if(v!=null&&+v>0){P.push([dn(r[0]),+v,r[0]]);}});
+P.sort(function(a,b){return a[0]-b[0];});
+if(P.length<3){h+='<div class="fd-tc"><h4>'+esc(sr[1])+'</h4><p class="fd-muted">'+esc(W.nodata)+'</p></div>';return;}
+var avg=null;if(sr[4]){var r28=P.filter(function(p){return p[0]>x1-28;});if(r28.length>=3){avg=r28.reduce(function(a,p){return a+p[1];},0)/r28.length;}}
+var o={p:P,x0:x0,x1:x1,from:T.from,to:T.to,lang:W.lang,unit:sr[2],dec:sr[3],avg:avg,pad:sr[5],label:sr[1]};
+h+='<div class="fd-tc"><h4>'+esc(sr[1])+'</h4>'+(avg!=null?'<p class="fd-muted">- - '+esc(W.tr_avg)+': '+esc(fm2(avg,sr[3]))+' '+esc(sr[2])+'</p>':'')+'<div class="fd-tcv" data-tc="'+esc(JSON.stringify(o))+'"></div></div>';});
+if(T.cyc&&T.cyc.p&&T.cyc.p.length){h+='<div class="fd-tc"><h4>'+esc(T.cyc.label||"")+'</h4><div class="fd-cycs" data-cy="'+esc(JSON.stringify({p:T.cyc.p,x0:x0,x1:x1,from:T.from,to:T.to,lang:W.lang}))+'"></div></div>';}
+el.innerHTML=h;el.dataset.done=1;el.querySelectorAll(".fd-tcv").forEach(draw);el.querySelectorAll(".fd-cycs").forEach(cstrip);}
+function cstrip(c){var o=JSON.parse(c.dataset.cy),w=Math.max(240,Math.round(c.clientWidth||300)),h=46,pl=8,pr=58,s='<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" aria-hidden="true"><rect x="'+pl+'" y="6" width="'+(w-pl-pr)+'" height="16" rx="4" fill="rgba(255,255,255,.05)"/>';
+function X(d){return pl+(d-o.x0)/((o.x1-o.x0)||1)*(w-pl-pr);}o.p.forEach(function(p){var a=dn(p[0]),b=p[1]?dn(p[1]):a+4;if(b<o.x0||a>o.x1){return;}a=Math.max(a,o.x0);b=Math.min(b,o.x1);s+='<rect x="'+X(a).toFixed(1)+'" y="6" width="'+Math.max(3,X(b+1)-X(a)).toFixed(1)+'" height="16" rx="3" fill="#c99bff" fill-opacity=".55"/>';});
+s+='<text x="'+pl+'" y="42" font-size="14" fill="#b8bec8">'+esc(dl(o.from,o.lang))+'</text><text x="'+(w-pr)+'" y="42" font-size="14" fill="#b8bec8" text-anchor="end">'+esc(dl(o.to,o.lang))+'</text></svg>';c.innerHTML=s;}
+window.ccFdTrends=trends;
+function visible(){document.querySelectorAll(".fd-trends[data-tr]").forEach(function(el){if(el.offsetParent!==null){trends(el);}});}
+document.addEventListener("toggle",function(e){var t=e.target;if(!t.classList||!t.open){return;}if(t.classList.contains("fd-micro")){micro(t);}if(t.classList.contains("fd-trd")){visible();}},true);
+var rt=null;addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){document.querySelectorAll(".fd-tcv").forEach(function(c){if(c.offsetParent!==null){draw(c);}});document.querySelectorAll(".fd-cycs").forEach(function(c){if(c.offsetParent!==null){cstrip(c);}});},200);});
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",visible);}else{visible();}
+})();
+JS;
+    return '<script>' . str_replace(["\r", "\n"], ['', ' '], $js) . '</script>';
 }
 /* the athlete's diary (all drawn in the browser from data-cfg; every change is saved through the REST routes) */
 function cc_fd_js() {
@@ -595,7 +1016,7 @@ function cc_fd_js() {
 (function(){
 var root=document.querySelector(".fd-app");if(!root){return;}
 var C=JSON.parse(root.getAttribute("data-cfg")),W=C.w;
-var S={date:C.date,day:C.day,mine:C.mine||[],kg:C.kg||"",open:{},srch:null,edit:null,timer:null,dirty:false,mineOpen:false,res:[]};
+var S={date:C.date,day:C.day,mine:C.mine||[],kg:C.kg||"",open:{},srch:null,edit:null,timer:null,dirty:false,mineOpen:false,res:[],fav:C.fav||[],recent:C.recent||[],just:null,cyc:C.cycle||null,M:null};
 var DB=null,DBP=null;
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
 function fmt(x){x=Math.round((+x||0)*10)/10;return x.toLocaleString(C.lang,{maximumFractionDigits:1});}
@@ -608,18 +1029,66 @@ function send(url,data,method){var o={method:method||"POST",credentials:"same-or
 if(o.method==="GET"){url+=(url.indexOf("?")>-1?"&":"?")+new URLSearchParams(data).toString();}
 else if(data instanceof FormData){o.body=data;}else{var f=new FormData();for(var k in data){f.append(k,data[k]);}o.body=f;}
 return fetch(url,o).then(function(r){if(!r.ok){throw r;}return r.json();});}
-function status(t,bad){var el=root.querySelector(".fd-status");if(el){el.textContent=t||"";el.className="fd-status"+(bad?" err":"");}}
+var stT=null;function status(t,bad){var el=root.querySelector(".fd-status");if(el){var ok=t===W.saved;el.textContent=ok?"✓ "+t:(t||"");el.className="fd-status"+(bad?" err":"")+(ok?" ok":"");clearTimeout(stT);if(ok){stT=setTimeout(function(){el.classList.add("fade");},1600);}}}
 function slot(k){if(!S.day.s||Array.isArray(S.day.s)){S.day.s={};}var s=S.day.s[k];if(!s){s=S.day.s[k]={t:"",n:"",i:[]};}if(!s.i){s.i=[];}return s;}
 var F=["k","c","p","f","fi","su"];
-function tot(items){var t={k:0,c:0,p:0,f:0,fi:0,su:0};(items||[]).forEach(function(it){var m=(+it.g||0)/100;F.forEach(function(x){t[x]+=(+it[x]||0)*m;});});return t;}
+function tot(items){var t={k:0,c:0,p:0,f:0,fi:0,su:0,na:0,nam:0};(items||[]).forEach(function(it){var m=(+it.g||0)/100;F.forEach(function(x){t[x]+=(+it[x]||0)*m;});if(m>0){if(it.na==null||it.na===""){t.nam++;}else{t.na+=(+it.na)*m;}}});return t;}
 function dayTot(){var a=[];C.slots.forEach(function(s){a=a.concat(slot(s[0]).i);});return tot(a);}
-function macro(it){var m=(+it.g||0)/100;return fmt0(it.k*m)+" kcal · "+W.c_ab+" "+fmt(it.c*m)+" · "+W.p_ab+" "+fmt(it.p*m)+" · "+W.f_ab+" "+fmt(it.f*m);}
+function dayMl(){var ml=0;C.slots.forEach(function(s){ml+=+slot(s[0]).d||0;});return ml;}
+function macro(it){var m=(+it.g||0)/100;return fmt0(it.k*m)+" kcal · "+W.c_ab+" "+fmt(it.c*m)+" · "+W.p_ab+" "+fmt(it.p*m)+" · "+W.f_ab+" "+fmt(it.f*m)+" · Na\u00a0"+(it.na==null||it.na===""?"–":fmt0(it.na*m)+"\u00a0mg");}
+function kgUsed(){return C.vkg?+C.vkg.v:(parseFloat(String(S.kg).replace(",","."))||0);}
+function sxTxt(k,s,t){var a=[],ml=+s.d||0;if(s.i.length){a.push(W.sodium+" "+fmt0(t.na)+" mg"+(t.nam?" ("+W.na_inc+")":""));}
+return a.map(function(x){return x.charAt(0)==="<"?x:esc(x);}).join(" · ");}
+function hm(m){m=Math.round(+m||0);return m>0?Math.floor(m/60)+":"+String(m%60).padStart(2,"0"):"";}
+function pmin(v){v=String(v||"").trim().replace(",",".");if(!v){return 0;}var m=v.match(/^(\d{1,2})[:h.](\d{1,2})$/);if(m&&v.indexOf(".")<0){return (+m[1])*60+(+m[2]);}var x=parseFloat(v);return x>0?(x<=24?Math.round(x*60):Math.round(x)):0;}
+function rideMin(s){var r=C.rides&&C.rides[S.date];return r>0?r:(+s.r||0);}
+function gauge(label,val,unit,tg){var max=Math.max(tg?tg*1.3:0,val*1.1,unit==="ml"?800:100),pct=Math.min(100,val/max*100),ok=tg&&val>=tg;
+return '<div class="fd-gauge"><div class="fd-gh"><span>'+esc(label)+'</span><b>'+fmt0(val)+' '+unit+'/h</b></div><div class="fd-gbar"><i class="'+(ok?"ok":"")+'" style="width:'+pct.toFixed(1)+'%"></i>'+(tg?'<u style="left:'+(tg/max*100).toFixed(1)+'%"></u>':"")+'</div>'+(tg?'<small>'+esc(W.target.replace("%s",tg+" "+unit+"/h"))+(ok?" ✓":"")+'</small>':"")+'</div>';}
+function gaugesHtml(k,s,t){if(k!=="bike"){return "";}var rm=rideMin(s);if(!(rm>0)||(!s.i.length&&!(+s.d>0))){return "";}var h=rm/60,tg=(C.targets&&C.targets[S.date])||{};
+return gauge(W.g_h,t.c/h,"g",tg.c||0)+gauge(W.ml_h,(+s.d||0)/h,"ml",tg.ml||0);}
+function isFav(id){return S.fav.some(function(f){return f.id===id;});}
+function ringParts(t){var kc=t.c*4,kp=t.p*4,kf=t.f*9,tt=kc+kp+kf,L=2*Math.PI*42,off=0;return [kc,kp,kf].map(function(v){var len=tt?v/tt*L:0,o={len:len,off:off,pct:tt?Math.round(v/tt*100):0};off+=len;return o;});}
+function ringHtml(t){var P=ringParts(t),L=2*Math.PI*42,col=["#7fb2ff","#c99bff","#f0b45a"],g=[t.c,t.p,t.f],nm=[W.carbs,W.protein,W.fat];
+var h='<div class="fd-ringw"><svg class="fd-ring" viewBox="0 0 110 110" width="110" height="110" aria-hidden="true"><circle cx="55" cy="55" r="42" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="12"/>';
+P.forEach(function(p,i){h+='<circle data-rg="'+i+'" cx="55" cy="55" r="42" fill="none" stroke="'+col[i]+'" stroke-width="12" stroke-dasharray="'+p.len.toFixed(1)+' '+L.toFixed(1)+'" stroke-dashoffset="'+(-p.off).toFixed(1)+'" transform="rotate(-90 55 55)"/>';});
+h+='<text data-rk x="55" y="58" text-anchor="middle" font-size="22" font-weight="700" fill="#fff">'+fmt0(t.k)+'</text><text x="55" y="76" text-anchor="middle" font-size="14" fill="#b8bec8">kcal</text></svg><ul class="fd-leg">';
+P.forEach(function(p,i){h+='<li><i style="background:'+col[i]+'"></i><span>'+esc(nm[i])+'</span><b data-rl="'+i+'">'+p.pct+' % · '+fmt0(g[i])+' g</b></li>';});return h+'</ul></div>';}
+function ringUpd(){var w=root.querySelector(".fd-ringw");if(!w){return;}var t=dayTot(),P=ringParts(t),L=2*Math.PI*42,g=[t.c,t.p,t.f];
+P.forEach(function(p,i){var c=w.querySelector('[data-rg="'+i+'"]');if(c){c.setAttribute("stroke-dasharray",p.len.toFixed(1)+" "+L.toFixed(1));c.setAttribute("stroke-dashoffset",(-p.off).toFixed(1));}var l=w.querySelector('[data-rl="'+i+'"]');if(l){l.textContent=p.pct+" % · "+fmt0(g[i])+" g";}});
+var k=w.querySelector("[data-rk]");if(k){k.textContent=fmt0(t.k);}}
+function ironDay(){if(!C.female||!S.M){return null;}var j=S.M.cols.indexOf("fe"),rc=recipes(),fe=0,g=0,miss=0,sl=0;
+C.slots.forEach(function(sv){var s=slot(sv[0]);if(s.i.length){sl++;}s.i.forEach(function(it){var gr=+it.g||0;if(!(gr>0)){return;}g+=gr;var v=window.ccFdM.per100(S.M,it.id,rc,0);if(!v||v[j]==null){miss+=gr;}else{fe+=v[j]*gr/100;}});});
+var inc=g>0&&miss/g>0.3;return {fe:fe,inc:inc,low:!inc&&sl>=3&&fe<14};}
+function ironHtml(){var r=ironDay();if(!r||!hasAny()){return "";}var v=fmt(r.fe);
+return '<p class="fd-ironl">'+esc(W.iron_line.replace("%s",v))+(r.inc?' <small class="fd-inc">('+esc(W.incomplete)+')</small>':'')+'</p>'+(r.low?'<p class="fd-ironnote">'+esc(W.iron_note.replace("%s",v))+'</p>':'');}
+function cycLen(p){var g=[];for(var i=1;i<p.length;i++){var d=dn2(p[i][0])-dn2(p[i-1][0]);if(d>=18&&d<=45){g.push(d);}}return g.length>=2?Math.round(g.reduce(function(a,b){return a+b;},0)/g.length):28;}
+function cycN(p){var n=0;for(var i=1;i<p.length;i++){var d=dn2(p[i][0])-dn2(p[i-1][0]);if(d>=18&&d<=45){n++;}}return n;}
+function dn2(s){return Math.round(Date.parse(s+"T12:00:00Z")/864e5);}
+function phase(ds){var cy=S.cyc;if(!cy||!cy.on||!cy.p.length){return null;}var L=cycLen(cy.p),last=null;cy.p.forEach(function(x){if(x[0]<=ds){last=x;}});if(!last){return null;}
+var day=dn2(ds)-dn2(last[0])+1;if(day>L+10){return null;}var pl=last[1]?dn2(last[1])-dn2(last[0])+1:5,ov=L-14;return {day:day,ph:day<=pl?"m":(Math.abs(day-ov)<=1?"o":(day<ov?"f":"l"))};}
+function cycChip(){var p=phase(S.date);return p?'<p><span class="fd-cchip">'+esc(W.cyc_day.replace("%d",p.day)+" · "+W["ph_"+p.ph])+'</span></p>':"";}
+function cycHtml(){if(!C.female){return "";}var cy=S.cyc||{on:0,p:[]},h='<details class="fd-cyc"'+(S.cycOpen?" open":"")+'><summary>'+esc(W.cyc_title)+'</summary><div><p>'+esc(W.cyc_consent)+'</p>';
+if(!cy.on){return h+'<button type="button" class="btn btn-ghost" data-act="cyc" data-v="on">'+esc(W.cyc_on)+'</button></div></details>';}
+var isS=cy.p.some(function(x){return x[0]===S.date;}),isE=cy.p.some(function(x){return x[1]===S.date;}),L=cycLen(cy.p);
+h+='<div class="fd-row">'+(isS||isE?'<button type="button" class="btn btn-ghost" data-act="cyc" data-v="unset">'+esc(W.cyc_unset)+'</button>':'<button type="button" class="btn btn-ghost" data-act="cyc" data-v="start">'+esc(W.cyc_start)+'</button><button type="button" class="btn btn-ghost" data-act="cyc" data-v="end">'+esc(W.cyc_end)+'</button>')+'</div>';
+h+='<p><small>'+esc(cycN(cy.p)>=2?W.cyc_len.replace("%d",L):W.cyc_def)+'</small></p>';
+if(cy.p.length){h+='<p><small>'+esc(W.cyc_starts)+': '+esc(cy.p.slice(-6).map(function(x){return new Date(x[0]+"T12:00:00").toLocaleDateString(C.lang,{day:"numeric",month:"short"});}).join(", "))+'</small></p>';}
+return h+'<button type="button" class="fd-link" data-act="cyc" data-v="off" style="justify-self:start">'+esc(W.cyc_off)+'</button></div></details>';}
+function renderCyc(){var b=root.querySelector(".fd-cycbox");if(b){b.innerHTML=cycHtml();}}
+function hasAny(){return C.slots.some(function(sv){return slot(sv[0]).i.length>0;});}
+function streakHtml(){if(S.date!==C.today){return "";}var n=(+C.streak||0)+(hasAny()?1:0);return n>=2?'<p class="fd-streak">🔥 '+esc(W.streak.replace("%d",n))+'</p>':"";}
+function chipsHtml(){var h="";function row(lbl,src,arr){if(!arr.length){return "";}return '<p class="fd-chl">'+esc(lbl)+'</p><div class="fd-chips">'+arr.map(function(f,i){return '<button type="button" class="fd-chip" data-act="chip" data-src="'+src+'" data-i="'+i+'">'+(src==="fav"?"★ ":"")+esc(f.n)+'</button>';}).join("")+'</div>';}
+h+=row(W.favs,"fav",S.fav)+row(W.recent,"recent",S.recent);return h?'<div class="fd-chipbox">'+h+'</div>':"";}
 function macro100(f){return fmt0(f.k)+" kcal · "+W.c_ab+" "+fmt(f.c)+" · "+W.p_ab+" "+fmt(f.p)+" · "+W.f_ab+" "+fmt(f.f)+" / 100 g";}
 function macroT(t){return fmt0(t.k)+" kcal · "+W.carbs+" "+fmt(t.c)+" g · "+W.protein+" "+fmt(t.p)+" g · "+W.fat+" "+fmt(t.f)+" g";}
 function tag(m){return m?' <span class="fd-tag">'+esc(m==="r"?W.myrecipe:W.myfood)+'</span>':"";}
 function loadDB(){if(DBP){return DBP;}DBP=fetch(C.foods,{credentials:"omit"}).then(function(r){if(!r.ok){throw r;}return r.json();}).then(function(d){
-DB=d.foods.map(function(r){return {id:r[0],n:r[2],fr:r[3]||"",k:r[4],c:r[5],p:r[6],f:r[7],fi:r[8]==null?0:r[8],su:r[9]==null?0:r[9],q:norm(r[2]+" | "+(r[3]||"")),qn:norm(r[2])};});return DB;}).catch(function(){DBP=null;DB=null;});return DBP;}
-function mineFoods(){return S.mine.map(function(m){return {id:m.id,n:m.n,fr:"",k:m.k,c:m.c,p:m.p,f:m.f,fi:m.fi||0,su:m.su||0,q:norm(m.n),qn:norm(m.n),mine:m.t};});}
+DB=d.foods.map(function(r){return {id:r[0],n:r[2],fr:r[3]||"",k:r[4],c:r[5],p:r[6],f:r[7],fi:r[8]==null?0:r[8],su:r[9]==null?0:r[9],na:r[10]==null?null:r[10],st:r[11]||"",q:norm(r[2]+" | "+(r[3]||"")),qn:norm(r[2])};});
+BYID={};DB.forEach(function(f){BYID[f.id]=f;});STAP=(d.staples||[]).map(function(s){return {re:new RegExp(s.rx),raw:s.raw,cooked:s.cooked};});return DB;}).catch(function(){DBP=null;DB=null;});return DBP;}
+var BYID={},STAP=[];
+function staple(f){if(!f||f.mine||(f.st!=="r"&&f.st!=="c")){return null;}for(var i=0;i<STAP.length;i++){if(STAP[i].re.test(f.qn)){return STAP[i];}}return null;}
+function rcb(st){return st==="r"||st==="c"?' <span class="fd-rc fd-rc-'+st+'">'+esc(st==="r"?W.b_raw:W.b_cooked)+'</span>':"";}
+function mineFoods(){return S.mine.map(function(m){return {id:m.id,n:m.n,fr:"",k:m.k,c:m.c,p:m.p,f:m.f,fi:m.fi||0,su:m.su||0,na:m.na==null?null:m.na,st:"",q:norm(m.n),qn:norm(m.n),mine:m.t};});}
 var ALIAS={rasher:"bacon",rashers:"bacon",crisps:"potato chips",crisp:"potato chips",porridge:"oats",courgette:"zucchini",courgettes:"zucchini",aubergine:"eggplant",aubergines:"eggplant",biscuit:"cookie",biscuits:"cookies",chips:"french fries",coriander:"cilantro",rocket:"arugula",prawn:"shrimp",prawns:"shrimp",sweets:"candy",treacle:"molasses",swede:"rutabaga",cornflour:"cornstarch",yoghurt:"yogurt",isotonic:"sports drink",krispies:"rice crisp",nutella:"hazelnut spread",preserve:"jam",conserve:"jam",brack:"barmbrack"};
 function scoreOf(f,ws){for(var j=0;j<ws.length;j++){if(f.q.indexOf(ws[j])<0){return -1;}}var whole=ws.join(" ");
 return f.qn.indexOf(whole)===0?0:(f.qn.indexOf(ws[0])===0?1:(ws.every(function(w){return new RegExp("(^|[^a-z0-9])"+w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).test(f.qn);})?2:3));}
@@ -639,38 +1108,53 @@ function resultsHtml(){if(!DB&&!S.mine.length){return '<p class="fd-muted">'+esc
 S.res=search(S.srch.q);if(!S.res.length){return DB?'<p class="fd-muted">'+esc(W.noresults)+'</p>':'<p class="fd-muted">'+esc(W.loading)+'</p>';}
 var ws=norm(S.srch.q).split(/[\s,]+/).filter(Boolean);
 return (S.near?'<p class="fd-muted">'+esc(W.closest)+'</p>':'')+'<ul class="fd-rl">'+S.res.map(function(f,ix){var viaFr=f.fr&&!ws.every(function(w){return f.qn.indexOf(w)>-1;});
-return '<li><button type="button" data-act="pick" data-rx="'+ix+'"><span>'+esc(f.n)+tag(f.mine)+'</span>'+(viaFr?'<i>'+esc(f.fr)+'</i>':'')+'<small>'+esc(macro100(f))+'</small></button></li>';}).join("")+'</ul>';}
+return '<li><button type="button" data-act="pick" data-rx="'+ix+'"><span>'+esc(f.n)+rcb(f.st)+tag(f.mine)+'</span>'+(viaFr?'<i>'+esc(f.fr)+'</i>':'')+'<small>'+esc(macro100(f))+'</small></button></li>';}).join("")+'</ul>';}
 function searchHtml(){var s=S.srch;
+if(s.ask){var af=s.ask.f;return '<div class="fd-search"><div class="fd-ask"><b>'+esc(af.n)+rcb(af.st)+'</b><p>'+esc(W.ask_rc)+'</p><div class="fd-row"><button type="button" class="btn btn-go" data-act="rc" data-v="r">'+esc(W.w_raw)+'</button><button type="button" class="btn btn-go" data-act="rc" data-v="c">'+esc(W.w_cooked)+'</button><button type="button" class="fd-link" data-act="unpick">'+esc(W.cancel)+'</button></div></div></div>';}
 if(s.pick){var p=s.pick,it={k:p.k,c:p.c,p:p.p,f:p.f,g:s.g};
-return '<div class="fd-search"><div class="fd-pick"><b>'+esc(p.n)+tag(p.mine)+'</b><label>'+esc(W.grams)+' <input type="number" class="fd-pg" inputmode="decimal" min="1" max="5000" step="1" value="'+esc(s.g)+'"></label><span class="fd-pp">'+esc(macro(it))+'</span><div class="fd-row"><button type="button" class="btn btn-go" data-act="pickadd">'+esc(W.addit)+'</button><button type="button" class="fd-link" data-act="unpick">'+esc(W.cancel)+'</button></div></div></div>';}
-return '<div class="fd-search"><input type="search" class="fd-q" placeholder="'+esc(W.search)+'" value="'+esc(s.q)+'" autocomplete="off" enterkeyhint="search"><div class="fd-res">'+resultsHtml()+'</div><p class="fd-credit">'+esc(C.credit)+'</p><button type="button" class="fd-link" data-act="cancel" style="justify-self:start">'+esc(W.cancel)+'</button></div>';}
-function slotHtml(k,label){var s=slot(k),t=tot(s.i),open=S.open[k]!==undefined?S.open[k]:(s.i.length>0||!!s.n||!!s.phu);
+return '<div class="fd-search"><div class="fd-pick"><b>'+esc(p.n)+rcb(p.st)+tag(p.mine)+'</b><label>'+esc(W.grams)+' <input type="number" class="fd-pg" inputmode="decimal" min="1" max="5000" step="1" value="'+esc(s.g)+'"></label><span class="fd-pp">'+esc(macro(it))+'</span><div class="fd-row"><button type="button" class="btn btn-go" data-act="pickadd">'+esc(W.addit)+'</button><button type="button" class="fd-link" data-act="unpick">'+esc(W.cancel)+'</button></div></div></div>';}
+return '<div class="fd-search"><p class="fd-wh">'+esc(W.weigh_h)+'</p><input type="search" class="fd-q" placeholder="'+esc(W.search)+'" value="'+esc(s.q)+'" autocomplete="off" enterkeyhint="search">'+(s.q.trim()?"":chipsHtml())+'<div class="fd-res">'+resultsHtml()+'</div><p class="fd-credit">'+esc(C.credit)+'</p><button type="button" class="fd-link" data-act="cancel" style="justify-self:start">'+esc(W.cancel)+'</button></div>';}
+function slotHtml(k,label){var s=slot(k),t=tot(s.i),open=S.open[k]!==undefined?S.open[k]:(s.i.length>0||!!s.n||!!s.phu||+s.d>0);
 var h='<details class="fd-slot" data-slot="'+k+'"'+(open?" open":"")+'><summary><span class="fd-sl">'+esc(label)+'</span><span class="fd-st" data-tt="'+k+'">'+sumTxt(s,t)+'</span></summary><div class="fd-sb">';
+if(k==="bike"){var rv=C.rides&&C.rides[S.date];h+=rv>0?'<p class="fd-hint">'+esc(W.ride_rec.replace("%s",hm(rv).replace(":","h")))+'</p>':'<label class="fd-drk">'+esc(W.ride_t)+' <input type="text" inputmode="decimal" data-f="r" placeholder="2:30" value="'+esc(hm(s.r))+'" maxlength="5"></label>';}
 h+='<label class="fd-time">'+esc(W.time)+' <input type="time" data-f="t" value="'+esc(s.t||"")+'"></label>';
-if(s.i.length){h+='<ul class="fd-items">'+s.i.map(function(it,ix){return '<li><div class="fd-in"><b>'+esc(it.n)+tag(it.m)+'</b><small data-it="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-f="g" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-x" data-act="rm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">×</button></li>';}).join("")+'</ul>';
+if(s.i.length){h+='<ul class="fd-items">'+s.i.map(function(it,ix){return '<li'+(S.just===k+":"+ix?' class="fd-new"':'')+'><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+'</b><small data-it="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-f="g" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-star'+(isFav(it.id)?' on':'')+'" data-act="star" data-ix="'+ix+'" aria-label="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'" title="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'">'+(isFav(it.id)?'★':'☆')+'</button><button type="button" class="fd-x" data-act="rm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">×</button></li>';}).join("")+'</ul>';
 h+='<p class="fd-stot" data-stot="'+k+'">'+esc(W.slot_total+": "+macroT(t))+'</p>';}
-h+=(S.srch&&S.srch.ctx==="slot"&&S.srch.slot===k)?searchHtml():'<button type="button" class="btn btn-go" data-act="add">'+esc(W.add)+'</button>';
+h+='<p class="fd-sx" data-sx="'+k+'">'+sxTxt(k,s,t)+'</p><div class="fd-gg" data-gg="'+k+'">'+gaugesHtml(k,s,t)+'</div>';
+h+=(S.srch&&S.srch.ctx==="slot"&&S.srch.slot===k)?searchHtml():'<div class="fd-row"><button type="button" class="btn btn-go" data-act="add">'+esc(W.add)+'</button><button type="button" class="fd-link" data-act="copyslot">'+esc(W.copy_y)+'</button></div>';
+h+='<label class="fd-drk">'+esc(W.drinks)+' <input type="number" inputmode="numeric" min="0" max="10000" step="50" data-f="d" value="'+esc(s.d||"")+'"><span class="fd-hint">'+esc(W.drinks_h)+'</span></label>';
 h+='<label class="fd-note">'+esc(W.note)+'<textarea rows="2" data-f="n" placeholder="'+esc(W.note_ph)+'">'+esc(s.n||"")+'</textarea></label>';
 h+='<div class="fd-ph">'+(s.phu?'<a href="'+esc(s.phu)+'" target="_blank" rel="noopener"><img src="'+esc(s.phu)+'" alt=""></a>':"")+'<label class="btn btn-ghost fd-phb">'+esc(s.phu?W.photo_ch:W.photo)+'<input type="file" accept="image/*" hidden data-f="ph"></label>'+(s.phu?'<button type="button" class="fd-link" data-act="phdel">'+esc(W.photo_del)+'</button>':"")+'</div>';
 return h+'</div></details>';}
-function sumTxt(s,t){var a=[];if(s.t){a.push(s.t);}if(s.i.length){a.push(fmt0(t.k)+" kcal");}return esc(a.join(" · "));}
-function totV(){var t=dayTot(),kg=parseFloat(String(S.kg).replace(",","."))||0;
-function tile(v,l,x){return '<div><b>'+v+'</b><span>'+esc(l)+'</span>'+(x?'<em>'+x+'</em>':"")+'</div>';}
-return '<div class="fd-tiles">'+tile(fmt0(t.k),"kcal")+tile(fmt0(t.c)+" g",W.carbs,kg?fmt(t.c/kg)+" g/kg":"")+tile(fmt0(t.p)+" g",W.protein,kg?fmt(t.p/kg)+" g/kg":"")+tile(fmt0(t.f)+" g",W.fat)+tile(fmt0(t.fi)+" g",W.fibre)+tile(fmt0(t.su)+" g",W.sugars)+'</div>';}
+function sumTxt(s,t){var a=[];if(s.t){a.push(s.t);}if(s.i.length){a.push(fmt0(t.k)+" kcal");}if(+s.d>0){a.push(fmt0(s.d)+" ml");}if(!a.length&&!s.n&&!s.phu){return '<span class="fd-addh">'+esc(W.add_short)+'</span>';}return esc(a.join(" · "));}
+function totV(){var t=dayTot(),kg=kgUsed(),ml=dayMl();
+function tile(v,l,x,cl){return '<div><b>'+v+'</b><span>'+esc(l)+'</span>'+(x?'<em'+(cl?' class="fd-inc"':"")+'>'+x+'</em>':"")+'</div>';}
+return '<div class="fd-tiles">'+tile(fmt0(t.k),"kcal")+tile(fmt0(t.c)+" g",W.carbs,kg?fmt(t.c/kg)+" g/kg":"")+tile(fmt0(t.p)+" g",W.protein,kg?fmt(t.p/kg)+" g/kg":"")+tile(fmt0(t.f)+" g",W.fat)+tile(fmt0(t.fi)+" g",W.fibre)+tile(fmt0(t.su)+" g",W.sugars)
++tile(fmt0(ml)+" ml",W.fluids,ml?(Math.round(ml/100)/10).toLocaleString(C.lang,{minimumFractionDigits:1,maximumFractionDigits:1})+" L":"")+tile(fmt0(t.na)+" mg",W.sodium,t.nam?esc(W.na_inc):"",true)+'</div>'+ironHtml();}
+function microItems(){var a=[];C.slots.forEach(function(sv){slot(sv[0]).i.forEach(function(it){a.push([it.id,+it.g||0,it.m||""]);});});return a;}
+function recipes(){var o={};S.mine.forEach(function(m){if(m.t==="r"){o[m.id]={ing:(m.ing||[]).map(function(i){return [i.id,+i.g||0,i.m||""];}),cw:+m.cw||0};}});return o;}
+function microSet(el){var t=dayTot();el.setAttribute("data-items",JSON.stringify(microItems()));el.setAttribute("data-mine",JSON.stringify(recipes()));el.setAttribute("data-na",JSON.stringify({v:Math.round(t.na),inc:t.nam,fi:Math.round(t.fi*10)/10}));}
+function microHtml(){if(!microItems().length){return "";}return '<details class="fd-micro"'+(S.microOpen?" open":"")+' data-url="'+esc(C.micro)+'" data-w="'+esc(JSON.stringify(C.mw))+'"><summary>'+esc(W.micro)+'</summary><div class="fd-mt"></div></details>';}
+function microRefresh(){var el=root.querySelector(".fd-micro");if(!el){return;}microSet(el);if(el.open&&window.ccFdMicro){window.ccFdMicro(el);}}
 function threadHtml(){var r=S.day.r||[];
 var h=r.map(function(x){var who=x.from==="athlete"?W.you:(x.from==="nutri"?"Marine":"Matteo");var d=new Date(x.at*1000);
 return '<div class="nt-rep'+(x.from==="athlete"?" nt-rep-a":"")+'"><span class="nt-rh"><b>'+esc(who)+'</b> <small>'+esc(d.toLocaleString(C.lang,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}))+'</small></span><p>'+esc(x.text).replace(/\n/g,"<br>")+'</p></div>';}).join("");
 return '<div class="fd-thread">'+(r.length?'<h3>'+esc(W.thread)+'</h3>'+h:"")+'<details class="nt-replyd"><summary>'+esc(r.length?W.reply:W.ask)+'</summary><div class="fd-rbox"><textarea rows="3"></textarea><button type="button" class="btn btn-go" data-act="send">'+esc(W.send_r)+'</button></div></details></div>';}
 function render(){var d=new Date(S.date+"T12:00:00"),lbl=d.toLocaleDateString(C.lang,{weekday:"long",day:"numeric",month:"long"}),isT=S.date===today();
 var h='<div class="fd-nav"><button type="button" class="fd-arrow" data-act="prev" aria-label="'+esc(W.prev)+'">‹</button><div class="fd-date"><b>'+esc(lbl)+'</b>'+(isT?'<small>'+esc(W.today)+'</small>':'<button type="button" class="fd-link" data-act="today">'+esc(W.gotoday)+'</button>')+'</div><button type="button" class="fd-arrow" data-act="next" aria-label="'+esc(W.next)+'"'+(S.date>=today()?" disabled":"")+'>›</button></div><p class="fd-status" role="status"></p>';
+h+='<div class="fd-dtop">'+cycChip()+streakHtml()+(hasAny()?ringHtml(dayTot()):'')+'<button type="button" class="fd-link fd-copyday" data-act="copyday">'+esc(W.copy_day)+'</button></div>';
 C.slots.forEach(function(sv){h+=slotHtml(sv[0],sv[1]);});
-h+='<div class="fd-tot"><h3>'+esc(W.day_total)+'</h3><div class="fd-totv">'+totV()+'</div><label class="fd-kg">'+esc(W.weight)+' <input type="number" class="fd-kgi" inputmode="decimal" min="25" max="250" step="0.1" value="'+esc(S.kg)+'"></label><p class="fd-muted">'+esc(W.weight_h)+'</p></div>';
+var wb=C.vkg?'<p class="fd-vkg">'+esc(W.vk_weight.replace("%1$s",fmt(C.vkg.v)).replace("%2$s",new Date(C.vkg.d+"T12:00:00").toLocaleDateString(C.lang,{day:"numeric",month:"short"})))+'</p><p class="fd-muted">'+esc(W.vk_weight_h)+'</p>'
+:'<label class="fd-kg">'+esc(W.weight)+' <input type="number" class="fd-kgi" inputmode="decimal" min="25" max="250" step="0.1" value="'+esc(S.kg)+'"></label><p class="fd-muted">'+esc(W.weight_h)+'</p>';
+h+='<div class="fd-tot"><h3>'+esc(W.day_total)+'</h3><div class="fd-totv">'+totV()+'</div>'+wb+'</div>'+microHtml();
 h+=threadHtml();
-root.querySelector(".fd-day").innerHTML=h;renderMine();}
+root.querySelector(".fd-day").innerHTML=h;S.just=null;renderMine();renderCyc();microRefresh();}
 function refreshNums(){C.slots.forEach(function(sv){var k=sv[0],s=slot(k),t=tot(s.i),el=root.querySelector('[data-tt="'+k+'"]');if(el){el.innerHTML=sumTxt(s,t);}
 var st=root.querySelector('[data-stot="'+k+'"]');if(st){st.textContent=W.slot_total+": "+macroT(t);}
 var sl=root.querySelector('.fd-slot[data-slot="'+k+'"]');if(sl){s.i.forEach(function(it,ix){var sm=sl.querySelector('[data-it="'+ix+'"]');if(sm){sm.textContent=macro(it);}});}});
-var tv=root.querySelector(".fd-totv");if(tv){tv.innerHTML=totV();}}
+C.slots.forEach(function(sv){var sx=root.querySelector('[data-sx="'+sv[0]+'"]');if(sx){var s2=slot(sv[0]);sx.innerHTML=sxTxt(sv[0],s2,tot(s2.i));}});
+C.slots.forEach(function(sv){var gg=root.querySelector('[data-gg="'+sv[0]+'"]');if(gg){var s3=slot(sv[0]);gg.innerHTML=gaugesHtml(sv[0],s3,tot(s3.i));}});
+var tv=root.querySelector(".fd-totv");if(tv){tv.innerHTML=totV();}ringUpd();var sk=root.querySelector(".fd-streak");if(sk){var n=(+C.streak||0)+(hasAny()?1:0);sk.textContent="🔥 "+W.streak.replace("%d",n);}microRefresh();}
 function save(){S.dirty=true;status(W.saving);clearTimeout(S.timer);S.timer=setTimeout(flush,700);}
 function payload(){return {page:C.page,date:S.date,data:JSON.stringify(S.day.s||{})};}
 function flush(){clearTimeout(S.timer);if(!S.dirty){return Promise.resolve();}S.dirty=false;return send(C.u.save,payload()).then(function(){status(W.saved);}).catch(function(){S.dirty=true;status(W.err,true);});}
@@ -681,11 +1165,11 @@ if(!S.mine.length&&!S.edit){h+='<p class="fd-muted">'+esc(W.none_mine)+'</p>';}
 S.mine.forEach(function(m){h+='<div class="fd-mrow"><div><b>'+esc(m.n)+tag(m.t)+'</b><small>'+esc(macro100(m))+'</small></div><button type="button" class="fd-link" data-act="medit" data-id="'+esc(m.id)+'">'+esc(W.edit)+'</button><button type="button" class="fd-link" data-act="mdel" data-id="'+esc(m.id)+'">'+esc(W.del)+'</button></div>';});
 h+=S.edit?formHtml():'<div class="fd-row"><button type="button" class="btn btn-ghost" data-act="newfood">'+esc(W.add_label)+'</button><button type="button" class="btn btn-ghost" data-act="newrecipe">'+esc(W.add_recipe)+'</button></div>';
 return h+'</div></details>';}
-function recipeCalc(e){var t=tot(e.ing),w=parseFloat(e.cw)||0,sum=e.ing.reduce(function(a,i){return a+(+i.g||0);},0);if(!(w>0)){w=sum;}var o={};F.forEach(function(x){o[x]=w>0?Math.round(t[x]*1000/w)/10:0;});o.w=w;o.sum=sum;return o;}
+function recipeCalc(e){var t=tot(e.ing),w=parseFloat(e.cw)||0,sum=e.ing.reduce(function(a,i){return a+(+i.g||0);},0);if(!(w>0)){w=sum;}var o={};F.forEach(function(x){o[x]=w>0?Math.round(t[x]*1000/w)/10:0;});o.na=(w>0&&!t.nam)?Math.round(t.na*1000/w)/10:null;o.w=w;o.sum=sum;return o;}
 function formHtml(){var e=S.edit,h='<div class="fd-form"><h4>'+esc(e.id?W.edit:(e.t==="r"?W.add_recipe:W.add_label))+'</h4><label>'+esc(W.name)+'<input type="text" data-e="n" value="'+esc(e.n)+'" maxlength="120"></label>';
-if(e.t==="f"){h+='<h4>'+esc(W.per100)+'</h4><div class="fd-nums">'+[["k","kcal"],["c",W.carbs+" (g)"],["p",W.protein+" (g)"],["f",W.fat+" (g)"],["fi",W.fibre+" (g), "+W.optional],["su",W.sugars+" (g), "+W.optional]].map(function(x){return '<label>'+esc(x[1])+'<input type="number" inputmode="decimal" min="0" step="0.1" data-e="'+x[0]+'" value="'+esc(e[x[0]])+'"></label>';}).join("")+'</div>';}
+if(e.t==="f"){h+='<h4>'+esc(W.per100)+'</h4><div class="fd-nums">'+[["k","kcal"],["c",W.carbs+" (g)"],["p",W.protein+" (g)"],["f",W.fat+" (g)"],["fi",W.fibre+" (g), "+W.optional],["su",W.sugars+" (g), "+W.optional],["na",W.sodium+" (mg), "+W.optional]].map(function(x){return '<label>'+esc(x[1])+'<input type="number" inputmode="decimal" min="0" step="0.1" data-e="'+x[0]+'" value="'+esc(e[x[0]])+'"></label>';}).join("")+'</div>';}
 else{h+='<h4>'+esc(W.ingredients)+'</h4>';
-if(e.ing.length){h+='<ul class="fd-items">'+e.ing.map(function(it,ix){return '<li><div class="fd-in"><b>'+esc(it.n)+tag(it.m)+'</b><small data-ing="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-e="ig" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-x" data-act="ingrm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">×</button></li>';}).join("")+'</ul>';}
+if(e.ing.length){h+='<ul class="fd-items">'+e.ing.map(function(it,ix){return '<li><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+'</b><small data-ing="'+ix+'">'+esc(macro(it))+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-e="ig" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-x" data-act="ingrm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">×</button></li>';}).join("")+'</ul>';}
 h+=(S.srch&&S.srch.ctx==="ing")?searchHtml():'<button type="button" class="btn btn-ghost" data-act="adding" style="justify-self:start">'+esc(W.add_ing)+'</button>';
 var rc=recipeCalc(e);h+='<label>'+esc(W.cooked)+'<input type="number" inputmode="decimal" min="0" step="1" data-e="cw" value="'+esc(e.cw||"")+'" placeholder="'+esc(fmt0(rc.sum))+'" style="max-width:160px"><span class="fd-hint">'+esc(W.cooked_h)+'</span></label>';
 h+='<p class="fd-stot fd-rcp">'+esc(W.per100+": "+macro100(rc))+'</p>';}
@@ -695,39 +1179,54 @@ function saveMine(){return send(C.u.mine,{page:C.page,data:JSON.stringify(S.mine
 function focusQ(){var q=root.querySelector(".fd-q");if(q){q.focus();}}
 function refreshRes(){var r=root.querySelector(".fd-res");if(r&&S.srch){r.innerHTML=resultsHtml();}}
 function redraw(){if(S.srch&&S.srch.ctx==="ing"){renderMine();}else{render();}}
-root.addEventListener("toggle",function(e){var t=e.target;if(t.classList&&t.classList.contains("fd-slot")){S.open[t.dataset.slot]=t.open;}else if(t.classList&&t.classList.contains("fd-mine")){S.mineOpen=t.open;}},true);
+root.addEventListener("toggle",function(e){var t=e.target;if(t.classList&&t.classList.contains("fd-slot")){S.open[t.dataset.slot]=t.open;}else if(t.classList&&t.classList.contains("fd-mine")){S.mineOpen=t.open;}else if(t.classList&&t.classList.contains("fd-micro")){S.microOpen=t.open;}else if(t.classList&&t.classList.contains("fd-cyc")){S.cycOpen=t.open;}},true);
 root.addEventListener("click",function(e){var b=e.target.closest("[data-act]");if(!b||!root.contains(b)){return;}var a=b.dataset.act,sl=b.closest(".fd-slot"),k=sl?sl.dataset.slot:null;
 if(a==="prev"){go(shift(S.date,-1));}
 else if(a==="next"){go(shift(S.date,1));}
 else if(a==="today"){go(today());}
 else if(a==="add"||a==="adding"){S.srch={ctx:a==="add"?"slot":"ing",slot:k,q:"",pick:null,g:100};if(a==="add"){S.open[k]=true;}redraw();focusQ();loadDB().then(refreshRes);}
 else if(a==="cancel"){S.srch=null;redraw();}
-else if(a==="pick"){S.srch.pick=S.res[+b.dataset.rx];redraw();var g=root.querySelector(".fd-pg");if(g){g.focus();g.select();}}
-else if(a==="unpick"){S.srch.pick=null;redraw();focusQ();}
+else if(a==="pick"){var pf=S.res[+b.dataset.rx];if(staple(pf)){S.srch.ask={f:pf};redraw();}else{S.srch.pick=pf;redraw();var g=root.querySelector(".fd-pg");if(g){g.focus();g.select();}}}
+else if(a==="rc"){var af=S.srch.ask.f,sp=staple(af),want=b.dataset.v,tg=(af.st===want||!sp)?af:(BYID[want==="r"?sp.raw:sp.cooked]||af);S.srch.ask=null;S.srch.pick=tg;redraw();var g3=root.querySelector(".fd-pg");if(g3){g3.focus();g3.select();}}
+else if(a==="unpick"){S.srch.pick=null;S.srch.ask=null;redraw();focusQ();}
 else if(a==="pickadd"){var p=S.srch.pick,g2=parseFloat(String(S.srch.g).replace(",","."))||0;if(!(g2>0)){return;}
-var it={id:p.id,n:p.n,g:Math.round(g2*10)/10,k:p.k,c:p.c,p:p.p,f:p.f,fi:p.fi||0,su:p.su||0};if(p.mine){it.m=p.mine;}
-if(S.srch.ctx==="slot"){slot(S.srch.slot).i.push(it);S.open[S.srch.slot]=true;S.srch=null;render();save();}else{S.edit.ing.push(it);S.srch=null;renderMine();}}
-else if(a==="rm"){slot(k).i.splice(+b.dataset.ix,1);render();save();}
+var it={id:p.id,n:p.n,g:Math.round(g2*10)/10,k:p.k,c:p.c,p:p.p,f:p.f,fi:p.fi||0,su:p.su||0};if(p.mine){it.m=p.mine;}if(p.na!=null&&p.na!==""){it.na=p.na;}if(p.st){it.st=p.st;}
+S.recent=[it].concat(S.recent.filter(function(x){return x.id!==it.id;})).slice(0,8);
+if(S.srch.ctx==="slot"){var sk2=S.srch.slot,ar=slot(sk2).i;ar.push(it);S.just=sk2+":"+(ar.length-1);S.open[sk2]=true;S.srch=null;render();save();}else{S.edit.ing.push(it);S.srch=null;renderMine();}}
+else if(a==="rm"){var li=b.closest("li");if(li){li.classList.add("fd-out");}setTimeout(function(){slot(k).i.splice(+b.dataset.ix,1);render();save();},200);}
+else if(a==="star"){var si=slot(k).i[+b.dataset.ix];if(!si){return;}if(isFav(si.id)){S.fav=S.fav.filter(function(f){return f.id!==si.id;});}else{S.fav=S.fav.concat([JSON.parse(JSON.stringify(si))]).slice(-40);}render();
+send(C.u.fav,{page:C.page,data:JSON.stringify(S.fav)}).then(function(j){S.fav=j.fav||S.fav;status(W.saved);}).catch(function(){status(W.err,true);});}
+else if(a==="cyc"){var cv=b.dataset.v;if(cv==="off"&&!confirm(W.cyc_offq)){return;}b.disabled=true;
+send(C.u.cycle,{page:C.page,act:cv,date:S.date}).then(function(j){S.cyc=j.cycle;S.cycOpen=true;render();status(W.saved);}).catch(function(){b.disabled=false;status(W.err,true);});}
+else if(a==="chip"){var arr=b.dataset.src==="fav"?S.fav:S.recent,cf=arr[+b.dataset.i];if(!cf){return;}
+S.srch.pick={id:cf.id,n:cf.n,k:cf.k,c:cf.c,p:cf.p,f:cf.f,fi:cf.fi||0,su:cf.su||0,na:cf.na==null?null:cf.na,st:cf.st||"",mine:cf.m||""};S.srch.g=cf.g||100;redraw();var g4=root.querySelector(".fd-pg");if(g4){g4.focus();g4.select();}}
+else if(a==="copyslot"||a==="copyday"){if(a==="copyday"&&hasAny()&&!confirm(W.copy_q)){return;}b.disabled=true;
+flush().then(function(){return send(C.u.day,{page:C.page,date:shift(S.date,-1)},"GET");}).then(function(y){var ys=(y&&y.s&&!Array.isArray(y.s))?y.s:{},n=0;
+(a==="copyday"?C.slots.map(function(sv){return sv[0];}):[k]).forEach(function(sk3){var src=ys[sk3];if(!src||(!(src.i||[]).length&&!(+src.d>0))){return;}n++;var dst=slot(sk3),cp=JSON.parse(JSON.stringify(src.i||[]));
+if(a==="copyday"){dst.i=cp;dst.d=+src.d||0;if(src.r){dst.r=src.r;}}else{dst.i=dst.i.concat(cp);if(!(+dst.d>0)&&+src.d>0){dst.d=+src.d;}}S.open[sk3]=true;});
+if(!n){b.disabled=false;status(W.copy_none);return;}render();save();}).catch(function(){b.disabled=false;status(W.err,true);});}
 else if(a==="phdel"){flush().then(function(){return send(C.u.photodel,{page:C.page,date:S.date,slot:k});}).then(function(){var s=slot(k);delete s.ph;delete s.phu;render();}).catch(function(){status(W.err,true);});}
 else if(a==="send"){var box=b.closest(".fd-rbox"),t=box.querySelector("textarea");if(!t.value.trim()){return;}b.disabled=true;
 send(C.u.reply,{page:C.page,date:S.date,text:t.value}).then(function(j){S.day.r=j.r||[];render();}).catch(function(){b.disabled=false;status(W.sent_err,true);});}
-else if(a==="newfood"||a==="newrecipe"){S.edit={t:a==="newfood"?"f":"r",id:"",n:"",k:"",c:"",p:"",f:"",fi:"",su:"",ing:[],cw:""};S.srch=null;S.mineOpen=true;renderMine();var n=root.querySelector('[data-e="n"]');if(n){n.focus();}}
+else if(a==="newfood"||a==="newrecipe"){S.edit={t:a==="newfood"?"f":"r",id:"",n:"",k:"",c:"",p:"",f:"",fi:"",su:"",na:"",ing:[],cw:""};S.srch=null;S.mineOpen=true;renderMine();var n=root.querySelector('[data-e="n"]');if(n){n.focus();}}
 else if(a==="medit"){var m=S.mine.filter(function(x){return x.id===b.dataset.id;})[0];if(!m){return;}S.edit=JSON.parse(JSON.stringify(m));if(!S.edit.ing){S.edit.ing=[];}S.srch=null;S.mineOpen=true;renderMine();}
 else if(a==="mdel"){if(!confirm(W.delq)){return;}S.mine=S.mine.filter(function(x){return x.id!==b.dataset.id;});renderMine();saveMine();}
 else if(a==="mcancel"){S.edit=null;S.srch=null;renderMine();}
 else if(a==="ingrm"){S.edit.ing.splice(+b.dataset.ix,1);renderMine();}
 else if(a==="msave"){var e2=S.edit,msg=root.querySelector(".fd-emsg"),o={id:e2.id||("M"+Date.now().toString(36)),t:e2.t,n:String(e2.n||"").trim()};
-if(e2.t==="f"){if(!o.n||!(parseFloat(e2.k)>=0&&String(e2.k).trim()!=="")){msg.textContent=W.need;return;}F.forEach(function(x){o[x]=Math.max(0,parseFloat(String(e2[x]).replace(",","."))||0);});}
-else{if(!o.n||!e2.ing.length){msg.textContent=W.need_r;return;}var rc=recipeCalc(e2);F.forEach(function(x){o[x]=rc[x];});o.ing=e2.ing;o.cw=parseFloat(e2.cw)||0;}
+if(e2.t==="f"){if(!o.n||!(parseFloat(e2.k)>=0&&String(e2.k).trim()!=="")){msg.textContent=W.need;return;}F.forEach(function(x){o[x]=Math.max(0,parseFloat(String(e2[x]).replace(",","."))||0);});var nv=String(e2.na==null?"":e2.na).replace(",",".").trim();o.na=nv!==""&&!isNaN(parseFloat(nv))?Math.max(0,parseFloat(nv)):null;}
+else{if(!o.n||!e2.ing.length){msg.textContent=W.need_r;return;}var rc=recipeCalc(e2);F.forEach(function(x){o[x]=rc[x];});o.na=rc.na;o.ing=e2.ing;o.cw=parseFloat(e2.cw)||0;}
 var ix=-1;S.mine.forEach(function(x,i){if(x.id===o.id){ix=i;}});if(ix>-1){S.mine[ix]=o;}else{S.mine.push(o);}S.edit=null;S.srch=null;renderMine();saveMine().then(renderMine);}
 });
 var qt=null,kt=null;
 root.addEventListener("input",function(e){var el=e.target,sl=el.closest(".fd-slot"),k=sl?sl.dataset.slot:null,f=el.dataset.f,ef=el.dataset.e;
-if(el.classList.contains("fd-q")){S.srch.q=el.value;clearTimeout(qt);qt=setTimeout(refreshRes,120);return;}
+if(el.classList.contains("fd-q")){S.srch.q=el.value;var cb=el.parentNode.querySelector(".fd-chipbox");if(cb){cb.hidden=!!el.value.trim();}clearTimeout(qt);qt=setTimeout(refreshRes,120);return;}
 if(el.classList.contains("fd-pg")){S.srch.g=el.value;var p=S.srch.pick,pp=root.querySelector(".fd-pp");if(pp){pp.textContent=macro({k:p.k,c:p.c,p:p.p,f:p.f,g:parseFloat(el.value)||0});}return;}
 if(el.classList.contains("fd-kgi")){S.kg=el.value;refreshNums();clearTimeout(kt);kt=setTimeout(function(){send(C.u.kg,{page:C.page,kg:S.kg}).then(function(){status(W.saved);}).catch(function(){status(W.err,true);});},800);return;}
 if(f==="g"&&k){slot(k).i[+el.dataset.ix].g=parseFloat(el.value)||0;refreshNums();save();return;}
 if(f==="t"&&k){slot(k).t=el.value;refreshNums();save();return;}
+if(f==="d"&&k){slot(k).d=Math.max(0,Math.round(parseFloat(el.value)||0));refreshNums();save();return;}
+if(f==="r"&&k){slot(k).r=Math.min(1440,pmin(el.value));refreshNums();save();return;}
 if(f==="n"&&k){slot(k).n=el.value;save();return;}
 if(ef&&S.edit){if(ef==="ig"){S.edit.ing[+el.dataset.ix].g=parseFloat(el.value)||0;var sm=root.querySelector('[data-ing="'+el.dataset.ix+'"]');if(sm){sm.textContent=macro(S.edit.ing[+el.dataset.ix]);}}else{S.edit[ef]=el.value;}
 var rp=root.querySelector(".fd-rcp");if(rp&&S.edit.t==="r"){rp.textContent=W.per100+": "+macro100(recipeCalc(S.edit));}}
@@ -738,7 +1237,9 @@ root.addEventListener("change",function(e){var el=e.target;if(el.dataset.f!=="ph
 if(fi.size>10485760||!/^image\//.test(fi.type||"")&&!/\.(heic|heif|jpe?g|png|webp)$/i.test(fi.name)){status(W.photo_bad,true);return;}
 status(W.uploading);flush().then(function(){var fd=new FormData();fd.append("file",fi);fd.append("date",S.date);fd.append("slot",k);fd.append("page",C.page);return send(C.u.photo,fd);})
 .then(function(j){var s=slot(k);s.ph=j.id;s.phu=j.url;S.open[k]=true;render();status(W.saved);}).catch(function(){status(W.err,true);});});
+if(C.trends){root.querySelector(".fd-trbox").innerHTML='<details class="fd-trd"><summary>'+esc(W.mytrends)+'</summary><div><p class="fd-muted">'+esc(W.tr_lede)+'</p><div class="fd-trends" data-tr="'+esc(JSON.stringify(C.trends))+'"></div></div></details>';}
 render();
+if(C.female&&window.ccFdM){window.ccFdM.load(C.micro).then(function(M){S.M=M;var tv=root.querySelector(".fd-totv");if(tv){tv.innerHTML=totV();}}).catch(function(){});}
 if(!C.fixed&&today()!==S.date){go(today());}
 if(C.fixed){var fe=document.getElementById("food");if(fe){setTimeout(function(){fe.scrollIntoView();},300);}}
 })();
