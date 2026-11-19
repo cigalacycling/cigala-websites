@@ -85,3 +85,28 @@ add_action('admin_post_cc_idea_act', function () {
     update_option('cc_ideas', array_values($all), false);
     wp_safe_redirect(add_query_arg('board', 'ideas', home_url('/' . CC_ATH_SLUG . '/'))); exit;
 });
+
+/* ---------- "More from Cigala Cycling": bike tours and the shop (Matteo 19 Nov 2026) ----------
+ * A quiet section near the end of every athlete's hub (TrainingPeaks riders too: nothing Vekta here), just before the ideas box. */
+function cc_more_w($k) {
+    static $W = [
+        'h' => ['en' => 'More from Cigala Cycling', 'it' => 'Di più da Cigala Cycling', 'pt' => 'Mais da Cigala Cycling', 'sl' => 'Več od Cigala Cycling', 'sk' => 'Viac od Cigala Cycling'],
+        'lede' => ['en' => 'Ride with me in person, and gear up for your season.', 'it' => 'Pedala con me dal vivo e preparati al meglio per la tua stagione.', 'pt' => 'Pedala comigo ao vivo e prepara-te para a tua época.', 'sl' => 'Kolesari z mano v živo in se opremi za svojo sezono.', 'sk' => 'Jazdi so mnou naživo a priprav sa na svoju sezónu.'],
+        'tours' => ['en' => 'Bike tours', 'it' => 'Tour in bici', 'pt' => 'Tours de bicicleta', 'sl' => 'Kolesarske ture', 'sk' => 'Cyklistické túry'],
+        'tours_s' => ['en' => 'Cycling holidays with me, from the Dolomites to the Alps', 'it' => 'Vacanze in bici con me, dalle Dolomiti alle Alpi', 'pt' => 'Férias de bicicleta comigo, das Dolomitas aos Alpes', 'sl' => 'Kolesarske počitnice z mano, od Dolomitov do Alp', 'sk' => 'Cyklistické dovolenky so mnou, od Dolomitov po Alpy'],
+        'shop' => ['en' => 'Shop', 'it' => 'Negozio', 'pt' => 'Loja', 'sl' => 'Trgovina', 'sk' => 'Obchod'],
+        'shop_s' => ['en' => 'Premium cycling brands and sports nutrition', 'it' => 'Marchi di ciclismo di qualità e nutrizione sportiva', 'pt' => 'Marcas de ciclismo premium e nutrição desportiva', 'sl' => 'Vrhunske kolesarske znamke in športna prehrana', 'sk' => 'Prémiové cyklistické značky a športová výživa'],
+    ];
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
+}
+function cc_more_tile($href, $icon, $title, $sub) {
+    return '<a class="ath-tile" href="' . esc_url($href) . '" target="_blank" rel="noopener">' . cc_ath_icon($icon)
+         . '<span class="ath-tt"><b>' . esc_html($title) . '</b><small>' . esc_html($sub) . '</small></span><span class="ath-go" aria-hidden="true">→</span></a>';
+}
+add_filter('cc_ath_end', function ($html, $view, $coach) {
+    if (!$view) return $html;
+    return $html . '<section class="ath-s" id="more"><h2>' . cc_ath_icon('bike', 'ath-hic') . esc_html(cc_more_w('h')) . '</h2><div class="ath-body"><p>' . esc_html(cc_more_w('lede')) . '</p>'
+        . '<div class="wp-block-buttons">' . cc_more_tile('https://tours.cigalacycling.com/', 'bike', cc_more_w('tours'), cc_more_w('tours_s'))
+        . cc_more_tile('https://retail.cigalacycling.com/', 'bag', cc_more_w('shop'), cc_more_w('shop_s')) . '</div></div></section>';
+}, 5, 3);
+add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view) $nav[] = ['more', cc_more_w('h')]; return $nav; }, 90, 3);
