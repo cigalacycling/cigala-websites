@@ -8,32 +8,35 @@ guide = open(os.path.join(G, 'guide.html')).read()
 A = '../../../coaching/nutrition-guide/assets/'
 style = guide[guide.index('<style>') + 7:guide.index('</style>')].replace('url(assets/', 'url(' + A)
 
-# ---- prices: Mallorca 2026 group table minus 2%, rounded to the nearest €5
-MALLORCA = [(7, 2480), (8, 2340), (9, 2250), (10, 2170), (11, 2110), (12, 2040), (13, 1980), (14, 1920)]
-PRICES = [(n, int(5 * round(p * 0.98 / 5))) for n, p in MALLORCA]
+# ---- prices (Matteo, 19 Nov 2026): Mallorca table minus ~2%, rounded up to the next €50
+PRICES = [(7, 2450), (8, 2300), (9, 2250), (10, 2150), (11, 2100), (12, 2000), (13, 1950), (14, 1900)]
 SINGLE = 420
 DEPOSIT = 499
+GROUP = 'Nat Maple Group'
 
+H1 = 'Alti Hotel *** · Bagnères-de-Luchon'
+H2 = 'Mercure Saint-Lary **** · Saint-Lary-Soulan'
+H3 = 'Hotel Gallia **** · Lourdes'
+# (date, title, climbs, hotel, text, photo). No distances/elevation until Matteo confirms the routes.
 DAYS = [
- ('Sat 19 June', 'Arrival in Luchon & shake-out ride', '30 km', '400 m', 'Alti Hotel, Luchon',
-  'Welcome to the Pyrenees! Transfer from the airport to Bagnères-de-Luchon, the “Queen of the Pyrenees”. Bike set-up and fitting with our mechanics, then an easy shake-out ride along the valley to loosen the legs after the journey. Welcome briefing and first evening together.', 'meadow'),
- ('Sun 20 June', 'Superbagnères & Col du Portillon', '75 km', '2,100 m', 'Alti Hotel, Luchon',
-  'Straight from the hotel we climb to Superbagnères, a former Tour de France summit finish with huge views over the Luchon valley. In the afternoon we cross the Col du Portillon into Spain and return through the Val d’Aran.', 'two'),
- ('Mon 21 June', 'Col de Peyresourde & Col d’Azet to Saint-Lary', '65 km', '1,900 m', 'Mercure, Saint-Lary-Soulan',
-  'Our first point-to-point stage. We leave Luchon on the Col de Peyresourde, a Tour de France classic, then ride through the Val Louron and over the Col d’Azet before descending into Saint-Lary-Soulan. Luggage travels with the support vehicle.', 'valley'),
- ('Tue 22 June', 'Col du Portet', '55 km', '1,700 m', 'Mercure, Saint-Lary-Soulan',
-  'A day for the queen climb of this side of the range: the Col du Portet (2,215 m), one of the highest roads in the Pyrenees and a modern Tour de France summit finish. Long, steady and spectacular above the Néouvielle massif. Afternoon to rest and recover.', 'hairpins'),
- ('Wed 23 June', 'Col d’Aspin & Col du Tourmalet to Lourdes', '115 km', '2,600 m', 'Hotel Gallia, Lourdes',
-  'The big day. We climb the Col d’Aspin, then the legendary Col du Tourmalet (2,115 m), the most climbed pass in Tour de France history. A long descent through Luz-Saint-Sauveur and the Gave de Pau valley brings us to Lourdes.', 'tourmalet'),
- ('Thu 24 June', 'Col du Soulor & Col d’Aubisque', '105 km', '2,200 m', 'Hotel Gallia, Lourdes',
-  'From Lourdes we ride up the Val d’Azun to the Col du Soulor and on along the famous balcony road to the Col d’Aubisque, with its giant bikes at the summit. Return the same way for one of the most scenic descents of the week.', 'goats'),
- ('Fri 25 June', 'Hautacam (or Luz Ardiden)', '60 km', '1,600 m', 'Hotel Gallia, Lourdes',
-  'The grand finale on the slopes of Hautacam, scene of many Tour de France battles. Riders who want more can choose Luz Ardiden instead; an easier valley option is always available. Celebration dinner in the evening.', 'group'),
- ('Sat 26 June', 'Departure day', '', '', '',
+ ('Sat 19 June', 'Arrival in Luchon & shake-out ride', '', H1,
+  'Welcome to the Pyrenees! Transfer from the airport to Bagnères-de-Luchon, the “Queen of the Pyrenees”. Bike set-up and fitting with our mechanics, then an easy shake-out ride in the valley to loosen the legs after the journey. Welcome briefing and first evening together.', 'meadow'),
+ ('Sun 20 June', 'Col de Portet d’Aspet & Col de Menté', 'Col de Portet d’Aspet · Col de Menté', H1,
+  'A loop from Luchon over two climbs full of Tour de France history: the steep Col de Portet d’Aspet and the Col de Menté, through quiet forests and remote mountain villages.', 'two'),
+ ('Mon 21 June', 'Peyresourde & Col d’Azet to Saint-Lary', 'Col de Peyresourde · Col d’Azet', H2,
+  'Our first point-to-point stage, from base to base by bike. We leave Luchon on the Col de Peyresourde, a Tour de France classic, ride through the Val Louron and over the Col d’Azet, then descend into Saint-Lary-Soulan. Luggage travels with the support vehicle.', 'valley'),
+ ('Tue 22 June', 'Col d’Aspin & Payolle loop', 'Col d’Aspin · Payolle (Hourquette d’Ancizan)', H2,
+  'From Saint-Lary we climb the Col d’Aspin. On the way down towards Payolle and the Tourmalet we turn left over the Hourquette d’Ancizan, a quiet high road with wide views, and come back down into the Saint-Lary valley.', 'hairpins'),
+ ('Wed 23 June', 'Col du Portet & Lac de Cap de Long', 'Col du Portet · Lac de Cap de Long (option)', H3,
+  'The queen climb of this side of the range: the Col du Portet (2,215 m), one of the highest roads in the Pyrenees and a modern Tour de France summit finish. Riders who want more can add the climb to the Lac de Cap de Long dam. In the afternoon we transfer with the bikes to Lourdes.', 'goats'),
+ ('Thu 24 June', 'Col du Tourmalet', 'Col du Tourmalet', H3,
+  'The legendary Col du Tourmalet (2,115 m), the most climbed pass in Tour de France history. A day to enjoy the climb, the summit and the long descent back down the valley.', 'tourmalet'),
+ ('Fri 25 June', 'Col d’Aubisque & Hautacam', 'Col d’Aubisque · Hautacam', H3,
+  'The grand finale: up the Val d’Azun and along the famous balcony road to the Col d’Aubisque. Riders who still have legs finish on the slopes of Hautacam. Easier options are always available. Celebration dinner in the evening.', 'group'),
+ ('Sat 26 June', 'Departure day', '', '',
   'After breakfast, transfer to the airport. See you next time!', None),
 ]
-km = sum(int(d[2].split()[0]) for d in DAYS if d[2])
-up = sum(int(d[3].split()[0].replace(',', '')) for d in DAYS if d[3])
+CLIMBS = ['Col de Portet d’Aspet', 'Col de Menté', 'Col de Peyresourde', 'Col d’Azet', 'Col d’Aspin', 'Hourquette d’Ancizan', 'Col du Portet', 'Lac de Cap de Long', 'Col du Tourmalet', 'Col d’Aubisque', 'Hautacam']
 
 INCLUDED = ['7 nights in hand-picked hotels at three bases: Luchon, Saint-Lary-Soulan and Lourdes',
  '6 days of guided cycling',
@@ -49,7 +52,7 @@ INCLUDED = ['7 nights in hand-picked hotels at three bases: Luchon, Saint-Lary-S
 NOT_INCLUDED = ['Flights',
  'Dinners – organised with great restaurants along the route',
  f'Single room supplement €{SINGLE}',
- 'Bike rental from €280, depending on bike specs',
+ 'Bike rental from €300, depending on bike specs',
  'Travel insurance']
 
 style += '''
@@ -76,6 +79,9 @@ style += '''
 .base .n{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red-text)}
 .base .anton{font-size:20px;margin:6px 0 2px}
 .base p{margin:0;font-size:11.5px}
+.base p.cl{margin-top:8px;font-size:10.5px;color:var(--text-3);line-height:1.45}
+.st3{color:#f0bf00;font-family:Montserrat,sans-serif;font-size:.6em;letter-spacing:1px;vertical-align:.15em}
+.day .h .st3{font-size:1em;vertical-align:0}
 .day{display:grid;grid-template-columns:66px 1fr 44mm;gap:14px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:9px;align-items:start}
 .day.np{grid-template-columns:66px 1fr}
 .day .dn{text-align:center;border-right:1px solid var(--border-strong);padding-right:10px}
@@ -117,31 +123,31 @@ def sec(eb, title, sub=''):
 
 # schematic route map (approximate positions, lon/lat projected)
 PTS = {'Lourdes': (-0.046, 43.095), 'Luchon': (0.593, 42.790), 'Saint-Lary': (0.322, 42.817)}
-COLS = {'Superbagnères': (0.570, 42.752), 'Col du Portillon': (0.680, 42.805), 'Col de Peyresourde': (0.445, 42.797),
-        'Col d’Azet': (0.380, 42.812), 'Col du Portet': (0.230, 42.800), 'Col d’Aspin': (0.328, 42.943),
-        'Col du Tourmalet': (0.145, 42.908), 'Col du Soulor': (-0.262, 42.959), 'Col d’Aubisque': (-0.339, 42.977),
-        'Hautacam': (0.000, 43.000)}
+COLS = {'Col de Portet d’Aspet': (0.836, 42.936), 'Col de Menté': (0.752, 42.941), 'Col de Peyresourde': (0.445, 42.797),
+        'Col d’Azet': (0.380, 42.812), 'Col d’Aspin': (0.328, 42.943), 'Hourquette d’Ancizan': (0.287, 42.884),
+        'Col du Portet': (0.230, 42.800), 'Lac de Cap de Long': (0.143, 42.807), 'Col du Tourmalet': (0.145, 42.908),
+        'Col d’Aubisque': (-0.339, 42.977), 'Hautacam': (0.000, 43.000)}
 def xy(p):
-    x0, x1, y0, y1 = -0.45, 0.78, 42.72, 43.14
-    return 30 + (p[0] - x0) / (x1 - x0) * 640, 20 + (y1 - p[1]) / (y1 - y0) * 300
-route = ['Luchon', 'Col de Peyresourde', 'Col d’Azet', 'Saint-Lary', 'Col d’Aspin', 'Col du Tourmalet', 'Lourdes']
+    x0, x1, y0, y1 = -0.45, 0.92, 42.74, 43.14
+    return 30 + (p[0] - x0) / (x1 - x0) * 640, 25 + (y1 - p[1]) / (y1 - y0) * 290
 allp = {**PTS, **COLS}
-path = ' '.join(('M' if i == 0 else 'L') + '%.1f %.1f' % xy(allp[k]) for i, k in enumerate(route))
-svg = f'<svg viewBox="0 0 700 340" role="img" aria-label="Schematic route map: Luchon to Saint-Lary-Soulan to Lourdes, with the main climbs">'
-svg += '<rect x="0" y="0" width="700" height="340" fill="none"/>'
-svg += f'<path d="{path}" fill="none" stroke="#009a44" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1 0"/>'
-lab = {'Superbagnères': (8, 14), 'Col du Portillon': (-4, -12), 'Col de Peyresourde': (-30, 26), 'Col d’Azet': (8, -8), 'Col du Portet': (-40, 24),
-       'Col d’Aspin': (8, -8), 'Col du Tourmalet': (-30, -12), 'Col du Soulor': (8, 16), 'Col d’Aubisque': (-40, -12), 'Hautacam': (10, 4)}
+P = lambda ks: ' '.join(('M' if i == 0 else 'L') + '%.1f %.1f' % xy(allp[k]) for i, k in enumerate(ks))
+svg = '<svg viewBox="0 0 700 340" role="img" aria-label="Schematic map: Luchon to Saint-Lary-Soulan by bike, then Lourdes, with the climbs of the week">'
+svg += f'<path d="{P(['Luchon', 'Col de Peyresourde', 'Col d’Azet', 'Saint-Lary'])}" fill="none" stroke="#009a44" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>'
+svg += f'<path d="{P(['Saint-Lary', 'Lourdes'])}" fill="none" stroke="#8a8f98" stroke-width="2.5" stroke-dasharray="6 6"/>'
+lab = {'Col de Portet d’Aspet': (-60, 22), 'Col de Menté': (-40, -12), 'Col de Peyresourde': (-30, 28), 'Col d’Azet': (4, -10),
+       'Col d’Aspin': (8, -6), 'Hourquette d’Ancizan': (-142, 4), 'Col du Portet': (-34, 24), 'Lac de Cap de Long': (-125, 6),
+       'Col du Tourmalet': (-96, -6), 'Col d’Aubisque': (-30, -12), 'Hautacam': (10, 4)}
 for k, p in COLS.items():
     x, y = xy(p); dx, dy = lab[k]
     svg += f'<path d="M{x:.1f} {y-7:.1f} L{x+6:.1f} {y+4:.1f} L{x-6:.1f} {y+4:.1f} Z" fill="#f0bf00"/>'
     svg += f'<text x="{x+dx:.1f}" y="{y+dy:.1f}" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">{k}</text>'
-for i, (k, p) in enumerate([('Luchon', PTS['Luchon']), ('Saint-Lary', PTS['Saint-Lary']), ('Lourdes', PTS['Lourdes'])], 1):
-    x, y = xy(p)
+for i, k in enumerate(['Luchon', 'Saint-Lary', 'Lourdes'], 1):
+    x, y = xy(PTS[k])
     svg += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="13" fill="#E10600" stroke="#fff" stroke-width="2"/><text x="{x:.1f}" y="{y+4.5:.1f}" text-anchor="middle" font-family="Anton" font-size="14" fill="#fff">{i}</text>'
-    off = {'Luchon': (18, 5), 'Saint-Lary': (-60, -20), 'Lourdes': (18, -8)}[k]
+    off = {'Luchon': (18, 18), 'Saint-Lary': (-34, -22), 'Lourdes': (18, -8)}[k]
     svg += f'<text x="{x+off[0]:.1f}" y="{y+off[1]:.1f}" font-family="Anton" font-size="17" fill="#f7f8f8" letter-spacing=".5">{k.upper()}</text>'
-svg += '<text x="690" y="332" text-anchor="end" font-family="Montserrat" font-size="9.5" fill="#8a8f98">Schematic map · day loops from each base not drawn</text></svg>'
+svg += '<text x="690" y="332" text-anchor="end" font-family="Montserrat" font-size="9.5" fill="#8a8f98">Schematic map · green: by bike between bases · dashed: transfer · day loops not drawn</text></svg>'
 
 pages = []
 pages.append(f'''<section class="page tours-cover">
@@ -150,7 +156,8 @@ pages.append(f'''<section class="page tours-cover">
     <img class="logo" src="{I}logo.png" alt="Cigala Cycling Tours logo">
     <h1>Pyrenees<br>2027</h1>
     <div class="bar" style="width:56px;height:4px;margin-top:18px"></div>
-    <p class="tag">Ride the legendary cols of the Tour de France. A private group tour from Luchon to Lourdes.</p>
+    <p class="tag">A cycling journey through the legendary climbs of the French Pyrenees, from Luchon to Lourdes.</p>
+    <div class="eyebrow" style="margin-top:16px;color:var(--text)">Private tour proposal for the {GROUP}</div>
   </div>
   <div class="meta">
     <div><span>Dates</span><b>19–26 June</b></div>
@@ -162,37 +169,38 @@ pages.append(f'''<section class="page tours-cover">
 
 pages.append(f'''<section class="page">
 {RUN}{sec('Private group tour proposal', 'The Pyrenees, cols of legend')}
-  <p class="lead">The Pyrenees are home to some of the most famous climbs in cycling: the Tourmalet, the Aubisque, the Peyresourde and the Col du Portet. We have designed a week that moves across the heart of the range, staying at three bases so every day brings new roads, quieter valleys and authentic mountain villages.</p>
-  <p>We start in Luchon, the “Queen of the Pyrenees”, cross to Saint-Lary-Soulan for the Col du Portet, and finish in Lourdes after riding the Tourmalet, the Aubisque and Hautacam. Every day is fully supported by our guides and support vehicle, with easier options always available.</p>
+  <p class="lead">This itinerary focuses entirely on the French Pyrenees, combining some of the most iconic Tour de France climbs with spectacular mountain roads and three different accommodation bases.</p>
+  <p>The route is designed to explore different areas of the Pyrenees while incorporating point-to-point riding days, allowing us to travel between locations by bike rather than relying on vehicle transfers. Every day is fully supported by our guides and support vehicle, with easier options always available.</p>
   <div class="glance">
-    <div><b>~{km} km</b><span>Total distance</span></div>
-    <div><b>~{up:,} m</b><span>Total climbing</span></div>
-    <div><b>10</b><span>Iconic climbs</span></div>
+    <div><b>{len(CLIMBS)}</b><span>Iconic climbs</span></div>
     <div><b>6</b><span>Days riding</span></div>
+    <div><b>7</b><span>Nights</span></div>
+    <div><b>3</b><span>Bases</span></div>
   </div>
   <div class="map">{svg}</div>
   <h3>Three bases</h3><div class="bar"></div>
   <div class="bases">
-    <div class="base"><div class="n">Nights 1–2 · 19–20 June</div><div class="anton">Alti Hotel</div><p>Bagnères-de-Luchon</p></div>
-    <div class="base"><div class="n">Nights 3–4 · 21–22 June</div><div class="anton">Mercure Saint-Lary</div><p>Saint-Lary-Soulan</p></div>
-    <div class="base"><div class="n">Nights 5–7 · 23–25 June</div><div class="anton">Hotel Gallia</div><p>Lourdes</p></div>
+    <div class="base"><div class="n">2 nights · 19–20 June</div><div class="anton">Alti Hotel <span class="st3">★★★</span></div><p>Bagnères-de-Luchon</p><p class="cl">Col de Menté · Col de Portet d’Aspet · Col de Peyresourde · Col d’Azet</p></div>
+    <div class="base"><div class="n">2 nights · 21–22 June</div><div class="anton">Mercure Saint-Lary <span class="st3">★★★★</span></div><p>Saint-Lary-Soulan</p><p class="cl">Col d’Aspin · Payolle · Col du Portet · Lac de Cap de Long</p></div>
+    <div class="base"><div class="n">3 nights · 23–25 June</div><div class="anton">Hotel Gallia <span class="st3">★★★★</span></div><p>Lourdes</p><p class="cl">Col du Tourmalet · Col d’Aubisque · Hautacam</p></div>
   </div>
 ''' + FOOT(2) + '</section>')
 
 def day_html(i, d):
-    date, title, dist, gain, hotel, txt, img = d
-    st = f'<div class="st"><span>{dist}</span><span>+{gain}</span></div>' if dist else ''
-    h = f'<div class="h">Hotel: <b>{hotel}</b></div>' if hotel else ''
+    date, title, climbs, hotel, txt, img = d
+    st = ''.join(f'<span>▲ {c}</span>' for c in climbs.split(' · ')) if climbs else ''
+    st = f'<div class="st">{st}</div>' if st else ''
+    h = f'<div class="h">Hotel: <b>{hotel.replace("***", "<span class=st3>★★★</span>").replace("<span class=st3>★★★</span>*", "<span class=st3>★★★★</span>")}</b></div>' if hotel else ''
     ph = f'<div class="ph"><img src="{I}{img}.jpg" alt="{title}"></div>' if img else ''
     cls = 'day' if img else 'day np'
     return f'<div class="{cls}"><div class="dn"><small>DAY</small><b>{i}</b><em>{date}</em></div><div><div class="anton">{title}</div>{st}<p>{txt}</p>{h}</div>{ph}</div>\n'
 
-pages.append('<section class="page">\n' + RUN + sec('Itinerary', 'Day by day', 'Routes, distances and climbing are indicative and will be finalised with the group. GPX files are sent before the trip.')
+pages.append('<section class="page">\n' + RUN + sec('Itinerary', 'Day by day', 'Routes are finalised with the group. Full GPX files, distances and elevation are sent before the trip.')
              + ''.join(day_html(i + 1, d) for i, d in enumerate(DAYS[:4])) + FOOT(3) + '</section>')
 pages.append('<section class="page">\n' + RUN + ''.join(day_html(i + 5, d) for i, d in enumerate(DAYS[4:])) + f'''  <div class="panel exc" style="margin-top:6px"><div class="anton" style="font-size:19px;margin-bottom:8px">Not included</div><ul class="dots c2">{''.join(f"<li>{x}</li>" for x in NOT_INCLUDED)}</ul></div>
 ''' + FOOT(4) + '</section>')
 
-rows = ''.join(f'<tr{" class=hl" if n == 8 else ""}><td>{n} cyclists</td><td><b>€{p:,}</b></td></tr>' for n, p in PRICES)
+rows = ''.join(f'<tr><td>{n} cyclists</td><td><b>€{p:,}</b></td></tr>' for n, p in PRICES)
 pages.append(f'''<section class="page">
 {RUN}{sec('Price', 'Price per person', 'The price per person depends on the final size of the group. All prices in euro, sharing a twin or double room.')}
   <div class="g2" style="align-items:start">
@@ -217,7 +225,7 @@ pages.append(f'''<section class="page">
     <img src="{I}valley.jpg" alt="Cyclist climbing high above a Pyrenean valley">
   </div>
   <div class="g2" style="margin-top:14px">
-    <div class="rev"><div class="s">★★★★★</div><p>“Had a wonderful tour with Cigala in the French Alps in June 2025. I just showed up ready to pedal and they took care of the rest: excellent rental bikes, phenomenal routes with stunning views, gracious accommodations and delicious food with local charm.”</p><div class="w">Hank · USA · French Alps</div></div>
+    <div class="rev"><div class="s">★★★★★</div><p>“Very well organised from the very first contact. Marine or Matteo rode with us each day and captured the best moments with hundreds of photos. A special thanks to Alessio, the driver of the support vehicle and bike mechanic.”</p><div class="w">Andreas · Mexico · Italian mountains</div></div>
     <div class="rev"><div class="s">★★★★★</div><p>“I have gone on a number of trips organised by Cigala Cycling Tours and they have been fantastic. Matteo pays attention to every last detail, from logistics, food and accommodation to the spectacular routes.”</p><div class="w">Mike · Ireland · repeat guest</div></div>
   </div>
   <h3>Next steps</h3><div class="bar"></div>
@@ -240,4 +248,4 @@ html = f'''<!doctype html>
 </body></html>
 '''
 open(os.path.join(HERE, 'proposal.html'), 'w').write(html)
-print('prices', PRICES, 'km', km, 'up', up)
+print('prices', PRICES, 'climbs', len(CLIMBS))
