@@ -986,7 +986,9 @@ c.innerHTML=s;var svg=c.querySelector("svg"),tip=svg.querySelector(".fd-tip");
 function show(ev){var r=svg.getBoundingClientRect(),mx2=(ev.clientX-r.left)*w/r.width,b=0;q.forEach(function(p,ix){if(Math.abs(p[0]-mx2)<Math.abs(q[b][0]-mx2)){b=ix;}});
 tip.style.display="";var ln=tip.querySelector("line"),ci=tip.querySelector("circle"),tx=tip.querySelector("text");ln.setAttribute("x1",q[b][0]);ln.setAttribute("x2",q[b][0]);ci.setAttribute("cx",q[b][0]);ci.setAttribute("cy",q[b][1]);
 tx.textContent=dl(P[b][2],o.lang)+" · "+fm2(P[b][1],o.dec)+" "+o.unit;var right=q[b][0]>w/2;tx.setAttribute("x",right?q[b][0]-6:q[b][0]+6);tx.setAttribute("text-anchor",right?"end":"start");}
-svg.addEventListener("pointermove",show);svg.addEventListener("pointerdown",show);svg.addEventListener("pointerleave",function(){tip.style.display="none";});}
+svg.style.touchAction="pan-y";svg.style.cursor="crosshair";
+svg.addEventListener("pointermove",show);svg.addEventListener("pointerdown",show);svg.addEventListener("pointerleave",function(ev){if(ev.pointerType==="mouse"){tip.style.display="none";}});
+svg.addEventListener("touchmove",function(ev){var t=ev.touches[0];if(t){show({clientX:t.clientX});}},{passive:true});svg.addEventListener("touchstart",function(ev){var t=ev.touches[0];if(t){show({clientX:t.clientX});}},{passive:true});}
 function fm2(v,dec){return (+v).toLocaleString(undefined,{minimumFractionDigits:dec,maximumFractionDigits:dec});}
 function trends(el){if(el.dataset.done){return;}var T=JSON.parse(el.dataset.tr),W=T.w,x0=dn(T.from),x1=dn(T.to),h="";
 [[1,W.tr_w,"kg",1,false,0.5],[2,W.tr_hrv,"ms",0,true,3],[3,W.tr_rhr,"bpm",0,true,2]].forEach(function(sr){var P=[];T.days.forEach(function(r){var v=r[sr[0]];if(v!=null&&+v>0){P.push([dn(r[0]),+v,r[0]]);}});
