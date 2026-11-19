@@ -45,9 +45,19 @@ function cc_nt_w($k) {
         'answer' => ['en' => 'Answer Matteo', 'it' => 'Rispondi a Matteo', 'pt' => 'Responder ao Matteo', 'sl' => 'Odgovori Matteu', 'sk' => 'Odpovedať Matteovi'],
         'delq' => ['en' => 'Delete this? It cannot be undone.', 'it' => 'Eliminarlo? Non si può annullare.', 'pt' => 'Apagar? Não é possível desfazer.', 'sl' => 'Izbrišem? Tega ni mogoče razveljaviti.', 'sk' => 'Vymazať? Nedá sa to vrátiť späť.'],
         'mail_btn' => ['en' => 'Open my hub', 'it' => 'Apri la mia area', 'pt' => 'Abrir a minha área', 'sl' => 'Odpri moje središče', 'sk' => 'Otvoriť moju zónu'],
+        // Matteo 19 Nov: double tap to like, like on Instagram
+        'liked_m' => ['en' => 'Matteo liked your message', 'it' => 'A Matteo piace il tuo messaggio', 'pt' => 'O Matteo gostou da tua mensagem', 'sl' => 'Matteu je všeč tvoje sporočilo', 'sk' => 'Matteovi sa páči tvoja správa'],
+        'hint' => ['en' => 'Double tap a message to ❤️ it', 'it' => 'Tocca due volte un messaggio per mettere ❤️', 'pt' => 'Toca duas vezes numa mensagem para dar ❤️', 'sl' => 'Dvakrat tapni sporočilo za ❤️', 'sk' => 'Dvakrát ťukni na správu a daj jej ❤️'],
     ];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en';
     return $W[$k][$l] ?? $W[$k]['en'];
+}
+// the little ❤️ under a message: who liked it ("Matteo", "You", or the athlete's name in the coach view)
+function cc_nt_likes($lk, $forCoach, $name = '') {
+    $lk = (array) $lk; $who = [];
+    if (!empty($lk['coach'])) $who[] = $forCoach ? 'You' : cc_nt_w('from_m');
+    if (!empty($lk['athlete'])) $who[] = $forCoach ? ($name ?: 'Athlete') : cc_nt_w('you');
+    return '<span class="nt-like"' . ($who ? '' : ' hidden') . '>❤️ <small>' . esc_html(implode(' · ', $who)) . '</small></span>';
 }
 function cc_nt_get($pid) { $a = json_decode((string) get_post_meta($pid, 'cc_notes', true), true); return is_array($a) ? $a : []; }
 function cc_nt_put($pid, $ns) {   // keeps the newest 60; older ones go, with their recordings (Matteo 17 Nov: no files left behind)
@@ -80,11 +90,12 @@ function cc_nt_delbtn($pid, $at, $ri = -1) {
 function cc_nt_item($n, $forCoach, $pid = 0) {
     $who = $forCoach && $pid ? get_the_title($pid) : '';
     $byMe = ($n['from'] ?? '') === 'coach';   // a message Matteo started himself (Matteo 18 Nov)
-    $o = '<div class="nt-item' . ($byMe ? ' nt-bym' : '') . '">' . ($byMe ? '<span class="nt-rh"><img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt=""><b>' . esc_html($forCoach ? 'Your message' : cc_nt_w('from_m')) . '</b></span>' : '') . '<small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at'])) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), date_i18n('j M', strtotime($n['day'] . ' 12:00')))) : '') . '</small>'
+    $o = '<div class="nt-item' . ($byMe ? ' nt-bym' : '') . '"' . ($pid ? ' data-lp="' . (int) $pid . '" data-la="' . (int) $n['at'] . '" data-lr="-1"' : '') . '>' . ($byMe ? '<span class="nt-rh"><img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt=""><b>' . esc_html($forCoach ? 'Your message' : cc_nt_w('from_m')) . '</b></span>' : '') . '<small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at'])) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), date_i18n('j M', strtotime($n['day'] . ' 12:00')))) : '') . '</small>'
        . ($pid ? cc_nt_delbtn($pid, $n['at']) : '');
     if (($u = cc_nt_url($n['audio'] ?? 0))) $o .= cc_nt_player($u);
     if (($n['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($n['text'])) . '</p>';
     if ($forCoach && ($n['tr'] ?? '') !== '') $o .= '<p class="nt-tr"><i>Written out from the voice note:</i> ' . esc_html($n['tr']) . '</p>';
+    $o .= cc_nt_likes($n['likes']['n'] ?? [], $forCoach, $who);
     foreach (array_values((array) ($n['replies'] ?? [])) as $ri => $r) {
         $mine = ($r['from'] ?? 'coach') === 'coach';   // Matteo's reply, or the athlete answering in the thread
         $label = $mine ? ($forCoach ? 'Your reply' : cc_nt_w('reply')) : ($forCoach ? $who : cc_nt_w('you'));
@@ -92,12 +103,12 @@ function cc_nt_item($n, $forCoach, $pid = 0) {
         // Matteo 17 Nov: the face always beside the name (never on top), his own photo in his coach view too
         $face = $mine ? '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">'
                       : ($pid && function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '');
-        $o .= '<div class="nt-rep' . ($mine ? '' : ' nt-rep-a') . '"><span class="nt-rh">' . $face
+        $o .= '<div class="nt-rep' . ($mine ? '' : ' nt-rep-a') . '"' . ($pid ? ' data-lp="' . (int) $pid . '" data-la="' . (int) $n['at'] . '" data-lr="' . (int) $ri . '"' : '') . '><span class="nt-rh">' . $face
             . '<b>' . esc_html($label) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small></span>'
             . ($pid && ($forCoach || !$mine) ? cc_nt_delbtn($pid, $n['at'], $ri) : '');
         if (($u = cc_nt_url($r['audio'] ?? 0))) $o .= cc_nt_player($u);
         if (($r['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($r['text'])) . '</p>';
-        $o .= '</div>';
+        $o .= cc_nt_likes($n['likes']['r' . $ri] ?? [], $forCoach, $who) . '</div>';
     }
     if ($pid && $forCoach) $o .= '<details class="nt-replyd"><summary>Reply</summary>' . cc_nt_box(rest_url('cc/v1/note-reply'), ['page' => $pid, 'at' => (int) $n['at']], 'Your reply…', 'Send reply') . '</details>';
     elseif ($pid && (!empty($n['replies']) || $byMe)) {   // the athlete answers in the same thread once Matteo has replied (or wrote first)
@@ -124,7 +135,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
        . cc_nt_box(rest_url('cc/v1/note'), new stdClass(), cc_nt_w('ph'), cc_nt_w('send'), true, $speech);
     // Matteo 17 Nov: the hub shows their notes of the last 30 days (at most 5); everything stays on his Notes board
     $recent = array_slice(array_values(array_filter($ns, function ($n) { return $n['at'] > time() - 30 * DAY_IN_SECONDS; })), 0, 5);
-    if ($recent) { $o .= '<h3 class="av-sub nt-yours">' . esc_html(cc_nt_w('yours')) . '</h3>'; foreach ($recent as $n) $o .= cc_nt_item($n, false, $view); }
+    if ($recent) { $o .= '<h3 class="av-sub nt-yours">' . esc_html(cc_nt_w('yours')) . '</h3><p class="nt-hint">' . esc_html(cc_nt_w('hint')) . '</p>'; foreach ($recent as $n) $o .= cc_nt_item($n, false, $view); }
     return $html . $o . '</section>' . cc_nt_css() . cc_nt_js();
 }, 15, 3);
 function cc_nt_css() {
@@ -158,9 +169,50 @@ function cc_nt_css() {
         . 'html .cc .nt-bar b{position:absolute;top:50%;left:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.5);opacity:0;transition:opacity .15s}'
         . 'html .cc .nt-pl.on .nt-bar b,html .cc .nt-bar:hover b{opacity:1}html .cc .nt-t{flex:none;min-width:42px;text-align:right;font:600 14px var(--body);color:#d0d6e0;font-variant-numeric:tabular-nums}</style>';
 }
+// Matteo 19 Nov: double tap (or double click) a message to ❤️ it, like on Instagram; again to take it back
+function cc_nt_like_js() {
+    return '<style>html .cc [data-lp]{touch-action:manipulation}html .cc .nt-like{display:inline-flex;align-items:center;gap:5px;margin:6px 0 0;padding:3px 10px;border-radius:999px;background:rgba(225,6,0,.12);font-size:15px;line-height:1.3}html .cc .nt-like[hidden]{display:none}html .cc .nt-like small{font-size:14px;color:#d0d6e0}'
+        . 'html .cc .nt-pop{position:fixed;z-index:99999;font-size:64px;pointer-events:none;transform:translate(-50%,-50%) scale(.3);opacity:0;animation:ntPop .8s ease-out forwards}@keyframes ntPop{30%{transform:translate(-50%,-50%) scale(1.15);opacity:1}60%{transform:translate(-50%,-50%) scale(1)}100%{transform:translate(-50%,-70%) scale(1);opacity:0}}'
+        . 'html .cc .nt-hint{margin:2px 0 10px;font-size:14px;color:#b8bec8}</style>'
+        . '<script>(function(){if(window.ccNtLike)return;window.ccNtLike=1;var API=' . wp_json_encode(rest_url('cc/v1/note-like')) . ',NONCE=' . wp_json_encode(wp_create_nonce('wp_rest')) . ';'
+        . 'function skip(t){return t.closest("button,a,audio,textarea,input,details summary,.nt-replyd,.nt-del");}'
+        . 'function like(el,x,y){var cc=document.querySelector(".cc")||document.body,p=document.createElement("span");p.className="nt-pop";p.textContent="❤️";p.style.left=x+"px";p.style.top=y+"px";cc.appendChild(p);setTimeout(function(){p.remove();},900);'
+        . 'fetch(API,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":NONCE},body:JSON.stringify({page:+el.dataset.lp,at:+el.dataset.la,ri:+el.dataset.lr})}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(!j)return;'
+        . 'var s=null;for(var i=0;i<el.children.length;i++)if(el.children[i].classList.contains("nt-like"))s=el.children[i];if(s)s.outerHTML=j.html;});}'
+        . 'document.addEventListener("dblclick",function(e){var el=e.target.closest&&e.target.closest("[data-lp]");if(!el||skip(e.target))return;var r=e.target.closest(".nt-rep");if(r&&r!==el)return;e.preventDefault();like(el,e.clientX,e.clientY);});'
+        . 'var last=0,lastEl=null;document.addEventListener("touchend",function(e){var el=e.target.closest&&e.target.closest("[data-lp]");if(!el||skip(e.target))return;var r=e.target.closest(".nt-rep");if(r)el=r;var now=Date.now();'
+        . 'if(lastEl===el&&now-last<320){e.preventDefault();var t=e.changedTouches[0];like(el,t.clientX,t.clientY);last=0;lastEl=null;}else{last=now;lastEl=el;}},{passive:false});})();</script>';
+}
+add_action('rest_api_init', function () {
+    register_rest_route('cc/v1', '/note-like', ['methods' => 'POST', 'permission_callback' => 'is_user_logged_in', 'callback' => function (WP_REST_Request $r) {
+        $pid = (int) $r['page']; $at = (int) $r['at']; $ri = (int) $r['ri']; $coach = cc_ath_is_coach();
+        if (!$coach && (int) get_post_meta($pid, 'cc_user', true) !== get_current_user_id()) return new WP_Error('cc_no', 'Not allowed', ['status' => 403]);
+        $ns = cc_nt_get($pid); $role = $coach ? 'coach' : 'athlete'; $key = $ri < 0 ? 'n' : 'r' . $ri; $on = false; $author = '';
+        foreach ($ns as &$n) {
+            if ((int) $n['at'] !== $at) continue;
+            if ($ri >= 0 && !isset(array_values((array) ($n['replies'] ?? []))[$ri])) return new WP_Error('cc_none', 'No such reply', ['status' => 404]);
+            $author = $ri < 0 ? ((($n['from'] ?? '') === 'coach') ? 'coach' : 'athlete') : ((array_values($n['replies'])[$ri]['from'] ?? 'coach') === 'coach' ? 'coach' : 'athlete');
+            $lk = (array) ($n['likes'][$key] ?? []); $on = empty($lk[$role]);
+            if ($on) $lk[$role] = time(); else unset($lk[$role]);
+            $n['likes'][$key] = $lk; $liked = $lk; break;
+        }
+        unset($n);
+        if (!isset($liked)) return new WP_Error('cc_none', 'No such note', ['status' => 404]);
+        cc_nt_put($pid, $ns);
+        // Matteo liked the athlete's message: a quiet line in their bell (no phone buzz, no email)
+        if ($on && $coach && $author === 'athlete' && function_exists('cc_inbox_add') && ($uid = (int) get_post_meta($pid, 'cc_user', true))) {
+            $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $GLOBALS['cc_ath_lang'] = function_exists('cc_ath_user_lang') ? cc_ath_user_lang($uid) : 'en';
+            cc_inbox_add($uid, '❤️ ' . cc_nt_w('liked_m'), '', home_url('/' . CC_ATH_SLUG . '/#notes'), 'cc-like');
+            $GLOBALS['cc_ath_lang'] = $keep;
+        }
+        if (!$coach && function_exists('cc_ath_user_lang')) $GLOBALS['cc_ath_lang'] = cc_ath_user_lang(get_current_user_id());
+        $html = cc_nt_likes($liked, $coach, get_the_title($pid));
+        return ['ok' => true, 'on' => $on, 'html' => $html];
+    }]);
+});
 function cc_nt_js() {
     static $done = false; if ($done) return ''; $done = true;
-    return <<<'JS'
+    return cc_nt_like_js() . <<<'JS'
 <script>(function(){function ntInit(){document.querySelectorAll('.nt-box').forEach(function(A){var W=JSON.parse(A.dataset.w),L=A.dataset.lang,ta=A.querySelector('textarea'),
 b=A.querySelector('.nt-rec'),st=A.querySelector('.nt-st'),go=A.querySelector('.nt-send'),m=A.querySelector('.nt-msg'),dy=A.querySelector('.nt-day input'),
 rec=null,sr=null,chunks=[],blob=null,tr='',t0=0,tick=null;
