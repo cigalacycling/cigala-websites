@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><title>Pyrenees 2027 | Cigala Cycling Tours</title>
+<link rel="stylesheet" href="../../../coaching/nutrition-guide/assets/fonts.css"><style>
+:root{
+  --bg:#08090a; --panel:rgba(15,16,17,.92); --panel-solid:#0f1011;
+  --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.14);
+  --text:#f7f8f8; --text-2:#d0d6e0; --text-3:#8a8f98;
+  --green:#009a44; --green-text:#34c46a; --red:#E10600; --red-text:#ff3d33;
+  /* Vivify Sports (partner) */
+  --vivify:#19444b;
+  /* topic colours: one per nutrient, used through the whole guide */
+  --c-carb:#f28c38; --c-pro:#e8606a; --c-fat:#f2cf4a; --c-mic:#34c46a; --c-hyd:#4aa8e8; --topic:#d0d6e0; --vivify-2:#2f6f7a; --vivify-text:#7fc3cc;
+}
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{font-family:Montserrat,sans-serif;color:var(--text-2);font-size:12.5px;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+b,strong{color:var(--text);font-weight:600}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;padding:13mm 15mm 22mm;
+  background:#08090a url(../../../coaching/nutrition-guide/assets/topo-a4.jpg) center/100% 100% no-repeat;
+  page-break-after:always;break-after:page}
+.page:last-child{page-break-after:auto}
+/* running header + footer */
+.run{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);font-weight:600;padding-bottom:9px;border-bottom:1px solid var(--border);margin-bottom:18px}
+.run img{height:22px;width:auto}
+.run .logos{display:flex;align-items:center;gap:9px}
+.run .logos span{color:var(--text-3);font-weight:400}
+.foot{position:absolute;left:15mm;right:15mm;bottom:9mm;display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600;border-top:1px solid var(--border);padding-top:9px}
+.foot .n{color:var(--text);font-family:Anton,sans-serif;font-size:15px;letter-spacing:.04em}
+/* type */
+h1,h2,h3,.anton{font-family:Anton,sans-serif;font-weight:400;text-transform:uppercase;color:var(--text);letter-spacing:.01em;line-height:1.02}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--red-text)}
+.bar{width:40px;height:3px;background:var(--green);border-radius:2px}
+h3{font-size:19px;margin:18px 0 4px}
+h3+.bar{margin:10px 0 12px}
+p{margin:0 0 10px}
+.lead{font-size:13.5px;color:var(--text-2)}
+.note{font-size:10.5px;color:var(--text-3);margin-top:6px}
+/* section header */
+.sec{position:relative;padding:4px 0 0;margin-bottom:14px}
+.sec .eyebrow{margin-bottom:10px}
+.sec h2{font-size:42px;max-width:78%}
+.sec .bar{margin:14px 0 12px}
+.sec .sub{font-size:14px;color:var(--text-2);max-width:72%}
+.sec .big{position:absolute;right:-2mm;top:-8px;font-family:Anton,sans-serif;font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--topic);opacity:.55}
+.topic{display:inline-flex;align-items:center;gap:7px;margin-left:10px;padding:0 10px 0 8px;line-height:17px;vertical-align:1px;border-radius:999px;border:1px solid var(--border-strong);color:var(--text);font-size:9.5px;letter-spacing:.16em}
+.topic i{width:8px;height:8px;border-radius:50%;background:var(--topic);display:inline-block}
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.dots{list-style:none;display:grid;gap:7px 22px}
+.dots li{position:relative;padding-left:16px}
+.dots li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--green)}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:1fr 1fr 1fr}
+.callout{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:12px;padding:12px 18px;margin-top:12px}
+.callout .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green-text);margin-bottom:4px}
+.callout.viv{border-left-color:var(--vivify-2)}
+.callout.viv .k{color:var(--vivify-text)}
+.callout p{margin:0}
+/* stat tiles */
+.tiles{display:grid;gap:8px}
+.tile{border-radius:12px;padding:11px 8px 10px;text-align:center;border:1px solid var(--border);background:var(--panel-solid)}
+.tile .v{font-family:Anton,sans-serif;font-size:27px;color:var(--text);line-height:1.1}
+.tile .u{font-size:10.5px;color:var(--text-2);margin-top:2px}
+.tile .l{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-top:7px;line-height:1.35}
+.m{display:flex;gap:3px;justify-content:center;margin-top:10px}.m i{width:14px;height:4px;border-radius:2px;background:rgba(255,255,255,.14)}.m i.on{background:var(--topic)}
+.tile.wide{padding:16px;border-top:3px solid var(--topic)}.tile.wide .v{font-size:40px;color:var(--topic)}
+.tiles.plain .tile,.tiles.scale .tile{border-top:3px solid var(--topic)}
+/* tables */
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:11.5px}
+.tbl{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+th{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);text-align:left;padding:10px 12px;background:#17191b;border-bottom:1px solid var(--border-strong)}
+td{padding:5px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td small{color:var(--text-3);font-size:10px}
+th .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.d-green{background:var(--green)}.d-viv{background:var(--vivify-text)}.d-red{background:var(--red)}.d-grey{background:var(--text-3)}.d-white{background:var(--text)}
+th small{display:block;font-weight:500;letter-spacing:.06em;text-transform:none;color:var(--red-text);font-size:9.5px;margin-top:1px}
+.avoid td:nth-child(2){color:var(--text-3)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+/* fats cards */
+.fat{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:11px}
+.fat .hd{padding:11px 12px 10px;border-bottom:1px solid var(--border-strong)}
+.fat .hd .anton{font-size:17px;display:flex;align-items:center;gap:7px}
+.fat .hd .anton i{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.fat .hd .tag{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-top:4px}
+.fat .ds{padding:10px 12px 4px;color:var(--text-3);font-style:italic;font-size:10.5px;line-height:1.45}
+.fat ul{list-style:none;padding:4px 12px 12px}
+.fat li{padding:2.5px 0 2.5px 13px;position:relative;line-height:1.35}
+.fat li::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--text-3)}
+.fat.mono li::before{background:var(--green)}.fat.poly li::before{background:var(--green)}.fat.trans li::before{background:var(--red)}
+.fat.trans{border-color:rgba(225,6,0,.35)}
+/* micronutrients */
+.micro td{font-size:10.5px;line-height:1.45;padding:8px 10px}
+.micro td:first-child{font-weight:600;color:var(--text);width:24%;border-left:3px solid var(--green)}
+.micro td:last-child{width:33%}
+.micro b{font-weight:600}
+/* food sources */
+.foods td{padding:7px 14px;font-size:11.5px}
+.foods td:first-child{width:32%;font-weight:600;color:var(--text)}
+.foods td em{color:var(--text-3)}
+/* timing */
+.row{display:grid;grid-template-columns:150px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:9px;background:var(--panel)}
+.row .lab{padding:14px;display:flex;align-items:center;font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);background:#151719;border-right:3px solid var(--green);line-height:1.1}
+.row.v .lab{border-right-color:var(--vivify-2)}
+.row .bd{padding:11px 16px;font-size:11.5px}
+.row .bd .dots{gap:4px}
+.row .bd .k{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green-text);margin:7px 0 4px}
+.row .bd em{color:var(--text-3);font-size:10.5px}
+/* hydration cards */
+.hc{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.hc .hd{padding:10px 14px;font-family:Anton,sans-serif;text-transform:uppercase;font-size:16px;color:var(--text);background:#151719;border-bottom:1px solid var(--border-strong)}
+.hc .dots{padding:12px 14px;gap:6px;font-size:11.2px}
+/* plates */
+.plates{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.plate{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 10px 18px;text-align:center}
+.plate .t{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-bottom:10px;min-height:2.6em}
+.plate svg{width:196px;height:196px;display:block;margin:0 auto 10px}
+.plate .x{font-size:11.5px;color:var(--text-3);line-height:1.6}
+.legend{display:flex;gap:18px;justify-content:center;margin-top:12px;font-size:10.5px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+/* contents */
+.toc{list-style:none;margin-top:4px}
+.toc li{display:grid;grid-template-columns:62px 1fr 40px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.toc .no{font-family:Anton,sans-serif;font-size:28px;color:transparent;-webkit-text-stroke:1px var(--topic)}
+.key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:8px;font-size:11px;color:var(--text)}
+.key span{display:flex;align-items:center;gap:7px}.key i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.toc .tt{font-family:Anton,sans-serif;text-transform:uppercase;font-size:18px;color:var(--text);line-height:1.1}
+.toc .ds{font-size:11px;color:var(--text-3);margin-top:2px}
+.toc .pg{text-align:right;font-weight:600;color:var(--text)}
+/* cover */
+.cover{padding:0}
+.cover .in{position:absolute;inset:0;padding:18mm 16mm}
+.cover .logos{display:flex;align-items:center;gap:16px}
+.cover .logos .cc{width:30mm;height:30mm}
+.cover .logos .x{font-size:28px;color:var(--text-3);font-weight:300}
+.cover .logos .vv{height:30mm}
+.cover h1{font-size:104px;line-height:.92;margin-top:22mm}
+.cover .eyebrow{margin-top:20mm}
+.cover .bar{margin:18px 0 16px;width:56px;height:4px}
+.cover .tag{font-size:17px;color:var(--text-2);max-width:120mm;line-height:1.45}
+.cover .photo{position:absolute;left:16mm;right:16mm;bottom:44mm;height:74mm;border-radius:12px;overflow:hidden;border:1px solid var(--border-strong)}
+.cover .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
+.cover .by{position:absolute;left:16mm;right:16mm;bottom:16mm;display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--border-strong);padding-top:12px}
+.cover .by .who{font-family:Anton,sans-serif;text-transform:uppercase;font-size:22px;color:var(--text);line-height:1.1}
+.cover .by .role{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);font-weight:600;margin-top:4px}
+.cover .by .r{text-align:right}
+/* consultation */
+.consult{display:grid;grid-template-columns:1.05fr 1fr;gap:0;border:1px solid var(--border-strong);border-radius:12px;overflow:hidden;background:var(--panel)}
+.consult .l{padding:20px 22px}
+.consult .r{padding:20px 22px;background:linear-gradient(160deg,rgba(25,68,75,.85),rgba(15,16,17,.95));border-left:1px solid var(--border-strong)}
+.consult .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:8px}
+.consult .r .k{color:var(--vivify-text)}
+.person{margin-bottom:16px}
+.person .nm{font-family:Anton,sans-serif;text-transform:uppercase;font-size:19px;color:var(--text)}
+.person .rl{font-size:10.5px;color:var(--text-3);margin-bottom:6px}
+.person a,.person div.c{display:block;color:var(--text);font-size:11.5px;font-weight:500;text-decoration:none;line-height:1.6}
+.btn{display:inline-block;background:var(--green);color:#fff;font-weight:600;font-size:13px;padding:11px 18px;border-radius:8px;text-decoration:none;margin-top:14px}
+.mphoto{height:86mm;border-radius:12px;overflow:hidden;border:1px solid var(--border-strong);margin-bottom:16px;position:relative}
+.mphoto img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.pill{position:absolute;left:14px;bottom:14px;background:rgba(15,16,17,.92);border:1px solid var(--border-strong);border-radius:999px;color:#fff;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:7px 13px 7px 11px;display:flex;align-items:center;gap:8px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block}
+.coach{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:12px;padding:14px 18px;margin-top:14px}
+.coach img{width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid var(--green)}
+.av{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--green);flex:none;display:block}
+.av.viv{border-color:var(--vivify-text)}
+.avrow{display:flex;gap:12px;align-items:center}.avrow.rev{flex-direction:row-reverse}
+.coach .k{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red-text);margin-bottom:3px}
+.coach p{margin:0}
+.ratio td{text-align:center;font-size:12.5px;padding:8px 10px}.ratio td:first-child{text-align:left}.ratio th{text-align:center}.ratio th:first-child{text-align:left}
+.ratio td b{color:var(--green-text)}
+.pk td{font-size:11.5px;padding:8px 12px}.pk td:not(:first-child),.pk th:not(:first-child){text-align:center;width:18%}
+.ok{color:var(--green-text);font-weight:700}.no{color:var(--text-3)}
+.tool{display:block;text-decoration:none;color:var(--text-2);background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.tool .anton{font-size:17px;margin-bottom:4px}.tool .go{color:var(--green-text);font-weight:600;font-size:11.5px;margin-top:6px;display:block}
+/* foundations */
+.fd{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.fd .card{grid-column:span 3;background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--topic);border-radius:12px;padding:16px;text-align:center}
+.fd .card.s2{grid-column:span 2}
+.fd .ic{width:44px;height:44px;border-radius:50%;background:var(--topic);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.fd .ic svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fd .card .anton{font-size:18px;margin-bottom:6px}
+.fd .card p{font-size:11px;margin:0}
+.hub{display:flex;justify-content:center;margin:16px 0}
+.hub span{font-family:Anton,sans-serif;font-size:24px;letter-spacing:.06em;color:#fff;background:var(--green);padding:9px 28px;border-radius:999px}
+.tl{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr;align-items:center;gap:8px;margin-top:6px}
+.tl .st{display:flex;gap:11px;align-items:center}
+.tl .st .ic{width:40px;height:40px;border-radius:50%;background:var(--green);flex:none;display:flex;align-items:center;justify-content:center}
+.tl .st .ic svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tl .anton{font-size:16px}
+.tl p{font-size:10.5px;margin:0;line-height:1.4}
+.tl .ar{color:var(--green-text);font-size:20px;text-align:center}
+.quote{text-align:center;margin-top:18px;padding:18px;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong)}
+.quote .anton{font-size:22px}
+.quote p{margin:6px 0 0;font-size:13px}
+
+.tours-cover{padding:0}
+.tours-cover .bg{position:absolute;inset:0}
+.tours-cover .bg img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.tours-cover .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,10,.55) 0%,rgba(8,9,10,.25) 35%,rgba(8,9,10,.85) 72%,#08090a 100%)}
+.tours-cover .in{position:absolute;inset:0;padding:16mm 16mm}
+.tours-cover .logo{width:28mm;height:28mm}
+.tours-cover h1{font-size:118px;line-height:.9;margin-top:92mm}
+.tours-cover .tag{font-size:18px;color:var(--text);max-width:150mm;margin-top:14px;line-height:1.4}
+.tours-cover .meta{position:absolute;left:16mm;right:16mm;bottom:16mm;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tours-cover .meta div{background:rgba(15,16,17,.85);border:1px solid var(--border-strong);border-radius:12px;padding:12px 14px}
+.tours-cover .meta b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:22px;color:var(--text);text-transform:uppercase;line-height:1.1}
+.tours-cover .meta span{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
+.glance{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:14px 0}
+.glance div{background:var(--panel);border:1px solid var(--border);border-top:3px solid var(--green);border-radius:12px;padding:12px;text-align:center}
+.glance b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:26px;color:var(--text);line-height:1.1}
+.glance span{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)}
+.map{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+.map svg{width:100%;height:auto;display:block}
+.bases{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.base{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;border-top:3px solid var(--red)}
+.base .n{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red-text)}
+.base .anton{font-size:20px;margin:6px 0 2px}
+.base p{margin:0;font-size:11.5px}
+.day{display:grid;grid-template-columns:66px 1fr 44mm;gap:14px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:9px;align-items:start}
+.day.np{grid-template-columns:66px 1fr}
+.day .dn{text-align:center;border-right:1px solid var(--border-strong);padding-right:10px}
+.day .dn small{display:block;font-size:9px;font-weight:700;letter-spacing:.16em;color:var(--text-3)}
+.day .dn b{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:38px;color:var(--green-text);line-height:1}
+.day .dn em{display:block;font-style:normal;font-size:9.5px;color:var(--text-3);margin-top:4px;line-height:1.3}
+.day .anton{font-size:18px;line-height:1.1}
+.day .st{display:flex;gap:8px;margin:6px 0 6px;flex-wrap:wrap}
+.day .st span{font-size:10.5px;font-weight:600;color:var(--text);border:1px solid var(--border-strong);border-radius:999px;padding:2px 10px}
+.day p{margin:0;font-size:11.2px;line-height:1.5}
+.day .h{font-size:10.5px;color:var(--text-3);margin-top:6px}
+.day .h b{color:var(--text-2);font-weight:600}
+.day .ph{height:34mm;border-radius:8px;overflow:hidden}
+.day .ph img{width:100%;height:100%;object-fit:cover}
+.prices{width:100%}
+.prices td,.prices th{text-align:center;font-size:12.5px;padding:6px 10px}
+.prices th:first-child,.prices td:first-child{text-align:left}
+.prices td b{font-family:Anton,sans-serif;font-weight:400;font-size:20px;color:var(--text)}
+.prices tr.hl td{background:rgba(0,154,68,.12)}
+.inc li::before{background:var(--green)}
+.exc li::before{background:var(--text-3)}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gal img{width:100%;height:42mm;object-fit:cover;border-radius:10px;display:block}
+.rev{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.rev .s{color:#f0bf00;letter-spacing:2px;font-size:13px}
+.rev p{margin:6px 0 6px;font-size:11.5px;font-style:italic}
+.rev .w{font-size:10.5px;color:var(--text-3)}
+.next{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.step{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.step b.k{display:block;font-family:Anton,sans-serif;font-weight:400;font-size:30px;color:var(--green-text);line-height:1}
+</style></head>
+<body>
+<section class="page tours-cover">
+  <div class="bg"><img src="img/hero.jpg" alt="Aerial view of a hairpin road climbing through the Pyrenees"></div>
+  <div class="in">
+    <img class="logo" src="img/logo.png" alt="Cigala Cycling Tours logo">
+    <h1>Pyrenees<br>2027</h1>
+    <div class="bar" style="width:56px;height:4px;margin-top:18px"></div>
+    <p class="tag">Ride the legendary cols of the Tour de France. A private group tour from Luchon to Lourdes.</p>
+  </div>
+  <div class="meta">
+    <div><span>Dates</span><b>19–26 June</b></div>
+    <div><span>Nights</span><b>7 nights</b></div>
+    <div><span>Riding</span><b>6 days</b></div>
+    <div><span>Bases</span><b>3 hotels</b></div>
+  </div>
+</section>
+<section class="page">
+  <div class="run"><span>Pyrenees 2027 · 19–26 June</span><span>Cigala Cycling Tours</span></div>
+  <div class="sec"><div class="eyebrow">Private group tour proposal</div><h2>The Pyrenees, cols of legend</h2><div class="bar"></div></div>
+
+  <p class="lead">The Pyrenees are home to some of the most famous climbs in cycling: the Tourmalet, the Aubisque, the Peyresourde and the Col du Portet. We have designed a week that moves across the heart of the range, staying at three bases so every day brings new roads, quieter valleys and authentic mountain villages.</p>
+  <p>We start in Luchon, the “Queen of the Pyrenees”, cross to Saint-Lary-Soulan for the Col du Portet, and finish in Lourdes after riding the Tourmalet, the Aubisque and Hautacam. Every day is fully supported by our guides and support vehicle, with easier options always available.</p>
+  <div class="glance">
+    <div><b>~505 km</b><span>Total distance</span></div>
+    <div><b>~12,500 m</b><span>Total climbing</span></div>
+    <div><b>10</b><span>Iconic climbs</span></div>
+    <div><b>6</b><span>Days riding</span></div>
+  </div>
+  <div class="map"><svg viewBox="0 0 700 340" role="img" aria-label="Schematic route map: Luchon to Saint-Lary-Soulan to Lourdes, with the main climbs"><rect x="0" y="0" width="700" height="340" fill="none"/><path d="M572.7 270.0 L495.7 265.0 L461.9 254.3 L431.7 250.7 L434.8 160.7 L339.6 185.7 L240.2 52.1" fill="none" stroke="#009a44" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="1 0"/><path d="M560.7 290.1 L566.7 301.1 L554.7 301.1 Z" fill="#f0bf00"/><text x="568.7" y="311.1" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">Superbagnères</text><path d="M618.0 252.3 L624.0 263.3 L612.0 263.3 Z" fill="#f0bf00"/><text x="614.0" y="247.3" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">Col du Portillon</text><path d="M495.7 258.0 L501.7 269.0 L489.7 269.0 Z" fill="#f0bf00"/><text x="465.7" y="291.0" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">Col de Peyresourde</text><path d="M461.9 247.3 L467.9 258.3 L455.9 258.3 Z" fill="#f0bf00"/><text x="469.9" y="246.3" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">Col d’Azet</text><path d="M383.8 255.9 L389.8 266.9 L377.8 266.9 Z" fill="#f0bf00"/><text x="343.8" y="286.9" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">Col du Portet</text><path d="M434.8 153.7 L440.8 164.7 L428.8 164.7 Z" fill="#f0bf00"/><text x="442.8" y="152.7" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">Col d’Aspin</text><path d="M339.6 178.7 L345.6 189.7 L333.6 189.7 Z" fill="#f0bf00"/><text x="309.6" y="173.7" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">Col du Tourmalet</text><path d="M127.8 142.3 L133.8 153.3 L121.8 153.3 Z" fill="#f0bf00"/><text x="135.8" y="165.3" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">Col du Soulor</text><path d="M87.8 129.4 L93.8 140.4 L81.8 140.4 Z" fill="#f0bf00"/><text x="47.8" y="124.4" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">Col d’Aubisque</text><path d="M264.1 113.0 L270.1 124.0 L258.1 124.0 Z" fill="#f0bf00"/><text x="274.1" y="124.0" font-family="Montserrat" font-size="11" font-weight="600" fill="#d0d6e0">Hautacam</text><circle cx="572.7" cy="270.0" r="13" fill="#E10600" stroke="#fff" stroke-width="2"/><text x="572.7" y="274.5" text-anchor="middle" font-family="Anton" font-size="14" fill="#fff">1</text><text x="590.7" y="275.0" font-family="Anton" font-size="17" fill="#f7f8f8" letter-spacing=".5">LUCHON</text><circle cx="431.7" cy="250.7" r="13" fill="#E10600" stroke="#fff" stroke-width="2"/><text x="431.7" y="255.2" text-anchor="middle" font-family="Anton" font-size="14" fill="#fff">2</text><text x="371.7" y="230.7" font-family="Anton" font-size="17" fill="#f7f8f8" letter-spacing=".5">SAINT-LARY</text><circle cx="240.2" cy="52.1" r="13" fill="#E10600" stroke="#fff" stroke-width="2"/><text x="240.2" y="56.6" text-anchor="middle" font-family="Anton" font-size="14" fill="#fff">3</text><text x="258.2" y="44.1" font-family="Anton" font-size="17" fill="#f7f8f8" letter-spacing=".5">LOURDES</text><text x="690" y="332" text-anchor="end" font-family="Montserrat" font-size="9.5" fill="#8a8f98">Schematic map · day loops from each base not drawn</text></svg></div>
+  <h3>Three bases</h3><div class="bar"></div>
+  <div class="bases">
+    <div class="base"><div class="n">Nights 1–2 · 19–20 June</div><div class="anton">Alti Hotel</div><p>Bagnères-de-Luchon</p></div>
+    <div class="base"><div class="n">Nights 3–4 · 21–22 June</div><div class="anton">Mercure Saint-Lary</div><p>Saint-Lary-Soulan</p></div>
+    <div class="base"><div class="n">Nights 5–7 · 23–25 June</div><div class="anton">Hotel Gallia</div><p>Lourdes</p></div>
+  </div>
+  <div class="foot"><span>Cigala Cycling Tours · Pyrenees 2027 · Private group proposal</span><span class="n">2</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Pyrenees 2027 · 19–26 June</span><span>Cigala Cycling Tours</span></div>
+  <div class="sec"><div class="eyebrow">Itinerary</div><h2>Day by day</h2><div class="bar"></div><p class=sub>Routes, distances and climbing are indicative and will be finalised with the group. GPX files are sent before the trip.</p></div>
+<div class="day"><div class="dn"><small>DAY</small><b>1</b><em>Sat 19 June</em></div><div><div class="anton">Arrival in Luchon & shake-out ride</div><div class="st"><span>30 km</span><span>+400 m</span></div><p>Welcome to the Pyrenees! Transfer from the airport to Bagnères-de-Luchon, the “Queen of the Pyrenees”. Bike set-up and fitting with our mechanics, then an easy shake-out ride along the valley to loosen the legs after the journey. Welcome briefing and first evening together.</p><div class="h">Hotel: <b>Alti Hotel, Luchon</b></div></div><div class="ph"><img src="img/meadow.jpg" alt="Arrival in Luchon & shake-out ride"></div></div>
+<div class="day"><div class="dn"><small>DAY</small><b>2</b><em>Sun 20 June</em></div><div><div class="anton">Superbagnères & Col du Portillon</div><div class="st"><span>75 km</span><span>+2,100 m</span></div><p>Straight from the hotel we climb to Superbagnères, a former Tour de France summit finish with huge views over the Luchon valley. In the afternoon we cross the Col du Portillon into Spain and return through the Val d’Aran.</p><div class="h">Hotel: <b>Alti Hotel, Luchon</b></div></div><div class="ph"><img src="img/two.jpg" alt="Superbagnères & Col du Portillon"></div></div>
+<div class="day"><div class="dn"><small>DAY</small><b>3</b><em>Mon 21 June</em></div><div><div class="anton">Col de Peyresourde & Col d’Azet to Saint-Lary</div><div class="st"><span>65 km</span><span>+1,900 m</span></div><p>Our first point-to-point stage. We leave Luchon on the Col de Peyresourde, a Tour de France classic, then ride through the Val Louron and over the Col d’Azet before descending into Saint-Lary-Soulan. Luggage travels with the support vehicle.</p><div class="h">Hotel: <b>Mercure, Saint-Lary-Soulan</b></div></div><div class="ph"><img src="img/valley.jpg" alt="Col de Peyresourde & Col d’Azet to Saint-Lary"></div></div>
+<div class="day"><div class="dn"><small>DAY</small><b>4</b><em>Tue 22 June</em></div><div><div class="anton">Col du Portet</div><div class="st"><span>55 km</span><span>+1,700 m</span></div><p>A day for the queen climb of this side of the range: the Col du Portet (2,215 m), one of the highest roads in the Pyrenees and a modern Tour de France summit finish. Long, steady and spectacular above the Néouvielle massif. Afternoon to rest and recover.</p><div class="h">Hotel: <b>Mercure, Saint-Lary-Soulan</b></div></div><div class="ph"><img src="img/hairpins.jpg" alt="Col du Portet"></div></div>
+  <div class="foot"><span>Cigala Cycling Tours · Pyrenees 2027 · Private group proposal</span><span class="n">3</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Pyrenees 2027 · 19–26 June</span><span>Cigala Cycling Tours</span></div>
+<div class="day"><div class="dn"><small>DAY</small><b>5</b><em>Wed 23 June</em></div><div><div class="anton">Col d’Aspin & Col du Tourmalet to Lourdes</div><div class="st"><span>115 km</span><span>+2,600 m</span></div><p>The big day. We climb the Col d’Aspin, then the legendary Col du Tourmalet (2,115 m), the most climbed pass in Tour de France history. A long descent through Luz-Saint-Sauveur and the Gave de Pau valley brings us to Lourdes.</p><div class="h">Hotel: <b>Hotel Gallia, Lourdes</b></div></div><div class="ph"><img src="img/tourmalet.jpg" alt="Col d’Aspin & Col du Tourmalet to Lourdes"></div></div>
+<div class="day"><div class="dn"><small>DAY</small><b>6</b><em>Thu 24 June</em></div><div><div class="anton">Col du Soulor & Col d’Aubisque</div><div class="st"><span>105 km</span><span>+2,200 m</span></div><p>From Lourdes we ride up the Val d’Azun to the Col du Soulor and on along the famous balcony road to the Col d’Aubisque, with its giant bikes at the summit. Return the same way for one of the most scenic descents of the week.</p><div class="h">Hotel: <b>Hotel Gallia, Lourdes</b></div></div><div class="ph"><img src="img/goats.jpg" alt="Col du Soulor & Col d’Aubisque"></div></div>
+<div class="day"><div class="dn"><small>DAY</small><b>7</b><em>Fri 25 June</em></div><div><div class="anton">Hautacam (or Luz Ardiden)</div><div class="st"><span>60 km</span><span>+1,600 m</span></div><p>The grand finale on the slopes of Hautacam, scene of many Tour de France battles. Riders who want more can choose Luz Ardiden instead; an easier valley option is always available. Celebration dinner in the evening.</p><div class="h">Hotel: <b>Hotel Gallia, Lourdes</b></div></div><div class="ph"><img src="img/group.jpg" alt="Hautacam (or Luz Ardiden)"></div></div>
+<div class="day np"><div class="dn"><small>DAY</small><b>8</b><em>Sat 26 June</em></div><div><div class="anton">Departure day</div><p>After breakfast, transfer to the airport. See you next time!</p></div></div>
+  <div class="panel exc" style="margin-top:6px"><div class="anton" style="font-size:19px;margin-bottom:8px">Not included</div><ul class="dots c2"><li>Flights</li><li>Dinners – organised with great restaurants along the route</li><li>Single room supplement €420</li><li>Bike rental from €280, depending on bike specs</li><li>Travel insurance</li></ul></div>
+  <div class="foot"><span>Cigala Cycling Tours · Pyrenees 2027 · Private group proposal</span><span class="n">4</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Pyrenees 2027 · 19–26 June</span><span>Cigala Cycling Tours</span></div>
+  <div class="sec"><div class="eyebrow">Price</div><h2>Price per person</h2><div class="bar"></div><p class=sub>The price per person depends on the final size of the group. All prices in euro, sharing a twin or double room.</p></div>
+
+  <div class="g2" style="align-items:start">
+    <div class="tbl"><table class="prices"><tr><th>Group size</th><th>Price per person</th></tr><tr><td>7 cyclists</td><td><b>€2,430</b></td></tr><tr class=hl><td>8 cyclists</td><td><b>€2,295</b></td></tr><tr><td>9 cyclists</td><td><b>€2,205</b></td></tr><tr><td>10 cyclists</td><td><b>€2,125</b></td></tr><tr><td>11 cyclists</td><td><b>€2,070</b></td></tr><tr><td>12 cyclists</td><td><b>€2,000</b></td></tr><tr><td>13 cyclists</td><td><b>€1,940</b></td></tr><tr><td>14 cyclists</td><td><b>€1,880</b></td></tr></table></div>
+    <div>
+      <div class="tile wide" style="border-top:3px solid var(--green)"><div class="v" style="color:var(--text)">€420</div><div class="u">per person</div><div class="l">Single room supplement</div></div>
+      <div class="tile wide" style="border-top:3px solid var(--green);margin-top:10px"><div class="v" style="color:var(--text)">€499</div><div class="u">per person, to confirm a place</div><div class="l">Deposit</div></div>
+      <p class="note" style="margin-top:10px">Balance due before the trip. Payment by bank transfer or card.</p>
+    </div>
+  </div>
+  <div class="panel inc" style="margin-top:14px"><div class="anton" style="font-size:19px;margin-bottom:8px">What’s included</div><ul class="dots c2"><li>7 nights in hand-picked hotels at three bases: Luchon, Saint-Lary-Soulan and Lourdes</li><li>6 days of guided cycling</li><li>Daily buffet breakfast</li><li>Airport transfers, including bike and luggage, at set times</li><li>Guided routes every day with our ex-pro, experienced and friendly guides</li><li>Daily PRO experience with support vehicle and mechanic</li><li>Snacks & water on route</li><li>Luggage transfers from hotel to hotel</li><li>GPX files sent in advance</li><li>Pro tips from our ex-pro staff</li><li>1 cycling kit washing service during the week</li></ul></div>
+  <div class="foot"><span>Cigala Cycling Tours · Pyrenees 2027 · Private group proposal</span><span class="n">5</span></div>
+</section>
+<section class="page">
+  <div class="run"><span>Pyrenees 2027 · 19–26 June</span><span>Cigala Cycling Tours</span></div>
+  <div class="sec"><div class="eyebrow">Real riders, real roads</div><h2>The Pyrenees with Cigala</h2><div class="bar"></div></div>
+
+  <div class="gal">
+    <img src="img/aerial.jpg" alt="Hairpin road on a Pyrenean climb seen from the air">
+    <img src="img/hairpins.jpg" alt="Winding road climbing a green Pyrenean slope">
+    <img src="img/tourmalet.jpg" alt="Cyclist climbing the Col du Tourmalet">
+    <img src="img/two.jpg" alt="Two cyclists riding up a winding mountain road">
+    <img src="img/goats.jpg" alt="A herd of goats on a mountain road with cyclists">
+    <img src="img/valley.jpg" alt="Cyclist climbing high above a Pyrenean valley">
+  </div>
+  <div class="g2" style="margin-top:14px">
+    <div class="rev"><div class="s">★★★★★</div><p>“Had a wonderful tour with Cigala in the French Alps in June 2025. I just showed up ready to pedal and they took care of the rest: excellent rental bikes, phenomenal routes with stunning views, gracious accommodations and delicious food with local charm.”</p><div class="w">Hank · USA · French Alps</div></div>
+    <div class="rev"><div class="s">★★★★★</div><p>“I have gone on a number of trips organised by Cigala Cycling Tours and they have been fantastic. Matteo pays attention to every last detail, from logistics, food and accommodation to the spectacular routes.”</p><div class="w">Mike · Ireland · repeat guest</div></div>
+  </div>
+  <h3>Next steps</h3><div class="bar"></div>
+  <div class="next">
+    <div class="step"><b class="k">1</b><div class="anton" style="font-size:17px;margin:6px 0 4px">Confirm the group</div><p style="margin:0;font-size:11.5px">Let us know your numbers and any changes to the itinerary. We hold the hotels for the group.</p></div>
+    <div class="step"><b class="k">2</b><div class="anton" style="font-size:17px;margin:6px 0 4px">Pay the deposit</div><p style="margin:0;font-size:11.5px">€499 per person confirms each place. We then send the booking form and waiver.</p></div>
+  </div>
+  <div class="made" style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:16px 20px;border:1px solid var(--border-strong);border-radius:12px;background:var(--panel)">
+    <div><div class="eyebrow" style="margin-bottom:4px">Questions?</div><div class="anton" style="font-size:20px">Cigala Cycling Tours</div>
+      <div style="font-size:11.5px;color:var(--text);margin-top:4px">tours@cigalacycling.com · +353 40478107 · tours.cigalacycling.com</div></div>
+    <img src="img/logo.png" alt="Cigala Cycling Tours logo" style="width:20mm;height:20mm">
+  </div>
+  <div class="foot"><span>Cigala Cycling Tours · Pyrenees 2027 · Private group proposal</span><span class="n">6</span></div>
+</section>
+</body></html>
