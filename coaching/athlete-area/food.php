@@ -48,6 +48,7 @@ function cc_fd_w($k) {
         'c_ab' => ['C', 'C', 'H', 'OH', 'S'],
         'p_ab' => ['P', 'P', 'P', 'B', 'B'],
         'f_ab' => ['F', 'G', 'G', 'M', 'T'],
+        'weight_n' => ['Your weight (kg) — helps Marine read your diary.', 'Il tuo peso (kg) — aiuta Marine a leggere il tuo diario.', 'O teu peso (kg) — ajuda a Marine a ler o teu diário.', 'Tvoja teža (kg) — Marine pomaga brati tvoj dnevnik.', 'Tvoja hmotnosť (kg) — pomáha Marine čítať tvoj denník.'],
         'weight' => ['My weight (kg)', 'Il mio peso (kg)', 'O meu peso (kg)', 'Moja teža (kg)', 'Moja hmotnosť (kg)'],
         'weight_h' => ['Optional: with your weight, carbs and protein are also shown per kg.', 'Facoltativo: con il tuo peso, carboidrati e proteine compaiono anche per kg.', 'Opcional: com o teu peso, os hidratos e a proteína aparecem também por kg.', 'Neobvezno: s tvojo težo so ogljikovi hidrati in beljakovine prikazani tudi na kg.', 'Nepovinné: s tvojou hmotnosťou sa sacharidy a bielkoviny ukážu aj na kg.'],
         'note' => ['Note (optional)', 'Nota (facoltativa)', 'Nota (opcional)', 'Opomba (neobvezno)', 'Poznámka (nepovinné)'],
@@ -429,7 +430,7 @@ function cc_fd_upgrade() {
 function cc_fd_athlete($pid) {
     $date = cc_fd_date($_GET['fd'] ?? '') ?: current_time('Y-m-d');
     $W = []; foreach (['time', 'add', 'search', 'grams', 'addit', 'remove', 'cancel', 'noresults', 'closest', 'loading', 'slot_total', 'day_total', 'carbs', 'protein', 'fat', 'fibre', 'sugars', 'c_ab', 'p_ab', 'f_ab',
-                       'weight', 'weight_h', 'note', 'note_ph', 'photo', 'photo_ch', 'photo_del', 'photo_bad', 'uploading', 'saving', 'saved', 'err', 'prev', 'next', 'today', 'gotoday', 'mine', 'mine_lede',
+                       'weight', 'weight_n', 'note', 'note_ph', 'photo', 'photo_ch', 'photo_del', 'photo_bad', 'uploading', 'saving', 'saved', 'err', 'prev', 'next', 'today', 'gotoday', 'mine', 'mine_lede',
                        'add_label', 'add_recipe', 'name', 'per100', 'optional', 'ingredients', 'add_ing', 'cooked', 'cooked_h', 'save', 'edit', 'del', 'delq', 'myfood', 'myrecipe', 'need', 'need_r',
                        'none_mine', 'thread', 'ask', 'reply', 'send_r', 'sent_err', 'you', 'drinks', 'drinks_h', 'fluids', 'per_h', 'ride', 'sodium', 'na_inc', 'vk_weight', 'vk_weight_h',
                        'b_raw', 'b_cooked', 'ask_rc', 'w_raw', 'w_cooked', 'weigh_h', 'micro', 'mytrends', 'tr_lede',
@@ -561,8 +562,8 @@ function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer, $mine = [], $fem = 
         $sl .= '</div>';
     }
     if ($has) {
-        $o .= cc_fd_ring($t) . $sl . '<div class="fd-rtot"><b>Day total</b><span>' . round($t['k']) . ' kcal</span><span>Carbs ' . round($t['c']) . ' g' . ($kg ? ' (' . cc_fd_f1($t['c'] / $kg) . ' g/kg)' : '') . '</span>'
-            . '<span>Protein ' . round($t['p']) . ' g' . ($kg ? ' (' . cc_fd_f1($t['p'] / $kg) . ' g/kg)' : '') . '</span><span>Fat ' . round($t['f']) . ' g' . ($t['k'] > 0 ? ' · ' . round($t['f'] * 900 / $t['k']) . '% of energy' : '') . ($kg ? ' · ' . cc_fd_f1($t['f'] / $kg) . ' g/kg' : '') . '</span><span>Fibre ' . round($t['fi']) . ' g</span><span>Sugars ' . round($t['su']) . ' g</span>'
+        $o .= cc_fd_ring($t) . $sl . '<div class="fd-rtot"><b>Day total</b><span>' . round($t['k']) . ' kcal</span><span>Carbs ' . round($t['c']) . ' g' . ($kg ? ' (' . number_format($t['c'] / $kg, 1) . ' g/kg)' : '') . '</span>'
+            . '<span>Protein ' . round($t['p']) . ' g' . ($kg ? ' (' . number_format($t['p'] / $kg, 1) . ' g/kg)' : '') . '</span><span>Fat ' . round($t['f']) . ' g' . (($t['k'] > 0 || $kg) ? ' (' . implode(' · ', array_filter([$t['k'] > 0 ? round($t['f'] * 900 / $t['k']) . ' % of energy' : '', $kg ? number_format($t['f'] / $kg, 1) . ' g/kg' : ''])) . ')' : '') . '</span><span>Fibre ' . round($t['fi']) . ' g</span><span>Sugars ' . round($t['su']) . ' g</span>'
             . '<span>Fluids ' . number_format($ml) . ' ml (' . cc_fd_f1($ml / 1000) . ' L)</span></div>'
             . ($fem ? '<p class="fd-ironl">' . esc_html(sprintf(cc_fd_w('iron_line'), cc_fd_f1($ir['fe']))) . ($ir['inc'] ? ' <small class="fd-inc">incomplete</small>' : '') . '</p>' : '')
             . cc_fd_micro_box($d, $mine, $fem);
@@ -1129,9 +1130,9 @@ function ringHtml(t){var P=ringParts(t),L=2*Math.PI*42,col=["#7fb2ff","#c99bff",
 var h='<div class="fd-ringw"><svg class="fd-ring" viewBox="0 0 110 110" width="110" height="110" aria-hidden="true"><circle cx="55" cy="55" r="42" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="12"/>';
 P.forEach(function(p,i){h+='<circle data-rg="'+i+'" cx="55" cy="55" r="42" fill="none" stroke="'+col[i]+'" stroke-width="12" stroke-dasharray="'+p.len.toFixed(1)+' '+L.toFixed(1)+'" stroke-dashoffset="'+(-p.off).toFixed(1)+'" transform="rotate(-90 55 55)"/>';});
 h+='<text data-rk x="55" y="58" text-anchor="middle" font-size="22" font-weight="700" fill="#fff">'+fmt0(t.k)+'</text><text x="55" y="76" text-anchor="middle" font-size="14" fill="#b8bec8">kcal</text></svg><ul class="fd-leg">';
-P.forEach(function(p,i){h+='<li><i style="background:'+col[i]+'"></i><span>'+esc(nm[i])+'</span><b data-rl="'+i+'">'+p.pct+' % · '+fmt0(g[i])+' g</b></li>';});return h+'</ul></div>';}
+P.forEach(function(p,i){h+='<li><i style="background:'+col[i]+'"></i><span>'+esc(nm[i])+'</span><b data-rl="'+i+'">'+fmt0(g[i])+' g</b></li>';});return h+'</ul></div>';}
 function ringUpd(){var w=root.querySelector(".fd-ringw");if(!w){return;}var t=dayTot(),P=ringParts(t),L=2*Math.PI*42,g=[t.c,t.p,t.f];
-P.forEach(function(p,i){var c=w.querySelector('[data-rg="'+i+'"]');if(c){c.setAttribute("stroke-dasharray",p.len.toFixed(1)+" "+L.toFixed(1));c.setAttribute("stroke-dashoffset",(-p.off).toFixed(1));}var l=w.querySelector('[data-rl="'+i+'"]');if(l){l.textContent=p.pct+" % · "+fmt0(g[i])+" g";}});
+P.forEach(function(p,i){var c=w.querySelector('[data-rg="'+i+'"]');if(c){c.setAttribute("stroke-dasharray",p.len.toFixed(1)+" "+L.toFixed(1));c.setAttribute("stroke-dashoffset",(-p.off).toFixed(1));}var l=w.querySelector('[data-rl="'+i+'"]');if(l){l.textContent=fmt0(g[i])+" g";}});
 var k=w.querySelector("[data-rk]");if(k){k.textContent=fmt0(t.k);}}
 function ironDay(){if(!C.female||!S.M){return null;}var j=S.M.cols.indexOf("fe"),rc=recipes(),fe=0,g=0,miss=0,sl=0;
 C.slots.forEach(function(sv){var s=slot(sv[0]);if(s.i.length){sl++;}s.i.forEach(function(it){var gr=+it.g||0;if(!(gr>0)){return;}g+=gr;var v=window.ccFdM.per100(S.M,it.id,rc,0);if(!v||v[j]==null){miss+=gr;}else{fe+=v[j]*gr/100;}});});
@@ -1211,9 +1212,9 @@ h+='<label class="fd-note">'+esc(W.note)+'<textarea rows="2" data-f="n" placehol
 h+='<div class="fd-ph">'+(s.phu?'<a href="'+esc(s.phu)+'" target="_blank" rel="noopener"><img src="'+esc(s.phu)+'" alt=""></a>':"")+'<label class="btn btn-ghost fd-phb">'+esc(s.phu?W.photo_ch:W.photo)+'<input type="file" accept="image/*" hidden data-f="ph"></label>'+(s.phu?'<button type="button" class="fd-link" data-act="phdel">'+esc(W.photo_del)+'</button>':"")+'</div>';
 return h+'</div></details>';}
 function sumTxt(s,t){var a=[];if(s.t){a.push(s.t);}if(s.i.length){a.push(fmt0(t.k)+" kcal");}if(+s.d>0){a.push(fmt0(s.d)+" ml");}if(!a.length&&!s.n&&!s.phu){return '<span class="fd-addh">'+esc(W.add_short)+'</span>';}return esc(a.join(" · "));}
-function totV(){var t=dayTot(),kg=kgUsed(),ml=dayMl();
+function totV(){var t=dayTot(),ml=dayMl();
 function tile(v,l,x,cl){return '<div><b>'+v+'</b><span>'+esc(l)+'</span>'+(x?'<em'+(cl?' class="fd-inc"':"")+'>'+x+'</em>':"")+'</div>';}
-return '<div class="fd-tiles">'+tile(fmt0(t.k),"kcal")+tile(fmt0(t.c)+" g",W.carbs,kg?fmt(t.c/kg)+" g/kg":"")+tile(fmt0(t.p)+" g",W.protein,kg?fmt(t.p/kg)+" g/kg":"")+tile(fmt0(t.f)+" g",W.fat,(t.k>0?'<span class="fd-nw">'+Math.round(t.f*900/t.k)+"\u00a0% "+esc(W.of_energy)+'</span>':"")+(kg?(t.k>0?" · ":"")+'<span class="fd-nw">'+fmt(t.f/kg)+" g/kg</span>":""))+tile(fmt0(t.fi)+" g",W.fibre)+tile(fmt0(t.su)+" g",W.sugars)
+return '<div class="fd-tiles">'+tile(fmt0(t.k),"kcal")+tile(fmt0(t.c)+" g",W.carbs)+tile(fmt0(t.p)+" g",W.protein)+tile(fmt0(t.f)+" g",W.fat)+tile(fmt0(t.fi)+" g",W.fibre)+tile(fmt0(t.su)+" g",W.sugars)
 +tile(fmt0(ml)+" ml",W.fluids,ml?(Math.round(ml/100)/10).toLocaleString(C.lang,{minimumFractionDigits:1,maximumFractionDigits:1})+" L":"")+'</div>'+ironHtml();}
 function microItems(){var a=[];C.slots.forEach(function(sv){slot(sv[0]).i.forEach(function(it){a.push([it.id,+it.g||0,it.m||""]);});});return a;}
 function recipes(){var o={};S.mine.forEach(function(m){if(m.t==="r"){o[m.id]={ing:(m.ing||[]).map(function(i){return [i.id,+i.g||0,i.m||""];}),cw:+m.cw||0};}});return o;}
@@ -1228,8 +1229,8 @@ function render(){var d=new Date(S.date+"T12:00:00"),lbl=d.toLocaleDateString(C.
 var h='<div class="fd-nav"><button type="button" class="fd-arrow" data-act="prev" aria-label="'+esc(W.prev)+'">‹</button><div class="fd-date"><b>'+esc(lbl)+'</b>'+(isT?'<small>'+esc(W.today)+'</small>':'<button type="button" class="fd-link" data-act="today">'+esc(W.gotoday)+'</button>')+'</div><button type="button" class="fd-arrow" data-act="next" aria-label="'+esc(W.next)+'"'+(S.date>=shift(today(),7)?" disabled":"")+'>›</button></div>';
 h='<div class="fd-stick">'+h+'<p class="fd-slim">'+slimHtml()+'</p></div><p class="fd-status" role="status"></p>';
 C.slots.forEach(function(sv){h+=slotHtml(sv[0],sv[1]);});
-var wb=C.vkg?'<p class="fd-vkg">'+esc(W.vk_weight.replace("%1$s",fmt(C.vkg.v)).replace("%2$s",new Date(C.vkg.d+"T12:00:00").toLocaleDateString(C.lang,{day:"numeric",month:"short"})))+'</p><p class="fd-muted">'+esc(W.vk_weight_h)+'</p>'
-:'<label class="fd-kg">'+esc(W.weight)+' <input type="number" class="fd-kgi" inputmode="decimal" min="25" max="250" step="0.1" value="'+esc(S.kg)+'"></label><p class="fd-muted">'+esc(W.weight_h)+'</p>';
+/* Matteo 19 Nov: per-kg numbers are for Marine and the coach only; the weight box shows only when there is no Vekta weight (last 60 days) */
+var wb=C.vkg?"":'<label class="fd-kg">'+esc(W.weight_n)+' <input type="number" class="fd-kgi" inputmode="decimal" min="25" max="250" step="0.1" value="'+esc(S.kg)+'"></label>';
 h+='<div class="fd-tot"><h3>'+esc(W.day_total)+'</h3>'+(hasAny()?ringHtml(dayTot()):'')+'<div class="fd-totv">'+totV()+'</div>'+wb+'<button type="button" class="fd-link fd-copyday" data-act="copyday">'+esc(W.copy_day)+'</button></div>'+microHtml();
 root.querySelector(".fd-day").innerHTML=h;root.querySelector(".fd-thbox").innerHTML=threadHtml();S.just=null;renderMine();renderCyc();microRefresh();watchThread();}
 function refreshNums(){C.slots.forEach(function(sv){var k=sv[0],s=slot(k),t=tot(s.i),el=root.querySelector('[data-tt="'+k+'"]');if(el){el.innerHTML=sumTxt(s,t);}
