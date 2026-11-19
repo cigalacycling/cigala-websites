@@ -213,8 +213,10 @@ function cc_fd_switch($pid) {
 }
 add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     if (!$view || get_post_meta($view, 'cc_shared', true)) return $html;
-    if ($coach) return $html . cc_fd_coach_card($view);
-    return $html . (cc_fd_on($view) ? cc_fd_athlete($view) : cc_fd_upgrade());
+    // Matteo 19 Nov: on his demo page (no login) he sees the athlete's own diary too, so he can try it as an athlete would
+    if ($coach) return $html . cc_fd_coach_card($view) . (get_post_meta($view, 'cc_demo', true) && cc_fd_on($view) ? cc_fd_athlete($view) : '');
+    // the upgrade card only once Matteo launches the diary (option cc_fd_launched); until then athletes without the package see nothing
+    return $html . (cc_fd_on($view) ? cc_fd_athlete($view) : (get_option('cc_fd_launched') ? cc_fd_upgrade() : ''));
 }, 18, 3);
 add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view && !$coach && cc_fd_on($view)) $nav[] = ['food', cc_fd_w('title')]; return $nav; }, 32, 3);
 
@@ -459,6 +461,11 @@ add_action('rest_api_init', function () {
         return ['ok' => true, 'r' => array_values($cur['r'])];
     }]);
     // Matteo's laptop: which athletes have the package (with their Vekta id), and their Vekta summary (sessions + Marine's nutrition notes)
+    // Matteo's launch switch: shows the "Food diary with Marine" upgrade card to athletes without the package
+    register_rest_route('cc/v1', '/food-launch', ['methods' => 'GET,POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        if ($r->get_method() === 'POST') update_option('cc_fd_launched', $r['on'] ? 1 : 0, false);
+        return ['launched' => (bool) get_option('cc_fd_launched')];
+    }]);
     register_rest_route('cc/v1', '/food-athletes', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
         $o = [];
         foreach (cc_fd_pkg_pages() as $p) { $uid = (int) get_post_meta($p->ID, 'cc_user', true); $vid = $uid ? (string) get_user_meta($uid, 'cc_vekta_id', true) : '';
