@@ -18,6 +18,9 @@ function cc_bt_w($k) {
         'marine_rep' => ['en' => 'Marine replied about your blood test', 'it' => 'Marine ha risposto sulle tue analisi', 'pt' => 'A Marine respondeu sobre as tuas análises', 'sl' => 'Marine je odgovorila glede tvojih izvidov', 'sk' => 'Marine odpovedala na tvoj krvný test'],
         'matteo_rep' => ['en' => 'Matteo replied about your blood test', 'it' => 'Matteo ha risposto sulle tue analisi', 'pt' => 'O Matteo respondeu sobre as tuas análises', 'sl' => 'Matteo je odgovoril glede tvojih izvidov', 'sk' => 'Matteo odpovedal na tvoj krvný test'],
         'file' => ['en' => 'Choose the file', 'it' => 'Scegli il file', 'pt' => 'Escolhe o ficheiro', 'sl' => 'Izberi datoteko', 'sk' => 'Vybrať súbor'],
+        // 19 Nov: a styled file button (the phone's own "Choose File" box ran off the screen and was always in English)
+        'pick' => ['en' => 'Choose a PDF or photo', 'it' => 'Scegli un PDF o una foto', 'pt' => 'Escolher um PDF ou foto', 'sl' => 'Izberi PDF ali fotografijo', 'sk' => 'Vybrať PDF alebo fotku'],
+        'nofile' => ['en' => 'No file chosen yet', 'it' => 'Nessun file scelto', 'pt' => 'Ainda nenhum ficheiro escolhido', 'sl' => 'Datoteka še ni izbrana', 'sk' => 'Zatiaľ nie je vybraný žiadny súbor'],
         'date' => ['en' => 'Date of the test', 'it' => 'Data delle analisi', 'pt' => 'Data das análises', 'sl' => 'Datum preiskave', 'sk' => 'Dátum testu'],
         'share' => ['en' => 'Share with Marine, our sports nutritionist, so she can take a look', 'it' => 'Condividi con Marine, la nostra nutrizionista sportiva, per un suo parere', 'pt' => 'Partilhar com a Marine, a nossa nutricionista desportiva, para ela dar uma vista de olhos', 'sl' => 'Deli z Marine, našo športno nutricionistko, da jih pregleda', 'sk' => 'Zdieľať s Marine, našou športovou nutričnou poradkyňou, aby sa na to pozrela'],
         'send' => ['en' => 'Upload', 'it' => 'Carica', 'pt' => 'Carregar', 'sl' => 'Naloži', 'sk' => 'Nahrať'],
@@ -51,7 +54,7 @@ function cc_bt_thread($pid, $b, $viewer) {   // $viewer: coach | nutri | athlete
         $face = $who === 'athlete' ? (function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '')
               : '<img class="nt-me" src="' . esc_url($who === 'nutri' ? 'https://coaching.cigalacycling.com/wp-content/uploads/2026/11/vivify-tile.png' : 'https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg') . '" width="30" height="30" alt="">';
         $label = $who === 'athlete' ? ($viewer === 'athlete' ? cc_bt_w('you') : get_the_title($pid)) : ($who === 'nutri' ? 'Marine' : 'Matteo');
-        $o .= '<div class="nt-rep' . ($who === 'athlete' ? ' nt-rep-a' : '') . '"><span class="nt-rh">' . $face . '<b>' . esc_html($label) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small></span><p>' . nl2br(esc_html($r['text'])) . '</p></div>';
+        $o .= '<div class="nt-rep' . ($who === 'athlete' ? ' nt-rep-a' : '') . '"><span class="nt-rh">' . $face . '<b>' . esc_html($label) . '</b> <small>' . esc_html(cc_r_dm((int) $r['at'], true)) . '</small></span><p>' . nl2br(esc_html($r['text'])) . '</p></div>';
     }
     $can = $viewer !== 'nutri' || !empty($b['share']);
     if ($can && ($viewer !== 'athlete' || !empty($b['replies'])))
@@ -62,7 +65,7 @@ function cc_bt_thread($pid, $b, $viewer) {   // $viewer: coach | nutri | athlete
 function cc_bt_row($pid, $b, $forCoach, $viewer = null) {
     $viewer = $viewer ?: ($forCoach ? 'coach' : 'athlete');
     $u = wp_get_attachment_url((int) $b['file']); if (!$u) return '';
-    $when = $b['date'] ? date_i18n('j M Y', strtotime($b['date'] . ' 12:00')) : date_i18n('j M Y', (int) $b['at']);
+    $when = $b['date'] ? cc_r_date(strtotime($b['date'] . ' 12:00')) : cc_r_date((int) $b['at']);
     return '<div class="bt-row"><span class="bt-ic">🩸</span><span class="bt-t"><b>' . esc_html($when) . '</b>' . (!empty($b['share']) ? '<small>' . esc_html($forCoach ? 'shared with the nutritionist' : cc_bt_w('shared')) . '</small>' : '') . '</span>'
          . '<a class="btn btn-ghost" href="' . esc_url($u) . '" target="_blank" rel="noopener">' . esc_html($forCoach ? 'Open' : cc_bt_w('open')) . '</a>'
          . ($viewer === 'nutri' ? '' : '<button type="button" class="bt-del" data-page="' . (int) $pid . '" data-at="' . (int) $b['at'] . '" data-q="' . esc_attr($forCoach ? 'Delete this blood test?' : cc_bt_w('delq')) . '">' . esc_html($forCoach ? 'Delete' : cc_bt_w('del')) . '</button>')
@@ -71,17 +74,18 @@ function cc_bt_row($pid, $b, $forCoach, $viewer = null) {
 function cc_bt_assets($again = false) {   // $again: the food diary review prints them again when Marine's blood list (which printed them) is not shown
     static $done = false; if ($done && !$again) return ''; $done = true;
     $api = esc_url(rest_url('cc/v1/blood')); $nonce = esc_attr(wp_create_nonce('wp_rest'));
-    return '<style>html .cc .bt-form{display:grid;gap:12px;max-width:520px}html .cc .bt-form label{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}'
-        . 'html .cc .bt-form input[type=file]{font:16px var(--body);color:#d0d6e0}html .cc .bt-tick{display:flex!important;align-items:flex-start;gap:10px;font-weight:500!important;white-space:normal;line-height:1.45}html .cc .bt-tick input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:#12a150}html .cc .bt-tick span{flex:1;min-width:0;overflow-wrap:anywhere}'
+    return '<style>html .cc .bt-form{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;max-width:520px}html .cc .bt-form input[type=file]{max-width:100%}html .cc .bt-fw{display:grid;gap:8px;min-width:0}html .cc .bt-fl{font-size:15px;color:#d0d6e0;font-weight:600}html .cc .bt-form label.bt-pick{position:relative;display:inline-flex!important;align-items:center;justify-content:center;justify-self:start;width:auto!important;max-width:100%;min-height:44px;margin:0;padding:10px 18px;font-size:15px;color:#fff;cursor:pointer;white-space:normal;text-align:center}html .cc .bt-pick .bt-file{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}html .cc .bt-pick:focus-within{outline:2px solid #009a44;outline-offset:2px}html .cc .bt-fn{font-size:15px;color:#b8bec8;overflow-wrap:anywhere;min-width:0}html .cc .bt-fn.on{color:#fff}html .cc .bt-form label{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}'
+        . 'html .cc .bt-form input[type=file]{font:16px var(--body);color:#d0d6e0}html .cc .bt-tick{display:flex!important;align-items:flex-start;gap:12px;font-weight:500!important;white-space:normal;line-height:1.45;min-height:44px;padding:8px 0;cursor:pointer}html .cc .bt-tick input{flex:none;width:24px;height:24px;margin:0;accent-color:#12a150}html .cc .bt-tick span{flex:1;min-width:0;overflow-wrap:anywhere}'
         . 'html .cc .bt-form input[type=date]{width:100%;max-width:230px;box-sizing:border-box;padding:10px 12px;font:16px var(--body);border-radius:10px}'
         . 'html .cc .bt-form .btn{justify-self:start;width:auto;margin:0}html .cc .bt-msg{font-size:15px;font-weight:600;color:#2bd47a;margin:0}html .cc .bt-msg.err{color:#ff7a73}html .cc .bt-msg:empty{display:none}'
         . 'html .cc .bt-row{display:flex;align-items:center;gap:12px;padding:10px 12px;margin:8px 0 0;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}'
         . 'html .cc .bt-ic{font-size:20px}html .cc .bt-t{display:grid;flex:1;min-width:0}html .cc .bt-t b{color:#fff;font-size:16px}html .cc .bt-t small{color:#b8bec8;font-size:14px}'
-        . 'html .cc .bt-row .btn{width:auto;margin:0;padding:8px 14px}html .cc .bt-del{background:none;border:0;color:#b8bec8;text-decoration:underline;font-size:14px;cursor:pointer;padding:4px}'
+        . 'html .cc .bt-row .btn{width:auto;margin:0;padding:8px 14px}html .cc .bt-del{background:none;border:0;color:#b8bec8;text-decoration:underline;font-size:15px;cursor:pointer;padding:0 8px;min-height:44px;min-width:44px}'
         . 'html .cc .bt-th{margin:0 0 6px 14px}html .cc .bt-r{display:grid;gap:8px}html .cc .bt-r textarea{width:100%;box-sizing:border-box;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0b0d0f;color:#fff}html .cc .bt-r .btn{justify-self:start;width:auto;margin:0}</style>'
         . '<script>document.addEventListener("click",function(e){var b=e.target.closest(".bt-send");if(!b)return;var r=b.closest(".bt-r"),t=r.querySelector("textarea");if(!t.value.trim())return;b.disabled=true;var d=new FormData();d.append("page",r.dataset.page);d.append("at",r.dataset.at);d.append("text",t.value);'
         . 'fetch("' . esc_url(rest_url('cc/v1/blood-reply')) . '",{method:"POST",body:d,credentials:"same-origin",headers:{"X-WP-Nonce":"' . $nonce . '"}}).then(function(x){if(!x.ok)throw 0;location.reload();}).catch(function(){b.disabled=false;alert("Not sent. Please try again.");});});</script>'
-        . '<script>(function(){var f=document.querySelector(".bt-form");if(f){var m=f.querySelector(".bt-msg"),W=JSON.parse(f.dataset.w);f.addEventListener("submit",function(e){e.preventDefault();'
+        . '<script>(function(){var f=document.querySelector(".bt-form");if(f){var m=f.querySelector(".bt-msg"),W=JSON.parse(f.dataset.w),fn=f.querySelector(".bt-fn"),fz=f.querySelector("input[type=file]");'
+        . 'if(fn&&fz){var n0=fn.textContent;fz.addEventListener("change",function(){var x=fz.files&&fz.files[0];fn.textContent=x?x.name:n0;fn.classList.toggle("on",!!x);});}f.addEventListener("submit",function(e){e.preventDefault();'
         . 'var fi=f.querySelector("input[type=file]").files[0];if(!fi||fi.size>10485760||!/pdf|jpe?g|png|heic|heif/i.test(fi.type+fi.name)){m.className="bt-msg err";m.textContent=W.bad;return;}'
         . 'var d=new FormData();d.append("file",fi);d.append("date",f.querySelector("input[type=date]").value);d.append("share",f.querySelector(".bt-tick input").checked?1:0);var b=f.querySelector(".btn");b.disabled=true;m.className="bt-msg";m.textContent=W.sending;'
         . 'fetch("' . $api . '",{method:"POST",body:d,credentials:"same-origin",headers:{"X-WP-Nonce":"' . $nonce . '"}}).then(function(r){if(!r.ok)throw 0;m.textContent=W.done;setTimeout(function(){var u=location.href.split("#")[0];location.replace(u+(u.indexOf("?")>-1?"&":"?")+"bt="+Date.now()+"#blood");},800);})'
@@ -100,7 +104,9 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     }
     $W = ['bad' => cc_bt_w('bad'), 'sending' => cc_bt_w('sending'), 'done' => cc_bt_w('done'), 'err' => cc_bt_w('err')];
     $o = '<section class="ath-s bt" id="blood"><h2>' . cc_ath_icon('sweat', 'ath-hic') . esc_html(cc_bt_w('title')) . '</h2><p class="av-lede">' . esc_html(cc_bt_w('lede')) . '</p>'
-       . '<form class="bt-form" data-w="' . esc_attr(wp_json_encode($W)) . '"><label>' . esc_html(cc_bt_w('file')) . '<input type="file" accept="application/pdf,image/*" required></label>'
+       . '<form class="bt-form" data-w="' . esc_attr(wp_json_encode($W)) . '"><div class="bt-fw"><span class="bt-fl" id="bt-fl">' . esc_html(cc_bt_w('file')) . '</span>'
+       . '<label class="btn btn-ghost bt-pick"><input type="file" class="bt-file" accept="application/pdf,image/*" aria-labelledby="bt-fl"><span>' . esc_html(cc_bt_w('pick')) . '</span></label>'
+       . '<span class="bt-fn" aria-live="polite">' . esc_html(cc_bt_w('nofile')) . '</span></div>'
        . '<label>' . esc_html(cc_bt_w('date')) . '<input type="date" max="' . esc_attr(current_time('Y-m-d')) . '"></label>'
        . '<label class="bt-tick"><input type="checkbox"><span>' . esc_html(cc_bt_w('share')) . '</span></label><button type="submit" class="btn btn-go">' . esc_html(cc_bt_w('send')) . '</button><p class="bt-msg" role="status"></p></form>';
     if ($list) $o .= '<h3 class="av-sub">' . esc_html(cc_bt_w('yours')) . '</h3>' . implode('', array_map(function ($b) use ($view) { return cc_bt_row($view, $b, false); }, $list));

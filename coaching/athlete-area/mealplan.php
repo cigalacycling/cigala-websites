@@ -310,13 +310,13 @@ add_filter('cc_fd_review_day_extra', function ($html, $pid, $date, $viewer) {
         if ($it['k'] === 'r') { $r = cc_mp_rec_for($pid, $it['rid']); $nm = ($r ? $r['n'] : 'Recipe') . ' × ' . cc_fd_f1($it['x']); } else $nm = $it['f']['n'] . ' · ' . cc_fd_f1($it['f']['g']) . ' g';
         $st = $s === 'y' ? ['y', '✓', 'Ate it'] : ($s === 'd' ? ['d', '✎', 'Different' . (!empty($a['g']) ? ' (' . cc_fd_f1($a['g']) . ' g)' : (!empty($a['x']) ? ' (' . cc_fd_f1($a['x']) . '×)' : '')) . (!empty($a['sw']['f']['n']) ? ' · swapped in ' . $a['sw']['f']['n'] : '')]
             : ($s === 'n' ? ['n', '✗', 'Didn’t eat it' . (!empty($a['why']) ? ' (' . ($why[$a['why']] ?? '') . ')' : '')] : ['o', '○', $past ? 'Not answered' : 'Planned']));
-        $li .= '<li class="mp-a-' . $st[0] . '"><span class="mp-ic" aria-hidden="true">' . $st[1] . '</span><span><b>' . esc_html(cc_fd_w($it['sl']) . ' · ' . $nm) . '</b><small>' . esc_html($st[2]) . ' · planned ' . round($m['k']) . ' kcal, C ' . round($m['c']) . ' g'
+        $li .= '<li class="mp-a-' . $st[0] . '"><span class="mp-ic" aria-hidden="true">' . $st[1] . '</span><span><b>' . esc_html(cc_fd_w($it['sl']) . ' · ' . $nm) . '</b><small>' . esc_html($st[2]) . ' · planned ' . round($m['k']) . ' kcal, ' . cc_fd_mlbl('c', 'C') . ' ' . round($m['c']) . ' g'
             . ($e ? ' · eaten ' . round($e['k']) . ' kcal, C ' . round($e['c']) . ' g' : '') . '</small></span></li>';
     }
     return $html . '<div class="mp mp-adh"><h4>Meal plan</h4>'
         . ($pl['n'] !== '' ? '<p class="mp-adn"><b>Your plan:</b> ' . nl2br(esc_html($pl['n'])) . '</p>' : '')
         . ($pl['tr'] !== '' ? '<p class="mp-adn"><b>Athlete’s training:</b> ' . esc_html($pl['tr']) . '</p>' : '')
-        . ($li ? '<ul class="mp-al">' . $li . '</ul><p class="mp-adt">Planned <b>' . number_format(round($pt['k'])) . ' kcal · C ' . round($pt['c']) . ' g</b> · eaten from the plan <b>' . number_format(round($et['k'])) . ' kcal · C ' . round($et['c']) . ' g</b></p>' : '') . '</div>';
+        . ($li ? '<ul class="mp-al">' . $li . '</ul><p class="mp-adt">Planned <b>' . number_format(round($pt['k'])) . ' kcal · ' . cc_fd_mlbl('c', 'C') . ' ' . round($pt['c']) . ' g</b> · eaten from the plan <b>' . number_format(round($et['k'])) . ' kcal · ' . cc_fd_mlbl('c', 'C') . ' ' . round($et['c']) . ' g</b></p>' : '') . '</div>';
 }, 10, 4);
 
 /* ---------- REST ---------- */
@@ -432,7 +432,7 @@ html .cc .mp textarea{width:100%}html .cc .mp label{display:grid;gap:6px;color:#
 html .cc .mp h3{font-size:20px!important;margin:0 0 8px}html .cc .mp h4{font:700 16px var(--body);color:#fff;margin:0;letter-spacing:.01em;text-transform:none}
 html .cc .mp-msg{margin:0;font-size:15px;font-weight:600;color:#2bd47a;min-height:0}html .cc .mp-msg.err{color:#ff7a73}html .cc .mp-msg:empty{display:none}
 html .cc .mp-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
-html .cc .mp-x0{flex:none;box-sizing:border-box;width:40px;height:40px;min-width:40px;display:grid;place-items:center;padding:0;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:none;color:#d0d6e0;cursor:pointer}html .cc .mp-x0 svg{display:block;pointer-events:none}
+html .cc .mp-x0{flex:none;box-sizing:border-box;width:44px;height:44px;min-width:44px;display:grid;place-items:center;padding:0;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:none;color:#d0d6e0;cursor:pointer}html .cc .mp-x0 svg{display:block;pointer-events:none}
 html .cc .mp-tabs{display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap}html .cc .mp-tab{min-height:44px;padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#fff;font:600 16px var(--body);cursor:pointer}html .cc .mp-tab.on{background:#12a150;border-color:#12a150}
 html .cc .mp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:10px;margin-top:12px}
 html .cc .mp-card{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);min-width:0}
@@ -442,7 +442,7 @@ html .cc .mp-img{width:72px;height:72px;border-radius:12px;object-fit:cover;disp
 html .cc .mp-tags{display:flex;flex-wrap:wrap;gap:4px}html .cc .mp-tg{display:inline-block;padding:1px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.18);color:#d0d6e0;font-size:14px;white-space:nowrap}
 html .cc .mp-ed{display:grid;gap:14px;padding:14px;border-radius:14px;border:1px solid rgba(43,212,122,.35);background:rgba(18,161,80,.05)}
 html .cc .mp-chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-html .cc .mp-chip{min-height:40px;padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.05);color:#fff;font:600 15px var(--body);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}html .cc .mp-chip.on{background:#12a150;border-color:#12a150;color:#fff}
+html .cc .mp-chip{min-height:44px;padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.05);color:#fff;font:600 15px var(--body);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}html .cc .mp-chip.on{background:#12a150;border-color:#12a150;color:#fff}
 html .cc .mp-ings{list-style:none;margin:0;padding:0;display:grid;gap:8px}html .cc .mp-ings li{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);flex-wrap:wrap}
 html .cc .mp-ings .mp-in{flex:1 1 180px;min-width:0;display:grid;gap:2px}html .cc .mp-ings b{color:#fff;font-size:16px;font-weight:600;overflow-wrap:anywhere}html .cc .mp-ings small{color:#b8bec8;font-size:14px}
 html .cc .mp-g{display:flex!important;align-items:center;gap:6px;flex:none;font-weight:500!important}html .cc .mp .mp-g input{width:86px}
@@ -471,10 +471,10 @@ html .cc .mp-it{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padd
 html .cc .mp-it .mp-in{flex:1 1 160px;min-width:0;display:grid;gap:2px}html .cc .mp-it b{color:#fff;font-size:16px;font-weight:600;overflow-wrap:anywhere}html .cc .mp-it small{color:#b8bec8;font-size:14px}
 html .cc .mp .mp-xin{width:84px}html .cc .mp-st{flex:none;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;font-size:16px;font-weight:700;border:1px solid rgba(255,255,255,.2);color:#d0d6e0}
 html .cc .mp-st.s-y,html .cc .mp-st.s-d{background:#12a150;border-color:#12a150;color:#fff}html .cc .mp-st.s-n{border-color:#ff7a73;color:#ff7a73}
-html .cc .mp-add{justify-self:start;min-height:40px;padding:6px 12px;border-radius:10px;border:1px dashed rgba(43,212,122,.6);background:rgba(18,161,80,.1);color:#c9f3da;font:600 15px var(--body);cursor:pointer;text-align:left}
+html .cc .mp-add{justify-self:start;min-height:44px;padding:6px 12px;border-radius:10px;border:1px dashed rgba(43,212,122,.6);background:rgba(18,161,80,.1);color:#c9f3da;font:600 15px var(--body);cursor:pointer;text-align:left}
 html .cc .mp-dt{margin:0;padding:8px 10px;border-radius:12px;background:rgba(18,161,80,.08);border:1px solid rgba(43,212,122,.3);font-size:15px;color:#d0d6e0;display:grid;gap:2px}html .cc .mp-dt b{color:#fff}
 html .cc .mp-cp{display:grid;gap:8px;padding:10px;border-radius:12px;background:rgba(0,0,0,.25)}html .cc .mp-cp label{display:flex;align-items:center;gap:8px;font-weight:500}html .cc .mp-cp input{width:20px;height:20px}
-html .cc .fd-link.mp-lk{font-size:15px}html .cc .mp .fd-link,html .cc .mp-pi .fd-link,html .cc .mp-my .fd-link,html .cc .mp-plan .fd-link{background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;color:#2bd47a!important;padding:4px 2px!important;min-height:40px;width:auto!important;text-decoration:underline;font:600 15px var(--body)!important;cursor:pointer}
+html .cc .fd-link.mp-lk{font-size:15px}html .cc .mp .fd-link,html .cc .mp-pi .fd-link,html .cc .mp-my .fd-link,html .cc .mp-plan .fd-link{background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;color:#2bd47a!important;padding:4px 2px!important;min-height:44px;width:auto!important;text-decoration:underline;font:600 15px var(--body)!important;cursor:pointer}
 html .cc .mp-adh{margin:10px 0 0;padding:10px 12px;border-radius:12px;border:1px solid rgba(43,212,122,.3);background:rgba(18,161,80,.05)}html .cc .mp-adh h4{margin:0 0 6px;font-size:14px;color:#b8bec8;text-transform:uppercase;letter-spacing:.06em}
 html .cc .mp-al{list-style:none;margin:0;padding:0;display:grid;gap:6px}html .cc .mp-al li{display:flex;gap:10px;align-items:flex-start}html .cc .mp-al li>span:last-child{display:grid;gap:1px}html .cc .mp-al b{color:#fff;font-size:15px;font-weight:600}html .cc .mp-al small{color:#b8bec8;font-size:14px}
 html .cc .mp-ic{flex:none;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;font-size:14px;font-weight:700;border:1px solid rgba(255,255,255,.2);color:#d0d6e0}html .cc .mp-a-y .mp-ic,html .cc .mp-a-d .mp-ic{background:#12a150;border-color:#12a150;color:#fff}html .cc .mp-a-n .mp-ic{border-color:#ff7a73;color:#ff7a73}
@@ -504,7 +504,7 @@ html .cc .mp-mbox,.mp-mbox{position:relative;width:100%;max-width:560px;margin:a
 .mp-mbox .fd-rc{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:6px;border:1px solid rgba(255,255,255,.28);color:#e6e9ee;font-size:14px;font-weight:700}
 @media (min-width:900px){html .cc .mp-pl{grid-template-columns:260px minmax(0,1fr);align-items:start}html .cc .mp-side{position:sticky;top:84px;max-height:calc(100vh - 100px);overflow:auto}}
 CSS;
-    return '<style>' . str_replace(["\r", "\n"], '', $css) . '</style>';
+    return '<style>' . (function_exists('cc_fd_mc_css') ? cc_fd_mc_css() : '') . str_replace(["\r", "\n"], '', $css) . '</style>';
 }
 
 /* the food search shared by Marine's recipe editor and the athlete's "swap an ingredient" (same table, aliases and raw/cooked staples as the diary) */
@@ -600,10 +600,10 @@ mybox.innerHTML='<details class="mp-my"'+(P.myOpen?" open":"")+'><summary>'+esc(
 mybox.addEventListener("toggle",function(e){if(e.target.classList.contains("mp-my")){P.myOpen=e.target.open;}},true);
 window.ccMpAfter=function(d){if(!P.plans[d]&&!P.pend[d]){P.pend[d]=1;send(C.u.day,{page:C.page,date:d},"GET").then(function(j){P.plans[d]=j.plan;Object.assign(P.recs,j.recs||{});delete P.pend[d];if(F.date()===d){F.render();}}).catch(function(){delete P.pend[d];});}
 renderMy();if(C.open&&!P.opened){P.opened=1;modal(C.open,1,false);}};
-function tile(v,l){return '<div><b>'+esc(v)+'</b><span>'+esc(l)+'</span></div>';}
+function tile(v,l,mc){return '<div'+(mc?' class="mcb-'+mc+'"':'')+'><b>'+esc(v)+'</b><span>'+esc(l)+'</span></div>';}
 function modal(rid,x,fromPlan){var r=P.recs[rid];if(!r){return;}x=+x||1;var por=Math.max(1,+r.por||1),m=r.mac||{};
 var h='<div class="mp-mbox"><button type="button" class="mp-close" data-mp="close" aria-label="'+esc(W.close)+'">'+XI+'</button>'+(r.phu?'<img class="mp-hero" src="'+esc(r.phu)+'" alt="">':'')+'<h3>'+esc(r.n)+'</h3>'
-+'<p class="mp-mh">'+esc(fromPlan?W.your_portion.replace("%s",xs(x)):W.per_portion)+'</p><div class="mp-tiles">'+tile(f0(m.k*x),"kcal")+tile(f0(m.c*x)+" g",W.carbs)+tile(f0(m.p*x)+" g",W.protein)+tile(f0(m.f*x)+" g",W.fat)+tile(f0(m.fi*x)+" g",W.fibre)+'</div>'
++'<p class="mp-mh">'+esc(fromPlan?W.your_portion.replace("%s",xs(x)):W.per_portion)+'</p><div class="mp-tiles">'+tile(f0(m.k*x),"kcal")+tile(f0(m.c*x)+" g",W.carbs,"c")+tile(f0(m.p*x)+" g",W.protein,"p")+tile(f0(m.f*x)+" g",W.fat,"f")+tile(f0(m.fi*x)+" g",W.fibre)+'</div>'
 +'<p class="mp-mh">'+esc(W.ingredients)+'</p><ul>'+r.ing.map(function(i){return '<li>'+esc(f0(i.g/por*x))+' g '+esc(i.n)+S.rcb(i.st,W)+'</li>';}).join("")+'</ul>'
 +(r.m?'<p class="mp-mh">'+esc(W.method)+'</p><p>'+esc(r.m).replace(/\n/g,"<br>")+'</p>':'')+'<small>'+esc(W.makes.replace("%s",por))+'</small></div>';
 var ov=document.createElement("div");ov.className="mp-modal";ov.setAttribute("role","dialog");ov.setAttribute("aria-modal","true");ov.setAttribute("aria-label",r.n);ov.innerHTML=h;
@@ -664,7 +664,7 @@ function fmac(f,x){var g=(+f.g||0)/100*(x||1),o={};["k","c","p","f","fi","su"].f
 function add(t,m){if(!m){return;}["k","c","p","f","fi","fe"].forEach(function(k){t[k]=(t[k]||0)+(+m[k]||0);});}
 function zero(){return {k:0,c:0,p:0,f:0,fi:0,fe:0};}
 function share(m){var s=(+m.c||0)*4+(+m.p||0)*4+(+m.f||0)*9;return function(g,f){var k=(+g||0)*f;return '<em>'+f0(k)+' kcal'+(s>0?' · '+Math.round(k/s*100)+' %':'')+'</em>';};}
-function tiles(m,iron,inc){var sh=share(m);return '<div class="mp-tiles"><div><b>'+f0(m.k)+'</b><span>kcal</span></div><div><b>'+f0(m.c)+' g</b><span>Carbs</span>'+sh(m.c,4)+'</div><div><b>'+f0(m.p)+' g</b><span>Protein</span>'+sh(m.p,4)+'</div><div><b>'+f0(m.f)+' g</b><span>Fat</span>'+sh(m.f,9)+'</div><div><b>'+r1(m.fi)+' g</b><span>Fibre</span></div>'+(iron?'<div><b>'+r1(m.fe)+' mg</b><span>Iron'+(inc?" (incomplete)":"")+'</span></div>':'')+'</div>';}
+function tiles(m,iron,inc){var sh=share(m);return '<div class="mp-tiles"><div><b>'+f0(m.k)+'</b><span>kcal</span></div><div class="mcb-c"><b>'+f0(m.c)+' g</b><span>Carbs</span>'+sh(m.c,4)+'</div><div class="mcb-p"><b>'+f0(m.p)+' g</b><span>Protein</span>'+sh(m.p,4)+'</div><div class="mcb-f"><b>'+f0(m.f)+' g</b><span>Fat</span>'+sh(m.f,9)+'</div><div><b>'+r1(m.fi)+' g</b><span>Fibre</span></div>'+(iron?'<div><b>'+r1(m.fe)+' mg</b><span>Iron'+(inc?" (incomplete)":"")+'</span></div>':'')+'</div>';}
 
 /* ===== library ===== */
 var LR=document.querySelector(".mp-lib");

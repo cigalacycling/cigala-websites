@@ -177,6 +177,31 @@ function cc_r_date($ts, $long = false) {   // "17 Nov 2026" in the hub language 
     if (!isset($M[$l])) return date_i18n('j M Y', $ts);
     return (in_array($l, ['sl', 'sk'], true) ? date_i18n('j.', $ts) : date_i18n('j', $ts)) . ' ' . $M[$l][(int) date_i18n('n', $ts) - 1] . ' ' . date_i18n('Y', $ts);
 }
+/* 19 Nov: short dates for notes, uploads, news and availability in the hub language: "19 nov" / "19 nov, 14:05" (year optional) */
+function cc_r_dm($ts, $time = false, $year = false) {
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en';
+    if ($l === 'en' || !in_array($l, ['it', 'pt', 'sl', 'sk'], true)) return date_i18n('j M' . ($year ? ' Y' : '') . ($time ? ', H:i' : ''), $ts);
+    $d = cc_r_date($ts);   // "19 nov 2026" / "19. nov. 2026"
+    if (!$year) $d = preg_replace('/\s+\d{4}$/', '', $d);
+    return $d . ($time ? ', ' . date_i18n('H:i', $ts) : '');
+}
+/* 19 Nov: "5 minutes ago" / "3 hours ago" / "2 days ago" in the hub language; older than a week: the date */
+function cc_r_ago($ts, $now = null) {
+    $s = max(0, ($now ?? time()) - (int) $ts); $l = $GLOBALS['cc_ath_lang'] ?? 'en';
+    static $W = [   // [just now, [minute: 1, 2, 3-4, 5+], [hour: ...], [day: ...]]
+        'en' => ['just now', ['1 minute ago', '%d minutes ago', '%d minutes ago', '%d minutes ago'], ['1 hour ago', '%d hours ago', '%d hours ago', '%d hours ago'], ['1 day ago', '%d days ago', '%d days ago', '%d days ago']],
+        'it' => ['adesso', ['1 minuto fa', '%d minuti fa', '%d minuti fa', '%d minuti fa'], ['1 ora fa', '%d ore fa', '%d ore fa', '%d ore fa'], ['1 giorno fa', '%d giorni fa', '%d giorni fa', '%d giorni fa']],
+        'pt' => ['agora mesmo', ['há 1 minuto', 'há %d minutos', 'há %d minutos', 'há %d minutos'], ['há 1 hora', 'há %d horas', 'há %d horas', 'há %d horas'], ['há 1 dia', 'há %d dias', 'há %d dias', 'há %d dias']],
+        'sl' => ['pravkar', ['pred 1 minuto', 'pred %d minutama', 'pred %d minutami', 'pred %d minutami'], ['pred 1 uro', 'pred %d urama', 'pred %d urami', 'pred %d urami'], ['pred 1 dnevom', 'pred %d dnevoma', 'pred %d dnevi', 'pred %d dnevi']],
+        'sk' => ['práve teraz', ['pred 1 minútou', 'pred %d minútami', 'pred %d minútami', 'pred %d minútami'], ['pred 1 hodinou', 'pred %d hodinami', 'pred %d hodinami', 'pred %d hodinami'], ['pred 1 dňom', 'pred %d dňami', 'pred %d dňami', 'pred %d dňami']],
+    ];
+    $w = $W[$l] ?? $W['en'];
+    if ($s < 60) return $w[0];
+    if ($s >= 7 * DAY_IN_SECONDS) return cc_r_dm($ts, false, $s > 300 * DAY_IN_SECONDS);
+    [$n, $u] = $s < HOUR_IN_SECONDS ? [(int) floor($s / 60), 1] : ($s < DAY_IN_SECONDS ? [(int) floor($s / HOUR_IN_SECONDS), 2] : [(int) floor($s / DAY_IN_SECONDS), 3]);
+    $f = $w[$u][$n === 1 ? 0 : ($n === 2 ? 1 : ($n <= 4 ? 2 : 3))];
+    return sprintf($f, $n);
+}
 function cc_r_unseen($uid, $rid) { return !in_array($rid, (array) get_user_meta($uid, 'cc_seen_reports', true), true); }
 add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     if (!$view) return $html;

@@ -303,11 +303,19 @@ add_action('wp_head', function () {
 /* ---------- logins: athletes never see wp-admin and stay logged in for a year ---------- */
 /* Matteo 18 Nov: in the hub the site's "Book Consultation" button makes no sense. Athletes get "WhatsApp Matteo";
  * his own coach view gets no button. The rest of the website keeps "Book Consultation". */
-add_filter('cc_ath_end', function ($html, $view, $coach) {
-    return $html . '<script>(function(){document.querySelectorAll(\'a.btn[href*="calendly.com/cigalacycling"]\').forEach(function(a){'
-        . ($coach ? 'a.style.display="none";' : 'a.href="https://wa.me/353834777697";a.textContent="WhatsApp Matteo";a.setAttribute("aria-label","WhatsApp Matteo");')
-        . '});})();</script>';
-}, 50, 3);
+/* 19 Nov: runs in the footer of EVERY hub page (My availability, My goals & events and the rider form return early and
+ * never reach cc_ath_end). Coach: no button; anyone else logged in (athletes, rider form): "WhatsApp Matteo". */
+add_action('wp_footer', function () {
+    if (!is_user_logged_in() || strpos((string) ($_SERVER['REQUEST_URI'] ?? ''), '/' . CC_ATH_SLUG . '/') !== 0) return;
+    $coach = cc_ath_is_coach();
+    echo '<script>(function(){function sw(){document.querySelectorAll(\'a.btn[href*="calendly.com/cigalacycling"]\').forEach(function(a){if(a.closest(".xpop"))return;'
+        . ($coach ? 'a.style.display="none";' : 'a.href="https://wa.me/353834777697";a.target="_blank";a.rel="noopener";a.textContent="WhatsApp Matteo";a.setAttribute("aria-label","WhatsApp Matteo");')
+        . '});}sw();addEventListener("DOMContentLoaded",sw);})();</script>' . "\n";
+}, 50);
+/* 19 Nov: logged in, the footer's "Athlete login" link is not needed (the header icon still opens the hub) */
+add_action('wp_head', function () {
+    if (is_user_logged_in()) echo '<style>.legal a[href="/athletes/"],.legal a[href$="/athletes/"]{display:none!important}</style>' . "\n";
+}, 20);
 add_filter('show_admin_bar', function ($s) {
     if (!current_user_can('edit_posts')) return false;
     // Matteo 18 Nov: no WordPress toolbar in the hub, for him either (the app looks like the athletes' app); the rest of the site keeps it
@@ -397,6 +405,13 @@ function cc_ath_inner() {
     $days = max(1, (int) floor((time() - strtotime($since . ' UTC')) / DAY_IN_SECONDS) + 1);
     $mineHtml = $view ? cc_ath_dress(trim(cc_ath_content($view))) : '';
     $nrep = substr_count($mineHtml, 'class="ath-file"');
+    // Matteo 17 Nov: "Change my availability" / "Add or change my goals & events" open their own page (?my=availability|goals); the hub shows a short summary
+    // 19 Nov: those pages get a compact header (back link + one-line greeting) so the form starts above the fold on phones
+    $sub = (!$coach && $view && isset($_GET['my'])) ? sanitize_key($_GET['my']) : '';
+    if ($sub !== '' && ($sp = apply_filters('cc_ath_subpage', '', $sub, $view)) !== '')
+        return $o . '<header class="ath-hero-c"><p class="ath-back"><a href="' . esc_url($url) . '">← ' . esc_html(cc_ath_w('back')) . '</a></p>'
+            . '<h1><span class="ath-greet" data-l="' . $lang . '" data-g="' . esc_attr(wp_json_encode([cc_L('Good morning', 'Buongiorno'), cc_L('Good afternoon', 'Buon pomeriggio'), cc_L('Good evening', 'Buonasera')])) . '">' . cc_t('Welcome') . '</span>, ' . esc_html($first) . '</h1></header>'
+            . $sp . '</div>' . cc_ath_js();
     $o .= '<header class="ath-hero"><div class="ath-hero-txt"><p class="eyebrow">' . cc_t('Athlete area') . ($coach ? cc_t(' · coach view') : '') . '</p>'
         // Matteo 17 Nov: the athlete's own round photo by the greeting (initials + camera until they add one; tap to add or change)
         . (!$coach && $view && function_exists('cc_ph_widget') ? '<div class="ath-hello">' . cc_ph_widget($view, 72, true, 'ath-me-ph') : '')
@@ -414,10 +429,6 @@ function cc_ath_inner() {
         . cc_ath_live_chips($coach ? 0 : $view, $coach, $coach ? 0 : $nrep)
         . '<div class="ath-links">' . apply_filters('cc_ath_hero_links', '', $coach) . '</div></div>'   // Matteo 17 Nov: the links in one tidy row
         . '<div class="ath-hero-me">' . cc_ath_sig_photo() . '</div></header>';
-    // Matteo 17 Nov: "Change my availability" / "Add or change my goals & events" open their own page (?my=availability|goals); the hub shows a short summary
-    $sub = (!$coach && $view && isset($_GET['my'])) ? sanitize_key($_GET['my']) : '';
-    if ($sub !== '' && ($sp = apply_filters('cc_ath_subpage', '', $sub, $view)) !== '')
-        return $o . '<p class="ath-back"><a href="' . esc_url($url) . '">← ' . esc_html(cc_ath_w('back')) . '</a></p>' . $sp . '</div>' . cc_ath_js();
     if ($coach) {
         $list = get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC', 'meta_key' => 'cc_user']);
         // Matteo 17 Nov: his own demo page (no login, his own Vekta data), first in the list
@@ -651,7 +662,7 @@ function cc_ath_live_chips($view, $coach, $nrep) {
         break;
     }
     $o .= (string) apply_filters('cc_ath_live_chips_athlete', '', $view);   // e.g. food.php: "Log today's food" (package athletes)
-    if ($n = count($unread)) $o .= $chip($n, cc_ath_live_w('new', $n), '#', 'ath-chip-go ath-chip-bell');
+    // 19 Nov: no "N new notifications" chip any more: it repeated the bell's red badge and linked nowhere ('#')
     if ($nrep) $o .= $chip($nrep, cc_ath_live_w('rep', $nrep), '#reports');
     return $o !== '' ? '<div class="ath-chips ath-live">' . $o . '</div>' : '';
 }
@@ -1269,6 +1280,51 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
   html .cc .ath-reads { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 0 -16px 8px; padding: 2px 16px 6px; }
   html .cc .ath-reads::-webkit-scrollbar { display: none; }
   html .cc .ath-read { flex: 0 0 72%; scroll-snap-align: start; }
+}
+/* ---- 19 Nov hub fixes (audit): grey no darker than #b8bec8, text 14px and up, 44px tap targets, phone jump row, compact sub-page header ---- */
+html .cc .ath { --text-3: #b8bec8; }   /* the hub only (the site header/footer keep the brand grey) */
+html .cc .ath-hero-c { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 0 0 16px; }
+html .cc .ath-hero-c .ath-back { margin: 0; }
+html .cc .ath .ath-hero-c h1 { font-family: var(--head); font-weight: 400; text-transform: uppercase; font-size: clamp(24px, 5vw, 32px); line-height: 1.1; margin: 0; color: #fff; }
+html .cc .ath-back a { min-height: 44px; box-sizing: border-box; }
+html .cc .ath .av-sub { font-size: 14px !important; }
+html .cc .ath-out { font-size: 15px; }
+html .cc .ath-lang label { font-size: 14px; }
+html .cc .ath-tt small, html .cc .ath-read small { font-size: 14px; }
+html .cc .ath-chip { font-size: 14px !important; }
+html .cc .rp-when { font-size: 15px !important; }
+html body .set-h { font-size: 14px !important; }
+html .cc .ath-bell i { min-width: 22px !important; height: 22px !important; font: 700 14px/22px var(--body) !important; }
+/* rider form: labels 15px, eyebrow and step line 14px, "saved as you go" 15px, a 44px Log out */
+html .cc .rf .eyebrow { font-size: 14px !important; }
+html .cc .rf label, html .cc .rf legend, html .cc .rf-chip span { font-size: 15px !important; }
+html .cc .rf-steps p { font-size: 14px !important; }
+html .cc .rf-saved { font-size: 15px !important; }
+html .cc .rf-seg span, html .cc .rf-ev label, html .cc .rf-ev-pl, html .cc .rf-date, html .cc .rf-row span, html .cc .rf-scrollhint, html .cc .rf-sig-ph { font-size: 14px !important; }
+html .cc .rf-legal, html .cc .rf-note { font-size: 15px !important; } html .cc .rf-legal h3 { font-size: 14px !important; }
+html .cc .ath form .rf-clr { font-size: 14px !important; min-height: 44px; padding: 8px 14px !important; }
+html .cc .ath label, html .cc .pw-form label { font-size: 15px; }
+html .cc .ath .eyebrow { font-size: 14px; }
+html .cc .ath-pri, html .cc .gl-prio { width: 24px !important; height: 24px !important; font-size: 14px !important; }
+html .cc .av-n { font-size: 14px !important; }
+html .cc .ph-rm { font-size: 14px !important; min-height: 44px !important; padding: 0 4px !important; }
+html .cc .ath .ath-out { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; box-sizing: border-box; }
+/* tap targets: padding / min-height, same text size */
+html .cc .nt-del { display: inline-flex !important; align-items: center; justify-content: center; min-height: 44px !important; min-width: 44px; padding: 0 6px !important; }
+html .cc .nt-replyd > summary { display: flex; align-items: center; min-height: 44px; box-sizing: border-box; }
+html .cc .nt-replyd > summary::-webkit-details-marker { display: none; }
+html .cc .rp-new a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; margin-left: 0 !important; }
+html .cc .nw-guide { padding: 0 16px !important; }
+html .cc .nw-guide > summary { min-height: 48px; }
+html .cc .nw-guide[open] { padding-bottom: 12px !important; }
+html .cc .ath-jump a { min-height: 44px; box-sizing: border-box; }
+html .cc .ath-live .ath-chip, html .cc .bt-row .btn, html .cc .ath select, html .cc .rp-fold > summary { min-height: 44px; box-sizing: border-box; }
+@media (max-width: 760px) {
+  /* the section links: one row that scrolls sideways on phones (16 pills filled ~560px of the screen); the fade on the right hints there is more */
+  html .cc .ath-jump { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; margin: 0 -16px 16px; padding: 2px 16px 4px; scroll-padding-inline: 16px;
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent); }
+  html .cc .ath-jump a { scroll-snap-align: start; white-space: nowrap; }
+  html .cc .ath-jump a:last-child { margin-right: 28px; }
 }
 </style>
 CSS;

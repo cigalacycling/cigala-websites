@@ -90,7 +90,7 @@ function cc_nt_delbtn($pid, $at, $ri = -1) {
 function cc_nt_item($n, $forCoach, $pid = 0) {
     $who = $forCoach && $pid ? get_the_title($pid) : '';
     $byMe = ($n['from'] ?? '') === 'coach';   // a message Matteo started himself (Matteo 18 Nov)
-    $o = '<div class="nt-item' . ($byMe ? ' nt-bym' : '') . '"' . ($pid ? ' id="nt-' . (int) $pid . '-' . (int) $n['at'] . '"' : '') . ($pid ? ' data-lp="' . (int) $pid . '" data-la="' . (int) $n['at'] . '" data-lr="-1"' : '') . '>' . ($byMe ? '<span class="nt-rh"><img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt=""><b>' . esc_html($forCoach ? 'Your message' : cc_nt_w('from_m')) . '</b></span>' : '') . '<small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at'])) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), date_i18n('j M', strtotime($n['day'] . ' 12:00')))) : '') . '</small>'
+    $o = '<div class="nt-item' . ($byMe ? ' nt-bym' : '') . '"' . ($pid ? ' id="nt-' . (int) $pid . '-' . (int) $n['at'] . '"' : '') . ($pid ? ' data-lp="' . (int) $pid . '" data-la="' . (int) $n['at'] . '" data-lr="-1"' : '') . '>' . ($byMe ? '<span class="nt-rh"><img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt=""><b>' . esc_html($forCoach ? 'Your message' : cc_nt_w('from_m')) . '</b></span>' : '') . '<small>' . esc_html(cc_r_dm((int) $n['at'], true, true)) . (!empty($n['day']) ? ' · ' . esc_html(sprintf(cc_nt_w('about'), cc_r_dm(strtotime($n['day'] . ' 12:00')))) : '') . '</small>'
        . ($pid ? cc_nt_delbtn($pid, $n['at']) : '');
     if (($u = cc_nt_url($n['audio'] ?? 0))) $o .= cc_nt_player($u);
     if (($n['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($n['text'])) . '</p>';
@@ -104,7 +104,7 @@ function cc_nt_item($n, $forCoach, $pid = 0) {
         $face = $mine ? '<img class="nt-me" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" width="30" height="30" alt="">'
                       : ($pid && function_exists('cc_ph_widget') ? cc_ph_widget($pid, 30, false, 'nt-me-a') : '');
         $o .= '<div class="nt-rep' . ($mine ? '' : ' nt-rep-a') . '"' . ($pid ? ' data-lp="' . (int) $pid . '" data-la="' . (int) $n['at'] . '" data-lr="' . (int) $ri . '"' : '') . '><span class="nt-rh">' . $face
-            . '<b>' . esc_html($label) . '</b> <small>' . esc_html(date_i18n('j M, H:i', (int) $r['at'])) . '</small></span>'
+            . '<b>' . esc_html($label) . '</b> <small>' . esc_html(cc_r_dm((int) $r['at'], true)) . '</small></span>'
             . ($pid && ($forCoach || !$mine) ? cc_nt_delbtn($pid, $n['at'], $ri) : '');
         if (($u = cc_nt_url($r['audio'] ?? 0))) $o .= cc_nt_player($u);
         if (($r['text'] ?? '') !== '') $o .= '<p>' . nl2br(esc_html($r['text'])) . '</p>';

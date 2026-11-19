@@ -163,12 +163,16 @@ function cc_inbox_items($uid) {
     $coach = user_can((int) $uid, 'edit_pages'); $items = '';
     $matteo = '<img class="bell-f" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" alt="">';
     $logo = '<img class="bell-f" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-app-192.png" alt="">';
+    $vivify = '<img class="bell-f" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/vivify-tile.png" alt="">';
     foreach (cc_inbox_get($uid) as $x) {
         $from = (int) ($x['from'] ?? 0);
         if (!$from && $coach) $from = cc_inbox_guess_from((string) $x['title']);   // older lines: the athlete's name is in the title
-        $face = !$coach ? $matteo : ($from && function_exists('cc_ph_widget') && get_post_type($from) === 'cc_athlete' ? cc_ph_widget($from, 40, false, 'bell-f') : $logo);
+        // 19 Nov: athletes see the sender's face: Marine (nutritionist) gets her Vivify logo, as in blood.php; anything else is from Matteo.
+        // Her lines are recognised by 'who' => 'nutri' or by her name in the title ("Marine replied…", "A Marine respondeu…").
+        $nutri = ($x['who'] ?? '') === 'nutri' || preg_match('/\bMarine\b/u', (string) $x['title']);
+        $face = !$coach ? ($nutri ? $vivify : $matteo) : ($from && function_exists('cc_ph_widget') && get_post_type($from) === 'cc_athlete' ? cc_ph_widget($from, 40, false, 'bell-f') : $logo);
         $items .= '<a class="bell-it' . (empty($x['read']) ? ' new' : '') . '" href="' . esc_url($x['url'] ?: home_url('/' . CC_ATH_SLUG . '/')) . '">' . $face . '<span class="bell-t"><b>' . esc_html(preg_replace('/\b(?:Private|Privato|Privado|Zasebno):\s*/u', '', (string) $x['title'])) . '</b>'
-            . ($x['body'] !== '' ? '<span>' . esc_html($x['body']) . '</span>' : '') . '<small>' . esc_html(human_time_diff((int) $x['at'], time())) . '</small></span></a>';
+            . ($x['body'] !== '' ? '<span>' . esc_html($x['body']) . '</span>' : '') . '<small>' . esc_html(cc_r_ago((int) $x['at'])) . '</small></span></a>';
     }
     return $items ?: '<p class="bell-e">' . esc_html(cc_inbox_w('empty')) . '</p>';
 }

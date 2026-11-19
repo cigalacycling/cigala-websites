@@ -268,11 +268,11 @@ add_filter('cc_fd_review_day_extra', function ($html, $pid, $date, $viewer) {
     $tg = cc_np_targets($pid, [$date])[$date] ?? null; $o = '';
     if ($tg) {
         $t = cc_fd_daytot($day); $lbl = ['set' => 'your day targets', 'plan' => 'meal plan', 'text' => 'your plan text', 'note' => 'your Vekta note'];
-        $bar = function ($v, $mx, $big = false) { $pc = $mx > 0 ? min(100, $v / $mx * 100) : 0; return '<div class="fd-tgb' . ($big ? ' big' : '') . '"><i' . ($v >= $mx ? ' class="ok"' : '') . ' style="width:' . round($pc, 1) . '%"></i></div>'; };
+        $bar = function ($v, $mx, $big = false) { $pc = $mx > 0 ? min(100, $v / $mx * 100) : 0; return '<div class="fd-tgb' . ($big === true ? ' big' : ($big ? ' ' . $big : '')) . '"><i' . ($v >= $mx ? ' class="ok"' : '') . ' style="width:' . round($pc, 1) . '%"></i></div>'; };
         $h = '';
         if (!empty($tg['k'])) { $k = round($t['k']); $h .= '<p class="np-tgk"><b>' . number_format($k) . '</b> of ' . number_format($tg['k']) . ' kcal' . ($k >= $tg['k'] ? ' · <span class="ok">reached ✓</span>' : ' · ' . number_format($tg['k'] - $k) . ' to go') . ' <small>(' . round($k / $tg['k'] * 100) . ' %)</small></p>' . $bar($k, $tg['k'], true); }
         $m = '';
-        foreach (['c' => 'Carbs', 'p' => 'Protein', 'f' => 'Fat'] as $k => $nm) if (!empty($tg[$k])) { $v = round($t[$k]); $m .= '<div><span>' . $nm . '</span>' . $bar($v, $tg[$k]) . '<small>' . number_format($v) . ' of ' . number_format($tg[$k]) . ' g' . ($v >= $tg[$k] ? ' ✓' : '') . '</small></div>'; }
+        foreach (['c' => 'Carbs', 'p' => 'Protein', 'f' => 'Fat'] as $k => $nm) if (!empty($tg[$k])) { $v = round($t[$k]); $m .= '<div><span class="mc-' . $k . '">' . $nm . '</span>' . $bar($v, $tg[$k], 'mc-' . $k) . '<small>' . number_format($v) . ' of ' . number_format($tg[$k]) . ' g' . ($v >= $tg[$k] ? ' ✓' : '') . '</small></div>'; }
         if ($m) $h .= '<div class="fd-tgm">' . $m . '</div>';
         $src = array_unique(array_values((array) ($tg['src'] ?? [])));
         if ($h) $o .= '<div class="fd-tgt np-tgt">' . $h . '<p class="np-sub">Day target from ' . esc_html(implode(' + ', array_map(function ($s) use ($lbl) { return $lbl[$s]; }, $src))) . (!empty($tg['fi']) ? ' · fibre at least ' . (int) $tg['fi'] . ' g (eaten ' . round($t['fi']) . ' g)' : '') . '.</p></div>';
@@ -281,9 +281,9 @@ add_filter('cc_fd_review_day_extra', function ($html, $pid, $date, $viewer) {
             foreach (array_merge(CC_FD_SLOTS, ['gym']) as $sk) {
                 $st = $tg['sl'][$sk] ?? null; if (!$st) continue;
                 $s = $day['s'][$sk] ?? ['i' => []]; $et = cc_fd_tot($s['i'] ?? []); $fl = cc_fd_fluids(['s' => [$s]]); $p = [];
-                foreach (['c' => 'C', 'p' => 'P', 'f' => 'F'] as $k => $ab) if (!empty($st[$k])) $p[] = $ab . ' ' . round($et[$k]) . '/' . $st[$k] . ' g';
-                if (!empty($st['w'])) $p[] = 'water ' . ($fl[0] + $fl[1]) . '/' . $st['w'] . ' ml';
-                $rows .= '<li><b>' . esc_html($sk === 'gym' ? 'Gym' : cc_fd_w($sk)) . '</b> ' . esc_html(implode(' · ', $p)) . '</li>';
+                foreach (['c' => 'C', 'p' => 'P', 'f' => 'F'] as $k => $ab) if (!empty($st[$k])) $p[] = cc_fd_mlbl($k, $ab) . ' ' . round($et[$k]) . '/' . (int) $st[$k] . ' g';
+                if (!empty($st['w'])) $p[] = 'water ' . ($fl[0] + $fl[1]) . '/' . (int) $st['w'] . ' ml';
+                $rows .= '<li><span class="fd-sicw">' . cc_fd_icon($sk) . '</span><b>' . esc_html($sk === 'gym' ? 'Gym' : cc_fd_w($sk)) . '</b> <span>' . implode(' · ', $p) . '</span></li>';
             }
             if (!empty($tg['bk'])) $rows .= '<li><b>On the bike, per hour</b> ' . esc_html(implode(' · ', array_filter([!empty($tg['bk']['ch']) ? $tg['bk']['ch'] . ' g carbs' : '', !empty($tg['bk']['mlh']) ? $tg['bk']['mlh'] . ' ml' : '']))) . ' <small>(eaten: see On the bike above)</small></li>';
             $o .= '<details class="np-fa" open><summary>Targets by meal (eaten / your note)</summary><ul class="np-sl">' . $rows . '</ul></details>';
@@ -301,12 +301,12 @@ function cc_np_alc($day, $mine) {
 }
 /* "Carbs 438 g · 1,752 kcal (75 %) (6.0 g/kg)" ... and "Total 2,341 kcal": 4/4/9 (alcohol 7) kcal per g; the % use the sum of the macro kcal so they add up to 100 */
 function cc_np_macro_spans($t, $kg, $alc = 0) {
-    $rows = [['Carbs', $t['c'], 4], ['Protein', $t['p'], 4], ['Fat', $t['f'], 9]]; if ($alc >= 0.5) $rows[] = ['Alcohol', $alc, 7];
+    $rows = [['Carbs', $t['c'], 4, 'c'], ['Protein', $t['p'], 4, 'p'], ['Fat', $t['f'], 9, 'f']]; if ($alc >= 0.5) $rows[] = ['Alcohol', $alc, 7, ''];
     $sum = 0; foreach ($rows as $r) $sum += $r[1] * $r[2];
     $o = '';
     foreach ($rows as $r) {
         $kc = $r[1] * $r[2];
-        $o .= '<span>' . $r[0] . ' ' . number_format(round($r[1])) . ' g · ' . number_format(round($kc)) . ' kcal' . ($sum > 0 ? ' (' . round($kc / $sum * 100) . ' %)' : '') . ($kg && $r[0] !== 'Alcohol' ? ' (' . number_format($r[1] / $kg, 1) . ' g/kg)' : '') . '</span>';
+        $o .= '<span>' . ($r[3] ? cc_fd_mlbl($r[3], $r[0]) : $r[0]) . ' ' . number_format(round($r[1])) . ' g · ' . number_format(round($kc)) . ' kcal' . ($sum > 0 ? ' (' . round($kc / $sum * 100) . ' %)' : '') . ($kg && $r[0] !== 'Alcohol' ? ' (' . number_format($r[1] / $kg, 1) . ' g/kg)' : '') . '</span>';
     }
     return $o . '<span><b>Total ' . number_format(round($sum)) . ' kcal</b>' . (abs($sum - $t['k']) >= 20 ? ' <small>(food tables: ' . number_format(round($t['k'])) . ' kcal)</small>' : '') . '</span>';
 }
@@ -403,7 +403,7 @@ function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){retur
 function post(u,data,nonce){var f=new FormData();for(var k in data){f.append(k,data[k]);}return fetch(u,{method:"POST",body:f,credentials:"same-origin",headers:{"X-WP-Nonce":nonce}}).then(function(r){if(!r.ok){throw r;}return r.json();});}
 function n0(x){return Math.round(+x||0).toLocaleString("en");}
 function n1(x){return (Math.round((+x||0)*10)/10).toLocaleString("en");}
-var IC=[["Easy (intensity < 25)","#7fb2ff"],["Moderate (25–39)","#f0b45a"],["Hard (40+)","#c99bff"],["No intensity","#8f97a3"]];
+var IC=[["Easy (intensity < 25)","#3f9c96"],["Moderate (25–39)","#7fd6cf"],["Hard (40+)","#eaf8f6"],["No intensity","#8f97a3"]];
 function icls(i){if(i==null){return 3;}return i<25?0:(i<40?1:2);}
 var SP={ride:"Ride",run:"Run",gym:"Gym",hike:"Hike",other:"Other"};
 function shape(sp,x,y,r,col,ring){var st=ring?' fill="none" stroke="'+col+'" stroke-width="2.5"':' fill="'+col+'" stroke="#0b0d0f" stroke-width="1"';

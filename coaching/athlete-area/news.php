@@ -81,7 +81,7 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     foreach (array_slice(cc_nw_for($view), 0, 3) as $n) {
         $l = $GLOBALS['cc_ath_lang'] ?? 'en'; $t = $n['t'][$l] ?? ($n['t']['en'] ?? []);
         $o .= '<div class="nw-card" data-id="' . esc_attr($n['id']) . '" hidden>' . (!empty($n['img']) ? '<img src="' . esc_url($n['img']) . '" alt="">' : '')
-            . '<div><p class="nw-eb">📣 ' . esc_html(cc_nw_w('news')) . ' · ' . esc_html(date_i18n('j M', (int) $n['at'])) . '</p><b>' . esc_html($t['title'] ?? '') . '</b>'
+            . '<div><p class="nw-eb">📣 ' . esc_html(cc_nw_w('news')) . ' · ' . esc_html(cc_r_dm((int) $n['at'])) . '</p><b>' . esc_html($t['title'] ?? '') . '</b>'
             // the event time: Irish time from the server, then the browser rewrites it in the viewer's own time zone
             . (!empty($n['when']) ? '<p class="nw-when" data-utc="' . (int) $n['when'] . '" data-loc="' . esc_attr(['en' => 'en-GB', 'it' => 'it-IT', 'pt' => 'pt-PT', 'sl' => 'sl-SI', 'sk' => 'sk-SK'][$l] ?? 'en-GB') . '" data-mine="' . esc_attr(['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas', 'sk' => 'tvoj čas'][$l] ?? 'your time') . '">'
                 . esc_html(cc_nw_when($n['when'], 0, $l)) . '</p>' : '')

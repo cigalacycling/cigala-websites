@@ -312,7 +312,7 @@ function cc_f_field($f, $v, $kind) {
             $pp = (int) ($GLOBALS['cc_f_pid'] ?? 0);
             return $wrap('<div class="rf-photo">' . ($pp ? cc_ph_widget($pp, 96, true) : '') . '<div><p class="rf-photo-t">' . esc_html(cc_ph_w('form')) . '</p><p class="rf-photo-h">' . esc_html(cc_ph_w('form_hint')) . '</p></div></div>' . cc_ph_assets(), ' full');
         case 'sig': return $wrap('<div class="rf-sig"><canvas aria-label="' . esc_attr(cc_f('Signature pad: sign with your finger')) . '"></canvas><span class="rf-sig-ph">' . esc_html(cc_f('Sign here')) . '</span>'
-            . '<button type="button" class="btn btn-ghost rf-clr">' . esc_html(cc_f('Clear')) . '</button></div><p class="rf-date">' . esc_html(cc_f('Date')) . ': <b>' . esc_html(date_i18n('j F Y')) . '</b></p>', ' full');
+            . '<button type="button" class="btn btn-ghost rf-clr">' . esc_html(cc_f('Clear')) . '</button></div><p class="rf-date">' . esc_html(cc_f('Date')) . ': <b>' . esc_html(cc_r_date(current_time('timestamp'))) . '</b></p>', ' full');
     }
     return '';
 }

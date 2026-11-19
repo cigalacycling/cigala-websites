@@ -14,6 +14,7 @@ function cc_rs_w($k) {
                    'pt' => 'Um resultado em prova, um recorde pessoal, um treino de que te orgulhas: partilha-o com uma foto. Adoro vê-los.',
                    'sl' => 'Rezultat na tekmi, osebni rekord, vožnja, na katero si ponosen: deli jo s fotografijo. Rad jih vidim.', 'sk' => 'Výsledok z pretekov, osobný rekord, jazda, ktorá ťa teší: podeľ sa o ňu s fotkou. Rád sa na ne pozriem.'],
         'photo' => ['en' => 'Add a photo', 'it' => 'Aggiungi una foto', 'pt' => 'Adicionar uma foto', 'sl' => 'Dodaj fotografijo', 'sk' => 'Pridať fotku'],
+        'date' => ['en' => 'Date', 'it' => 'Data', 'pt' => 'Data', 'sl' => 'Datum', 'sk' => 'Dátum'],   // 19 Nov: a visible label on the date box
         'change' => ['en' => 'Change the photo', 'it' => 'Cambia la foto', 'pt' => 'Mudar a foto', 'sl' => 'Zamenjaj fotografijo', 'sk' => 'Zmeniť fotku'],
         'ph' => ['en' => 'What happened? e.g. 3rd in my category, first 100 km, new 20-min power', 'it' => 'Cosa è successo? es. 3° di categoria, primi 100 km, nuovo record sui 20 minuti',
                  'pt' => 'O que aconteceu? ex. 3.º no escalão, primeiros 100 km, novo recorde aos 20 minutos', 'sl' => 'Kaj se je zgodilo? npr. 3. v kategoriji, prvih 100 km, nov rekord na 20 minut', 'sk' => 'Čo sa stalo? napr. 3. miesto v kategórii, prvých 100 km, nový rekord na 20 minút'],
@@ -98,13 +99,13 @@ function cc_rs_css() {
         . 'html .cc .rs-heart{position:absolute;left:50%;top:50%;font-size:56px;font-style:normal;transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none}html .cc .rs-heart.go{animation:rsheart .9s ease-out}'
         . '@keyframes rsheart{0%{transform:translate(-50%,-50%) scale(0);opacity:0}25%{transform:translate(-50%,-50%) scale(1.25);opacity:1}55%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(1.1);opacity:0}}'
         . 'html .cc .rs-pw{position:relative;display:inline-block}html .cc .rs-x{position:absolute;top:-8px;right:-8px;width:30px;height:30px;min-height:0;padding:0;margin:0;border-radius:50%;border:2px solid #0b0d0f;background:#E10600;color:#fff;font:700 15px/1 var(--body);cursor:pointer}html .cc .rs-x[hidden]{display:none}'
-        . 'html .cc .rs-form{display:grid;gap:12px}html .cc .rs-pick{display:flex;align-items:center;gap:14px}html .cc .rs-prev{width:96px;height:96px;border-radius:14px;object-fit:cover;border:2px solid #2bd47a;display:none}html .cc .rs-prev.on{display:block}'
+        . 'html .cc .rs-form{display:grid;gap:12px}html .cc .rs-pick{display:flex;align-items:center;gap:0}html .cc .rs-prev{width:96px;height:96px;border-radius:14px;object-fit:cover;border:2px solid #2bd47a;display:none}html .cc .rs-prev.on{display:block}html .cc .rs-pw:has(.rs-prev.on){margin-right:14px}'
         . 'html .cc .rs-form textarea,html .cc .rs-form select,html .cc .rs-form input[type=date]{width:100%;font:16px var(--body);padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}'
         // Matteo 17 Nov: the date box stayed wider than the card on iPhones (native date inputs keep their own width)
         . 'html .cc .rs-form input[type=date]{display:block;max-width:100%;min-width:0;-webkit-appearance:none;appearance:none;min-height:48px;line-height:1.2}html .cc .rs-form input[type=date]::-webkit-date-and-time-value{text-align:left}'
         . 'html .cc .rs-form label{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600;min-width:0}'
         . 'html .cc .rs-share{padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03)}html .cc .rs-share b{display:block;color:#fff;font-size:16px;margin:0 0 8px}'
-        . 'html .cc .rs-form .rs-tick{display:flex!important;gap:12px;align-items:flex-start;font-weight:500;font-size:16px;color:#e6e9ee}html .cc .rs-tick input{width:26px;height:26px;flex:none;margin:0;accent-color:#12a150}'
+        . 'html .cc .rs-form .rs-tick{display:flex!important;gap:12px;align-items:flex-start;font-weight:500;font-size:16px;line-height:1.45;color:#e6e9ee;min-height:44px;cursor:pointer}html .cc .rs-tick input{width:26px;height:26px;flex:none;margin:0;accent-color:#12a150}'
         . 'html .cc .rs-form .btn{justify-self:start}html .cc .rs-msg{margin:0;font-size:16px;font-weight:600;color:#34c46a}html .cc .rs-msg.err{color:#ff7a73}html .cc .rs-msg:empty{display:none}'
         . 'html .cc .rs-shelf{display:grid;gap:12px;margin-top:10px}html .cc .rs-card{display:flex;gap:14px;align-items:flex-start;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}'
         . 'html .cc .rs-ph{flex:none;width:110px;height:110px;border-radius:12px;overflow:hidden;display:grid;place-items:center;background:rgba(18,161,80,.12);font-size:40px}html .cc .rs-ph img{width:100%;height:100%;object-fit:cover}'
@@ -160,14 +161,14 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     }
     $g = function_exists('cc_g_get') ? (cc_g_get($view) ?: []) : []; $opts = '<option value="">' . esc_html(cc_rs_w('none')) . '</option>';
     $ev = (array) ($g['events'] ?? []); usort($ev, function ($a, $b) { return strcmp($b['date'], $a['date']); });
-    foreach ($ev as $e) if ($e['date'] <= current_time('Y-m-d', false) || $e['date'] <= date('Y-m-d', strtotime('+3 days'))) $opts .= '<option value="' . esc_attr($e['name']) . '" data-d="' . esc_attr($e['date']) . '">' . esc_html($e['name'] . ' · ' . date_i18n('j M Y', strtotime($e['date'] . ' 12:00'))) . '</option>';
+    foreach ($ev as $e) if ($e['date'] <= current_time('Y-m-d', false) || $e['date'] <= date('Y-m-d', strtotime('+3 days'))) $opts .= '<option value="' . esc_attr($e['name']) . '" data-d="' . esc_attr($e['date']) . '">' . esc_html($e['name'] . ' · ' . cc_r_date(strtotime($e['date'] . ' 12:00'))) . '</option>';
     $W = []; foreach (['change', 'photo', 'sending', 'sent', 'empty', 'err'] as $k) $W[$k] = cc_rs_w($k);
     $o = '<section class="ath-s" id="results"><h2>' . cc_ath_icon('trophy', 'ath-hic') . esc_html(cc_rs_w('title')) . '</h2><p class="av-lede">' . esc_html(cc_rs_w('lede')) . '</p>'
        . '<div class="rs-form" data-api="' . esc_url(rest_url('cc/v1/result')) . '" data-nonce="' . esc_attr(wp_create_nonce('wp_rest')) . '" data-w="' . esc_attr(wp_json_encode($W)) . '">'
        . '<div class="rs-pick"><span class="rs-pw"><img class="rs-prev" alt=""><button type="button" class="rs-x" hidden aria-label="' . esc_attr(cc_rs_w('del')) . '">✕</button></span><button type="button" class="btn btn-ghost rs-pickb">' . esc_html(cc_rs_w('photo')) . '</button><input type="file" accept="image/*" class="rs-file" hidden></div>'
        . '<textarea rows="3" maxlength="1500" placeholder="' . esc_attr(cc_rs_w('ph')) . '" aria-label="' . esc_attr(cc_rs_w('title')) . '"></textarea>'
        . '<label>' . esc_html(cc_rs_w('race')) . '<select>' . $opts . '</select></label>'
-       . '<input type="date" max="' . esc_attr(current_time('Y-m-d')) . '" value="' . esc_attr(current_time('Y-m-d')) . '" aria-label="Date">'
+       . '<label>' . esc_html(cc_rs_w('date')) . '<input type="date" max="' . esc_attr(current_time('Y-m-d')) . '" value="' . esc_attr(current_time('Y-m-d')) . '"></label>'
        // unticked: sharing publicly is their active choice; a heading says what the tick is for
        . '<div class="rs-share"><b>' . esc_html(cc_rs_w('askshare')) . '</b><label class="rs-tick"><input type="checkbox"> <span>' . esc_html(cc_rs_w('ok')) . '</span></label></div>'
        . '<button type="button" class="btn btn-go rs-go">' . esc_html(cc_rs_w('send')) . '</button><p class="rs-msg" role="status"></p></div>';
@@ -230,7 +231,7 @@ function cc_rs_save(WP_REST_Request $r) {
     $name = get_the_title($pid); $board = add_query_arg('board', 'results', home_url('/' . CC_ATH_SLUG . '/'));
     if (function_exists('cc_av_notify_to') && cc_av_notify_to()) {
         $h = '<div style="font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:16px;color:#222"><h2>🏆 Result from ' . esc_html($name) . '</h2>'
-           . '<p style="margin:0 0 10px">' . esc_html(date_i18n('j M Y', strtotime($date . ' 12:00'))) . ($x['race'] !== '' ? ' · <b>' . esc_html($x['race']) . '</b>' : '') . '</p>'
+           . '<p style="margin:0 0 10px">' . esc_html(cc_r_date(strtotime($date . ' 12:00'))) . ($x['race'] !== '' ? ' · <b>' . esc_html($x['race']) . '</b>' : '') . '</p>'
            . ($text !== '' ? '<blockquote style="margin:0 0 16px;padding:10px 14px;background:#f2f4f3;border-left:3px solid #009a44;white-space:pre-line">' . esc_html($text) . '</blockquote>' : '')
            . '<p style="margin:0 0 10px">' . ($x['consent'] ? '✅ OK to share on social media and Skool.' : '🔒 Private: they did not tick social media.') . ($pidPhoto ? ' Photo attached.' : '') . '</p>'
            . '<p style="margin:20px 0 0"><a href="' . esc_url($board) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">React in the hub</a></p></div>';

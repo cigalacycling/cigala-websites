@@ -234,7 +234,7 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
         $n = count($a['changes'] ?? []); $cw = explode('|', cc_ath_w('changes', $lang));
         $upd = (int) get_post_meta($view, 'cc_avail_updated', true);
         $o .= '<div class="av-sumbox"><p class="av-sumt"><b>' . esc_html($tot) . '</b>' . ($n ? ' · ' . esc_html(sprintf($n === 1 ? $cw[0] : ($cw[1] ?? $cw[0]), $n)) : '')
-            . ($upd ? '<small>' . esc_html(sprintf(cc_ath_w('updated', $lang), date_i18n('j M', $upd))) . '</small>' : '') . '</p>'
+            . ($upd ? '<small>' . esc_html(sprintf(cc_ath_w('updated', $lang), cc_r_dm($upd))) . '</small>' : '') . '</p>'
             . '<a class="btn btn-ghost" href="' . $go . '">' . esc_html(cc_ath_w('av_change', $lang)) . '</a></div>';
     }
     return $html . $o . '</section>';
@@ -326,7 +326,7 @@ function draw(){var h='<h3 class="av-sub av-first"><span class="av-n" aria-hidde
  h+='<div class="av-part"><h3 class="av-sub"><span class="av-n" aria-hidden="true">3</span>'+esc(W.more)+'</h3><div class="av-notew"><textarea id="av-note" rows="4" placeholder="'+esc(W.note_ph)+'"'+(ro?' readonly':'')+'>'+esc(D.note||'')+'</textarea>';
  if(!ro)h+='<button type="button" class="av-mic" aria-label="'+esc(W.mic)+'" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>';
  h+='</div><p class="av-rec" hidden></p></div>';
- if(!ro)h+='<div class="av-save"><button type="button" class="btn btn-go av-go" disabled>'+esc(W.save)+'</button><span class="av-msg" role="status"></span></div>';
+ if(!ro)h+='<div class="av-save"><button type="button" class="btn btn-go av-go">'+esc(W.save)+'</button><span class="av-msg" role="status"></span></div>';
  app.innerHTML=h;drawChanges();total();msg(saved?t_('last',{d:new Date(saved*1000).toLocaleDateString(L,{day:'numeric',month:'short'})}):'');}
 function drawChanges(){var w=app.querySelector('.av-chs'),h='';
  if(!D.changes.length)h=ro?'<p class="av-none av-none-ro">No changes added yet: the athlete hasn’t told you about any trips or busier weeks.</p>':'<p class="av-none">'+esc(W.none)+'</p>';   /* Matteo 17 Nov: his read-only view looked like a missing box */
@@ -359,7 +359,7 @@ app.addEventListener('click',function(e){var b=e.target.closest('button');if(!b|
  if(b.classList.contains('av-add')){D.changes.push({from:today,to:today,open:false,days:[],type:'away',h:'',text:''});drawChanges();touch();var l=app.querySelectorAll('.av-ch');l[l.length-1].querySelector('.av-f').focus();}
  if(b.classList.contains('av-del')){D.changes.splice(+b.closest('.av-ch').dataset.i,1);drawChanges();touch();}
  if(b.classList.contains('av-mic'))mic(b);
- if(b.classList.contains('av-go'))save(b);});
+ if(b.classList.contains('av-go')){if(!dirty&&!blob){msg(W.nothing);return;}save(b);}});
 /* voice: record for Matteo + type the words into the note while they speak */
 var rec=null,sr=null,chunks=[],base='',t0=0,tick=null;
 function mic(b){if(rec){rec.stop();return;}
@@ -385,7 +385,7 @@ function save(b){b.disabled=true;msg(W.saving);var f=new FormData(),txt=document
  if(blob){f.append('audio',blob,'voice.'+(/mp4/.test(blob.type)?'m4a':'webm'));f.append('transcript',txt.slice(base.length));}
  fetch(app.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':app.dataset.nonce}}).then(function(r){return r.json().then(function(j){return[r.ok,j];});})
  .then(function(x){if(!x[0])throw new Error(x[1].message||'');dirty=false;blob=null;var r=app.querySelector('.av-rec');r.hidden=true;
-  msg(x[1].unchanged?W.nothing:W.saved);b.disabled=true;})
+  msg(x[1].unchanged?W.nothing:W.saved);b.disabled=false;})
  .catch(function(){b.disabled=false;msg(W.err,true);});}
 addEventListener('beforeunload',function(e){if(dirty&&!ro){e.preventDefault();e.returnValue='';}});
 draw();})();</script>
@@ -399,18 +399,18 @@ html .cc .av-lede { color: var(--text-2); margin: -4px 0 18px; }
 html .cc .av-week { display: grid; gap: 8px; }
 html .cc .av-day { display: grid; grid-template-columns: 110px 130px 1fr; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.08); }
 html .cc .av-day.is-rest { opacity: .7; }
-html .cc .av-dn { margin: 0 !important; font-weight: 600; font-size: 15px; color: #fff; }
+html .cc .av-dn, html .cc .ath label.av-dn { margin: 0 !important; font-weight: 600; font-size: 15px; color: #fff; }
 html .cc .ath select, html .cc .ath textarea, html .cc .ath input[type=date], html .cc .ath .av-tx { width: 100%; box-sizing: border-box; font: 16px var(--body); padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,.18); background: #0b0d0f; color: #fff; color-scheme: dark; }
 html .cc .ath :is(select, textarea, input):focus-visible { outline: 2px solid var(--green, #009a44); outline-offset: 1px; }
 html .cc .av-when { display: flex; flex-wrap: wrap; gap: 6px; }
-html .cc .av-w { font: 600 13px var(--body); padding: 9px 13px; min-height: 40px; border-radius: 999px; border: 1px solid rgba(255,255,255,.16); background: transparent; color: var(--text-2); cursor: pointer; }
+html .cc .av-w { font: 600 15px var(--body); padding: 9px 13px; min-height: 44px; border-radius: 999px; border: 1px solid rgba(255,255,255,.16); background: transparent; color: var(--text-2); cursor: pointer; }
 html .cc .av-w[aria-pressed=true] { background: #009a44; border-color: #009a44; color: #fff; }
 html .cc .av-w:disabled { opacity: .35; cursor: default; }
 html .cc .av-total { min-height: 1.4em; margin: 12px 0 0; color: var(--text-2); font-size: 14px; }
 html .cc .av-total b { color: var(--green-text, #34c46a); font-weight: 700; }
-html .cc .ath .av-sub { display: flex; align-items: center; gap: 10px; font: 700 13px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); margin: 0 0 6px; }
+html .cc .ath .av-sub { display: flex; align-items: center; gap: 10px; font: 700 14px var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--red-text, #ff3d33); margin: 0 0 6px; }
 html .cc .av-n { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #009a44; color: #fff; font: 700 13px/1 var(--body); letter-spacing: 0; }
-html .cc .av-subp { margin: 0 0 14px 36px; color: var(--text-3); font-size: 14px; }
+html .cc .av-subp { margin: 0 0 14px 36px; color: var(--text-3); font-size: 15px; }
 html .cc .av-part { margin-top: 30px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.1); }
 html .cc .av-none { color: var(--text-3); font-size: 14px; margin: 0 0 12px; }
 html .cc .av-none-ro { background: rgba(255,255,255,.035); border: 1px dashed rgba(255,255,255,.18); border-radius: 12px; padding: 14px 16px; }
@@ -418,13 +418,13 @@ html .cc .av-ch { display: grid; gap: 10px; padding: 14px; margin: 0 0 10px; bor
 html .cc .av-ch.av-away { border-left-color: #E10600; } html .cc .av-ch.av-less { border-left-color: #b9895a; } html .cc .av-ch.av-more { border-left-color: #009a44; } html .cc .av-ch:is(.av-gym, .av-indoor) { border-left-color: #d0d6e0; }
 html .cc .av-chr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
 html .cc .av-ch label > * { min-width: 0; }
-html .cc .av-ch label { display: grid; gap: 5px; margin: 0; font-size: 12.5px; color: var(--text-3); font-weight: 600; }
+html .cc .av-ch label { display: grid; gap: 5px; margin: 0; font-size: 15px; color: var(--text-3); font-weight: 600; }
 html .cc .av-open { display: flex !important; align-items: center; gap: 8px !important; font-size: 14px !important; color: var(--text-2) !important; font-weight: 500 !important; }
 html .cc .av-open input { width: 18px; height: 18px; accent-color: #009a44; }
-html .cc .av-dsel { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; } html .cc .av-dsel .av-w { padding: 8px 0; min-height: 38px; font-size: 12.5px; }
+html .cc .av-dsel { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; } html .cc .av-dsel .av-w { padding: 8px 0; min-height: 44px; font-size: 14px; }
 html .cc .av-chw { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) !important; }
-html .cc .av-hint { font-size: 12.5px; color: var(--text-3); margin: -4px 0 0; }
-html .cc .av-del, html .cc .av-x { justify-self: start; background: none; border: 0; padding: 4px 0; color: var(--text-3); font: 13px var(--body); text-decoration: underline; cursor: pointer; }
+html .cc .av-hint { font-size: 15px; color: var(--text-3); margin: -4px 0 0; }
+html .cc .av-del, html .cc .av-x { justify-self: start; background: none; border: 0; padding: 0 6px; min-height: 44px; min-width: 44px; color: var(--text-3); font: 15px var(--body); text-decoration: underline; cursor: pointer; }
 html .cc .av-add { margin: 0; max-width: 100%; white-space: normal; height: auto; text-align: center; }
 html .cc .av-notew { position: relative; }
 html .cc .av-notew textarea { padding-right: 64px; resize: vertical; min-height: 110px; line-height: 1.5; }
@@ -434,7 +434,7 @@ html .cc .av-mic.on { background: #E10600; box-shadow: 0 0 0 0 rgba(225,6,0,.5);
 @keyframes av-pulse { 70% { box-shadow: 0 0 0 14px rgba(225,6,0,0); } 100% { box-shadow: 0 0 0 0 rgba(225,6,0,0); } }
 html .cc .av-rec { margin: 10px 0 0; font-size: 14px; color: var(--text-2); }
 html .cc .av-save { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin: 22px 0 0; }
-html .cc .av-go:disabled { opacity: .5; cursor: default; }
+html .cc .av-go:disabled { opacity: .7; cursor: progress; }   /* 19 Nov: only while saving; before any change the button looks normal and says "Nothing new to save" */
 html .cc .av-msg { font-size: 14px; color: var(--green-text, #34c46a); } html .cc .av-msg.bad { color: var(--red-text, #ff3d33); }
 /* coach board */
 html .cc .av-boardlink { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; color: #fff; font-weight: 600; font-size: 14px; }
