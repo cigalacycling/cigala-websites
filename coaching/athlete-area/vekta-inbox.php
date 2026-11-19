@@ -140,7 +140,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     if (!$rows) $o .= '<p class="vx-none">✓ All caught up: no Vekta comment is waiting for you.</p>';
     $last = 0;
     foreach ($rows as [$pid, $u]) {
-        if ($pid !== $last) { $o .= '<div class="vx-who">' . (function_exists('cc_ph_face') ? cc_ph_face($pid, 30) : '') . '<a href="' . esc_url(add_query_arg('view', $pid, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html(get_the_title($pid)) . '</a>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($pid) : '') . '</div>'; $last = $pid; }
+        if ($pid !== $last) { $o .= '<div class="vx-who">' . (function_exists('cc_ph_face') ? cc_ph_face($pid, 30) : '') . '<a href="' . esc_url(add_query_arg('view', $pid, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html(get_the_title($pid)) . '</a>' . '</div>'; $last = $pid; }
         $o .= cc_vx_item($pid, $u, $q[$u['key']] ?? '');
     }
     return $o . '</section>' . cc_vx_assets() . (function_exists('cc_nt_css') ? cc_nt_css() : '') . (function_exists('cc_ph_assets') ? cc_ph_assets() : '');

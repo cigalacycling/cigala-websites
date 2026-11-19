@@ -279,6 +279,6 @@ add_filter('cc_ath_board', function ($html, $board) {
     usort($all, function ($a, $b) { return $b[1]['at'] <=> $a[1]['at']; });
     $o = '<section class="ath-s"><h2>' . cc_ath_icon('trophy', 'ath-hic') . 'Results</h2><p class="av-lede">What your athletes are proud of, newest first. ✅ means they agreed you can share it on social media and Skool. React or reply: they see it in their hub and on their phone.</p><div class="rs-shelf">';
     if (!$all) $o .= '<p class="av-lede">No results yet.</p>';
-    foreach (array_slice($all, 0, 60) as [$p, $x]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 30) . ' ' : '') . '<b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($p->post_title) . '</a></b>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($p->ID) : '') . '</div>' . cc_rs_card($p->ID, $x, true);
+    foreach (array_slice($all, 0, 60) as [$p, $x]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 30) . ' ' : '') . '<b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($p->post_title) . '</a></b>' . '</div>' . cc_rs_card($p->ID, $x, true);
     return $o . '</div></section>' . cc_rs_css() . cc_rs_js() . (function_exists('cc_nt_css') ? cc_nt_css() . cc_nt_js() : '');
 }, 10, 2);

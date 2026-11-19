@@ -122,7 +122,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     usort($all, function ($a, $b) { return $b[1]['at'] <=> $a[1]['at']; });
     $o = '<section class="ath-s"><h2>Blood tests</h2><p class="av-lede">Blood tests your athletes uploaded, newest first. Private: only you (and the nutritionist when the athlete ticked "share") can open them. Deleted when coaching ends.</p>';
     if (!$all) $o .= '<p class="av-lede">None yet.</p>';
-    foreach ($all as [$p, $b]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 30) . ' ' : '') . '<b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '#blood">' . esc_html($p->post_title) . '</a></b>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($p->ID) : '') . '</div>' . cc_bt_row($p->ID, $b, true);
+    foreach ($all as [$p, $b]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 30) . ' ' : '') . '<b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '#blood">' . esc_html($p->post_title) . '</a></b>' . '</div>' . cc_bt_row($p->ID, $b, true);
     return $o . '</section>' . cc_bt_assets() . (function_exists('cc_nt_css') ? cc_nt_css() : '');
 }, 10, 2);
 
@@ -166,7 +166,7 @@ add_filter('cc_ath_nutritionist', function ($html, $me) {
        . '<p class="av-lede">Blood tests Matteo\'s athletes chose to share with you, newest first. Open the file, then reply under it: the athlete and Matteo see your reply in the hub.</p>'
        . '<p><a class="btn btn-ghost" href="' . esc_url(wp_logout_url(home_url('/' . CC_ATH_SLUG . '/'))) . '">Log out</a></p>';
     if (!$all) $o .= '<p class="av-lede">Nothing shared yet. You will get an email when an athlete shares a blood test with you.</p>';
-    foreach ($all as [$p, $b]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 30) . ' ' : '') . '<b>' . esc_html($p->post_title) . '</b>' . (function_exists('cc_ath_flag_for') ? cc_ath_flag_for($p->ID) : '') . '</div>' . cc_bt_row($p->ID, $b, false, 'nutri');
+    foreach ($all as [$p, $b]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 30) . ' ' : '') . '<b>' . esc_html($p->post_title) . '</b>' . '</div>' . cc_bt_row($p->ID, $b, false, 'nutri');
     return $html . $o . '</section>' . cc_bt_assets() . (function_exists('cc_nt_css') ? cc_nt_css() : '') . (function_exists('cc_ph_assets') ? cc_ph_assets() : '');
 }, 10, 2);
 add_action('rest_api_init', function () {
