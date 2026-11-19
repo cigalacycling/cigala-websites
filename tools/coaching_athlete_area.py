@@ -257,7 +257,7 @@ if __name__ == '__main__':
     code = open(ROOT + 'coaching/athlete-area/athlete-area.php').read()
     assert code.startswith('<?php\n'); code = code[len('<?php\n'):]
     if '--availability' in sys.argv:   # the availability card (README "Athlete area: availability"); only once Matteo says go
-        for f in ('hub-i18n.php', 'availability-i18n.php', 'availability.php', 'form-legal.php', 'form-legal-it.php', 'onboarding-i18n.php', 'onboarding.php', 'goals.php', 'passwords.php', 'reports.php', 'pc-api.php', 'ideas.php', 'gocardless.php', 'notes.php', 'photo.php', 'push.php', 'results.php', 'news.php', 'vekta-inbox.php', 'blood.php', 'food.php', 'mealplan.php', 'nutrition-plus.php'):
+        for f in ('hub-i18n.php', 'availability-i18n.php', 'availability.php', 'form-legal.php', 'form-legal-it.php', 'onboarding-i18n.php', 'onboarding.php', 'goals.php', 'passwords.php', 'reports.php', 'pc-api.php', 'ideas.php', 'gocardless.php', 'notes.php', 'photo.php', 'push.php', 'results.php', 'news.php', 'vekta-inbox.php', 'blood.php', 'food.php', 'mealplan.php', 'nutrition-plus.php', 'today.php'):
             extra = open(ROOT + 'coaching/athlete-area/' + f).read()
             assert extra.startswith('<?php\n'); code += '\n' + extra[len('<?php\n'):].replace("if (!defined('ABSPATH')) return;", '', 1)
     body = {'name': 'Cigala athlete area (one login per athlete)', 'desc': 'Built by tools/coaching_athlete_area.py from coaching/athlete-area/athlete-area.php in the cigala-websites repo. Do not edit here.',

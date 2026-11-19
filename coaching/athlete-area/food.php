@@ -229,6 +229,22 @@ function cc_fd_w($k) {
         'undo' => ['Undo', 'Annulla', 'Anular', 'Razveljavi', 'Späť'],
         'tap_add' => ['One tap adds it with the last amount. You can change the grams after.', 'Un tocco e lo aggiungi con l’ultima quantità. Poi puoi cambiare i grammi.', 'Um toque e fica adicionado com a última quantidade. Depois podes mudar os gramas.', 'En dotik in je dodano z zadnjo količino. Grame lahko spremeniš pozneje.', 'Jedným ťuknutím ho pridáš s posledným množstvom. Gramy môžeš zmeniť potom.'],
         'xtra' => ['Time, note, photo', 'Ora, nota, foto', 'Hora, nota, foto', 'Čas, opomba, fotografija', 'Čas, poznámka, fotka'],
+        /* round 2, 19 Nov 2026: My meals, the photo prompt, the week box */
+        'meals' => ['My meals', 'I miei pasti', 'As minhas refeições', 'Moji obroki', 'Moje jedlá'],
+        'meal_save' => ['Save as a meal', 'Salva come pasto', 'Guardar como refeição', 'Shrani kot obrok', 'Uložiť ako jedlo'],
+        'meal_name' => ['Name of the meal', 'Nome del pasto', 'Nome da refeição', 'Ime obroka', 'Názov jedla'],
+        'meal_ph' => ['e.g. My usual breakfast', 'es. La mia colazione di sempre', 'ex.: O meu pequeno-almoço de sempre', 'npr. Moj običajni zajtrk', 'napr. Moje obvyklé raňajky'],
+        'meal_ok' => ['Saved in My meals. Next time, one tap adds it.', 'Salvato nei tuoi pasti. La prossima volta lo aggiungi con un tocco.', 'Guardada nas tuas refeições. Da próxima vez, um toque e fica adicionada.', 'Shranjeno med tvoje obroke. Naslednjič ga dodaš z enim dotikom.', 'Uložené medzi tvoje jedlá. Nabudúce ho pridáš jedným ťuknutím.'],
+        'meal_done' => ['Added: %s', 'Aggiunto: %s', 'Adicionado: %s', 'Dodano: %s', 'Pridané: %s'],
+        'meal_lede' => ['Meals you saved from the diary. Tap one in any meal of the day to add all its foods at once.', 'I pasti che hai salvato dal diario. Toccane uno in un pasto qualsiasi per aggiungere tutti i suoi alimenti insieme.', 'As refeições que guardaste do diário. Toca numa, em qualquer refeição do dia, para adicionar todos os alimentos de uma vez.', 'Obroki, ki si jih shranil iz dnevnika. Tapni enega pri kateremkoli obroku in dodaš vsa živila naenkrat.', 'Jedlá, ktoré si si uložil z denníka. Ťukni na jedno pri hocijakom jedle dňa a pridáš všetky potraviny naraz.'],
+        'meal_none' => ['Open a meal with foods in it and tap “Save as a meal”.', 'Apri un pasto con degli alimenti e tocca “Salva come pasto”.', 'Abre uma refeição com alimentos e toca em “Guardar como refeição”.', 'Odpri obrok z živili in tapni »Shrani kot obrok«.', 'Otvor jedlo s potravinami a ťukni na „Uložiť ako jedlo“.'],
+        'ph_add' => ['Nice photo! Add what was in it?', 'Bella foto! Aggiungi cosa c’era?', 'Boa foto! Adicionas o que tinha?', 'Lepa fotografija! Dodaš, kaj je bilo na krožniku?', 'Pekná fotka! Pridáš, čo na nej bolo?'],
+        'wk_title' => ['Your week', 'La tua settimana', 'A tua semana', 'Tvoj teden', 'Tvoj týždeň'],
+        'wk_days' => ['Days logged this week', 'Giorni registrati questa settimana', 'Dias registados esta semana', 'Zabeleženi dnevi ta teden', 'Zapísané dni tento týždeň'],
+        'wk_tg' => ['Days on Marine’s targets', 'Giorni con gli obiettivi di Marine raggiunti', 'Dias com os objetivos da Marine atingidos', 'Dnevi z doseženimi Marininimi cilji', 'Dni so splnenými cieľmi od Marine'],
+        'wk_ml' => ['Meals on Marine’s targets', 'Pasti con gli obiettivi di Marine raggiunti', 'Refeições com os objetivos da Marine atingidos', 'Obroki z doseženimi Marininimi cilji', 'Jedlá so splnenými cieľmi od Marine'],
+        'wk_mp' => ['Meals from Marine’s plan eaten', 'Pasti del piano di Marine mangiati', 'Refeições do plano da Marine comidas', 'Pojedeni obroki iz Marininega načrta', 'Zjedené jedlá z plánu od Marine'],
+        'wk_dl' => ['M,T,W,T,F,S,S', 'L,M,M,G,V,S,D', 'S,T,Q,Q,S,S,D', 'P,T,S,Č,P,S,N', 'P,U,S,Š,P,S,N'],
     ];
     static $I = ['en' => 0, 'it' => 1, 'pt' => 2, 'sl' => 3, 'sk' => 4];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en';
@@ -368,6 +384,44 @@ function cc_fd_recent($pid) {
     }
     return $o;
 }
+function cc_fd_meals($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_food_meals', true), true); return is_array($a) ? $a : []; }
+function cc_fd_meals_out($pid) {   // the foods with today's values (as the diary lines)
+    $own = cc_fd_own_idx(cc_fd_mine($pid)); $o = [];
+    foreach (cc_fd_meals($pid) as $m) { $m['i'] = array_map(function ($it) use ($own) { return cc_fd_fresh_item($it, $own); }, (array) ($m['i'] ?? [])); $o[] = $m; }
+    return $o;
+}
+/* round 2 (19 Nov 2026): "Your week" at the top of the diary, positive only: days logged, days and meals on Marine's targets,
+   meals from her plan eaten. Lines with nothing are left out; the box is left out until something is logged this week. */
+function cc_fd_week_box($pid) {
+    $today = current_time('Y-m-d'); $t0 = strtotime($today . ' 12:00'); $dow = (int) gmdate('N', $t0);
+    $dates = []; for ($i = $dow - 1; $i >= 0; $i--) $dates[] = gmdate('Y-m-d', $t0 - $i * DAY_IN_SECONDS);
+    $tg = function_exists('cc_np_targets') ? cc_np_targets($pid, $dates) : [];
+    $logged = []; $dayOk = 0; $mealOk = 0; $mpEat = 0;
+    foreach ($dates as $d) {
+        $raw = json_decode((string) get_post_meta((int) $pid, 'cc_fd_' . $d, true), true); $sl = is_array($raw) ? (array) ($raw['s'] ?? []) : []; $any = false;
+        foreach ($sl as $x) if (is_array($x) && (!empty($x['i']) || (float) ($x['d'] ?? 0) > 0 || !empty($x['ph']))) { $any = true; break; }
+        if ($any) $logged[$d] = 1;
+        if ($any && !empty($tg[$d])) {
+            $day = cc_fd_get($pid, $d); $t = cc_fd_daytot($day); $set = 0; $ok = 0;
+            foreach (['k', 'c', 'p'] as $f) if (!empty($tg[$d][$f])) { $set++; if (round($t[$f]) >= (int) $tg[$d][$f]) $ok++; }
+            if ($set && $ok === $set) $dayOk++;
+            foreach ((array) ($tg[$d]['sl'] ?? []) as $k => $st) {
+                if (!is_array($st)) continue;
+                $ts = cc_fd_tot((array) ($day['s'][$k]['i'] ?? [])); $set = 0; $ok = 0;
+                foreach (['c', 'p', 'f'] as $f) if (!empty($st[$f])) { $set++; if (round($ts[$f]) >= (int) $st[$f]) $ok++; }
+                if ($set && $ok === $set) $mealOk++;
+            }
+        }
+        if (function_exists('cc_mp_get')) foreach (cc_mp_get($pid, $d)['i'] as $it) if (($it['a']['s'] ?? '') === 'y') $mpEat++;
+    }
+    if (!$logged) return '';
+    $dl = explode(',', cc_fd_w('wk_dl')); $dots = '';
+    foreach ($dl as $i => $l) { $d = gmdate('Y-m-d', $t0 - ($dow - 1 - $i) * DAY_IN_SECONDS); $on = isset($logged[$d]);
+        $dots .= '<span class="fd-wkd' . ($on ? ' on' : '') . ($d === $today ? ' td' : '') . '"' . ($on ? '' : ' aria-hidden="true"') . '><span>' . esc_html($l) . '</span>' . ($on ? '<i aria-hidden="true">✓</i>' : '') . '</span>'; }
+    $row = function ($n, $k) { return $n ? '<li><b>' . (int) $n . '</b> <span>' . esc_html(cc_fd_w($k)) . '</span></li>' : ''; };
+    return '<div class="fd-week" role="group" aria-label="' . esc_attr(cc_fd_w('wk_title')) . '"><h3>' . esc_html(cc_fd_w('wk_title')) . '</h3><div class="fd-wkdots">' . $dots . '</div><ul class="fd-wkl">'
+        . $row(count($logged), 'wk_days') . $row($dayOk, 'wk_tg') . $row($mealOk, 'wk_ml') . $row($mpEat, 'wk_mp') . '</ul></div>';
+}
 function cc_fd_fav($pid) { $a = json_decode((string) get_post_meta((int) $pid, 'cc_food_fav', true), true); return is_array($a) ? $a : []; }
 /* days logged in a row, counted up to yesterday; the page adds today once something is logged */
 function cc_fd_streak($pid) {
@@ -498,7 +552,7 @@ function cc_fd_athlete($pid) {
                        'recent', 'favs', 'star_add', 'star_rm', 'copy_y', 'copy_day', 'copy_q', 'copy_none', 'ride_t', 'ride_rec', 'g_h', 'ml_h', 'target', 'streak', 'add_short', 'new_msg', 'of_energy',
                        'water', 'water_h', 'w_tile', 'od_tile', 'tf_tile', 'amount', 'unit', 'un_g', 'un_u', 'un_s', 'un_m', 'un_l', 'un_sl', 'un_pot', 'un_tsp', 'un_tbsp', 'un_cup', 'un_can', 'un_btl',
                        'v_btn', 'v_listen', 'v_text', 'v_read', 'v_again', 'v_right', 'v_logall', 'v_none', 'v_nosup', 'v_err', 'v_food', 'tg_of', 'tg_go', 'tg_done', 'tg_mac', 'tg_title', 'tg_eat', 'tg_your', 'tg_ml', 'tg_meal',
-                       'same_y', 'same_done', 'undo', 'tap_add', 'xtra'] as $k) $W[$k] = cc_fd_w($k);
+                       'same_y', 'same_done', 'undo', 'tap_add', 'xtra', 'meals', 'meal_save', 'meal_name', 'meal_ph', 'meal_ok', 'meal_done', 'meal_lede', 'meal_none', 'ph_add'] as $k) $W[$k] = cc_fd_w($k);
     // ?fd=today (the header chip): the diary on the athlete's own today, scrolled into view
     $go = ($_GET['fd'] ?? '') === 'today';
     $slots = []; $ic = []; foreach (CC_FD_SLOTS as $k) { $slots[] = [$k, cc_fd_w($k)]; $ic[$k] = cc_fd_icon($k); }
@@ -509,14 +563,29 @@ function cc_fd_athlete($pid) {
             /* TrainingPeaks athletes: no Vekta weight, rides or trends (and never the word Vekta) */
             'vkg' => $kv['src'] === 'vekta' ? ['v' => $kv['kg'], 'd' => $kv['d']] : null, 'rides' => (object) ($tp ? [] : cc_fd_rides($vx)),
             'trends' => (!$tp && cc_fd_trends_on($pid)) ? cc_fd_trend_data($vx) : null, 'micro' => cc_fd_micro_url(), 'mw' => cc_fd_mw($fem), 'female' => $fem ? 1 : 0, 'cycle' => $fem ? cc_fd_cycle($pid) : null,
-            'recent' => cc_fd_recent($pid), 'fav' => array_map(function ($it) use ($pid) { return cc_fd_fresh_item($it, cc_fd_own_idx(cc_fd_mine($pid))); }, cc_fd_fav($pid)), 'streak' => cc_fd_streak($pid), 'targets' => (object) ($tp ? [] : cc_fd_targets($vx)), 'today' => current_time('Y-m-d'),
+            'recent' => cc_fd_recent($pid), 'fav' => array_map(function ($it) use ($pid) { return cc_fd_fresh_item($it, cc_fd_own_idx(cc_fd_mine($pid))); }, cc_fd_fav($pid)), 'streak' => cc_fd_streak($pid), 'meals' => cc_fd_meals_out($pid), 'targets' => (object) ($tp ? [] : cc_fd_targets($vx)), 'today' => current_time('Y-m-d'),
             'foods' => esc_url_raw(add_query_arg('v', get_option('cc_food_db_v', '0'), rest_url('cc/v1/foods'))),
-            'u' => ['day' => $u('food-day'), 'save' => $u('food-day'), 'photo' => $u('food-photo'), 'photodel' => $u('food-photo-del'), 'mine' => $u('food-mine'), 'kg' => $u('food-kg'), 'reply' => $u('food-reply'), 'fav' => $u('food-fav'), 'cycle' => $u('food-cycle'), 'seen' => $u('food-seen')]];
+            'u' => ['day' => $u('food-day'), 'save' => $u('food-day'), 'photo' => $u('food-photo'), 'photodel' => $u('food-photo-del'), 'mine' => $u('food-mine'), 'kg' => $u('food-kg'), 'reply' => $u('food-reply'), 'fav' => $u('food-fav'), 'cycle' => $u('food-cycle'), 'seen' => $u('food-seen'), 'meals' => $u('food-meals')]];
     $cfg = apply_filters('cc_fd_athlete_cfg', $cfg, (int) $pid, $date);   // nutrition-plus.php: Marine's day targets
-    return '<section class="ath-s fd" id="food"><h2>' . cc_ath_icon('food', 'ath-hic') . esc_html(cc_fd_w('title')) . '</h2><p class="fd-lede">' . esc_html(cc_fd_w('lede')) . '</p>'
+    return '<section class="ath-s fd" id="food"><h2>' . cc_ath_icon('food', 'ath-hic') . esc_html(cc_fd_w('title')) . '</h2><p class="fd-lede">' . esc_html(cc_fd_w('lede')) . '</p>' . cc_fd_week_box($pid)
         . '<div class="fd-app" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"><div class="fd-day"></div><div class="fd-trbox"></div><div class="fd-cycbox"></div><div class="fd-minebox"></div><div class="fd-thbox"></div></div></section>' . cc_fd_css() . cc_fd_sjs() . (function_exists('cc_np_pjs') ? cc_np_pjs() : '') . cc_fd_js()
         . apply_filters('cc_fd_after_app', '', (int) $pid, $date);   // mealplan.php: Marine's planned meals in the diary
 
+}
+/* round 2 (19 Nov 2026), speed: the diary's scripts (about 110 KB) stay in the page as text and run only when the diary is near
+   (scrolled to within ~900px), opened from the menu (#food), or asked for by a link (?fd=…, #food, #fd-…; window.ccFdLoad()).
+   The food tables (~2 MB, fetched by the diary) therefore load only then too. */
+function cc_fd_lazy($h) {
+    $n = 0;
+    $h = preg_replace_callback('#<script>(.*?)</script>#s', function ($m) use (&$n) { $n++; return '<script type="text/plain" class="fd-lz">' . $m[1] . '</script>'; }, $h);
+    if (!$n) return $h;
+    return $h . '<script>(function(){var done=false;function go(){if(done){return;}done=true;document.querySelectorAll("script.fd-lz").forEach(function(o){var s=document.createElement("script");s.text=o.text;o.parentNode.replaceChild(s,o);});}'
+        . 'window.ccFdLoad=go;var sec=document.getElementById("food");'
+        . 'if(/[?&]fd=/.test(location.search)||/^#(food|fd-)/.test(location.hash)||!sec||!window.IntersectionObserver){go();return;}'
+        . 'addEventListener("hashchange",function(){if(/^#(food|fd-)/.test(location.hash)){go();}});'
+        . 'document.addEventListener("click",function(e){var a=e.target&&e.target.closest?e.target.closest("a[href$=food],[data-fd-load]"):null;if(a){go();}},true);'
+        . 'var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){io.disconnect();go();}});},{rootMargin:"900px 0px 900px 0px"});io.observe(sec);'
+        . 'function chk(){if(done){removeEventListener("scroll",chk);return;}if(sec.getBoundingClientRect().top<innerHeight+900){go();}}addEventListener("scroll",chk,{passive:true});})();</script>';   // a quick jump past the diary still loads it
 }
 function cc_fd_coach_card($pid) {
     $on = cc_fd_on($pid); $days = $on ? cc_fd_days($pid) : [];
@@ -537,11 +606,11 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     // Matteo 19 Nov: on his demo page (no login) he sees the athlete's own diary too, so he can try it as an athlete would
     if ($coach) return $html . cc_fd_coach_card($view) . (get_post_meta($view, 'cc_demo', true) && cc_fd_on($view) ? cc_fd_athlete($view) : '');
     // the upgrade card only once Matteo launches the diary (option cc_fd_launched); until then athletes without the package see nothing
-    return $html . (cc_fd_on($view) ? cc_fd_athlete($view) : (get_option('cc_fd_launched') ? cc_fd_upgrade() : ''));
+    return $html . (cc_fd_on($view) ? cc_fd_lazy(cc_fd_athlete($view)) : (get_option('cc_fd_launched') ? cc_fd_upgrade() : ''));
 }, 18, 3);
 // header chip for package athletes (not Matteo, not athletes without the package): straight to today's diary
 add_filter('cc_ath_live_chips_athlete', function ($html, $view) {
-    if (!$view || cc_ath_is_coach() || !cc_fd_on($view)) return $html;
+    if (!$view || cc_ath_is_coach() || !cc_fd_on($view) || function_exists('cc_td_card')) return $html;
     return $html . '<a class="ath-chip ath-chip-go ath-chip-food" href="' . esc_url(add_query_arg('fd', 'today', cc_fd_hub())) . '#food">🍽 ' . esc_html(cc_fd_w('log_today')) . '</a>';
 }, 10, 2);
 add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view && !$coach && cc_fd_on($view)) $nav[] = ['food', cc_fd_w('title')]; return $nav; }, 32, 3);
@@ -875,6 +944,21 @@ add_action('rest_api_init', function () {
         update_post_meta($pid, 'cc_food_fav', wp_slash(wp_json_encode($out)));
         return ['ok' => true, 'fav' => $out];
     }]);
+    // round 2 (19 Nov 2026): "My meals", a slot's foods saved under a name; up to 30 meals of 25 foods
+    register_rest_route('cc/v1', '/food-meals', ['methods' => 'POST', 'permission_callback' => $mine, 'callback' => function (WP_REST_Request $r) use ($page) {
+        $pid = $page($r); $in = json_decode((string) $r->get_param('data'), true); if (!$pid || !is_array($in)) return new WP_Error('cc_bad', 'Data needed', ['status' => 400]);
+        $out = [];
+        foreach (array_slice($in, 0, 30) as $m) {
+            if (!is_array($m)) continue; $n = cc_fd_txt($m['n'] ?? '', 80); if ($n === '') continue;
+            $its = []; foreach (array_slice((array) ($m['i'] ?? []), 0, 25) as $it) { $c = is_array($it) ? cc_fd_item($it) : null; if ($c) $its[] = $c; }
+            if (!$its) continue;
+            $id = preg_match('/^[A-Za-z0-9]{3,24}$/', (string) ($m['id'] ?? '')) ? (string) $m['id'] : 'm' . strtolower(wp_generate_password(8, false, false));
+            $sl = in_array($m['sl'] ?? '', CC_FD_SLOTS, true) ? $m['sl'] : '';
+            $out[] = ['id' => $id, 'n' => $n, 'sl' => $sl, 'i' => $its];
+        }
+        update_post_meta($pid, 'cc_food_meals', wp_slash(wp_json_encode($out)));
+        return ['ok' => true, 'meals' => cc_fd_meals_out($pid)];
+    }]);
     register_rest_route('cc/v1', '/food-kg', ['methods' => 'POST', 'permission_callback' => $mine, 'callback' => function (WP_REST_Request $r) use ($page) {
         $pid = $page($r); $k = cc_fd_num($r->get_param('kg'), 250);
         if ($k >= 25) update_post_meta($pid, 'cc_food_kg', $k); else delete_post_meta($pid, 'cc_food_kg');
@@ -969,7 +1053,7 @@ add_action('delete_user', function ($uid) {
     if (!empty($GLOBALS['cc_keep_record'])) return;
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'meta_key' => 'cc_user', 'meta_value' => (int) $uid, 'numberposts' => -1, 'fields' => 'ids']) as $pid) {
         foreach (cc_fd_days($pid) as $d) { foreach ((array) (cc_fd_get($pid, $d)['s'] ?? []) as $s) if (!empty($s['ph'])) wp_delete_attachment((int) $s['ph'], true); delete_post_meta($pid, 'cc_fd_' . $d); }
-        foreach (['cc_food_mine', 'cc_food_kg', 'cc_food_vx', 'cc_fd_trends_off', 'cc_food_fav', 'cc_fd_cycle', 'cc_fd_seen', 'cc_np_tg'] as $k) delete_post_meta($pid, $k);
+        foreach (['cc_food_mine', 'cc_food_kg', 'cc_food_vx', 'cc_fd_trends_off', 'cc_food_fav', 'cc_food_meals', 'cc_fd_cycle', 'cc_fd_seen', 'cc_np_tg'] as $k) delete_post_meta($pid, $k);
     }
 }, 4);
 
@@ -980,7 +1064,7 @@ function cc_fd_css() {
         . 'html .cc .fd-lede{font-size:16px;color:#d0d6e0;line-height:1.55;margin:0 0 14px}html .cc .fd-muted{color:#b8bec8;font-size:15px;margin:6px 0}'
         . 'html .cc .fd-link{background:none;border:0;padding:4px 2px;min-height:44px;color:#2bd47a;text-decoration:underline;font:600 15px var(--body);cursor:pointer}'
         . 'html .cc .fd-tag{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:rgba(18,161,80,.15);border:1px solid rgba(43,212,122,.35);color:#c9f3da;font-size:14px;font-weight:600;white-space:nowrap}'
-        . 'html .cc .fd-nav{display:flex;align-items:center;gap:10px;margin:4px 0 6px}html .cc .fd-date{flex:1;min-width:0;text-align:center;display:grid;gap:2px}html .cc .fd-date b{color:#fff;font-size:18px;text-transform:capitalize}html .cc .fd-date small{color:#b8bec8;font-size:14px}'
+        . 'html .cc .fd-nav{display:flex;align-items:center;gap:10px;margin:4px 0 6px}html .cc .fd-date{flex:1;min-width:0;text-align:center;display:grid;gap:2px}html .cc .fd-date b{color:#fff;font-size:18px}html .cc .fd-date small{color:#b8bec8;font-size:14px}'
         . 'html .cc .fd-arrow{flex:none;width:46px;height:46px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:#fff;font-size:26px;line-height:1;cursor:pointer}html .cc .fd-arrow:disabled{opacity:.35;cursor:default}'
         . 'html .cc .fd-status{min-height:20px;margin:0 0 6px;text-align:center;font-size:14px;color:#b8bec8}html .cc .fd-status.err{color:#ff7a73;font-weight:600}'
         . 'html .cc .fd-slot{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);border-radius:14px;margin:0 0 10px}'
@@ -1119,6 +1203,16 @@ function cc_fd_css() {
         . 'html .cc .fd-xtra>summary::-webkit-details-marker{display:none}html .cc .fd-xtra>summary::after{content:"▾";color:#b8bec8}html .cc .fd-xtra[open]>summary::after{content:"▴"}html .cc .fd-xb{display:grid;gap:12px;padding:4px 0 2px}'
         . 'html .cc .fd-newm{min-height:0}html .cc .fd-thread .nt-replyd>summary{min-height:44px;display:flex;align-items:center}html .cc .fd-tiles .mcb-c,html .cc .fd-tiles .mcb-p,html .cc .fd-tiles .mcb-f{padding-left:16px}'
         . '@media (max-width:420px){html .cc .fd-sl{font-size:16px}html .cc .fd-slot>summary{padding:12px 12px}html .cc .fd-sb{padding:0 12px 14px}}'
+        /* round 2, 19 Nov 2026: the week box, My meals, the photo prompt */
+        . 'html .cc .fd-week{margin:0 0 16px;padding:14px 16px;border-radius:12px;background:rgba(18,161,80,.07);border:1px solid rgba(43,212,122,.25)}html .cc .fd-week h3{margin:0 0 10px;font:400 20px var(--head);text-transform:uppercase;letter-spacing:.02em;color:#fff}'
+        . 'html .cc .fd-wkdots{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:0 0 10px;max-width:420px}html .cc .fd-wkd{position:relative;display:grid;place-items:center;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,.12);color:#b8bec8;font:600 14px var(--body)}'
+        . 'html .cc .fd-wkd.on{background:#009a44;border-color:#009a44;color:#fff}html .cc .fd-wkd.td{outline:2px solid rgba(255,255,255,.55);outline-offset:1px}html .cc .fd-wkd i{position:absolute;right:3px;top:1px;font:700 11px/1 var(--body);font-style:normal}'
+        . 'html .cc .fd-wkl{list-style:none;margin:0;padding:0;display:grid;gap:4px}html .cc .fd-wkl li{display:flex;align-items:baseline;gap:8px;color:#d0d6e0;font-size:16px}html .cc .fd-wkl b{min-width:1.6em;color:#2bd47a;font:400 24px/1.1 var(--head)}'
+        . 'html .cc .fd-meals{display:grid;gap:6px;margin:10px 0 0}html .cc .fd-mls{display:flex;flex-wrap:wrap;gap:8px}html .cc .fd-ml{display:grid;gap:1px;text-align:left;min-height:44px;max-width:100%;padding:7px 14px;border-radius:12px;border:1px solid rgba(43,212,122,.4);background:rgba(18,161,80,.1);color:#fff;font:600 15px var(--body);cursor:pointer}'
+        . 'html .cc .fd-ml span{overflow-wrap:anywhere}html .cc .fd-ml small{color:#b8bec8;font-size:14px;font-weight:500}html .cc .fd-ml:hover{border-color:#2bd47a}html .cc .fd-msave{display:inline-block;margin-top:4px;text-decoration:none}'
+        . 'html .cc .fd-msf{display:grid;gap:8px;margin:10px 0 0;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03)}html .cc .fd-msf label{display:grid;gap:6px;color:#fff;font-weight:600;font-size:15px}'
+        . 'html .cc .fd-msf input{font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0b0d0f;color:#fff;width:100%;box-sizing:border-box}html .cc .fd-mlh{margin:14px 0 2px;color:#fff;font-size:16px}'
+        . 'html .cc .fd-phq{display:flex;align-items:center;gap:12px;margin:4px 0 10px;padding:10px 12px;border-radius:12px;background:rgba(18,161,80,.08);border:1px solid rgba(43,212,122,.3)}html .cc .fd-phq img{flex:none;width:56px;height:56px;object-fit:cover;border-radius:10px}html .cc .fd-phq p{margin:0;color:#fff;font-size:16px;font-weight:600}'
         . '</style>';
 }
 /* review pages (Matteo / Marine): replies, the package switch, adding an athlete by email */
@@ -1231,7 +1325,7 @@ var root=document.querySelector(".fd-app");if(!root){return;}
 var C=JSON.parse(root.getAttribute("data-cfg")),W=C.w;
 var OPEN=(function(){try{return JSON.parse(localStorage.getItem("ccFdOpen")||"{}")||{};}catch(x){return {};}})();
 function keepOpen(k,v){OPEN[k]=v?1:0;try{localStorage.setItem("ccFdOpen",JSON.stringify(OPEN));}catch(x){}}
-var S={date:C.date,day:C.day,mine:C.mine||[],kg:C.kg||"",open:{},srch:null,edit:null,timer:null,dirty:false,mineOpen:!!OPEN.mine,microOpen:!!OPEN.micro,cycOpen:!!OPEN.cyc,res:[],fav:C.fav||[],recent:C.recent||[],just:null,y:null,yd:"",undo:null,xo:{},cyc:C.cycle||null,M:null,seen:C.seen||{}};
+var S={date:C.date,day:C.day,mine:C.mine||[],kg:C.kg||"",open:{},srch:null,edit:null,timer:null,dirty:false,mineOpen:!!OPEN.mine,microOpen:!!OPEN.micro,cycOpen:!!OPEN.cyc,res:[],fav:C.fav||[],recent:C.recent||[],meals:C.meals||[],msave:null,mok:"",just:null,y:null,yd:"",undo:null,xo:{},cyc:C.cycle||null,M:null,seen:C.seen||{}};
 var XI='<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2.5 2.5l9 9M11.5 2.5l-9 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
 function starI(on){return '<svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.4l1.98 4.1 4.52.6-3.3 3.13.83 4.47L8 11.55 3.97 13.7l.83-4.47L1.5 6.1l4.52-.6z" fill="'+(on?"currentColor":"none")+'" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>';}
 var DB=null,DBP=null;
@@ -1268,7 +1362,7 @@ function ySlot(k){var y=S.y&&S.y.s&&!Array.isArray(S.y.s)?S.y.s[k]:null;return y
 function yBtn(k){var y=ySlot(k);if(!y||(S.undo&&S.undo.k===k)){return "";}return '<button type="button" class="btn btn-ghost fd-same" data-act="samey" title="'+esc(y.i.map(function(x){return x.n;}).join(", "))+'">'+esc(W.same_y)+' <small>('+y.i.length+')</small></button>';}
 function yUpd(){C.slots.forEach(function(sv){var el=root.querySelector('[data-yb="'+sv[0]+'"]');if(el){el.innerHTML=yBtn(sv[0]);}});}
 function loadY(){var yd=shift(S.date,-1);if(S.yd===yd){return;}S.yd=yd;S.y=null;send(C.u.day,{page:C.page,date:yd},"GET").then(function(y){if(S.yd!==yd){return;}S.y=y;yUpd();}).catch(function(){if(S.yd===yd){S.yd="";}});}
-function undoHtml(k){return S.undo&&S.undo.k===k?'<p class="fd-undo" role="status"><span><b class="fd-ok">✓</b> '+esc(W.same_done.replace("%d",S.undo.n))+'</span><button type="button" class="fd-link" data-act="undo">'+esc(W.undo)+'</button></p>':"";}
+function undoHtml(k){return S.undo&&S.undo.k===k?'<p class="fd-undo" role="status"><span><b class="fd-ok">✓</b> '+esc(S.undo.mn?W.meal_done.replace("%s",S.undo.mn):W.same_done.replace("%d",S.undo.n))+'</span><button type="button" class="fd-link" data-act="undo">'+esc(W.undo)+'</button></p>':"";}
 function kgUsed(){return C.vkg?+C.vkg.v:(parseFloat(String(S.kg).replace(",","."))||0);}
 function sxTxt(k,s,t){var a=[],rm=rideMin(s);if(k==="bike"&&s.i.length){a.push(W.sodium+": "+fmt0(t.na)+" mg"+(rm>0?" · ≈ "+fmt0(t.na/(rm/60))+" mg/h":""));}
 return a.map(function(x){return x.charAt(0)==="<"?x:esc(x);}).join(" · ");}
@@ -1364,14 +1458,24 @@ if(k==="bike"){var rv=C.rides&&C.rides[S.date];h+=rv>0?'<p class="fd-hint">'+esc
 if(s.i.length){h+='<ul class="fd-items">'+s.i.map(function(it,ix){return '<li'+(S.just===k+":"+ix?' class="fd-new"':'')+'><div class="fd-in"><b>'+esc(it.n)+rcb(it.st)+tag(it.m)+(window.ccMpTag?window.ccMpTag(it):"")+'</b><small data-it="'+ix+'">'+itemSubH(it)+'</small></div><label class="fd-g"><input type="number" inputmode="decimal" min="0" max="5000" step="1" data-f="g" data-ix="'+ix+'" value="'+esc(it.g)+'" aria-label="'+esc(W.grams)+'"> g</label><button type="button" class="fd-star'+(isFav(it.id)?' on':'')+'" data-act="star" data-ix="'+ix+'" aria-label="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'" title="'+esc(isFav(it.id)?W.star_rm:W.star_add)+'">'+starI(isFav(it.id))+'</button><button type="button" class="fd-x" data-act="rm" data-ix="'+ix+'" aria-label="'+esc(W.remove)+'">'+XI+'</button></li>';}).join("")+'</ul>';
 h+='<p class="fd-stot" data-stot="'+k+'">'+esc(W.slot_total)+': '+macroTH(t)+'</p>';}
 h+='<p class="fd-sx" data-sx="'+k+'">'+sxTxt(k,s,t)+'</p><div class="fd-gg" data-gg="'+k+'">'+gaugesHtml(k,s,t)+'</div>';
-h+=(S.srch&&S.srch.ctx==="slot"&&S.srch.slot===k)?searchHtml():((S.voice&&S.voice.slot===k)?voiceHtml():'<div class="fd-row"><button type="button" class="btn btn-go" data-act="add">'+esc(W.add)+'</button><button type="button" class="btn btn-ghost fd-mic" data-act="voice">🎙 '+esc(W.v_btn)+'</button><span class="fd-yb" data-yb="'+k+'">'+yBtn(k)+'</span></div>'+undoHtml(k));
+if(s.phu&&!s.i.length&&!(S.srch&&S.srch.slot===k)&&!(S.voice&&S.voice.slot===k)){h+='<div class="fd-phq"><img src="'+esc(s.phu)+'" alt=""><p>'+esc(W.ph_add)+'</p></div>';}
+h+=(S.srch&&S.srch.ctx==="slot"&&S.srch.slot===k)?searchHtml():((S.voice&&S.voice.slot===k)?voiceHtml():'<div class="fd-row"><button type="button" class="btn btn-go" data-act="add">'+esc(W.add)+'</button><button type="button" class="btn btn-ghost fd-mic" data-act="voice">🎙 '+esc(W.v_btn)+'</button><span class="fd-yb" data-yb="'+k+'">'+yBtn(k)+'</span></div>'+undoHtml(k)+mealsHtml(k));
 h+='<label class="fd-drk">'+esc(W.water)+' <input type="number" inputmode="numeric" min="0" max="10000" step="50" data-f="d" value="'+esc(s.d||"")+'"><span class="fd-hint">'+esc(W.water_h)+'</span></label>';
 var xo=S.xo[k]!==undefined?S.xo[k]:!!(s.t||s.n||s.phu);
 h+='<details class="fd-xtra" data-x="'+k+'"'+(xo?" open":"")+'><summary>'+esc(W.xtra)+'</summary><div class="fd-xb"><label class="fd-time">'+esc(W.time)+' <input type="time" data-f="t" value="'+esc(s.t||"")+'"></label>';
 h+='<label class="fd-note">'+esc(W.note)+'<textarea rows="2" data-f="n" placeholder="'+esc(W.note_ph)+'">'+esc(s.n||"")+'</textarea></label>';
 h+='<div class="fd-ph">'+(s.phu?'<a href="'+esc(s.phu)+'" target="_blank" rel="noopener"><img src="'+esc(s.phu)+'" alt=""></a>':"")+'<label class="btn btn-ghost fd-phb">'+esc(s.phu?W.photo_ch:W.photo)+'<input type="file" accept="image/*" hidden data-f="ph"></label>'+(s.phu?'<button type="button" class="fd-link" data-act="phdel">'+esc(W.photo_del)+'</button>':"")+'</div></div></details>';
 return h+'</div></details>';}
-function sumTxt(s,t){var a=[];if(s.t){a.push(s.t);}if(s.i.length){a.push(fmt0(t.k)+" kcal");}var fl=slotFl(s);if(fl[0]+fl[1]>0){a.push(fmt0(fl[0]+fl[1])+" ml");}if(!a.length&&!s.n&&!s.phu){return '<span class="fd-addh">'+esc(W.add_short)+'</span>';}return '<span>'+esc(a.join(" · "))+'</span>'+(s.i.length?miniBar(t):"");}
+/* round 2 (19 Nov 2026): My meals. One tap adds all the foods of a saved meal (with Undo); "Save as a meal" names a slot's foods */
+function mealK(m){return tot(m.i).k;}
+function mealsHtml(k){var s=slot(k),h="",ms=S.meals.map(function(m,i){return [m,i];}).sort(function(a,b){return (b[0].sl===k)-(a[0].sl===k);}).slice(0,8);
+if(ms.length){h+='<div class="fd-meals"><p class="fd-chl">'+esc(W.meals)+'</p><div class="fd-mls">'+ms.map(function(x){return '<button type="button" class="fd-ml" data-act="mealadd" data-mi="'+x[1]+'"><span>+ '+esc(x[0].n)+'</span><small>'+esc(fmt0(mealK(x[0]))+" kcal")+'</small></button>';}).join("")+'</div></div>';}
+if(S.mok===k){h+='<p class="fd-undo" role="status"><span><b class="fd-ok">✓</b> '+esc(W.meal_ok)+'</span></p>';}
+if(s.i.length){if(S.msave===k){h+='<div class="fd-msf"><label>'+esc(W.meal_name)+'<input type="text" class="fd-mname" maxlength="80" placeholder="'+esc(W.meal_ph)+'" enterkeyhint="done"></label><div class="fd-row"><button type="button" class="btn btn-go" data-act="mealok">'+esc(W.save)+'</button><button type="button" class="fd-link" data-act="mealx">'+esc(W.cancel)+'</button></div></div>';}
+else{h+='<button type="button" class="fd-link fd-msave" data-act="mealsave">☆ '+esc(W.meal_save)+'</button>';}}
+return h;}
+function saveMeals(){return send(C.u.meals,{page:C.page,data:JSON.stringify(S.meals)}).then(function(j){S.meals=j.meals||S.meals;status(W.saved);}).catch(function(){status(W.err,true);});}
+function sumTxt(s,t){var a=[];if(s.t){a.push(s.t);}if(s.i.length){a.push(fmt0(t.k)+" kcal");}var fl=slotFl(s);if(fl[0]+fl[1]>0){a.push(fmt0(fl[0]+fl[1])+" ml");}if(!a.length&&!s.n&&!s.phu){return '<span class="fd-addh">'+esc(W.add_short)+'</span>';}if(!a.length&&s.phu){return '<span class="fd-addh">📷 '+esc(W.add_short)+'</span>';}return '<span>'+esc(a.join(" · "))+'</span>'+(s.i.length?miniBar(t):"");}
 function totV(){var t=dayTot(),ml=dayMl();
 function tile(v,l,x,cl,mc){return '<div'+(mc?' class="mcb-'+mc+'"':'')+'><b>'+v+'</b><span>'+esc(l)+'</span>'+(x?'<em'+(cl?' class="fd-inc"':"")+'>'+x+'</em>':"")+'</div>';}
 return '<div class="fd-tiles">'+tile(fmt0(t.k),"kcal")+tile(fmt0(t.c)+" g",W.carbs,"","","c")+tile(fmt0(t.p)+" g",W.protein,"","","p")+tile(fmt0(t.f)+" g",W.fat,"","","f")+tile(fmt0(t.fi)+" g",W.fibre)+tile(fmt0(t.su)+" g",W.sugars)
@@ -1445,7 +1549,7 @@ REC.onresult=function(e){var it="";fin="";for(var i=0;i<e.results.length;i++){if
 REC.onerror=function(e){v.listening=false;v.msg=(e&&(e.error==="not-allowed"||e.error==="service-not-allowed"))?W.v_nosup:W.v_err;vRedraw();};
 REC.onend=function(){if(S.voice!==v){return;}var was=v.listening;v.listening=false;if(v.text.trim()){vDo();}else if(was){v.msg=W.v_err;vRedraw();}};
 try{REC.start();}catch(x){v.listening=false;v.msg=W.v_nosup;vRedraw();}}
-function render(){var d=new Date(S.date+"T12:00:00"),lbl=d.toLocaleDateString(C.lang,{weekday:"long",day:"numeric",month:"long"}),isT=S.date===today();
+function render(){var d=new Date(S.date+"T12:00:00"),lbl=d.toLocaleDateString(C.lang,{weekday:"long",day:"numeric",month:"long"}),lbl=lbl.charAt(0).toUpperCase()+lbl.slice(1),isT=S.date===today();
 var h='<div class="fd-nav"><button type="button" class="fd-arrow" data-act="prev" aria-label="'+esc(W.prev)+'">‹</button><div class="fd-date"><b>'+esc(lbl)+'</b>'+(isT?'<small>'+esc(W.today)+'</small>':'<button type="button" class="fd-link" data-act="today">'+esc(W.gotoday)+'</button>')+'</div><button type="button" class="fd-arrow" data-act="next" aria-label="'+esc(W.next)+'"'+(S.date>=shift(today(),7)?" disabled":"")+'>›</button></div>';
 h='<div class="fd-stick">'+h+'<p class="fd-slim">'+slimHtml()+'</p></div><div class="fd-tgbox">'+tgHtml()+'</div><p class="fd-status" role="status"></p>'+(window.ccMpTop?window.ccMpTop(S.date):"");
 C.slots.forEach(function(sv){h+=slotHtml(sv[0],sv[1]);});
@@ -1463,10 +1567,12 @@ function save(){S.dirty=true;status(W.saving);clearTimeout(S.timer);S.timer=setT
 function payload(){return {page:C.page,date:S.date,data:JSON.stringify(S.day.s||{})};}
 function flush(){clearTimeout(S.timer);if(!S.dirty){return Promise.resolve();}S.dirty=false;return send(C.u.save,payload()).then(function(){status(W.saved);}).catch(function(){S.dirty=true;status(W.err,true);});}
 addEventListener("pagehide",function(){if(!S.dirty){return;}var f=new FormData(),p=payload();for(var k in p){f.append(k,p[k]);}f.append("_wpnonce",C.nonce);try{navigator.sendBeacon(C.u.save,f);S.dirty=false;}catch(x){}});
-function go(ds){flush().then(function(){return send(C.u.day,{page:C.page,date:ds},"GET");}).then(function(d){S.date=ds;S.day=d;S.open={};S.srch=null;S.voice=null;S.undo=null;S.xo={};S.yd="";S.y=null;render();}).catch(function(){status(W.err,true);});}
+function go(ds){flush().then(function(){return send(C.u.day,{page:C.page,date:ds},"GET");}).then(function(d){S.date=ds;S.day=d;S.open={};S.srch=null;S.voice=null;S.undo=null;S.msave=null;S.mok="";S.xo={};S.yd="";S.y=null;render();}).catch(function(){status(W.err,true);});}
 function mineHtml(){var h='<details class="fd-mine"'+(S.mineOpen?" open":"")+'><summary>'+esc(W.mine)+'</summary><div class="fd-mb"><p class="fd-muted">'+esc(W.mine_lede)+'</p>';
 if(!S.mine.length&&!S.edit){h+='<p class="fd-muted">'+esc(W.none_mine)+'</p>';}
 S.mine.forEach(function(m){h+='<div class="fd-mrow"><div><b>'+esc(m.n)+tag(m.t)+'</b><small>'+esc(macro100(m))+'</small></div><button type="button" class="fd-link" data-act="medit" data-id="'+esc(m.id)+'">'+esc(W.edit)+'</button><button type="button" class="fd-link" data-act="mdel" data-id="'+esc(m.id)+'">'+esc(W.del)+'</button></div>';});
+h+='<h4 class="fd-mlh">'+esc(W.meals)+'</h4><p class="fd-muted">'+esc(S.meals.length?W.meal_lede:W.meal_none)+'</p>';
+S.meals.forEach(function(m,i){h+='<div class="fd-mrow"><div><b>'+esc(m.n)+'</b><small>'+esc(m.i.map(function(x){return x.n;}).join(", "))+' · '+esc(fmt0(mealK(m))+" kcal")+'</small></div><button type="button" class="fd-link" data-act="mealdel" data-mi="'+i+'">'+esc(W.del)+'</button></div>';});
 h+=S.edit?formHtml():'<div class="fd-row"><button type="button" class="btn btn-ghost" data-act="newfood">'+esc(W.add_label)+'</button><button type="button" class="btn btn-ghost" data-act="newrecipe">'+esc(W.add_recipe)+'</button></div>';
 return h+'</div></details>';}
 function recipeCalc(e){var t=tot(e.ing),w=parseFloat(e.cw)||0,sum=e.ing.reduce(function(a,i){return a+(+i.g||0);},0);if(!(w>0)){w=sum;}var o={};F.forEach(function(x){o[x]=w>0?Math.round(t[x]*1000/w)/10:0;});o.na=(w>0&&!t.nam)?Math.round(t.na*1000/w)/10:null;o.w=w;o.sum=sum;return o;}
@@ -1516,6 +1622,13 @@ if(!(+cf2.g>0)){setPick(src2,100);redraw();return;}var it2=mkItem(src2,+cf2.g,cf
 if(S.srch.ctx==="slot"){var qk=S.srch.slot,qa=slot(qk).i;qa.push(it2);S.just=qk+":"+(qa.length-1);S.open[qk]=true;S.srch=null;S.undo=null;render();save();}else{S.edit.ing.push(it2);S.srch=null;renderMine();}}
 else if(a==="samey"){var ys2=ySlot(k);if(!ys2){return;}var dst2=slot(k),prev={i:JSON.parse(JSON.stringify(dst2.i)),d:dst2.d};dst2.i=dst2.i.concat(JSON.parse(JSON.stringify(ys2.i)));if(!(+dst2.d>0)&&+ys2.d>0){dst2.d=+ys2.d;}
 S.undo={k:k,prev:prev,n:ys2.i.length};S.just=k+":"+(dst2.i.length-1);S.open[k]=true;render();save();}
+else if(a==="mealadd"){var mm=S.meals[+b.dataset.mi];if(!mm){return;}var dm=slot(k),pm={i:JSON.parse(JSON.stringify(dm.i)),d:dm.d};dm.i=dm.i.concat(JSON.parse(JSON.stringify(mm.i)));
+S.undo={k:k,prev:pm,n:mm.i.length,mn:mm.n};S.mok="";S.just=k+":"+(dm.i.length-1);S.open[k]=true;render();save();}
+else if(a==="mealsave"){S.msave=k;S.mok="";S.open[k]=true;render();var mn=root.querySelector(".fd-mname");if(mn){mn.focus();}}
+else if(a==="mealx"){S.msave=null;render();}
+else if(a==="mealok"){var mi=root.querySelector(".fd-mname"),nm=mi?mi.value.trim():"";if(!nm){if(mi){mi.focus();}return;}
+S.meals=[{id:"m"+Date.now().toString(36),n:nm.slice(0,80),sl:k,i:JSON.parse(JSON.stringify(slot(k).i.slice(0,25)))}].concat(S.meals).slice(0,30);S.msave=null;S.mok=k;render();saveMeals().then(function(){render();});}
+else if(a==="mealdel"){if(!confirm(W.delq)){return;}S.meals.splice(+b.dataset.mi,1);renderMine();saveMeals().then(renderMine);}
 else if(a==="undo"){var un=S.undo;if(!un){return;}var du=slot(un.k);du.i=un.prev.i;if(un.prev.d===undefined){delete du.d;}else{du.d=un.prev.d;}S.undo=null;S.open[un.k]=true;render();save();}
 else if(a==="cyc"){var cv=b.dataset.v;if(cv==="off"&&!confirm(W.cyc_offq)){return;}b.disabled=true;
 send(C.u.cycle,{page:C.page,act:cv,date:S.date}).then(function(j){S.cyc=j.cycle;S.cycOpen=true;render();status(W.saved);}).catch(function(){b.disabled=false;status(W.err,true);});}
@@ -1554,7 +1667,7 @@ if(f==="n"&&k){slot(k).n=el.value;save();return;}
 if(ef&&S.edit){if(ef==="ig"){S.edit.ing[+el.dataset.ix].g=parseFloat(el.value)||0;var sm=root.querySelector('[data-ing="'+el.dataset.ix+'"]');if(sm){sm.textContent=macro(S.edit.ing[+el.dataset.ix]);}}else{S.edit[ef]=el.value;}
 var rp=root.querySelector(".fd-rcp");if(rp&&S.edit.t==="r"){rp.textContent=W.per100+": "+macro100(recipeCalc(S.edit));}}
 });
-root.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList.contains("fd-pq")){e.preventDefault();var b=root.querySelector('[data-act="pickadd"]');if(b){b.click();}}
+root.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList.contains("fd-mname")){e.preventDefault();var mb=root.querySelector('[data-act="mealok"]');if(mb){mb.click();}return;}if(e.key==="Enter"&&e.target.classList.contains("fd-pq")){e.preventDefault();var b=root.querySelector('[data-act="pickadd"]');if(b){b.click();}}
 if(e.key==="Enter"&&e.target.classList.contains("fd-q")){e.preventDefault();var first=root.querySelector('.fd-rl [data-act="pick"]');if(first){first.click();}}});
 root.addEventListener("change",function(e){var el=e.target;
 if(el.classList.contains("fd-pu")&&S.srch&&S.srch.pick){var og=pickG(S.srch);S.srch.u=el.value;S.srch.q=el.value==="g"?Math.round(og||100):1;S.srch.g=pickG(S.srch);redraw();var pq=root.querySelector(".fd-pq");if(pq){pq.focus();pq.select();}return;}

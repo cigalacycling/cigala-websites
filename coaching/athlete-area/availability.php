@@ -452,7 +452,8 @@ html .cc .av-chg { padding-left: 8px; border-left: 3px solid #8a8f98; } html .cc
 html .cc .av-note { font-style: italic; color: var(--text-3); } html .cc .av-listen { color: var(--green-text, #34c46a); font-weight: 600; }
 html .cc .av-vk { color: var(--text-3); font-size: 11px; } html .cc .av-vk-error { color: var(--red-text, #ff3d33); }
 @media (max-width: 760px) {
-  html .cc .av-day { grid-template-columns: 1fr 120px; gap: 8px 10px; }
+  html .cc .av-day { grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; }
+  html .cc .ath .av-day select.av-hsel { width: auto; min-width: 120px; max-width: 62vw; }   /* round 2, 19 Nov: "Non indicato", "Não indicado"… no longer cut off */
   html .cc .av-when { grid-column: 1 / -1; } html .cc .av-w { flex: 1; }
   html .cc .av-th { display: none; }
   html .cc .av-tr { grid-template-columns: repeat(7, 1fr); }

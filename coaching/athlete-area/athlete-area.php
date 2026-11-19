@@ -466,6 +466,7 @@ function cc_ath_inner() {
     $nav = [['reports', cc_t('Your reports')]];
     foreach ($hub[1] as $s) $nav[] = $s;
     $nav = apply_filters('cc_ath_nav', $nav, $view, $coach);   // modules add their own sections (availability.php)
+    if (!$coach) $o .= apply_filters('cc_ath_after_hero', '', $view);   // today.php (round 2, 19 Nov 2026): the "Today" card, above the jump links
     $o .= '<nav class="ath-jump" aria-label="' . cc_t('Sections') . '">';
     foreach ($nav as $n) $o .= '<a href="#' . esc_attr($n[0]) . '">' . esc_html($n[1]) . '</a>';
     $o .= '</nav>';
@@ -1261,6 +1262,7 @@ html.ath-anim .cc .ath-s.in :is(.ath-tile, .ath-read):nth-child(4) { animation-d
   html .cc .ath-chip { padding: 7px 11px; font-size: 12.5px; gap: 6px; }
   html .cc .ath-chip b { font-size: 18px; }
   html .cc .ath-live .ath-chip { font-size: 14px; padding: 7px 12px; white-space: nowrap; }   /* 14px minimum (50+ readers) */
+  html .cc .ath-live .ath-chip-food { white-space: normal; line-height: 1.3; }   /* round 2, 19 Nov: "Registra il cibo di oggi" / "Regista a comida de hoje" wrap instead of hiding under the photo */
   /* the race chip on two tidy lines: badge + days, then the race name */
   html .cc .ath-live .ath-chip-race { flex-wrap: wrap; row-gap: 2px; border-radius: 16px; }
   html .cc .ath-live .ath-chip-race .ath-chip-nm { flex-basis: 100%; max-width: 100%; }
@@ -1350,20 +1352,41 @@ add_action('wp_head', function () {
        . '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="theme-color" content="#08090a">'
        . '<link rel="apple-touch-icon" sizes="180x180" href="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-app-180.png">' . "\n";   // iPhone home-screen icon
 });
-add_filter('cc_ath_before_reports', function ($html, $view, $coach) {   // a small tip on phones, until they add it or tap "Not now"
+/* round 2 (19 Nov 2026): the card gives the iPhone and Android steps in the athlete's language (en, it, pt, sl, sk), shows only on
+   phones and tablets when the hub is not already open from the home screen, and "Got it" hides it for good on that phone (localStorage).
+   The manifest (?cc_manifest=1), the 180/192/512 icons and the service worker (push.php) were already in place. */
+function cc_ath_a2hs_w($k) {
+    static $W = [
+        'title' => ['en' => 'Put the hub on your home screen', 'it' => 'Metti l’area sulla schermata Home', 'pt' => 'Põe o hub no ecrã principal', 'sl' => 'Dodaj središče na začetni zaslon', 'sk' => 'Daj si zónu na plochu telefónu'],
+        'lede' => ['en' => 'It opens like an app, full screen, one tap away.', 'it' => 'Si apre come un’app, a schermo intero, con un tocco.', 'pt' => 'Abre como uma app, em ecrã inteiro, com um toque.', 'sl' => 'Odpre se kot aplikacija, čez cel zaslon, z enim dotikom.', 'sk' => 'Otvorí sa ako aplikácia, na celú obrazovku, jedným ťuknutím.'],
+        'ios' => ['en' => 'In Safari, tap Share (the square with the arrow), then “Add to Home Screen”.', 'it' => 'In Safari tocca Condividi (il quadrato con la freccia), poi “Aggiungi alla schermata Home”.', 'pt' => 'No Safari, toca em Partilhar (o quadrado com a seta) e depois em “Adicionar ao ecrã principal”.', 'sl' => 'V Safariju tapni Deli (kvadrat s puščico), nato »Dodaj na začetni zaslon«.', 'sk' => 'V Safari ťukni na Zdieľať (štvorec so šípkou) a potom na „Pridať na plochu“.'],
+        'and' => ['en' => 'In Chrome, tap the menu ⋮, then “Install app” or “Add to Home screen”.', 'it' => 'In Chrome tocca il menu ⋮, poi “Installa app” o “Aggiungi a schermata Home”.', 'pt' => 'No Chrome, toca no menu ⋮ e depois em “Instalar app” ou “Adicionar ao ecrã principal”.', 'sl' => 'V Chromu tapni meni ⋮, nato »Namesti aplikacijo« ali »Dodaj na začetni zaslon«.', 'sk' => 'V Chrome ťukni na menu ⋮ a potom na „Inštalovať aplikáciu“ alebo „Pridať na plochu“.'],
+        'install' => ['en' => 'Install now', 'it' => 'Installa ora', 'pt' => 'Instalar agora', 'sl' => 'Namesti zdaj', 'sk' => 'Inštalovať teraz'],
+        'ok' => ['en' => 'Got it', 'it' => 'Ok, capito', 'pt' => 'Entendido', 'sl' => 'Razumem', 'sk' => 'Rozumiem'],
+    ];
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en'; return $W[$k][$l] ?? $W[$k]['en'];
+}
+add_filter('cc_ath_before_reports', function ($html, $view, $coach) {   // phones and tablets, until they add it or tap "Got it"
     if ($coach || !$view) return $html;
-    return '<div class="ath-a2hs" hidden><p><b>' . esc_html(cc_L('Add the hub to your home screen', 'Aggiungi l’area alla schermata Home')) . '</b>'
-        . '<span class="a2hs-ios" hidden>' . esc_html(cc_L('On iPhone: tap Share, then “Add to Home Screen”.', 'Su iPhone: tocca Condividi, poi “Aggiungi alla schermata Home”.')) . '</span></p>'
-        . '<button type="button" class="btn btn-go a2hs-go" hidden>' . esc_html(cc_L('Add to home screen', 'Aggiungi alla Home')) . '</button>'
-        . '<button type="button" class="btn btn-ghost a2hs-no">' . esc_html(cc_L('Not now', 'Non ora')) . '</button></div>'
+    return '<div class="ath-a2hs" role="region" aria-label="' . esc_attr(cc_ath_a2hs_w('title')) . '" hidden><img class="a2hs-ic" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-app-192.png" alt="" width="48" height="48">'
+        . '<div class="a2hs-tx"><p class="a2hs-t">' . esc_html(cc_ath_a2hs_w('title')) . '</p><p>' . esc_html(cc_ath_a2hs_w('lede')) . '</p><ul>'
+        . '<li class="a2hs-ios"><b>iPhone</b> ' . esc_html(cc_ath_a2hs_w('ios')) . '</li><li class="a2hs-and"><b>Android</b> ' . esc_html(cc_ath_a2hs_w('and')) . '</li></ul>'
+        . '<div class="a2hs-b"><button type="button" class="btn btn-go a2hs-go" hidden>' . esc_html(cc_ath_a2hs_w('install')) . '</button>'
+        . '<button type="button" class="btn btn-ghost a2hs-no">' . esc_html(cc_ath_a2hs_w('ok')) . '</button></div></div></div>'
         . '<script>(function(){var b=document.querySelector(".ath-a2hs");if(!b)return;var k="cc_a2hs_no",ev=null;'
         . 'function no(){try{return localStorage.getItem(k)}catch(e){return null}}'
-        . 'if(no()||matchMedia("(display-mode: standalone)").matches||navigator.standalone||!matchMedia("(max-width: 900px)").matches)return;'
-        . 'if(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)return;'   // Matteo 17 Nov: already on the home screen: no "add to home screen" card
-        . 'var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);if(ios){b.querySelector(".a2hs-ios").hidden=false;b.hidden=false;}'
-        . 'addEventListener("beforeinstallprompt",function(e){e.preventDefault();ev=e;b.querySelector(".a2hs-go").hidden=false;b.hidden=false;});'
-        . 'b.querySelector(".a2hs-go").addEventListener("click",function(){if(ev){ev.prompt();ev.userChoice.then(function(){b.hidden=true;});}});'
+        . 'var mm=function(q){try{return matchMedia(q).matches}catch(e){return false}};'
+        . 'if(no()||mm("(display-mode: standalone)")||mm("(display-mode: fullscreen)")||navigator.standalone)return;'   // already on the home screen: no card
+        . 'var ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1),and=/android/i.test(navigator.userAgent);'
+        . 'if(!ios&&!and&&!mm("(max-width: 900px)"))return;'   // desktop: nothing to add
+        . 'if(ios)b.querySelector(".a2hs-and").hidden=true;if(and)b.querySelector(".a2hs-ios").hidden=true;b.hidden=false;'
+        . 'addEventListener("beforeinstallprompt",function(e){e.preventDefault();ev=e;b.querySelector(".a2hs-go").hidden=false;});'
+        . 'addEventListener("appinstalled",function(){b.hidden=true;});'
+        . 'b.querySelector(".a2hs-go").addEventListener("click",function(){if(ev){ev.prompt();ev.userChoice.then(function(c){if(c&&c.outcome==="accepted")b.hidden=true;});}});'
         . 'b.querySelector(".a2hs-no").addEventListener("click",function(){try{localStorage.setItem(k,"1")}catch(e){}b.hidden=true;});})();</script>'
-        . '<style>html .cc .ath-a2hs{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0 0 14px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04)}'
-        . 'html .cc .ath-a2hs[hidden],html .cc .ath-a2hs [hidden]{display:none!important}html .cc .ath-a2hs .a2hs-ios{display:block}html .cc .ath-a2hs p{margin:0;flex:1 1 220px;font-size:14px;color:var(--text-2)}html .cc .ath-a2hs b{display:block;color:#fff}html .cc .ath-a2hs .btn{width:auto;margin:0}</style>' . $html;
+        . '<style>html .cc .ath-a2hs{display:flex;align-items:flex-start;gap:14px;margin:0 0 14px;padding:14px 16px;border-radius:12px;border:1px solid rgba(43,212,122,.3);background:rgba(18,161,80,.07)}'
+        . 'html .cc .ath-a2hs[hidden],html .cc .ath-a2hs [hidden]{display:none!important}html .cc .a2hs-ic{flex:none;width:48px;height:48px;border-radius:12px}html .cc .a2hs-tx{flex:1;min-width:0}'
+        . 'html .cc .ath-a2hs p{margin:0 0 6px;font-size:16px;line-height:1.5;color:#d0d6e0}html .cc .ath-a2hs .a2hs-t{color:#fff;font-weight:700}'
+        . 'html .cc .ath-a2hs ul{margin:0 0 10px;padding:0;list-style:none;display:grid;gap:6px}html .cc .ath-a2hs li{font-size:15px;line-height:1.5;color:#d0d6e0}html .cc .ath-a2hs li b{color:#fff;margin-right:4px}'
+        . 'html .cc .a2hs-b{display:flex;flex-wrap:wrap;gap:8px}html .cc .ath-a2hs .btn{width:auto;margin:0;min-height:44px}</style>' . $html;
 }, 5, 3);
