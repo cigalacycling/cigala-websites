@@ -13,6 +13,7 @@ Matteo 16 Nov 2026: "remake this site using my own style of fonts but using thei
 import os, re, sys, json, html, shutil, glob
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import vivify_example as EX   # 'What your coaching looks like' example week
+import vivify_icons as VI   # Marine 19 Nov: line icons in boxes
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 V = ROOT + 'vivify/'
@@ -531,6 +532,7 @@ def lang_switch(file, current='en'):
         f'<a href="{href(l)}" hreflang="{l}" lang="{l}"' + (' aria-current="true"' if l == current else '') + f'>{l.upper()}</a>' for l in ('en', 'fr')) + '</li>')   # Marine 17 Nov: Italian site removed for now
 
 def shell(file, body, schema=None):
+    body = VI.add_icons(body)
     path = PAGES[file]
     if file in NEW:
         b = {'title': NEW[file][1], 'meta_description': NEW[file][2]}
@@ -1297,7 +1299,7 @@ body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none
 
 # ---------------------------------------------------------------- write
 if __name__ == '__main__':
-    open(OUT + 'vivify.css', 'w').write(CSS + EX.CSS + EXTRA_CSS)
+    open(OUT + 'vivify.css', 'w').write(CSS + EX.CSS + EXTRA_CSS + VI.CSS)
     b, n, ni, nu = blog()
     for f, h in [('index.html', home()), ('about.html', about()), ('nutrition-nutrition-philosophy.html', philosophy()),
                  ('sports-nutritionist-ireland.html', coaching()), ('massage-therapy.html', massage()), ('yoga.html', yoga()),

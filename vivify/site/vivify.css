@@ -470,3 +470,12 @@ body::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none
 @media (max-width:860px){.mfeature{grid-template-columns:1fr;gap:26px}.mfeature .portrait{max-width:420px}}
 .side-photo{border-radius:16px;overflow:hidden;border:1px solid var(--border);margin-bottom:18px;aspect-ratio:16/10}
 .side-photo img{width:100%;height:100%;object-fit:cover}
+
+/* Marine 19 Nov: icons in boxes */
+.vic{display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:14px;color:var(--aqua);
+ background:linear-gradient(145deg,rgba(177,216,221,.16),rgba(177,216,221,.04));border:1px solid rgba(177,216,221,.28);margin:0 0 16px;flex:none}
+.vic.corner{position:absolute;top:22px;right:22px;margin:0}
+.pcard,.scard .tx,.note{position:relative}
+.note .vic{width:38px;height:38px;border-radius:10px;margin:0 0 10px}
+.note .vic svg{width:20px;height:20px}
+@media (hover:hover){.pcard:hover .vic,.scard:hover .vic{color:var(--lime-text);border-color:rgba(128,163,21,.55);transition:color .3s,border-color .3s}}
