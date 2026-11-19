@@ -109,3 +109,18 @@ add_filter('cc_ath_end', function ($html, $view, $coach) {
         . cc_more_tile('https://retail.cigalacycling.com/', 'bag', cc_more_w('shop'), cc_more_w('shop_s')) . '</div></div></section>';
 }, 5, 3);
 add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view) $nav[] = ['more', cc_more_w('h')]; return $nav; }, 90, 3);
+
+/* ---------- © notice and terms of use, at the very bottom of every hub page (Matteo 19 Nov 2026) ---------- */
+add_filter('cc_ath_end', function ($html, $view, $coach) {
+    static $T = [
+        'en' => 'This hub, its reports, tools and content are for the personal use of Cigala Cycling Coaching clients. Please don’t copy, share or republish them without permission.',
+        'it' => 'Quest’area, i suoi report, strumenti e contenuti sono per l’uso personale dei clienti di Cigala Cycling Coaching. Non copiarli, condividerli o pubblicarli senza permesso.',
+        'pt' => 'Esta área, os seus relatórios, ferramentas e conteúdos são para uso pessoal dos clientes da Cigala Cycling Coaching. Não os copies, partilhes ou publiques sem autorização.',
+        'sl' => 'To središče, njegova poročila, orodja in vsebine so namenjeni osebni uporabi strank Cigala Cycling Coaching. Ne kopiraj, deli ali objavljaj jih brez dovoljenja.',
+        'sk' => 'Táto zóna, jej reporty, nástroje a obsah sú určené na osobné použitie klientov Cigala Cycling Coaching. Nekopíruj, nezdieľaj ani nezverejňuj ich bez povolenia.',
+    ];
+    $R = ['en' => 'All rights reserved.', 'it' => 'Tutti i diritti riservati.', 'pt' => 'Todos os direitos reservados.', 'sl' => 'Vse pravice pridržane.', 'sk' => 'Všetky práva vyhradené.'];
+    $l = $GLOBALS['cc_ath_lang'] ?? 'en';
+    return $html . '<p class="cc-legal">© ' . esc_html(date('Y')) . ' Cigala Cycling Ltd. ' . esc_html($R[$l] ?? $R['en']) . '<br>' . esc_html($T[$l] ?? $T['en']) . '</p>'
+        . '<style>html .cc .cc-legal{margin:28px 4px 8px;font-size:14px;line-height:1.5;color:#b8bec8;text-align:center}</style>';
+}, 99, 3);
