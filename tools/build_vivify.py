@@ -529,7 +529,7 @@ def lang_switch(file, current='en'):
         slug = i18n.PAGES.get(k, ('', ''))[0 if lang == 'fr' else 1]
         return f'/{lang}/' + (slug + '/' if slug else '')
     return ('<li class="lang" aria-label="Language">' + ''.join(
-        f'<a href="{href(l)}" hreflang="{l}" lang="{l}"' + (' aria-current="true"' if l == current else '') + f'>{l.upper()}</a>' for l in ('en', 'fr')) + '</li>')   # Marine 17 Nov: Italian site removed for now
+        f'<a href="{href(l)}" hreflang="{l}" lang="{l}"' + (' aria-current="true"' if l == current else '') + f'>{l.upper()}</a>' for l in ('en', 'fr', 'it')) + '</li>')   # Marine 19 Nov: Italian site back
 
 def shell(file, body, schema=None):
     body = VI.add_icons(body)

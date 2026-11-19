@@ -523,3 +523,11 @@ META = {
                  'Contatta Vivify Sports per un coaching di nutrizione sportiva personalizzato, online e in italiano. Chiamata conoscitiva gratuita di 30 minuti.'),
  },
 }
+
+
+# full FR / IT sites (19 Nov): more translations, kept in a separate file
+import i18n_more as _more
+TR.update(_more.TR2)
+KEEP = _more.KEEP
+PAGES.update(_more.PAGES2)
+for _l in META: META[_l].update(_more.META2[_l])

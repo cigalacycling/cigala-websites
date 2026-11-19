@@ -193,3 +193,11 @@ The board PNGs in `vivify/board/` are gitignored.
 - Site icon (browser tab): V mark on dark teal, vivify/site-icon-512.png, set as WordPress site_icon.
 - E-book page: new cover + two inside pages (alts of the two live images kept). Workshops, Contact, FAQ: photo headers. Free call page: Marine's photo, 3 steps, who it is for.
 - Background: flowing wavy lines (our own SVG), whole site + feature box + CTA panels.
+
+## Full French and Italian sites (19 Nov)
+- All 19 pages in FR and IT (/fr/..., /it/...), each with its own address (i18n_more.PAGES2), Google title and description (META2).
+- Translations: vivify/i18n.py (TR) + vivify/i18n_more.py (TR2, merged at import). Client reviews, names, plan names, race names, research references and blog posts stay in English (KEEP).
+- New English text? `python3 tools/vivify_i18n_extract.py` lists what has no translation yet; add it to TR2, then `python3 tools/build_vivify.py && python3 tools/build_vivify_i18n.py`.
+- Language switch EN · FR · IT on every page. Code Snippets #7 now covers all 19 page groups (lang attribute + hreflang en/fr/it + x-default). Re-generate it if pages are added.
+- Not translated on purpose: blog (posts are English; the Blog link goes to /blog/), e-book download page.
+- To check with Marine: the privacy policy (all three languages) still says the site is hosted on Wix.

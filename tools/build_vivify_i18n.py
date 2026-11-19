@@ -18,7 +18,7 @@ import i18n
 import build_vivify_wp as W
 import importlib.util
 spec = importlib.util.spec_from_file_location('bv', ROOT + 'tools/build_vivify.py'); BV = importlib.util.module_from_spec(spec); spec.loader.exec_module(BV)
-LANGS = {'fr': 0}   # Marine 17 Nov: Italian removed for now (translations kept in vivify/i18n.py; pages set to draft)
+LANGS = {'fr': 0, 'it': 1}   # Marine 19 Nov: full French and Italian sites (Italian back on)
 STATE = V + 'wp-pages-i18n.json'
 st = json.load(open(STATE)) if os.path.exists(STATE) else {}
 FORMS = V + 'wp-forms.json'
@@ -115,9 +115,12 @@ def yoast():
         if lang not in LANGS: continue
         t, d = i18n.META[lang][f]
         items += [{'id': pid, 'seo_title': t}, {'id': pid, 'meta_description': d}]
-    out = subprocess.run(['curl', '-sS', '-X', 'POST', W.SITE + '/wp-json/yoast/v1/bulk_editor/update_search', '-H', 'Content-Type: application/json',
-                          '--data-binary', json.dumps({'items': items})], capture_output=True, text=True).stdout
-    res = json.loads(out).get('results', [])
+    res = []
+    for k in range(0, len(items), 18):   # the bulk editor refuses big batches
+        out = subprocess.run(['curl', '-sS', '-X', 'POST', W.SITE + '/wp-json/yoast/v1/bulk_editor/update_search', '-H', 'Content-Type: application/json',
+                              '--data-binary', json.dumps({'items': items[k:k + 18]})], capture_output=True, text=True).stdout
+        try: res += json.loads(out).get('results', [])
+        except Exception: print('YOAST FAIL', out[:200])
     print('yoast', len(res), 'items,', sum(not r['success'] for r in res), 'failed')
 
 if __name__ == '__main__':
