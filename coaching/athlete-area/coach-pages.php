@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) return;
  *   (sandboxed, no caching, noindex, frame only from this site). The board shows it inside a sandboxed iframe.
  * - Board ?board=morning: tabs Command Centre / Early Warning, latest by default, earlier days from a list. */
 
-function cc_cp_keys() { return ['early-warning' => 'Early Warning'];   /* Matteo 20 Nov: Command Centre dropped from the board */ }
+function cc_cp_keys() { return ['early-warning' => 'Early Warning', 'tests-due' => 'Tests due'];   /* Matteo 20 Nov: Command Centre dropped from the board; Tests due (vekta\hub\tests_due.py) added */ }
 function cc_cp_max() { return 3 * 1024 * 1024; }
 function cc_cp_keep() { return 14; }
 

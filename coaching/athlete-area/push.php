@@ -393,7 +393,24 @@ add_action('rest_api_init', function () {
         $uid = $r->get_param('page') ? (int) get_post_meta((int) $r->get_param('page'), 'cc_user', true) : get_current_user_id();
         return ['sent' => cc_push_user($uid, 'Cigala Cycling', 'Test: notifications work on this phone 🎉', home_url('/' . CC_ATH_SLUG . '/'), 'cc-test')];
     }]);
-    register_rest_route('cc/v1', '/push-status', ['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
+    /* 20 Nov 2026: a line for Matteo from his laptop tools (vekta\hub\new_bests.py: new all-time power bests). Coach only, never
+     * an athlete: {title, body, url (this site only, else the hub), tag (cc-…), page (the athlete page it is about, for the face)}.
+     * Same path as every coach line: cc_push_coaches (bell always, phone if he turned it on). No email. */
+    register_rest_route('cc/v1', '/coach-notify', ['methods' => 'POST', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function (WP_REST_Request $r) {
+        $title = mb_substr(sanitize_text_field((string) $r->get_param('title')), 0, 140);
+        $body = mb_substr(sanitize_text_field((string) $r->get_param('body')), 0, 300);
+        if ($title === '') return new WP_Error('cc_bad', 'No title.', ['status' => 400]);
+        $hub = home_url('/' . CC_ATH_SLUG . '/');
+        $url = esc_url_raw((string) $r->get_param('url'), ['https', 'http']);
+        if ($url === '' || wp_parse_url($url, PHP_URL_HOST) !== wp_parse_url(home_url(), PHP_URL_HOST)) $url = $hub;
+        $tag = preg_replace('/[^a-z0-9_-]/', '', strtolower((string) $r->get_param('tag')));
+        if (strpos($tag, 'cc-') !== 0) $tag = 'cc-tool';
+        $pid = (int) $r->get_param('page');
+        if ($pid && get_post_type($pid) !== 'cc_athlete') $pid = 0;
+        cc_push_coaches($title, $body, $url, substr($tag, 0, 40), $pid);
+        return ['ok' => true, 'tag' => $tag, 'url' => $url];
+    }]);
+    register_rest_route('cc/v1', '/push-status',['methods' => 'GET', 'permission_callback' => 'cc_ath_is_coach', 'callback' => function () {
         $n = 0; $who = []; $hosts = [];
         foreach (get_users(['meta_key' => 'cc_push', 'fields' => ['ID', 'display_name']]) as $u) { $s = (array) get_user_meta($u->ID, 'cc_push', true); if ($s) { $n += count($s); $who[] = $u->display_name;
             foreach ($s as $x) $hosts[] = $u->display_name . ': ' . wp_parse_url((string) ($x['endpoint'] ?? ''), PHP_URL_HOST); } }   // which push service each phone uses (Apple, Google, Mozilla…), no keys
