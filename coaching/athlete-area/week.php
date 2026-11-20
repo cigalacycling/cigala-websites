@@ -170,11 +170,8 @@ function cc_wk_card($a, $dy, $wk, $rv) {
     $chips = cc_wk_race_html($dy['races'] ?? []) . cc_wk_load_html($dy['load'] ?? null);
     if ($chips !== '') $o .= '<div class="wk-chips">' . $chips . '</div>';
     $rows = (array) ($a['rows'] ?? []);
-    if (!$rows) {
-        $fl = array_map('strval', (array) ($a['flags'] ?? []));
-        $ch = array_map(function ($c) { return (string) ($c['what'] ?? ''); }, (array) ($a['changes'] ?? []));
-        $o .= '<p class="wk-none">No sessions drafted for this rider.' . ($fl || $ch ? ' ' . esc_html(implode(' ', array_filter(array_merge($ch, $fl)))) : '') . '</p>';
-    } else {
+    if (!$rows) return cc_wk_mini($a, $dy, $rv, $face, $nm, $chips);
+    {
         $pct = isset($a['pct']) && $a['pct'] !== null ? sprintf(' (%+.1f%%)', (float) $a['pct']) : '';
         $hard = count(array_unique(array_map(function ($r) { return $r['date']; }, array_filter($rows, function ($r) { return in_array($r['stim'] ?? '', ['threshold', 'vo2max', 'neuromuscular'], true); }))));
         $meta = ['<span><b>Cycle</b> ' . esc_html(($a['cycle'] ?? '') ?: 'not set') . '</span>',
@@ -217,6 +214,27 @@ function cc_wk_card($a, $dy, $wk, $rv) {
         . '<div class="wk-bt2"><button type="button" class="wk-b wk-dict" aria-pressed="false">🎙 Dictate</button><span class="wk-saved" role="status"></span></div></div>';
     return $o . '</article>';
 }
+/* Matteo 20 Nov: a rider with no draft week is one compact row; the comment box opens only on "Plan this rider" or "Add a note" */
+function cc_wk_mini($a, $dy, $rv, $face, $nm, $chips) {
+    $uid = (string) $a['userId'];
+    $l = $dy['load'] ?? null;
+    if ($l && empty($l['flag'])) $chips = cc_wk_race_html($dy['races'] ?? []) . '<span class="wk-nums">Load-8 ' . round((float) $l['l8']) . ' · Load-2 ' . round((float) $l['l2']) . ' · Strain ' . round((float) $l['st']) . '</span>';
+    $note = implode(' ', array_filter(array_merge(array_map(function ($c) { return (string) ($c['what'] ?? ''); }, (array) ($a['changes'] ?? [])), array_map('strval', (array) ($a['flags'] ?? [])))));
+    $d = (array) ($rv[$uid] ?? []); [$lt, $lk] = cc_wk_label($d);
+    return '<article class="wk-card wk-mini" id="wk-' . esc_attr($uid) . '" data-uid="' . esc_attr($uid) . '" data-name="' . esc_attr($a['name'] ?? '') . '">'
+        . '<div class="wk-rv" data-state="' . esc_attr(wp_json_encode($d ?: new stdClass())) . '">'
+        . '<div class="wk-mrow"><span class="wk-who">' . $face . '<b>' . $nm . '</b></span><span class="wk-st" data-k="' . esc_attr($lk) . '">' . esc_html($lt === 'Not reviewed' ? '' : $lt) . '</span></div>'
+        . ($chips !== '' ? '<div class="wk-chips">' . $chips . '</div>' : '')
+        . ($note !== '' ? '<p class="wk-mnote">' . esc_html(wp_trim_words($note, 28)) . '</p>' : '')
+        . '<div class="wk-reply"' . (empty($d['reply']) ? ' hidden' : '') . '><small>Claude</small><p>' . esc_html($d['reply'] ?? '') . '</p></div>'
+        . '<div class="wk-btns" role="group" aria-label="Decision for ' . esc_attr($a['name'] ?? '') . '">'
+        . '<button type="button" class="wk-b wk-open" data-d="change" aria-pressed="false">Plan this rider</button>'
+        . '<button type="button" class="wk-b" data-d="hold" aria-pressed="false">Hold</button>'
+        . '<button type="button" class="wk-b wk-open wk-note" aria-label="Add a note" title="Add a note">+ Note</button><span class="wk-saved" role="status"></span></div>'
+        . '<div class="wk-cbox" hidden><textarea rows="2" placeholder="What should I know or plan for this rider?" aria-label="Note for Claude"></textarea>'
+        . '<div class="wk-bt2"><button type="button" class="wk-b wk-dict" aria-pressed="false">🎙 Dictate</button></div></div>'
+        . '</div></article>';
+}
 function cc_wk_compact($dy, $wk, $what, $cls = '') {
     $pid = (int) ($dy['page'] ?? 0);
     $face = ($pid && function_exists('cc_ph_face')) ? cc_ph_face($pid, 28) : '';
@@ -254,7 +272,9 @@ add_filter('cc_ath_board', function ($html, $board) {
         if ($w !== null) $toplan[] = [['userId' => $id, 'name' => $dy['name'], 'rows' => []], $dy, $w];
     }
     $sortn = function ($x, $y) { return strcasecmp($x['name'] ?? '', $y['name'] ?? ''); };
-    usort($toplan, function ($x, $y) { $a = empty($x[0]['rows']) ? 1 : 0; $b = empty($y[0]['rows']) ? 1 : 0; return $a <=> $b ?: strcasecmp($x[0]['name'] ?? '', $y[0]['name'] ?? ''); });
+    /* drafted weeks first; then riders racing in 14 days or with a load flag; then by name */
+    $rank = function ($t) { if (!empty($t[0]['rows'])) return 0; return (!empty($t[1]['races']) || !empty($t[1]['load']['flag'])) ? 1 : 2; };
+    usort($toplan, function ($x, $y) use ($rank) { return $rank($x) <=> $rank($y) ?: strcasecmp($x[0]['name'] ?? '', $y[0]['name'] ?? ''); });
     usort($planned, function ($x, $y) use ($sortn) { return $sortn($x[0], $y[0]); });
     usort($drafts, function ($x, $y) use ($sortn) { return $sortn($x[0], $y[0]); });
     usort($skipped, $sortn);
@@ -276,7 +296,12 @@ add_filter('cc_ath_board', function ($html, $board) {
 
     $o .= '<h3 class="wk-h">To plan</h3>';
     if (!$toplan) $o .= '<p class="wk-ok">✓ Every rider has your sessions for this week.</p>';
-    foreach ($toplan as [$a, $dy, $w]) $o .= cc_wk_card($a, $dy, $wk, $rv['athletes']);
+    $mini = false;
+    foreach ($toplan as [$a, $dy, $w]) {
+        if (empty($a['rows']) && !$mini) { $mini = true; $o .= '<p class="wk-sub wk-minih">No draft week yet: racing or load flags first. Tap <b>Plan this rider</b> to ask Claude for a week.</p><div class="wk-minis">'; }
+        $o .= cc_wk_card($a, $dy, $wk, $rv['athletes']);
+    }
+    if ($mini) $o .= '</div>';
     if ($drafts) {
         $o .= '<h3 class="wk-h">Drafts in Vekta (hidden)</h3><p class="wk-sub">Created, waiting for you to unhide them in the Vekta calendar.</p><div class="wk-lines">';
         foreach ($drafts as [$dy, $w]) $o .= cc_wk_compact($dy, $wk, '<span class="wk-draft">' . (int) $w['hidden'] . ' hidden · ' . esc_html($w['hiddenHours']) . ' h</span>');
@@ -345,17 +370,24 @@ function cc_wk_assets($wk) {
         . 'html .cc .wk-done{color:#2bd47a;font-weight:600}html .cc .wk-draft{color:#f0bf00;font-weight:600}html .cc .wk-skip{color:#b8bec8}'
         . 'html .cc .wk-notes{display:grid;gap:8px;margin:26px 0 0}'
         . 'html .cc .wk-how{margin:22px 0 0;font-size:15px;color:#b8bec8;line-height:1.55}html .cc .wk-how q{color:#2bd47a;font-weight:600}'
+        . 'html .cc .wk-minis{display:grid;gap:8px}html .cc .wk-minih{margin:18px 0 8px}'
+        . 'html .cc .wk-card.wk-mini{padding:10px 14px;margin:0;gap:0;border-radius:12px;background:rgba(255,255,255,.03)}'
+        . 'html .cc .wk-mini .wk-rv{border-top:0;padding-top:0;gap:8px}html .cc .wk-mrow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}'
+        . 'html .cc .wk-mini .wk-who{font-size:16px}html .cc .wk-nums{font-size:14px;color:#b8bec8;align-self:center}'
+        . 'html .cc .wk-mini .wk-race,html .cc .wk-mini .wk-load{padding:4px 10px}html .cc .wk-mnote{margin:0;font-size:14px;color:#b8bec8;line-height:1.45}'
+        . 'html .cc .wk-mini .wk-b{padding:8px 11px;font-size:14px;min-height:44px}html .cc .wk-mini .wk-btns{gap:6px}html .cc .wk-mini .wk-saved:empty{display:none}html .cc .wk-mini .wk-saved{flex-basis:100%}html .cc .wk-mini .wk-cbox{display:grid;gap:8px}html .cc .wk-mini .wk-cbox[hidden]{display:none}'
         . '@media(max-width:640px){html .cc .wk-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}html .cc .wk-line{grid-template-columns:1fr}html .cc .wk-what{text-align:left}html .cc .wk-card{padding:14px 12px}}';
     $js = '(function(){var API=' . wp_json_encode(rest_url('cc/v1/week-review')) . ',N=' . wp_json_encode(wp_create_nonce('wp_rest')) . ',WEEK=' . wp_json_encode($wk) . ';'
         . 'function lab(d){if(!d||!Object.keys(d).length)return["Not reviewed",""];var w=d.updatedAt&&(!d.handledAt||d.updatedAt>d.handledAt);if(d.outcome&&!w)return[d.outcome,"done"];'
         . 'if(d.decision==="approve")return[w?"Create as drafts: waiting for Claude":"Approved",w?"wait":"approve"];if(d.decision==="hold")return["On hold",""];'
         . 'var dy=d.days||{};if(w&&(d.decision==="change"||d.comment||Object.keys(dy).some(function(k){return dy[k];})))return["Change asked: waiting for Claude","wait"];if(d.handledAt)return["Revised by Claude","done"];return["Not reviewed",""];}'
         . 'function st(c){var r=c.querySelector(".wk-rv");try{return JSON.parse(r.dataset.state||"{}")||{};}catch(e){return{};}}'
-        . 'function draw(c,d){var r=c.querySelector(".wk-rv");r.dataset.state=JSON.stringify(d);var l=lab(d),s=r.querySelector(".wk-st");s.textContent=l[0];s.dataset.k=l[1];'
+        . 'function draw(c,d){var r=c.querySelector(".wk-rv");r.dataset.state=JSON.stringify(d);var l=lab(d),s=r.querySelector(".wk-st");s.textContent=(l[0]==="Not reviewed"&&c.classList.contains("wk-mini"))?"":l[0];s.dataset.k=l[1];'
         . 'r.querySelectorAll("[data-d]").forEach(function(b){b.setAttribute("aria-pressed",String(d.decision===b.dataset.d));});'
         . 'var t=r.querySelector("textarea");if(document.activeElement!==t)t.value=d.comment||"";var any=false;'
         . 'c.querySelectorAll(".wk-dayedit").forEach(function(i){var v=(d.days||{})[i.dataset.date]||"";if(document.activeElement!==i)i.value=v;if(v){i.hidden=false;any=true;}});'
-        . 'var e=c.querySelector(".wk-ed");if(e&&any)e.setAttribute("aria-expanded","true");}'
+        . 'var e=c.querySelector(".wk-ed");if(e&&any)e.setAttribute("aria-expanded","true");var cb=c.querySelector(".wk-cbox");if(cb&&d.comment)cb.hidden=false;}'
+        . 'document.addEventListener("click",function(ev){var b=ev.target.closest(".wk-open");if(!b)return;var cb=b.closest(".wk-card").querySelector(".wk-cbox");if(cb&&cb.hidden){cb.hidden=false;var t=cb.querySelector("textarea");if(t&&!b.dataset.d)t.focus();}});'
         . 'var q={};function save(c,patch){var uid=c.dataset.uid,m=c.querySelector(".wk-rv .wk-saved");m.className="wk-saved";m.textContent="Saving…";'
         . 'var body=Object.assign({week:WEEK,uid:uid,name:c.dataset.name},patch);q[uid]=(q[uid]||Promise.resolve()).then(function(){return fetch(API,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":N},body:JSON.stringify(body)})'
         . '.then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){draw(c,j.doc);m.textContent="Saved. When you are done, tell Claude: “process my plan review”.";})'
