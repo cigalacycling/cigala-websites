@@ -69,7 +69,25 @@ function cc_bt_row($pid, $b, $forCoach, $viewer = null) {
     return '<div class="bt-row"><span class="bt-ic">🩸</span><span class="bt-t"><b>' . esc_html($when) . '</b>' . (!empty($b['share']) ? '<small>' . esc_html($forCoach ? 'shared with the nutritionist' : cc_bt_w('shared')) . '</small>' : '') . '</span>'
          . '<a class="btn btn-ghost" href="' . esc_url($u) . '" target="_blank" rel="noopener">' . esc_html($forCoach ? 'Open' : cc_bt_w('open')) . '</a>'
          . ($viewer === 'nutri' ? '' : '<button type="button" class="bt-del" data-page="' . (int) $pid . '" data-at="' . (int) $b['at'] . '" data-q="' . esc_attr($forCoach ? 'Delete this blood test?' : cc_bt_w('delq')) . '">' . esc_html($forCoach ? 'Delete' : cc_bt_w('del')) . '</button>')
-         . '</div><div class="bt-th">' . cc_bt_thread($pid, $b, $viewer) . '</div>';
+         . '</div><div class="bt-th">' . ($viewer === 'athlete' ? cc_bt_thread($pid, $b, $viewer) : cc_bt_thread_fold($pid, $b, $viewer)) . '</div>';
+}
+/* Matteo 20 Nov: with 100+ tests and conversations the coach view gets long. Comments fold ("Show comments (N)"), open by themselves only
+   when the athlete wrote last (waiting for an answer); tests beyond the newest 5 fold under "Show older tests (N)"; the whole section folds
+   (closed when nothing is new, remembered per coach in this browser). The athlete's view is unchanged. */
+function cc_bt_waiting($b) { $r = (array) ($b['replies'] ?? []); $l = end($r); return $l && ($l['from'] ?? '') === 'athlete'; }
+function cc_bt_new($b) { return cc_bt_waiting($b) || (int) ($b['at'] ?? 0) > (int) get_user_meta(get_current_user_id(), 'cc_blood_seen', true); }
+function cc_bt_thread_fold($pid, $b, $viewer) {
+    $n = count((array) ($b['replies'] ?? []));
+    if (!$n) return cc_bt_thread($pid, $b, $viewer);
+    return '<details class="bt-cm"' . (cc_bt_waiting($b) ? ' open' : '') . '><summary><span class="bt-cms">Show comments (' . $n . ')</span><span class="bt-cmh">Hide comments</span>' . (cc_bt_waiting($b) ? ' <span class="bt-new">reply waiting</span>' : '') . '</summary>' . cc_bt_thread($pid, $b, $viewer) . '</details>';
+}
+function cc_bt_rows_fold($rows, $keep = 5) {   // $rows: html per test, newest first
+    if (count($rows) <= $keep) return implode('', $rows);
+    return implode('', array_slice($rows, 0, $keep)) . '<details class="bt-older"><summary>Show older tests (' . (count($rows) - $keep) . ')</summary>' . implode('', array_slice($rows, $keep)) . '</details>';
+}
+function cc_bt_section_fold($key, $list, $body) {   // $list: the tests shown
+    $n = count($list); $new = 0; foreach ($list as $b) if (cc_bt_new($b)) $new++;
+    return '<details class="bt-fold" data-k="' . esc_attr($key) . '"' . ($new ? ' open data-new="1"' : '') . '><summary><span>' . $n . ' test' . ($n === 1 ? '' : 's') . '</span>' . ($new ? ' <span class="bt-new">' . $new . ' new</span>' : '') . '<span class="bt-fh">Show</span><span class="bt-fs">Hide</span></summary>' . $body . '</details>';
 }
 function cc_bt_assets($again = false) {   // $again: the food diary review prints them again when Marine's blood list (which printed them) is not shown
     static $done = false; if ($done && !$again) return ''; $done = true;
@@ -81,7 +99,12 @@ function cc_bt_assets($again = false) {   // $again: the food diary review print
         . 'html .cc .bt-row{display:flex;align-items:center;gap:12px;padding:10px 12px;margin:8px 0 0;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}'
         . 'html .cc .bt-ic{font-size:20px}html .cc .bt-t{display:grid;flex:1;min-width:0}html .cc .bt-t b{color:#fff;font-size:16px}html .cc .bt-t small{color:#b8bec8;font-size:14px}'
         . 'html .cc .bt-row .btn{width:auto;margin:0;padding:8px 14px}html .cc .bt-del{background:none;border:0;color:#b8bec8;text-decoration:underline;font-size:15px;cursor:pointer;padding:0 8px;min-height:44px;min-width:44px}'
-        . 'html .cc .bt-th{margin:0 0 6px 14px}html .cc .bt-r{display:grid;gap:8px}html .cc .bt-r textarea{width:100%;box-sizing:border-box;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0b0d0f;color:#fff}html .cc .bt-r .btn{justify-self:start;width:auto;margin:0}</style>'
+        . 'html .cc .bt-th{margin:0 0 6px 14px}html .cc .bt-r{display:grid;gap:8px}html .cc .bt-r textarea{width:100%;box-sizing:border-box;font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:#0b0d0f;color:#fff}html .cc .bt-r .btn{justify-self:start;width:auto;margin:0}'
+        . 'html .cc .bt-fold>summary,html .cc .bt-older>summary,html .cc .bt-cm>summary{cursor:pointer;min-height:44px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;list-style:none}html .cc .bt-fold>summary::-webkit-details-marker,html .cc .bt-older>summary::-webkit-details-marker,html .cc .bt-cm>summary::-webkit-details-marker{display:none}'
+        . 'html .cc .bt-fold>summary{color:#e6e9ee;font-size:16px;font-weight:600;padding:4px 0}html .cc .bt-fold>summary .bt-fh,html .cc .bt-fold>summary .bt-fs{margin-left:auto;color:#2bd47a;font-size:15px}html .cc .bt-fold[open]>summary .bt-fh,html .cc .bt-fold:not([open])>summary .bt-fs{display:none}'
+        . 'html .cc .bt-new{display:inline-block;padding:1px 10px;border-radius:999px;background:rgba(18,161,80,.2);border:1px solid rgba(43,212,122,.5);color:#c9f3da;font-size:14px;font-weight:700}'
+        . 'html .cc .bt-older{margin:8px 0 0}html .cc .bt-older>summary,html .cc .bt-cm>summary{color:#2bd47a;font-size:15px;font-weight:600}html .cc .bt-cm[open]>summary .bt-cms,html .cc .bt-cm:not([open])>summary .bt-cmh{display:none}</style>'
+        . '<script>(function(){function k(d){return "ccBtFold:"+d.dataset.k;}document.querySelectorAll("details.bt-fold").forEach(function(d){if(!d.dataset.new){try{var v=localStorage.getItem(k(d));if(v==="1"){d.open=true;}}catch(x){}}d.addEventListener("toggle",function(){try{localStorage.setItem(k(d),d.open?"1":"0");}catch(x){}});});})();</script>'
         . '<script>document.addEventListener("click",function(e){var b=e.target.closest(".bt-send");if(!b)return;var r=b.closest(".bt-r"),t=r.querySelector("textarea");if(!t.value.trim())return;b.disabled=true;var d=new FormData();d.append("page",r.dataset.page);d.append("at",r.dataset.at);d.append("text",t.value);'
         . 'fetch("' . esc_url(rest_url('cc/v1/blood-reply')) . '",{method:"POST",body:d,credentials:"same-origin",headers:{"X-WP-Nonce":"' . $nonce . '"}}).then(function(x){if(!x.ok)throw 0;location.reload();}).catch(function(){b.disabled=false;alert("Not sent. Please try again.");});});</script>'
         . '<script>(function(){var f=document.querySelector(".bt-form");if(f){var m=f.querySelector(".bt-msg"),W=JSON.parse(f.dataset.w),fn=f.querySelector(".bt-fn"),fz=f.querySelector("input[type=file]");'
@@ -100,7 +123,8 @@ add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
     $list = array_reverse(cc_bt_get($view));
     if ($coach) {
         if (!$list) return $html;
-        return $html . '<section class="ath-s bt" id="blood"><h2>' . cc_ath_icon('sweat', 'ath-hic') . 'Blood tests</h2>' . implode('', array_map(function ($b) use ($view) { return cc_bt_row($view, $b, true); }, $list)) . '</section>' . cc_bt_assets();
+        $rows = array_map(function ($b) use ($view) { return cc_bt_row($view, $b, true); }, $list);
+        return $html . '<section class="ath-s bt" id="blood"><h2>' . cc_ath_icon('sweat', 'ath-hic') . 'Blood tests</h2>' . cc_bt_section_fold('p' . (int) $view, $list, cc_bt_rows_fold($rows)) . '</section>' . cc_bt_assets();
     }
     $W = ['bad' => cc_bt_w('bad'), 'sending' => cc_bt_w('sending'), 'done' => cc_bt_w('done'), 'err' => cc_bt_w('err')];
     $o = '<section class="ath-s bt" id="blood"><h2>' . cc_ath_icon('sweat', 'ath-hic') . esc_html(cc_bt_w('title')) . '</h2><p class="av-lede">' . esc_html(cc_bt_w('lede')) . '</p>'

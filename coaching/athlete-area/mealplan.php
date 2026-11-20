@@ -50,6 +50,16 @@ function cc_mp_w($k) {
         'training_ph' => ['e.g. 2h endurance, rest', 'es. 2h fondo, riposo', 'p. ex. 2h resistência, descanso', 'npr. 2 h vzdržljivost, počitek', 'napr. 2 h vytrvalosť, voľno'],
         'na' => ['This recipe isn’t available on your page. If you think it should be, write to Marine under any day of your food diary.', 'Questa ricetta non è disponibile nella tua pagina. Se pensi che dovrebbe esserci, scrivi a Marine sotto un giorno qualsiasi del tuo diario alimentare.', 'Esta receita não está disponível na tua página. Se achas que devia estar, escreve à Marine em qualquer dia do teu diário alimentar.', 'Ta recept ni na voljo na tvoji strani. Če misliš, da bi moral biti, piši Marine pod katerim koli dnem v prehranskem dnevniku.', 'Tento recept nie je na tvojej stránke dostupný. Ak si myslíš, že by mal byť, napíš Marine pod ktorýkoľvek deň v stravovacom denníku.'],
         'open_r' => ['Open recipe', 'Apri la ricetta', 'Abrir receita', 'Odpri recept', 'Otvoriť recept'],
+        'mps_title' => ['Meal plan', 'Piano alimentare', 'Plano alimentar', 'Načrt prehrane', 'Jedálny plán'],
+        'mps_lede' => ['Your meals from Marine, day by day. Tap a recipe to see how to make it.', 'I tuoi pasti da Marine, giorno per giorno. Tocca una ricetta per vedere come prepararla.', 'As tuas refeições da Marine, dia a dia. Toca numa receita para ver como a preparar.', 'Tvoji obroki od Marine, dan za dnem. Tapni recept in poglej, kako ga pripraviš.', 'Tvoje jedlá od Marine, deň po dni. Ťukni na recept a pozri si, ako ho pripraviť.'],
+        'mps_soon' => ['Marine will add your next plan here.', 'Marine aggiungerà qui il tuo prossimo piano.', 'A Marine vai pôr aqui o teu próximo plano.', 'Marine bo tukaj dodala tvoj naslednji načrt.', 'Marine sem pridá tvoj ďalší plán.'],
+        'tomorrow' => ['Tomorrow', 'Domani', 'Amanhã', 'Jutri', 'Zajtra'],
+        'yesterday' => ['Yesterday', 'Ieri', 'Ontem', 'Včeraj', 'Včera'],
+        'today' => ['Today', 'Oggi', 'Hoje', 'Danes', 'Dnes'],
+        'open_diary' => ['Open in my diary', 'Apri nel mio diario', 'Abrir no meu diário', 'Odpri v mojem dnevniku', 'Otvoriť v mojom denníku'],
+        'week' => ['Your week', 'La tua settimana', 'A tua semana', 'Tvoj teden', 'Tvoj týždeň'],
+        'pick_day' => ['Choose a day', 'Scegli un giorno', 'Escolhe um dia', 'Izberi dan', 'Vyber deň'],
+        'session' => ['Session', 'Allenamento', 'Treino', 'Trening', 'Tréning'],
     ];
     static $I = ['en' => 0, 'it' => 1, 'pt' => 2, 'sl' => 3, 'sk' => 4];
     $l = $GLOBALS['cc_ath_lang'] ?? 'en';
@@ -161,9 +171,9 @@ function cc_mp_rec_ath($r) {
             'mac' => ['k' => $m['k'], 'c' => $m['c'], 'p' => $m['p'], 'f' => $m['f'], 'fi' => $m['fi']], 'w' => $m['w']];
 }
 function cc_mp_ath_day($pid, $d) {
-    $pl = cc_mp_get($pid, $d); $items = []; $recs = [];
+    $pl = cc_mp_get($pid, $d); $items = []; $recs = []; $day = $pl['i'] ? cc_fd_get($pid, $d) : [];
     foreach ($pl['i'] as $it) {
-        $o = ['u' => $it['u'], 'sl' => $it['sl'], 'k' => $it['k'], 'a' => $it['a'] ?? null, 'pm' => cc_mp_round(cc_mp_item_mac($pid, $it))];
+        $o = ['u' => $it['u'], 'sl' => $it['sl'], 'k' => $it['k'], 'a' => $it['a'] ?? null, 'pm' => cc_mp_round(cc_mp_item_mac($pid, $it)), 'em' => cc_mp_round(cc_mp_eaten($day, $it['u']))];
         if ($it['k'] === 'r') { $r = cc_mp_rec_for($pid, $it['rid']); if (!$r) continue; $o['rid'] = $it['rid']; $o['x'] = (float) $it['x']; $recs[$it['rid']] = cc_mp_rec_ath($r); }
         else $o['f'] = cc_fd_fresh_item($it['f'], []);
         $items[] = $o;
@@ -250,7 +260,7 @@ function cc_mp_staff_day($pid, $d, $vx, $tp) {
         $items[] = $o;
     }
     $ts = strtotime($d . ' 12:00');
-    return ['d' => $d, 'lbl' => date_i18n('D j M', $ts), 'dow' => date_i18n('D', $ts), 'i' => $items, 'n' => $pl['n'], 'tr' => $pl['tr'], 'train' => cc_mp_train_html($vx, $tp, $d, $pl['tr'])];
+    return ['d' => $d, 'lbl' => date_i18n('D j M', $ts), 'dow' => date_i18n('D', $ts), 'dnum' => date_i18n('j M', $ts), 'i' => $items, 'n' => $pl['n'], 'tr' => $pl['tr'], 'train' => cc_mp_train_html($vx, $tp, $d, $pl['tr'])];
 }
 /* the 7 days ending $end: meals followed, share of planned carbs eaten, and where it breaks down */
 function cc_mp_week_stats($pid, $end) {
@@ -279,7 +289,8 @@ function cc_mp_week_html($pid) {
 /* the planning section on the athlete's review page (food.php calls this filter) */
 add_filter('cc_fd_review_plan', function ($html, $pid, $viewer) {
     if (!cc_fd_on($pid)) return $html;
-    $start = cc_fd_date($_GET['mpd'] ?? '') ?: current_time('Y-m-d');
+    $base = cc_fd_date($_GET['mpd'] ?? '') ?: current_time('Y-m-d'); $tb = strtotime($base . ' 12:00');
+    $start = gmdate('Y-m-d', $tb - ((int) gmdate('N', $tb) - 1) * DAY_IN_SECONDS);   // Matteo 20 Nov: the week as a calendar, Monday to Sunday
     $tp = cc_ath_tp($pid); $vx = $tp ? [] : cc_fd_vx($pid); $kg = cc_fd_kgv($pid)['kg'];
     $days = []; $t0 = strtotime($start . ' 12:00'); for ($i = 0; $i < 7; $i++) $days[] = cc_mp_staff_day($pid, gmdate('Y-m-d', $t0 + $i * DAY_IN_SECONDS), $vx, $tp);
     $lib = cc_mp_lib_out(); $rs = [];
@@ -295,9 +306,17 @@ add_filter('cc_fd_review_plan', function ($html, $pid, $viewer) {
     return $html . '<div class="mp mp-plan-s" id="mp-plan"><h3>Meal plan</h3>'
         . '<p class="fd-lede">Drag a recipe onto a meal, or a day template onto a day. On a phone: tap a recipe or template, then tap “Add to …”. The athlete sees each planned item in that meal of their diary and answers ✓ / ✎ / ✗; your nutrition plan text shows at the top of their day. Carbs per kg are shown to you only. <a href="' . esc_url($lib_url) . '">Edit recipes and templates</a></p>'
         . cc_mp_week_html($pid)
-        . '<div class="mp-wnav"><a class="btn btn-ghost" href="' . $sh(-7) . '">← Earlier</a><form method="get" action="#mp-plan" class="mp-jump">' . $keep . '<label>Start from <input type="date" name="mpd" value="' . esc_attr($start) . '"></label><button type="submit" class="btn btn-ghost">Show</button></form><a class="btn btn-ghost" href="' . $sh(7) . '">Later →</a></div>'
-        . '<div class="mp-plan" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"></div></div>' . cc_mp_css() . cc_mp_search_js() . cc_mp_sjs();
+        . '<div class="mp-wnav"><a class="btn btn-ghost" href="' . $sh(-7) . '">← Previous week</a><form method="get" action="#mp-plan" class="mp-jump">' . $keep . '<label>Start from <input type="date" name="mpd" value="' . esc_attr($start) . '"></label><button type="submit" class="btn btn-ghost">Show</button></form><a class="btn btn-ghost" href="' . $sh(7) . '">Next week →</a>' . ($start > current_time('Y-m-d') || gmdate('Y-m-d', $t0 + 6 * DAY_IN_SECONDS) < current_time('Y-m-d') ? '<a class="btn btn-ghost" href="' . esc_url(remove_query_arg('mpd') . '#mp-plan') . '">This week</a>' : '') . '</div>'
+        . '<div class="mp-plan" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"></div>' . cc_mp_see($pid) . '</div>' . cc_mp_css() . cc_mp_search_js() . cc_mp_sjs();
 }, 10, 3);
+/* "See what the athlete sees": the athlete's Meal plan section, in their language, read-only (as saved when this page was opened) */
+function cc_mp_see($pid) {
+    $keep = $GLOBALS['cc_ath_lang'] ?? 'en'; $u = (int) get_post_meta($pid, 'cc_user', true);
+    $GLOBALS['cc_ath_lang'] = ($u && function_exists('cc_ath_user_lang')) ? cc_ath_user_lang($u) : 'en';
+    $h = cc_mps_html($pid, true); $GLOBALS['cc_ath_lang'] = $keep;
+    if ($h === '') return '';
+    return '<details class="mp-see"><summary>See what ' . esc_html(strtok(trim((string) get_the_title($pid)), ' ') ?: 'the athlete') . ' sees (Meal plan section)</summary><p class="fd-muted">As saved when you opened this page; <a href="' . esc_url(add_query_arg([]) ) . '#mp-plan">reload</a> after changes. ✓ buttons are not shown here.</p>' . $h . '</details>';
+}
 /* under each day of the review: planned vs eaten, item by item */
 add_filter('cc_fd_review_day_extra', function ($html, $pid, $date, $viewer) {
     if (!cc_fd_on($pid)) return $html;
@@ -418,6 +437,200 @@ add_action('delete_user', function ($uid) {
     }
 }, 4);
 
+/* ---------- "Meal plan" section for the athlete (Matteo, 20 Nov 2026) ----------
+ * Its own section after the food diary (#mealplan, own menu link): the days Marine planned (last 2 days, today, next 13), one calm card per
+ * meal (photo, name, portion in grams, C/P/F grams), tap a recipe for the full recipe, Marine's day note, the day's training, and at the top
+ * "Eaten from your plan" (planned total vs what the diary holds for the planned items: ate it = planned, different = their amount,
+ * didn't eat = 0). Answers go through /mp-answer (same as the diary, one source of truth); "Open in my diary" for anything else.
+ * Hidden when Marine has never planned a day. Marine and Matteo get the same block as "See what the athlete sees" on the planner. */
+function cc_mps_train($vx, $tp, $d, $tr) {
+    $o = []; $nm = cc_mp_w('session');
+    if (!$tp && $vx) {
+        foreach (cc_fd_vx_day($vx, $d, 'done') as $a) $o[] = '✓ ' . trim(($a['n'] ?: $nm) . ($a['min'] ? ' · ' . cc_fd_hm($a['min'] * 60) : ''));
+        if (!$o) foreach (cc_fd_vx_day($vx, $d, 'plan') as $p) $o[] = trim(($p['n'] ?: $nm) . ($p['min'] ? ' · ' . cc_fd_hm($p['min'] * 60) : ''));
+    }
+    if ($tr !== '') $o[] = $tr;
+    return $o;
+}
+function cc_mps_day($pid, $d, $vx, $tp) {
+    $pl = cc_mp_get($pid, $d); if (!$pl['i'] && $pl['n'] === '') return null;
+    $day = $pl['i'] ? cc_fd_get($pid, $d) : []; $sl = []; $t = ['k' => 0, 'c' => 0, 'p' => 0, 'f' => 0]; $e = $t; $recs = [];
+    foreach ($pl['i'] as $it) {
+        $m = cc_mp_item_mac($pid, $it); $em = cc_mp_eaten($day, $it['u']);
+        $o = ['u' => $it['u'], 'k' => $it['k'], 'a' => (string) ($it['a']['s'] ?? ''), 'm' => cc_mp_round(['k' => $m['k'], 'c' => $m['c'], 'p' => $m['p'], 'f' => $m['f']]), 'em' => cc_mp_round($em)];
+        if ($it['k'] === 'r') {
+            $r = cc_mp_rec_for($pid, $it['rid']); if (!$r) continue;
+            $recs[$it['rid']] = cc_mp_rec_ath($r); $o += ['rid' => $it['rid'], 'nm' => $r['n'], 'x' => (float) $it['x'], 'g' => round((float) cc_mp_calc($r)['w'] * (float) $it['x']), 'ph' => cc_mp_photo_url($r['ph'] ?? 0)];
+        } else { $f = cc_fd_fresh_item($it['f'], []); $o += ['nm' => (string) $f['n'], 'g' => (float) $f['g'], 'ph' => '']; }
+        foreach ($t as $k => $_) { $t[$k] += $m[$k]; if ($em) $e[$k] += $em[$k]; }
+        $sl[$it['sl']][] = $o;
+    }
+    $s = []; foreach (CC_FD_SLOTS as $k) if (!empty($sl[$k])) $s[] = [$k, cc_fd_w($k), $sl[$k]];
+    return ['d' => ['d' => $d, 'n' => $pl['n'], 'tr' => cc_mps_train($vx, $tp, $d, $pl['tr']), 's' => $s, 't' => cc_mp_round($t), 'e' => cc_mp_round($e)], 'recs' => $recs];
+}
+function cc_mps_w($k) {
+    static $W = [
+        'eaten' => ['Eaten from your plan', 'Mangiato dal tuo piano', 'Comido do teu plano', 'Pojedeno iz tvojega načrta', 'Zjedené z tvojho plánu'],
+        'eaten_t' => ['%1$s of %2$s kcal', '%1$s di %2$s kcal', '%1$s de %2$s kcal', '%1$s od %2$s kcal', '%1$s z %2$s kcal'],
+    ];
+    static $I = ['en' => 0, 'it' => 1, 'pt' => 2, 'sl' => 3, 'sk' => 4];
+    return $W[$k][$I[$GLOBALS['cc_ath_lang'] ?? 'en'] ?? 0];
+}
+function cc_mps_html($pid, $preview = false) {
+    if (!cc_fd_on($pid) || !cc_mp_days($pid)) return '';
+    $today = current_time('Y-m-d'); $t0 = strtotime($today . ' 12:00'); $tp = cc_ath_tp($pid); $vx = $tp ? [] : cc_fd_vx($pid);
+    $days = []; $recs = []; $week = [];
+    for ($i = -2; $i <= 13; $i++) {
+        $d = gmdate('Y-m-d', $t0 + $i * DAY_IN_SECONDS); $x = cc_mps_day($pid, $d, $vx, $tp); if (!$x) continue;
+        $days[] = $x['d']; $recs += $x['recs'];
+        if ($i >= 0 && $i < 7 && $x['d']['s']) { $w = []; foreach ($x['d']['s'] as $s) $w[] = [$s[1], implode(', ', array_map(function ($o) { return $o['nm']; }, $s[2]))]; $week[] = ['d' => $d, 's' => $w]; }
+    }
+    $sel = ''; foreach ($days as $x) if ($x['d'] >= $today) { $sel = $x['d']; break; }
+    if ($sel === '' && $days) $sel = $days[count($days) - 1]['d'];
+    $W = []; foreach (['mps_soon', 'tomorrow', 'yesterday', 'today', 'open_diary', 'week', 'pick_day', 'from_m', 'por_x', 'open_r', 'ate', 'done_y', 'done_d', 'done_n', 'per_portion', 'your_portion', 'method', 'makes', 'close'] as $k) $W[$k] = cc_mp_w($k);
+    foreach (['carbs', 'protein', 'fat', 'fibre', 'ingredients', 'c_ab', 'p_ab', 'f_ab', 'b_raw', 'b_cooked', 'saved', 'err'] as $k) $W[$k] = cc_fd_w($k);
+    $W['eaten'] = cc_mps_w('eaten'); $W['eaten_t'] = cc_mps_w('eaten_t');
+    $ic = []; foreach (CC_FD_SLOTS as $k) $ic[$k] = cc_fd_icon($k);
+    $hub = cc_fd_hub(); if (function_exists('cc_ath_demo_as') && cc_ath_demo_as()) $hub = add_query_arg('view', (int) $pid, $hub);
+    $cfg = ['page' => (int) $pid, 'today' => $today, 'lang' => $GLOBALS['cc_ath_lang'] ?? 'en', 'days' => $days, 'sel' => $sel, 'week' => $week, 'recs' => (object) $recs, 'w' => $W, 'ic' => $ic, 'pv' => $preview ? 1 : 0,
+            'diary' => esc_url_raw(add_query_arg('fd', 'DATE', $hub)) . '#food', 'nonce' => wp_create_nonce('wp_rest'), 'ans' => esc_url_raw(rest_url('cc/v1/mp-answer'))];
+    return '<section class="ath-s mps" id="' . ($preview ? 'mps-preview' : 'mealplan') . '"><h2>' . cc_ath_icon('food', 'ath-hic') . esc_html(cc_mp_w('mps_title')) . '</h2>'
+        . ($days ? '<p class="fd-lede">' . esc_html(cc_mp_w('mps_lede')) . '</p>' : '')
+        . '<div class="mps-app" data-cfg="' . esc_attr(wp_json_encode($cfg)) . '"></div></section>' . cc_mp_css() . cc_mps_css() . cc_mps_js();
+}
+add_filter('cc_ath_after_reports', function ($html, $view, $coach) {
+    if (!$view || $coach || get_post_meta($view, 'cc_shared', true) || !cc_fd_on($view)) return $html;
+    return $html . cc_mps_html($view);
+}, 18, 3);
+add_filter('cc_ath_nav', function ($nav, $view, $coach) { if ($view && !$coach && cc_fd_on($view) && cc_mp_days($view)) $nav[] = ['mealplan', cc_mp_w('mps_title')]; return $nav; }, 33, 3);
+function cc_mps_css() {
+    static $done = false; if ($done) return ''; $done = true;
+    $css = <<<'CSS'
+html .cc .mps-app{display:grid;gap:22px;min-width:0}
+html .cc .mps-pills{display:flex;gap:10px;overflow-x:auto;padding:2px 2px 6px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+html .cc .mps-pill{flex:none;scroll-snap-align:start;min-width:72px;min-height:64px;display:grid;place-items:center;gap:2px;padding:8px 12px;margin:0;border-radius:16px;border:1px solid rgba(255,255,255,.14)!important;background:rgba(255,255,255,.03)!important;color:#d0d6e0!important;font:600 14px var(--body);cursor:pointer;box-shadow:none!important;width:auto}
+html .cc .mps-pill b{font:400 22px/1.1 var(--head,Anton),sans-serif;color:#fff;letter-spacing:.02em}
+html .cc .mps-pill.on{background:#12a150!important;border-color:#12a150!important;color:#fff!important}
+html .cc .mps-day{display:grid;gap:18px;min-width:0}
+html .cc .mps-day h3{margin:0;font:400 26px/1.15 var(--head,Anton),sans-serif;color:#fff;letter-spacing:.01em}
+html .cc .mps-tr{display:flex;gap:10px;align-items:center;margin:0;color:#e6e9ee;font-size:16px}
+html .cc .mps-tr svg{flex:none;color:#b8bec8}
+html .cc .mps-note{margin:0;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+html .cc .mps-note b{display:block;color:#c9f3da;font-size:15px}
+html .cc .mps-note p{margin:4px 0 0;color:#fff;font-size:16px;line-height:1.5}
+html .cc .mps-prog{display:grid;gap:10px;padding:16px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1)}
+html .cc .mps-prog>p{margin:0;color:#d0d6e0;font-size:15px}
+html .cc .mps-prog>p b{display:block;color:#fff;font-size:22px;font-weight:700;margin-top:2px}
+html .cc .mps-bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+html .cc .mps-bar i{display:block;height:100%;border-radius:999px;background:#e6e9ee;transition:width .4s}
+html .cc .mps-bars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+html .cc .mps-bars>div{display:grid;gap:6px;min-width:0}
+html .cc .mps-bars span{font-size:14px;color:#d0d6e0}
+html .cc .mps-bars .mps-bar{height:8px}
+html .cc .mps-bars .mc-c i{background:var(--mc-c)}
+html .cc .mps-bars .mc-p i{background:var(--mc-p)}
+html .cc .mps-bars .mc-f i{background:var(--mc-f)}
+html .cc .mps-slot{display:grid;gap:10px}
+html .cc .mps-sl{display:flex;align-items:center;gap:8px;margin:0;color:#b8bec8;font-size:15px;font-weight:600;letter-spacing:.02em}
+html .cc .mps-sl svg{width:20px;height:20px}
+html .cc .mps-card{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;width:100%;box-sizing:border-box;padding:12px;margin:0;border-radius:18px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.035);color:#fff;min-width:0}
+html .cc .mps-card.ok{border-color:rgba(43,212,122,.35)}
+html .cc .mps-open{display:flex;align-items:center;gap:14px;flex:1 1 240px;min-width:0;white-space:normal;overflow:hidden;min-height:44px;padding:0;margin:0;border:0!important;background:none!important;box-shadow:none!important;color:#fff!important;text-align:left;font:inherit;cursor:pointer;width:auto;border-radius:12px}
+html .cc div.mps-open{cursor:default}
+html .cc .mps-ph{flex:none;width:76px;height:76px;border-radius:14px;object-fit:cover;display:grid;place-items:center;background:rgba(255,255,255,.06);color:#b8bec8}
+html .cc .mps-ct{display:grid;gap:3px;min-width:0;flex:1}
+html .cc .mps-ct b{font-size:17px;color:#fff;font-weight:600;overflow-wrap:anywhere;line-height:1.3}
+html .cc .mps-ct small{font-size:15px;color:#b8bec8}
+html .cc .mps-mac{font-size:15px;color:#e6e9ee}
+html .cc .mps-mac i{font-style:normal;color:#b8bec8;margin:0 5px}html .cc .mps-mac u{text-decoration:none;white-space:nowrap}
+html .cc .mps-chev{flex:none;color:#b8bec8;font-size:24px;line-height:1}
+html .cc .mps-ok{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#12a150;color:#fff;font-size:20px;font-weight:700}
+html .cc .mps-ok.d{background:rgba(18,161,80,.25);color:#c9f3da}
+html .cc .mps-ok.n{background:none;border:1px dashed rgba(255,255,255,.35);color:#d0d6e0;font-size:16px}
+html .cc .mps-ate{flex:none;margin-left:auto!important;min-height:44px;min-width:44px;padding:6px 14px;margin:0;border-radius:999px;border:1px solid #12a150!important;background:none!important;color:#c9f3da!important;font:600 15px var(--body);cursor:pointer;box-shadow:none!important;width:auto;white-space:nowrap}
+html .cc .mps-go{justify-self:start;margin:0}
+html .cc .mps-msg{margin:0;font-size:15px;color:#c9f3da}
+html .cc .mps-msg:empty{display:none}
+html .cc .mps-wk{border-top:1px solid rgba(255,255,255,.1);padding-top:8px}
+html .cc .mps-wk summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:#fff;font:600 17px var(--body)}
+html .cc .mps-wk>div{display:grid;gap:8px;margin-top:6px}
+html .cc .mps-wr{white-space:normal;display:grid;gap:4px;text-align:left;padding:12px 14px;margin:0;border-radius:14px;border:1px solid rgba(255,255,255,.1)!important;background:rgba(255,255,255,.03)!important;color:#e6e9ee!important;font:15px/1.45 var(--body);cursor:pointer;width:100%;box-sizing:border-box;box-shadow:none!important;min-height:44px}
+html .cc .mps-wr.on{border-color:#2bd47a!important}
+html .cc .mps-wr b{color:#fff;font-size:16px}
+html .cc .mps-wr em{font-style:normal;color:#b8bec8}
+html .cc .mps-soon{margin:0;color:#e6e9ee;font-size:16px}
+@media (max-width:480px){html .cc .mps-ph{width:60px;height:60px}html .cc .mps-card{gap:8px;padding:10px}html .cc .mps-open{gap:12px}html .cc .mps-bars{gap:8px}html .cc .mps-ate{padding:6px 10px}}
+CSS;
+    return '<style>' . str_replace(["\r", "\n"], '', $css) . '</style>';
+}
+function cc_mps_js() {
+    static $done = false; if ($done) return ''; $done = true;
+    $js = <<<'JS'
+(function(){
+var A=document.querySelector(".mps-app");if(!A){return;}
+var C=JSON.parse(A.getAttribute("data-cfg")),W=C.w,D={},sel=C.sel,wkOpen=false,busy=false,msg="";C.days.forEach(function(d){D[d.d]=d;});
+var BOWL='<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M3 11h18a9 9 0 0 1-18 0z"/><path d="M8 7c0-1.5 1-2 1-3.5M12 7c0-1.5 1-2 1-3.5M16 7c0-1.5 1-2 1-3.5"/></svg>';
+var BIKE='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="5.5" cy="16" r="3.5"/><circle cx="18.5" cy="16" r="3.5"/><path d="M5.5 16L9.5 9h6.5M12 16L9.5 9M18.5 16l-3-9.5H18"/></svg>';
+var XI='<svg width="16" height="16" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M2.5 2.5l9 9M11.5 2.5l-9 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function f0(x){return Math.round(+x||0).toLocaleString(C.lang);}
+function f1(x){return (Math.round((+x||0)*100)/100).toLocaleString(C.lang,{maximumFractionDigits:2});}
+function dt(s){return new Date(s+"T12:00:00");}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function rel(s){var n=Math.round((dt(s)-dt(C.today))/864e5);return n===0?W.today:(n===1?W.tomorrow:(n===-1?W.yesterday:""));}
+function wd(s){return cap(dt(s).toLocaleDateString(C.lang,{weekday:"short"}).replace(".",""));}
+function lng(s){return cap(dt(s).toLocaleDateString(C.lang,{weekday:"long",day:"numeric",month:"long"}));}
+function mac(m){m=m||{};return '<span class="mps-mac"><u><b class="mc-c">'+esc(W.c_ab)+'</b> '+f0(m.c)+' g</u><i>·</i><u><b class="mc-p">'+esc(W.p_ab)+'</b> '+f0(m.p)+' g</u><i>·</i><u><b class="mc-f">'+esc(W.f_ab)+'</b> '+f0(m.f)+' g</u></span>';}
+function ph(it){return it.ph?'<img class="mps-ph" src="'+esc(it.ph)+'" alt="" loading="lazy">':'<span class="mps-ph">'+BOWL+'</span>';}
+function badge(it,d){if(it.a==="y"){return '<span class="mps-ok" role="img" aria-label="'+esc(W.done_y)+'" title="'+esc(W.done_y)+'">✓</span>';}if(it.a==="d"){return '<span class="mps-ok d" role="img" aria-label="'+esc(W.done_d)+'" title="'+esc(W.done_d)+'">✓</span>';}if(it.a==="n"){return '<span class="mps-ok n" role="img" aria-label="'+esc(W.done_n)+'" title="'+esc(W.done_n)+'">–</span>';}
+return (d<=C.today&&!C.pv)?'<button type="button" class="mps-ate" data-u="'+esc(it.u)+'">✓ '+esc(W.ate)+'</button>':"";}
+function card(it,d){var sub=it.k==="r"?(W.por_x.replace("%s",f1(it.x)+"×")+" · "+f0(it.g)+" g"):f0(it.g)+" g";
+var inner=ph(it)+'<span class="mps-ct"><b>'+esc(it.nm)+'</b><small>'+esc(sub)+'</small>'+mac(it.m)+'</span>';
+var o=it.k==="r"?'<button type="button" class="mps-open" data-rid="'+esc(it.rid)+'" data-x="'+esc(it.x)+'" aria-label="'+esc(W.open_r+": "+it.nm)+'">'+inner+'<span class="mps-chev" aria-hidden="true">›</span></button>':'<div class="mps-open">'+inner+'</div>';
+return '<div class="mps-card'+(it.a==="y"||it.a==="d"?" ok":"")+'">'+o+badge(it,d)+'</div>';}
+function bar(v,T,cl,lbl){var pc=T>0?Math.min(100,v/T*100):0,full=T>0&&v>=T*0.98;return '<div class="'+cl+'"><span>'+lbl+(full?" ✓":"")+'</span><div class="mps-bar"><i style="width:'+pc.toFixed(1)+'%"></i></div></div>';}
+function prog(d){var t=d.t,e=d.e;if(!(t.k>0)){return "";}var full=e.k>=t.k*0.98;
+return '<div class="mps-prog"><p>'+esc(W.eaten)+'<b>'+esc(W.eaten_t.replace("%1$s",f0(e.k)).replace("%2$s",f0(t.k)))+(full?" ✓":"")+'</b></p><div class="mps-bar"><i style="width:'+(Math.min(100,e.k/t.k*100)).toFixed(1)+'%"></i></div>'
++'<div class="mps-bars">'+bar(e.c,t.c,"mc-c",'<b class="mc-c">'+esc(W.carbs)+'</b><br>'+f0(e.c)+" / "+f0(t.c)+" g")+bar(e.p,t.p,"mc-p",'<b class="mc-p">'+esc(W.protein)+'</b><br>'+f0(e.p)+" / "+f0(t.p)+" g")+bar(e.f,t.f,"mc-f",'<b class="mc-f">'+esc(W.fat)+'</b><br>'+f0(e.f)+" / "+f0(t.f)+" g")+'</div></div>';}
+function pills(){if(C.days.length<2){return "";}return '<div class="mps-pills" role="tablist" aria-label="'+esc(W.pick_day)+'">'+C.days.map(function(d){var on=d.d===sel,r=rel(d.d);return '<button type="button" role="tab" class="mps-pill'+(on?" on":"")+'" aria-selected="'+on+'" data-d="'+d.d+'"><span>'+esc(r||wd(d.d))+'</span><b>'+dt(d.d).getDate()+'</b></button>';}).join("")+'</div>';}
+function day(){var d=D[sel];if(!d){return "";}var h='<div class="mps-day"><h3>'+esc((rel(d.d)?rel(d.d)+" · ":"")+lng(d.d))+'</h3>';
+if(d.s.length){h+=prog(d);}
+if(d.tr.length){h+='<p class="mps-tr">'+BIKE+'<span>'+esc(d.tr.join(" · "))+'</span></p>';}
+if(d.n){h+='<div class="mps-note"><b>'+esc(W.from_m)+'</b><p>'+esc(d.n).replace(/\n/g,"<br>")+'</p></div>';}
+d.s.forEach(function(s){h+='<div class="mps-slot"><p class="mps-sl">'+(C.ic[s[0]]||"")+'<span>'+esc(s[1])+'</span></p>'+s[2].map(function(it){return card(it,d.d);}).join("")+'</div>';});
+h+='<p class="mps-msg" role="status">'+esc(msg)+'</p>';
+if(!C.pv){h+='<a class="btn btn-go mps-go" data-fd-load href="'+esc(C.diary.replace("DATE",d.d))+'">'+esc(W.open_diary)+'</a>';}
+return h+'</div>';}
+function week(){var ws=C.week;if(ws.length<2){return "";}return '<details class="mps-wk"'+(wkOpen?" open":"")+'><summary>'+esc(W.week)+'</summary><div>'+ws.map(function(w){return '<button type="button" class="mps-wr'+(w.d===sel?" on":"")+'" data-d="'+w.d+'" data-wk="1"><b>'+esc((rel(w.d)?rel(w.d)+" · ":"")+lng(w.d))+'</b>'+w.s.map(function(s){return '<span><em>'+esc(s[0])+':</em> '+esc(s[1])+'</span>';}).join("")+'</button>';}).join("")+'</div></details>';}
+function render(){var sc=A.querySelector(".mps-pills"),sl=sc?sc.scrollLeft:-1;A.innerHTML=C.days.length?pills()+day()+week():'<p class="mps-soon">'+esc(W.mps_soon)+'</p>';var s=A.querySelector(".mps-pills");if(s){if(sl>=0){s.scrollLeft=sl;}else{var p=s.querySelector(".mps-pill.on");if(p){s.scrollLeft=Math.max(0,p.offsetLeft-s.offsetLeft-90);}}}}
+function tile(v,l,mc){return '<div'+(mc?' class="mcb-'+mc+'"':'')+'><b>'+esc(v)+'</b><span>'+esc(l)+'</span></div>';}
+function modal(rid,x){var r=C.recs[rid];if(!r){return;}x=+x||1;var por=Math.max(1,+r.por||1),m=r.mac||{};
+var h='<div class="mp-mbox"><button type="button" class="mp-close" aria-label="'+esc(W.close)+'">'+XI+'</button>'+(r.phu?'<img class="mp-hero" src="'+esc(r.phu)+'" alt="">':'')+'<h3>'+esc(r.n)+'</h3>'
++'<p class="mp-mh">'+esc(W.your_portion.replace("%s",f1(x)+"×"))+'</p><div class="mp-tiles">'+tile(f0(m.k*x),"kcal")+tile(f0(m.c*x)+" g",W.carbs,"c")+tile(f0(m.p*x)+" g",W.protein,"p")+tile(f0(m.f*x)+" g",W.fat,"f")+tile(f0(m.fi*x)+" g",W.fibre)+'</div>'
++'<p class="mp-mh">'+esc(W.ingredients)+'</p><ul>'+r.ing.map(function(i){return '<li>'+esc(f0(i.g/por*x))+' g '+esc(i.n)+(i.st==="r"||i.st==="c"?' <span class="fd-rc">'+esc(i.st==="r"?W.b_raw:W.b_cooked)+'</span>':'')+'</li>';}).join("")+'</ul>'
++(r.m?'<p class="mp-mh">'+esc(W.method)+'</p><p>'+esc(r.m).replace(/\n/g,"<br>")+'</p>':'')+'<small>'+esc(W.makes.replace("%s",por))+'</small></div>';
+var ov=document.createElement("div");ov.className="mp-modal mps-modal";ov.setAttribute("role","dialog");ov.setAttribute("aria-modal","true");ov.setAttribute("aria-label",r.n);ov.innerHTML=h;
+var back=document.activeElement;(document.querySelector(".cc")||document.body).appendChild(ov);document.documentElement.style.overflow="hidden";var cb=ov.querySelector(".mp-close");if(cb){cb.focus();}
+function close(){ov.remove();document.documentElement.style.overflow="";if(back&&back.focus){back.focus();}}
+ov.addEventListener("click",function(e){if(e.target===ov||e.target.closest(".mp-close")){close();}});ov.addEventListener("keydown",function(e){if(e.key==="Escape"){close();}});}
+function fromPlan(d,plan){var day=D[d];if(!day||!plan){return;}var by={};(plan.i||[]).forEach(function(p){by[p.u]=p;});var e={k:0,c:0,p:0,f:0};
+day.s.forEach(function(s){s[2].forEach(function(it){var p=by[it.u];if(p){it.a=(p.a&&p.a.s)||"";it.em=p.em||null;}if(it.em){e.k+=+it.em.k||0;e.c+=+it.em.c||0;e.p+=+it.em.p||0;e.f+=+it.em.f||0;}});});day.e=e;}
+function answer(d,u,b){if(busy){return;}busy=true;b.disabled=true;var f=new FormData();f.append("page",C.page);f.append("date",d);f.append("u",u);f.append("s","y");
+var go=function(){return fetch(C.ans,{method:"POST",body:f,credentials:"same-origin",headers:{"X-WP-Nonce":C.nonce}}).then(function(r){return r.json().then(function(j){if(!r.ok){throw j;}return j;});});};
+(window.ccFd&&window.ccFd.flush?window.ccFd.flush():Promise.resolve()).then(go).then(function(j){busy=false;fromPlan(d,j.plan);msg=W.saved;render();try{document.dispatchEvent(new CustomEvent("ccmp:answer",{detail:{d:d,plan:j.plan,day:j.day,src:"mps"}}));}catch(x){}})
+.catch(function(){busy=false;msg=W.err;render();});}
+document.addEventListener("ccmp:answer",function(e){var x=e.detail||{};if(x.src!=="diary"){return;}fromPlan(x.d,x.plan);if(x.d===sel){msg="";render();}});
+A.addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!A.contains(b)){return;}
+if(b.classList.contains("mps-ate")){answer(sel,b.dataset.u,b);return;}
+if(b.dataset.rid){modal(b.dataset.rid,b.dataset.x);return;}
+if(b.dataset.d){sel=b.dataset.d;msg="";render();if(b.dataset.wk){var t=A.querySelector(".mps-day");if(t&&t.scrollIntoView){t.scrollIntoView({block:"start",behavior:"smooth"});}}}});
+A.addEventListener("toggle",function(e){if(e.target.classList.contains("mps-wk")){wkOpen=e.target.open;}},true);
+render();
+})();
+JS;
+    return '<script>' . str_replace(["\r", "\n"], '', $js) . '</script>';
+}
+
 /* ---------- look ---------- */
 function cc_mp_css() {
     static $done = false; if ($done) return ''; $done = true;
@@ -502,7 +715,44 @@ html .cc .mp-mbox,.mp-mbox{position:relative;width:100%;max-width:560px;margin:a
 .mp-mbox .mp-close{position:absolute;top:10px;right:10px;width:44px;height:44px;display:grid;place-items:center;padding:0;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:#121518;color:#fff;cursor:pointer}.mp-mbox .mp-close svg{display:block}
 .mp-mbox .mp-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}.mp-mbox .mp-tiles div{padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.05);display:grid;gap:2px}.mp-mbox .mp-tiles b{color:#fff;font-size:18px}.mp-mbox .mp-tiles span{color:#b8bec8;font-size:14px}
 .mp-mbox .fd-rc{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:6px;border:1px solid rgba(255,255,255,.28);color:#e6e9ee;font-size:14px;font-weight:700}
-@media (min-width:900px){html .cc .mp-pl{grid-template-columns:260px minmax(0,1fr);align-items:start}html .cc .mp-side{position:sticky;top:84px;max-height:calc(100vh - 100px);overflow:auto}}
+html .cc .mp-main{display:grid;gap:16px;min-width:0}
+html .cc .mp-week{display:grid;grid-template-columns:repeat(7,minmax(136px,1fr));gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 0 8px;min-width:0;align-items:start;scrollbar-width:thin}
+html .cc .mp-col{scroll-snap-align:start;display:grid;gap:6px;align-content:start;padding:8px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);min-width:0}
+html .cc .mp-col.is-today{border-color:rgba(43,212,122,.7);background:rgba(18,161,80,.07)}
+html .cc .mp-col.is-open{box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+html .cc .mp-col.drop{border-color:#2bd47a}
+html .cc .mp-colh{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;min-height:44px;width:100%;box-sizing:border-box;padding:6px 8px;margin:0;border-radius:10px;border:0!important;background:rgba(255,255,255,.06)!important;box-shadow:none!important;color:#fff!important;font:600 15px var(--body);cursor:pointer;text-align:left}
+html .cc .mp-colh:hover{background:rgba(255,255,255,.12)!important}
+html .cc .mp-colh b{font-size:17px}
+html .cc .mp-colh small{color:#2bd47a;font-size:14px;font-weight:700}
+html .cc .mp-ctr{margin:0;padding:0;list-style:none;font-size:14px;color:#d0d6e0;display:grid;gap:2px;overflow-wrap:break-word;line-height:1.35}
+html .cc .mp-ctr .fd-muted{color:#b8bec8}
+html .cc .mp-cnote{margin:0;font-size:14px;color:#e6e9ee;overflow-wrap:break-word;line-height:1.35}
+html .cc .mp-cnote b{color:#c9f3da}
+html .cc .mp-csr{padding:6px 0 0;gap:4px;border-radius:8px}
+html .cc .mp-csr>b{font-size:14px;color:#b8bec8;font-weight:700}
+html .cc .mp-cit{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:4px;padding:6px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);min-width:0}
+html .cc .mp-cia{display:grid;justify-items:center;gap:2px}
+html .cc .mp-cit.mv{cursor:grab}
+html .cc .mp-cit img{display:block;width:100%;height:46px;border-radius:7px;object-fit:cover;margin:0 0 4px}
+html .cc .mp-cin{min-width:0;display:grid;gap:1px}
+html .cc .mp-cit b{color:#fff;font-size:14px;font-weight:600;overflow-wrap:break-word;hyphens:auto;line-height:1.25}
+html .cc .mp-cit small{color:#b8bec8;font-size:14px;line-height:1.25}
+html .cc .mp-cit .mp-st{width:24px;height:24px;font-size:14px}
+html .cc .mp-cit .mp-cx{width:32px;height:32px;min-width:32px;border:0}
+html .cc .mp-ctot{margin:2px 0 0;padding:6px 8px;border-radius:10px;background:rgba(18,161,80,.08);border:1px solid rgba(43,212,122,.3);font-size:14px;color:#d0d6e0;display:grid;gap:1px}
+html .cc .mp-ctot b{color:#fff}
+html .cc .mp-ctot .mp-cate{color:#c9f3da}
+html .cc .mp-c0{background:none;border-color:rgba(255,255,255,.08);color:#b8bec8}
+html .cc .mp-col .mp-add{width:100%;font-size:14px;padding:4px 8px}
+html .cc .mp-col .mp-msg{font-size:14px;overflow-wrap:anywhere}
+html .cc .mp-edl{margin:0;color:#b8bec8;font-size:14px}
+html .cc .mp-edw{display:grid;gap:8px}
+html .cc .mp-edw .mp-sr.mp-empty{display:grid}
+html .cc .mp-see{margin-top:16px;border-top:1px solid rgba(255,255,255,.12);padding-top:8px}
+html .cc .mp-see>summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:#2bd47a;font:600 16px var(--body)}
+html .cc .mp-see .mps{margin-top:8px;max-width:560px;padding:16px;border:1px solid rgba(255,255,255,.12);border-radius:16px}
+html .cc .mp-side .mp-chs{display:flex;flex-wrap:wrap;gap:6px;max-height:180px;overflow:auto}html .cc .mp-side .mp-ch{width:auto;max-width:260px}html .cc .mp-side .mp-flt{max-width:360px}
 CSS;
     return '<style>' . (function_exists('cc_fd_mc_css') ? cc_fd_mc_css() : '') . str_replace(["\r", "\n"], '', $css) . '</style>';
 }
@@ -612,7 +862,7 @@ ov.addEventListener("click",function(e){if(e.target===ov||e.target.closest(".mp-
 function closeM(ov){ov.remove();document.documentElement.style.overflow="";}
 document.addEventListener("keydown",function(e){if(e.key==="Escape"){var ov=document.querySelector(".mp-modal");if(ov){closeM(ov);}}});
 function answer(d,u,data){var it=find(d,u);if(!it||P.busy){return;}P.busy=true;var b=Object.assign({page:C.page,date:d,u:u},data);
-F.flush().then(function(){return send(C.u.ans,b);}).then(function(j){P.busy=false;P.plans[d]=j.plan;Object.assign(P.recs,j.recs||{});delete P.ed[u];F.setDay(j.day);F.status(W.saved);})
+F.flush().then(function(){return send(C.u.ans,b);}).then(function(j){P.busy=false;P.plans[d]=j.plan;Object.assign(P.recs,j.recs||{});delete P.ed[u];F.setDay(j.day);F.status(W.saved);try{document.dispatchEvent(new CustomEvent("ccmp:answer",{detail:{d:d,plan:j.plan,src:"diary"}}));}catch(x){}})
 .catch(function(){P.busy=false;F.status(W.err,true);});}
 function rr(){F.render();}
 root.addEventListener("click",function(e){var b=e.target.closest("[data-mp]");if(!b||!root.contains(b)){return;}var a=b.dataset.mp;
@@ -643,6 +893,7 @@ var c=el.closest(".mp-pi");if(!c){return;}var ed=P.ed[c.dataset.u];if(!ed){retur
 if(el.classList.contains("mp-gi")){ed.g=parseFloat(String(el.value).replace(",","."))||"";c.querySelectorAll('[data-mp="dx"]').forEach(function(x){x.classList.toggle("on",!ed.g&&+x.dataset.x===ed.x);});return;}
 if(el.classList.contains("mp-q")&&ed.pk){ed.pk.q=el.value;clearTimeout(qt);qt=setTimeout(function(){var r=c.querySelector(".mp-res");if(r){r.innerHTML=S.resHtml(ed.pk,W);}},120);}});
 root.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList.contains("mp-q")){e.preventDefault();var f=e.target.closest(".mp-pi").querySelector('.fd-rl [data-mp="pick"]');if(f){f.click();}}});
+document.addEventListener("ccmp:answer",function(e){var x=e.detail||{};if(x.src==="diary"||!x.plan){return;}P.plans[x.d]=x.plan;if(x.day&&F.date()===x.d){F.setDay(x.day);}else if(F.date()===x.d){F.render();}});
 F.render();
 })();
 JS;
@@ -817,7 +1068,7 @@ render();})();}
 /* ===== planning on the athlete's page ===== */
 var PR=document.querySelector(".mp-plan");
 if(PR){(function(){var C=JSON.parse(PR.getAttribute("data-cfg")),P={days:{},order:[],sel:null,drag:null,copy:null,addf:null,flt:"",msg:{}},RBm={},TBm={};
-C.days.forEach(function(d){P.days[d.d]=d;P.order.push(d.d);});C.r.forEach(function(r){RBm[r.id]=r;});C.t.forEach(function(t){TBm[t.id]=t;});var SL={};C.slots.forEach(function(s){SL[s[0]]=s[1];});
+C.days.forEach(function(d){P.days[d.d]=d;P.order.push(d.d);});P.open=P.order.indexOf(C.today)>-1?C.today:P.order[0];C.r.forEach(function(r){RBm[r.id]=r;});C.t.forEach(function(t){TBm[t.id]=t;});var SL={};C.slots.forEach(function(s){SL[s[0]]=s[1];});
 function send(u,d){return S.send(u,d,C.nonce);}
 function dTot(day){var t=zero(),e=zero(),ans=false;day.i.forEach(function(it){add(t,it.pm);if(it.em){add(e,it.em);}if(it.a&&it.a.s){ans=true;}});return {p:t,e:e,ans:ans};}
 function gkg(c){return C.kg?" ("+r1(c/C.kg)+" g/kg)":"";}
@@ -843,11 +1094,23 @@ if(P.addf&&P.addf.d===d){h+='<div class="mp-cp"><label>Meal<select class="mp-afs
 if(P.copy===d){h+='<div class="mp-cp"><b>Copy '+esc(day.lbl)+' to:</b>'+P.order.filter(function(x){return x!==d;}).map(function(x){return '<label><input type="checkbox" class="mp-cpx" value="'+x+'"> '+esc(P.days[x].lbl)+'</label>';}).join("")+'<p class="fd-muted" style="margin:0">Unanswered items on those days are replaced; answered ones stay.</p><div class="mp-row"><button type="button" class="btn btn-go" data-mp="docopy">Copy</button><button type="button" class="fd-link" data-mp="nocopy">Cancel</button></div></div>';}
 h+='<div class="mp-row">'+(P.addf&&P.addf.d===d?'':'<button type="button" class="fd-link" data-mp="addf">+ Single food</button>')+(day.i.length||day.n?'<button type="button" class="fd-link" data-mp="copy">Copy this day to…</button>':'')+(day.i.some(function(it){return !(it.a&&it.a.s);})?'<button type="button" class="fd-link" data-mp="clear">Clear planned items</button>':'')+'</div>';
 var m=P.msg[d];return h+'<p class="mp-msg'+(m&&m.err?" err":"")+'" role="status">'+esc(m?m.t:"")+'</p></section>';}
-function render(){PR.innerHTML='<div class="mp-pl'+(P.sel&&P.sel.k==="r"?" mp-showall":"")+'">'+side()+'<div class="mp-days">'+P.order.map(dayHtml).join("")+'</div></div>';}
-function renderDay(d){var el=PR.querySelector('.mp-day[data-d="'+d+'"]');if(!el){render();return;}var w=document.createElement("div");w.innerHTML=dayHtml(d);el.replaceWith(w.firstChild);}
+function colHtml(d){var day=P.days[d],past=d<=C.today,sel=P.sel,t=dTot(day),h='<section class="mp-col'+(d===C.today?" is-today":"")+(P.open===d?" is-open":"")+'" data-d="'+d+'" aria-label="'+esc(day.lbl)+'"><button type="button" class="mp-colh" data-mp="dopen" title="Edit '+esc(day.lbl)+' below" aria-pressed="'+(P.open===d)+'"><span>'+esc(day.dow)+'</span><b>'+esc(day.dnum)+'</b>'+(d===C.today?'<small>Today</small>':'')+'</button>';
+h+='<ul class="mp-ctr">'+day.train.map(function(x){return '<li>'+x+'</li>';}).join("")+'</ul>';
+if(day.n){h+='<p class="mp-cnote" title="'+esc(day.n)+'"><b>Note:</b> '+esc(day.n.length>70?day.n.slice(0,67)+"…":day.n)+'</p>';}
+if(sel&&sel.k==="t"&&TBm[sel.id]){h+='<button type="button" class="mp-add" data-mp="apply">+ Apply template</button>';}
+C.slots.forEach(function(sv){var k=sv[0],a=day.i.filter(function(it){return it.sl===k;});
+h+='<div class="mp-sr mp-csr'+(a.length?"":" mp-empty")+'" data-sl="'+k+'"><b>'+esc(sv[1])+'</b>';
+a.forEach(function(it){var r=it.k==="r"?RBm[it.rid]:null,nm=it.k==="r"?it.rn:it.f.n,mv=!(it.a&&it.a.s),pm=it.pm||{};h+='<div class="mp-cit'+(mv?" mv":"")+'" data-u="'+esc(it.u)+'"'+(mv?' draggable="true" title="Drag to another meal or day"':'')+'><span class="mp-cin">'+(r&&r.phu?'<img src="'+esc(r.phu)+'" alt="" loading="lazy">':'')+'<b>'+esc(nm)+(it.k==="r"&&+it.x!==1?' ×'+r1(it.x):'')+'</b><small>'+f0(pm.k)+' kcal · C '+f0(pm.c)+' g</small></span><span class="mp-cia"><button type="button" class="mp-x0 mp-cx" data-mp="rm" data-u="'+esc(it.u)+'" aria-label="Remove '+esc(nm)+'">'+XI+'</button>'+stIc(it,past)+'</span></div>';});
+if(sel&&sel.k==="r"&&RBm[sel.id]){h+='<button type="button" class="mp-add" data-mp="addr" data-sl="'+k+'">+ Add</button>';}
+h+='</div>';});
+h+=day.i.length?'<p class="mp-ctot"><span>Planned <b>'+f0(t.p.k)+' kcal</b></span><span>C '+f0(t.p.c)+' g'+gkg(t.p.c)+'</span>'+(t.ans?'<span class="mp-cate">✓ Eaten '+f0(t.e.k)+' kcal · C '+f0(t.e.c)+' g</span>':'')+'</p>':'<p class="mp-ctot mp-c0">Nothing planned</p>';
+var m=P.msg[d];return h+'<p class="mp-msg'+(m&&m.err?" err":"")+'" role="status">'+esc(m?m.t:"")+'</p></section>';}
+function render(){PR.innerHTML='<div class="mp-pl'+(P.sel&&(P.sel.k==="r")?" mp-showall":"")+'">'+side()+'<div class="mp-main"><div class="mp-week" role="group" aria-label="Week">'+P.order.map(colHtml).join("")+'</div><div class="mp-edw"><p class="mp-edl">Day editor · click a day header above to edit another day</p>'+(P.open?dayHtml(P.open):"")+'</div></div></div>';}
+function renderCol(d){var c=PR.querySelector('.mp-col[data-d="'+d+'"]');if(!c){return;}var w=document.createElement("div");w.innerHTML=colHtml(d);c.replaceWith(w.firstChild);}
+function renderDay(d){var c=PR.querySelector('.mp-col[data-d="'+d+'"]');if(!c){render();return;}renderCol(d);if(P.open===d){var e=PR.querySelector('.mp-day[data-d="'+d+'"]');if(e){var w2=document.createElement("div");w2.innerHTML=dayHtml(d);e.replaceWith(w2.firstChild);}}}
 function out(it){var o={u:it.u,sl:it.sl,k:it.k};if(it.k==="r"){o.rid=it.rid;o.x=it.x;}else{o.f=it.f;}return o;}
 function save(d,quiet){var day=P.days[d];P.msg[d]={t:"Saving…"};if(!quiet){renderDay(d);}
-return send(C.u.plan,{page:C.page,date:d,data:JSON.stringify({i:day.i.map(out),n:day.n})}).then(function(j){P.days[d]=j.day;P.msg[d]={t:"✓ Saved"};if(!quiet){renderDay(d);}else{var m=PR.querySelector('.mp-day[data-d="'+d+'"] .mp-msg');if(m){m.textContent="✓ Saved";m.className="mp-msg";}}var wl=document.querySelector(".mp-plan-s .mp-wl");if(wl&&j.week){var tmp=document.createElement("div");tmp.innerHTML=j.week;var hint=document.querySelector(".mp-plan-s .mp-hint");if(hint){hint.remove();}wl.replaceWith.apply(wl,Array.prototype.slice.call(tmp.childNodes));}})
+return send(C.u.plan,{page:C.page,date:d,data:JSON.stringify({i:day.i.map(out),n:day.n})}).then(function(j){P.days[d]=j.day;P.msg[d]={t:"✓ Saved"};if(!quiet){renderDay(d);}else{renderCol(d);var m=PR.querySelector('.mp-day[data-d="'+d+'"] .mp-msg');if(m){m.textContent="✓ Saved";m.className="mp-msg";}}var wl=document.querySelector(".mp-plan-s .mp-wl");if(wl&&j.week){var tmp=document.createElement("div");tmp.innerHTML=j.week;var hint=document.querySelector(".mp-plan-s .mp-hint");if(hint){hint.remove();}wl.replaceWith.apply(wl,Array.prototype.slice.call(tmp.childNodes));}})
 .catch(function(e){P.msg[d]={t:(e&&e.message)||"Not saved. Please try again.",err:true};renderDay(d);});}
 function newR(rid,sl,x){var r=RBm[rid];return {u:uid(),sl:sl,k:"r",rid:rid,x:x||1,rn:r?r.n:"",pm:r?scale(r.mac,x||1):null};}
 function scale(m,x){var o={};["k","c","p","f","fi","fe"].forEach(function(k){o[k]=(+m[k]||0)*x;});return o;}
@@ -859,7 +1122,8 @@ day.i=keep.concat(add2);save(d);}
 function copyTo(src,dsts){var s=P.days[src];dsts.forEach(function(d){var day=P.days[d],keep=day.i.filter(function(it){return it.a&&it.a.s;});day.i=keep.concat(s.i.map(function(it){var c=JSON.parse(JSON.stringify(it));c.u=uid();delete c.a;delete c.em;return c;}));if(!day.n&&s.n){day.n=s.n;}save(d);});}
 function copyLink(rid,b){var u=C.link+(C.link.indexOf("?")>-1?"&":"?")+"mpr="+encodeURIComponent(rid);var done=function(){var d=b.closest(".mp-day").dataset.d;P.msg[d]={t:"✓ Link copied. Paste it into your Vekta note: "+u};var m=b.closest(".mp-day").querySelector(".mp-msg");if(m){m.textContent=P.msg[d].t;m.className="mp-msg";}};
 if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(done,function(){prompt("Copy this link:",u);});}else{prompt("Copy this link:",u);}}
-PR.addEventListener("click",function(e){var b=e.target.closest("[data-mp]");if(!b){return;}var a=b.dataset.mp,dEl=b.closest(".mp-day"),d=dEl?dEl.dataset.d:null;
+PR.addEventListener("click",function(e){var b=e.target.closest("[data-mp]");if(!b){return;}var a=b.dataset.mp,dEl=b.closest(".mp-day")||b.closest(".mp-col"),d=dEl?dEl.dataset.d:null;
+if(a==="dopen"&&d){P.open=d;P.copy=null;P.addf=null;render();var ew=PR.querySelector(".mp-edw");if(ew&&ew.scrollIntoView){ew.scrollIntoView({block:"start",behavior:"smooth"});}return;}
 if(a==="sel"){var k=b.dataset.k,id=b.dataset.id;P.sel=(P.sel&&P.sel.k===k&&P.sel.id===id)?null:{k:k,id:id};render();return;}
 if(a==="unsel"){P.sel=null;render();return;}
 if(!d){return;}var day=P.days[d];
@@ -889,12 +1153,15 @@ var it=day.i.filter(function(x){return x.u===el.dataset.u;})[0];if(!it){return;}
 if(el.classList.contains("mp-xin")){var x=parseFloat(String(el.value).replace(",","."));if(x>0){it.x=Math.min(10,x);save(d);}}
 else if(el.classList.contains("mp-gin")){var g=parseFloat(String(el.value).replace(",","."));if(g>0){it.f.g=Math.min(5000,g);save(d);}}});
 PR.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList.contains("mp-q")){e.preventDefault();var f=e.target.closest(".mp-day").querySelector('.fd-rl [data-mp="pick"]');if(f){f.click();}}if(e.key==="Enter"&&e.target.classList.contains("mp-pg")){e.preventDefault();var b=e.target.closest(".mp-day").querySelector('[data-mp="pickadd"]');if(b){b.click();}}});
-PR.addEventListener("dragstart",function(e){var b=e.target.closest&&e.target.closest(".mp-ch");if(!b){return;}P.drag={k:b.dataset.k,id:b.dataset.id};try{e.dataTransfer.setData("text/plain",b.dataset.k+":"+b.dataset.id);e.dataTransfer.effectAllowed="copy";}catch(x){}if(P.drag.k==="r"){var pl=PR.querySelector(".mp-pl");if(pl){pl.classList.add("mp-showall");}}});
+PR.addEventListener("dragstart",function(e){var mi=e.target.closest&&e.target.closest(".mp-cit.mv");if(mi){P.drag={k:"m",u:mi.dataset.u,from:mi.closest(".mp-col").dataset.d};try{e.dataTransfer.setData("text/plain","m:"+mi.dataset.u);e.dataTransfer.effectAllowed="move";}catch(x){}var pl0=PR.querySelector(".mp-pl");if(pl0){pl0.classList.add("mp-showall");}return;}
+var b=e.target.closest&&e.target.closest(".mp-ch");if(!b){return;}P.drag={k:b.dataset.k,id:b.dataset.id};try{e.dataTransfer.setData("text/plain",b.dataset.k+":"+b.dataset.id);e.dataTransfer.effectAllowed="copy";}catch(x){}if(P.drag.k==="r"){var pl=PR.querySelector(".mp-pl");if(pl){pl.classList.add("mp-showall");}}});
 PR.addEventListener("dragend",function(){P.drag=null;PR.querySelectorAll(".drop").forEach(function(x){x.classList.remove("drop");});var pl=PR.querySelector(".mp-pl");if(pl&&!(P.sel&&P.sel.k==="r")){pl.classList.remove("mp-showall");}});
-function target(e){if(!P.drag){return null;}return P.drag.k==="r"?e.target.closest(".mp-sr"):e.target.closest(".mp-day");}
-PR.addEventListener("dragover",function(e){var t=target(e);if(!t){return;}e.preventDefault();try{e.dataTransfer.dropEffect="copy";}catch(x){}PR.querySelectorAll(".drop").forEach(function(x){if(x!==t){x.classList.remove("drop");}});t.classList.add("drop");});
-PR.addEventListener("drop",function(e){var t=target(e);if(!t){return;}e.preventDefault();var dr=P.drag,d=t.closest(".mp-day").dataset.d;P.drag=null;t.classList.remove("drop");
-if(dr.k==="r"){addR(d,t.dataset.sl,dr.id);}else{applyT(d,dr.id);}var pl=PR.querySelector(".mp-pl");if(pl&&!(P.sel&&P.sel.k==="r")){pl.classList.remove("mp-showall");}});
+function target(e){if(!P.drag){return null;}return P.drag.k!=="t"?e.target.closest(".mp-sr"):e.target.closest(".mp-day,.mp-col");}
+function moveIt(dr,d,sl){var src=P.days[dr.from],it=null;if(!src||!P.days[d]){return;}src.i=src.i.filter(function(x){if(x.u===dr.u){it=x;return false;}return true;});if(!it){return;}it.sl=sl;delete it.em;
+if(dr.from===d){src.i.push(it);save(d);}else{P.days[d].i.push(it);save(dr.from);save(d);}}
+PR.addEventListener("dragover",function(e){var t=target(e);if(!t){return;}e.preventDefault();try{e.dataTransfer.dropEffect=P.drag.k==="m"?"move":"copy";}catch(x){}PR.querySelectorAll(".drop").forEach(function(x){if(x!==t){x.classList.remove("drop");}});t.classList.add("drop");});
+PR.addEventListener("drop",function(e){var t=target(e);if(!t){return;}e.preventDefault();var dr=P.drag,d=t.closest(".mp-day,.mp-col").dataset.d;P.drag=null;t.classList.remove("drop");
+if(dr.k==="m"){moveIt(dr,d,t.dataset.sl);}else if(dr.k==="r"){addR(d,t.dataset.sl,dr.id);}else{applyT(d,dr.id);}var pl=PR.querySelector(".mp-pl");if(pl&&!(P.sel&&P.sel.k==="r")){pl.classList.remove("mp-showall");}});
 render();})();}
 })();
 JS;

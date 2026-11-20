@@ -724,11 +724,13 @@ function cc_fd_day_html($pid, $date, $vx, $tp, $kg, $viewer, $mine = [], $fem = 
         $sl .= '</div>';
     }
     if ($has) {
-        $o .= cc_fd_ring($t) . $sl . '<div class="fd-rtot"><b>Day total</b>' . (function_exists('cc_np_macro_spans') ? cc_np_macro_spans($t, $kg, cc_np_alc($d, $mine)) : '<span>' . round($t['k']) . ' kcal</span>')
+        $o .= cc_fd_ring($t) . $sl . '<div class="fd-rtot"><b>Day total</b><span><b>' . number_format(round($t['k'])) . ' kcal</b></span>'
+            . '<span>' . cc_fd_mlbl('c', 'Carbs') . ' ' . round($t['c']) . ' g' . ($kg ? ' (' . number_format($t['c'] / $kg, 1) . ' g/kg)' : '') . '</span><span>' . cc_fd_mlbl('p', 'Protein') . ' ' . round($t['p']) . ' g' . ($kg ? ' (' . number_format($t['p'] / $kg, 1) . ' g/kg)' : '') . '</span><span>' . cc_fd_mlbl('f', 'Fat') . ' ' . round($t['f']) . ' g</span>'
             . '<span>Fibre ' . round($t['fi']) . ' g</span><span>Sugars ' . round($t['su']) . ' g</span>'
             . '<span>Water ' . number_format($fl[0]) . ' ml</span><span>Other drinks ' . number_format($fl[1]) . ' ml</span><span>Total fluids ' . number_format($ml) . ' ml (' . cc_fd_f1($ml / 1000) . ' L)</span></div>'
             . ($fem ? '<p class="fd-ironl">' . esc_html(sprintf(cc_fd_w('iron_line'), cc_fd_f1($ir['fe']))) . ($ir['inc'] ? ' <small class="fd-inc">incomplete</small>' : '') . '</p>' : '')
-            . cc_fd_micro_box($d, $mine, $fem);
+            . cc_fd_micro_box($d, $mine, $fem)
+            . (function_exists('cc_np_analysis') ? '<p class="np-anlink"><a href="' . esc_url(add_query_arg('an', $date) . '#fd-analysis') . '">Diet and fuelling analysis for this day ↑</a></p>' : '');
     } else $o .= '<p class="fd-muted">Nothing logged.</p>';
     $o = str_replace('%IRONTAG%', ($fem && $has && $ir['low']) ? ' <span class="fd-lowfe">Low iron</span>' : '', $o);
     if (!$tp && $vx) $o .= '<div class="fd-vx">' . cc_fd_training_html($vx, $date, 'Training this day') . cc_fd_training_html($vx, $next, 'Training next day')
@@ -763,7 +765,7 @@ function cc_fd_review($pid, $viewer) {
         $n = 0; $k = 0; foreach (cc_fd_days($pid) as $dd) { $day = cc_fd_get($pid, $dd); if (empty($day['s'])) continue; $k++; $ir = cc_fd_iron($day, $mine); if ($ir['low']) $n++; if ($k >= 7) break; }
         if ($n >= 1) $o .= '<p class="fd-ironsum">Iron below 14 mg on <b>' . $n . '</b> of the last ' . $k . ' logged day' . ($k === 1 ? '' : 's') . ' (days with 3+ meals logged and enough iron data).</p>';
     }
-    $o .= '<div class="fd-top">' . cc_fd_blood_box($pid, $viewer) . ($tp ? '' : cc_fd_trends_box($pid, $vx, $cy)) . '</div>';
+    $o .= '<div class="fd-top">' . cc_fd_blood_box($pid, $viewer) . ((!$tp && !function_exists('cc_np_analysis')) ? cc_fd_trends_box($pid, $vx, $cy) : '') . '</div>';   // trends: in "Diet and fuelling analysis" (nutrition-plus.php)
     $o .= apply_filters('cc_fd_review_top', '', (int) $pid, $viewer);   // nutrition-plus.php: carbs per hour and energy charts, omega-3 week
     $o .= apply_filters('cc_fd_review_plan', '', (int) $pid, $viewer);   // mealplan.php: plan the coming days
     if (!$tp && $vx) $o .= cc_fd_week_ahead($vx, $pid, $viewer);
@@ -776,12 +778,13 @@ function cc_fd_review($pid, $viewer) {
 /* blood tests next to the diary: Marine sees only the tests the athlete shared with her; Matteo sees all of them */
 function cc_fd_blood_box($pid, $viewer) {
     if (!function_exists('cc_bt_get') || !function_exists('cc_bt_row')) return '';
-    $rows = '';
+    $rows = []; $list = [];
     foreach (array_reverse(cc_bt_get($pid)) as $b) {
-        if ($viewer === 'nutri') { if (!empty($b['share'])) $rows .= cc_bt_row($pid, $b, false, 'nutri'); }
-        else $rows .= cc_bt_row($pid, $b, true);
+        if ($viewer === 'nutri') { if (!empty($b['share'])) { $rows[] = cc_bt_row($pid, $b, false, 'nutri'); $list[] = $b; } }
+        else { $rows[] = cc_bt_row($pid, $b, true); $list[] = $b; }
     }
-    return '<div class="fd-box fd-blood"><h3>Blood tests</h3>' . ($rows ?: '<p class="fd-muted">' . ($viewer === 'nutri' ? 'No blood tests shared yet.' : 'No blood tests uploaded yet.') . '</p>') . '</div>';
+    $body = $rows ? (function_exists('cc_bt_rows_fold') ? cc_bt_section_fold('f' . (int) $pid, $list, cc_bt_rows_fold($rows)) : implode('', $rows)) : '<p class="fd-muted">' . ($viewer === 'nutri' ? 'No blood tests shared yet.' : 'No blood tests uploaded yet.') . '</p>';
+    return '<div class="fd-box fd-blood"><h3>Blood tests</h3>' . $body . '</div>';
 }
 /* the 12-week trends (weight, HRV, resting HR) from Vekta, and the switch that shows them to the athlete */
 function cc_fd_trends_box($pid, $vx, $cy = null) {

@@ -142,10 +142,10 @@ function cc_np_o3_html($o) {
     return $h . '</div>';
 }
 /* 7 days of omega-3 as stacked bars (plant / marine-animal), drawn on the server */
-function cc_np_o3_week($pid, $end) {
+function cc_np_o3_week($pid, $end, $bare = false) {
     $mine = cc_fd_mine($pid); $t0 = strtotime($end . ' 12:00'); $rows = []; $mx = 0; $any = false;
     for ($i = 6; $i >= 0; $i--) { $d = gmdate('Y-m-d', $t0 - $i * DAY_IN_SECONDS); $o = cc_np_o3(cc_fd_get($pid, $d), $mine); $rows[] = [$d, $o]; $mx = max($mx, $o['ala'] + $o['n3m']); if ($o['g'] > 0) $any = true; }
-    if (!$any) return '<div class="fd-box np-o3w"><h3>Omega-3 · last 7 days</h3><p class="fd-muted">Nothing logged in the last 7 days.</p></div>';
+    if (!$any) return $bare ? '<p class="fd-muted">Nothing logged in these 7 days.</p>' : '<div class="fd-box np-o3w"><h3>Omega-3 · last 7 days</h3><p class="fd-muted">Nothing logged in the last 7 days.</p></div>';
     $W = 560; $H = 230; $pb = 44; $pt = 30; $bw = 46; $gap = ($W - 7 * $bw) / 8; $mx = $mx > 0 ? $mx * 1.15 : 1;
     $s = '<svg viewBox="0 0 ' . $W . ' ' . $H . '" role="img" aria-label="Omega-3 per day, last 7 days">';
     $s .= '<line x1="0" y1="' . ($H - $pb) . '" x2="' . $W . '" y2="' . ($H - $pb) . '" stroke="rgba(255,255,255,.18)"/>';
@@ -160,8 +160,9 @@ function cc_np_o3_week($pid, $end) {
         $s .= '<text x="' . round($x + $bw / 2, 1) . '" y="' . ($H - 6) . '" text-anchor="middle" font-size="14" fill="#b8bec8">' . esc_html(date_i18n('j M', strtotime($d . ' 12:00'))) . '</text>';
     }
     $s .= '</svg>';
-    return '<div class="fd-box np-o3w"><h3>Omega-3 · last 7 days</h3><p class="fd-muted">Grams per day from the foods with omega-3 data (– = nothing logged).</p>' . $s
-        . '<p class="np-leg"><span><i style="background:#5cc8c2"></i>Plant (ALA)</span><span><i style="background:#7fb2ff"></i>Marine/animal (EPA+DPA+DHA)</span></p></div>';
+    $in = '<p class="fd-muted">Grams per day from the foods with omega-3 data (– = nothing logged).</p>' . $s
+        . '<p class="np-leg"><span><i style="background:#5cc8c2"></i>Plant (ALA)</span><span><i style="background:#7fb2ff"></i>Marine/animal (EPA+DPA+DHA)</span></p>';
+    return $bare ? $in : '<div class="fd-box np-o3w"><h3>Omega-3 · last 7 days</h3>' . $in . '</div>';
 }
 
 /* ---------- carbs per hour and energy vs duration and intensity (12 weeks) ---------- */
@@ -189,20 +190,53 @@ function cc_np_sessions($pid, $vx) {
     }
     return ['s' => $out, 'nofood' => $nofood];
 }
-add_filter('cc_fd_review_top', function ($html, $pid, $viewer) {
-    $tp = cc_ath_tp($pid); $vx = $tp ? [] : cc_fd_vx($pid); $o = '';
-    if ($tp) $o .= '';
-    elseif (empty($vx['acts'])) $o .= '<div class="fd-box np-ch"><h3>Carbs per hour and energy · last 12 weeks</h3><p class="fd-muted">No sessions yet: they arrive with the next sync from Matteo’s laptop.</p></div>';
-    else {
-        $S = cc_np_sessions($pid, $vx);
-        $o .= '<div class="fd-box np-ch"><h3>Carbs per hour during exercise · last 12 weeks</h3><p class="fd-muted">One dot per session: duration across, carbs per hour from the athlete’s “On the bike” foods that day (given to the day’s longest ride, else its longest session). Colour = Vekta intensity; shape = sport. Tap or hover a dot.'
-            . ($S['nofood'] ? ' ' . $S['nofood'] . ' training day' . ($S['nofood'] === 1 ? '' : 's') . ' without “On the bike” food logged are not shown.' : '') . '</p>'
-            . '<div class="np-sc" data-kind="g" data-sc="' . esc_attr(wp_json_encode($S['s'])) . '"></div></div>'
-            . '<div class="fd-box np-ch"><h3>Energy burned · last 12 weeks</h3><p class="fd-muted">One dot per session: duration across, kcal burned up (Vekta calories; if missing, work in kJ ≈ kcal, ringed dot). Colour = Vekta intensity; shape = sport.</p>'
-            . '<div class="np-sc" data-kind="k" data-sc="' . esc_attr(wp_json_encode($S['s'])) . '"></div></div>';
+/* ---------- "Diet and fuelling analysis" (Matteo, 20 Nov 2026): every analysis piece for Marine and Matteo in one section of the review,
+ * each one foldable: macro split (kcal and %, day + 7-day average), carbs per hour during exercise, energy burned, omega-3 (day + 7 days),
+ * food families (day + 7 days) and the 12-week trends. Nothing of this is repeated under the days any more. Never shown to athletes. */
+function cc_np_analysis($pid) {
+    $tp = cc_ath_tp($pid); $vx = $tp ? [] : cc_fd_vx($pid); $mine = cc_fd_mine($pid); $kg = cc_fd_kgv($pid)['kg']; $today = current_time('Y-m-d');
+    $day = cc_fd_date($_GET['an'] ?? '');
+    if (!$day || $day > $today) { $day = $today; foreach (cc_fd_days($pid) as $dd) if ($dd <= $today) { $day = $dd; break; } }
+    $t0 = strtotime($day . ' 12:00'); $lbl = date_i18n('D j M', $t0); $sum = ['k' => 0, 'c' => 0, 'p' => 0, 'f' => 0, 'fi' => 0, 'su' => 0]; $alc = 0; $n = 0; $dd0 = null; $t1 = null; $a1 = 0;
+    for ($i = 0; $i < 7; $i++) {
+        $dd = cc_fd_get($pid, gmdate('Y-m-d', $t0 - $i * DAY_IN_SECONDS)); $t = cc_fd_daytot($dd); $a = $t['k'] > 0 ? cc_np_alc($dd, $mine) : 0;
+        if ($i === 0) { $dd0 = $dd; $t1 = $t; $a1 = $a; }
+        if ($t['k'] > 0) { $n++; foreach ($sum as $k => $_) $sum[$k] += (float) $t[$k]; $alc += $a; }
     }
-    $o .= cc_np_o3_week($pid, current_time('Y-m-d'));
-    return $html . '<div class="np-top">' . $o . '</div>' . cc_np_css() . cc_np_js();
+    $fold = function ($k, $title, $body, $open = false, $cls = '') { return '<details class="np-anp' . ($cls ? ' ' . $cls : '') . '" data-k="' . $k . '"' . ($open ? ' open' : '') . '><summary>' . $title . '</summary><div class="np-anb">' . $body . '</div></details>'; };
+    $keep = ''; foreach (['food', 'board', 'ath', 'fo'] as $q) if (isset($_GET[$q])) $keep .= '<input type="hidden" name="' . $q . '" value="' . esc_attr(sanitize_key($_GET[$q])) . '">';
+    $o = '<section class="fd-box np-an" id="fd-analysis"><h3>Diet and fuelling analysis</h3>'
+       . '<form method="get" action="#fd-analysis" class="np-anf">' . $keep . '<label>Day <input type="date" name="an" value="' . esc_attr($day) . '" max="' . esc_attr($today) . '"></label><button type="submit" class="btn btn-ghost">Show</button>'
+       . '<span class="np-sub">Day pieces use ' . esc_html($lbl) . '; 7-day pieces the 7 days up to it.</span></form>';
+    // 1. macro split
+    $b = ($t1 && $t1['k'] > 0) ? '<p class="np-anl">' . esc_html($lbl) . '</p><div class="fd-rtot">' . cc_np_macro_spans($t1, $kg, $a1) . '<span>Fibre ' . round($t1['fi']) . ' g</span><span>Sugars ' . round($t1['su']) . ' g</span></div>' : '<p class="fd-muted">Nothing logged on ' . esc_html($lbl) . '.</p>';
+    if ($n) { $avg = []; foreach ($sum as $k => $v) $avg[$k] = $v / $n; $b .= '<p class="np-anl">7-day average (' . $n . ' logged day' . ($n === 1 ? '' : 's') . ')</p><div class="fd-rtot">' . cc_np_macro_spans($avg, $kg, $alc / $n) . '<span>Fibre ' . round($avg['fi']) . ' g</span><span>Sugars ' . round($avg['su']) . ' g</span></div>'; }
+    $o .= $fold('mac', 'Macro split · kcal and %', $b, true);
+    // 2 + 3. carbs per hour and energy burned (12 weeks)
+    if (!$tp) {
+        if (empty($vx['acts'])) $o .= $fold('cph', 'Carbs per hour during exercise · 12 weeks', '<p class="fd-muted">No sessions yet: they arrive with the next sync from Matteo’s laptop.</p>', true);
+        else {
+            $S = cc_np_sessions($pid, $vx);
+            $o .= $fold('cph', 'Carbs per hour during exercise · 12 weeks', '<p class="fd-muted">One dot per session: duration across, carbs per hour from the athlete’s “On the bike” foods that day (given to the day’s longest ride, else its longest session). Colour = Vekta intensity; shape = sport. Tap or hover a dot.'
+                . ($S['nofood'] ? ' ' . $S['nofood'] . ' training day' . ($S['nofood'] === 1 ? '' : 's') . ' without “On the bike” food logged are not shown.' : '') . '</p><div class="np-sc" data-kind="g" data-sc="' . esc_attr(wp_json_encode($S['s'])) . '"></div>', true, 'np-ch');
+            $o .= $fold('kcal', 'Energy burned · 12 weeks', '<p class="fd-muted">One dot per session: duration across, kcal burned up (Vekta calories; if missing, work in kJ ≈ kcal, ringed dot). Colour = Vekta intensity; shape = sport.</p><div class="np-sc" data-kind="k" data-sc="' . esc_attr(wp_json_encode($S['s'])) . '"></div>', false, 'np-ch');
+        }
+    }
+    // 4. omega-3
+    $o3 = $dd0 ? cc_np_o3_html(cc_np_o3($dd0, $mine)) : '';
+    $o .= $fold('o3', 'Omega-3 · day and 7 days', '<p class="np-anl">' . esc_html($lbl) . '</p>' . ($o3 ?: '<p class="fd-muted">Nothing logged this day.</p>') . '<p class="np-anl">7 days up to ' . esc_html($lbl) . '</p>' . cc_np_o3_week($pid, $day, true), false, 'np-o3w');
+    // 5. food families
+    $o .= $fold('fam', 'Food families · sugars, carbs, fibre (day and 7 days)', cc_np_fam_html($pid, $day, $mine, true), false, 'np-fa');
+    // 6. 12-week trends (weight, HRV, resting HR)
+    if (!$tp) {
+        $fem = cc_fd_female($pid, $vx); $cy = $fem ? cc_fd_cycle($pid) : null; if ($cy && empty($cy['on'])) $cy = null;
+        $tb = preg_replace('#<h3>.*?</h3>#', '', cc_fd_trends_box($pid, $vx, $cy), 1);
+        $o .= $fold('tr', 'Trends · weight, HRV, resting HR (12 weeks)', $tb, false, 'fd-trd');
+    }
+    return $o . '</section>';
+}
+add_filter('cc_fd_review_top', function ($html, $pid, $viewer) {
+    return $html . cc_np_analysis($pid) . cc_np_css() . cc_np_js();
 }, 10, 3);
 
 /* ---------- Marine's day targets form (next 7 days, after the meal plan) ---------- */
@@ -244,9 +278,10 @@ function cc_np_fam_day($day, $mine, $set) {
     }
     return $o;
 }
-function cc_np_fam_html($pid, $date, $mine) {
+function cc_np_fam_html($pid, $date, $mine, $bare = false) {
     $set = cc_np_fam_set(); $link = esc_url(cc_ath_is_coach() ? add_query_arg('board', 'families', cc_fd_hub()) : add_query_arg('ff', '1', cc_fd_hub()));
-    if (!$set['f'] && !$set['o']) return '<details class="np-fa"><summary>Food-family analysis</summary><p class="fd-muted">No food families classified yet. Set sugars, carbs and fibre per family on the <a href="' . $link . '">Food families</a> page; the analysis then lists the families eaten under each one (no quantities).</p></details>';
+    $none = '<p class="fd-muted">No food families classified yet. Set sugars, carbs and fibre per family on the <a href="' . $link . '">Food families</a> page; the analysis then lists the families eaten under each one (no quantities).</p>';
+    if (!$set['f'] && !$set['o']) return $bare ? $none : '<details class="np-fa"><summary>Food-family analysis</summary>' . $none . '</details>';
     $today = cc_np_fam_day(cc_fd_get($pid, $date), $mine, $set);
     $wk = []; $t0 = strtotime($date . ' 12:00');
     for ($i = 0; $i < 7; $i++) { $dd = cc_np_fam_day(cc_fd_get($pid, gmdate('Y-m-d', $t0 - $i * DAY_IN_SECONDS)), $mine, $set); foreach ($dd as $dim => $vals) foreach ($vals as $v => $labs) foreach ($labs as $l => $_) $wk[$dim][$v][$l] = ($wk[$dim][$v][$l] ?? 0) + 1; }
@@ -261,7 +296,8 @@ function cc_np_fam_html($pid, $date, $mine) {
         }
         if ($rows) $h .= '<h5>' . esc_html($title) . '</h5><ul>' . $rows . '</ul>';
     }
-    return '<details class="np-fa"><summary>Food-family analysis</summary>' . ($h ?: '<p class="fd-muted">None of the foods eaten this week belong to a classified family yet.</p>') . '<p class="np-sub"><a href="' . $link . '">Food families settings</a></p></details>';
+    $in = ($h ?: '<p class="fd-muted">None of the foods eaten this week belong to a classified family yet.</p>') . '<p class="np-sub"><a href="' . $link . '">Food families settings</a></p>';
+    return $bare ? $in : '<details class="np-fa"><summary>Food-family analysis</summary>' . $in . '</details>';
 }
 add_filter('cc_fd_review_day_extra', function ($html, $pid, $date, $viewer) {
     $day = cc_fd_get($pid, $date); $has = false; foreach ((array) ($day['s'] ?? []) as $s) if (!empty($s['i'])) $has = true;
@@ -289,7 +325,6 @@ add_filter('cc_fd_review_day_extra', function ($html, $pid, $date, $viewer) {
             $o .= '<details class="np-fa" open><summary>Targets by meal (eaten / your note)</summary><ul class="np-sl">' . $rows . '</ul></details>';
         }
     }
-    if ($has) { $mine = cc_fd_mine($pid); $o .= cc_np_o3_html(cc_np_o3($day, $mine)) . cc_np_fam_html($pid, $date, $mine); }
     return $html . ($o ? '<div class="np-day">' . $o . '</div>' . cc_np_css() : '');
 }, 20, 4);
 
@@ -378,6 +413,12 @@ function cc_np_css() {
         . 'html .cc .np-day p{margin:0;font-size:15px;color:#d0d6e0;line-height:1.5}html .cc .np-day p b{color:#fff}html .cc .np-day small,html .cc .np-sub{color:#b8bec8;font-size:14px}'
         . 'html .cc .np-fa summary{cursor:pointer;color:#2bd47a;font-weight:600;font-size:15px;min-height:40px;display:flex;align-items:center}'
         . 'html .cc .np-fa h5{margin:8px 0 4px;font-size:15px;color:#fff}html .cc .np-fa ul{margin:0;padding-left:18px;display:grid;gap:4px}html .cc .np-fa li{font-size:15px;color:#d0d6e0}html .cc .np-fa li small{display:block}'
+        . 'html .cc .np-an{margin:8px 0 18px;display:grid;gap:10px;padding:14px 16px}html .cc .ath .np-an>h3{font:400 24px/1.15 var(--head,Anton),sans-serif!important;color:#fff;margin:0;letter-spacing:.01em}'
+        . 'html .cc .np-anf{display:flex;flex-wrap:wrap;align-items:end;gap:8px 12px;margin:0}html .cc .np-anf label{display:grid;gap:4px;font-size:14px;color:#b8bec8}html .cc .np-anf input{width:auto!important;max-width:220px;font:16px var(--body);min-height:44px;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;box-sizing:border-box}html .cc .np-anf .btn{min-height:44px;margin:0;width:auto!important;flex:none}html .cc .np-anf .np-sub{flex-basis:100%}'
+        . 'html .cc .np-anp{border-top:1px solid rgba(255,255,255,.1)}html .cc .np-anp>summary{cursor:pointer;min-height:48px;display:flex;align-items:center;gap:8px;color:#fff;font:700 17px var(--body);list-style:none}html .cc .np-anp>summary::-webkit-details-marker{display:none}'
+        . 'html .cc .np-anp>summary::before{content:"›";display:inline-grid;place-items:center;width:24px;color:#2bd47a;font-size:22px;transition:transform .2s}html .cc .np-anp[open]>summary::before{transform:rotate(90deg)}'
+        . 'html .cc .np-anb{display:grid;gap:8px;padding:0 0 14px;min-width:0}html .cc .np-anl{margin:4px 0 0;color:#fff;font-size:15px;font-weight:700}html .cc .np-anb .fd-box{border:0;padding:0;background:none}'
+        . 'html .cc .np-anb .fd-rtot{margin:0}html .cc .np-anlink{margin:6px 0 0;font-size:15px}html .cc .np-anlink a{color:#2bd47a}'
         . 'html .cc .np-tgt{margin:0}html .cc .np-tgk{font-size:16px!important;text-align:left}html .cc .np-tgk b{font-size:22px;color:#fff}html .cc .np-tgk .ok{color:#2bd47a;font-weight:700}html .cc .np-sl{list-style:none;padding:0!important}html .cc .np-sl li b{color:#fff}'
         . 'html .cc .np-tg{margin:12px 0}html .cc .np-tgr{display:grid;gap:6px;padding:10px 0;border-top:1px solid rgba(255,255,255,.08)}html .cc .np-tgr b{color:#fff;font-size:15px}html .cc .np-tgr small{color:#b8bec8;font-size:14px}'
         . 'html .cc .np-tgi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}html .cc .np-tgi label{display:grid;gap:4px;font-size:14px;color:#b8bec8;min-width:0}'
@@ -436,7 +477,7 @@ svg.addEventListener("pointermove",function(e){show(e.clientX,e.clientY);});svg.
 svg.addEventListener("touchmove",function(e){if(e.touches[0]){show(e.touches[0].clientX,e.touches[0].clientY);}},{passive:true});
 svg.addEventListener("pointerleave",function(e){if(e.pointerType==="mouse"){tip.hidden=true;hl.style.display="none";}});}
 function scAll(){document.querySelectorAll(".np-sc[data-sc]").forEach(function(el){if(el.offsetParent!==null&&!el.dataset.done){el.dataset.done=1;scatter(el);}});}
-scAll();var rt=null;addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){document.querySelectorAll(".np-sc[data-done]").forEach(function(el){scatter(el);});},250);});
+scAll();document.addEventListener("toggle",function(e){if(e.target.open&&e.target.classList&&e.target.classList.contains("np-anp")){scAll();}},true);var rt=null;addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){document.querySelectorAll(".np-sc[data-done]").forEach(function(el){scatter(el);});},250);});
 document.querySelectorAll(".np-tg").forEach(function(box){var b=box.querySelector(".np-tgsave"),m=box.querySelector(".fd-msg");b.addEventListener("click",function(){var d={};box.querySelectorAll("input[data-d]").forEach(function(i){var x=d[i.dataset.d]||(d[i.dataset.d]={});x[i.dataset.k]=i.value;});
 b.disabled=true;m.textContent="Saving…";post(box.dataset.url,{page:box.dataset.page,data:JSON.stringify(d)},box.dataset.nonce).then(function(){m.textContent="✓ Saved. The athlete sees it on their next visit.";b.disabled=false;}).catch(function(){m.textContent="Not saved. Try again.";b.disabled=false;});});});
 var A=document.querySelector(".np-ffapp");if(!A){return;}
