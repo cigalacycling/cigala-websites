@@ -101,10 +101,10 @@ function cc_vx_assets() {
         . 'try{r.start();}catch(x){cur=null;}});})();</script>'
         . '<script>(function(){document.addEventListener("click",function(e){var k=e.target.closest(".vx-skip");if(!k)return;var m=k.closest(".vx-msg");k.disabled=true;'
         . 'fetch(' . wp_json_encode(rest_url('cc/v1/vekta-dismiss')) . ',{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":' . wp_json_encode(wp_create_nonce('wp_rest')) . '},body:JSON.stringify({key:m.dataset.key})})'
-        . '.then(function(r){if(!r.ok)throw 0;m.style.transition="opacity .25s";m.style.opacity="0";setTimeout(function(){m.remove();},260);}).catch(function(){k.disabled=false;});});'
+        . '.then(function(r){if(!r.ok)throw 0;if(window.ccDec)window.ccDec("vekta");m.style.transition="opacity .25s";m.style.opacity="0";setTimeout(function(){m.remove();},260);}).catch(function(){k.disabled=false;if(window.ccErr)window.ccErr(k,"Not saved. Please try again.");});});'
         . 'document.addEventListener("click",function(e){var b=e.target.closest(".vx-send");if(!b)return;var m=b.closest(".vx-msg"),t=m.querySelector("textarea"),s=m.querySelector(".vx-m"),v=t.value.trim();if(!v){t.focus();return;}'
         . 'b.disabled=true;s.className="vx-m";s.textContent="…";fetch(' . wp_json_encode(rest_url('cc/v1/vekta-reply')) . ',{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":' . wp_json_encode(wp_create_nonce('wp_rest')) . '},body:JSON.stringify({key:m.dataset.key,text:v})})'
-        . '.then(function(r){if(!r.ok)throw 0;m.querySelector(".vx-r").outerHTML="<p class=\"vx-st\">⏳ Your reply is queued: your laptop posts it in Vekta within about 15 minutes</p>";})'
+        . '.then(function(r){if(!r.ok)throw 0;if(window.ccDec)window.ccDec("vekta");m.querySelector(".vx-r").outerHTML="<p class=\"vx-st\">⏳ Your reply is queued: your laptop posts it in Vekta within about 15 minutes</p>";})'
         . '.catch(function(){b.disabled=false;s.className="vx-m err";s.textContent="Not saved. Please try again.";});});})();</script>';
 }
 function cc_vx_sync_line() {

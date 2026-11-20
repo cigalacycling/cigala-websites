@@ -331,6 +331,7 @@ add_filter('cc_ath_board', function ($html, $board) {
         . 'try{sessionStorage.removeItem(K);}catch(x){}'
         . 'fetch(f.action,{method:"POST",body:new FormData(f),credentials:"same-origin",redirect:"manual"}).then(function(r){if(!(r.ok||r.type==="opaqueredirect"||(r.status>=300&&r.status<400)))throw 0;'
         . 'if(act==="testmail"||act==="stopauto"){if(b){b.textContent=DONE[act];}return;}'
+        . 'if(row&&(act==="publish"||act==="delete")&&!row.closest("details")&&window.ccDec)window.ccDec("reports");'   // 20 Nov: the "N to review" badge goes down
         . 'if(row){row.style.transition="opacity .3s";row.style.opacity=".45";row.querySelector(".rp-acts").innerHTML="<span class=\"rp-done\">"+(DONE[act]||"✓ Done")+"</span>";var c=row.querySelector("input.rp-pick");if(c)c.remove();}})'
         // if the in-place call fails, fall back to the normal submit (page reloads at the same spot), so the click always works
         . '.catch(function(){try{sessionStorage.setItem(K,String(window.scrollY));}catch(x){}HTMLFormElement.prototype.submit.call(f);});});})();</script>'

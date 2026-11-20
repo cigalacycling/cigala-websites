@@ -83,21 +83,29 @@ function cc_g_save(WP_REST_Request $r) {
         foreach ($old['events'] ?? [] as $oe) if ($rk($oe) === $rk($ne) && !empty($oe['route_at'])) { $ne['route_at'] = (int) $oe['route_at']; break; } }
     unset($ne);
     $new['from_form'] = $old['from_form'] ?? '';
-    $diff = cc_g_diff($old, $new);
-    if (!$diff) return ['ok' => true, 'unchanged' => true];
+    $diff = cc_g_diff($old, $new); $auto = (bool) $r->get_param('auto');
+    if (!$diff) {   // 20 Nov: the Save button after autosaves sends the email autosave kept back
+        if (!$coach && !$auto && ($b = cc_mail_take($pid, 'gl')) && ($d2 = cc_g_diff($b['old'], $old))) cc_g_email($pid, $uid, $d2, $old);
+        return ['ok' => true, 'unchanged' => true];
+    }
     $new['updated'] = time();
     if ($coach) $new['by_coach'] = time();   // Matteo changed them (from a WhatsApp, a call…): no email to himself
     update_post_meta($pid, 'cc_goals', wp_slash(wp_json_encode($new)));
     if ($coach) return ['ok' => true, 'updated' => $new['updated']];
+    if ($auto) { cc_mail_hold($pid, 'gl', $old, $uid); return ['ok' => true, 'updated' => $new['updated'], 'auto' => true]; }   // one email ~10 min after the last change
+    if ($b = cc_mail_take($pid, 'gl')) { $d2 = cc_g_diff($b['old'], $new); if ($d2) $diff = $d2; }
+    cc_g_email($pid, $uid, $diff, $new);
+    return ['ok' => true, 'updated' => $new['updated']];
+}
+function cc_g_email($pid, $uid, $diff, $new) {
     $u = get_userdata($uid); $name = get_post_field('post_title', $pid);
     $h = '<div style="font:15px/1.5 Montserrat,Arial,sans-serif;color:#111;max-width:560px"><p style="margin:0 0 4px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#E10600;font-weight:600">Goals &amp; events</p>'
        . '<h2 style="margin:0 0 14px;color:#111">' . esc_html($name) . ' updated their goals and events</h2><ul>' . implode('', array_map(function ($x) { return '<li>' . esc_html($x) . '</li>'; }, $diff)) . '</ul>'
-       . ($new['events'] ? '<p style="margin:16px 0 6px"><b style="color:#111">All their events</b></p><ul>' . implode('', array_map(function ($e) { return '<li>' . esc_html(cc_g_event_text($e)) . '</li>'; }, $new['events'])) . '</ul>' : '')
+       . (!empty($new['events']) ? '<p style="margin:16px 0 6px"><b style="color:#111">All their events</b></p><ul>' . implode('', array_map(function ($e) { return '<li>' . esc_html(cc_g_event_text($e)) . '</li>'; }, $new['events'])) . '</ul>' : '')
        . '<p style="margin:20px 0 0"><a href="' . esc_url(add_query_arg('board', 'goals', home_url('/' . CC_ATH_SLUG . '/'))) . '" style="display:inline-block;padding:12px 20px;border-radius:8px;background:#009a44;color:#fff;font-weight:600;text-decoration:none">Open all athletes’ goals</a></p></div>';
     $hd = ['Content-Type: text/html; charset=UTF-8']; if ($u && is_email($u->user_email)) $hd[] = 'Reply-To: ' . $name . ' <' . $u->user_email . '>';
     if (function_exists('cc_ath_coach_wrap')) $h = cc_ath_coach_wrap($h);
     if (cc_av_notify_to()) wp_mail(cc_av_notify_to(), 'Goals & events: ' . $name . ' – ' . $diff[0], $h, $hd);
-    return ['ok' => true, 'updated' => $new['updated']];
 }
 function cc_g_route_upload(WP_REST_Request $r) {
     if (cc_ath_is_coach()) { $pid = (int) $r->get_param('page'); if (get_post_type($pid) !== 'cc_athlete') return new WP_Error('cc_none', 'No such athlete', ['status' => 404]); }
@@ -217,7 +225,7 @@ function draw(){var h='<div class="gl-goals2"><label for="gl-s">'+esc(W['Short-t
    +((e.type==='race'||e.type==='sportive')?route(e):'')
    +(ro?'':'<button type="button" class="av-del gl-del">'+esc(W.Remove)+'</button>')+'</div>';});
  h+='</div><p class="gl-hint">'+esc(W['A = your main goal, B = important, C = for training or fun'])+'</p>';
- if(!ro)h+='<button type="button" class="btn btn-ghost gl-add">'+esc(W['+ Add an event'])+'</button><div class="av-save"><button type="button" class="btn btn-go gl-go" disabled>'+esc(W['Save my goals & events'])+'</button><span class="av-msg gl-msg" role="status"></span></div>';
+ if(!ro)h+='<button type="button" class="btn btn-ghost gl-add">'+esc(W['+ Add an event'])+'</button><div class="av-save"><button type="button" class="btn btn-go gl-go">'+esc(W['Save my goals & events'])+'</button><span class="av-msg gl-msg" role="status"></span></div>';
  A.innerHTML=h;}
 /* Matteo 17 Nov: the route question inside each race (file or link + start time) for the race day simulation */
 function route(e){var f=e.route_type&&e.route_type!=='link';
@@ -233,7 +241,14 @@ function upload(inp){var x=ev(inp),box=inp.closest('.gl-route'),m=box.querySelec
  .then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){x.route_id=j.route_id;x.route_name=j.route_name;x.route_type=j.route_type;delete x.route_link;delete x.route_at;draw();touch();
    var s=A.querySelector('.gl-go');if(x.name&&x.date&&s)s.click();})   /* saved straight away when the race already has a name and a date */
  .catch(function(){m.textContent=W.rt_bad;m.classList.add('bad');inp.value='';});}
-function touch(){dirty=true;var b=A.querySelector('.gl-go');if(b)b.disabled=false;var m=A.querySelector('.gl-msg');if(m)m.textContent='';}
+/* 20 Nov (smoothness): changes save themselves a moment later ("Saving… / Saved ✓"); the button stays as a fallback */
+var SV={en:'Saved',it:'Salvato',pt:'Guardado',sl:'Shranjeno',sk:'Uložené'}[String(C.L||'en').slice(0,2)]||'Saved',at_=null,busy=false,again=false,ver=0;
+function touch(){dirty=true;ver++;var b=A.querySelector('.gl-go');if(b)b.disabled=false;if(!ro){var m0=A.querySelector('.gl-msg');if(m0){m0.textContent=W['Saving…'];m0.classList.remove('bad');}clearTimeout(at_);at_=setTimeout(function(){put(true);},1500);}}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&dirty&&!ro){clearTimeout(at_);put(true);}});
+function put(auto){if(busy){again=true;return;}busy=true;var v0=ver,b=A.querySelector('.gl-go'),m=A.querySelector('.gl-msg');if(b&&!auto)b.disabled=true;if(m){m.textContent=W['Saving…'];m.classList.remove('bad');}
+ fetch(A.dataset.api,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-WP-Nonce':A.dataset.nonce},body:JSON.stringify({goals:G,auto:auto?1:0})})
+ .then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){busy=false;if(ver===v0)dirty=false;m=A.querySelector('.gl-msg');if(m)m.textContent=auto?'✓ '+SV:W['Saved. Thanks, I will plan around it.'];if(again){again=false;if(dirty)put(true);}})
+ .catch(function(){busy=false;again=false;var b2=A.querySelector('.gl-go');if(b2)b2.disabled=false;m=A.querySelector('.gl-msg');if(m){m.textContent=W['That did not save. Please try again.'];m.classList.add('bad');}});}
 function ev(t){return G.events[+t.closest('.gl-ev').dataset.i];}
 A.addEventListener('input',function(e){var t=e.target;if(t.id==='gl-s')G.short=t.value;else if(t.id==='gl-l')G.long=t.value;else if(t.closest('.gl-ev')){var x=ev(t);
  if(t.classList.contains('gl-ln')){x.route_link=t.value.trim();if(x.route_link){x.route_type='link';}else{delete x.route_type;}delete x.route_at;}
@@ -246,10 +261,7 @@ A.addEventListener('click',function(e){var b=e.target.closest('button');if(!b||r
  if(b.classList.contains('gl-add')){G.events.push({name:'',date:'',type:'race',prio:'B',dist:'',elev:'',note:''});draw();touch();var l=A.querySelectorAll('.gl-n');l[l.length-1].focus();}
  if(b.classList.contains('gl-rx')){var y=ev(b);delete y.route_id;delete y.route_name;delete y.route_type;delete y.route_at;draw();touch();}
  if(b.classList.contains('gl-del')){G.events.splice(+b.closest('.gl-ev').dataset.i,1);draw();touch();}
- if(b.classList.contains('gl-go')){b.disabled=true;var m=A.querySelector('.gl-msg');m.textContent=W['Saving…'];m.classList.remove('bad');
-  fetch(A.dataset.api,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-WP-Nonce':A.dataset.nonce},body:JSON.stringify({goals:G})})
-  .then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){dirty=false;m.textContent=j.unchanged?W['Nothing new to save.']:W['Saved. Thanks, I will plan around it.'];})
-  .catch(function(){b.disabled=false;m.textContent=W['That did not save. Please try again.'];m.classList.add('bad');});}});
+ if(b.classList.contains('gl-go')){clearTimeout(at_);put(false);}});
 addEventListener('beforeunload',function(e){if(dirty&&!ro){e.preventDefault();e.returnValue='';}});
 draw();})();</script>
 JS;

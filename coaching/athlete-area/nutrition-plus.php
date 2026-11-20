@@ -225,6 +225,25 @@ function cc_np_analysis($pid) {
     // 4. omega-3
     $o3 = $dd0 ? cc_np_o3_html(cc_np_o3($dd0, $mine)) : '';
     $o .= $fold('o3', 'Omega-3 · day and 7 days', '<p class="np-anl">' . esc_html($lbl) . '</p>' . ($o3 ?: '<p class="fd-muted">Nothing logged this day.</p>') . '<p class="np-anl">7 days up to ' . esc_html($lbl) . '</p>' . cc_np_o3_week($pid, $day, true), false, 'np-o3w');
+    // 4b. supplements (20 Nov 2026): which ones, on how many of the 7 days, and the doses (never in kcal or macros)
+    if (function_exists('cc_fd_supp_clean')) {
+        $sp = [];
+        for ($i = 0; $i < 7; $i++) {
+            foreach (cc_fd_supp_clean(cc_fd_get($pid, gmdate('Y-m-d', $t0 - $i * DAY_IN_SECONDS))['sp'] ?? []) as $x) {
+                $lb = cc_fd_supp_label($x); $key = mb_strtolower($lb); $sp[$key]['n'] = $lb; $sp[$key]['days'][$i] = 1;
+                $ds = cc_fd_supp_dose($x); if ($ds !== '') $sp[$key]['dose'][$ds] = ($sp[$key]['dose'][$ds] ?? 0) + 1;
+            }
+        }
+        uasort($sp, function ($a, $b) { return count($b['days']) <=> count($a['days']) ?: strcmp($a['n'], $b['n']); });
+        if ($sp) {
+            $tb = '<table class="np-spt"><thead><tr><th>Supplement</th><th>Days</th><th>Doses</th></tr></thead><tbody>';
+            foreach ($sp as $x) { $dz = []; foreach ((array) ($x['dose'] ?? []) as $ds => $c) $dz[] = esc_html($ds) . ($c > 1 ? ' ×' . $c : '');
+                $tb .= '<tr><td>' . esc_html($x['n']) . '</td><td>' . count($x['days']) . ' of 7</td><td>' . ($dz ? implode(' · ', $dz) : '–') . '</td></tr>'; }
+            $b = '<p class="fd-muted">7 days up to ' . esc_html($lbl) . '. Logged by the athlete; not counted in kcal or macros.</p>' . $tb . '</tbody></table>';
+        } else $b = '<p class="fd-muted">No supplements logged in the 7 days up to ' . esc_html($lbl) . '.</p>';
+        $o .= $fold('sup', 'Supplements · 7 days', $b . '<style>html .cc .np-spt{width:100%;border-collapse:collapse;font-size:15px;color:#d0d6e0}html .cc .np-spt th{text-align:left;color:#b8bec8;font-size:14px;font-weight:700;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.15)}'
+            . 'html .cc .np-spt td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top;overflow-wrap:anywhere}html .cc .np-spt td:first-child{color:#fff;font-weight:600}</style>', false);
+    }
     // 5. food families
     $o .= $fold('fam', 'Food families · sugars, carbs, fibre (day and 7 days)', cc_np_fam_html($pid, $day, $mine, true), false, 'np-fa');
     // 6. 12-week trends (weight, HRV, resting HR)

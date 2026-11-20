@@ -80,7 +80,7 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
     $o = '<details class="nw-guide" id="nw-guide" open><summary>' . esc_html(cc_nw_w('g_title')) . '</summary><ul>' . implode('', array_map(function ($x) { return '<li>' . wp_kses($x, ['b' => [], 'a' => ['href' => [], 'target' => [], 'rel' => []]]) . '</li>'; }, $lines)) . '</ul></details>';
     foreach (array_slice(cc_nw_for($view), 0, 3) as $n) {
         $l = $GLOBALS['cc_ath_lang'] ?? 'en'; $t = $n['t'][$l] ?? ($n['t']['en'] ?? []);
-        $o .= '<div class="nw-card" data-id="' . esc_attr($n['id']) . '" hidden>' . (!empty($n['img']) ? '<img src="' . esc_url($n['img']) . '" alt="">' : '')
+        $o .= '<div class="nw-card" data-id="' . esc_attr($n['id']) . '"' . (function_exists('cc_dismissed') && cc_dismissed('news_' . $n['id']) ? ' data-got="1"' : '') . (function_exists('cc_dismiss_attr') ? cc_dismiss_attr() : '') . ' hidden>' . (!empty($n['img']) ? '<img src="' . esc_url($n['img']) . '" alt="">' : '')
             . '<div><p class="nw-eb">📣 ' . esc_html(cc_nw_w('news')) . ' · ' . esc_html(cc_r_dm((int) $n['at'])) . '</p><b>' . esc_html($t['title'] ?? '') . '</b>'
             // the event time: Irish time from the server, then the browser rewrites it in the viewer's own time zone
             . (!empty($n['when']) ? '<p class="nw-when" data-utc="' . (int) $n['when'] . '" data-loc="' . esc_attr(['en' => 'en-GB', 'it' => 'it-IT', 'pt' => 'pt-PT', 'sl' => 'sl-SI', 'sk' => 'sk-SK'][$l] ?? 'en-GB') . '" data-mine="' . esc_attr(['en' => 'your time', 'it' => 'ora locale', 'pt' => 'hora local', 'sl' => 'tvoj čas', 'sk' => 'tvoj čas'][$l] ?? 'your time') . '">'
@@ -106,8 +106,9 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {
         // Matteo 17 Nov: open on the first visit only; afterwards folded (tap the title to open it again)
         . 'var d=document.getElementById("nw-guide");if(d){if(g("cc_guide_seen"))d.open=false;else s("cc_guide_seen","1");}'
         . 'document.querySelectorAll(".nw-card").forEach(function(c){var mini=document.querySelector(".nw-mini[data-id=\'"+c.dataset.id+"\']");'
-        . 'function fold(){c.hidden=true;if(mini)mini.hidden=false;}if(g("cc_news_"+c.dataset.id))fold();else c.hidden=false;'
-        . 'c.querySelector(".nw-got").addEventListener("click",function(){s("cc_news_"+c.dataset.id,"1");fold();});'
+        . 'function fold(){c.hidden=true;if(mini)mini.hidden=false;}if(c.dataset.got||g("cc_news_"+c.dataset.id))fold();else c.hidden=false;'
+        // 20 Nov: "Got it" is also kept for the person (any phone), not only this browser
+        . 'c.querySelector(".nw-got").addEventListener("click",function(){s("cc_news_"+c.dataset.id,"1");' . (function_exists('cc_dismiss_js') ? cc_dismiss_js('c', '"news_"+c.dataset.id') : '') . 'fold();});'
         . 'if(mini)mini.addEventListener("click",function(){mini.hidden=true;c.hidden=false;});});'
         // event times in the viewer's own time zone; and the hub remembers that zone for emails / notifications
         . 'document.querySelectorAll(".nw-when").forEach(function(p){try{var d=new Date(1000*p.dataset.utc);if(p.classList.contains("nw-when-mini")){p.textContent="· "+d.toLocaleString(p.dataset.loc,{weekday:"short",hour:"2-digit",minute:"2-digit"});return;}p.textContent="🕗 "+d.toLocaleString(p.dataset.loc,{weekday:"long",day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})+" ("+p.dataset.mine+")";}catch(e){}});'
@@ -124,6 +125,11 @@ function cc_nw_post($in) {   // ['aud', 'url', 'img', 'push', 't' => [lang => [t
     foreach (CC_NW_LANGS as $l) { $x = (array) ($in['t'][$l] ?? []); $title = cc_av_str($x['title'] ?? '', 140); if ($title === '') continue;
         $t[$l] = ['title' => $title, 'body' => cc_av_note($x['body'] ?? '', 1500), 'btn' => cc_av_str($x['btn'] ?? '', 40)]; }
     foreach ($need as $l) if (empty($t[$l])) return new WP_Error('cc_lang', 'Missing the ' . strtoupper($l) . ' text: every athlete reads news in their own language', ['status' => 400]);
+    // 20 Nov (smoothness): the same news twice within 60 seconds (a double tap, a resend) is refused, so nobody gets two emails or buzzes
+    $sig = md5(wp_json_encode([$aud, $t, (string) ($in['url'] ?? ''), (string) ($in['when'] ?? '')]));
+    $last = get_transient('cc_nw_last');
+    if (is_array($last) && ($last[0] ?? '') === $sig && time() - (int) ($last[1] ?? 0) < 60) return new WP_Error('cc_dup', 'This news was posted less than a minute ago, so it was not sent again.', ['status' => 409]);
+    set_transient('cc_nw_last', [$sig, time()], 120);
     $when = 0;   // optional event time, entered in Irish time ("YYYY-MM-DDTHH:MM"), stored as UTC
     if (preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/', (string) ($in['when'] ?? ''))) { try { $when = (new DateTime(substr($in['when'], 0, 16), new DateTimeZone('Europe/Dublin')))->getTimestamp(); } catch (Exception $e) { $when = 0; } }
     $n = ['id' => wp_generate_password(8, false, false), 'at' => time(), 'aud' => $aud, 'url' => esc_url_raw((string) ($in['url'] ?? '')), 'img' => esc_url_raw((string) ($in['img'] ?? '')), 'when' => $when, 't' => $t];
@@ -172,13 +178,20 @@ add_filter('cc_ath_board', function ($html, $board) {
     $o .= '<label>Event date &amp; time, Irish time (optional): each athlete sees it in their own time zone <input name="when" type="datetime-local"></label>'
        . '<label>Button link (optional) <input name="url" type="url" placeholder="https://"></label><label class="nw-tick"><input type="checkbox" name="push" value="1" checked> Also send a phone notification</label>'
        . '<label class="nw-tick"><input type="checkbox" name="email" value="1" checked> Also email it (only to athletes who already use the hub, i.e. set their password)</label>'
-       . '<button class="btn btn-go" type="submit">Post the news</button></form>';
+       . '<button class="btn btn-go" type="submit">Post the news</button><p class="nw-fm" role="status"></p></form>'
+       // 20 Nov (smoothness): sent with fetch: the button shows "Sending…" and stays off until the answer; on an error every field stays filled
+       . '<script>(function(){var f=document.querySelector(".nw-form");if(!f)return;f.addEventListener("submit",function(e){e.preventDefault();var b=f.querySelector("button[type=submit]"),m=f.querySelector(".nw-fm");if(b.disabled)return;'
+       . 'var j={aud:f.aud.value,url:f.url.value,when:f.when.value,push:f.push.checked?1:0,email:f.email.checked?1:0,t:{}};["en","it","pt","sl","sk"].forEach(function(l){j.t[l]={title:f.elements["t["+l+"][title]"].value,body:f.elements["t["+l+"][body]"].value,btn:f.elements["t["+l+"][btn]"].value};});'
+       . 'b.disabled=true;var t0=b.textContent;b.textContent="Sending…";m.textContent="";m.style.color="";'
+       . 'fetch("' . esc_url(rest_url('cc/v1/news')) . '",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":"' . esc_attr(wp_create_nonce('wp_rest')) . '"},body:JSON.stringify(j)})'
+       . '.then(function(r){return r.json().then(function(x){return [r.ok,x];});}).then(function(x){if(!x[0])throw new Error(x[1]&&x[1].message||"Not posted");b.textContent="Posted ✓";location.replace("' . esc_url_raw(add_query_arg(['board' => 'news', 'nw' => 'ok'], home_url('/' . CC_ATH_SLUG . '/'))) . '");})'
+       . '.catch(function(err){b.disabled=false;b.textContent=t0;m.style.color="#ff7a73";m.textContent=(err&&err.message)||"Not posted. Please try again.";});});})();</script>';
     $all = array_reverse(cc_nw_all());
     if ($all) { $o .= '<h3 class="av-sub">Posted</h3>'; foreach ($all as $n) $o .= '<div class="nt-item"><small>' . esc_html(date_i18n('j M Y, H:i', (int) $n['at']) . ' · ' . $n['aud']) . '</small><p><b>' . esc_html($n['t']['en']['title'] ?? reset($n['t'])['title']) . '</b></p>'
         . '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '"><input type="hidden" name="action" value="cc_news_del"><input type="hidden" name="id" value="' . esc_attr($n['id']) . '">' . wp_nonce_field('cc_news', '_wpnonce', false, false) . '<button class="btn btn-ghost" type="submit" onclick="return confirm(\'Remove this news from every hub?\')">Remove</button></form></div>'; }
     return $o . '</section><style>html .cc .nw-form{display:grid;gap:12px;max-width:640px}html .cc .nw-form label{display:grid;gap:6px;font-size:15px;color:#d0d6e0;font-weight:600}html .cc .nw-form fieldset{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 12px;display:grid;gap:8px}'
         . 'html .cc .nw-form legend{font-weight:700;color:#fff;padding:0 6px}html .cc .nw-form :is(input,textarea,select){font:16px var(--body);padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0b0d0f;color:#fff;width:100%;box-sizing:border-box}'
-        . 'html .cc .nw-form .nw-tick{display:flex!important;gap:10px;align-items:center}html .cc .nw-form .nw-tick input{width:22px;height:22px}html .cc .nw-form .btn{justify-self:start}</style>';
+        . 'html .cc .nw-form .nw-tick{display:flex!important;gap:10px;align-items:center}html .cc .nw-form .nw-tick input{width:22px;height:22px}html .cc .nw-form .btn{justify-self:start}html .cc .nw-fm{margin:0;font-size:15px;font-weight:600}html .cc .nw-fm:empty{display:none}</style>';
 }, 10, 2);
 add_action('admin_post_cc_news', function () {
     if (!cc_ath_is_coach() || !wp_verify_nonce($_POST['_wpnonce'] ?? '', 'cc_news')) wp_die('Not allowed');

@@ -317,6 +317,8 @@ add_filter('wpseo_exclude_from_sitemap_by_post_ids', function ($ids) {
    and the sales pop-ups stay away (newsletter pop-up snoozed, exit pop-up off). Runs first in <head>, before the page scripts.
    Only for athletes: Matteo logged in still sees the site as a visitor does. Logged-in pages are never cached. ---------- */
 add_action('wp_head', function () {
+    // 20 Nov (smoothness): Matteo on the hub page itself: the newsletter and exit pop-ups stay away there too (the rest of the site is unchanged for him)
+    if (is_user_logged_in() && current_user_can('edit_pages') && cc_ath_is_area()) { echo "<script>try{var n=JSON.parse(localStorage.getItem('cc_nl')||'{}');if(!n.s){n.c=Date.now();localStorage.setItem('cc_nl',JSON.stringify(n));}sessionStorage.setItem('cc_exit','1');}catch(e){}</script>\n"; return; }
     if (!is_user_logged_in() || cc_ath_is_coach() || !cc_ath_page_of(get_current_user_id())) return;
     echo "<script>try{localStorage.setItem('cc_tools_ok','1');var n=JSON.parse(localStorage.getItem('cc_nl')||'{}');if(!n.s){n.c=Date.now();localStorage.setItem('cc_nl',JSON.stringify(n));}sessionStorage.setItem('cc_exit','1');}catch(e){}</script>\n";
     // already coached: no "Want a plan built around these numbers?" box under the free tools (Matteo 16 Nov)
@@ -689,7 +691,7 @@ function cc_ath_live_chips($view, $coach, $nrep) {
         $kinds = ['cc-note' => ['notes', 'new note', 'new notes'], 'cc-result' => ['results', 'new result', 'new results'], 'cc-form' => ['forms', 'form signed', 'forms signed'],
                   'cc-idea' => ['ideas', 'new idea', 'new ideas'], 'cc-new' => ['contracts', 'new athlete', 'new athletes']];
         foreach ($kinds as $tag => [$board, $one, $many]) {
-            $n = count(array_filter($unread, function ($x) use ($tag) { return ($x['tag'] ?? '') === $tag || strpos((string) ($x['tag'] ?? ''), $tag . '-') === 0; }));
+            $n = 0; foreach ($unread as $x) if (($x['tag'] ?? '') === $tag || strpos((string) ($x['tag'] ?? ''), $tag . '-') === 0) $n += max(1, (int) ($x['n'] ?? 1));   // 20 Nov: collapsed lines count each time ("(3)")
             if ($n) $o .= $chip($n, $n === 1 ? $one : $many, add_query_arg('board', $board, $hub), 'ath-chip-go');
         }
         if (function_exists('cc_vx_open_count') && ($n = cc_vx_open_count())) $o .= $chip($n, $n === 1 ? 'Vekta message' : 'Vekta messages', add_query_arg('board', 'vekta', $hub), 'ath-chip-go');   // waiting in Vekta (laptop sync)
@@ -1416,7 +1418,7 @@ function cc_ath_a2hs_w($k) {
 }
 add_filter('cc_ath_before_reports', function ($html, $view, $coach) {   // phones and tablets, until they add it or tap "Got it"
     if ($coach || !$view) return $html;
-    return '<div class="ath-a2hs" role="region" aria-label="' . esc_attr(cc_ath_a2hs_w('title')) . '" hidden><img class="a2hs-ic" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-app-192.png" alt="" width="48" height="48">'
+    return '<div class="ath-a2hs" role="region" aria-label="' . esc_attr(cc_ath_a2hs_w('title')) . '"' . (function_exists('cc_dismissed') && cc_dismissed('a2hs') ? ' data-no="1"' : '') . (function_exists('cc_dismiss_attr') ? cc_dismiss_attr() : '') . ' hidden><img class="a2hs-ic" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-hub-app-192.png" alt="" width="48" height="48">'
         . '<div class="a2hs-tx"><p class="a2hs-t">' . esc_html(cc_ath_a2hs_w('title')) . '</p><p>' . esc_html(cc_ath_a2hs_w('lede')) . '</p><ul>'
         . '<li class="a2hs-ios"><b>iPhone</b> ' . esc_html(cc_ath_a2hs_w('ios')) . '</li><li class="a2hs-and"><b>Android</b> ' . esc_html(cc_ath_a2hs_w('and')) . '</li></ul>'
         . '<div class="a2hs-b"><button type="button" class="btn btn-go a2hs-go" hidden>' . esc_html(cc_ath_a2hs_w('install')) . '</button>'
@@ -1424,14 +1426,14 @@ add_filter('cc_ath_before_reports', function ($html, $view, $coach) {   // phone
         . '<script>(function(){var b=document.querySelector(".ath-a2hs");if(!b)return;var k="cc_a2hs_no",ev=null;'
         . 'function no(){try{return localStorage.getItem(k)}catch(e){return null}}'
         . 'var mm=function(q){try{return matchMedia(q).matches}catch(e){return false}};'
-        . 'if(no()||mm("(display-mode: standalone)")||mm("(display-mode: fullscreen)")||navigator.standalone)return;'   // already on the home screen: no card
+        . 'if(no()||b.dataset.no||mm("(display-mode: standalone)")||mm("(display-mode: fullscreen)")||navigator.standalone)return;'   // already on the home screen: no card
         . 'var ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1),and=/android/i.test(navigator.userAgent);'
         . 'if(!ios&&!and&&!mm("(max-width: 900px)"))return;'   // desktop: nothing to add
         . 'if(ios)b.querySelector(".a2hs-and").hidden=true;if(and)b.querySelector(".a2hs-ios").hidden=true;b.hidden=false;'
         . 'addEventListener("beforeinstallprompt",function(e){e.preventDefault();ev=e;b.querySelector(".a2hs-go").hidden=false;});'
         . 'addEventListener("appinstalled",function(){b.hidden=true;});'
         . 'b.querySelector(".a2hs-go").addEventListener("click",function(){if(ev){ev.prompt();ev.userChoice.then(function(c){if(c&&c.outcome==="accepted")b.hidden=true;});}});'
-        . 'b.querySelector(".a2hs-no").addEventListener("click",function(){try{localStorage.setItem(k,"1")}catch(e){}b.hidden=true;});})();</script>'
+        . 'b.querySelector(".a2hs-no").addEventListener("click",function(){try{localStorage.setItem(k,"1")}catch(e){}' . (function_exists('cc_dismiss_js') ? cc_dismiss_js('b', '"a2hs"') : '') . 'b.hidden=true;});})();</script>'
         . '<style>html .cc .ath-a2hs{display:flex;align-items:flex-start;gap:14px;margin:0 0 14px;padding:14px 16px;border-radius:12px;border:1px solid rgba(43,212,122,.3);background:rgba(18,161,80,.07)}'
         . 'html .cc .ath-a2hs[hidden],html .cc .ath-a2hs [hidden]{display:none!important}html .cc .a2hs-ic{flex:none;width:48px;height:48px;border-radius:12px}html .cc .a2hs-tx{flex:1;min-width:0}'
         . 'html .cc .ath-a2hs p{margin:0 0 6px;font-size:16px;line-height:1.5;color:#d0d6e0}html .cc .ath-a2hs .a2hs-t{color:#fff;font-weight:700}'

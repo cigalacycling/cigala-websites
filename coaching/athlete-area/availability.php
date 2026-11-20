@@ -145,13 +145,36 @@ function cc_av_save(WP_REST_Request $r) {
         $new['voice'][] = ['id' => $vid, 'at' => time(), 'text' => cc_av_str($r->get_param('transcript'), 2000)];
     }
     $new['updated'] = time();
-    $diff = cc_av_diff($old, $new);
-    if (!$diff && empty($vid)) return ['ok' => true, 'unchanged' => true];
+    $diff = cc_av_diff($old, $new); $auto = (bool) $r->get_param('auto');
+    if (!$diff && empty($vid)) {   // 20 Nov: the Save button after autosaves sends Matteo's email for what autosave kept back
+        if (!$auto && ($b = cc_mail_take($pid, 'av')) && ($d2 = cc_av_diff($b['old'], $old))) cc_av_email($pid, $uid, $d2, $old, 0);
+        return ['ok' => true, 'unchanged' => true];
+    }
     update_post_meta($pid, 'cc_avail', wp_slash(wp_json_encode($new)));
     update_post_meta($pid, 'cc_avail_updated', $new['updated']);
+    // 20 Nov (smoothness): autosave. One email to Matteo ~10 minutes after the athlete stops changing things, with everything that changed
+    if ($auto && empty($vid)) { cc_mail_hold($pid, 'av', $old, $uid); return ['ok' => true, 'updated' => $new['updated'], 'auto' => true]; }
+    if ($b = cc_mail_take($pid, 'av')) { $d2 = cc_av_diff($b['old'], $new); if ($d2) $diff = $d2; }
     cc_av_email($pid, $uid, $diff, $new, $vid ?? 0);
     return ['ok' => true, 'updated' => $new['updated']];
 }
+/* autosave mail hold (availability 'av', goals 'gl'): the state before the first unmailed autosave, and one email 10 minutes after the last change */
+function cc_mail_hold($pid, $kind, $old, $uid) {
+    $k = 'cc_mail_base_' . $kind;
+    if (!get_post_meta($pid, $k, true)) update_post_meta($pid, $k, wp_slash(wp_json_encode(['old' => $old, 'uid' => (int) $uid])));
+    wp_clear_scheduled_hook('cc_mail_later', [(int) $pid, $kind]);
+    wp_schedule_single_event(time() + 600, 'cc_mail_later', [(int) $pid, $kind]);
+}
+function cc_mail_take($pid, $kind) {
+    $k = 'cc_mail_base_' . $kind; $b = json_decode((string) get_post_meta($pid, $k, true), true);
+    delete_post_meta($pid, $k); wp_clear_scheduled_hook('cc_mail_later', [(int) $pid, $kind]);
+    return is_array($b) && isset($b['old']) ? $b : null;
+}
+add_action('cc_mail_later', function ($pid, $kind) {
+    $b = cc_mail_take($pid, $kind); if (!$b) return;
+    if ($kind === 'av') { $new = cc_av_get($pid); if ($new && ($d = cc_av_diff($b['old'], $new))) cc_av_email($pid, (int) $b['uid'], $d, $new, 0); }
+    elseif ($kind === 'gl' && function_exists('cc_g_email')) { $new = cc_g_get($pid); if ($new && ($d = cc_g_diff($b['old'], $new))) cc_g_email($pid, (int) $b['uid'], $d, $new); }
+}, 10, 2);
 // the recording: into uploads/cc-private, attached to the athlete page, so the athlete-area file check guards it
 function cc_av_store_audio($f, $pid, $transcript) {
     if (($f['error'] ?? 1) !== UPLOAD_ERR_OK || !is_uploaded_file($f['tmp_name'])) return new WP_Error('cc_audio', 'The voice note did not upload. Please try again.', ['status' => 400]);
@@ -346,7 +369,10 @@ function total(){var s=0;for(var k in D.week)s+=+(D.week[k].h||0);var n=0;for(k 
  var hs=(s%1?s.toFixed(1):String(s));if(L.slice(0,2)!=='en')hs=hs.replace('.',',');
  app.querySelector('.av-total').innerHTML=s?esc(t_(n===1?'total_one':'total',{h:'\u0001'+hs+'\u0002',n:'\u0001'+n+'\u0002'})).replace(/\u0001/g,'<b>').replace(/\u0002/g,'</b>'):'';}
 function msg(t,bad){var m=app.querySelector('.av-msg');if(m){m.textContent=t;m.classList.toggle('bad',!!bad);}}
-function touch(){dirty=true;var b=app.querySelector('.av-go');if(b)b.disabled=false;msg('');}
+/* 20 Nov (smoothness): every change saves itself a moment later ("Saving… / Saved ✓"); the button stays as a fallback */
+var SV={en:'Saved',it:'Salvato',pt:'Guardado',sl:'Shranjeno',sk:'Uložené'}[String(L||'en').slice(0,2)]||'Saved',at_=null,busy=false,again=false,ver=0;
+function touch(){dirty=true;ver++;var b=app.querySelector('.av-go');if(b)b.disabled=false;if(!ro){msg(W.saving);clearTimeout(at_);at_=setTimeout(function(){save(null,true);},1200);}}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&dirty&&!ro&&!rec){clearTimeout(at_);save(null,true);}});
 app.addEventListener('change',function(e){var t=e.target,day=t.closest('.av-day'),ch=t.closest('.av-ch');
  if(day&&t.classList.contains('av-hsel')){var k=day.dataset.k;D.week[k]=D.week[k]||{h:'',w:[]};D.week[k].h=t.value;var r=t.value==='0';if(r)D.week[k].w=[];
   day.classList.toggle('is-rest',r);day.querySelectorAll('.av-w').forEach(function(b){b.disabled=r;if(r)b.setAttribute('aria-pressed','false');});total();touch();return;}
@@ -359,7 +385,7 @@ app.addEventListener('click',function(e){var b=e.target.closest('button');if(!b|
  if(b.classList.contains('av-add')){D.changes.push({from:today,to:today,open:false,days:[],type:'away',h:'',text:''});drawChanges();touch();var l=app.querySelectorAll('.av-ch');l[l.length-1].querySelector('.av-f').focus();}
  if(b.classList.contains('av-del')){D.changes.splice(+b.closest('.av-ch').dataset.i,1);drawChanges();touch();}
  if(b.classList.contains('av-mic'))mic(b);
- if(b.classList.contains('av-go')){if(!dirty&&!blob){msg(W.nothing);return;}save(b);}});
+ if(b.classList.contains('av-go')){clearTimeout(at_);save(b,false);}});
 /* voice: record for Matteo + type the words into the note while they speak */
 var rec=null,sr=null,chunks=[],base='',t0=0,tick=null;
 function mic(b){if(rec){rec.stop();return;}
@@ -380,13 +406,13 @@ function mic(b){if(rec){rec.stop();return;}
    sr.onresult=function(e){var s='';for(var i=0;i<e.results.length;i++)s+=e.results[i][0].transcript;ta.value=base+s.trim();D.note=ta.value;};
    sr.onend=function(){if(rec&&tries++<8)setTimeout(function(){if(rec)try{sr.start();}catch(x){}},700);};sr.onerror=function(){};try{sr.start();}catch(x){}}
  }).catch(function(){msg(W.mic_denied,true);});}
-function save(b){b.disabled=true;msg(W.saving);var f=new FormData(),txt=document.getElementById('av-note').value;
- f.append('data',JSON.stringify({week:D.week,changes:D.changes,note:D.note}));
+function save(b,auto){if(busy){again=true;return;}if(rec&&auto)return;busy=true;var v0=ver;if(b)b.disabled=true;msg(W.saving);var f=new FormData(),txt=document.getElementById('av-note').value;
+ f.append('data',JSON.stringify({week:D.week,changes:D.changes,note:D.note}));if(auto)f.append('auto','1');
  if(blob){f.append('audio',blob,'voice.'+(/mp4/.test(blob.type)?'m4a':'webm'));f.append('transcript',txt.slice(base.length));}
  fetch(app.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':app.dataset.nonce}}).then(function(r){return r.json().then(function(j){return[r.ok,j];});})
- .then(function(x){if(!x[0])throw new Error(x[1].message||'');dirty=false;blob=null;var r=app.querySelector('.av-rec');r.hidden=true;
-  msg(x[1].unchanged?W.nothing:W.saved);b.disabled=false;})
- .catch(function(){b.disabled=false;msg(W.err,true);});}
+ .then(function(x){busy=false;if(!x[0])throw new Error(x[1].message||'');if(ver===v0)dirty=false;if(f.has('audio')){blob=null;var r=app.querySelector('.av-rec');r.hidden=true;}
+  msg(auto?'✓ '+SV:W.saved);if(b)b.disabled=false;if(again){again=false;if(dirty)save(null,true);}})
+ .catch(function(){busy=false;again=false;if(b)b.disabled=false;msg(W.err,true);});}
 addEventListener('beforeunload',function(e){if(dirty&&!ro){e.preventDefault();e.returnValue='';}});
 draw();})();</script>
 JS;

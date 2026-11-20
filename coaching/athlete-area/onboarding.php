@@ -59,8 +59,8 @@ function cc_f_steps_all() {
       ['numbers', 'Your numbers', 'both', [
         ['p', 'Your numbers', 'Only what you know. Leave anything else empty: we will test it together.', 'fields' => [
           ['height', 'number', 'Height (cm)', 'half' => 1, 'req' => 1], ['weight', 'number', 'Weight (kg)', 'half' => 1, 'req' => 1], ['weight_goal', 'number', 'Ideal race weight (kg)', 'opt' => 1],
-          ['ftp', 'number', 'Threshold power, FTP or CP (W)', 'opt' => 1, 'half' => 1], ['ftp_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1],
-          ['thr', 'number', 'Threshold heart rate (bpm)', 'opt' => 1, 'half' => 1], ['thr_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1],
+          ['ftp', 'number', 'Threshold power, FTP or CP (W)', 'opt' => 1, 'half' => 1, 'im' => 'numeric'], ['ftp_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1],
+          ['thr', 'number', 'Threshold heart rate (bpm)', 'opt' => 1, 'half' => 1, 'im' => 'numeric'], ['thr_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1],
           ['pace', 'text', 'Running threshold pace (min/km)', 'opt' => 1, 'ph' => 'e.g. 4:30', 'half' => 1, 'if' => 'run'], ['pace_date', 'date', 'Date of that test', 'opt' => 1, 'half' => 1, 'if' => 'run'],
           ['kit', 'checks', 'Do you have a heart rate monitor, a power meter, a cadence sensor, a turbo trainer, a gym membership? Tap what you have.',
              'opts' => ['hr' => 'Heart rate monitor', 'power' => 'Power meter', 'cadence' => 'Cadence sensor', 'turbo' => 'Turbo trainer', 'gym' => 'Gym membership']],
@@ -278,7 +278,7 @@ function cc_f_field($f, $v, $kind) {
         case 'text': case 'tel': case 'email': case 'date':
             $extra = $t === 'date' && $k === 'dob' ? '<small class="rf-age"></small>' : '';
             return $wrap('<label for="' . $id . '">' . $label . $opt . '</label><input type="' . $t . '"' . $name . $ph . $ac . ' value="' . esc_attr((string) $v) . '">' . $extra);
-        case 'number': return $wrap('<label for="' . $id . '">' . $label . $opt . '</label><input type="number" inputmode="decimal" step="any"' . $name . ' value="' . esc_attr((string) $v) . '">');
+        case 'number': return $wrap('<label for="' . $id . '">' . $label . $opt . '</label><input type="number" inputmode="' . ($f['im'] ?? 'decimal') . '" step="any"' . $name . ' value="' . esc_attr((string) $v) . '">');
         case 'textarea': return $wrap('<label for="' . $id . '">' . $label . $opt . '</label><textarea rows="3"' . $name . $ph . '>' . esc_textarea((string) $v) . '</textarea>');
         case 'select': $s = '<option value=""></option>'; foreach ($f['opts'] as $ov => $ol) $s .= '<option value="' . $ov . '"' . ((string) $v === (string) $ov ? ' selected' : '') . '>' . esc_html($ol) . '</option>';
             return $wrap('<label for="' . $id . '">' . $label . '</label><select' . $name . '>' . $s . '</select>');
@@ -798,7 +798,7 @@ function cond(){var d=data(),a=age(),u18=a!==null&&a<18;var A=R.querySelector('.
   else if(c.indexOf('yes:')===0)s=c.slice(4).split(',').some(function(k){return d[k]==='yes';});e.hidden=!s;});}
 function show(n){steps[i].classList.remove('on');i=n;steps[i].classList.add('on');dots.forEach(function(x,k){x.className=k<i?'done':(k===i?'now':'');});
  R.querySelector('.rf-sn').textContent=i+1;R.querySelector('.rf-st').textContent=steps[i].dataset.t;R.querySelector('.rf-back').style.visibility=i?'visible':'hidden';
- R.querySelector('.rf-next').textContent=i===steps.length-1?(pv?W.preview.split('.')[0]:W.submit):W.next;R.querySelector('.rf-err').hidden=true;if(steps[i].dataset.k==='sign')pad();
+ R.querySelector('.rf-next').textContent=i===steps.length-1?(pv?W.preview.split('.')[0]:W.submit):W.next;R.querySelector('.rf-err').hidden=true;if(steps[i].dataset.k==='sign'&&(!drawn||!cw))pad();
  var t=R.getBoundingClientRect().top+scrollY-90;scrollTo({top:t,behavior:'smooth'});}
 function post(action,extra){var b={action:action,data:data()};for(var k in extra)b[k]=extra[k];
  return fetch(R.dataset.api,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-WP-Nonce':R.dataset.nonce},body:JSON.stringify(b)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw j;return j;});});}
@@ -819,12 +819,15 @@ var EV=R.querySelector('.rf-evs');if(EV){var EW=JSON.parse(EV.dataset.words),esc
   if(b.classList.contains('rf-ev-x')){b.closest('.rf-ev').remove();autosave();}});}
 // signature
 var c=R.querySelector('.rf-sig canvas'),x=c&&c.getContext('2d'),down=false,last=null;
-function pad(){if(!c)return;var r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;if(!r.width)return;c.width=r.width*d;c.height=r.height*d;x.setTransform(d,0,0,d,0,0);
+/* 20 Nov (smoothness): going back and forth keeps the signature; turning the phone redraws it at the new size */
+var cw=0;function pad(){if(!c)return;var r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;if(!r.width)return;cw=r.width;c.width=r.width*d;c.height=r.height*d;x.setTransform(d,0,0,d,0,0);
  x.fillStyle='#fff';x.fillRect(0,0,r.width,r.height);x.lineWidth=2.4;x.lineCap='round';x.lineJoin='round';x.strokeStyle='#111';drawn=false;R.querySelector('.rf-sig-ph').hidden=false;}
 if(c){var pt=function(e){var r=c.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];};
  c.addEventListener('pointerdown',function(e){down=true;last=pt(e);c.setPointerCapture(e.pointerId);});
  c.addEventListener('pointermove',function(e){if(!down)return;var p=pt(e);x.beginPath();x.moveTo(last[0],last[1]);x.lineTo(p[0],p[1]);x.stroke();last=p;if(!drawn){drawn=true;R.querySelector('.rf-sig-ph').hidden=true;}});
- ['pointerup','pointercancel'].forEach(function(t){c.addEventListener(t,function(){down=false;});});R.querySelector('.rf-clr').onclick=pad;}
+ ['pointerup','pointercancel'].forEach(function(t){c.addEventListener(t,function(){down=false;});});R.querySelector('.rf-clr').onclick=pad;
+ var rz=null;addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){if(!steps[i]||steps[i].dataset.k!=='sign')return;var r=c.getBoundingClientRect();if(!r.width||Math.abs(r.width-cw)<2)return;if(!drawn){pad();return;}
+  var img=new Image();img.onload=function(){pad();x.drawImage(img,0,0,r.width,r.height);drawn=true;R.querySelector('.rf-sig-ph').hidden=true;};img.src=c.toDataURL('image/png');},250);});}
 /* every required question on this step must be answered before "Next" (hidden ones never count) */
 function check(st){var miss=[],a=age(),u18=a!==null&&a<18;st.querySelectorAll('.rf-f[data-req]').forEach(function(w){w.classList.remove('rf-miss');if(w.closest('[hidden]')||(w.dataset.req==='u18'&&!u18))return;var ok;
   var tk=w.querySelector('.rf-tick input'),wk=w.querySelector('.rf-week');if(wk){ok=true;wk.querySelectorAll('select').forEach(function(x){var d=x.closest('.av-day');d.classList.toggle('rf-dmiss',x.value==='');if(x.value==='')ok=false;});}else if(tk)ok=tk.checked;else{var rs=w.querySelectorAll('input[type=radio],input[type=checkbox]');
@@ -843,7 +846,9 @@ R.querySelector('.rf-next').onclick=function(){var m=check(steps[i]),er=R.queryS
  if(i<steps.length-1){show(i+1);autosave();return;}
  clearTimeout(timer);var er=R.querySelector('.rf-err'),btn=this;if(pv){er.hidden=false;er.textContent=W.preview;return;}btn.disabled=true;
  post('submit',{sig:drawn?c.toDataURL('image/jpeg',.85):''}).then(function(){location.reload();}).catch(function(j){btn.disabled=false;er.hidden=false;er.textContent=j&&j.code==='cc_missing'?W.almost+': '+j.message+'.':W.err;});};
-cond();show(0);scrollTo(0,0);
+/* 20 Nov (smoothness): coming back to the form opens on the first step that still misses a required answer (not always step 1) */
+cond();var st0=0;if(!pv){for(var q=0;q<steps.length;q++){var mq=check(steps[q]);steps[q].querySelectorAll('.rf-miss,.rf-dmiss').forEach(function(z){z.classList.remove('rf-miss');z.classList.remove('rf-dmiss');});if(mq.length){st0=q;break;}if(q===steps.length-1)st0=q;}}
+show(st0);scrollTo(0,0);
 })();</script>
 JS;
 }

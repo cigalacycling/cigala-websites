@@ -127,7 +127,7 @@ function cc_rs_js() {
  F.querySelector('.rs-x').addEventListener('click',function(){img=null;pv.removeAttribute('src');pv.classList.remove('on');this.hidden=true;pb.textContent=W.photo;});
  F.querySelector('.rs-go').addEventListener('click',function(){var b=this,t=F.querySelector('textarea').value.trim();if(!t&&!img){msg(W.empty,true);return;}b.disabled=true;msg(W.sending);
   var fd=new FormData();fd.append('text',t);fd.append('race',F.querySelector('select').value);fd.append('date',F.querySelector('input[type=date]').value);fd.append('consent',F.querySelector('.rs-tick input').checked?1:0);if(img)fd.append('img',img);
-  fetch(F.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':F.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;msg(W.sent);setTimeout(function(){var u=location.href.split('#')[0];location.replace(u+(u.indexOf('?')>-1?'&':'?')+'rs='+Date.now()+'#results');},1000);})
+  fetch(F.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':F.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;msg(W.sent);setTimeout(function(){if(window.ccGo){window.ccGo('rs','#results');return;}var u=location.href.split('#')[0];location.replace(u+(u.indexOf('?')>-1?'&':'?')+'rs='+Date.now()+'#results');},1000);})
   .catch(function(){b.disabled=false;msg(W.err,true);});});}
 /* coach: double-tap (or double-click) a photo = ❤️ */
 document.querySelectorAll('.rs-dbl').forEach(function(P){var last=0,A=P.closest('.rs-card').querySelector('.rs-acts');if(!A)return;
@@ -136,15 +136,15 @@ document.querySelectorAll('.rs-dbl').forEach(function(P){var last=0,A=P.closest(
  P.addEventListener('dblclick',function(e){e.preventDefault();});});
 document.querySelectorAll('.rs-acts').forEach(function(A){function post(d){var fd=new FormData();fd.append('page',A.dataset.page);fd.append('at',A.dataset.at);Object.keys(d).forEach(function(k){fd.append(k,d[k]);});
   return fetch(A.dataset.api,{method:'POST',body:fd,credentials:'same-origin',headers:{'X-WP-Nonce':A.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;});}
- A.querySelectorAll('.rs-rx').forEach(function(x){x.addEventListener('click',function(){post({react:x.dataset.r}).then(function(){A.querySelectorAll('.rs-rx').forEach(function(y){y.classList.toggle('on',y===x);});});});});
+ A.querySelectorAll('.rs-rx').forEach(function(x){x.addEventListener('click',function(){post({react:x.dataset.r}).then(function(){A.querySelectorAll('.rs-rx').forEach(function(y){y.classList.toggle('on',y===x);});}).catch(function(){if(window.ccErr)window.ccErr(A);});});});
  var pic=null,cf=A.querySelector('.rs-cfile'),cp=A.querySelector('.rs-cprev');
  A.querySelector('.rs-cam').addEventListener('click',function(){cf.click();});
  cf.addEventListener('change',function(){var f=cf.files&&cf.files[0];if(!f)return;var i=new Image(),u=URL.createObjectURL(f);i.onload=function(){var s=Math.min(1,1600/Math.max(i.naturalWidth,i.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(i.naturalWidth*s);c.height=Math.round(i.naturalHeight*s);
   c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);pic=c.toDataURL('image/jpeg',.85);cp.src=pic;cp.hidden=false;};i.src=u;cf.value='';});
  cp.addEventListener('click',function(){pic=null;cp.hidden=true;});
- A.querySelector('.rs-send').addEventListener('click',function(){var i=A.querySelector('.rs-rep'),d={};if(i.value.trim())d.reply=i.value.trim();if(pic)d.img=pic;if(!d.reply&&!d.img)return;this.disabled=true;post(d).then(function(){location.reload();});});});
-document.addEventListener('click',function(e){var d=e.target.closest('.rs-del');if(!d||!confirm(d.dataset.q))return;var f=new FormData();f.append('page',d.dataset.page);f.append('at',d.dataset.at);
- fetch(d.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':d.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;var c=d.closest('.rs-card');if(c){var w=c.previousElementSibling;if(w&&w.classList.contains('nt-who'))w.remove();c.remove();}});});
+ A.querySelector('.rs-send').addEventListener('click',function(){var i=A.querySelector('.rs-rep'),d={};if(i.value.trim())d.reply=i.value.trim();if(pic)d.img=pic;if(!d.reply&&!d.img)return;var sb=this;sb.disabled=true;post(d).then(function(){var c=A.closest('.rs-card');if(window.ccGo){window.ccGo('rs',c&&c.id?'#'+c.id:'#results');}else location.reload();}).catch(function(){sb.disabled=false;if(window.ccErr)window.ccErr(A);});});});
+document.addEventListener('click',function(e){var d=e.target.closest('.rs-del');if(!d)return;(window.ccAsk?window.ccAsk(d.dataset.q):Promise.resolve(confirm(d.dataset.q))).then(function(ok){if(!ok)return;var f=new FormData();f.append('page',d.dataset.page);f.append('at',d.dataset.at);
+ fetch(d.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':d.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;var c=d.closest('.rs-card');if(c){var w=c.previousElementSibling;if(w&&w.classList.contains('nt-who'))w.remove();c.remove();}}).catch(function(){if(window.ccErr)window.ccErr(d);});});});
 })();</script>
 JS;
 }

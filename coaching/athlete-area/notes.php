@@ -250,14 +250,15 @@ go.addEventListener('click',function(){if(rec){rec.stop();setTimeout(function(){
  fetch(A.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':A.dataset.nonce}}).then(function(r){return r.json().then(function(j){return[r.ok,j];});})
  .then(function(x){if(!x[0])throw new Error();ta.value='';blob=null;tr='';st.textContent='';voice(false);if(dy)dy.value='';msg(W.sent);go.disabled=false;
   /* Matteo 17 Nov: show it straight away: reload and come back to the notes */
-  setTimeout(function(){var u=location.href.split('#')[0];location.replace(u+(u.indexOf('?')>-1?'&':'?')+'nt='+Date.now()+(A.dataset.api.indexOf('result-reply')>-1?'#results':'#notes'));},900);})
+  /* 20 Nov: no piling up of ?nt=… (old nt/rs/bt/fd go) and back to the item itself when it has an anchor */
+  setTimeout(function(){var h=A.closest('[id^="nt-"],[id^="rs-"]');h=h?'#'+h.id:(A.dataset.api.indexOf('result-reply')>-1?'#results':'#notes');if(window.ccGo){window.ccGo('nt',h);return;}var u=location.href.split('#')[0];location.replace(u+(u.indexOf('?')>-1?'&':'?')+'nt='+Date.now()+h);},900);})
  .catch(function(){go.disabled=false;msg(W.err,true);});});
 });}
 /* boxes further down the page (results) exist only once the page has loaded */
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ntInit);else ntInit();
 /* delete a note or a reply (asks first) */
-document.addEventListener('click',function(e){var d=e.target.closest('.nt-del');if(!d||!confirm(d.dataset.q))return;var f=new FormData();f.append('page',d.dataset.page);f.append('at',d.dataset.at);f.append('ri',d.dataset.ri);
- fetch(d.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':d.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;var el=d.dataset.ri==='-1'?d.closest('.nt-item'):d.closest('.nt-rep');if(el){if(d.dataset.ri==='-1'){var w=el.previousElementSibling;if(w&&w.classList.contains('nt-who'))w.remove();}el.remove();}}).catch(function(){alert('Not deleted. Please try again.');});});
+document.addEventListener('click',function(e){var d=e.target.closest('.nt-del');if(!d)return;(window.ccAsk?window.ccAsk(d.dataset.q):Promise.resolve(confirm(d.dataset.q))).then(function(ok){if(!ok)return;var f=new FormData();f.append('page',d.dataset.page);f.append('at',d.dataset.at);f.append('ri',d.dataset.ri);
+ fetch(d.dataset.api,{method:'POST',body:f,credentials:'same-origin',headers:{'X-WP-Nonce':d.dataset.nonce}}).then(function(r){if(!r.ok)throw 0;var el=d.dataset.ri==='-1'?d.closest('.nt-item'):d.closest('.nt-rep');if(el){if(d.dataset.ri==='-1'){var w=el.previousElementSibling;if(w&&w.classList.contains('nt-who'))w.remove();}el.remove();}}).catch(function(){if(window.ccErr)window.ccErr(d);else alert('Not deleted. Please try again.');});});});
 /* the player: one sound at a time; recordings from phones can report no length at first, so it is worked out on load */
 var cur=null;function fm(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
 document.querySelectorAll('.nt-pl').forEach(function(P){var a=null,bar=P.querySelector('.nt-bar'),fill=bar.querySelector('i'),dot=bar.querySelector('b'),t=P.querySelector('.nt-t');
@@ -397,7 +398,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     $all = [];
     foreach (get_posts(['post_type' => 'cc_athlete', 'post_status' => 'any', 'numberposts' => -1, 'meta_key' => 'cc_notes_updated']) as $p) foreach (cc_nt_get($p->ID) as $n) $all[] = [$p, $n];
     usort($all, function ($a, $b) { return $b[1]['at'] <=> $a[1]['at']; });
-    $o = '<section class="ath-s nt"><h2>' . cc_ath_icon('mic', 'ath-hic') . 'Notes</h2><p class="av-lede">Notes and voice notes from your athletes, newest first. Tap Reply to answer by typing or with a voice note: they see it in their hub and get an email.</p>';
+    $o = '<section class="ath-s nt" id="notes"><h2>' . cc_ath_icon('mic', 'ath-hic') . 'Notes</h2><p class="av-lede">Notes and voice notes from your athletes, newest first. Tap Reply to answer by typing or with a voice note: they see it in their hub and get an email.</p>';
     if (!$all) return $o . '<p class="av-lede">No notes yet.</p></section>' . cc_nt_css();
     foreach (array_slice($all, 0, 80) as [$p, $n]) $o .= '<div class="nt-who">' . (function_exists('cc_ph_face') ? cc_ph_face($p->ID, 30) . ' ' : '') . '<b><a style="color:#fff" href="' . esc_url(add_query_arg('view', $p->ID, home_url('/' . CC_ATH_SLUG . '/'))) . '">' . esc_html($p->post_title) . '</a></b>' . '</div>' . cc_nt_item($n, true, $p->ID);
     return $o . '</section>' . cc_nt_css() . cc_nt_js();

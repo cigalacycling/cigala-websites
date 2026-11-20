@@ -64,7 +64,7 @@ function cc_td_card($view) {
             $body = trim((string) ($x['body'] ?? '')); $url = (string) ($x['url'] ?? '') ?: $hub;
             $rows .= '<div class="td-row td-msg"><img class="td-face" src="https://coaching.cigalacycling.com/wp-content/uploads/2026/11/cigala-email-matteo-photo.jpg" alt="" width="44" height="44">'
                 . '<div class="td-tx"><h3>' . esc_html(cc_td_w('msg')) . '</h3>' . ($body !== '' ? '<p>' . esc_html(mb_strlen($body) > 160 ? mb_substr($body, 0, 150) . '…' : $body) . '</p>' : '')
-                . '<a class="td-link" href="' . esc_url($url) . '">' . esc_html(cc_td_w('read')) . ' →</a></div></div>';
+                . '<a class="td-link" data-at="' . (int) ($x['at'] ?? 0) . '" data-tag="' . esc_attr($tag) . '" href="' . esc_url($url) . '">' . esc_html(cc_td_w('read')) . ' →</a></div></div>';
             break;
         }
     }
@@ -83,6 +83,10 @@ function cc_td_css() {
         . 'html .cc .td-tx p,html .cc .td-tx li{margin:0 0 4px;color:#d0d6e0;font-size:16px;line-height:1.5;overflow-wrap:anywhere}html .cc .td-tx ul{list-style:none;margin:0;padding:0}'
         . 'html .cc .td-tx .td-sub{color:#b8bec8;font-size:15px}html .cc .td-ok{color:#2bd47a;font-weight:700}html .cc .td-tx li b{color:#fff}'
         . 'html .cc .td-link{display:inline-flex;align-items:center;min-height:44px;color:#2bd47a;font-weight:600;font-size:15px;text-decoration:underline}'
-        . 'html .cc .td-log{justify-self:start;width:auto;min-height:44px;margin:4px 0 0}@media (max-width:600px){html .cc .td-log{justify-self:stretch;text-align:center}}</style>';
+        . 'html .cc .td-log{justify-self:start;width:auto;min-height:44px;margin:4px 0 0}@media (max-width:600px){html .cc .td-log{justify-self:stretch;text-align:center}}</style>'
+        // 20 Nov (smoothness): opening Matteo's message from the Today card also marks it read in the bell
+        . '<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest(".td-link[data-at]");var b=document.querySelector(".ath-bell");if(!a||!b||b.dataset.demo)return;'
+        . 'var it=document.querySelector(".bell-it.new[data-at=\""+a.dataset.at+"\"]");if(it)it.classList.remove("new");'
+        . 'try{fetch(b.dataset.api,{method:"POST",keepalive:true,credentials:"same-origin",headers:{"X-WP-Nonce":b.dataset.nonce,"Content-Type":"application/json"},body:JSON.stringify({at:+a.dataset.at,tag:a.dataset.tag||""})}).then(function(r){return r.ok?r.json():null;}).then(function(j){if(j&&window.ccBell)window.ccBell.set(j.unread);}).catch(function(){});}catch(x){}a.closest(".td-row").remove();});})();</script>';
 }
 add_filter('cc_ath_after_hero', function ($html, $view) { return $html . cc_td_card($view); }, 10, 2);
