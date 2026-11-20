@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) return;
  *   (sandboxed, no caching, noindex, frame only from this site). The board shows it inside a sandboxed iframe.
  * - Board ?board=morning: tabs Command Centre / Early Warning, latest by default, earlier days from a list. */
 
-function cc_cp_keys() { return ['command-centre' => 'Command Centre', 'early-warning' => 'Early Warning']; }
+function cc_cp_keys() { return ['early-warning' => 'Early Warning'];   /* Matteo 20 Nov: Command Centre dropped from the board */ }
 function cc_cp_max() { return 3 * 1024 * 1024; }
 function cc_cp_keep() { return 14; }
 
@@ -113,7 +113,7 @@ add_filter('cc_ath_board', function ($html, $board) {
     if ($board !== 'morning' || !cc_ath_is_coach()) return $html;
     $keys = cc_cp_keys();
     $key = isset($_GET['pg']) ? sanitize_key($_GET['pg']) : '';
-    if (!isset($keys[$key])) $key = 'command-centre';
+    if (!isset($keys[$key])) $key = 'early-warning';
     $list = cc_cp_list($key);
     $date = isset($_GET['d']) ? sanitize_text_field(wp_unslash($_GET['d'])) : '';
     if (!isset($list[$date])) $date = $list ? (string) array_key_first($list) : '';
