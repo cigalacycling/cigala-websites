@@ -58,6 +58,10 @@ EVENT_BOX = {'chianti-gran-fondo-strade-bianche': ('Gran Fondo Strade Bianche', 
              'tour-of-flanders-experience': ('We Ride Flanders', 'support', SUPP)}   # badge = the tour cards' badge (tours/badges.json), Matteo 17 Nov: same icon and wording everywhere
 _BADGES = json.load(open(ROOT + 'tours/badges.json'))
 TOLFE = ('nUFKHzZkgkI', 5162)   # Strade Bianche pro race day, VIP terrace: Matteo's YouTube Short + our own photo as the cover (Matteo 16 Nov: not the partner site's photos)
+# early-bird date from the tour cards (stg-tours/out/list-trips.json, built by build_tours_list.py), for tours whose page text has none
+EARLY_CARD = {re.search(r'/trips/([^/"]+)/', a_).group(1): e_.group(1).strip()
+              for a_ in re.findall(r'<article class="tcard.*?</article>', json.load(open(ROOT + 'stg-tours/out/list-trips.json'))['main'], re.S)
+              for e_ in [re.search(r'<span class="early">([^<]*)', a_)] if e_ and re.search(r'/trips/([^/"]+)/', a_)}
 OP_LOGO = {'maratona-dles-dolomites': 'logo-mdd'}
 # who may book through us (Matteo 16 Nov: our target markets as listed for Cigala on the official Maratona tour-operator page)
 OP_NOTE = {'maratona-dles-dolomites': 'As an Official Tour Operator, we offer this tour to riders resident in our official target markets: '
@@ -281,6 +285,8 @@ def trip(slug):
     if early and not price_main and '€' in price_t:   # 'Early bird prices until 30/05 €1299 | £1149 | $1499*' (Lake Como): the note first, then the price
         i_ = price_t.index('€'); price_main = price_t[i_:].strip()
         early = re.match(r'(.*)', price_t[:i_].strip())
+    if not early and EARLY_CARD.get(slug):   # the tour page had no early-bird line, the card does (Matteo 20 Nov): same date on both
+        early = re.match(r'(.*)', EARLY_CARD[slug])
     prices = [p.strip() for p in price_main.split('|')]
     book_urls = [v for k, v, s in it if k == 'book' and v] + [x[1] for x in [(k, v) for k, v, s in it] if False]
     book = next((s.get('link', {}).get('url') for k, v, s in it if k in ('h2', 'h3', 'h5') and classify(k, text_of(v)) == 'book' and s.get('link', {}).get('url')), None)
