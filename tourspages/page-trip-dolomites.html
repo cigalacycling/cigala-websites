@@ -1229,6 +1229,9 @@ html .cc .band .tx .eyebrow + h2, html .cc .band .tx h2 + .bar { margin-top: 0; 
 html .cc .fi select:focus, html .cc .fi select:focus-visible { outline: none; }
 html .cc .fi:focus-within { box-shadow: inset 0 0 0 2px var(--green); border-radius: 10px; }
 html .cc .tour .facts span { white-space: nowrap; }
+html .cc .tour .dist { align-self: flex-start; display: flex; width: max-content; max-width: 100%; align-items: center; gap: 6px; margin: -2px 0 12px; padding: 5px 10px 4px; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; background: rgba(8,9,10,.45); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #d0d6e0; white-space: nowrap; }
+html .cc .tour .dist svg { width: 13px; height: 13px; fill: none; stroke: #2bd47a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+html .cc .tour .dist .sep { width: 1px; height: 11px; background: rgba(255,255,255,.2); margin: 0 3px; }
 html .cc .tour .facts span:not(:last-child)::after { content: "·"; margin-left: 12px; color: var(--red); font-weight: 700; }
 html .cc .matteo .photo { background: none; aspect-ratio: auto; position: relative; display: flex; justify-content: center; align-items: flex-end; isolation: isolate; }
 html .cc .matteo .photo::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }
@@ -1242,6 +1245,22 @@ html .cc #tour-grid .tour { aspect-ratio: auto; min-height: 380px; }
 html .cc #tour-grid .tour .tx { padding-top: 58px; padding-bottom: 18px; }
 html .cc #tour-grid .tour p { margin: 6px 0 10px; }
 @media (min-width: 1100px) {html .cc #tour-grid .tour .facts { margin-bottom: 8px; }
+ }
+html .cc .guests { margin-top: 34px; padding: 22px 24px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255,255,255,.025); text-align: center; }
+html .cc .guests .gtitle { margin: 0 0 16px; font-size: 15px; color: var(--text-2); letter-spacing: .02em; }
+html .cc .guests .gtitle b { color: var(--text); font-weight: 700; }
+html .cc .gflags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+html .cc .gflags li { position: relative; }
+html .cc .gflags img { display: block; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); transition: transform .2s; }
+html .cc .gflags li:hover img { transform: translateY(-3px) scale(1.08); }
+html .cc .gflags span { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; font-size: 12px; font-weight: 600; color: #fff; background: rgba(8,9,10,.92); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+html .cc .gflags li:hover span { opacity: 1; }
+@media (min-width: 1100px) {html .cc .gflags { flex-wrap: nowrap; gap: 9px; }
+ }
+@media (max-width: 600px) {html .cc .gflags { display: grid; grid-template-columns: repeat(5, 44px); justify-content: center; gap: 12px 16px; }
+html .cc .gflags img { width: 44px; height: 44px; }
+html .cc .guests { padding: 18px 14px; }
+html .cc .gflags span { display: none; }
  }
 @media (max-width: 1080px) {html .cc .menu { display: none; }
 html .cc .burger { display: block; }
@@ -1329,7 +1348,7 @@ html .cc .tour:hover img { transform: none; }
       <div class="bk-top">
         <span class="lab">Price per person</span>
         <div class="price">€1499<small>£1349 · $1749*</small></div>
-        <span class="early">Early bird price until 28/02</span>
+        <span class="early" data-until="2027-02-28">Early bird price until 28/02</span>
         <div class="spots av-high"><span class="dot green" aria-hidden="true"></span>Spots available</div>
       </div>
       <ul><li><span>Deposit</span><span>€299</span></li><li><span>Non-cycling companion</span><span>€799</span></li><li><span>Group size</span><span>12 max</span></li></ul>
@@ -1406,6 +1425,11 @@ var ls=[].slice.call(t.querySelectorAll('a[href^="#"]')),ss=ls.map(function(a){r
 function spy(){var y=160,cur=-1;ss.forEach(function(s,i){if(s&&s.getBoundingClientRect().top<=y)cur=i;});ls.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
 addEventListener('scroll',spy,{passive:true});spy();})();</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "TouristTrip", "name": "Dolomites", "url": "https://tours.cigalacycling.com/trips/dolomites/", "description": "On this trip, you’ll ride through the Dolomites — one of the most spectacular landscapes on Earth. Towering limestone peaks, alpine meadows, and dramatic passes create a truly unique setting. A UNESCO World Heritage Site and a bucket-list destination for cyclists, every turn feels like a postcard — ", "touristType": "Cyclists", "provider": {"@id": "https://tours.cigalacycling.com/#organization"}, "image": "https://staging.tours.cigalacycling.com/wp-content/uploads/2026/11/cigala-tours-trip-dolomites.webp", "itinerary": {"@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "item": {"@type": "Place", "name": "La Villa"}}, {"@type": "ListItem", "position": 2, "item": {"@type": "Place", "name": "Canazei"}}, {"@type": "ListItem", "position": 3, "item": {"@type": "Place", "name": "Passo Gardena"}}, {"@type": "ListItem", "position": 4, "item": {"@type": "Place", "name": "Passo Sella"}}, {"@type": "ListItem", "position": 5, "item": {"@type": "Place", "name": "Passo Pordoi"}}, {"@type": "ListItem", "position": 6, "item": {"@type": "Place", "name": "Campolongo"}}, {"@type": "ListItem", "position": 7, "item": {"@type": "Place", "name": "Passo Giau"}}, {"@type": "ListItem", "position": 8, "item": {"@type": "Place", "name": "Falzarego"}}, {"@type": "ListItem", "position": 9, "item": {"@type": "Place", "name": "Tre Cime di Lavaredo"}}, {"@type": "ListItem", "position": 10, "item": {"@type": "Place", "name": "Cortina"}}, {"@type": "ListItem", "position": 11, "item": {"@type": "Place", "name": "San Pellegrino"}}, {"@type": "ListItem", "position": 12, "item": {"@type": "Place", "name": "Fedaia"}}]}, "offers": {"@type": "Offer", "price": "1499", "priceCurrency": "EUR", "url": "https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=9944206554&source=direct_link", "availability": "https://schema.org/InStock"}}</script>
+<script>(function(){var t=new Date();t.setHours(0,0,0,0);
+document.querySelectorAll('[data-until]').forEach(function(e){var u=new Date(e.dataset.until+'T23:59:59');if(t<=u&&Date.now()<=u.getTime())return;
+var box=e.closest('.tcard,.bk2');e.classList.add('none');e.setAttribute('aria-hidden','true');if(e.closest('.bk2'))e.style.display='none';
+if(!box)return;box.querySelectorAll('.price').forEach(function(p){var w=document.createTreeWalker(p,4),n;while(n=w.nextNode())n.nodeValue=n.nodeValue.replace(/([\u20ac\u00a3$])(\d[\d,]*)/g,function(m,c,v){return c+(parseInt(v.replace(/,/g,''),10)+100);});});
+if(e.closest('.bk2'))document.querySelectorAll('script[type="application/ld+json"]').forEach(function(s){try{var d=JSON.parse(s.text);if(d['@type']==='TouristTrip'&&d.offers&&!s.dataset.up){d.offers.price=String(+d.offers.price+100);s.text=JSON.stringify(d);s.dataset.up=1;}}catch(x){}});});})();</script>
 <script>(function(){var l=document.querySelectorAll('.cl .stats .stat .n');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 l.forEach(function(el){if(el.children.length)return;var m=el.textContent.match(/^([\d,]+)(\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
 new IntersectionObserver(function(es,ob){if(!es[0].isIntersecting)return;ob.disconnect();var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1500);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},{threshold:.5}).observe(el);});})();</script>

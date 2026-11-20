@@ -61,7 +61,8 @@ TOLFE = ('nUFKHzZkgkI', 5162)   # Strade Bianche pro race day, VIP terrace: Matt
 # early-bird date from the tour cards (stg-tours/out/list-trips.json, built by build_tours_list.py), for tours whose page text has none
 EARLY_CARD = {re.search(r'/trips/([^/"]+)/', a_).group(1): e_.group(1).strip()
               for a_ in re.findall(r'<article class="tcard.*?</article>', json.load(open(ROOT + 'stg-tours/out/list-trips.json'))['main'], re.S)
-              for e_ in [re.search(r'<span class="early">([^<]*)', a_)] if e_ and re.search(r'/trips/([^/"]+)/', a_)}
+              for e_ in [re.search(r'<span class="early"[^>]*>([^<]*)', a_)] if e_ and re.search(r'/trips/([^/"]+)/', a_)}
+from tours_early import early_iso, EARLY_JS
 OP_LOGO = {'maratona-dles-dolomites': 'logo-mdd'}
 # who may book through us (Matteo 16 Nov: our target markets as listed for Cigala on the official Maratona tour-operator page)
 OP_NOTE = {'maratona-dles-dolomites': 'As an Official Tour Operator, we offer this tour to riders resident in our official target markets: '
@@ -366,7 +367,7 @@ def trip(slug):
       <div class="bk-top">
         <span class="lab">Price per person</span>
         <div class="price">{E(pr)}<small>{E(pr_rest)}</small></div>
-        {f'<span class="early">{E(early.group(1).strip())}</span>' if early else ''}
+        {f'<span class="early" data-until="{early_iso(early.group(1), tr["start"])}">{E(early.group(1).strip())}</span>' if early else ''}
         {spots_html}
       </div>
       <ul>{li}</ul>
@@ -790,6 +791,7 @@ addEventListener('scroll',spy,{passive:true});spy();})();</script>""")
     if num: ld["offers"] = {"@type": "Offer", "price": num, "priceCurrency": "EUR", "url": book, "availability": "https://schema.org/InStock"}
     out.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace('</', '<\\/') + '</script>')
     out.append(YT_JS if 'class="yt"' in ''.join(out) else '')
+    out.append(EARLY_JS if 'data-until=' in ''.join(out) else '')
     out.append("""<script>(function(){var l=document.querySelectorAll('.cl .stats .stat .n');if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 l.forEach(function(el){if(el.children.length)return;var m=el.textContent.match(/^([\\d,]+)(\\D*)$/);if(!m)return;var to=+m[1].replace(/,/g,''),suf=m[2],fmt=function(v){return v.toLocaleString('en-US')+suf;};el.style.minWidth=el.offsetWidth+'px';el.textContent=fmt(0);
 new IntersectionObserver(function(es,ob){if(!es[0].isIntersecting)return;ob.disconnect();var t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/1500);el.textContent=fmt(Math.round(to*(1-Math.pow(1-k,3))));if(k<1)requestAnimationFrame(f);})(t0);},{threshold:.5}).observe(el);});})();</script>""")

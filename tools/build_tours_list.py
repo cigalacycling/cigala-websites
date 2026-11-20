@@ -14,6 +14,7 @@ from datetime import date
 from PIL import Image
 import sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # -I skips the script folder
 from css_scope import scope_css
+from tours_early import early_iso, EARLY_JS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
 L = 'https://tours.cigalacycling.com'
@@ -91,7 +92,7 @@ for a in re.findall(r'<article class="panel trip".*?</article>', idx, re.S):
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
       <div class="price"><small>{price_label}</small>{price}</div>
-      {f'<span class="early">{early.group(1)}</span>' if early else '<span class="early none" aria-hidden="true">&nbsp;</span>'}
+      {f'<span class="early" data-until="{early_iso(early.group(1), t["start"])}">{early.group(1)}</span>' if early else '<span class="early none" aria-hidden="true">&nbsp;</span>'}
       <div class="ctas"><a class="btn btn-ghost" href="{more}" {EXT}>More details</a><a class="btn btn-go" href="{book}" {EXT}>Book now →</a></div>
     </div>
   </div>
@@ -185,7 +186,7 @@ def page_main(slug):
     else:
         parts.append(f'<section id="calendar" style="padding-top:44px">\n  <div class="in">\n    {head}\n'
                      f'    <div class="tgrid">\n{tours_html}\n    </div>{NONE}\n    {footnote}\n  </div>\n</section>')
-    parts += [band, partners, READMORE, LEVEL_JS]
+    parts += [band, partners, READMORE, LEVEL_JS, EARLY_JS]
     return '\n'.join(parts)
 
 # ---------- CSS: design CSS scoped to .cl, plus the brand fixes used on the homepage ----------

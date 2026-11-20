@@ -766,6 +766,9 @@ html .cc .band .tx .eyebrow + h2, html .cc .band .tx h2 + .bar { margin-top: 0; 
 html .cc .fi select:focus, html .cc .fi select:focus-visible { outline: none; }
 html .cc .fi:focus-within { box-shadow: inset 0 0 0 2px var(--green); border-radius: 10px; }
 html .cc .tour .facts span { white-space: nowrap; }
+html .cc .tour .dist { align-self: flex-start; display: flex; width: max-content; max-width: 100%; align-items: center; gap: 6px; margin: -2px 0 12px; padding: 5px 10px 4px; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; background: rgba(8,9,10,.45); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #d0d6e0; white-space: nowrap; }
+html .cc .tour .dist svg { width: 13px; height: 13px; fill: none; stroke: #2bd47a; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+html .cc .tour .dist .sep { width: 1px; height: 11px; background: rgba(255,255,255,.2); margin: 0 3px; }
 html .cc .tour .facts span:not(:last-child)::after { content: "·"; margin-left: 12px; color: var(--red); font-weight: 700; }
 html .cc .matteo .photo { background: none; aspect-ratio: auto; position: relative; display: flex; justify-content: center; align-items: flex-end; isolation: isolate; }
 html .cc .matteo .photo::before { content: ""; position: absolute; inset: 10% 5% 0; background: radial-gradient(circle at 50% 45%, rgba(0,154,68,.25), rgba(8,9,10,0) 65%); z-index: -1; }
@@ -779,6 +782,22 @@ html .cc #tour-grid .tour { aspect-ratio: auto; min-height: 380px; }
 html .cc #tour-grid .tour .tx { padding-top: 58px; padding-bottom: 18px; }
 html .cc #tour-grid .tour p { margin: 6px 0 10px; }
 @media (min-width: 1100px) {html .cc #tour-grid .tour .facts { margin-bottom: 8px; }
+ }
+html .cc .guests { margin-top: 34px; padding: 22px 24px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255,255,255,.025); text-align: center; }
+html .cc .guests .gtitle { margin: 0 0 16px; font-size: 15px; color: var(--text-2); letter-spacing: .02em; }
+html .cc .guests .gtitle b { color: var(--text); font-weight: 700; }
+html .cc .gflags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+html .cc .gflags li { position: relative; }
+html .cc .gflags img { display: block; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4); transition: transform .2s; }
+html .cc .gflags li:hover img { transform: translateY(-3px) scale(1.08); }
+html .cc .gflags span { position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; font-size: 12px; font-weight: 600; color: #fff; background: rgba(8,9,10,.92); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+html .cc .gflags li:hover span { opacity: 1; }
+@media (min-width: 1100px) {html .cc .gflags { flex-wrap: nowrap; gap: 9px; }
+ }
+@media (max-width: 600px) {html .cc .gflags { display: grid; grid-template-columns: repeat(5, 44px); justify-content: center; gap: 12px 16px; }
+html .cc .gflags img { width: 44px; height: 44px; }
+html .cc .guests { padding: 18px 14px; }
+html .cc .gflags span { display: none; }
  }
 @media (max-width: 1080px) {html .cc .menu { display: none; }
 html .cc .burger { display: block; }
@@ -876,7 +895,7 @@ html .cc .tour:hover img { transform: none; }
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
       <div class="price"><small>Price</small>€1399 | £1249 | $1649*</div>
-      <span class="early">Early bird price until 30/11</span>
+      <span class="early" data-until="2026-11-30">Early bird price until 30/11</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/cyprus-crossing-gravel/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=7789420390&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
@@ -891,7 +910,7 @@ html .cc .tour:hover img { transform: none; }
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
       <div class="price"><small>Price</small>€1399 | £1249 | $1649*</div>
-      <span class="early">Early bird price until 31/12</span>
+      <span class="early" data-until="2026-12-31">Early bird price until 31/12</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/tuscany-epic-gravel/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=5065115298&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
@@ -906,7 +925,7 @@ html .cc .tour:hover img { transform: none; }
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
       <div class="price"><small>Price</small>€1299 | £1149 | $1549*</div>
-      <span class="early">Early bird price until 28/02</span>
+      <span class="early" data-until="2027-02-28">Early bird price until 28/02</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/alpine-gravel-escape/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=6681342030&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
@@ -921,7 +940,7 @@ html .cc .tour:hover img { transform: none; }
     <button type="button" class="more-txt" aria-expanded="false" hidden>Read more</button>
     <div class="bottom">
       <div class="price"><small>Price</small>€1099 | £999 | $1299*</div>
-      <span class="early">Early bird price until 30/04</span>
+      <span class="early" data-until="2027-04-30">Early bird price until 30/04</span>
       <div class="ctas"><a class="btn btn-ghost" href="https://tours.cigalacycling.com/trips/lake-garda-gravel/" target="_blank" rel="noopener">More details</a><a class="btn btn-go" href="https://cigalacyclingtours.wetravel.com/checkout_embed?uuid=2303316283&source=direct_link" target="_blank" rel="noopener">Book now →</a></div>
     </div>
   </div>
@@ -957,6 +976,11 @@ g.querySelectorAll('.fchip').forEach(function(x){x.classList.toggle('on',x===b);
 document.querySelectorAll('.cl .tgrid').forEach(function(grid){var n=0;[].forEach.call(grid.querySelectorAll('.tcard'),function(c){var ok=!v||c.dataset.level.split(' ').indexOf(v)>-1;c.hidden=!ok;if(ok)n++;});
 var m=grid.nextElementSibling&&grid.nextElementSibling.classList.contains('lvnone')?grid.nextElementSibling:null;if(m)m.hidden=n>0;
 var sec=grid.closest('section');if(sec&&sec.id!=='calendar')sec.hidden=n===0;});});});})();</script>
+<script>(function(){var t=new Date();t.setHours(0,0,0,0);
+document.querySelectorAll('[data-until]').forEach(function(e){var u=new Date(e.dataset.until+'T23:59:59');if(t<=u&&Date.now()<=u.getTime())return;
+var box=e.closest('.tcard,.bk2');e.classList.add('none');e.setAttribute('aria-hidden','true');if(e.closest('.bk2'))e.style.display='none';
+if(!box)return;box.querySelectorAll('.price').forEach(function(p){var w=document.createTreeWalker(p,4),n;while(n=w.nextNode())n.nodeValue=n.nodeValue.replace(/([\u20ac\u00a3$])(\d[\d,]*)/g,function(m,c,v){return c+(parseInt(v.replace(/,/g,''),10)+100);});});
+if(e.closest('.bk2'))document.querySelectorAll('script[type="application/ld+json"]').forEach(function(s){try{var d=JSON.parse(s.text);if(d['@type']==='TouristTrip'&&d.offers&&!s.dataset.up){d.offers.price=String(+d.offers.price+100);s.text=JSON.stringify(d);s.dataset.up=1;}}catch(x){}});});})();</script>
 </div>
 <div class="cc"><footer>
   <div class="in">
