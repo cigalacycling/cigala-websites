@@ -115,7 +115,7 @@ function cc_vx_sync_line() {
 /* Matteo 18 Nov: an icon beside every coach tool (the Vekta logo for Vekta messages), added last so it covers every module's link */
 add_filter('cc_ath_coach_links', function ($html) {
     $map = ['vekta' => 'logo-vekta', 'notes' => 'mic', 'results' => 'trophy', 'reports' => 'reports', 'forms' => 'doc', 'availability' => 'calendar',
-            'goals' => 'peaks', 'contracts' => 'people', 'news' => 'bolt', 'ideas' => 'idea', 'blood' => 'sweat'];
+            'goals' => 'peaks', 'contracts' => 'people', 'news' => 'bolt', 'ideas' => 'idea', 'blood' => 'sweat', 'morning' => 'gauge'];
     $html = preg_replace_callback('~<a class="av-boardlink" href="([^"]*)">~', function ($m) use ($map) {
         $b = preg_match('~[?&](?:amp;)?board=([a-z]+)~', html_entity_decode($m[1]), $x) ? $x[1] : '';
         return $m[0] . (function_exists('cc_ath_icon') ? cc_ath_icon($map[$b] ?? 'link', 'ath-jic') : '');
